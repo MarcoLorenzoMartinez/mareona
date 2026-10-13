@@ -52,3 +52,11 @@ La accesibilidad es un **requisito bloqueante** en todas las fases[cite: 2].
 - **Live Regions:** `role="status"` o `aria-live="polite"` para actualizaciones del marcador, confirmaciones o nuevos mensajes[cite: 2].
 - **Wordle Sportinguista:** Celdas accesibles con texto descriptivo ("S, correcta; P, en otra posición")[cite: 2]. Estados diferenciados con formas/iconos además del color (relleno + ✓, borde + ▲, gris + ✕)[cite: 2].
 - **Clasificación:** Etiqueta `<table>` nativa con `<caption>` y `<th scope>`[cite: 2].
+
+### Filosofía de Diseño: Minimalismo Funcional
+
+1. **Economía Visual:** Menos elementos compitiendo por la atención. Eliminar cualquier borde, icono, sombra o etiqueta que no sea indispensable para comprender la información.
+2. **Legibilidad Inmediata:**
+   - Fechas y horarios en formato relativo/absoluto conciso ("Sábado 18 · 18:30" en vez de "Fecha y hora del próximo encuentro programado").
+   - Marcadores limpios con el resultado en tipografía tabular destacada.
+3. **Manejo del Espacio en Blanco:** No llenar huecos vacíos con texto decorativo. El espacio en blanco estructura la jerarquía mejor que añadir líneas divisorias o contenedores secundarios.

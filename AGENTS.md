@@ -64,3 +64,23 @@ La IA debe consultar y aplicar de forma autónoma las skills instaladas según e
 | **Notificaciones o confirmaciones** (envío de porra, guardado, errores) | `.agents/skills/ask-sonner` | Integración correcta de toasts con `sonner` y alineación con tokens del proyecto. |
 
 > **Regla de conflicto innegociable:** Ante cualquier conflicto de estilo propuesto por una skill, los tokens y restricciones de `docs/DESIGN.md` (tema claro, rojo `#e2001a`, blanco puro y sin tonos azules) tienen prioridad absoluta.
+
+## 9. Principios de Producto y Diseño Minimalista (Orientado a Producción)
+
+El objetivo visual de Mareona es una interfaz deportiva **sobria, directa y sin sobrecarga cognitiva**, accesible tanto para usuarios expertos como ocasionales.
+
+### A. Jerarquía y Claridad de Contenidos
+- **Cero prosa explicativa:** Prohibidos los subtítulos descriptivos ("Aquí podrás consultar los partidos...", "Información sobre..."). El contenido debe explicarse solo. Si un elemento necesita un párrafo explicativo para entenderse, el diseño ha fallado.
+- **Un único foco principal por pantalla:** Cada vista debe responder a una pregunta clave del usuario de un vistazo:
+  - `/temporada`: "¿Cuándo y contra quién jugamos el próximo partido?" (Hero card sobrio) seguido de "¿Cómo vamos en la tabla?" (vista compacta).
+  - `/juegos`: "¿Cuál es el partido para pronosticar hoy?" y "¿Cuántos puntos llevo?".
+  - `/social`: Conversación directa y limpia, sin barras laterales recargadas de widgets secundarios.
+- **Sin pantallas "resumen de resúmenes":** No crear dashboards genéricos llenos de cajitas con métricas vacías. Cada pantalla va directa al grano.
+
+### B. Uso Restrictivo y Semántico de Elementos Visuales
+- **Tipografía y números sobre adornos:** En una app de datos deportivos, el diseño lo marcan los números bien proporcionados (fechas, marcadores, posiciones), los escudos y los espacios en blanco, no las líneas decorativas.
+- **Iconos estrictamente funcionales:**
+  - En escritorio: enlaces del header solo con texto tipográfico y estado activo limpio.
+  - En móvil: barra inferior con iconos claros de navegación.
+  - En el resto de la interfaz: prohibido añadir iconos al lado de cada título de tarjeta o etiqueta de texto si no aportan una acción directa o un estado crítico (error/alerta).
+- **Tratamiento de tarjetas y superficies:** Evitar anidar cajas dentro de cajas con bordes múltiples. Usar fondo blanco predominante, bordes tenues de un píxel (`--border`) y fondos neutros suaves (`--surface`) solo para separar bloques temáticos claros.
