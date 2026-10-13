@@ -9,6 +9,7 @@ import {
   type DomainMatchSummary,
 } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
+import { createClient } from "@/lib/supabase/server";
 import { StandingsView } from "./standings-view";
 
 export function generateMetadata(): Metadata {
@@ -38,9 +39,10 @@ async function ClasificacionContent() {
   let matches: readonly DomainMatchSummary[] = [];
 
   try {
+    const supabase = await createClient();
     const [standingsRes, matchesRes] = await Promise.all([
-      fetchStandings(),
-      fetchSportingSeasonMatches(),
+      fetchStandings(undefined, supabase, { includeSplits: true }),
+      fetchSportingSeasonMatches(supabase),
     ]);
     standings = standingsRes;
     matches = matchesRes;

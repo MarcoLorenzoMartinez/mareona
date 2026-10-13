@@ -44,10 +44,12 @@ function getApiConfig() {
  */
 export async function fetchStandings(
   season: number = getCurrentSeasonYear(),
-  supabase?: SupabaseServerClient | null
+  supabase?: SupabaseServerClient | null,
+  options?: { includeSplits?: boolean }
 ): Promise<readonly DomainStandingRow[]> {
   const currentSeason = getCurrentSeasonYear();
-  const cacheKey = `standings_${LALIGA_HYPERMOTION_LEAGUE_ID}_${season}`;
+  const includeSplits = options?.includeSplits ?? false;
+  const cacheKey = `standings_${LALIGA_HYPERMOTION_LEAGUE_ID}_${season}${includeSplits ? "_splits" : ""}`;
 
   // 1. Try reading valid cache from Supabase if client is supplied
   if (supabase) {
@@ -60,7 +62,7 @@ export async function fetchStandings(
   // 2. For the active season, use the live open connector
   if (season === currentSeason) {
     try {
-      const liveRows = await fetchEspnLiveStandings();
+      const liveRows = await fetchEspnLiveStandings({ includeSplits });
       if (liveRows.length > 0) {
         if (supabase) {
           await setCachedPayload(

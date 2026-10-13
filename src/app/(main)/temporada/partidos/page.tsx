@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { fetchSportingSeasonMatches } from "@/lib/sports-api/client";
 import { getSeasonLabel } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
+import { createClient } from "@/lib/supabase/server";
 import { MatchesList } from "./matches-list";
 
 export function generateMetadata(): Metadata {
@@ -27,7 +28,8 @@ async function PartidosContent() {
   await connection();
 
   const dict = getDictionary();
-  const matches = await fetchSportingSeasonMatches();
+  const supabase = await createClient();
+  const matches = await fetchSportingSeasonMatches(supabase);
   const seasonLabel = getSeasonLabel();
 
   return (

@@ -7,6 +7,7 @@ import { getDictionary } from "@/i18n";
 import { TeamCrest } from "@/components/media/team-crest";
 import { fetchStandings, fetchNextFixture } from "@/lib/sports-api/client";
 import { getStadiumAsset } from "@/lib/sports-api/stadiums";
+import { createClient } from "@/lib/supabase/server";
 import {
   getSeasonLabel,
   type DomainStandingRow,
@@ -65,9 +66,10 @@ async function SeasonContent() {
   let match: DomainMatchSummary | null = null;
 
   try {
+    const supabase = await createClient();
     const [standingsRes, matchRes] = await Promise.allSettled([
-      fetchStandings(),
-      fetchNextFixture(),
+      fetchStandings(undefined, supabase, { includeSplits: false }),
+      fetchNextFixture(supabase),
     ]);
 
     if (standingsRes.status === "fulfilled" && standingsRes.value.length > 0) {
