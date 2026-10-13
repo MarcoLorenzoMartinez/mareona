@@ -51,3 +51,16 @@
 - Sistema de Diseño y Accesibilidad: `docs/DESIGN.md`
 - Licencias y Uso de Activos de Terceros: `docs/LEGAL-ASSETS.md`
 - Esquema de Base de Datos: `supabase/migrations/`
+
+## 8. Orquestación Automática de Skills (.agents/skills/)
+
+La IA debe consultar y aplicar de forma autónoma las skills instaladas según el contexto del trabajo, sin necesidad de que el usuario lo solicite explícitamente:
+
+| Contexto / Tipo de archivo | Skill obligatoria | Directriz principal |
+| :--- | :--- | :--- |
+| **Vistas con datos y tablas** (`/temporada`, clasificación, plantillas, estadísticas) | `.agents/skills/design-taste-frontend` | Controlar `VISUAL_DENSITY` (densidad alta pero legible, ritmo visual sobrio sin tarjetas infladas). |
+| **Layouts móviles y PWA** (`MainNav`, vistas de móvil, navegación inferior) | `.agents/skills/mobile-native` | Áreas táctiles cómodas (≥44px), ergonomía de pulgar, evitar scroll rebote y emular sensación nativa. |
+| **Microinteracciones y feedback** (botones, tarjetas activas, dialogs, tabs) | `.agents/skills/emil-design-eng` | Transiciones rápidas (<200ms), estados `:active` inmediatos y físicas naturales sin animación superflua. |
+| **Notificaciones o confirmaciones** (envío de porra, guardado, errores) | `.agents/skills/ask-sonner` | Integración correcta de toasts con `sonner` y alineación con tokens del proyecto. |
+
+> **Regla de conflicto innegociable:** Ante cualquier conflicto de estilo propuesto por una skill, los tokens y restricciones de `docs/DESIGN.md` (tema claro, rojo `#e2001a`, blanco puro y sin tonos azules) tienen prioridad absoluta.
