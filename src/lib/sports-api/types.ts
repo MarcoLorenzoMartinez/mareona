@@ -419,6 +419,12 @@ export interface MatchdayEvolutionPoint {
   readonly isHome: boolean;
   readonly result: "W" | "D" | "L";
   readonly score: string;
+  readonly homeScore: number;
+  readonly awayScore: number;
+  readonly homeTeamName: string;
+  readonly awayTeamName: string;
+  readonly homeCrestUrl?: string | null;
+  readonly awayCrestUrl?: string | null;
   readonly matchPoints: number;
   readonly cumulativePoints: number;
   readonly position: number;
@@ -505,6 +511,12 @@ export function getSportingSeasonEvolution(
       isHome,
       result,
       score: `${match.homeScore}-${match.awayScore}`,
+      homeScore: match.homeScore,
+      awayScore: match.awayScore,
+      homeTeamName: match.homeTeam.name,
+      awayTeamName: match.awayTeam.name,
+      homeCrestUrl: match.homeTeam.crestUrl,
+      awayCrestUrl: match.awayTeam.crestUrl,
       matchPoints,
       cumulativePoints,
       position,

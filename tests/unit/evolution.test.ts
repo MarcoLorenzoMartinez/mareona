@@ -93,6 +93,10 @@ test("getSportingSeasonEvolution ignores scheduled matches and computes points c
   assert.equal(evolution[0]?.matchday, 1);
   assert.equal(evolution[0]?.opponent, "Cádiz CF");
   assert.equal(evolution[0]?.isHome, true);
+  assert.equal(evolution[0]?.homeTeamName, "Real Sporting");
+  assert.equal(evolution[0]?.awayTeamName, "Cádiz CF");
+  assert.equal(evolution[0]?.homeScore, 1);
+  assert.equal(evolution[0]?.awayScore, 0);
   assert.equal(evolution[0]?.result, "W");
   assert.equal(evolution[0]?.matchPoints, 3);
   assert.equal(evolution[0]?.cumulativePoints, 3);

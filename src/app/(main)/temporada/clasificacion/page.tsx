@@ -22,9 +22,9 @@ export function generateMetadata(): Metadata {
 function ClasificacionSkeleton() {
   return (
     <div className="flex flex-col gap-5 animate-pulse" aria-busy="true">
-      <div className="flex justify-between items-center">
-        <div className="h-8 w-44 rounded-md bg-[var(--surface)]" />
-        <div className="h-9 w-52 rounded-md bg-[var(--surface)]" />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="h-9 w-64 rounded-full bg-[var(--surface)]" />
+        <div className="h-9 w-56 rounded-full bg-[var(--surface)]" />
       </div>
       <div className="h-[600px] rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs" />
     </div>

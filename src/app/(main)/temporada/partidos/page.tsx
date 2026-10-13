@@ -32,14 +32,9 @@ async function PartidosContent() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div>
-        <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)] md:text-2xl">
-          {dict.season.matchesList.title}
-        </h1>
-        <p className="text-xs text-[var(--foreground-muted)]">
-          {dict.season.competitionName} · {dict.season.seasonLabelPrefix} {seasonLabel}
-        </p>
-      </div>
+      <h1 className="sr-only">
+        {dict.season.matchesList.title} — {dict.season.competitionName} {seasonLabel}
+      </h1>
 
       {matches.length > 0 ? (
         <MatchesList matches={matches} />

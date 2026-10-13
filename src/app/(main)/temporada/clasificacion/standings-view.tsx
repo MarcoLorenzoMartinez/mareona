@@ -11,7 +11,7 @@ import {
 } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
 import { RealDistanceView } from "./real-distance-view";
-import { EvolutionChart } from "./evolution-chart";
+import { EvolutionChart, type DisplayMode } from "./evolution-chart";
 
 export type ClassificationViewMode = "table" | "distance" | "evolution";
 
@@ -36,6 +36,7 @@ export function StandingsView({
 
   const [mode, setMode] = useState<ClassificationViewMode>("table");
   const [scope, setScope] = useState<StandingsViewScope>("total");
+  const [evolutionMode, setEvolutionMode] = useState<DisplayMode>("both");
 
   const viewModeOptions: readonly { readonly id: ClassificationViewMode; readonly label: string }[] = useMemo(
     () => [
@@ -53,6 +54,15 @@ export function StandingsView({
       { id: "away", label: t.scopes.away },
     ],
     [t.scopes]
+  );
+
+  const evolutionModeOptions: readonly { readonly id: DisplayMode; readonly label: string }[] = useMemo(
+    () => [
+      { id: "both", label: t.evolution.metrics.both },
+      { id: "points", label: t.evolution.metrics.points },
+      { id: "position", label: t.evolution.metrics.position },
+    ],
+    [t.evolution.metrics]
   );
 
   // Recalculates position ranks and sorts instantly upon scope change
@@ -73,22 +83,18 @@ export function StandingsView({
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Cabecera Principal: Título y Selector de Vistas fijo a la misma altura */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)] md:text-2xl">
-            {t.title}
-          </h1>
-          <p className="text-xs text-[var(--foreground-muted)]">
-            {t.subtitle} · {dict.season.seasonLabelPrefix} {seasonLabel}
-          </p>
-        </div>
+      {/* Encabezado semántico para lectores de pantalla (WCAG 2.2 AA) */}
+      <h1 className="sr-only">
+        {t.title} — {dict.season.competitionName} {seasonLabel}
+      </h1>
 
-        {/* Selector de Modo: Tabla / Distancia Real / Evolución */}
+      {/* Barra de Controles Superior: Vista (izquierda) y Filtro contextual redondeado y rojo (derecha) */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* Selector de Modo Principal: Tabla / Distancia Real / Evolución */}
         <div
           role="radiogroup"
           aria-label="Tipo de visualización"
-          className="inline-flex self-start rounded-lg border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto"
+          className="inline-flex self-start rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto"
         >
           {viewModeOptions.map((opt) => {
             const isSelected = mode === opt.id;
@@ -99,7 +105,7 @@ export function StandingsView({
                 role="radio"
                 aria-checked={isSelected}
                 onClick={() => setMode(opt.id)}
-                className={`inline-flex min-h-[36px] items-center justify-center rounded-md px-3 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+                className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
                   isSelected
                     ? "bg-white text-[var(--foreground)] shadow-xs font-bold"
                     : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
@@ -110,54 +116,70 @@ export function StandingsView({
             );
           })}
         </div>
+
+        {/* Selector Secundario (derecha): Estilo más redondeado y rojo */}
+        {mode === "evolution" ? (
+          <div
+            role="radiogroup"
+            aria-label="Series de evolución"
+            className="inline-flex self-start rounded-full border border-red-200 bg-red-50/50 p-1 sm:self-auto"
+          >
+            {evolutionModeOptions.map((opt) => {
+              const isSelected = evolutionMode === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  onClick={() => setEvolutionMode(opt.id)}
+                  className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+                    isSelected
+                      ? "bg-[var(--primary)] text-white shadow-xs font-bold"
+                      : "text-neutral-700 hover:text-[var(--primary)] hover:bg-red-100/50"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <div
+            role="radiogroup"
+            aria-label="Filtro de ámbito"
+            className="inline-flex self-start rounded-full border border-red-200 bg-red-50/50 p-1 sm:self-auto"
+          >
+            {scopeOptions.map((opt) => {
+              const isSelected = scope === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  onClick={() => setScope(opt.id)}
+                  className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+                    isSelected
+                      ? "bg-[var(--primary)] text-white shadow-xs font-bold"
+                      : "text-neutral-700 hover:text-[var(--primary)] hover:bg-red-100/50"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Renderizado de vista condicional según el modo seleccionado */}
       {mode === "evolution" ? (
-        <EvolutionChart evolution={evolution} />
+        <EvolutionChart evolution={evolution} mode={evolutionMode} />
       ) : mode === "distance" ? (
-        <RealDistanceView
-          standings={currentStandings}
-          scopeLabel={activeScopeLabel}
-          scope={scope}
-          onScopeChange={setScope}
-          scopeOptions={scopeOptions}
-        />
+        <RealDistanceView standings={currentStandings} />
       ) : (
         <div className="rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs sm:p-5">
-          {/* Barra de herramientas interna: Filtro de Ámbito (General / En Casa / A Domicilio) dentro de la tarjeta */}
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
-            <span className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
-              {activeScopeLabel}
-            </span>
-
-            <div
-              role="radiogroup"
-              aria-label="Filtro de ámbito"
-              className="inline-flex rounded-lg border border-[var(--border)] bg-[var(--surface)] p-1"
-            >
-              {scopeOptions.map((opt) => {
-                const isSelected = scope === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={isSelected}
-                    onClick={() => setScope(opt.id)}
-                    className={`inline-flex min-h-[32px] items-center justify-center rounded-md px-3 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-                      isSelected
-                        ? "bg-white text-[var(--foreground)] shadow-xs font-bold"
-                        : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <caption className="sr-only">

@@ -3,13 +3,15 @@
 
 import { useState } from "react";
 import type { MatchdayEvolutionPoint } from "@/lib/sports-api/types";
+import { TeamCrest } from "@/components/media/team-crest";
 import { getDictionary } from "@/i18n";
+
+export type DisplayMode = "both" | "points" | "position";
 
 interface EvolutionChartProps {
   readonly evolution: readonly MatchdayEvolutionPoint[];
+  readonly mode?: DisplayMode;
 }
-
-type DisplayMode = "both" | "points" | "position";
 
 /**
  * Native, responsive SVG dual-axis line chart visualizing Real Sporting's season evolution
@@ -17,11 +19,9 @@ type DisplayMode = "both" | "points" | "position";
  * Complies with WCAG 2.2 AA (color + shape differentiation, high contrast, accessible table)
  * and corporate red/white visual identity.
  */
-export function EvolutionChart({ evolution }: EvolutionChartProps) {
+export function EvolutionChart({ evolution, mode = "both" }: EvolutionChartProps) {
   const dict = getDictionary();
   const t = dict.season.standings.evolution;
-
-  const [mode, setMode] = useState<DisplayMode>("both");
   const [selectedPointIndex, setSelectedPointIndex] = useState<number | null>(
     evolution.length > 0 ? evolution.length - 1 : null
   );
@@ -112,114 +112,8 @@ export function EvolutionChart({ evolution }: EvolutionChartProps) {
         } L ${firstPointCoord.x} ${paddingTop + plotHeight} Z`
       : "";
 
-  // Summary statistics
-  const avgPoints = (latestPoint.cumulativePoints / latestPoint.matchday).toFixed(2);
-
   return (
     <div className="rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs sm:p-6">
-      {/* Header & Controls */}
-      <div className="flex flex-col gap-4 border-b border-[var(--border)] pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-base font-bold text-[var(--foreground)]">{t.title}</h2>
-          <p className="text-xs text-[var(--foreground-muted)]">{t.description}</p>
-        </div>
-
-        {/* Display Mode Selector */}
-        <div
-          role="radiogroup"
-          aria-label={t.title}
-          className="inline-flex self-start rounded-lg border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto"
-        >
-          <button
-            type="button"
-            role="radio"
-            aria-checked={mode === "both"}
-            onClick={() => setMode("both")}
-            className={`inline-flex min-h-[34px] items-center justify-center rounded-md px-3 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-              mode === "both"
-                ? "bg-white text-[var(--foreground)] shadow-xs font-bold"
-                : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            {t.metrics.both}
-          </button>
-          <button
-            type="button"
-            role="radio"
-            aria-checked={mode === "points"}
-            onClick={() => setMode("points")}
-            className={`inline-flex min-h-[34px] items-center justify-center rounded-md px-3 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-              mode === "points"
-                ? "bg-white text-[var(--foreground)] shadow-xs font-bold"
-                : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            {t.metrics.points}
-          </button>
-          <button
-            type="button"
-            role="radio"
-            aria-checked={mode === "position"}
-            onClick={() => setMode("position")}
-            className={`inline-flex min-h-[34px] items-center justify-center rounded-md px-3 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-              mode === "position"
-                ? "bg-white text-[var(--foreground)] shadow-xs font-bold"
-                : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            {t.metrics.position}
-          </button>
-        </div>
-      </div>
-
-      {/* KPI & Legend Bar */}
-      <div className="my-4 flex flex-wrap items-center justify-between gap-y-3">
-        {/* KPI Values */}
-        <div className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
-          <div>
-            <span className="text-2xl font-black tabular-nums tracking-tight text-[var(--primary)] sm:text-3xl">
-              {latestPoint.cumulativePoints}
-            </span>
-            <span className="ml-1.5 text-xs font-medium text-[var(--foreground-muted)] sm:text-sm">
-              {t.pointsSummary} {latestPoint.matchday} {t.matchesSummary} ({avgPoints}{" "}
-              {t.avgPointsSummary})
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <span className="text-2xl font-black tabular-nums tracking-tight text-neutral-800 sm:text-3xl">
-              {latestPoint.position}.ª
-            </span>
-            <span className="text-xs font-medium text-[var(--foreground-muted)] sm:text-sm">
-              (
-              {latestPoint.position <= 2
-                ? t.zones.directPromotion
-                : latestPoint.position <= 6
-                ? t.zones.playoff
-                : latestPoint.position >= 19
-                ? t.zones.relegation
-                : "Mitad de tabla"}
-              )
-            </span>
-          </div>
-        </div>
-
-        {/* Visual Legend with Distinct Shapes (WCAG 2.2 AA) */}
-        <div className="flex items-center gap-4 text-xs font-medium text-[var(--foreground-muted)]">
-          {showPoints && (
-            <div className="flex items-center gap-1.5">
-              <span className="inline-block h-2.5 w-2.5 rounded-full border-2 border-[var(--primary)] bg-white" />
-              <span className="text-[var(--foreground)] font-semibold">{t.legendPoints}</span>
-            </div>
-          )}
-          {showPosition && (
-            <div className="flex items-center gap-1.5">
-              <span className="inline-block h-2 w-2 rounded-xs border border-neutral-400 bg-white" />
-              <span className="text-[var(--foreground-muted)]">{t.legendPosition}</span>
-            </div>
-          )}
-        </div>
-      </div>
 
       {/* SVG Dual-Axis Chart Container */}
       <div className="relative w-full overflow-hidden rounded-lg bg-[var(--surface)]/30 p-2 sm:p-4">
@@ -457,30 +351,56 @@ export function EvolutionChart({ evolution }: EvolutionChartProps) {
       {/* Selected Point Detail Card */}
       {selectedPoint && (
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--border)] bg-white p-3 text-xs shadow-2xs">
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2.5">
             <span className="font-bold text-[var(--foreground)]">
               {t.matchdayPrefix} {selectedPoint.matchday}
             </span>
-            <span className="text-[var(--foreground-muted)]">·</span>
-            <span className="text-[var(--foreground)] font-medium">
-              {t.opponentPrefix} {selectedPoint.opponent} ({selectedPoint.isHome ? t.homeTag : t.awayTag})
-            </span>
-            <span
-              className={`rounded-xs px-1.5 py-0.5 text-[10px] font-bold uppercase ${
-                selectedPoint.result === "W"
-                  ? "bg-emerald-100 text-emerald-800"
-                  : selectedPoint.result === "D"
-                  ? "bg-neutral-100 text-neutral-800"
-                  : "bg-red-100 text-red-800"
-              }`}
-            >
-              {selectedPoint.result === "W"
-                ? t.win
-                : selectedPoint.result === "D"
-                ? t.draw
-                : t.loss}{" "}
-              {selectedPoint.score}
-            </span>
+
+            {/* Marcador con escudos de ambos equipos */}
+            <div className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1">
+              {/* Equipo Local */}
+              <div className="flex items-center gap-1.5">
+                <TeamCrest
+                  crestUrl={selectedPoint.homeCrestUrl}
+                  teamName={selectedPoint.homeTeamName}
+                  size="sm"
+                  isSporting={selectedPoint.isHome}
+                />
+                <span
+                  className={`text-xs ${
+                    selectedPoint.isHome
+                      ? "font-bold text-[var(--foreground)]"
+                      : "text-[var(--foreground-muted)]"
+                  }`}
+                >
+                  {selectedPoint.homeTeamName}
+                </span>
+              </div>
+
+              {/* Marcador */}
+              <span className="rounded-xs bg-white px-1.5 py-0.5 font-mono text-xs font-black tabular-nums border border-[var(--border)] text-[var(--foreground)]">
+                {selectedPoint.homeScore} - {selectedPoint.awayScore}
+              </span>
+
+              {/* Equipo Visitante */}
+              <div className="flex items-center gap-1.5">
+                <span
+                  className={`text-xs ${
+                    !selectedPoint.isHome
+                      ? "font-bold text-[var(--foreground)]"
+                      : "text-[var(--foreground-muted)]"
+                  }`}
+                >
+                  {selectedPoint.awayTeamName}
+                </span>
+                <TeamCrest
+                  crestUrl={selectedPoint.awayCrestUrl}
+                  teamName={selectedPoint.awayTeamName}
+                  size="sm"
+                  isSporting={!selectedPoint.isHome}
+                />
+              </div>
+            </div>
           </div>
 
           <div className="flex items-center gap-5 text-[var(--foreground)]">
