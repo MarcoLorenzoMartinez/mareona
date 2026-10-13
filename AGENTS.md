@@ -18,6 +18,8 @@
 - **Dependencias:** Prohibido instalar paquetes npm sin consultar. Si se resuelve con la plataforma web o ≤ 30 líneas, no se añade librería.
 - **Seguridad:** RLS activada en TODAS las tablas. Variables sensibles solo en servidor (`import 'server-only'`). El `user_id` se toma siempre de la sesión en servidor vía `supabase.auth.getUser()`.
 - **Datos Deportivos:** Nunca se llama a la API externa desde el cliente; siempre desde el servidor pasando por la caché de Supabase (`src/lib/sports-api/`).
+- **Nombre Canónico del Real Sporting:** El club se denomina estricta y únicamente **"Real Sporting"** (nunca "Sporting Gijón", "Sporting de Gijón" ni otras variantes de APIs externas). La normalización se realiza obligatoriamente en el borde de ingesta/adaptación (`normalizeTeamName` en `src/lib/sports-api/`) antes de almacenar en BD o pasar al modelo de dominio. Los componentes de UI consumen siempre el nombre ya normalizado y nunca contienen parches de renombramiento en JSX.
+- **Prohibición Estricta de Datos Ficticios (Cero Mock Data en Producción):** Queda terminantemente prohibido inventar o insertar datos de prueba/fallback ficticios (partidos, clasificaciones de muestra, marcadores inventados o plantillas simuladas) en componentes o rutas de producción. Si una consulta o API externa no dispone de datos o falla temporalmente, la interfaz debe comunicar con total transparencia que no se dispone de dicha información en ese momento.
 
 ## 3. Identidad Visual y Accesibilidad
 - **Rojo y blanco dominan.** `--brand`: `#e2001a`, `--background`: `#ffffff`.

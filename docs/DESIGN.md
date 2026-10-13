@@ -26,6 +26,7 @@ La aplicación utiliza como paleta principal el **rojo y blanco**, manteniendo u
 - **Rojo y blanco dominan:** El rojo no se usa en párrafos de texto largo ni fondos de lectura extensa (feeds o tablas)[cite: 2].
 - **Paleta coherente:** Reemplazar los valores predeterminados del navegador y librerías de estilos por los tokens corporativos (anillo de foco `--ring`, selecciones y enlaces)[cite: 2].
 - **Contenido externo:** Los escudos y fotografías de terceros conservan sus colores oficiales originales[cite: 2].
+- **Denominación oficial del club:** En cualquier pantalla o componente, el club se nombra siempre **"Real Sporting"**, sobreescribiendo en la capa de datos cualquier variación proveniente de APIs de terceros (ej. "Sporting Gijón").
 - **Logotipo:** Isotipo minimalista con fondo rojo `#e2001a` y una cresta de ola marina blanca formando sutilmente una letra "M"[cite: 2].
 
 ---

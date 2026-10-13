@@ -75,6 +75,7 @@ La aplicación contará con cuatro áreas verticales de primer nivel en la naveg
 7. **Protección de secretos:** ninguna credencial debe incluirse en el repositorio.
 8. **Accesibilidad desde el primer commit:** cumplir WCAG 2.2 AA en toda la aplicación.
 9. **Identidad visual:** utilizar el rojo y el blanco como paleta central de la interfaz.
+10. **Tolerancia cero a datos ficticios:** queda prohibido inventar o mockear datos en producción; si falta información o la fuente no responde, se muestra un estado de aviso transparente al usuario.
 
 ---
 
