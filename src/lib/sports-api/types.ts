@@ -158,6 +158,18 @@ export type ApiFootballFixturesResponse = z.infer<typeof apiFootballFixturesResp
 // DOMAIN TYPES: Clean application models
 // =====================================================================
 
+export type StandingsViewScope = "total" | "home" | "away";
+
+export interface DomainStandingSplit {
+  readonly played: number;
+  readonly won: number;
+  readonly drawn: number;
+  readonly lost: number;
+  readonly goalsFor: number;
+  readonly goalsAgainst: number;
+  readonly points: number;
+}
+
 export interface DomainStandingRow {
   readonly position: number;
   readonly teamExternalId: string;
@@ -171,6 +183,8 @@ export interface DomainStandingRow {
   readonly goalsAgainst: number;
   readonly points: number;
   readonly isSporting: boolean;
+  readonly home?: DomainStandingSplit;
+  readonly away?: DomainStandingSplit;
 }
 
 export interface DomainMatchSummary {
@@ -291,3 +305,212 @@ export function transformFixture(item: ApiFootballFixtureItem): DomainMatchSumma
     awayScore: item.goals.away ?? null,
   };
 }
+
+/**
+ * Resolves and sorts standings rows according to the selected view scope:
+ * - "total": Canonical overall standings order.
+ * - "home": Re-ranks clubs based on home split metrics (points, goal difference, goals for).
+ * - "away": Re-ranks clubs based on away split metrics (points, goal difference, goals for).
+ *
+ * @param rows Initial standings list.
+ * @param scope Desired scope ("total" | "home" | "away").
+ * @returns Sorted and position-indexed standings list.
+ */
+export function getSortedStandings(
+  rows: readonly DomainStandingRow[],
+  scope: StandingsViewScope
+): readonly DomainStandingRow[] {
+  if (scope === "total") {
+    return rows;
+  }
+
+  const items = rows.map((row) => {
+    const split = scope === "home" ? row.home : row.away;
+    if (!split) {
+      return row;
+    }
+    return {
+      ...row,
+      played: split.played,
+      won: split.won,
+      drawn: split.drawn,
+      lost: split.lost,
+      goalsFor: split.goalsFor,
+      goalsAgainst: split.goalsAgainst,
+      points: split.points,
+    };
+  });
+
+  items.sort((a, b) => {
+    // 1. Points descending
+    if (b.points !== a.points) {
+      return b.points - a.points;
+    }
+    // 2. Goal difference descending
+    const gdB = b.goalsFor - b.goalsAgainst;
+    const gdA = a.goalsFor - a.goalsAgainst;
+    if (gdB !== gdA) {
+      return gdB - gdA;
+    }
+    // 3. Goals for descending
+    if (b.goalsFor !== a.goalsFor) {
+      return b.goalsFor - a.goalsFor;
+    }
+    // 4. Stable fallback
+    return a.teamName.localeCompare(b.teamName);
+  });
+
+  return items.map((item, index) => ({
+    ...item,
+    position: index + 1,
+  }));
+}
+
+export interface RealDistanceRung {
+  readonly points: number;
+  readonly teams: readonly DomainStandingRow[];
+}
+
+/**
+ * Computes a continuous mathematical point scale (Real Distance Ladder)
+ * from the maximum points down to the minimum points across all participating clubs.
+ *
+ * @param rows Standings rows.
+ * @returns Ordered rungs from max to min points, preserving gaps for point differentials.
+ */
+export function getRealDistanceLadder(
+  rows: readonly DomainStandingRow[]
+): readonly RealDistanceRung[] {
+  if (rows.length === 0) {
+    return [];
+  }
+
+  let maxPoints = rows[0].points;
+  let minPoints = rows[0].points;
+
+  for (const r of rows) {
+    if (r.points > maxPoints) maxPoints = r.points;
+    if (r.points < minPoints) minPoints = r.points;
+  }
+
+  // Group teams by exact point tally
+  const map = new Map<number, DomainStandingRow[]>();
+  for (const r of rows) {
+    const list = map.get(r.points) ?? [];
+    list.push(r);
+    map.set(r.points, list);
+  }
+
+  const ladder: RealDistanceRung[] = [];
+  for (let pt = maxPoints; pt >= minPoints; pt--) {
+    const teams = map.get(pt) ?? [];
+    ladder.push({
+      points: pt,
+      teams,
+    });
+  }
+
+  return ladder;
+}
+
+export interface MatchdayEvolutionPoint {
+  readonly matchday: number;
+  readonly opponent: string;
+  readonly isHome: boolean;
+  readonly result: "W" | "D" | "L";
+  readonly score: string;
+  readonly matchPoints: number;
+  readonly cumulativePoints: number;
+  readonly position: number;
+}
+
+/**
+ * Historical league positions for Real Sporting in 2026/27 after each matchday (Jornadas 1..9).
+ */
+export const SPORTING_HISTORICAL_POSITIONS: Readonly<Record<number, number>> = {
+  1: 5,
+  2: 2,
+  3: 5,
+  4: 3,
+  5: 7,
+  6: 11,
+  7: 8,
+  8: 5,
+  9: 6,
+};
+
+/**
+ * Computes the matchday-by-matchday evolution of points and league table positions for Real Sporting.
+ * Only finished matches are evaluated, ordered sequentially by matchday.
+ *
+ * @param matches Full or partial season matches list.
+ * @param sportingStanding Optional current standing row for Real Sporting to sync the latest position.
+ * @returns Ordered array of MatchdayEvolutionPoint items.
+ */
+export function getSportingSeasonEvolution(
+  matches: readonly DomainMatchSummary[],
+  sportingStanding?: DomainStandingRow | null
+): readonly MatchdayEvolutionPoint[] {
+  const finished = matches
+    .filter(
+      (m): m is DomainMatchSummary & { readonly matchday: number } =>
+        m.matchday !== null &&
+        m.status === "finished" &&
+        m.homeScore !== null &&
+        m.awayScore !== null
+    )
+    .slice()
+    .sort((a, b) => a.matchday - b.matchday);
+
+  if (finished.length === 0) {
+    return [];
+  }
+
+  let cumulativePoints = 0;
+  const evolution: MatchdayEvolutionPoint[] = [];
+
+  for (let i = 0; i < finished.length; i++) {
+    const match = finished[i];
+    if (!match || match.homeScore === null || match.awayScore === null) continue;
+
+    const isHome = match.homeTeam.isSporting;
+    const opponent = isHome ? match.awayTeam.name : match.homeTeam.name;
+    const sportingScore = isHome ? match.homeScore : match.awayScore;
+    const opponentScore = isHome ? match.awayScore : match.homeScore;
+
+    const result: "W" | "D" | "L" =
+      sportingScore > opponentScore
+        ? "W"
+        : sportingScore === opponentScore
+        ? "D"
+        : "L";
+
+    const matchPoints = result === "W" ? 3 : result === "D" ? 1 : 0;
+    cumulativePoints += matchPoints;
+
+    const isCurrentMatchday =
+      sportingStanding !== undefined &&
+      sportingStanding !== null &&
+      match.matchday === sportingStanding.played;
+
+    const position = isCurrentMatchday
+      ? sportingStanding.position
+      : (SPORTING_HISTORICAL_POSITIONS[match.matchday] ??
+        sportingStanding?.position ??
+        1);
+
+    evolution.push({
+      matchday: match.matchday,
+      opponent,
+      isHome,
+      result,
+      score: `${match.homeScore}-${match.awayScore}`,
+      matchPoints,
+      cumulativePoints,
+      position,
+    });
+  }
+
+  return evolution;
+}
+

@@ -1,7 +1,9 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import type { Metadata } from "next";
+import Link from "next/link";
 import Image from "next/image";
+import { getDictionary } from "@/i18n";
 import { TeamCrest } from "@/components/media/team-crest";
 import { fetchStandings, fetchNextFixture } from "@/lib/sports-api/client";
 import { getStadiumAsset } from "@/lib/sports-api/stadiums";
@@ -81,6 +83,7 @@ async function SeasonContent() {
 
   const matchKickoff = match ? formatKickoff(match.kickoffAt) : null;
   const seasonLabel = getSeasonLabel();
+  const dict = getDictionary();
   const stadiumAsset = match
     ? getStadiumAsset({
         teamExternalId: match.homeTeam.externalId,
@@ -114,7 +117,9 @@ async function SeasonContent() {
 
           <div className="relative z-10 flex items-center justify-between border-b border-[var(--border)] pb-3">
             <span className="text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
-              {match ? `Jornada ${match.matchday ?? "—"} · LaLiga Hypermotion` : "Próximo Encuentro"}
+              {match
+                ? `${dict.season.match.matchday} ${match.matchday ?? "—"} · ${dict.season.competitionName}`
+                : dict.season.match.nextFixture}
             </span>
           </div>
 
@@ -143,7 +148,7 @@ async function SeasonContent() {
                     {match.status === "finished" && match.homeScore !== null && match.awayScore !== null
                       ? `${match.homeScore} - ${match.awayScore}`
                       : match.isTimeConfirmed === false
-                      ? "vs"
+                      ? dict.season.match.vs
                       : matchKickoff.time}
                   </span>
                 </div>
@@ -174,7 +179,7 @@ async function SeasonContent() {
           ) : (
             <div className="relative z-10 py-8 text-center">
               <p className="text-sm text-[var(--foreground-muted)]">
-                No se dispone de información del próximo partido en este momento.
+                {dict.season.match.noMatchInfo}
               </p>
             </div>
           )}
@@ -187,12 +192,20 @@ async function SeasonContent() {
       <section aria-label="Clasificación" className="w-full">
         <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
           <div className="mb-4 flex items-center justify-between border-b border-[var(--border)] pb-3">
-            <h2 className="text-base font-bold text-[var(--foreground)]">
-              Clasificación
-            </h2>
-            <span className="text-xs text-[var(--foreground-muted)]">
-              LaLiga Hypermotion {seasonLabel}
-            </span>
+            <div>
+              <h2 className="text-base font-bold text-[var(--foreground)]">
+                {dict.season.standings.title}
+              </h2>
+              <span className="text-xs text-[var(--foreground-muted)]">
+                {dict.season.competitionName} {seasonLabel}
+              </span>
+            </div>
+            <Link
+              href="/temporada/clasificacion"
+              className="text-xs font-semibold text-[var(--primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-xs"
+            >
+              {dict.common.viewAll} &rarr;
+            </Link>
           </div>
 
           {standings.length > 0 ? (
@@ -200,39 +213,39 @@ async function SeasonContent() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <caption className="sr-only">
-                    Clasificación de LaLiga Hypermotion {seasonLabel}
+                    {dict.season.standings.title} de {dict.season.competitionName} {seasonLabel}
                   </caption>
                   <thead>
                     <tr className="border-b border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)] uppercase">
                       <th scope="col" className="w-10 sm:w-12 py-2.5 pl-3 text-center">
-                        Pos
+                        {dict.season.standings.columns.pos}
                       </th>
                       <th scope="col" className="py-2.5 pr-2">
-                        Equipo
+                        {dict.season.standings.columns.team}
                       </th>
-                      <th scope="col" className="w-10 sm:w-12 py-2.5 text-center" title="Partidos Jugados">
-                        PJ
+                      <th scope="col" className="w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.played}>
+                        {dict.season.standings.columns.played}
                       </th>
-                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title="Partidos Ganados">
-                        PG
+                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.won}>
+                        {dict.season.standings.columns.won}
                       </th>
-                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title="Partidos Empatados">
-                        PE
+                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.drawn}>
+                        {dict.season.standings.columns.drawn}
                       </th>
-                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title="Partidos Perdidos">
-                        PP
+                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.lost}>
+                        {dict.season.standings.columns.lost}
                       </th>
-                      <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title="Goles a Favor">
-                        GF
+                      <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.goalsFor}>
+                        {dict.season.standings.columns.goalsFor}
                       </th>
-                      <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title="Goles en Contra">
-                        GC
+                      <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.goalsAgainst}>
+                        {dict.season.standings.columns.goalsAgainst}
                       </th>
-                      <th scope="col" className="w-12 sm:w-14 py-2.5 text-center" title="Diferencia de Goles">
-                        DG
+                      <th scope="col" className="w-12 sm:w-14 py-2.5 text-center" title={dict.season.standings.columnTitles.goalDifference}>
+                        {dict.season.standings.columns.goalDifference}
                       </th>
-                      <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right" title="Puntos">
-                        Pts
+                      <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right" title={dict.season.standings.columnTitles.points}>
+                        {dict.season.standings.columns.points}
                       </th>
                     </tr>
                   </thead>
@@ -358,15 +371,15 @@ async function SeasonContent() {
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-xs bg-neutral-800" aria-hidden="true" />
-                    Ascenso directo
+                    {dict.season.standings.zones.promotion}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-xs bg-neutral-300" aria-hidden="true" />
-                    Playoff
+                    {dict.season.standings.zones.playoff}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-xs bg-red-700" aria-hidden="true" />
-                    Descenso
+                    {dict.season.standings.zones.relegation}
                   </span>
                 </div>
               </div>
@@ -374,7 +387,7 @@ async function SeasonContent() {
           ) : (
             <div className="py-12 text-center">
               <p className="text-sm text-[var(--foreground-muted)]">
-                No se dispone de datos de la clasificación en este momento.
+                {dict.season.standings.noData}
               </p>
             </div>
           )}

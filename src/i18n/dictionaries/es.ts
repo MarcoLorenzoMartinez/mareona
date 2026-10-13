@@ -1,0 +1,125 @@
+/**
+ * Canonical Spanish dictionary for Mareona.
+ * Structured by feature area and component domains.
+ */
+export const es = {
+  common: {
+    loading: "Cargando...",
+    noData: "No se dispone de información en este momento.",
+    error: "Ha ocurrido un error al cargar la información.",
+    upcoming: "Próx.",
+    viewAll: "Ver completa",
+  },
+  season: {
+    title: "Temporada — Mareona",
+    description: "Partidos, clasificación y actualidad del Real Sporting de Gijón.",
+    competitionName: "LaLiga Hypermotion",
+    seasonLabelPrefix: "Temporada",
+    tabs: {
+      overview: "Resumen",
+      matches: "Partidos",
+      standings: "Clasificación",
+      squad: "Plantilla",
+    },
+    match: {
+      nextFixture: "Próximo Encuentro",
+      matchday: "Jornada",
+      vs: "vs",
+      at: "en",
+      tbd: "Horario por confirmar",
+      noMatchInfo: "No se dispone de información del próximo partido en este momento.",
+    },
+    matchesList: {
+      title: "Calendario de Partidos",
+      subtitle: "Jornadas 1 a 42",
+      filters: {
+        all: "Todos",
+        played: "Disputados",
+        upcoming: "Próximos",
+      },
+      nextBadge: "Próximo",
+      noMatches: "No se encontraron partidos para este filtro.",
+      noCalendar: "No se dispone del calendario de partidos en este momento.",
+    },
+    standings: {
+      title: "Clasificación",
+      subtitle: "LaLiga Hypermotion",
+      views: {
+        table: "Tabla",
+        distance: "Distancia Real",
+        evolution: "Evolución",
+      },
+      scopes: {
+        total: "General",
+        home: "En Casa",
+        away: "A Domicilio",
+      },
+      columns: {
+        pos: "Pos",
+        team: "Equipo",
+        played: "PJ",
+        won: "PG",
+        drawn: "PE",
+        lost: "PP",
+        goalsFor: "GF",
+        goalsAgainst: "GC",
+        goalDifference: "DG",
+        points: "Pts",
+      },
+      columnTitles: {
+        played: "Partidos Jugados",
+        won: "Partidos Ganados",
+        drawn: "Partidos Empatados",
+        lost: "Partidos Perdidos",
+        goalsFor: "Goles a Favor",
+        goalsAgainst: "Goles en Contra",
+        goalDifference: "Diferencia de Goles",
+        points: "Puntos",
+      },
+      zones: {
+        promotion: "Ascenso directo",
+        playoff: "Playoff",
+        relegation: "Descenso",
+      },
+      distanceReal: {
+        title: "Escala de Distancia Real",
+        description: "Cada peldaño vertical representa exactamente 1 punto. Los espacios vacíos reflejan la brecha real entre equipos.",
+        pointsLabel: "puntos",
+        noTeams: "ningún equipo",
+        empty: "No hay datos de puntos disponibles para calcular la distancia real.",
+      },
+      evolution: {
+        title: "Evolución en la Temporada",
+        description: "Trayectoria del Real Sporting a lo largo de las jornadas disputadas.",
+        metrics: {
+          both: "Ambas Líneas",
+          points: "Puntos Acumulados",
+          position: "Posición en la Tabla",
+        },
+        legendPoints: "Puntos (eje izq.)",
+        legendPosition: "Posición (eje dcho.)",
+        pointsSummary: "puntos en",
+        matchesSummary: "jornadas",
+        avgPointsSummary: "pts/partido",
+        currentPositionSummary: "Posición actual",
+        matchdayPrefix: "Jornada",
+        opponentPrefix: "vs",
+        homeTag: "C",
+        awayTag: "F",
+        win: "Victoria",
+        draw: "Empate",
+        loss: "Derrota",
+        zones: {
+          directPromotion: "1.º-2.º Ascenso directo",
+          playoff: "3.º-6.º Playoff",
+          relegation: "19.º-22.º Descenso",
+        },
+        empty: "No hay partidos disputados disponibles para mostrar la evolución.",
+        tableAriaLabel: "Evolución del Real Sporting jornada a jornada",
+      },
+      noData: "No se dispone de información de la clasificación en este momento.",
+    },
+  },
+} as const;
+
+export type Dictionary = typeof es;

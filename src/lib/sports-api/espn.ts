@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { DomainStandingRow, DomainMatchSummary } from "./types.ts";
+import type { DomainStandingRow, DomainStandingSplit, DomainMatchSummary } from "./types.ts";
 import { normalizeTeamName, getSeasonLabel } from "./types.ts";
 
 export const ESPN_SPORTING_GIJON_ID = "3788";
@@ -211,7 +211,94 @@ export async function fetchEspnLiveStandings(): Promise<readonly DomainStandingR
   }
 
   const entries = parsed.data.children[0]?.standings.entries ?? [];
-  return entries.map(transformEspnStandingEntry);
+  const baseRows = entries.map(transformEspnStandingEntry);
+
+  try {
+    const splits = await Promise.all(
+      baseRows.map((r) => fetchTeamSplitRecord(r.teamExternalId))
+    );
+
+    return baseRows.map((row, index) => ({
+      ...row,
+      home: splits[index]?.home,
+      away: splits[index]?.away,
+    }));
+  } catch {
+    // If team split enrichment fails, return base rows without breaking standings view
+    return baseRows;
+  }
+}
+
+/**
+ * Fetches verified home and away split record for a team from ESPN API.
+ */
+async function fetchTeamSplitRecord(
+  teamId: string
+): Promise<{ home?: DomainStandingSplit; away?: DomainStandingSplit }> {
+  try {
+    const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/teams/${teamId}`;
+    const res = await fetch(url, {
+      method: "GET",
+      headers: { "User-Agent": "Mareona/1.0" },
+      next: { revalidate: 3600 },
+    });
+
+    if (!res.ok) {
+      return {};
+    }
+
+    const data = (await res.json()) as {
+      team?: {
+        record?: {
+          items?: Array<{
+            stats?: Array<{ name: string; value: number }>;
+          }>;
+        };
+      };
+    };
+
+    const stats = data.team?.record?.items?.[0]?.stats ?? [];
+    const getVal = (name: string): number => stats.find((s) => s.name === name)?.value ?? 0;
+
+    const homeWins = getVal("homeWins");
+    const homeTies = getVal("homeTies");
+    const homeLosses = getVal("homeLosses");
+    const homeGamesPlayed = getVal("homeGamesPlayed") || homeWins + homeTies + homeLosses;
+    const homeGoalsFor = getVal("homePointsFor");
+    const homeGoalsAgainst = getVal("homePointsAgainst");
+    const homePoints = homeWins * 3 + homeTies;
+
+    const awayWins = getVal("awayWins");
+    const awayTies = getVal("awayTies");
+    const awayLosses = getVal("awayLosses");
+    const awayGamesPlayed = getVal("awayGamesPlayed") || awayWins + awayTies + awayLosses;
+    const awayGoalsFor = getVal("awayPointsFor");
+    const awayGoalsAgainst = getVal("awayPointsAgainst");
+    const awayPoints = awayWins * 3 + awayTies;
+
+    return {
+      home: {
+        played: homeGamesPlayed,
+        won: homeWins,
+        drawn: homeTies,
+        lost: homeLosses,
+        goalsFor: homeGoalsFor,
+        goalsAgainst: homeGoalsAgainst,
+        points: homePoints,
+      },
+      away: {
+        played: awayGamesPlayed,
+        won: awayWins,
+        drawn: awayTies,
+        lost: awayLosses,
+        goalsFor: awayGoalsFor,
+        goalsAgainst: awayGoalsAgainst,
+        points: awayPoints,
+      },
+    };
+  } catch {
+    return {};
+  }
 }
 
 /**

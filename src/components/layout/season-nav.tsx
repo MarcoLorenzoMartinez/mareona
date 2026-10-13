@@ -1,21 +1,9 @@
-﻿// Client: Requiere usePathname() para evaluar la ruta activa y aplicar aria-current="page"
+// Client: Requiere usePathname() para evaluar la ruta activa y aplicar aria-current="page"
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-interface SeasonTab {
-  readonly label: string;
-  readonly href: string;
-  readonly isAvailable: boolean;
-}
-
-const SEASON_TABS: readonly SeasonTab[] = [
-  { label: "Resumen", href: "/temporada", isAvailable: true },
-  { label: "Partidos", href: "/temporada/partidos", isAvailable: true },
-  { label: "Clasificación", href: "/temporada/clasificacion", isAvailable: false },
-  { label: "Plantilla", href: "/temporada/plantilla", isAvailable: false },
-];
+import { getDictionary } from "@/i18n";
 
 /**
  * Secondary navigation bar for the Temporada section.
@@ -23,6 +11,14 @@ const SEASON_TABS: readonly SeasonTab[] = [
  */
 export function SeasonNav() {
   const pathname = usePathname();
+  const dict = getDictionary();
+
+  const seasonTabs = [
+    { label: dict.season.tabs.overview, href: "/temporada", isAvailable: true },
+    { label: dict.season.tabs.matches, href: "/temporada/partidos", isAvailable: true },
+    { label: dict.season.tabs.standings, href: "/temporada/clasificacion", isAvailable: true },
+    { label: dict.season.tabs.squad, href: "/temporada/plantilla", isAvailable: false },
+  ];
 
   return (
     <nav
@@ -30,7 +26,7 @@ export function SeasonNav() {
       className="w-full border-b border-[var(--border)] bg-white"
     >
       <div className="flex items-center gap-1 overflow-x-auto scrollbar-none px-1">
-        {SEASON_TABS.map((tab) => {
+        {seasonTabs.map((tab) => {
           const isActive = pathname === tab.href;
 
           if (!tab.isAvailable) {
@@ -42,7 +38,7 @@ export function SeasonNav() {
               >
                 {tab.label}
                 <span className="rounded-xs bg-neutral-100 px-1.5 py-0.5 text-[9px] font-semibold text-neutral-400">
-                  Próx.
+                  {dict.common.upcoming}
                 </span>
               </span>
             );
