@@ -181,6 +181,7 @@ export interface DomainMatchSummary {
   readonly kickoffAt: string;
   readonly status: MatchStatus;
   readonly venue: string | null;
+  readonly isTimeConfirmed?: boolean;
   readonly homeTeam: {
     readonly externalId: string;
     readonly name: string;

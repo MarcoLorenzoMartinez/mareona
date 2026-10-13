@@ -64,6 +64,7 @@ export interface EspnEvent {
   readonly id: string;
   readonly date: string;
   readonly name: string;
+  readonly timeValid?: boolean;
   readonly competitions: readonly [
     {
       readonly id: string;
@@ -162,6 +163,7 @@ export function transformEspnEvent(event: EspnEvent, matchday: number = 10): Dom
     kickoffAt: event.date,
     status: isFinished ? "finished" : "scheduled",
     venue: comp.venue?.fullName ?? "El Molinón",
+    isTimeConfirmed: event.timeValid ?? true,
     homeTeam: {
       externalId: homeComp.team.id,
       name: normalizeTeamName(homeComp.team.displayName, isHomeSporting),
@@ -291,3 +293,60 @@ export async function fetchEspnSportingMatch(): Promise<DomainMatchSummary | nul
 
   return null;
 }
+
+/**
+ * Fetches the full season list of matches for Real Sporting from ESPN,
+ * combining completed matches (schedule) and upcoming fixtures (schedule?fixture=true).
+ *
+ * @returns Array of DomainMatchSummary items ordered by matchday from Jornada 1 to 42.
+ */
+export async function fetchEspnSportingSeasonMatches(): Promise<readonly DomainMatchSummary[]> {
+  const baseUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/teams/${ESPN_SPORTING_GIJON_ID}/schedule`;
+
+  const [pastRes, upcomingRes] = await Promise.allSettled([
+    fetch(baseUrl, {
+      method: "GET",
+      headers: { "User-Agent": "Mareona/1.0" },
+      next: { revalidate: 3600 },
+    }),
+    fetch(`${baseUrl}?fixture=true`, {
+      method: "GET",
+      headers: { "User-Agent": "Mareona/1.0" },
+      next: { revalidate: 3600 },
+    }),
+  ]);
+
+  const pastEvents: EspnEvent[] = [];
+  const upcomingEvents: EspnEvent[] = [];
+
+  if (pastRes.status === "fulfilled" && pastRes.value.ok) {
+    const pastData = (await pastRes.value.json()) as { events?: EspnEvent[] };
+    if (pastData.events) {
+      // Past events are delivered reverse-chronological by ESPN (Jornada 9 down to Jornada 1)
+      pastEvents.push(...[...pastData.events].reverse());
+    }
+  }
+
+  if (upcomingRes.status === "fulfilled" && upcomingRes.value.ok) {
+    const upcomingData = (await upcomingRes.value.json()) as { events?: EspnEvent[] };
+    if (upcomingData.events) {
+      upcomingEvents.push(...upcomingData.events);
+    }
+  }
+
+  const allEvents = [...pastEvents, ...upcomingEvents];
+  const domainMatches: DomainMatchSummary[] = [];
+
+  for (let i = 0; i < allEvents.length; i++) {
+    const ev = allEvents[i];
+    if (!ev) continue;
+    const matchday = i + 1;
+    const match = transformEspnEvent(ev, matchday);
+    if (match) {
+      domainMatches.push(match);
+    }
+  }
+
+  return domainMatches;
+}
+

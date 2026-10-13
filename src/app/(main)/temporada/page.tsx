@@ -1,8 +1,10 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { TeamCrest } from "@/components/media/team-crest";
 import { fetchStandings, fetchNextFixture } from "@/lib/sports-api/client";
+import { getStadiumAsset } from "@/lib/sports-api/stadiums";
 import {
   getSeasonLabel,
   type DomainStandingRow,
@@ -77,9 +79,15 @@ async function SeasonContent() {
     // Si la llamada falla, no se inventan datos de muestra: se muestra aviso informativo al usuario
   }
 
-  const sportingRow = standings.find((s) => s.isSporting);
   const matchKickoff = match ? formatKickoff(match.kickoffAt) : null;
   const seasonLabel = getSeasonLabel();
+  const stadiumAsset = match
+    ? getStadiumAsset({
+        teamExternalId: match.homeTeam.externalId,
+        isSporting: match.homeTeam.isSporting,
+        venueName: match.venue,
+      })
+    : null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -87,63 +95,84 @@ async function SeasonContent() {
       {/* HERO: Partido Destacado                                          */}
       {/* ================================================================= */}
       <section aria-label="Partido del Real Sporting" className="w-full">
-        <div className="rounded-xl border border-[var(--border)] bg-white p-6 shadow-2xs">
-          <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
+        <div className="relative overflow-hidden rounded-xl border border-[var(--border)] bg-white p-6 shadow-2xs">
+          {stadiumAsset && (
+            <div
+              className="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden"
+              aria-hidden="true"
+            >
+              <Image
+                src={stadiumAsset.imagePath}
+                alt=""
+                fill
+                sizes="(max-width: 768px) 100vw, 800px"
+                className="object-cover opacity-10"
+                priority
+              />
+            </div>
+          )}
+
+          <div className="relative z-10 flex items-center justify-between border-b border-[var(--border)] pb-3">
             <span className="text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
               {match ? `Jornada ${match.matchday ?? "—"} · LaLiga Hypermotion` : "Próximo Encuentro"}
             </span>
-            {match && (
-              <span className="text-xs font-medium text-[var(--foreground-muted)]">
-                {match.status === "finished" ? "Finalizado" : "Programado"}
-              </span>
-            )}
           </div>
 
           {match && matchKickoff ? (
-            <div className="grid grid-cols-1 items-center gap-6 py-6 md:grid-cols-7">
-              {/* Equipo Local */}
-              <div className="flex items-center justify-start gap-3.5 md:col-span-3 md:justify-end">
-                <span className="text-lg font-bold text-[var(--foreground)] md:text-xl">
-                  {match.homeTeam.name}
-                </span>
-                <TeamCrest
-                  crestUrl={match.homeTeam.crestUrl}
-                  teamName={match.homeTeam.name}
-                  size="lg"
-                  isSporting={match.homeTeam.isSporting}
-                />
+            <div className="relative z-10">
+              <div className="grid grid-cols-1 items-center gap-6 py-6 md:grid-cols-7">
+                {/* Equipo Local */}
+                <div className="flex items-center justify-start gap-3.5 md:col-span-3 md:justify-end">
+                  <span className="text-lg font-bold text-[var(--foreground)] md:text-xl">
+                    {match.homeTeam.name}
+                  </span>
+                  <TeamCrest
+                    crestUrl={match.homeTeam.crestUrl}
+                    teamName={match.homeTeam.name}
+                    size="lg"
+                    isSporting={match.homeTeam.isSporting}
+                  />
+                </div>
+
+                {/* Marcador / Horario */}
+                <div className="flex flex-col items-center justify-center rounded-md bg-[var(--surface)]/90 backdrop-blur-xs py-3 px-4 text-center md:col-span-1 shadow-2xs border border-[var(--border)]/40">
+                  <span className="text-xs font-bold tracking-widest text-[var(--foreground-muted)] uppercase">
+                    {matchKickoff.date}
+                  </span>
+                  <span className="text-2xl font-black tracking-tight text-[var(--foreground)]">
+                    {match.status === "finished" && match.homeScore !== null && match.awayScore !== null
+                      ? `${match.homeScore} - ${match.awayScore}`
+                      : match.isTimeConfirmed === false
+                      ? "vs"
+                      : matchKickoff.time}
+                  </span>
+                </div>
+
+                {/* Equipo Visitante */}
+                <div className="flex items-center justify-start gap-3.5 md:col-span-3">
+                  <TeamCrest
+                    crestUrl={match.awayTeam.crestUrl}
+                    teamName={match.awayTeam.name}
+                    size="lg"
+                    isSporting={match.awayTeam.isSporting}
+                  />
+                  <span className="text-lg font-bold text-[var(--foreground)] md:text-xl">
+                    {match.awayTeam.name}
+                  </span>
+                </div>
               </div>
 
-              {/* Marcador / Horario */}
-              <div className="flex flex-col items-center justify-center rounded-md bg-[var(--surface)] py-3 px-4 text-center md:col-span-1">
-                <span className="text-xs font-bold tracking-widest text-[var(--foreground-muted)] uppercase">
-                  {matchKickoff.date}
-                </span>
-                <span className="text-2xl font-black tracking-tight text-[var(--foreground)]">
-                  {match.status === "finished" && match.homeScore !== null && match.awayScore !== null
-                    ? `${match.homeScore} - ${match.awayScore}`
-                    : matchKickoff.time}
-                </span>
-                <span className="truncate text-[11px] font-medium text-[var(--foreground-muted)]">
-                  {match.venue ?? "El Molinón"}
-                </span>
-              </div>
-
-              {/* Equipo Visitante */}
-              <div className="flex items-center justify-start gap-3.5 md:col-span-3">
-                <TeamCrest
-                  crestUrl={match.awayTeam.crestUrl}
-                  teamName={match.awayTeam.name}
-                  size="lg"
-                  isSporting={match.awayTeam.isSporting}
-                />
-                <span className="text-lg font-bold text-[var(--foreground)] md:text-xl">
-                  {match.awayTeam.name}
-                </span>
-              </div>
+              {/* Estadio donde se disputa el partido */}
+              {match.venue && (
+                <div className="flex items-center justify-center border-t border-[var(--border)]/60 pt-3 text-center">
+                  <span className="text-xs font-medium text-[var(--foreground-muted)]">
+                    {match.venue}
+                  </span>
+                </div>
+              )}
             </div>
           ) : (
-            <div className="py-8 text-center">
+            <div className="relative z-10 py-8 text-center">
               <p className="text-sm text-[var(--foreground-muted)]">
                 No se dispone de información del próximo partido en este momento.
               </p>
@@ -175,16 +204,34 @@ async function SeasonContent() {
                   </caption>
                   <thead>
                     <tr className="border-b border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)] uppercase">
-                      <th scope="col" className="w-12 py-2.5 pl-3 text-center">
+                      <th scope="col" className="w-10 sm:w-12 py-2.5 pl-3 text-center">
                         Pos
                       </th>
-                      <th scope="col" className="py-2.5">
+                      <th scope="col" className="py-2.5 pr-2">
                         Equipo
                       </th>
-                      <th scope="col" className="w-16 py-2.5 text-center">
+                      <th scope="col" className="w-10 sm:w-12 py-2.5 text-center" title="Partidos Jugados">
                         PJ
                       </th>
-                      <th scope="col" className="w-16 py-2.5 pr-3 text-right">
+                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title="Partidos Ganados">
+                        PG
+                      </th>
+                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title="Partidos Empatados">
+                        PE
+                      </th>
+                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title="Partidos Perdidos">
+                        PP
+                      </th>
+                      <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title="Goles a Favor">
+                        GF
+                      </th>
+                      <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title="Goles en Contra">
+                        GC
+                      </th>
+                      <th scope="col" className="w-12 sm:w-14 py-2.5 text-center" title="Diferencia de Goles">
+                        DG
+                      </th>
+                      <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right" title="Puntos">
                         Pts
                       </th>
                     </tr>
@@ -195,16 +242,18 @@ async function SeasonContent() {
                       const isPlayoff = row.position >= 3 && row.position <= 6;
                       const isRelegation =
                         standings.length > 4 ? row.position > standings.length - 4 : false;
+                      const goalDiff = row.goalsFor - row.goalsAgainst;
 
                       return (
                         <tr
                           key={row.teamExternalId}
-                          className={`transition-colors ${
+                          className={`transition-colors text-sm ${
                             row.isSporting
                               ? "bg-red-50/70 font-semibold text-[var(--foreground)]"
                               : "hover:bg-[var(--surface)] text-[var(--foreground)]"
                           }`}
                         >
+                          {/* Posición */}
                           <td className="py-2.5 pl-3 text-center">
                             <span
                               className={`inline-flex h-6 w-6 items-center justify-center rounded-sm text-xs font-bold ${
@@ -229,8 +278,10 @@ async function SeasonContent() {
                               {row.position}
                             </span>
                           </td>
-                          <td className="py-2.5">
-                            <div className="flex items-center gap-2.5">
+
+                          {/* Equipo */}
+                          <td className="py-2.5 pr-2">
+                            <div className="flex items-center gap-2.5 min-w-0">
                               <TeamCrest
                                 crestUrl={row.crestUrl}
                                 teamName={row.teamName}
@@ -238,18 +289,62 @@ async function SeasonContent() {
                                 isSporting={row.isSporting}
                               />
                               <span
-                                className={`truncate text-sm ${
-                                  row.isSporting ? "font-bold text-[var(--primary)]" : ""
+                                className={`truncate ${
+                                  row.isSporting ? "font-bold text-[var(--primary)]" : "font-medium"
                                 }`}
                               >
                                 {row.teamName}
                               </span>
                             </div>
                           </td>
-                          <td className="py-2.5 text-center text-[var(--foreground-muted)]">
+
+                          {/* PJ */}
+                          <td className="py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
                             {row.played}
                           </td>
-                          <td className="py-2.5 pr-3 text-right font-bold text-[var(--foreground)]">
+
+                          {/* PG */}
+                          <td className="hidden sm:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
+                            {row.won}
+                          </td>
+
+                          {/* PE */}
+                          <td className="hidden sm:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
+                            {row.drawn}
+                          </td>
+
+                          {/* PP */}
+                          <td className="hidden sm:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
+                            {row.lost}
+                          </td>
+
+                          {/* GF */}
+                          <td className="hidden md:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
+                            {row.goalsFor}
+                          </td>
+
+                          {/* GC */}
+                          <td className="hidden md:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
+                            {row.goalsAgainst}
+                          </td>
+
+                          {/* DG */}
+                          <td className="py-2.5 text-center tabular-nums text-xs sm:text-sm font-medium">
+                            <span
+                              className={
+                                goalDiff > 0
+                                  ? "text-emerald-700 font-semibold"
+                                  : goalDiff < 0
+                                  ? "text-red-700"
+                                  : "text-[var(--foreground-muted)]"
+                              }
+                            >
+                              {goalDiff > 0 ? `+${goalDiff}` : goalDiff}
+                            </span>
+                          </td>
+
+                          {/* Pts */}
+                          <td className="py-2.5 pr-3 text-right font-black tabular-nums text-[var(--foreground)]">
                             {row.points}
                           </td>
                         </tr>
@@ -274,11 +369,6 @@ async function SeasonContent() {
                     Descenso
                   </span>
                 </div>
-                {sportingRow && (
-                  <span className="font-medium text-[var(--primary)]">
-                    Sporting: {sportingRow.position}ª posición · {sportingRow.points} pts
-                  </span>
-                )}
               </div>
             </>
           ) : (

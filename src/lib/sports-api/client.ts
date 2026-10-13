@@ -15,7 +15,11 @@ import {
   TTL_STANDINGS_MS,
   TTL_FIXTURES_MS,
 } from "./cache.ts";
-import { fetchEspnLiveStandings, fetchEspnSportingMatch } from "./espn.ts";
+import {
+  fetchEspnLiveStandings,
+  fetchEspnSportingMatch,
+  fetchEspnSportingSeasonMatches,
+} from "./espn.ts";
 import type { createClient } from "@/lib/supabase/server";
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
@@ -197,3 +201,44 @@ export async function fetchNextFixture(
 
   return domainMatch;
 }
+
+/**
+ * Fetches the complete list of matches for Real Sporting for the current season.
+ *
+ * @param supabase Optional scoped Supabase client for cache reads and writes.
+ * @returns Array of 42 DomainMatchSummary items ordered chronologically by matchday.
+ */
+export async function fetchSportingSeasonMatches(
+  supabase?: SupabaseServerClient | null
+): Promise<readonly DomainMatchSummary[]> {
+  const cacheKey = `sporting_season_matches_${SPORTING_GIJON_TEAM_ID}`;
+
+  // 1. Try reading valid cache from Supabase if client is supplied
+  if (supabase) {
+    const cached = await getCachedPayload<DomainMatchSummary[]>(supabase, cacheKey);
+    if (cached) {
+      return cached;
+    }
+  }
+
+  // 2. Fetch live full season matches from ESPN
+  try {
+    const matches = await fetchEspnSportingSeasonMatches();
+    if (matches.length > 0) {
+      if (supabase) {
+        await setCachedPayload(
+          supabase,
+          cacheKey,
+          matches as unknown as Record<string, unknown>[],
+          TTL_FIXTURES_MS
+        );
+      }
+      return matches;
+    }
+  } catch {
+    // If live fetch fails, return empty list (no mock data in production)
+  }
+
+  return [];
+}
+
