@@ -32,21 +32,22 @@
 - **Explicar el porqué, nunca el qué:** Prohibido parafrasear código obvio (ej. `// increment counter`). Los comentarios justifican decisiones complejas, limitaciones de librerías, casos límite o workarounds técnicos.
 - **TSDoc estricto y conciso:** Funciones de dominio, adaptadores y Server Actions deben incluir bloque JSDoc/TSDoc con `@param`, `@returns` y posibles `@throws`.
 - **Sin ruido ni código muerto:** Prohibido dejar bloques de código comentado para "después", notas personales o `console.log` de depuración.
-- **Marcadores de deuda técnica:** Usar solo `// TODO(issue-number): description` formal cuando quede algo pendiente previamente acordado[cite: 2].
+- **Marcadores de deuda técnica:** Usar solo `// TODO(issue-number): description` formal cuando quede algo pendiente previamente acordado.
 
 ## 5. Anti-patrones Prohibidos
-- Prohibido código espagueti (>200 líneas por componente, lógica de negocio en JSX, prop drilling >2 niveles)[cite: 2].
-- Prohibido UI genérica de plantillas IA (sin degradados artificiales ni cards por defecto sin personalizar)[cite: 2].
-- Prohibido fetch de datos en `useEffect` cuando pueda hacerse en Server Component[cite: 2].
-- Prohibido usar `style={{}}` salvo valores dinámicos estrictamente necesarios[cite: 2].
-- Prohibido modificar migraciones ya aplicadas[cite: 2].
+- **Prohibido componentes monolíticos (>180 líneas por archivo):** Todo archivo de componente en `src/` debe mantenerse estrictamente en ≤ 180 líneas. Modularidad preventiva obligatoria: extraer subcomponentes de fila, tabla, canvas, encabezado o módulos de cálculo antes de superar este umbral.
+- Prohibido lógica de negocio en JSX o prop drilling >2 niveles.
+- Prohibido UI genérica de plantillas IA (sin degradados artificiales ni cards por defecto sin personalizar).
+- Prohibido fetch de datos en `useEffect` cuando pueda hacerse en Server Component.
+- Prohibido usar `style={{}}` salvo valores dinámicos estrictamente necesarios.
+- Prohibido modificar migraciones ya aplicadas.
 
 ## 6. Higiene del Repositorio, Seguridad y Portfolio (Auditoría Pública)
 > Repositorio insignia para portfolio y revisiones técnicas externas. Todo cambio debe reflejar nivel senior.
-- **Commits atómicos y profesionales:** Mensajes estrictamente en inglés con Conventional Commits: `type(scope): imperative description`[cite: 2]. Prohibidos mensajes vagos (`fix`, `wip`, `update`).
+- **Commits atómicos y profesionales:** Mensajes estrictamente en inglés con Conventional Commits: `type(scope): imperative description`. Prohibidos mensajes vagos (`fix`, `wip`, `update`).
 - **Limpieza de árbol de trabajo:** No commitear archivos residuales, builds (`.next/`), dumps ni logs.
-- **Cero fugas de credenciales:** Ningún secreto (`SUPABASE_SERVICE_ROLE_KEY`, `SPORTS_API_KEY`) en el repo[cite: 2]. `.env.example` siempre sincronizado con variables requeridas pero con valores vacíos[cite: 2].
-- **Checklist previa a commit:** Ejecutar `npm run check` (typecheck + lint + tests) antes de dar la tarea por concluida[cite: 2].
+- **Cero fugas de credenciales:** Ningún secreto (`SUPABASE_SERVICE_ROLE_KEY`, `SPORTS_API_KEY`) en el repo. `.env.example` siempre sincronizado con variables requeridas pero con valores vacíos.
+- **Checklist previa a commit:** Ejecutar `npm run check` (typecheck + lint + tests) antes de dar la tarea por concluida.
 
 ## 7. Referencias y Documentación Detallada
 - Visión, Arquitectura y Roadmap: `docs/PROJECT_SPEC.md`
@@ -78,6 +79,7 @@ El objetivo visual de Mareona es una interfaz deportiva **sobria, directa y sin 
   - `/juegos`: "¿Cuál es el partido para pronosticar hoy?" y "¿Cuántos puntos llevo?".
   - `/social`: Conversación directa y limpia, sin barras laterales recargadas de widgets secundarios.
 - **Sin pantallas "resumen de resúmenes":** No crear dashboards genéricos llenos de cajitas con métricas vacías. Cada pantalla va directa al grano.
+- **Cero duplicidad de títulos en tarjetas:** Prohibido repetir títulos o subtítulos dentro de las tarjetas cuando ya existen selectores en la barra superior o cabecera de la vista.
 
 ### B. Uso Restrictivo y Semántico de Elementos Visuales
 - **Tipografía y números sobre adornos:** En una app de datos deportivos, el diseño lo marcan los números bien proporcionados (fechas, marcadores, posiciones), los escudos y los espacios en blanco, no las líneas decorativas.
@@ -86,3 +88,7 @@ El objetivo visual de Mareona es una interfaz deportiva **sobria, directa y sin 
   - En móvil: barra inferior con iconos claros de navegación.
   - En el resto de la interfaz: prohibido añadir iconos al lado de cada título de tarjeta o etiqueta de texto si no aportan una acción directa o un estado crítico (error/alerta).
 - **Tratamiento de tarjetas y superficies:** Evitar anidar cajas dentro de cajas con bordes múltiples. Usar fondo blanco predominante, bordes tenues de un píxel (`--border`) y fondos neutros suaves (`--surface`) solo para separar bloques temáticos claros.
+- **Controles de Interfaz y Filtros (Pills & Segmented Controls):**
+  - Los selectores de modo y filtros secundarios se ubican en la misma fila superior horizontal, alineados entre sí (vista a la izquierda, filtros contextuales a la derecha).
+  - Se presentan con estilo píldora (`rounded-full`), con bordes sutiles y ergonomía táctil.
+  - El estado seleccionado de filtros deportivos adopta el rojo corporativo (`bg-[var(--primary)]` o `bg-[#e2001a]`) con texto blanco puro (`text-white`) y tipografía en negrita (`font-bold`).

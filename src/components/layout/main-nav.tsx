@@ -4,47 +4,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  CalendarDays,
-  Gamepad2,
-  History,
-  MessageSquare,
-  type LucideIcon,
-} from "lucide-react";
-
-interface NavItem {
-  readonly label: string;
-  readonly href: string;
-  readonly icon: LucideIcon;
-  readonly description: string;
-}
-
-const NAV_ITEMS: readonly NavItem[] = [
-  {
-    label: "Temporada",
-    href: "/temporada",
-    icon: CalendarDays,
-    description: "Partidos, clasificación y plantilla actual",
-  },
-  {
-    label: "Histórico",
-    href: "/historico",
-    icon: History,
-    description: "Archivo histórico y efemérides sportinguistas",
-  },
-  {
-    label: "Social",
-    href: "/social",
-    icon: MessageSquare,
-    description: "Comunidad, feed de partidos y debates",
-  },
-  {
-    label: "Juegos",
-    href: "/juegos",
-    icon: Gamepad2,
-    description: "La Porra de El Molinón y pasatiempos",
-  },
-];
+import { NAV_ITEMS } from "./nav-items";
+import { MobileNav } from "./mobile-nav";
 
 /**
  * Brand logo linking to home/temporada.
@@ -83,7 +44,6 @@ function BrandLogo() {
             strokeLinejoin="round"
             className="h-5 w-5"
           >
-            {/* Minimalist wave crest forming the M */}
             <path d="M3 17c3-5 5-8 9-2 4 6 6 3 9-2" />
             <path d="M3 12c3-4 5-6 9-1 4 5 6 2 9-1" opacity="0.6" />
           </svg>
@@ -103,18 +63,16 @@ function BrandLogo() {
 
 /**
  * Main dual navigation:
- * - Desktop header: Corporate red background (#e2001a), white text, typographic links only (no decorative icons).
+ * - Desktop header: Corporate red background (#e2001a), white text, typographic links only.
  * - Mobile top bar: Matching corporate red header with logo.
- * - Mobile bottom bar: PWA ergonomic touch navigation with high visual clarity and functional icons.
+ * - Mobile bottom bar: PWA ergonomic touch navigation via MobileNav.
  */
 export function MainNav() {
   const pathname = usePathname();
 
   return (
     <>
-      {/* ================================================================= */}
-      {/* DESKTOP HEADER (≥ 768px): Red background, pure white typography   */}
-      {/* ================================================================= */}
+      {/* Desktop Header (≥ 768px): Red background, pure white typography */}
       <header className="sticky top-0 z-40 hidden w-full border-b border-[var(--primary-strong)] bg-[var(--primary)] text-white shadow-xs md:block">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <BrandLogo />
@@ -152,66 +110,13 @@ export function MainNav() {
         </div>
       </header>
 
-      {/* ================================================================= */}
-      {/* MOBILE TOP BAR (< 768px): Matching corporate red header           */}
-      {/* ================================================================= */}
+      {/* Mobile Top Bar (< 768px): Corporate red header */}
       <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b border-[var(--primary-strong)] bg-[var(--primary)] px-4 text-white shadow-xs md:hidden">
         <BrandLogo />
       </header>
 
-      {/* ================================================================= */}
-      {/* MOBILE BOTTOM NAVIGATION BAR (< 768px, PWA Ergonomics)           */}
-      {/* ================================================================= */}
-      <nav
-        aria-label="Navegación móvil"
-        className="fixed bottom-0 inset-x-0 z-50 border-t border-[var(--border)] bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
-      >
-        <ul className="grid grid-cols-4 items-center">
-          {NAV_ITEMS.map((item) => {
-            const isActive =
-              pathname === item.href || pathname.startsWith(`${item.href}/`);
-            const Icon = item.icon;
-
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={isActive ? "page" : undefined}
-                  className={`flex h-14 min-w-[44px] flex-col items-center justify-center gap-1 transition-transform duration-100 ease-out active:scale-90 select-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-                    isActive
-                      ? "text-[var(--primary)]"
-                      : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
-                  }`}
-                >
-                  <div className="relative flex items-center justify-center">
-                    <Icon
-                      className={`h-5 w-5 ${
-                        isActive
-                          ? "text-[var(--primary)] stroke-[2.25]"
-                          : "text-[var(--foreground-muted)] stroke-[1.75]"
-                      }`}
-                      aria-hidden="true"
-                    />
-                    {isActive && (
-                      <span
-                        className="absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full bg-[var(--primary)]"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </div>
-                  <span
-                    className={`text-[11px] leading-none tracking-tight ${
-                      isActive ? "font-bold text-[var(--primary)]" : "font-medium"
-                    }`}
-                  >
-                    {item.label}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+      {/* Mobile Bottom Navigation (< 768px, PWA Ergonomics) */}
+      <MobileNav />
     </>
   );
 }
