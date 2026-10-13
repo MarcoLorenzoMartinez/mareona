@@ -39,7 +39,7 @@ async function ClasificacionContent() {
 
   try {
     const [standingsRes, matchesRes] = await Promise.all([
-      fetchStandings(),
+      fetchStandings(undefined, undefined, { includeSplits: true }),
       fetchSportingSeasonMatches(),
     ]);
     standings = standingsRes;

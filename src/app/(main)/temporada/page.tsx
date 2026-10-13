@@ -66,7 +66,7 @@ async function SeasonContent() {
 
   try {
     const [standingsRes, matchRes] = await Promise.allSettled([
-      fetchStandings(),
+      fetchStandings(undefined, undefined, { includeSplits: false }),
       fetchNextFixture(),
     ]);
 
@@ -223,28 +223,10 @@ async function SeasonContent() {
                       <th scope="col" className="py-2.5 pr-2">
                         {dict.season.standings.columns.team}
                       </th>
-                      <th scope="col" className="w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.played}>
+                      <th scope="col" className="w-14 sm:w-16 py-2.5 text-center" title={dict.season.standings.columnTitles.played}>
                         {dict.season.standings.columns.played}
                       </th>
-                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.won}>
-                        {dict.season.standings.columns.won}
-                      </th>
-                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.drawn}>
-                        {dict.season.standings.columns.drawn}
-                      </th>
-                      <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.lost}>
-                        {dict.season.standings.columns.lost}
-                      </th>
-                      <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.goalsFor}>
-                        {dict.season.standings.columns.goalsFor}
-                      </th>
-                      <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title={dict.season.standings.columnTitles.goalsAgainst}>
-                        {dict.season.standings.columns.goalsAgainst}
-                      </th>
-                      <th scope="col" className="w-12 sm:w-14 py-2.5 text-center" title={dict.season.standings.columnTitles.goalDifference}>
-                        {dict.season.standings.columns.goalDifference}
-                      </th>
-                      <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right" title={dict.season.standings.columnTitles.points}>
+                      <th scope="col" className="w-14 sm:w-16 py-2.5 pr-3 text-right" title={dict.season.standings.columnTitles.points}>
                         {dict.season.standings.columns.points}
                       </th>
                     </tr>
@@ -255,7 +237,6 @@ async function SeasonContent() {
                       const isPlayoff = row.position >= 3 && row.position <= 6;
                       const isRelegation =
                         standings.length > 4 ? row.position > standings.length - 4 : false;
-                      const goalDiff = row.goalsFor - row.goalsAgainst;
 
                       return (
                         <tr
@@ -314,46 +295,6 @@ async function SeasonContent() {
                           {/* PJ */}
                           <td className="py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
                             {row.played}
-                          </td>
-
-                          {/* PG */}
-                          <td className="hidden sm:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
-                            {row.won}
-                          </td>
-
-                          {/* PE */}
-                          <td className="hidden sm:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
-                            {row.drawn}
-                          </td>
-
-                          {/* PP */}
-                          <td className="hidden sm:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
-                            {row.lost}
-                          </td>
-
-                          {/* GF */}
-                          <td className="hidden md:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
-                            {row.goalsFor}
-                          </td>
-
-                          {/* GC */}
-                          <td className="hidden md:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
-                            {row.goalsAgainst}
-                          </td>
-
-                          {/* DG */}
-                          <td className="py-2.5 text-center tabular-nums text-xs sm:text-sm font-medium">
-                            <span
-                              className={
-                                goalDiff > 0
-                                  ? "text-emerald-700 font-semibold"
-                                  : goalDiff < 0
-                                  ? "text-red-700"
-                                  : "text-[var(--foreground-muted)]"
-                              }
-                            >
-                              {goalDiff > 0 ? `+${goalDiff}` : goalDiff}
-                            </span>
                           </td>
 
                           {/* Pts */}

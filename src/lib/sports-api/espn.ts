@@ -188,7 +188,9 @@ export function transformEspnEvent(event: EspnEvent, matchday: number = 10): Dom
 /**
  * Fetches the live 2026/27 season standings directly from ESPN open API.
  */
-export async function fetchEspnLiveStandings(): Promise<readonly DomainStandingRow[]> {
+export async function fetchEspnLiveStandings(
+  options?: { includeSplits?: boolean }
+): Promise<readonly DomainStandingRow[]> {
   const url = `https://site.api.espn.com/apis/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/standings`;
 
   const response = await fetch(url, {
@@ -212,6 +214,12 @@ export async function fetchEspnLiveStandings(): Promise<readonly DomainStandingR
 
   const entries = parsed.data.children[0]?.standings.entries ?? [];
   const baseRows = entries.map(transformEspnStandingEntry);
+
+  // If splits (home/away) are not requested, return baseRows immediately.
+  // This eliminates 22 concurrent HTTP requests on views where splits are unused.
+  if (!options?.includeSplits) {
+    return baseRows;
+  }
 
   try {
     const splits = await Promise.all(
@@ -302,76 +310,49 @@ async function fetchTeamSplitRecord(
 }
 
 /**
- * Fetches the upcoming match (or latest played match) for Real Sporting for 2026/27.
+ * Fetches the upcoming match (or latest played match) for Real Sporting for 2026/27
+ * via direct query to the Sporting schedule endpoints (single roundtrip).
  */
 export async function fetchEspnSportingMatch(): Promise<DomainMatchSummary | null> {
-  // 1. Fetch current scoreboard to get upcoming calendar dates
+  const baseUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/teams/${ESPN_SPORTING_GIJON_ID}/schedule`;
+
   try {
-    const sbUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/scoreboard`;
-    const sbRes = await fetch(sbUrl, {
-      method: "GET",
-      headers: { "User-Agent": "Mareona/1.0" },
-      next: { revalidate: 3600 },
-    });
+    const [fixtureRes, pastRes] = await Promise.allSettled([
+      fetch(`${baseUrl}?fixture=true`, {
+        method: "GET",
+        headers: { "User-Agent": "Mareona/1.0" },
+        next: { revalidate: 3600 },
+      }),
+      fetch(baseUrl, {
+        method: "GET",
+        headers: { "User-Agent": "Mareona/1.0" },
+        next: { revalidate: 3600 },
+      }),
+    ]);
 
-    if (sbRes.ok) {
-      const sbData = (await sbRes.json()) as {
-        leagues?: Array<{ calendar?: string[] }>;
-      };
-
-      const calendar = sbData.leagues?.[0]?.calendar ?? [];
-      const now = new Date();
-      // Filter dates starting from today onwards, inspecting up to 5 upcoming dates
-      const upcomingDates = calendar
-        .filter((dt) => new Date(dt) >= new Date(now.getFullYear(), now.getMonth(), now.getDate()))
-        .slice(0, 5);
-
-      for (const calDate of upcomingDates) {
-        const dayStr = calDate.slice(0, 10).replace(/-/g, "");
-        const dayRes = await fetch(
-          `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/scoreboard?dates=${dayStr}`,
-          {
-            method: "GET",
-            headers: { "User-Agent": "Mareona/1.0" },
-            next: { revalidate: 3600 },
-          }
-        );
-
-        if (dayRes.ok) {
-          const dayData = (await dayRes.json()) as { events?: EspnEvent[] };
-          const sportingEvent = dayData.events?.find((e) =>
-            e.competitions[0]?.competitors.some((c) => c.team.id === ESPN_SPORTING_GIJON_ID)
-          );
-
-          if (sportingEvent) {
-            // Next scheduled match is Jornada 10
-            return transformEspnEvent(sportingEvent, 10);
-          }
-        }
+    let pastCount = 9;
+    if (pastRes.status === "fulfilled" && pastRes.value.ok) {
+      const pastData = (await pastRes.value.json()) as { events?: EspnEvent[] };
+      if (pastData.events) {
+        pastCount = pastData.events.length;
       }
     }
-  } catch {
-    // If scoreboard fails, fall through to team schedule
-  }
 
-  // 2. Fallback: Query team schedule (events array is sorted reverse chronological: index 0 is most recent!)
-  try {
-    const scheduleUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/teams/${ESPN_SPORTING_GIJON_ID}/schedule`;
-    const schedRes = await fetch(scheduleUrl, {
-      method: "GET",
-      headers: { "User-Agent": "Mareona/1.0" },
-      next: { revalidate: 3600 },
-    });
+    // 1. Check for upcoming fixture first
+    if (fixtureRes.status === "fulfilled" && fixtureRes.value.ok) {
+      const fixtureData = (await fixtureRes.value.json()) as { events?: EspnEvent[] };
+      const upcomingEvent = fixtureData.events?.[0];
+      if (upcomingEvent) {
+        return transformEspnEvent(upcomingEvent, pastCount + 1);
+      }
+    }
 
-    if (schedRes.ok) {
-      const schedData = (await schedRes.json()) as { events?: EspnEvent[] };
-      const events = schedData.events;
-      if (events && events.length > 0) {
-        // events[0] is the most recent match (Jornada 9)
-        const recentEvent = events[0];
-        if (recentEvent) {
-          return transformEspnEvent(recentEvent, 9);
-        }
+    // 2. If no upcoming fixture found, return latest played match
+    if (pastRes.status === "fulfilled" && pastRes.value.ok) {
+      const pastData = (await pastRes.value.json()) as { events?: EspnEvent[] };
+      const recentEvent = pastData.events?.[0];
+      if (recentEvent) {
+        return transformEspnEvent(recentEvent, pastCount);
       }
     }
   } catch {
