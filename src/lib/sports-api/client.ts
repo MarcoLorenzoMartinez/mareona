@@ -313,8 +313,15 @@ export async function fetchMatchDetail(
   return null;
 }
 
+/** In-memory cache for squad to eliminate latency on tab navigation. */
+let memoryCachedSquad: {
+  season: number;
+  data: readonly DomainPlayer[];
+  expiresAt: number;
+} | null = null;
+
 /**
- * Fetches the Sporting Gijon squad players, checking Supabase cache first if available.
+ * Fetches the Sporting Gijon squad players, checking in-memory and Supabase cache.
  * Uses the live open ESPN connector for the active season.
  *
  * @param supabase Optional scoped Supabase server client for cache reads and writes.
@@ -324,20 +331,43 @@ export async function fetchSportingSquad(
   supabase?: SupabaseServerClient | null
 ): Promise<readonly DomainPlayer[]> {
   const currentSeason = getCurrentSeasonYear();
+  const now = Date.now();
+
+  // 1. Instant in-memory cache check (0ms response)
+  if (
+    memoryCachedSquad &&
+    memoryCachedSquad.season === currentSeason &&
+    memoryCachedSquad.expiresAt > now &&
+    memoryCachedSquad.data.length > 0
+  ) {
+    return memoryCachedSquad.data;
+  }
+
   const cacheKey = `squad_sporting_${currentSeason}`;
 
-  // 1. Try reading valid cache from Supabase if client is supplied
+  // 2. Try reading valid cache from Supabase if client is supplied
   if (supabase) {
     const cached = await getCachedPayload<DomainPlayer[]>(supabase, cacheKey);
     if (cached && cached.length > 0) {
+      memoryCachedSquad = {
+        season: currentSeason,
+        data: cached,
+        expiresAt: now + TTL_SQUAD_MS,
+      };
       return cached;
     }
   }
 
-  // 2. Fetch live from ESPN open connector
+  // 3. Fetch live from ESPN open connector
   try {
     const livePlayers = await fetchEspnSportingRoster();
     if (livePlayers.length > 0) {
+      memoryCachedSquad = {
+        season: currentSeason,
+        data: livePlayers,
+        expiresAt: now + TTL_SQUAD_MS,
+      };
+
       if (supabase) {
         await setCachedPayload(
           supabase,

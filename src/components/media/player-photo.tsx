@@ -75,12 +75,15 @@ export function PlayerPhoto({
     );
   }
 
+  const isLocal = Boolean(photoUrl?.startsWith("/"));
+
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={photoUrl ?? ""}
       alt={isDecorative ? "" : playerName}
-      loading="lazy"
+      loading={isLocal ? "eager" : "lazy"}
+      decoding="async"
       onError={() => setFailedUrl(photoUrl ?? "")}
       className={`shrink-0 object-contain object-bottom ${sizeClass} ${className}`}
     />
