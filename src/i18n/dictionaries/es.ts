@@ -52,7 +52,6 @@ export const es = {
       tabs: {
         events: "Eventos",
         stats: "Estadísticas",
-        shotmap: "Tiros y xG",
         lineups: "Alineaciones",
         info: "Detalles",
       },

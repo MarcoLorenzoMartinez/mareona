@@ -11,21 +11,13 @@ const FOTMOB_HEADERS = {
 };
 
 interface FotMobRawShot {
-  readonly id: number;
-  readonly eventType: string;
-  readonly isGoal?: boolean;
-  readonly isOnTarget?: boolean;
-  readonly isBlocked?: boolean;
-  readonly teamId: number;
-  readonly playerId: number;
-  readonly playerName: string;
-  readonly min: number;
-  readonly x: number;
-  readonly y: number;
-  readonly expectedGoals?: number;
+  readonly id: number; readonly eventType: string; readonly isGoal?: boolean;
+  readonly isOnTarget?: boolean; readonly isBlocked?: boolean; readonly teamId: number;
+  readonly playerId: number; readonly playerName: string; readonly min: number;
+  readonly x: number; readonly y: number; readonly expectedGoals?: number;
   readonly expectedGoalsOnTarget?: number | null;
-  readonly shotType?: string;
-  readonly situation?: string;
+  readonly onGoalShot?: { readonly x: number; readonly y: number } | null;
+  readonly goalCrossedZ?: number | null; readonly shotType?: string; readonly situation?: string;
 }
 
 interface FotMobRawPayload {
@@ -74,6 +66,8 @@ export function transformFotMobAdvancedStats(
         s.expectedGoalsOnTarget !== null && s.expectedGoalsOnTarget !== undefined
           ? Math.round(s.expectedGoalsOnTarget * 1000) / 1000
           : null,
+      onGoalShot: s.onGoalShot ? { x: s.onGoalShot.x, y: s.onGoalShot.y } : null,
+      goalCrossedZ: s.goalCrossedZ ?? null,
       shotType: s.shotType || "Normal",
       situation: s.situation || "RegularPlay",
     };
@@ -94,35 +88,42 @@ export function transformFotMobAdvancedStats(
     return [Number.isNaN(h) ? 0 : h, Number.isNaN(a) ? 0 : a];
   };
 
+  const findStatRaw = (name: string): [string | number, string | number] => {
+    const match = allStatItems.find((i) => i.title?.toLowerCase().includes(name.toLowerCase()));
+    if (!match || !match.stats) return [0, 0];
+    return [match.stats[0] ?? 0, match.stats[1] ?? 0];
+  };
+
   const [homeXgFromStat, awayXgFromStat] = findStat("Expected goals");
   const homeXg = homeXgFromStat > 0 ? homeXgFromStat : shots.filter((s) => s.isHome).reduce((acc, s) => acc + s.expectedGoals, 0);
   const awayXg = awayXgFromStat > 0 ? awayXgFromStat : shots.filter((s) => !s.isHome).reduce((acc, s) => acc + s.expectedGoals, 0);
-
-  const [homeBigChances, awayBigChances] = findStat("Big chances");
-  const [homeBigChancesMissed, awayBigChancesMissed] = findStat("Big chances missed");
-  const [homeBoxTouches, awayBoxTouches] = findStat("Touches in opposition");
-  const [homeDuelsWon, awayDuelsWon] = findStat("Duels won");
+  const [homeXgOpenPlay, awayXgOpenPlay] = findStat("xG open play");
+  const [homeXgSetPlay, awayXgSetPlay] = findStat("xG set play");
+  const [homeXgot, awayXgot] = findStat("xG on target");
+  const [homeShotsInsideBox, awayShotsInsideBox] = findStat("Shots inside box");
+  const [homeShotsOutsideBox, awayShotsOutsideBox] = findStat("Shots outside box");
+  const [homePassesOwnHalf, awayPassesOwnHalf] = findStat("Own half");
+  const [homePassesOppHalf, awayPassesOppHalf] = findStat("Opposition half");
+  const [homeGroundDuelsWon, awayGroundDuelsWon] = findStatRaw("Ground duels won");
+  const [homeAerialDuelsWon, awayAerialDuelsWon] = findStatRaw("Aerial duels won");
+  const [homeDribblesWon, awayDribblesWon] = findStatRaw("Successful dribbles");
 
   const az = content?.attackingZones;
   const attackingZones =
-    az?.home?.total && az?.away?.total
-      ? { home: az.home.total, away: az.away.total }
-      : undefined;
+    az?.home?.total && az?.away?.total ? { home: az.home.total, away: az.away.total } : undefined;
 
   return {
-    homeXg: Math.round(homeXg * 100) / 100,
-    awayXg: Math.round(awayXg * 100) / 100,
-    homeBigChances,
-    awayBigChances,
-    homeBigChancesMissed,
-    awayBigChancesMissed,
-    homeBoxTouches,
-    awayBoxTouches,
-    homeDuelsWon,
-    awayDuelsWon,
-    attackingZones,
-    momentum: content?.momentum?.main?.data,
-    shots,
+    homeXg: Math.round(homeXg * 100) / 100, awayXg: Math.round(awayXg * 100) / 100,
+    homeXgOpenPlay, awayXgOpenPlay, homeXgSetPlay, awayXgSetPlay, homeXgot, awayXgot,
+    homeBigChances: findStat("Big chances")[0], awayBigChances: findStat("Big chances")[1],
+    homeBigChancesMissed: findStat("Big chances missed")[0], awayBigChancesMissed: findStat("Big chances missed")[1],
+    homeBoxTouches: findStat("Touches in opposition")[0], awayBoxTouches: findStat("Touches in opposition")[1],
+    homeShotsInsideBox, awayShotsInsideBox, homeShotsOutsideBox, awayShotsOutsideBox,
+    homePassesOwnHalf, awayPassesOwnHalf, homePassesOppHalf, awayPassesOppHalf,
+    homeDuelsWon: findStat("Duels won")[0], awayDuelsWon: findStat("Duels won")[1],
+    homeGroundDuelsWon, awayGroundDuelsWon, homeAerialDuelsWon, awayAerialDuelsWon,
+    homeDribblesWon, awayDribblesWon, attackingZones,
+    momentum: content?.momentum?.main?.data, shots,
   };
 }
 

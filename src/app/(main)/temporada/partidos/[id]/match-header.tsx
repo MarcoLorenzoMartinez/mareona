@@ -63,15 +63,11 @@ export function MatchHeader({ match }: MatchHeaderProps) {
           {match.matchday ? `${matchT.matchday} ${match.matchday} · ` : ""}
           {match.competition}
         </span>
-        {isFinished ? (
-          <span className="rounded-xs bg-neutral-100 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[var(--foreground)]">
-            {t.status.finished}
-          </span>
-        ) : match.status === "live" ? (
+        {match.status === "live" && (
           <span className="rounded-xs bg-[var(--primary)] px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white animate-pulse">
             {t.status.live}
           </span>
-        ) : null}
+        )}
       </div>
 
       {/* Marcador principal y equipos */}

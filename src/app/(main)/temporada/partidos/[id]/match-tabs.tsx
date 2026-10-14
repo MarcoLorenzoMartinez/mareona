@@ -6,7 +6,6 @@ import type { DomainMatchDetail } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
 import { MatchEventsTimeline } from "./match-events-timeline";
 import { MatchStatsPanel } from "./match-stats-panel";
-import { MatchAdvancedStats } from "./match-advanced-stats";
 import { MatchLineupsView } from "./match-lineups-view";
 import { MatchInfo } from "./match-info";
 
@@ -14,7 +13,7 @@ interface MatchTabsProps {
   readonly match: DomainMatchDetail;
 }
 
-type TabKey = "events" | "stats" | "shotmap" | "lineups" | "info";
+type TabKey = "events" | "stats" | "lineups" | "info";
 
 export function MatchTabs({ match }: MatchTabsProps) {
   const dict = getDictionary();
@@ -28,7 +27,6 @@ export function MatchTabs({ match }: MatchTabsProps) {
   const tabs: Array<{ key: TabKey; label: string }> = [
     { key: "events", label: t.events },
     { key: "stats", label: t.stats },
-    { key: "shotmap", label: t.shotmap },
     { key: "lineups", label: t.lineups },
     { key: "info", label: t.info },
   ];
@@ -74,13 +72,6 @@ export function MatchTabs({ match }: MatchTabsProps) {
       >
         {activeTab === "events" && <MatchEventsTimeline match={match} />}
         {activeTab === "stats" && <MatchStatsPanel match={match} />}
-        {activeTab === "shotmap" && (
-          <MatchAdvancedStats
-            advancedStats={match.advancedStats}
-            homeTeam={match.homeTeam}
-            awayTeam={match.awayTeam}
-          />
-        )}
         {activeTab === "lineups" && <MatchLineupsView match={match} />}
         {activeTab === "info" && <MatchInfo match={match} />}
       </div>

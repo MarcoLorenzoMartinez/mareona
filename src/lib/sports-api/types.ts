@@ -283,6 +283,7 @@ export interface DomainLineupPlayer {
   readonly jersey: number | null;
   readonly position: DomainPlayerPosition;
   readonly positionLabel: string;
+  readonly subposition?: string;
   readonly formationPlace: number | null;
   readonly isStarter: boolean;
   readonly subbedIn?: boolean;
@@ -314,6 +315,8 @@ export interface DomainShotItem {
   readonly y: number;
   readonly expectedGoals: number;
   readonly expectedGoalsOnTarget: number | null;
+  readonly onGoalShot?: { readonly x: number; readonly y: number } | null;
+  readonly goalCrossedZ?: number | null;
   readonly shotType: string;
   readonly situation: string;
 }
@@ -326,14 +329,34 @@ export interface DomainAttackingZones {
 export interface DomainAdvancedStats {
   readonly homeXg: number;
   readonly awayXg: number;
+  readonly homeXgOpenPlay?: number;
+  readonly awayXgOpenPlay?: number;
+  readonly homeXgSetPlay?: number;
+  readonly awayXgSetPlay?: number;
+  readonly homeXgot?: number;
+  readonly awayXgot?: number;
   readonly homeBigChances: number;
   readonly awayBigChances: number;
   readonly homeBigChancesMissed: number;
   readonly awayBigChancesMissed: number;
   readonly homeBoxTouches: number;
   readonly awayBoxTouches: number;
+  readonly homeShotsInsideBox?: number;
+  readonly awayShotsInsideBox?: number;
+  readonly homeShotsOutsideBox?: number;
+  readonly awayShotsOutsideBox?: number;
+  readonly homePassesOwnHalf?: number;
+  readonly awayPassesOwnHalf?: number;
+  readonly homePassesOppHalf?: number;
+  readonly awayPassesOppHalf?: number;
   readonly homeDuelsWon: number;
   readonly awayDuelsWon: number;
+  readonly homeGroundDuelsWon?: string | number;
+  readonly awayGroundDuelsWon?: string | number;
+  readonly homeAerialDuelsWon?: string | number;
+  readonly awayAerialDuelsWon?: string | number;
+  readonly homeDribblesWon?: string | number;
+  readonly awayDribblesWon?: string | number;
   readonly attackingZones?: DomainAttackingZones;
   readonly momentum?: ReadonlyArray<{ readonly minute: number; readonly value: number }>;
   readonly shots: readonly DomainShotItem[];
@@ -922,9 +945,9 @@ export function transformEspnMatchDetail(
   ];
 
   const groupTitles: Record<"control" | "attack" | "defense" | "discipline", string> = {
-    control: "Posesión y Pases",
-    attack: "Ataque y Remates",
-    defense: "Duelos y Defensa",
+    control: "Posesión",
+    attack: "Remates",
+    defense: "Defensa",
     discipline: "Disciplina",
   };
 
@@ -980,8 +1003,41 @@ export function transformEspnMatchDetail(
     );
     if (!rTeam || rTeam.roster.length === 0) return null;
 
+    const mapTacticalPosition = (
+      rawAbbr?: string,
+      rawName?: string,
+      pos?: DomainPlayerPosition
+    ): { rank: number; subpos: string } => {
+      const abbr = (rawAbbr ?? "").toUpperCase();
+      const name = (rawName ?? "").toLowerCase();
+
+      if (pos === "goalkeeper" || abbr === "G" || abbr === "GK" || name.includes("goalkeeper")) {
+        return { rank: 100, subpos: "POR" };
+      }
+      if (pos === "defender" || abbr.startsWith("C") || abbr.endsWith("B") || name.includes("defender")) {
+        if (abbr.includes("LB") || abbr.includes("LWB") || name.includes("left back")) return { rank: 210, subpos: "LI" };
+        if (abbr.includes("CD-L") || abbr.includes("CB-L") || abbr.includes("LCB") || name.includes("center left")) return { rank: 220, subpos: "DFC" };
+        if (abbr.includes("CD-R") || abbr.includes("CB-R") || abbr.includes("RCB") || name.includes("center right")) return { rank: 240, subpos: "DFC" };
+        if (abbr.includes("RB") || abbr.includes("RWB") || name.includes("right back")) return { rank: 250, subpos: "LD" };
+        return { rank: 230, subpos: "DFC" };
+      }
+      if (pos === "midfielder" || abbr.includes("M") || name.includes("midfield")) {
+        if (abbr.includes("LM") || abbr.includes("LW") || abbr.includes("AM-L") || abbr.includes("AML") || name.includes("left")) return { rank: 310, subpos: "MI" };
+        if (abbr.includes("DM-L") || abbr.includes("CM-L") || abbr.includes("DML") || abbr.includes("CML")) return { rank: 320, subpos: "MC" };
+        if (abbr.includes("DM-R") || abbr.includes("CM-R") || abbr.includes("DMR") || abbr.includes("CMR")) return { rank: 340, subpos: "MC" };
+        if (abbr.includes("RM") || abbr.includes("RW") || abbr.includes("AM-R") || abbr.includes("AMR") || name.includes("right")) return { rank: 350, subpos: "MD" };
+        if (abbr.includes("DM") || abbr.includes("CDM") || name.includes("defensive")) return { rank: 330, subpos: "MCD" };
+        if (abbr.includes("AM") || abbr.includes("CAM") || name.includes("attacking")) return { rank: 335, subpos: "MP" };
+        return { rank: 330, subpos: "MC" };
+      }
+      if (abbr.includes("LF") || abbr.includes("LS") || name.includes("left")) return { rank: 410, subpos: "EI" };
+      if (abbr.includes("RF") || abbr.includes("RS") || name.includes("right")) return { rank: 430, subpos: "ED" };
+      return { rank: 420, subpos: "DC" };
+    };
+
     const mapPlayer = (
-      p: z.infer<typeof espnRosterAthleteSchema>
+      p: z.infer<typeof espnRosterAthleteSchema>,
+      subposition?: string
     ): DomainLineupPlayer => {
       const jerseyNum = p.jersey ? parseInt(p.jersey, 10) : null;
       const placeNum = p.formationPlace ? parseInt(p.formationPlace, 10) : null;
@@ -999,6 +1055,7 @@ export function transformEspnMatchDetail(
         jersey: jerseyNum !== null && !Number.isNaN(jerseyNum) ? jerseyNum : null,
         position: pos,
         positionLabel: mapPositionToLabel(pos),
+        subposition: subposition ?? mapPositionToShort(pos),
         formationPlace: placeNum !== null && !Number.isNaN(placeNum) ? placeNum : null,
         isStarter: Boolean(p.starter),
         subbedIn: p.subbedIn,
@@ -1008,13 +1065,35 @@ export function transformEspnMatchDetail(
 
     const starters = rTeam.roster
       .filter((p) => p.starter)
-      .map(mapPlayer)
-      .sort((a, b) => (a.formationPlace ?? 99) - (b.formationPlace ?? 99));
+      .map((p) => {
+        const tactical = mapTacticalPosition(
+          p.position?.abbreviation,
+          p.position?.name ?? p.position?.displayName,
+          mapEspnPosition(p.position?.name ?? p.position?.displayName)
+        );
+        return {
+          player: mapPlayer(p, tactical.subpos),
+          rank: tactical.rank,
+        };
+      })
+      .sort((a, b) => a.rank - b.rank || (a.player.formationPlace ?? 99) - (b.player.formationPlace ?? 99))
+      .map((item) => item.player);
 
     const substitutes = rTeam.roster
       .filter((p) => !p.starter)
-      .map(mapPlayer)
-      .sort((a, b) => (a.jersey ?? 99) - (b.jersey ?? 99));
+      .map((p) => {
+        const tactical = mapTacticalPosition(
+          p.position?.abbreviation,
+          p.position?.name ?? p.position?.displayName,
+          mapEspnPosition(p.position?.name ?? p.position?.displayName)
+        );
+        return {
+          player: mapPlayer(p, tactical.subpos),
+          rank: tactical.rank,
+        };
+      })
+      .sort((a, b) => a.rank - b.rank || (a.player.jersey ?? 99) - (b.player.jersey ?? 99))
+      .map((item) => item.player);
 
     return {
       teamId: teamCompId,

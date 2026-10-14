@@ -18,10 +18,14 @@ test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones
                 title: "Top stats",
                 stats: [
                   { title: "Expected goals (xG)", stats: ["0.75", "0.66"] },
+                  { title: "xG open play", stats: ["0.71", "0.41"] },
+                  { title: "xG set play", stats: ["0.04", "0.26"] },
                   { title: "Big chances", stats: [1, 0] },
                   { title: "Big chances missed", stats: [1, 0] },
                   { title: "Touches in opposition box", stats: [21, 20] },
                   { title: "Duels won", stats: [28, 36] },
+                  { title: "Ground duels won", stats: ["19 (45%)", "23 (55%)"] },
+                  { title: "Aerial duels won", stats: ["9 (41%)", "13 (59%)"] },
                 ],
               },
             ],
@@ -57,6 +61,8 @@ test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones
             min: 87,
             isBlocked: false,
             isOnTarget: true,
+            onGoalShot: { x: 1.06, y: 0.25 },
+            goalCrossedZ: 0.94,
             expectedGoals: 0.044,
             expectedGoalsOnTarget: 0.083,
             shotType: "RightFoot",
@@ -86,12 +92,18 @@ test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones
   // 1. Verify totals
   assert.equal(result.homeXg, 0.75);
   assert.equal(result.awayXg, 0.66);
+  assert.equal(result.homeXgOpenPlay, 0.71);
+  assert.equal(result.awayXgOpenPlay, 0.41);
+  assert.equal(result.homeXgSetPlay, 0.04);
+  assert.equal(result.awayXgSetPlay, 0.26);
   assert.equal(result.homeBigChances, 1);
   assert.equal(result.awayBigChances, 0);
   assert.equal(result.homeBoxTouches, 21);
   assert.equal(result.awayBoxTouches, 20);
   assert.equal(result.homeDuelsWon, 28);
   assert.equal(result.awayDuelsWon, 36);
+  assert.equal(result.homeGroundDuelsWon, "19 (45%)");
+  assert.equal(result.awayGroundDuelsWon, "23 (55%)");
 
   // 2. Verify shots
   assert.equal(result.shots.length, 2);
@@ -100,6 +112,7 @@ test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones
   assert.equal(homeShot.isSporting, false);
   assert.equal(homeShot.expectedGoals, 0.12);
   assert.equal(homeShot.eventType, "Miss");
+  assert.equal(homeShot.onGoalShot, null);
 
   const goalShot = result.shots[1];
   assert.equal(goalShot.isHome, false);
@@ -108,6 +121,8 @@ test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones
   assert.equal(goalShot.playerName, "Pablo García");
   assert.equal(goalShot.expectedGoals, 0.044);
   assert.equal(goalShot.expectedGoalsOnTarget, 0.083);
+  assert.deepEqual(goalShot.onGoalShot, { x: 1.06, y: 0.25 });
+  assert.equal(goalShot.goalCrossedZ, 0.94);
 
   // 3. Verify attacking zones & momentum
   assert.ok(result.attackingZones);
