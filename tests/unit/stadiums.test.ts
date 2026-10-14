@@ -39,8 +39,19 @@ test("getStadiumAsset resolves Carlos Belmonte for Albacete", () => {
   assert.equal(assetById.imagePath, "/stadiums/carlos-belmonte.png");
 });
 
+test("getStadiumAsset resolves stadium by teamName keyword", () => {
+  const assetByTeamName = getStadiumAsset({ teamName: "Castellón" });
+  assert.ok(assetByTeamName);
+  assert.equal(assetByTeamName.imagePath, "/stadiums/castalia.jpg");
+  assert.equal(assetByTeamName.canonicalName, "Nou Estadi Castàlia");
+
+  const assetByAlbacete = getStadiumAsset({ teamName: "Albacete Balompié" });
+  assert.ok(assetByAlbacete);
+  assert.equal(assetByAlbacete.imagePath, "/stadiums/carlos-belmonte.png");
+});
+
 test("getStadiumAsset returns null for unknown away stadiums (zero fake data policy)", () => {
-  const asset = getStadiumAsset({ teamExternalId: "unknown-9999", venueName: "Estadio Ficticio" });
+  const asset = getStadiumAsset({ teamExternalId: "unknown-9999", venueName: "Estadio Ficticio", teamName: "Equipo Desconocido" });
   assert.equal(asset, null);
 });
 

@@ -1,6 +1,16 @@
 import { z } from "zod";
-import type { DomainStandingRow, DomainStandingSplit, DomainMatchSummary } from "./types.ts";
-import { normalizeTeamName, getSeasonLabel } from "./types.ts";
+import type {
+  DomainStandingRow,
+  DomainStandingSplit,
+  DomainMatchSummary,
+  DomainMatchDetail,
+} from "./types.ts";
+import {
+  normalizeTeamName,
+  getSeasonLabel,
+  espnMatchSummaryResponseSchema,
+  transformEspnMatchDetail,
+} from "./types.ts";
 
 export const ESPN_SPORTING_GIJON_ID = "3788";
 export const ESPN_SEGUNDA_LEAGUE_SLUG = "esp.2";
@@ -72,6 +82,8 @@ export interface EspnEvent {
         readonly type: {
           readonly state: string;
           readonly description?: string;
+          readonly detail?: string;
+          readonly shortDetail?: string;
         };
       };
       readonly venue?: {
@@ -163,7 +175,11 @@ export function transformEspnEvent(event: EspnEvent, matchday: number = 10): Dom
     kickoffAt: event.date,
     status: isFinished ? "finished" : "scheduled",
     venue: comp.venue?.fullName ?? "El Molinón",
-    isTimeConfirmed: event.timeValid ?? true,
+    isTimeConfirmed:
+      event.timeValid !== false &&
+      comp.status.type.shortDetail?.toUpperCase() !== "TBD" &&
+      !comp.status.type.detail?.toUpperCase().includes("TBD") &&
+      !comp.status.type.description?.toUpperCase().includes("TBD"),
     homeTeam: {
       externalId: homeComp.team.id,
       name: normalizeTeamName(homeComp.team.displayName, isHomeSporting),
@@ -417,4 +433,41 @@ export async function fetchEspnSportingSeasonMatches(): Promise<readonly DomainM
 
   return domainMatches;
 }
+
+/**
+ * Fetches match details from ESPN summary API.
+ *
+ * @param matchId ESPN event identifier.
+ * @param matchday Optional known matchday number (Jornada).
+ * @returns Clean DomainMatchDetail or null if event is not found or invalid.
+ */
+export async function fetchEspnMatchDetail(
+  matchId: string,
+  matchday?: number | null
+): Promise<DomainMatchDetail | null> {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/summary?event=${matchId}`;
+
+  try {
+    const res = await fetch(url, {
+      method: "GET",
+      headers: { "User-Agent": "Mareona/1.0" },
+      next: { revalidate: 3600 },
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
+    const json: unknown = await res.json();
+    const parsed = espnMatchSummaryResponseSchema.safeParse(json);
+    if (!parsed.success) {
+      return null;
+    }
+
+    return transformEspnMatchDetail(parsed.data, matchday ?? null);
+  } catch {
+    return null;
+  }
+}
+
 

@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { formatMatchDate, formatMatchTime } from "@/lib/sports-api/dates";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 import { TeamCrest } from "@/components/media/team-crest";
 import { getDictionary } from "@/i18n";
@@ -7,36 +9,9 @@ interface MatchRowProps {
   readonly isNext: boolean;
 }
 
-function formatMatchDate(dateStr: string): string {
-  try {
-    const d = new Date(dateStr);
-    return new Intl.DateTimeFormat("es-ES", {
-      timeZone: "Europe/Madrid",
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-    }).format(d);
-  } catch {
-    return "";
-  }
-}
-
-function formatMatchTime(dateStr: string): string {
-  try {
-    const d = new Date(dateStr);
-    return new Intl.DateTimeFormat("es-ES", {
-      timeZone: "Europe/Madrid",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(d);
-  } catch {
-    return "";
-  }
-}
-
 /**
  * Individual match card in the schedule list with matchday, kickoff,
- * team crests, score, and venue.
+ * team crests, score, and venue. Navigates to match detail view on click.
  */
 export function MatchRow({ match, isNext }: MatchRowProps) {
   const dict = getDictionary();
@@ -48,17 +23,20 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
     match.homeScore !== null &&
     match.awayScore !== null;
   const isConfirmedTime = match.isTimeConfirmed === true;
-  const dateLabel = formatMatchDate(match.kickoffAt);
+  const dateLabel = formatMatchDate(match.kickoffAt, isConfirmedTime);
   const timeLabel = formatMatchTime(match.kickoffAt);
 
   return (
-    <li
-      className={`p-4 transition-colors ${
-        isNext
-          ? "bg-red-50/50 border-l-4 border-l-[var(--primary)]"
-          : "hover:bg-[var(--surface)]"
-      }`}
-    >
+    <li className="group">
+      <Link
+        href={`/temporada/partidos/${match.externalId}`}
+        aria-label={`${matchT.matchday} ${match.matchday ?? "—"}: ${match.homeTeam.name} vs ${match.awayTeam.name}`}
+        className={`block p-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+          isNext
+            ? "bg-red-50/50 border-l-4 border-l-[var(--primary)] hover:bg-red-50"
+            : "hover:bg-[var(--surface)]"
+        }`}
+      >
       <div className="mb-2.5 flex items-center justify-between text-xs text-[var(--foreground-muted)]">
         <div className="flex items-center gap-2">
           <span className="font-bold text-[var(--foreground)]">
@@ -135,6 +113,7 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
           </span>
         </div>
       </div>
+      </Link>
     </li>
   );
 }

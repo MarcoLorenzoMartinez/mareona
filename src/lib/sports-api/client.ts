@@ -8,6 +8,7 @@ import {
   getCurrentSeasonYear,
   type DomainStandingRow,
   type DomainMatchSummary,
+  type DomainMatchDetail,
 } from "./types.ts";
 import {
   getCachedPayload,
@@ -19,6 +20,7 @@ import {
   fetchEspnLiveStandings,
   fetchEspnSportingMatch,
   fetchEspnSportingSeasonMatches,
+  fetchEspnMatchDetail,
 } from "./espn.ts";
 import type { createClient } from "@/lib/supabase/server";
 
@@ -243,4 +245,69 @@ export async function fetchSportingSeasonMatches(
 
   return [];
 }
+
+/**
+ * Fetches match details for a specific match, checking Supabase cache first if available.
+ * Resolves matchday from season matches if not known.
+ *
+ * @param matchId ESPN match event ID.
+ * @param supabase Optional scoped Supabase client for cache reads and writes.
+ * @returns DomainMatchDetail or null if not found.
+ */
+export async function fetchMatchDetail(
+  matchId: string,
+  supabase?: SupabaseServerClient | null
+): Promise<DomainMatchDetail | null> {
+  const cacheKey = `match_detail_${matchId}`;
+
+  // 1. Try reading valid cache from Supabase if client is supplied
+  if (supabase) {
+    const cached = await getCachedPayload<DomainMatchDetail>(supabase, cacheKey);
+    if (cached) {
+      return cached;
+    }
+  }
+
+  // 2. Resolve matchday from season matches
+  let matchday: number | null = null;
+  let isTimeConfirmedFromSeason: boolean | undefined = undefined;
+  try {
+    const seasonMatches = await fetchSportingSeasonMatches(supabase);
+    const found = seasonMatches.find((m) => m.externalId === matchId);
+    if (found?.matchday) {
+      matchday = found.matchday;
+    }
+    if (found?.isTimeConfirmed !== undefined) {
+      isTimeConfirmedFromSeason = found.isTimeConfirmed;
+    }
+  } catch {
+    // If season match resolution fails, continue with null matchday
+  }
+
+  // 3. Fetch live match details from ESPN
+  try {
+    const detail = await fetchEspnMatchDetail(matchId, matchday);
+    if (detail) {
+      const finalDetail: DomainMatchDetail =
+        isTimeConfirmedFromSeason === false
+          ? { ...detail, isTimeConfirmed: false }
+          : detail;
+
+      if (supabase) {
+        await setCachedPayload(
+          supabase,
+          cacheKey,
+          finalDetail as unknown as Record<string, unknown>,
+          TTL_FIXTURES_MS
+        );
+      }
+      return finalDetail;
+    }
+  } catch {
+    // Return null transparently without fake data
+  }
+
+  return null;
+}
+
 

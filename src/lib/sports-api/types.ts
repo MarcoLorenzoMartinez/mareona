@@ -23,6 +23,32 @@ export function normalizeTeamName(name: string, isSporting: boolean): string {
 }
 
 /**
+ * Canonical league name for LaLiga Hypermotion across all domain entities, UI and database.
+ */
+export const CANONICAL_LEAGUE_NAME = "LaLiga Hypermotion";
+
+/**
+ * Normalizes competition names across external data ingestion boundaries.
+ * Enforces CANONICAL_LEAGUE_NAME whenever the league corresponds to Segunda División / LaLiga 2.
+ *
+ * @param name Original name provided by external API.
+ * @returns Canonical competition name.
+ */
+export function normalizeCompetitionName(name?: string | null): string {
+  if (!name) return CANONICAL_LEAGUE_NAME;
+  const lower = name.toLowerCase();
+  if (
+    lower.includes("laliga 2") ||
+    lower.includes("la liga 2") ||
+    lower.includes("segunda") ||
+    lower.includes("hypermotion")
+  ) {
+    return CANONICAL_LEAGUE_NAME;
+  }
+  return name;
+}
+
+/**
  * Resolves the starting year of the active football season based on calendar date.
  * European competitions run from July/August to May/June.
  * Months July-December (month index >= 6) belong to season `year`.
@@ -212,6 +238,108 @@ export interface DomainMatchSummary {
   readonly awayScore: number | null;
 }
 
+export interface DomainMatchDetail {
+  readonly externalId: string;
+  readonly competition: string;
+  readonly season: string;
+  readonly matchday: number | null;
+  readonly kickoffAt: string;
+  readonly status: MatchStatus;
+  readonly isTimeConfirmed: boolean;
+  readonly venue: {
+    readonly name: string | null;
+    readonly city: string | null;
+  } | null;
+  readonly attendance: number | null;
+  readonly homeTeam: {
+    readonly externalId: string;
+    readonly name: string;
+    readonly crestUrl: string | null;
+    readonly isSporting: boolean;
+  };
+  readonly awayTeam: {
+    readonly externalId: string;
+    readonly name: string;
+    readonly crestUrl: string | null;
+    readonly isSporting: boolean;
+  };
+  readonly homeScore: number | null;
+  readonly awayScore: number | null;
+}
+
+// =====================================================================
+// ZOD SCHEMAS: ESPN Match Summary
+// =====================================================================
+
+export const espnMatchSummaryCompetitorSchema = z.object({
+  id: z.string(),
+  homeAway: z.enum(["home", "away"]),
+  score: z
+    .union([z.string(), z.number(), z.object({ value: z.number().optional() })])
+    .optional(),
+  team: z.object({
+    id: z.string(),
+    displayName: z.string(),
+    abbreviation: z.string().optional(),
+    logo: z.string().optional(),
+    logos: z.array(z.object({ href: z.string() })).optional(),
+  }),
+});
+
+export const espnMatchSummaryResponseSchema = z.object({
+  header: z.object({
+    id: z.string(),
+    season: z
+      .object({
+        year: z.number().optional(),
+        name: z.string().optional(),
+      })
+      .optional(),
+    league: z
+      .object({
+        id: z.string().optional(),
+        name: z.string().optional(),
+      })
+      .optional(),
+    competitions: z.array(
+      z.object({
+        id: z.string(),
+        date: z.string(),
+        timeValid: z.boolean().optional(),
+        status: z.object({
+          type: z.object({
+            state: z.string(),
+            description: z.string().optional(),
+            detail: z.string().optional(),
+            shortDetail: z.string().optional(),
+          }),
+        }),
+        competitors: z.array(espnMatchSummaryCompetitorSchema),
+      })
+    ),
+  }),
+  gameInfo: z
+    .object({
+      venue: z
+        .object({
+          id: z.string().optional(),
+          fullName: z.string().optional(),
+          shortName: z.string().optional(),
+          address: z
+            .object({
+              city: z.string().optional(),
+              country: z.string().optional(),
+            })
+            .optional(),
+        })
+        .optional(),
+      attendance: z.number().nullable().optional(),
+    })
+    .optional(),
+});
+
+export type EspnMatchSummaryResponse = z.infer<typeof espnMatchSummaryResponseSchema>;
+
 // =====================================================================
 // TRANSFORMERS
 // =====================================================================
@@ -283,7 +411,7 @@ export function transformFixture(item: ApiFootballFixtureItem): DomainMatchSumma
 
   return {
     externalId: String(item.fixture.id),
-    competition: item.league.name,
+    competition: normalizeCompetitionName(item.league.name),
     season: String(item.league.season),
     matchday: parseMatchday(item.league.round),
     kickoffAt: item.fixture.date,
@@ -303,6 +431,106 @@ export function transformFixture(item: ApiFootballFixtureItem): DomainMatchSumma
     },
     homeScore: item.goals.home ?? null,
     awayScore: item.goals.away ?? null,
+  };
+}
+
+/**
+ * Transforms an ESPN match summary response into a clean DomainMatchDetail.
+ * Normalizes team names ensuring Real Sporting canonical name,
+ * and extracts venue and real attendance following the zero fake data policy.
+ *
+ * @param data Parsed ESPN match summary response.
+ * @param matchday Optional matchday number (Jornada) if known.
+ * @returns Clean DomainMatchDetail or null if competitors are missing.
+ */
+export function transformEspnMatchDetail(
+  data: EspnMatchSummaryResponse,
+  matchday: number | null = null
+): DomainMatchDetail | null {
+  const comp = data.header.competitions[0];
+  if (!comp) {
+    return null;
+  }
+
+  const homeComp = comp.competitors.find((c) => c.homeAway === "home");
+  const awayComp = comp.competitors.find((c) => c.homeAway === "away");
+
+  if (!homeComp || !awayComp) {
+    return null;
+  }
+
+  const isHomeSporting =
+    homeComp.team.id === "3788" ||
+    homeComp.team.id === "731" ||
+    homeComp.team.displayName.toLowerCase().includes("sporting") ||
+    homeComp.team.abbreviation === "RSG";
+
+  const isAwaySporting =
+    awayComp.team.id === "3788" ||
+    awayComp.team.id === "731" ||
+    awayComp.team.displayName.toLowerCase().includes("sporting") ||
+    awayComp.team.abbreviation === "RSG";
+
+  const parseScore = (scoreVal: unknown): number | null => {
+    if (scoreVal === undefined || scoreVal === null) return null;
+    if (typeof scoreVal === "number") return scoreVal;
+    if (typeof scoreVal === "object" && "value" in (scoreVal as Record<string, unknown>)) {
+      const val = (scoreVal as { value?: number }).value;
+      return typeof val === "number" ? val : null;
+    }
+    if (typeof scoreVal === "string") {
+      const n = parseInt(scoreVal, 10);
+      return isNaN(n) ? null : n;
+    }
+    return null;
+  };
+
+  const isFinished = comp.status.type.state === "post";
+  const isLive = comp.status.type.state === "in";
+  const status: MatchStatus = isFinished ? "finished" : isLive ? "live" : "scheduled";
+
+  const homeScore = isFinished || isLive ? parseScore(homeComp.score) : null;
+  const awayScore = isFinished || isLive ? parseScore(awayComp.score) : null;
+
+  const homeLogo = homeComp.team.logo ?? homeComp.team.logos?.[0]?.href ?? null;
+  const awayLogo = awayComp.team.logo ?? awayComp.team.logos?.[0]?.href ?? null;
+
+  const venueName = data.gameInfo?.venue?.fullName ?? data.gameInfo?.venue?.shortName ?? null;
+  const venueCity = data.gameInfo?.venue?.address?.city ?? null;
+  const attendance = data.gameInfo?.attendance ?? null;
+
+  const isTbd =
+    comp.timeValid === false ||
+    comp.status.type.shortDetail?.toUpperCase() === "TBD" ||
+    comp.status.type.detail?.toUpperCase().includes("TBD") ||
+    comp.status.type.description?.toUpperCase().includes("TBD");
+
+  const isTimeConfirmed = !isTbd && comp.timeValid !== false;
+
+  return {
+    externalId: data.header.id,
+    competition: normalizeCompetitionName(data.header.league?.name),
+    season: getSeasonLabel(),
+    matchday,
+    kickoffAt: comp.date,
+    status,
+    isTimeConfirmed,
+    venue: venueName ? { name: venueName, city: venueCity } : null,
+    attendance,
+    homeTeam: {
+      externalId: homeComp.team.id,
+      name: normalizeTeamName(homeComp.team.displayName, isHomeSporting),
+      crestUrl: homeLogo,
+      isSporting: isHomeSporting,
+    },
+    awayTeam: {
+      externalId: awayComp.team.id,
+      name: normalizeTeamName(awayComp.team.displayName, isAwaySporting),
+      crestUrl: awayLogo,
+      isSporting: isAwaySporting,
+    },
+    homeScore,
+    awayScore,
   };
 }
 

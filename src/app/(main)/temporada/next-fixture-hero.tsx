@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { formatMatchDate, formatMatchTime } from "@/lib/sports-api/dates";
 import { TeamCrest } from "@/components/media/team-crest";
 import { getStadiumAsset } from "@/lib/sports-api/stadiums";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
@@ -9,38 +11,25 @@ interface NextFixtureHeroProps {
 }
 
 /**
- * Formats match kickoff timestamp according to Europe/Madrid timezone.
- */
-function formatKickoff(dateStr: string): { date: string; time: string } {
-  try {
-    const d = new Date(dateStr);
-    const date = new Intl.DateTimeFormat("es-ES", {
-      timeZone: "Europe/Madrid",
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-    }).format(d);
-    const time = new Intl.DateTimeFormat("es-ES", {
-      timeZone: "Europe/Madrid",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(d);
-    return { date, time };
-  } catch {
-    return { date: "Próximamente", time: "--:--" };
-  }
-}
-
-/**
  * Hero card spotlighting Real Sporting's upcoming or latest match,
  * including stadium photography, official crests, kickoff time, and venue.
  */
 export function NextFixtureHero({ match }: NextFixtureHeroProps) {
   const dict = getDictionary();
-  const matchKickoff = match ? formatKickoff(match.kickoffAt) : null;
+  const matchKickoff = match
+    ? {
+        date: formatMatchDate(
+          match.kickoffAt,
+          match.isTimeConfirmed ?? true,
+          false
+        ),
+        time: formatMatchTime(match.kickoffAt),
+      }
+    : null;
   const stadiumAsset = match
     ? getStadiumAsset({
         teamExternalId: match.homeTeam.externalId,
+        teamName: match.homeTeam.name,
         isSporting: match.homeTeam.isSporting,
         venueName: match.venue,
       })
@@ -71,6 +60,14 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
               ? `${dict.season.match.matchday} ${match.matchday ?? "—"} · ${dict.season.competitionName}`
               : dict.season.match.nextFixture}
           </span>
+          {match && (
+            <Link
+              href={`/temporada/partidos/${match.externalId}`}
+              className="text-xs font-semibold text-[var(--foreground-muted)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-xs"
+            >
+              {dict.season.matchDetail.title} →
+            </Link>
+          )}
         </div>
 
         {match && matchKickoff ? (
@@ -90,19 +87,21 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
               </div>
 
               {/* Marcador / Horario */}
-              <div className="flex flex-col items-center justify-center rounded-md bg-[var(--surface)]/90 backdrop-blur-xs py-3 px-4 text-center md:col-span-1 shadow-2xs border border-[var(--border)]/40">
-                <span className="text-xs font-bold tracking-widest text-[var(--foreground-muted)] uppercase">
+              <div className="relative flex flex-col items-center justify-center md:col-span-1">
+                <span className="text-[11px] font-bold tracking-widest text-[var(--foreground-muted)] uppercase whitespace-nowrap mb-1 md:mb-0 md:absolute md:-top-5 md:left-1/2 md:-translate-x-1/2">
                   {matchKickoff.date}
                 </span>
-                <span className="text-2xl font-black tracking-tight text-[var(--foreground)]">
-                  {match.status === "finished" &&
-                  match.homeScore !== null &&
-                  match.awayScore !== null
-                    ? `${match.homeScore} - ${match.awayScore}`
-                    : match.isTimeConfirmed === false
-                    ? dict.season.match.vs
-                    : matchKickoff.time}
-                </span>
+                <div className="flex h-12 min-w-[76px] items-center justify-center rounded-md bg-[var(--surface)]/90 backdrop-blur-xs px-3.5 text-center shadow-2xs border border-[var(--border)]/40">
+                  <span className="text-2xl font-black tracking-tight text-[var(--foreground)] tabular-nums leading-none">
+                    {match.status === "finished" &&
+                    match.homeScore !== null &&
+                    match.awayScore !== null
+                      ? `${match.homeScore} - ${match.awayScore}`
+                      : match.isTimeConfirmed === false
+                      ? dict.season.match.vs
+                      : matchKickoff.time}
+                  </span>
+                </div>
               </div>
 
               {/* Equipo Visitante */}

@@ -17,6 +17,8 @@ export interface StadiumAsset {
 export interface StadiumQuery {
   /** External API ID of the home team (e.g. ESPN team ID). */
   readonly teamExternalId?: string | null;
+  /** Display name of the home team. */
+  readonly teamName?: string | null;
   /** Whether the home team is Real Sporting. */
   readonly isSporting?: boolean;
   /** Name of the venue returned by the sports fixture API. */
@@ -172,6 +174,40 @@ const VENUE_KEYWORD_MAP: readonly { readonly keyword: string; readonly id: strin
 ];
 
 /**
+ * Keyword-based lookup fallback by team display name.
+ */
+const TEAM_NAME_KEYWORD_MAP: readonly { readonly keyword: string; readonly id: string }[] = [
+  { keyword: "sporting", id: "3788" },
+  { keyword: "gijon", id: "3788" },
+  { keyword: "albacete", id: "2737" },
+  { keyword: "oviedo", id: "92" },
+  { keyword: "cadiz", id: "3842" },
+  { keyword: "cádiz", id: "3842" },
+  { keyword: "eibar", id: "3752" },
+  { keyword: "almeria", id: "6832" },
+  { keyword: "almería", id: "6832" },
+  { keyword: "burgos", id: "12597" },
+  { keyword: "valladolid", id: "95" },
+  { keyword: "granada", id: "3747" },
+  { keyword: "palmas", id: "98" },
+  { keyword: "mallorca", id: "84" },
+  { keyword: "girona", id: "9812" },
+  { keyword: "castellon", id: "4438" },
+  { keyword: "castellón", id: "4438" },
+  { keyword: "tenerife", id: "245" },
+  { keyword: "eldense", id: "7320" },
+  { keyword: "cordoba", id: "8447" },
+  { keyword: "córdoba", id: "8447" },
+  { keyword: "leganes", id: "17534" },
+  { keyword: "leganés", id: "17534" },
+  { keyword: "ceuta", id: "5404" },
+  { keyword: "sabadell", id: "11487" },
+  { keyword: "andorra", id: "20179" },
+  { keyword: "celta", id: "131858" },
+  { keyword: "sociedad", id: "20983" },
+];
+
+/**
  * Normalizes a venue search string for resilient matching.
  */
 function normalizeVenueKeyword(venue: string): string {
@@ -198,7 +234,17 @@ export function getStadiumAsset(query: StadiumQuery): StadiumAsset | null {
     return TEAM_STADIUM_REGISTRY[query.teamExternalId] ?? null;
   }
 
-  // 3. Resilient fallback matching by venue name keyword
+  // 3. Resilient fallback matching by home team name keyword
+  if (query.teamName) {
+    const normalizedTeam = normalizeVenueKeyword(query.teamName);
+    for (const entry of TEAM_NAME_KEYWORD_MAP) {
+      if (normalizedTeam.includes(entry.keyword)) {
+        return TEAM_STADIUM_REGISTRY[entry.id] ?? null;
+      }
+    }
+  }
+
+  // 4. Resilient fallback matching by venue name keyword
   if (query.venueName) {
     const normalized = normalizeVenueKeyword(query.venueName);
     for (const entry of VENUE_KEYWORD_MAP) {
@@ -208,6 +254,6 @@ export function getStadiumAsset(query: StadiumQuery): StadiumAsset | null {
     }
   }
 
-  // 4. Graceful degradation: no verified asset available
+  // 5. Graceful degradation: no verified asset available
   return null;
 }
