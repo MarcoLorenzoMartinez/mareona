@@ -38,6 +38,7 @@
 - **Prohibido componentes monolíticos (>180 líneas por archivo):** Todo archivo de componente en `src/` debe mantenerse estrictamente en ≤ 180 líneas. Modularidad preventiva obligatoria: extraer subcomponentes de fila, tabla, canvas, encabezado o módulos de cálculo antes de superar este umbral.
 - Prohibido lógica de negocio en JSX o prop drilling >2 niveles.
 - Prohibido UI genérica de plantillas IA (sin degradados artificiales ni cards por defecto sin personalizar).
+- **Prohibido el uso de tipografía monoespaciada (`font-mono`) en UI pública:** Queda terminantemente prohibido utilizar fuentes monoespaciadas (`font-mono`) para números, minutos, marcas de tiempo, clasificaciones, dorsales o marcadores. Toda la interfaz debe emplear la tipografía corporativa sans-serif limpia con espaciado tabular (`font-sans tabular-nums`), erradicando estéticas de consola o plantillas IA.
 - Prohibido fetch de datos en `useEffect` cuando pueda hacerse en Server Component.
 - Prohibido usar `style={{}}` salvo valores dinámicos estrictamente necesarios.
 - Prohibido modificar migraciones ya aplicadas.
@@ -82,7 +83,7 @@ El objetivo visual de Mareona es una interfaz deportiva **sobria, directa y sin 
 - **Cero duplicidad de títulos en tarjetas:** Prohibido repetir títulos o subtítulos dentro de las tarjetas cuando ya existen selectores en la barra superior o cabecera de la vista.
 
 ### B. Uso Restrictivo y Semántico de Elementos Visuales
-- **Tipografía y números sobre adornos:** En una app de datos deportivos, el diseño lo marcan los números bien proporcionados (fechas, marcadores, posiciones), los escudos y los espacios en blanco, no las líneas decorativas.
+- **Tipografía y números sobre adornos (Cero `font-mono`):** En una app de datos deportivos, el diseño lo marcan los números bien proporcionados (fechas, marcadores, posiciones, minutos), los escudos y los espacios en blanco, no las líneas decorativas. Prohibido usar `font-mono` en componentes visuales; usar exclusivamente `font-sans` con alineación tabular (`tabular-nums`) para cifras y minutos.
 - **Iconos estrictamente funcionales:**
   - En escritorio: enlaces del header solo con texto tipográfico y estado activo limpio.
   - En móvil: barra inferior con iconos claros de navegación.
