@@ -17,7 +17,7 @@ export function SeasonNav() {
     { label: dict.season.tabs.overview, href: "/temporada", isAvailable: true },
     { label: dict.season.tabs.matches, href: "/temporada/partidos", isAvailable: true },
     { label: dict.season.tabs.standings, href: "/temporada/clasificacion", isAvailable: true },
-    { label: dict.season.tabs.squad, href: "/temporada/plantilla", isAvailable: false },
+    { label: dict.season.tabs.squad, href: "/temporada/plantilla", isAvailable: true },
   ];
 
   return (

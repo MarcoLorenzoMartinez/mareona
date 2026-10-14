@@ -4,12 +4,17 @@ import type {
   DomainStandingSplit,
   DomainMatchSummary,
   DomainMatchDetail,
+  DomainPlayer,
 } from "./types.ts";
 import {
   normalizeTeamName,
   getSeasonLabel,
   espnMatchSummaryResponseSchema,
   transformEspnMatchDetail,
+  POSITION_ORDER,
+  mapEspnPosition,
+  mapPositionToLabel,
+  mapPositionToShort,
 } from "./types.ts";
 
 export const ESPN_SPORTING_GIJON_ID = "3788";
@@ -468,6 +473,278 @@ export async function fetchEspnMatchDetail(
   } catch {
     return null;
   }
+}
+
+// =====================================================================
+// ZOD SCHEMAS: ESPN Roster
+// =====================================================================
+
+export const espnAthleteSchema = z.object({
+  id: z.string(),
+  fullName: z.string().optional().default(""),
+  displayName: z.string().optional().default(""),
+  shortName: z.string().optional().default(""),
+  jersey: z.string().optional().default(""),
+  age: z.number().optional().nullable(),
+  dateOfBirth: z.string().optional().nullable(),
+  citizenship: z.string().optional().nullable(),
+  displayHeight: z.string().optional().nullable(),
+  displayWeight: z.string().optional().nullable(),
+  flag: z
+    .object({
+      href: z.string().optional(),
+      alt: z.string().optional(),
+    })
+    .optional()
+    .nullable(),
+  headshot: z
+    .object({
+      href: z.string().optional(),
+    })
+    .optional()
+    .nullable(),
+  position: z
+    .object({
+      id: z.string().optional(),
+      name: z.string().optional(),
+      displayName: z.string().optional(),
+      abbreviation: z.string().optional(),
+    })
+    .optional()
+    .nullable(),
+  statistics: z
+    .object({
+      splits: z
+        .object({
+          categories: z
+            .array(
+              z.object({
+                name: z.string().optional(),
+                stats: z
+                  .array(
+                    z.object({
+                      name: z.string(),
+                      value: z.number().optional().default(0),
+                    })
+                  )
+                  .optional()
+                  .default([]),
+              })
+            )
+            .optional()
+            .default([]),
+        })
+        .optional()
+        .nullable(),
+    })
+    .optional()
+    .nullable(),
+});
+
+export const espnRosterResponseSchema = z.object({
+  status: z.string().optional(),
+  athletes: z.array(espnAthleteSchema).optional().default([]),
+});
+
+export type EspnAthlete = z.infer<typeof espnAthleteSchema>;
+
+/**
+ * Canonical overrides for known third-party API provider errors.
+ * Example: ESPN's database misattributes Sporting canterano Nacho Martín (jersey #6, born 2002)
+ * as veteran forward Nacho Martínez (born 1989).
+ */
+const ATHLETE_CANONICAL_OVERRIDES: Record<string, Partial<DomainPlayer>> = {
+  // Dorsal 6: Nacho Martín (Ignacio Martín Gómez, canterano centrocampista)
+  "6": {
+    fullName: "Nacho Martín",
+    displayName: "Nacho Martín",
+    shortName: "Nacho Martín",
+    position: "midfielder",
+    positionLabel: "Centrocampista",
+    positionShort: "MED",
+    birthDate: "2002-03-19",
+    age: 24,
+    nationality: "España",
+  },
+  // Dorsal 11: Konrad de la Fuente (Delantero / Extremo en lista oficial del club)
+  "11": {
+    position: "forward",
+    positionLabel: "Delantero",
+    positionShort: "DEL",
+  },
+  // Dorsal 20: Nikita Iosifov (Centrocampista en lista oficial del club)
+  "20": {
+    position: "midfielder",
+    positionLabel: "Centrocampista",
+    positionShort: "MED",
+  },
+  // Dorsal 27: Enol Prendes (Canterano / Sporting Atlético)
+  "27": {
+    displayName: "Enol Prendes",
+    fullName: "Enol Prendes",
+    position: "midfielder",
+    positionLabel: "Centrocampista",
+    positionShort: "MED",
+  },
+  // Dorsal 28: Miguel Conde (Canterano / Sporting Atlético)
+  "28": {
+    displayName: "Miguel Conde",
+    fullName: "Miguel Conde",
+    position: "forward",
+    positionLabel: "Delantero",
+    positionShort: "DEL",
+  },
+  // Dorsal 34: Diego Matabuena 'Mata' (Canterano / Sporting Atlético)
+  "34": {
+    displayName: "Mata",
+    fullName: "Diego Matabuena",
+    position: "midfielder",
+    positionLabel: "Centrocampista",
+    positionShort: "MED",
+  },
+  // Dorsal 35: Christian Ferreres (Canterano / Sporting Atlético)
+  "35": {
+    displayName: "Ferreres",
+    fullName: "Christian Ferreres",
+    position: "forward",
+    positionLabel: "Delantero",
+    positionShort: "DEL",
+  },
+  // Dorsal 36: Bruno Rubio (Canterano / Sporting Atlético)
+  "36": {
+    displayName: "Bruno Rubio",
+    fullName: "Bruno Rubio",
+    position: "midfielder",
+    positionLabel: "Centrocampista",
+    positionShort: "MED",
+  },
+};
+
+/**
+ * Transforms an ESPN athlete entry into a clean DomainPlayer model.
+ *
+ * @param athlete Validated ESPN athlete payload.
+ * @returns Clean DomainPlayer domain model.
+ */
+export function transformEspnAthlete(athlete: EspnAthlete): DomainPlayer {
+  const position = mapEspnPosition(
+    athlete.position?.name ?? athlete.position?.displayName
+  );
+  const positionLabel = mapPositionToLabel(position);
+  const positionShort = mapPositionToShort(position);
+
+  let appearances = 0;
+  let yellowCards = 0;
+  let redCards = 0;
+  let goals = 0;
+  let assists = 0;
+  let saves: number | undefined;
+  let goalsConceded: number | undefined;
+
+  const categories = athlete.statistics?.splits?.categories ?? [];
+  for (const cat of categories) {
+    for (const stat of cat.stats) {
+      if (stat.name === "appearances") appearances = stat.value;
+      if (stat.name === "yellowCards") yellowCards = stat.value;
+      if (stat.name === "redCards") redCards = stat.value;
+      if (stat.name === "totalGoals") goals = stat.value;
+      if (stat.name === "goalAssists") assists = stat.value;
+      if (stat.name === "saves") saves = stat.value;
+      if (stat.name === "goalsConceded") goalsConceded = stat.value;
+    }
+  }
+
+  const parsedJersey = athlete.jersey ? parseInt(athlete.jersey, 10) : null;
+  const shirtNumber =
+    parsedJersey !== null && !Number.isNaN(parsedJersey) ? parsedJersey : null;
+
+  // Use local official transparent cutout asset if shirtNumber is known; otherwise fallback to ESPN headshot
+  const photoUrl =
+    (shirtNumber !== null ? `/images/players/${shirtNumber}.png` : null) ??
+    athlete.headshot?.href ??
+    null;
+
+  const rawPlayer: DomainPlayer = {
+    id: `rsg-player-${athlete.id}`,
+    externalId: athlete.id,
+    fullName: athlete.fullName || athlete.displayName,
+    displayName: athlete.displayName || athlete.fullName,
+    shortName: athlete.shortName || athlete.displayName || athlete.fullName,
+    shirtNumber,
+    position,
+    positionLabel,
+    positionShort,
+    age: athlete.age ?? null,
+    birthDate: athlete.dateOfBirth ?? null,
+    nationality: athlete.citizenship ?? null,
+    flagUrl: athlete.flag?.href ?? null,
+    photoUrl,
+    height: athlete.displayHeight ?? null,
+    weight: athlete.displayWeight ?? null,
+    stats: {
+      appearances,
+      goals,
+      assists,
+      yellowCards,
+      redCards,
+      saves,
+      goalsConceded,
+    },
+  };
+
+  const jerseyKey = shirtNumber !== null ? String(shirtNumber) : null;
+  const override = jerseyKey ? ATHLETE_CANONICAL_OVERRIDES[jerseyKey] : undefined;
+
+  if (override) {
+    return {
+      ...rawPlayer,
+      ...override,
+    };
+  }
+
+  return rawPlayer;
+}
+
+/**
+ * Fetches the Sporting Gijon official squad from ESPN live open endpoint.
+ * Sorts players first by position (goalkeepers -> defenders -> midfielders -> forwards)
+ * and secondarily by shirt number ascending.
+ *
+ * @returns Array of DomainPlayer items.
+ */
+export async function fetchEspnSportingRoster(): Promise<readonly DomainPlayer[]> {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/teams/${ESPN_SPORTING_GIJON_ID}/roster`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: { "User-Agent": "Mareona/1.0" },
+    next: { revalidate: 3600 },
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `ESPN roster API error: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const json: unknown = await response.json();
+  const parsed = espnRosterResponseSchema.safeParse(json);
+
+  if (!parsed.success) {
+    throw new Error(`Invalid ESPN roster format: ${parsed.error.message}`);
+  }
+
+  const players = parsed.data.athletes.map(transformEspnAthlete);
+
+  // Sort by tactical position group, then by shirt number ascending
+  return players.sort((a, b) => {
+    const posDiff = POSITION_ORDER[a.position] - POSITION_ORDER[b.position];
+    if (posDiff !== 0) return posDiff;
+
+    const numA = a.shirtNumber ?? 999;
+    const numB = b.shirtNumber ?? 999;
+    return numA - numB;
+  });
 }
 
 

@@ -140,6 +140,25 @@ export const es = {
       },
       noData: "No se dispone de información de la clasificación en este momento.",
     },
+    squad: {
+      title: "Plantilla",
+      subtitle: "Primer Equipo",
+      noSquad: "No se dispone de la plantilla del Real Sporting en este momento.",
+      noNumber: "-",
+      viewCardAria: "Ver detalles de",
+      groups: {
+        goalkeepers: "Porteros",
+        defenders: "Defensas",
+        midfielders: "Centrocampistas",
+        forwards: "Delanteros",
+      },
+      positions: {
+        goalkeeper: "Portero",
+        defender: "Defensa",
+        midfielder: "Centrocampista",
+        forward: "Delantero",
+      },
+    },
   },
 } as const;
 

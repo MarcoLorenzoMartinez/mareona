@@ -9,18 +9,21 @@ import {
   type DomainStandingRow,
   type DomainMatchSummary,
   type DomainMatchDetail,
+  type DomainPlayer,
 } from "./types.ts";
 import {
   getCachedPayload,
   setCachedPayload,
   TTL_STANDINGS_MS,
   TTL_FIXTURES_MS,
+  TTL_SQUAD_MS,
 } from "./cache.ts";
 import {
   fetchEspnLiveStandings,
   fetchEspnSportingMatch,
   fetchEspnSportingSeasonMatches,
   fetchEspnMatchDetail,
+  fetchEspnSportingRoster,
 } from "./espn.ts";
 import type { createClient } from "@/lib/supabase/server";
 
@@ -308,6 +311,48 @@ export async function fetchMatchDetail(
   }
 
   return null;
+}
+
+/**
+ * Fetches the Sporting Gijon squad players, checking Supabase cache first if available.
+ * Uses the live open ESPN connector for the active season.
+ *
+ * @param supabase Optional scoped Supabase server client for cache reads and writes.
+ * @returns Array of DomainPlayer items.
+ */
+export async function fetchSportingSquad(
+  supabase?: SupabaseServerClient | null
+): Promise<readonly DomainPlayer[]> {
+  const currentSeason = getCurrentSeasonYear();
+  const cacheKey = `squad_sporting_${currentSeason}`;
+
+  // 1. Try reading valid cache from Supabase if client is supplied
+  if (supabase) {
+    const cached = await getCachedPayload<DomainPlayer[]>(supabase, cacheKey);
+    if (cached && cached.length > 0) {
+      return cached;
+    }
+  }
+
+  // 2. Fetch live from ESPN open connector
+  try {
+    const livePlayers = await fetchEspnSportingRoster();
+    if (livePlayers.length > 0) {
+      if (supabase) {
+        await setCachedPayload(
+          supabase,
+          cacheKey,
+          livePlayers as unknown as Record<string, unknown>[],
+          TTL_SQUAD_MS
+        );
+      }
+      return livePlayers;
+    }
+  } catch {
+    // Return empty array transparently without mock data
+  }
+
+  return [];
 }
 
 

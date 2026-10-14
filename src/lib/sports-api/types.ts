@@ -754,3 +754,160 @@ export function getSportingSeasonEvolution(
   return evolution;
 }
 
+// =====================================================================
+// SQUAD & PLAYER DOMAIN TYPES
+// =====================================================================
+
+export type DomainPlayerPosition =
+  | "goalkeeper"
+  | "defender"
+  | "midfielder"
+  | "forward";
+
+export interface DomainPlayerStats {
+  readonly appearances: number;
+  readonly goals: number;
+  readonly assists: number;
+  readonly yellowCards: number;
+  readonly redCards: number;
+  readonly saves?: number;
+  readonly goalsConceded?: number;
+}
+
+export interface DomainPlayer {
+  readonly id: string;
+  readonly externalId: string;
+  readonly fullName: string;
+  readonly displayName: string;
+  readonly shortName: string;
+  readonly shirtNumber: number | null;
+  readonly position: DomainPlayerPosition;
+  readonly positionLabel: string;
+  readonly positionShort: string;
+  readonly age: number | null;
+  readonly birthDate: string | null;
+  readonly nationality: string | null;
+  readonly flagUrl: string | null;
+  readonly photoUrl: string | null;
+  readonly height: string | null;
+  readonly weight: string | null;
+  readonly stats: DomainPlayerStats;
+}
+
+export interface DomainSquadByPosition {
+  readonly goalkeepers: readonly DomainPlayer[];
+  readonly defenders: readonly DomainPlayer[];
+  readonly midfielders: readonly DomainPlayer[];
+  readonly forwards: readonly DomainPlayer[];
+}
+
+export const POSITION_ORDER: Record<DomainPlayerPosition, number> = {
+  goalkeeper: 1,
+  defender: 2,
+  midfielder: 3,
+  forward: 4,
+};
+
+/**
+ * Maps ESPN position name to canonical DomainPlayerPosition.
+ *
+ * @param espnPositionName Raw position name or abbreviation from external API.
+ * @returns Canonical DomainPlayerPosition.
+ */
+export function mapEspnPosition(espnPositionName?: string | null): DomainPlayerPosition {
+  if (!espnPositionName) return "midfielder";
+  const lower = espnPositionName.toLowerCase();
+  if (lower.includes("goalkeeper") || lower.includes("keeper") || lower === "g") {
+    return "goalkeeper";
+  }
+  if (lower.includes("defen") || lower.includes("back") || lower === "d") {
+    return "defender";
+  }
+  if (
+    lower.includes("forward") ||
+    lower.includes("striker") ||
+    lower.includes("attacker") ||
+    lower === "f"
+  ) {
+    return "forward";
+  }
+  return "midfielder";
+}
+
+/**
+ * Returns Spanish label for a tactical player position.
+ *
+ * @param pos Canonical DomainPlayerPosition.
+ * @returns Spanish human-readable position label.
+ */
+export function mapPositionToLabel(pos: DomainPlayerPosition): string {
+  switch (pos) {
+    case "goalkeeper":
+      return "Portero";
+    case "defender":
+      return "Defensa";
+    case "midfielder":
+      return "Centrocampista";
+    case "forward":
+      return "Delantero";
+  }
+}
+
+/**
+ * Returns short tactical acronym for badge chips (inspired by POR, DFC, MED, DEL).
+ *
+ * @param pos Canonical DomainPlayerPosition.
+ * @returns Short 3-letter acronym.
+ */
+export function mapPositionToShort(pos: DomainPlayerPosition): string {
+  switch (pos) {
+    case "goalkeeper":
+      return "POR";
+    case "defender":
+      return "DEF";
+    case "midfielder":
+      return "MED";
+    case "forward":
+      return "DEL";
+  }
+}
+
+/**
+ * Groups and sorts a squad of players into tactical sections ordered by shirt number ascending.
+ *
+ * @param players Array of DomainPlayer items.
+ * @returns DomainSquadByPosition object with tactical categories.
+ */
+export function groupSquadByPosition(
+  players: readonly DomainPlayer[]
+): DomainSquadByPosition {
+  const sortByDorsal = (a: DomainPlayer, b: DomainPlayer) => {
+    const numA = a.shirtNumber ?? 999;
+    const numB = b.shirtNumber ?? 999;
+    return numA - numB;
+  };
+
+  const goalkeepers = players
+    .filter((p) => p.position === "goalkeeper")
+    .sort(sortByDorsal);
+
+  const defenders = players
+    .filter((p) => p.position === "defender")
+    .sort(sortByDorsal);
+
+  const midfielders = players
+    .filter((p) => p.position === "midfielder")
+    .sort(sortByDorsal);
+
+  const forwards = players
+    .filter((p) => p.position === "forward")
+    .sort(sortByDorsal);
+
+  return {
+    goalkeepers,
+    defenders,
+    midfielders,
+    forwards,
+  };
+}
+
