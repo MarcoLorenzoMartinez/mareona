@@ -578,6 +578,12 @@ const ATHLETE_CANONICAL_OVERRIDES: Record<string, Partial<DomainPlayer>> = {
     positionLabel: "Centrocampista",
     positionShort: "MED",
   },
+  // Dorsal 23: Jorge Sáenz (Defensa central)
+  "23": {
+    displayName: "Jorge Sáenz",
+    fullName: "Jorge Sáenz",
+    shortName: "J. Sáenz",
+  },
   // Dorsal 27: Enol Prendes (Canterano / Sporting Atlético)
   "27": {
     displayName: "Enol Prendes",

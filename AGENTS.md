@@ -92,3 +92,7 @@ El objetivo visual de Mareona es una interfaz deportiva **sobria, directa y sin 
   - Los selectores de modo y filtros secundarios se ubican en la misma fila superior horizontal, alineados entre sí (vista a la izquierda, filtros contextuales a la derecha).
   - Se presentan con estilo píldora (`rounded-full`), con bordes sutiles y ergonomía táctil.
   - El estado seleccionado de filtros deportivos adopta el rojo corporativo (`bg-[var(--primary)]` o `bg-[#e2001a]`) con texto blanco puro (`text-white`) y tipografía en negrita (`font-bold`).
+- **Tratamiento estético de Badges y Contenedores Pequeños:**
+  - No usar cajas grises cuadradas por defecto. Si se encapsula un dato (minuto, tanteo, filtro o badge de estado), usar la estética cápsula (`rounded-full`, paddings compactos como `px-2.5 py-0.5`, tipografía `font-sans` limpia).
+  - En filtros o selectores agrupados, emplear la barra segmentada tipo píldora (`rounded-full` con fondo/borde coordinado y elemento activo en rojo primario con texto blanco).
+  - Para eventos de partido en listas densas, priorizar texto corrido y reservar las cápsulas únicamente para el dato principal (por ejemplo, el resultado final o el estado en directo).

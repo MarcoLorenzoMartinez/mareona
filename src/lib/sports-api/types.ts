@@ -238,6 +238,107 @@ export interface DomainMatchSummary {
   readonly awayScore: number | null;
 }
 
+export type MatchEventType = "goal" | "yellowCard" | "redCard" | "substitution";
+
+export interface DomainMatchEvent {
+  readonly id: string;
+  readonly type: MatchEventType;
+  readonly minute: string;
+  readonly minuteSort: number;
+  readonly period: number;
+  readonly teamId: string;
+  readonly isSporting: boolean;
+  readonly isHome: boolean;
+  readonly score?: string;
+  readonly player: {
+    readonly id: string;
+    readonly name: string;
+  };
+  readonly secondaryPlayer?: {
+    readonly id: string;
+    readonly name: string;
+  };
+}
+
+export interface DomainMatchStatItem {
+  readonly key: string;
+  readonly label: string;
+  readonly homeValue: string;
+  readonly awayValue: string;
+  readonly homeNumeric: number;
+  readonly awayNumeric: number;
+  readonly isPercentage?: boolean;
+}
+
+export interface DomainMatchStatGroup {
+  readonly groupKey: "control" | "attack" | "defense" | "discipline";
+  readonly title: string;
+  readonly stats: readonly DomainMatchStatItem[];
+}
+
+export interface DomainLineupPlayer {
+  readonly id: string;
+  readonly name: string;
+  readonly shortName: string;
+  readonly jersey: number | null;
+  readonly position: DomainPlayerPosition;
+  readonly positionLabel: string;
+  readonly formationPlace: number | null;
+  readonly isStarter: boolean;
+  readonly subbedIn?: boolean;
+  readonly subbedOut?: boolean;
+}
+
+export interface DomainMatchLineup {
+  readonly teamId: string;
+  readonly teamName: string;
+  readonly isSporting: boolean;
+  readonly formation: string;
+  readonly starters: readonly DomainLineupPlayer[];
+  readonly substitutes: readonly DomainLineupPlayer[];
+}
+
+export interface DomainShotItem {
+  readonly id: number;
+  readonly eventType: "Goal" | "AttemptSaved" | "Miss" | "Blocked";
+  readonly isGoal: boolean;
+  readonly isOnTarget: boolean;
+  readonly isBlocked: boolean;
+  readonly isHome: boolean;
+  readonly isSporting: boolean;
+  readonly teamId: string;
+  readonly playerId: string;
+  readonly playerName: string;
+  readonly minute: number;
+  readonly x: number;
+  readonly y: number;
+  readonly expectedGoals: number;
+  readonly expectedGoalsOnTarget: number | null;
+  readonly shotType: string;
+  readonly situation: string;
+}
+
+export interface DomainAttackingZones {
+  readonly home: { readonly left: number; readonly center: number; readonly right: number };
+  readonly away: { readonly left: number; readonly center: number; readonly right: number };
+}
+
+export interface DomainAdvancedStats {
+  readonly homeXg: number;
+  readonly awayXg: number;
+  readonly homeBigChances: number;
+  readonly awayBigChances: number;
+  readonly homeBigChancesMissed: number;
+  readonly awayBigChancesMissed: number;
+  readonly homeBoxTouches: number;
+  readonly awayBoxTouches: number;
+  readonly homeDuelsWon: number;
+  readonly awayDuelsWon: number;
+  readonly attackingZones?: DomainAttackingZones;
+  readonly momentum?: ReadonlyArray<{ readonly minute: number; readonly value: number }>;
+  readonly shots: readonly DomainShotItem[];
+}
+
 export interface DomainMatchDetail {
   readonly externalId: string;
   readonly competition: string;
@@ -265,11 +366,98 @@ export interface DomainMatchDetail {
   };
   readonly homeScore: number | null;
   readonly awayScore: number | null;
+  readonly events: readonly DomainMatchEvent[];
+  readonly statGroups: readonly DomainMatchStatGroup[];
+  readonly homeLineup: DomainMatchLineup | null;
+  readonly awayLineup: DomainMatchLineup | null;
+  readonly advancedStats?: DomainAdvancedStats | null;
 }
 
 // =====================================================================
 // ZOD SCHEMAS: ESPN Match Summary
 // =====================================================================
+
+export const espnMatchStatisticItemSchema = z.object({
+  name: z.string(),
+  displayValue: z.string(),
+  label: z.string().optional(),
+});
+
+export const espnMatchKeyEventSchema = z.object({
+  id: z.string().optional(),
+  text: z.string().optional(),
+  type: z
+    .object({
+      id: z.string().optional(),
+      text: z.string().optional(),
+      type: z.string().optional(),
+    })
+    .optional(),
+  clock: z
+    .object({
+      value: z.number().optional(),
+      displayValue: z.string().optional(),
+    })
+    .optional(),
+  period: z
+    .object({
+      number: z.number().optional(),
+    })
+    .optional(),
+  scoringPlay: z.boolean().optional(),
+  team: z
+    .object({
+      id: z.string().optional(),
+      displayName: z.string().optional(),
+    })
+    .optional(),
+  participants: z
+    .array(
+      z.object({
+        athlete: z
+          .object({
+            id: z.string().optional(),
+            displayName: z.string().optional(),
+          })
+          .optional(),
+      })
+    )
+    .optional()
+    .default([]),
+});
+
+export const espnRosterAthleteSchema = z.object({
+  active: z.boolean().optional(),
+  starter: z.boolean().optional(),
+  jersey: z.string().optional(),
+  formationPlace: z.string().optional(),
+  subbedIn: z.boolean().optional(),
+  subbedOut: z.boolean().optional(),
+  athlete: z.object({
+    id: z.string(),
+    displayName: z.string(),
+    fullName: z.string().optional(),
+    shortName: z.string().optional(),
+  }),
+  position: z
+    .object({
+      name: z.string().optional(),
+      displayName: z.string().optional(),
+      abbreviation: z.string().optional(),
+    })
+    .optional(),
+});
+
+export const espnRosterTeamSchema = z.object({
+  team: z
+    .object({
+      id: z.string().optional(),
+      displayName: z.string().optional(),
+    })
+    .optional(),
+  formation: z.string().optional(),
+  roster: z.array(espnRosterAthleteSchema).optional().default([]),
+});
 
 export const espnMatchSummaryCompetitorSchema = z.object({
   id: z.string(),
@@ -336,6 +524,26 @@ export const espnMatchSummaryResponseSchema = z.object({
       attendance: z.number().nullable().optional(),
     })
     .optional(),
+  boxscore: z
+    .object({
+      teams: z
+        .array(
+          z.object({
+            team: z
+              .object({
+                id: z.string().optional(),
+                displayName: z.string().optional(),
+              })
+              .optional(),
+            statistics: z.array(espnMatchStatisticItemSchema).optional().default([]),
+          })
+        )
+        .optional()
+        .default([]),
+    })
+    .optional(),
+  rosters: z.array(espnRosterTeamSchema).optional(),
+  keyEvents: z.array(espnMatchKeyEventSchema).optional(),
 });
 
 export type EspnMatchSummaryResponse = z.infer<typeof espnMatchSummaryResponseSchema>;
@@ -435,6 +643,30 @@ export function transformFixture(item: ApiFootballFixtureItem): DomainMatchSumma
 }
 
 /**
+ * Normalizes vendor athlete names, repairing known database omissions.
+ * Example: ESPN lists Jorge Sáenz (jersey #23) as just "Jorge".
+ */
+export function normalizeAthleteName(athlete: {
+  readonly id?: string;
+  readonly displayName?: string;
+  readonly fullName?: string;
+  readonly shortName?: string;
+}): { readonly name: string; readonly shortName: string } {
+  const rawName = (athlete.displayName || athlete.fullName || "").trim();
+  const rawShort = (athlete.shortName || athlete.displayName || rawName).trim();
+
+  if (
+    athlete.id === "209736" ||
+    rawName.toLowerCase() === "jorge" ||
+    rawShort.toLowerCase() === "jorge"
+  ) {
+    return { name: "Jorge Sáenz", shortName: "J. Sáenz" };
+  }
+
+  return { name: rawName, shortName: rawShort };
+}
+
+/**
  * Transforms an ESPN match summary response into a clean DomainMatchDetail.
  * Normalizes team names ensuring Real Sporting canonical name,
  * and extracts venue and real attendance following the zero fake data policy.
@@ -507,6 +739,304 @@ export function transformEspnMatchDetail(
 
   const isTimeConfirmed = !isTbd && comp.timeValid !== false;
 
+  // Extract key match events (goals, cards, substitutions)
+  const events: DomainMatchEvent[] = (data.keyEvents ?? []).map((e, idx) => {
+    let type: MatchEventType = "goal";
+    const rawType = (e.type?.type || e.type?.text || "").toLowerCase();
+    if (rawType.includes("yellow")) {
+      type = "yellowCard";
+    } else if (rawType.includes("red")) {
+      type = "redCard";
+    } else if (rawType.includes("sub")) {
+      type = "substitution";
+    } else if (rawType.includes("goal") || e.scoringPlay) {
+      type = "goal";
+    }
+
+    const minuteStr = e.clock?.displayValue ?? "";
+    const parsedMin = parseInt(minuteStr.replace(/\D/g, ""), 10);
+    const minuteSort =
+      e.clock?.value ?? (!Number.isNaN(parsedMin) ? parsedMin * 60 : idx);
+
+    const isSporting =
+      e.team?.id === "3788" ||
+      e.team?.id === "731" ||
+      Boolean(e.team?.displayName?.toLowerCase().includes("sporting"));
+
+    const isHome = e.team?.id === homeComp.team.id;
+    const p0 = e.participants?.[0]?.athlete;
+    const p1 = e.participants?.[1]?.athlete;
+
+    const p0Name = normalizeAthleteName({
+      id: p0?.id,
+      displayName: p0?.displayName ?? e.text,
+    }).name;
+
+    const p1Name = p1?.displayName
+      ? normalizeAthleteName({ id: p1.id, displayName: p1.displayName }).name
+      : undefined;
+
+    return {
+      id: e.id ?? `event-${idx}`,
+      type,
+      minute: minuteStr,
+      minuteSort,
+      period: e.period?.number ?? 1,
+      teamId: e.team?.id ?? "",
+      isSporting,
+      isHome,
+      player: {
+        id: p0?.id ?? "",
+        name: p0Name,
+      },
+      secondaryPlayer: p1Name
+        ? { id: p1?.id ?? "", name: p1Name }
+        : undefined,
+    };
+  });
+
+  events.sort((a, b) => {
+    if (a.period !== b.period) return a.period - b.period;
+    return a.minuteSort - b.minuteSort;
+  });
+
+  let runningHomeScore = 0;
+  let runningAwayScore = 0;
+  const eventsWithScores: DomainMatchEvent[] = events.map((ev) => {
+    if (ev.type === "goal") {
+      if (ev.isHome) {
+        runningHomeScore += 1;
+      } else {
+        runningAwayScore += 1;
+      }
+      return {
+        ...ev,
+        score: `${runningHomeScore} - ${runningAwayScore}`,
+      };
+    }
+    return ev;
+  });
+
+  // Extract boxscore statistics
+  const homeBox = data.boxscore?.teams.find((t) => t.team?.id === homeComp.team.id);
+  const awayBox = data.boxscore?.teams.find((t) => t.team?.id === awayComp.team.id);
+
+  const homeStatsMap = new Map<string, string>();
+  for (const s of homeBox?.statistics ?? []) {
+    homeStatsMap.set(s.name, s.displayValue);
+  }
+  const awayStatsMap = new Map<string, string>();
+  for (const s of awayBox?.statistics ?? []) {
+    awayStatsMap.set(s.name, s.displayValue);
+  }
+
+  const parseNum = (v: string | undefined): number => {
+    if (!v) return 0;
+    const clean = v.replace("%", "").trim();
+    const n = parseFloat(clean);
+    return Number.isNaN(n) ? 0 : n;
+  };
+
+  const formatStat = (
+    key: string,
+    rawVal: string | undefined,
+    map: Map<string, string>,
+    totalKey?: string,
+    partKey?: string
+  ): string => {
+    if (rawVal === undefined) return "0";
+    if (key === "possessionPct") {
+      return rawVal.includes("%") ? rawVal : `${rawVal}%`;
+    }
+    if (totalKey && partKey) {
+      const total = parseNum(map.get(totalKey));
+      const part = parseNum(map.get(partKey));
+      if (total > 0) {
+        return `${Math.round((part / total) * 100)}%`;
+      }
+    }
+    if (key.endsWith("Pct") || key.endsWith("Percentage")) {
+      const num = parseNum(rawVal);
+      if (num > 0 && num <= 1 && !rawVal.includes("%")) {
+        return `${Math.round(num * 100)}%`;
+      }
+      if (!rawVal.includes("%") && rawVal !== "0") {
+        return `${rawVal}%`;
+      }
+    }
+    return rawVal;
+  };
+
+  const STAT_CONFIGS: Array<{
+    key: string;
+    aliasKey?: string;
+    label: string;
+    group: "control" | "attack" | "defense" | "discipline";
+    isPct?: boolean;
+    totalKey?: string;
+    partKey?: string;
+  }> = [
+    // Control
+    { key: "possessionPct", label: "Posesión", group: "control", isPct: true },
+    { key: "totalPasses", label: "Pases totales", group: "control" },
+    { key: "accuratePasses", label: "Pases acertados", group: "control" },
+    {
+      key: "passPct",
+      label: "Precisión de pase",
+      group: "control",
+      isPct: true,
+      totalKey: "totalPasses",
+      partKey: "accuratePasses",
+    },
+    // Attack
+    { key: "totalShots", aliasKey: "shotsTotal", label: "Tiros totales", group: "attack" },
+    { key: "shotsOnTarget", label: "Tiros a puerta", group: "attack" },
+    {
+      key: "shotPct",
+      label: "Efectividad de tiro",
+      group: "attack",
+      isPct: true,
+      totalKey: "totalShots",
+      partKey: "shotsOnTarget",
+    },
+    { key: "blockedShots", label: "Tiros bloqueados", group: "attack" },
+    { key: "wonCorners", label: "Córners", group: "attack" },
+    // Defense
+    { key: "totalTackles", label: "Entradas", group: "defense" },
+    { key: "effectiveTackles", label: "Entradas con éxito", group: "defense" },
+    {
+      key: "tacklePct",
+      label: "Efectividad de entradas",
+      group: "defense",
+      isPct: true,
+      totalKey: "totalTackles",
+      partKey: "effectiveTackles",
+    },
+    { key: "totalClearance", label: "Despejes", group: "defense" },
+    { key: "saves", label: "Paradas del portero", group: "defense" },
+    // Discipline
+    { key: "foulsCommitted", label: "Faltas cometidas", group: "discipline" },
+    { key: "yellowCards", label: "Tarjetas amarillas", group: "discipline" },
+    { key: "redCards", label: "Tarjetas rojas", group: "discipline" },
+    { key: "offsides", label: "Fueras de juego", group: "discipline" },
+  ];
+
+  const groupTitles: Record<"control" | "attack" | "defense" | "discipline", string> = {
+    control: "Posesión y Pases",
+    attack: "Ataque y Remates",
+    defense: "Duelos y Defensa",
+    discipline: "Disciplina",
+  };
+
+  const statGroups: DomainMatchStatGroup[] = [];
+  const groups: Array<"control" | "attack" | "defense" | "discipline"> = [
+    "control",
+    "attack",
+    "defense",
+    "discipline",
+  ];
+
+  for (const grp of groups) {
+    const itemsInGrp = STAT_CONFIGS.filter((c) => c.group === grp);
+    const validStats: DomainMatchStatItem[] = [];
+
+    for (const cfg of itemsInGrp) {
+      const hVal = homeStatsMap.get(cfg.key) ?? (cfg.aliasKey ? homeStatsMap.get(cfg.aliasKey) : undefined);
+      const aVal = awayStatsMap.get(cfg.key) ?? (cfg.aliasKey ? awayStatsMap.get(cfg.aliasKey) : undefined);
+      if (hVal !== undefined || aVal !== undefined) {
+        const homeValue = formatStat(cfg.key, hVal, homeStatsMap, cfg.totalKey, cfg.partKey);
+        const awayValue = formatStat(cfg.key, aVal, awayStatsMap, cfg.totalKey, cfg.partKey);
+        validStats.push({
+          key: cfg.key,
+          label: cfg.label,
+          homeValue,
+          awayValue,
+          homeNumeric: parseNum(homeValue),
+          awayNumeric: parseNum(awayValue),
+          isPercentage: cfg.isPct,
+        });
+      }
+    }
+
+    if (validStats.length > 0) {
+      statGroups.push({
+        groupKey: grp,
+        title: groupTitles[grp],
+        stats: validStats,
+      });
+    }
+  }
+
+  // Extract rosters & lineups
+  const transformLineup = (
+    teamCompId: string,
+    teamName: string,
+    isSportingTeam: boolean
+  ): DomainMatchLineup | null => {
+    const rTeam = data.rosters?.find(
+      (r) =>
+        r.team?.id === teamCompId ||
+        r.team?.displayName?.toLowerCase() === teamName.toLowerCase()
+    );
+    if (!rTeam || rTeam.roster.length === 0) return null;
+
+    const mapPlayer = (
+      p: z.infer<typeof espnRosterAthleteSchema>
+    ): DomainLineupPlayer => {
+      const jerseyNum = p.jersey ? parseInt(p.jersey, 10) : null;
+      const placeNum = p.formationPlace ? parseInt(p.formationPlace, 10) : null;
+      const pos = mapEspnPosition(p.position?.name ?? p.position?.displayName);
+      const normalized = normalizeAthleteName({
+        id: p.athlete.id,
+        displayName: p.athlete.displayName,
+        fullName: p.athlete.fullName,
+        shortName: p.athlete.shortName,
+      });
+      return {
+        id: p.athlete.id,
+        name: normalized.name,
+        shortName: normalized.shortName,
+        jersey: jerseyNum !== null && !Number.isNaN(jerseyNum) ? jerseyNum : null,
+        position: pos,
+        positionLabel: mapPositionToLabel(pos),
+        formationPlace: placeNum !== null && !Number.isNaN(placeNum) ? placeNum : null,
+        isStarter: Boolean(p.starter),
+        subbedIn: p.subbedIn,
+        subbedOut: p.subbedOut,
+      };
+    };
+
+    const starters = rTeam.roster
+      .filter((p) => p.starter)
+      .map(mapPlayer)
+      .sort((a, b) => (a.formationPlace ?? 99) - (b.formationPlace ?? 99));
+
+    const substitutes = rTeam.roster
+      .filter((p) => !p.starter)
+      .map(mapPlayer)
+      .sort((a, b) => (a.jersey ?? 99) - (b.jersey ?? 99));
+
+    return {
+      teamId: teamCompId,
+      teamName,
+      isSporting: isSportingTeam,
+      formation: rTeam.formation || "4-2-3-1",
+      starters,
+      substitutes,
+    };
+  };
+
+  const homeLineup = transformLineup(
+    homeComp.team.id,
+    normalizeTeamName(homeComp.team.displayName, isHomeSporting),
+    isHomeSporting
+  );
+  const awayLineup = transformLineup(
+    awayComp.team.id,
+    normalizeTeamName(awayComp.team.displayName, isAwaySporting),
+    isAwaySporting
+  );
+
   return {
     externalId: data.header.id,
     competition: normalizeCompetitionName(data.header.league?.name),
@@ -531,6 +1061,10 @@ export function transformEspnMatchDetail(
     },
     homeScore,
     awayScore,
+    events: eventsWithScores,
+    statGroups,
+    homeLineup,
+    awayLineup,
   };
 }
 

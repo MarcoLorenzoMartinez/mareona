@@ -6,9 +6,11 @@ import {
   LALIGA_HYPERMOTION_LEAGUE_ID,
   SPORTING_GIJON_TEAM_ID,
   getCurrentSeasonYear,
+  normalizeAthleteName,
   type DomainStandingRow,
   type DomainMatchSummary,
   type DomainMatchDetail,
+  type DomainMatchLineup,
   type DomainPlayer,
 } from "./types.ts";
 import {
@@ -25,6 +27,7 @@ import {
   fetchEspnMatchDetail,
   fetchEspnSportingRoster,
 } from "./espn.ts";
+import { fetchFotMobAdvancedStats } from "./fotmob.ts";
 import type { createClient } from "@/lib/supabase/server";
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
@@ -330,6 +333,57 @@ export async function fetchSportingSeasonMatches(
  * @param supabase Optional scoped Supabase client for cache reads and writes.
  * @returns DomainMatchDetail or null if not found.
  */
+function sanitizeMatchDetail(detail: DomainMatchDetail): DomainMatchDetail {
+  const sanitizeLineup = (lineup: DomainMatchLineup | null) => {
+    if (!lineup) return null;
+    return {
+      ...lineup,
+      starters: lineup.starters.map((p) => {
+        const norm = normalizeAthleteName({ id: p.id, displayName: p.name, shortName: p.shortName });
+        return { ...p, name: norm.name, shortName: norm.shortName };
+      }),
+      substitutes: lineup.substitutes.map((p) => {
+        const norm = normalizeAthleteName({ id: p.id, displayName: p.name, shortName: p.shortName });
+        return { ...p, name: norm.name, shortName: norm.shortName };
+      }),
+    };
+  };
+
+  return {
+    ...detail,
+    homeLineup: sanitizeLineup(detail.homeLineup),
+    awayLineup: sanitizeLineup(detail.awayLineup),
+    events: (() => {
+      let runningHome = 0;
+      let runningAway = 0;
+      return detail.events.map((e) => {
+        const pNorm = normalizeAthleteName({ id: e.player.id, displayName: e.player.name });
+        const secNorm = e.secondaryPlayer
+          ? normalizeAthleteName({ id: e.secondaryPlayer.id, displayName: e.secondaryPlayer.name })
+          : undefined;
+        let score = e.score;
+        if (e.type === "goal") {
+          if (e.isHome) {
+            runningHome += 1;
+          } else {
+            runningAway += 1;
+          }
+          score = score ?? `${runningHome} - ${runningAway}`;
+        }
+        return {
+          ...e,
+          score,
+          player: { ...e.player, name: pNorm.name },
+          secondaryPlayer:
+            secNorm && e.secondaryPlayer
+              ? { id: e.secondaryPlayer.id, name: secNorm.name }
+              : undefined,
+        };
+      });
+    })(),
+  };
+}
+
 export async function fetchMatchDetail(
   matchId: string,
   supabase?: SupabaseServerClient | null
@@ -340,7 +394,28 @@ export async function fetchMatchDetail(
   if (supabase) {
     const cached = await getCachedPayload<DomainMatchDetail>(supabase, cacheKey);
     if (cached) {
-      return cached;
+      if (cached.advancedStats === undefined && cached.status === "finished") {
+        try {
+          const advanced = await fetchFotMobAdvancedStats(
+            cached.kickoffAt,
+            cached.homeTeam.name,
+            cached.awayTeam.name
+          );
+          if (advanced) {
+            const enriched = { ...cached, advancedStats: advanced };
+            await setCachedPayload(
+              supabase,
+              cacheKey,
+              enriched as unknown as Record<string, unknown>,
+              TTL_FIXTURES_MS
+            );
+            return sanitizeMatchDetail(enriched);
+          }
+        } catch {
+          // Fall through to returning cached
+        }
+      }
+      return sanitizeMatchDetail(cached);
     }
   }
 
@@ -364,10 +439,21 @@ export async function fetchMatchDetail(
   try {
     const detail = await fetchEspnMatchDetail(matchId, matchday);
     if (detail) {
-      const finalDetail: DomainMatchDetail =
-        isTimeConfirmedFromSeason === false
-          ? { ...detail, isTimeConfirmed: false }
-          : detail;
+      let advancedStats = null;
+      try {
+        advancedStats = await fetchFotMobAdvancedStats(
+          detail.kickoffAt,
+          detail.homeTeam.name,
+          detail.awayTeam.name
+        );
+      } catch {
+        // Fallback gracefully
+      }
+
+      const finalDetail: DomainMatchDetail = {
+        ...(isTimeConfirmedFromSeason === false ? { ...detail, isTimeConfirmed: false } : detail),
+        advancedStats,
+      };
 
       if (supabase) {
         await setCachedPayload(

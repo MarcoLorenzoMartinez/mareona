@@ -34,6 +34,17 @@ La aplicación utiliza como paleta principal el **rojo y blanco**, manteniendo u
   - Los estados inactivos mantienen texto neutro legible (`text-neutral-700`) con sutil hover accesible.
 - **Cero Duplicidad en Tarjetas:** Prohibido repetir títulos de secciones o filtros dentro de los componentes hijos si ya están presentes en la cabecera o barra de controles superior.
 
+### Tratamiento Visual de Datos, Marcadores y Filtros
+- **Tipografía (Prohibido `font-mono`):** Los marcadores (`0-1`), minutos (`87'`), estadísticas y dorsales deben usar exclusivamente `font-sans`. Para cifras alineadas, aplicar `tabular-nums`.
+- **Modos de visualización de datos:**
+  1. **Integrado en texto (por defecto):** Para eventos de partido o listas continuas, la jerarquía visual se define con peso y color (`font-semibold`, `text-muted-foreground`), sin recuadros alrededor de cada dato.
+  2. **Encapsulado en píldora/cápsula (cuando aporte estructura o interacción):**
+     - Si un dato o control requiere contenedor propio (p. ej. estado del partido, minuto clave, badge de resultado o filtros segmentados), debe seguir el formato cápsula del sistema de diseño:
+       - Esquinas completamente redondeadas: `rounded-full`.
+       - Si es neutro: fondo suave (`bg-muted/50`), texto de apoyo y sin bordes toscos.
+       - Si es destacado o activo: fondo rojo corporativo (`bg-primary text-primary-foreground`) o borde sutil con tono de acento (`border border-primary/20`).
+     - Prohibido usar cajas rectangulares genéricas (`rounded-md` grisáceas sin estilo) que parezcan bloques de terminal o badges sin integrar.
+
 ---
 
 ## 2. REQUISITOS DE ACCESIBILIDAD (WCAG 2.2 AA)

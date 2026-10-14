@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { fetchMatchDetail } from "@/lib/sports-api/client";
 import { getDictionary } from "@/i18n";
 import { MatchHeader } from "./match-header";
-import { MatchInfo } from "./match-info";
+import { MatchTabs } from "./match-tabs";
 
 interface MatchDetailPageProps {
   readonly params: Promise<{ id: string }>;
@@ -35,10 +35,8 @@ function MatchDetailSkeleton() {
     <div className="flex flex-col gap-6 animate-pulse" aria-busy="true">
       <div className="h-5 w-32 rounded-md bg-neutral-200" />
       <div className="h-52 rounded-xl border border-[var(--border)] bg-white p-6 shadow-2xs" />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="h-28 rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs" />
-        <div className="h-28 rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs" />
-      </div>
+      <div className="mx-auto h-10 w-80 rounded-full bg-neutral-200" />
+      <div className="h-64 rounded-xl border border-[var(--border)] bg-white p-6 shadow-2xs" />
     </div>
   );
 }
@@ -79,7 +77,7 @@ async function MatchDetailContent({ id }: { readonly id: string }) {
       </nav>
 
       <MatchHeader match={match} />
-      <MatchInfo match={match} />
+      <MatchTabs match={match} />
     </div>
   );
 }

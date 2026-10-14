@@ -33,7 +33,7 @@ const SIZE_CLASSES = {
 export function PlayerPhoto({
   photoUrl,
   playerName,
-  shirtNumber,
+  shirtNumber: _shirtNumber,
   size = "card",
   className = "",
   isDecorative = true,

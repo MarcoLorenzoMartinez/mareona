@@ -225,3 +225,25 @@ test("transformEspnAthlete applies canonical overrides for jersey 6 Nacho Martí
   assert.equal(player.age, 24);
   assert.equal(player.birthDate, "2002-03-19");
 });
+
+test("transformEspnAthlete applies canonical overrides for jersey 23 Jorge Sáenz", () => {
+  const flawedJorgePayload = {
+    id: "209736",
+    fullName: "Jorge",
+    displayName: "Jorge",
+    shortName: "Jorge",
+    jersey: "23",
+    position: {
+      id: "2",
+      name: "Defender",
+      displayName: "Defender",
+      abbreviation: "D",
+    },
+  };
+
+  const player = transformEspnAthlete(flawedJorgePayload);
+  assert.equal(player.shirtNumber, 23);
+  assert.equal(player.fullName, "Jorge Sáenz");
+  assert.equal(player.displayName, "Jorge Sáenz");
+  assert.equal(player.shortName, "J. Sáenz");
+});
