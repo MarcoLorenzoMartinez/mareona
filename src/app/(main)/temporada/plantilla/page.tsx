@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import { connection } from "next/server";
 import type { Metadata } from "next";
 import { fetchSportingSquad } from "@/lib/sports-api/client";
 import { groupSquadByPosition, getSeasonLabel } from "@/lib/sports-api/types";
@@ -14,35 +12,8 @@ export function generateMetadata(): Metadata {
   };
 }
 
-/**
- * Loading skeleton matching the 4-column card grid structure.
- */
-function SquadSkeleton() {
-  return (
-    <div className="flex flex-col gap-8 animate-pulse" aria-busy="true">
-      {Array.from({ length: 2 }).map((_, gIdx) => (
-        <div key={gIdx} className="flex flex-col gap-3.5">
-          <div className="h-6 w-32 rounded-md bg-neutral-200" />
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
-            {Array.from({ length: 4 }).map((_, cIdx) => (
-              <div
-                key={cIdx}
-                className="h-72 rounded-2xl border border-[var(--border)] bg-white p-4 shadow-2xs"
-              />
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/**
- * Async squad page content fetching live data and rendering tactical categories.
- */
-async function SquadContent() {
-  await connection();
-
+export default async function PlantillaPage() {
+  "use cache";
   const dict = getDictionary();
   const t = dict.season.squad;
   const seasonLabel = getSeasonLabel();
@@ -82,13 +53,5 @@ async function SquadContent() {
         </div>
       )}
     </div>
-  );
-}
-
-export default function PlantillaPage() {
-  return (
-    <Suspense fallback={<SquadSkeleton />}>
-      <SquadContent />
-    </Suspense>
   );
 }

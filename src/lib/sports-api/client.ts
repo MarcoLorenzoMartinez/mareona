@@ -39,6 +39,11 @@ function getApiConfig() {
   return { apiKey, baseUrl };
 }
 
+const memoryCachedStandings = new Map<
+  string,
+  { data: readonly DomainStandingRow[]; expiresAt: number }
+>();
+
 /**
  * Fetches and validates LaLiga Hypermotion standings, checking Supabase cache first if available.
  * For the active ongoing season, uses the live ESPN connector.
@@ -54,12 +59,24 @@ export async function fetchStandings(
 ): Promise<readonly DomainStandingRow[]> {
   const currentSeason = getCurrentSeasonYear();
   const includeSplits = options?.includeSplits ?? false;
+  const memoryKey = `${season}_${includeSplits}`;
+  const now = Date.now();
+
+  const memoryHit = memoryCachedStandings.get(memoryKey);
+  if (memoryHit && memoryHit.expiresAt > now && memoryHit.data.length > 0) {
+    return memoryHit.data;
+  }
+
   const cacheKey = `standings_${LALIGA_HYPERMOTION_LEAGUE_ID}_${season}${includeSplits ? "_splits" : ""}`;
 
   // 1. Try reading valid cache from Supabase if client is supplied
   if (supabase) {
     const cached = await getCachedPayload<DomainStandingRow[]>(supabase, cacheKey);
     if (cached) {
+      memoryCachedStandings.set(memoryKey, {
+        data: cached,
+        expiresAt: now + TTL_STANDINGS_MS,
+      });
       return cached;
     }
   }
@@ -69,6 +86,11 @@ export async function fetchStandings(
     try {
       const liveRows = await fetchEspnLiveStandings({ includeSplits });
       if (liveRows.length > 0) {
+        memoryCachedStandings.set(memoryKey, {
+          data: liveRows,
+          expiresAt: now + TTL_STANDINGS_MS,
+        });
+
         if (supabase) {
           await setCachedPayload(
             supabase,
@@ -125,6 +147,13 @@ export async function fetchStandings(
   return domainRows;
 }
 
+/** In-memory cache for next fixture to eliminate hero card latency. */
+let memoryCachedNextFixture: {
+  teamId: number;
+  data: DomainMatchSummary | null;
+  expiresAt: number;
+} | null = null;
+
 /**
  * Fetches and validates the match for Real Sporting for the current season.
  *
@@ -136,12 +165,26 @@ export async function fetchNextFixture(
   supabase?: SupabaseServerClient | null,
   teamId: number = SPORTING_GIJON_TEAM_ID
 ): Promise<DomainMatchSummary | null> {
+  const now = Date.now();
+  if (
+    memoryCachedNextFixture &&
+    memoryCachedNextFixture.teamId === teamId &&
+    memoryCachedNextFixture.expiresAt > now
+  ) {
+    return memoryCachedNextFixture.data;
+  }
+
   const cacheKey = `fixture_current_${teamId}`;
 
   // 1. Try reading valid cache from Supabase if client is supplied
   if (supabase) {
     const cached = await getCachedPayload<DomainMatchSummary>(supabase, cacheKey);
     if (cached) {
+      memoryCachedNextFixture = {
+        teamId,
+        data: cached,
+        expiresAt: now + TTL_FIXTURES_MS,
+      };
       return cached;
     }
   }
@@ -150,6 +193,12 @@ export async function fetchNextFixture(
   try {
     const liveMatch = await fetchEspnSportingMatch();
     if (liveMatch) {
+      memoryCachedNextFixture = {
+        teamId,
+        data: liveMatch,
+        expiresAt: now + TTL_FIXTURES_MS,
+      };
+
       if (supabase) {
         await setCachedPayload(
           supabase,
@@ -209,6 +258,12 @@ export async function fetchNextFixture(
   return domainMatch;
 }
 
+/** In-memory cache for season matches to eliminate navigation delays. */
+let memoryCachedSeasonMatches: {
+  data: readonly DomainMatchSummary[];
+  expiresAt: number;
+} | null = null;
+
 /**
  * Fetches the complete list of matches for Real Sporting for the current season.
  *
@@ -218,12 +273,25 @@ export async function fetchNextFixture(
 export async function fetchSportingSeasonMatches(
   supabase?: SupabaseServerClient | null
 ): Promise<readonly DomainMatchSummary[]> {
+  const now = Date.now();
+  if (
+    memoryCachedSeasonMatches &&
+    memoryCachedSeasonMatches.expiresAt > now &&
+    memoryCachedSeasonMatches.data.length > 0
+  ) {
+    return memoryCachedSeasonMatches.data;
+  }
+
   const cacheKey = `sporting_season_matches_${SPORTING_GIJON_TEAM_ID}`;
 
   // 1. Try reading valid cache from Supabase if client is supplied
   if (supabase) {
     const cached = await getCachedPayload<DomainMatchSummary[]>(supabase, cacheKey);
     if (cached) {
+      memoryCachedSeasonMatches = {
+        data: cached,
+        expiresAt: now + TTL_FIXTURES_MS,
+      };
       return cached;
     }
   }
@@ -232,6 +300,11 @@ export async function fetchSportingSeasonMatches(
   try {
     const matches = await fetchEspnSportingSeasonMatches();
     if (matches.length > 0) {
+      memoryCachedSeasonMatches = {
+        data: matches,
+        expiresAt: now + TTL_FIXTURES_MS,
+      };
+
       if (supabase) {
         await setCachedPayload(
           supabase,

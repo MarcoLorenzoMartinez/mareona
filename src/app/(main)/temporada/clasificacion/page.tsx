@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import { connection } from "next/server";
 import type { Metadata } from "next";
 import { fetchStandings, fetchSportingSeasonMatches } from "@/lib/sports-api/client";
 import {
@@ -19,21 +17,8 @@ export function generateMetadata(): Metadata {
   };
 }
 
-function ClasificacionSkeleton() {
-  return (
-    <div className="flex flex-col gap-5 animate-pulse" aria-busy="true">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="h-9 w-64 rounded-full bg-[var(--surface)]" />
-        <div className="h-9 w-56 rounded-full bg-[var(--surface)]" />
-      </div>
-      <div className="h-[600px] rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs" />
-    </div>
-  );
-}
-
-async function ClasificacionContent() {
-  await connection();
-
+export default async function ClasificacionPage() {
+  "use cache";
   let standings: readonly DomainStandingRow[] = [];
   let matches: readonly DomainMatchSummary[] = [];
 
@@ -58,13 +43,5 @@ async function ClasificacionContent() {
       seasonLabel={seasonLabel}
       evolution={evolution}
     />
-  );
-}
-
-export default function ClasificacionPage() {
-  return (
-    <Suspense fallback={<ClasificacionSkeleton />}>
-      <ClasificacionContent />
-    </Suspense>
   );
 }

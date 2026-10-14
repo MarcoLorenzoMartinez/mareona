@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import { connection } from "next/server";
 import type { Metadata } from "next";
 import { fetchSportingSeasonMatches } from "@/lib/sports-api/client";
 import { getSeasonLabel } from "@/lib/sports-api/types";
@@ -14,18 +12,8 @@ export function generateMetadata(): Metadata {
   };
 }
 
-function PartidosSkeleton() {
-  return (
-    <div className="flex flex-col gap-4 animate-pulse" aria-busy="true">
-      <div className="h-10 w-64 rounded-md bg-neutral-200" />
-      <div className="h-96 rounded-xl border border-[var(--border)] bg-white p-6 shadow-2xs" />
-    </div>
-  );
-}
-
-async function PartidosContent() {
-  await connection();
-
+export default async function PartidosPage() {
+  "use cache";
   const dict = getDictionary();
   const matches = await fetchSportingSeasonMatches();
   const seasonLabel = getSeasonLabel();
@@ -46,13 +34,5 @@ async function PartidosContent() {
         </div>
       )}
     </div>
-  );
-}
-
-export default function PartidosPage() {
-  return (
-    <Suspense fallback={<PartidosSkeleton />}>
-      <PartidosContent />
-    </Suspense>
   );
 }
