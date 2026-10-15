@@ -1,4 +1,4 @@
-﻿// Markings for the unified horizontal football pitch with official FIFA proportions (105m x 68m)
+// Markings for the unified horizontal football pitch with official FIFA proportions (105m x 68m)
 export function PitchSvgMarkings() {
   return (
     <svg
@@ -31,13 +31,13 @@ export function PitchSvgMarkings() {
       <rect x="3" y="13.84" width="16.5" height="40.32" fill="none" stroke="#cbd5cb" strokeWidth="0.7" />
       <rect x="3" y="24.84" width="5.5" height="18.32" fill="none" stroke="#cbd5cb" strokeWidth="0.7" />
       <circle cx="14" cy="34" r="0.6" fill="#cbd5cb" />
-      <path d="M 19.5 27.5 A 9.15 9.15 0 0 1 19.5 40.5" fill="none" stroke="#cbd5cb" strokeWidth="0.7" strokeDasharray="1.5 1.5" />
+      <path d="M 19.5 26.7 A 9.15 9.15 0 0 1 19.5 41.3" fill="none" stroke="#cbd5cb" strokeWidth="0.7" />
 
       {/* Portería, área grande y área chica derecha (Equipo Visitante) */}
       <rect x="85.5" y="13.84" width="16.5" height="40.32" fill="none" stroke="#cbd5cb" strokeWidth="0.7" />
       <rect x="96.5" y="24.84" width="5.5" height="18.32" fill="none" stroke="#cbd5cb" strokeWidth="0.7" />
       <circle cx="91" cy="34" r="0.6" fill="#cbd5cb" />
-      <path d="M 85.5 27.5 A 9.15 9.15 0 0 0 85.5 40.5" fill="none" stroke="#cbd5cb" strokeWidth="0.7" strokeDasharray="1.5 1.5" />
+      <path d="M 85.5 26.7 A 9.15 9.15 0 0 0 85.5 41.3" fill="none" stroke="#cbd5cb" strokeWidth="0.7" />
 
       {/* Córners */}
       <path d="M 5 3 A 2 2 0 0 1 3 5" fill="none" stroke="#cbd5cb" strokeWidth="0.7" />

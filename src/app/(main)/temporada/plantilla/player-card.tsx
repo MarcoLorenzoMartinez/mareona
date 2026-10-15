@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { DomainPlayer } from "@/lib/sports-api/types";
 import { PlayerPhoto } from "@/components/media/player-photo";
 
@@ -12,17 +13,20 @@ interface PlayerCardProps {
  * - Centered, enlarged bust cutout photo.
  * - Bottom gradient in Sporting red seamlessly covering the photo cutout edge.
  * - Uppercase player name in crisp white typography.
+ * - Clickable link navigating to detailed player profile.
  *
  * @param player DomainPlayer data model.
  */
 export function PlayerCard({ player }: PlayerCardProps) {
   const dorsalLabel =
     player.shirtNumber !== null ? `Dorsal ${player.shirtNumber}` : "";
+  const href = `/temporada/plantilla/${player.shirtNumber ?? player.externalId}`;
 
   return (
-    <article
-      aria-label={`${player.displayName} ${dorsalLabel}`}
-      className="group relative flex flex-col justify-end rounded-2xl border border-[var(--border)] bg-white shadow-2xs transition-all duration-150 hover:border-neutral-300 hover:shadow-md select-none text-left overflow-hidden h-64 sm:h-72"
+    <Link
+      href={href}
+      aria-label={`${player.displayName} ${dorsalLabel} — Ver perfil y estadísticas completas`}
+      className="group relative flex flex-col justify-end rounded-2xl border border-[var(--border)] bg-white shadow-2xs transition-all duration-150 hover:border-neutral-300 hover:shadow-md select-none text-left overflow-hidden h-64 sm:h-72 focus-visible:outline-2 focus-visible:outline-[var(--primary)]"
     >
       {/* Dorsal: Large red number positioned on the right */}
       {player.shirtNumber !== null && (
@@ -54,7 +58,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
           {player.displayName}
         </h3>
       </div>
-    </article>
+    </Link>
   );
 }
 

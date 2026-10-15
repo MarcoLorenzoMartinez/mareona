@@ -33,10 +33,10 @@ export function PlayerAvatarFallback({
         style={{ color: teamColor, opacity: 0.55 }}
       >
         {/* Cabeza atlética proporcionada y equilibrada */}
-        <circle cx="32" cy="21" r="13" fill="currentColor" />
-        {/* Hombros y torso proporcionados que descienden hasta la base del círculo */}
+        <circle cx="32" cy="23" r="13" fill="currentColor" />
+        {/* Hombros y torso cercanos a la cabeza que descienden hasta la base del círculo */}
         <path
-          d="M12 64 C12 50 20 44 32 44 C44 44 52 50 52 64 Z"
+          d="M12 64 C12 47 20 40 32 40 C44 40 52 47 52 64 Z"
           fill="currentColor"
         />
       </svg>

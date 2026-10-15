@@ -41,7 +41,8 @@ function MatchDetailSkeleton() {
   );
 }
 
-async function MatchDetailContent({ id }: { readonly id: string }) {
+async function MatchDetailContent({ params }: MatchDetailPageProps) {
+  const { id } = await params;
   await connection();
 
   const dict = getDictionary();
@@ -82,12 +83,10 @@ async function MatchDetailContent({ id }: { readonly id: string }) {
   );
 }
 
-export default async function MatchDetailPage({ params }: MatchDetailPageProps) {
-  const { id } = await params;
-
+export default function MatchDetailPage({ params }: MatchDetailPageProps) {
   return (
     <Suspense fallback={<MatchDetailSkeleton />}>
-      <MatchDetailContent id={id} />
+      <MatchDetailContent params={params} />
     </Suspense>
   );
 }
