@@ -49,6 +49,7 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
           lineup={match.homeLineup}
           team={match.homeTeam}
           playerStats={playerStats}
+          tacticalLineup={match.advancedStats?.tacticalLineups?.home}
           onSelectPlayer={(player, stats, team, teamColor, textColor) =>
             setSelected({ player, stats, team, teamColor, textColor })
           }
@@ -57,6 +58,7 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
           lineup={match.awayLineup}
           team={match.awayTeam}
           playerStats={playerStats}
+          tacticalLineup={match.advancedStats?.tacticalLineups?.away}
           onSelectPlayer={(player, stats, team, teamColor, textColor) =>
             setSelected({ player, stats, team, teamColor, textColor })
           }

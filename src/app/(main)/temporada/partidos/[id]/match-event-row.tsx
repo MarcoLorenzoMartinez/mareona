@@ -40,15 +40,8 @@ function EventDetails({ event, assistLabel, penaltyMissedLabel }: EventDetailsPr
         {playerName}
       </span>
       {isGoal && secondaryName && (
-        <span
-          className={`text-[11px] text-[var(--foreground-muted)] font-normal flex items-center gap-1 ${
-            event.isHome ? "flex-row-reverse" : "flex-row"
-          }`}
-        >
-          <span className="text-neutral-400 font-medium select-none" aria-hidden="true">
-            {event.isHome ? "↲" : "↳"}
-          </span>
-          <span>asist. {secondaryName}</span>
+        <span className="text-[10px] text-[var(--foreground-muted)]/75 font-normal">
+          asist. {secondaryName}
         </span>
       )}
       {isPenaltyMissed && (

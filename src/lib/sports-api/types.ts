@@ -293,6 +293,7 @@ export interface DomainLineupPlayer {
   readonly isStarter: boolean;
   readonly subbedIn?: boolean;
   readonly subbedOut?: boolean;
+  readonly photoUrl?: string | null;
 }
 
 export interface DomainMatchLineup {
@@ -417,6 +418,25 @@ export interface DomainAdvancedStats {
     readonly scorerName: string;
     readonly assistantName: string;
   }>;
+  readonly tacticalLineups?: {
+    readonly home: DomainTacticalLineup;
+    readonly away: DomainTacticalLineup;
+  } | null;
+}
+
+export interface DomainTacticalStarter {
+  readonly id: number;
+  readonly name: string;
+  readonly shirtNumber: string;
+  readonly x: number;
+  readonly y: number;
+  readonly photoUrl: string;
+  readonly rating?: number | null;
+}
+
+export interface DomainTacticalLineup {
+  readonly formation: string;
+  readonly starters: readonly DomainTacticalStarter[];
 }
 
 export interface DomainMatchDetail {
@@ -519,6 +539,7 @@ export const espnRosterAthleteSchema = z.object({
     displayName: z.string(),
     fullName: z.string().optional(),
     shortName: z.string().optional(),
+    headshot: z.object({ href: z.string().optional() }).optional(),
   }),
   position: z
     .object({
@@ -1151,6 +1172,11 @@ export function transformEspnMatchDetail(
         fullName: p.athlete.fullName,
         shortName: p.athlete.shortName,
       });
+      const photoUrl =
+        (isSportingTeam && jerseyNum !== null ? `/images/players/${jerseyNum}.png` : null) ??
+        p.athlete.headshot?.href ??
+        null;
+
       return {
         id: p.athlete.id,
         name: normalized.name,
@@ -1163,6 +1189,7 @@ export function transformEspnMatchDetail(
         isStarter: Boolean(p.starter),
         subbedIn: p.subbedIn,
         subbedOut: p.subbedOut,
+        photoUrl,
       };
     };
 

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { TopProgressBar } from "@/components/layout/top-progress-bar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -47,6 +48,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]"
       >
+        <TopProgressBar />
         {children}
       </body>
     </html>

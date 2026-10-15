@@ -27,7 +27,10 @@ export function SeasonNav() {
     >
       <div className="flex items-center gap-1 overflow-x-auto scrollbar-none px-1">
         {seasonTabs.map((tab) => {
-          const isActive = pathname === tab.href;
+          const isActive =
+            tab.href === "/temporada"
+              ? pathname === "/temporada"
+              : pathname.startsWith(tab.href);
 
           if (!tab.isAvailable) {
             return (
@@ -49,7 +52,7 @@ export function SeasonNav() {
               key={tab.href}
               href={tab.href}
               aria-current={isActive ? "page" : undefined}
-              className={`inline-flex min-h-[44px] items-center border-b-2 px-3.5 py-2 text-sm font-semibold transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] focus-visible:ring-offset-2 ${
+              className={`inline-flex min-h-[44px] items-center border-b-2 px-3.5 py-2 text-sm font-semibold transition-all duration-150 whitespace-nowrap active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] focus-visible:ring-offset-2 ${
                 isActive
                   ? "border-[var(--primary)] text-[var(--primary)]"
                   : "border-transparent text-[var(--foreground-muted)] hover:text-[var(--foreground)]"

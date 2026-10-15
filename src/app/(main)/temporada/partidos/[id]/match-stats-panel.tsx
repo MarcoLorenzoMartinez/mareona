@@ -115,6 +115,7 @@ export function MatchStatsPanel({ match }: { readonly match: DomainMatchDetail }
           isHomeSporting={isHomeSporting}
           homeColor={homeColor}
           awayColor={awayColor}
+          events={match.events}
         />
       )}
 

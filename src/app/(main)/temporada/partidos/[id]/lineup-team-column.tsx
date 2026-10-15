@@ -2,14 +2,19 @@ import type {
   DomainMatchLineup,
   DomainLineupPlayer,
   DomainPlayerMatchStats,
+  DomainTacticalLineup,
 } from "@/lib/sports-api/types";
 import { TeamCrest } from "@/components/media/team-crest";
 import { getTeamPrimaryColor } from "@/lib/sports-api/team-colors";
+import { TacticalPlayerCard } from "./tactical-player-card";
+import { TacticalPitchBoard } from "./tactical-pitch-board";
+import { BenchRow } from "./bench-row";
 
 interface LineupTeamColumnProps {
   readonly lineup: DomainMatchLineup | null;
   readonly team: { readonly externalId?: string; readonly name: string; readonly crestUrl?: string | null; readonly isSporting: boolean };
   readonly playerStats?: Readonly<Record<string, DomainPlayerMatchStats>> | null;
+  readonly tacticalLineup?: DomainTacticalLineup | null;
   readonly onSelectPlayer?: (
     player: DomainLineupPlayer, stats: DomainPlayerMatchStats | null,
     team: LineupTeamColumnProps["team"], teamColor: string, textColor: string
@@ -31,65 +36,24 @@ function lookupPlayerStats(
   return stats[player.name.toLowerCase()] ?? (player.jersey ? stats[`jersey_${player.jersey}`] : null) ?? null;
 }
 
-function PlayerRow({
-  player, isSporting, teamColor, textColor, isBench = false, stats, onSelect,
-}: {
-  readonly player: DomainLineupPlayer; readonly isSporting: boolean;
-  readonly teamColor: string; readonly textColor: string; readonly isBench?: boolean;
-  readonly stats: DomainPlayerMatchStats | null; readonly onSelect?: () => void;
-}) {
-  return (
-    <li className="list-none">
-      <button
-        type="button"
-        onClick={onSelect}
-        className={`w-full flex items-center justify-between text-left transition-colors rounded-lg px-2 hover:bg-[var(--surface)] active:bg-neutral-100 cursor-pointer min-h-[44px] ${
-          isBench ? "py-1 text-[11px]" : "py-1.5 text-xs"
-        }`}
-      >
-        <div className="flex items-center gap-2.5 min-w-0">
-          <span
-            className={`flex shrink-0 items-center justify-center rounded-full tabular-nums font-bold ${
-              isBench
-                ? "h-5 w-5 text-[10px] opacity-80"
-                : "h-6 w-6 text-[11px] shadow-2xs"
-            }`}
-            style={{ backgroundColor: teamColor, color: textColor }}
-          >
-            {player.jersey ?? "-"}
-          </span>
-          <span
-            className={`truncate ${
-              isBench
-                ? "font-normal text-[var(--foreground-muted)]"
-                : isSporting
-                ? "font-semibold text-[var(--foreground)]"
-                : "font-medium text-[var(--foreground)]"
-            }`}
-          >
-            {player.name}
-          </span>
-        </div>
+function groupStartersByLine(starters: readonly DomainLineupPlayer[]) {
+  const gks = starters.filter((p) => p.position === "goalkeeper");
+  const defs = starters.filter((p) => p.position === "defender");
+  const mids = starters.filter((p) => p.position === "midfielder");
+  const fwds = starters.filter((p) => p.position === "forward");
+  const others = starters.filter((p) => !["goalkeeper", "defender", "midfielder", "forward"].includes(p.position));
 
-        <div className="flex items-center gap-2 shrink-0">
-          {player.subbedOut && !isBench && (
-            <span className="text-[12px] font-bold text-amber-600" title="Sustituido">↓</span>
-          )}
-          {player.subbedIn && isBench && (
-            <span className="text-[12px] font-bold text-emerald-600" title="Entró">↑</span>
-          )}
-          {stats?.rating ? (
-            <span className="rounded px-1.5 py-0.5 text-[10px] font-bold font-sans tabular-nums text-white bg-neutral-800 shadow-2xs">
-              {stats.rating.toFixed(1)}
-            </span>
-          ) : null}
-        </div>
-      </button>
-    </li>
-  );
+  const allMids = [...mids, ...others];
+  const lines: Array<{ readonly key: string; readonly label: string; readonly players: readonly DomainLineupPlayer[] }> = [];
+  if (gks.length > 0) lines.push({ key: "gk", label: "Portería", players: gks });
+  if (defs.length > 0) lines.push({ key: "def", label: "Defensa", players: defs });
+  if (allMids.length > 0) lines.push({ key: "mid", label: "Mediocampo", players: allMids });
+  if (fwds.length > 0) lines.push({ key: "fwd", label: "Delantera", players: fwds });
+
+  return lines;
 }
 
-export function LineupTeamColumn({ lineup, team, playerStats, onSelectPlayer }: LineupTeamColumnProps) {
+export function LineupTeamColumn({ lineup, team, playerStats, tacticalLineup, onSelectPlayer }: LineupTeamColumnProps) {
   const teamColor = getTeamPrimaryColor({
     teamExternalId: team.externalId,
     teamName: team.name,
@@ -109,37 +73,64 @@ export function LineupTeamColumn({ lineup, team, playerStats, onSelectPlayer }: 
     );
   }
 
+  const lines = groupStartersByLine(lineup.starters);
+  const activeFormation = tacticalLineup?.formation || lineup.formation;
+
   return (
     <div className="flex flex-col gap-5">
-      {/* 1. Tarjeta principal: Once Titular */}
+      {/* 1. Tarjeta principal: Once Titular con formación táctica */}
       <div className="rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs">
-        <div className="flex items-center gap-2.5 border-b border-[var(--border)] pb-3 mb-2 min-w-0">
-          <TeamCrest crestUrl={team.crestUrl} teamName={team.name} size="sm" isSporting={team.isSporting} />
-          <span
-            className={`text-sm truncate ${
-              team.isSporting ? "font-bold text-[var(--primary)]" : "font-bold text-[var(--foreground)]"
-            }`}
-          >
-            {team.name}
-          </span>
+        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 mb-4 min-w-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <TeamCrest crestUrl={team.crestUrl} teamName={team.name} size="sm" isSporting={team.isSporting} />
+            <span
+              className={`text-sm truncate ${
+                team.isSporting ? "font-bold text-[var(--primary)]" : "font-bold text-[var(--foreground)]"
+              }`}
+            >
+              {team.name}
+            </span>
+          </div>
+          {activeFormation && (
+            <span className="rounded-full bg-[var(--surface)] px-2.5 py-0.5 text-[10px] font-bold font-sans tabular-nums text-[var(--foreground-muted)] border border-[var(--border)]">
+              {activeFormation}
+            </span>
+          )}
         </div>
 
-        <ol className="divide-y divide-[var(--border)]/40">
-          {lineup.starters.map((player) => {
-            const stats = lookupPlayerStats(player, playerStats);
-            return (
-              <PlayerRow
-                key={player.id}
-                player={player}
-                isSporting={team.isSporting}
-                teamColor={teamColor}
-                textColor={textColor}
-                stats={stats}
-                onSelect={onSelectPlayer ? () => onSelectPlayer(player, stats, team, teamColor, textColor) : undefined}
-              />
-            );
-          })}
-        </ol>
+        {/* Campo táctico realista de FotMob con coordenadas reales */}
+        {tacticalLineup?.starters && tacticalLineup.starters.length > 0 ? (
+          <TacticalPitchBoard
+            starters={tacticalLineup.starters}
+            teamColor={teamColor}
+            textColor={textColor}
+            isSporting={team.isSporting}
+            domainStarters={lineup.starters}
+            playerStats={playerStats}
+            onSelectPlayer={(p, s) => onSelectPlayer?.(p, s, team, teamColor, textColor)}
+          />
+        ) : (
+          <div className="flex flex-col gap-3 sm:gap-4 rounded-xl bg-neutral-50/70 p-3 sm:p-4 border border-[var(--border)]/70">
+            {lines.map((line) => (
+              <div key={line.key} className="flex flex-wrap items-start justify-center gap-2 sm:gap-4">
+                {line.players.map((player) => {
+                  const stats = lookupPlayerStats(player, playerStats);
+                  return (
+                    <TacticalPlayerCard
+                      key={player.id}
+                      player={player}
+                      teamColor={teamColor}
+                      textColor={textColor}
+                      stats={stats}
+                      isSporting={team.isSporting}
+                      onSelect={onSelectPlayer ? () => onSelectPlayer(player, stats, team, teamColor, textColor) : undefined}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* 2. Tarjeta secundaria: Banquillo */}
@@ -155,13 +146,12 @@ export function LineupTeamColumn({ lineup, team, playerStats, onSelectPlayer }: 
             {lineup.substitutes.map((player) => {
               const stats = lookupPlayerStats(player, playerStats);
               return (
-                <PlayerRow
+                <BenchRow
                   key={player.id}
                   player={player}
                   isSporting={team.isSporting}
                   teamColor={teamColor}
                   textColor={textColor}
-                  isBench={true}
                   stats={stats}
                   onSelect={onSelectPlayer ? () => onSelectPlayer(player, stats, team, teamColor, textColor) : undefined}
                 />

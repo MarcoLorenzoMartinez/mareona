@@ -1,8 +1,6 @@
 import { normalizeAthleteName, type DomainAdvancedStats, type DomainShotItem } from "./types.ts";
-import {
-  parseFotMobPlayerStats, parseFotMobGoalAssists,
-  type FotMobRawPlayerStatItem, type FotMobGoalFacts,
-} from "./fotmob-player-parser.ts";
+import { parseFotMobPlayerStats, parseFotMobGoalAssists, type FotMobRawPlayerStatItem, type FotMobGoalFacts } from "./fotmob-player-parser.ts";
+import { parseFotMobTacticalLineups, type FotMobRawLineupPayload } from "./fotmob-lineup-parser.ts";
 
 const FOTMOB_SPORTING_ID = 9869;
 const FOTMOB_HEADERS = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36" };
@@ -30,6 +28,7 @@ interface FotMobRawPayload {
     };
     readonly momentum?: { readonly main?: { readonly data?: ReadonlyArray<{ readonly minute: number; readonly value: number }> } };
     readonly playerStats?: Record<string, FotMobRawPlayerStatItem>;
+    readonly lineup?: FotMobRawLineupPayload;
   };
 }
 
@@ -126,6 +125,7 @@ export function transformFotMobAdvancedStats(
     momentum: content?.momentum?.main?.data, shots,
     playerStats: parseFotMobPlayerStats(content?.playerStats),
     goalAssists: parseFotMobGoalAssists(data.header?.events ?? content?.matchFacts),
+    tacticalLineups: parseFotMobTacticalLineups(content?.lineup, homeTeamId, awayTeamId),
   };
 }
 

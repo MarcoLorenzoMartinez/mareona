@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { transformFotMobAdvancedStats } from "../../src/lib/sports-api/fotmob.ts";
 import { parseFotMobGoalAssists } from "../../src/lib/sports-api/fotmob-player-parser.ts";
+import { parseFotMobTacticalLineups } from "../../src/lib/sports-api/fotmob-lineup-parser.ts";
 
 test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones", () => {
   const samplePayload = {
@@ -193,4 +194,59 @@ test("parseFotMobGoalAssists extracts assists accurately from matchFacts/header 
   assert.equal(assists[1]?.scorerName, "Jonathan Dubasin");
   assert.equal(assists[1]?.assistantName, "Pablo García");
 });
+
+test("parseFotMobTacticalLineups maps formations, coordinates, and photo URLs", () => {
+  const sampleLineupPayload = {
+    homeTeam: {
+      id: 9869,
+      name: "Sporting Gijon",
+      formation: "4-4-2",
+      starters: [
+        {
+          id: 101,
+          name: "Rubén Yáñez",
+          shirtNumber: "1",
+          verticalLayout: { x: 0.5, y: 0.1 },
+          performance: { rating: 7.2 },
+        },
+      ],
+    },
+    awayTeam: {
+      id: 8888,
+      name: "CD Sabadell",
+      formation: "3-1-4-2",
+      starters: [
+        {
+          id: 202,
+          name: "Diego Fuoli",
+          shirtNumber: "1",
+          verticalLayout: { x: 0.5, y: 0.1 },
+          performance: { rating: 8.5 },
+        },
+      ],
+    },
+  };
+
+  const result = parseFotMobTacticalLineups(sampleLineupPayload, 9869, 8888);
+  assert.ok(result);
+  assert.equal(result.home.formation, "4-4-2");
+  assert.equal(result.home.starters.length, 1);
+  assert.equal(result.home.starters[0]?.name, "Rubén Yáñez");
+  assert.equal(result.home.starters[0]?.photoUrl, "/images/players/1.png");
+  assert.equal(result.home.starters[0]?.x, 0.5);
+  assert.equal(result.home.starters[0]?.y, 0.1);
+  assert.equal(result.home.starters[0]?.rating, 7.2);
+
+  assert.equal(result.away.formation, "3-1-4-2");
+  assert.equal(result.away.starters.length, 1);
+  assert.equal(result.away.starters[0]?.name, "Diego Fuoli");
+  assert.equal(
+    result.away.starters[0]?.photoUrl,
+    "https://images.fotmob.com/image_resources/playerimages/202.png"
+  );
+  assert.equal(result.away.starters[0]?.x, 0.5);
+  assert.equal(result.away.starters[0]?.y, 0.1);
+  assert.equal(result.away.starters[0]?.rating, 8.5);
+});
+
 

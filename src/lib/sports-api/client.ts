@@ -340,11 +340,13 @@ function sanitizeMatchDetail(detail: DomainMatchDetail): DomainMatchDetail {
       ...lineup,
       starters: lineup.starters.map((p) => {
         const norm = normalizeAthleteName({ id: p.id, displayName: p.name, shortName: p.shortName });
-        return { ...p, name: norm.name, shortName: norm.shortName };
+        const photoUrl = p.photoUrl ?? (lineup.isSporting && p.jersey ? `/images/players/${p.jersey}.png` : null);
+        return { ...p, name: norm.name, shortName: norm.shortName, photoUrl };
       }),
       substitutes: lineup.substitutes.map((p) => {
         const norm = normalizeAthleteName({ id: p.id, displayName: p.name, shortName: p.shortName });
-        return { ...p, name: norm.name, shortName: norm.shortName };
+        const photoUrl = p.photoUrl ?? (lineup.isSporting && p.jersey ? `/images/players/${p.jersey}.png` : null);
+        return { ...p, name: norm.name, shortName: norm.shortName, photoUrl };
       }),
     };
   };
