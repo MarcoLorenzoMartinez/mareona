@@ -1,9 +1,11 @@
 "use client";
-// Client: Interactive match player statistics modal with keyboard navigation
+// Client: Redesigned interactive match player statistics modal with photo, key highlights and visual stat bars
 
 import { useEffect } from "react";
 import type { DomainPlayerMatchStats, DomainLineupPlayer } from "@/lib/sports-api/types";
-import { TeamCrest } from "@/components/media/team-crest";
+import { PlayerModalHeader } from "./player-modal-header";
+import { PlayerStatBar } from "./player-stat-bar";
+import { PlayerImpactBanner } from "./player-impact-banner";
 
 interface PlayerMatchStatsModalProps {
   readonly player: DomainLineupPlayer;
@@ -23,10 +25,10 @@ function StatItem({ label, value }: { readonly label: string; readonly value: st
   );
 }
 
-function StatGroupCard({ title, children }: { readonly title: string; readonly children: React.ReactNode }) {
+function StatCard({ title, children }: { readonly title: string; readonly children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)]/50 p-3 shadow-2xs">
-      <h4 className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)] mb-1.5">
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)]/40 p-3 shadow-2xs">
+      <h4 className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)] mb-1.5">
         {title}
       </h4>
       <div className="space-y-0.5">{children}</div>
@@ -34,21 +36,13 @@ function StatGroupCard({ title, children }: { readonly title: string; readonly c
   );
 }
 
-function RatingBadge({ rating }: { readonly rating: number | null }) {
-  if (rating === null) return null;
-  const ratingColor = rating >= 7.5 ? "bg-emerald-600" : rating >= 6.5 ? "bg-emerald-700" : "bg-neutral-800";
-  return (
-    <span
-      className={`inline-flex items-center justify-center rounded-lg px-2.5 py-1 text-xs font-bold font-sans tabular-nums text-white shadow-2xs ${ratingColor}`}
-      title="Calificación del partido"
-    >
-      {rating.toFixed(1)}
-    </span>
-  );
-}
-
 export function PlayerMatchStatsModal({
-  player, stats, team, teamColor, textColor, onClose,
+  player,
+  stats,
+  team,
+  teamColor,
+  textColor,
+  onClose,
 }: PlayerMatchStatsModalProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -58,7 +52,6 @@ export function PlayerMatchStatsModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  const hasStats = Boolean(stats);
   const isGk = stats?.isGoalkeeper ?? player.position === "goalkeeper";
 
   return (
@@ -66,106 +59,79 @@ export function PlayerMatchStatsModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="player-stats-modal-title"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-xs p-0 sm:p-4 animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-xs p-0 sm:p-4 animate-in fade-in duration-150"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl border border-[var(--border)] bg-white p-5 sm:p-6 shadow-xl max-h-[85vh] overflow-y-auto flex flex-col gap-4">
-        {/* Mobile handle indicator */}
+      <div className="w-full sm:max-w-xl rounded-t-2xl sm:rounded-2xl border border-[var(--border)] bg-white p-4 sm:p-6 shadow-2xl max-h-[88vh] overflow-y-auto flex flex-col gap-4">
+        {/* Indicador de arrastre en móvil */}
         <div className="mx-auto h-1 w-10 rounded-full bg-neutral-300 sm:hidden" aria-hidden="true" />
 
-        {/* Modal Header */}
-        <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <span
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold font-sans tabular-nums shadow-2xs"
-              style={{ backgroundColor: teamColor, color: textColor }}
-            >
-              {player.jersey ?? "-"}
-            </span>
-            <div className="min-w-0">
-              <h3 id="player-stats-modal-title" className="text-base font-bold text-[var(--foreground)] truncate">
-                {player.name}
-              </h3>
-              <div className="flex items-center gap-1.5 text-xs text-[var(--foreground-muted)]">
-                <TeamCrest crestUrl={team.crestUrl} teamName={team.name} size="sm" />
-                <span>{player.positionLabel}</span>
-                {stats?.minutesPlayed ? <span>· {stats.minutesPlayed}&apos;</span> : null}
-              </div>
-            </div>
-          </div>
+        {/* 1. Cabecera Hero con foto, nombre, equipo y nota de partido */}
+        <PlayerModalHeader
+          player={player}
+          stats={stats}
+          team={team}
+          teamColor={teamColor}
+          textColor={textColor}
+          onClose={onClose}
+        />
 
-          <div className="flex items-center gap-2 shrink-0">
-            {stats && <RatingBadge rating={stats.rating} />}
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Cerrar ficha de jugador"
-              className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[var(--surface)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-
-        {/* Modal Body */}
+        {/* 2. Cuerpo del modal: estadísticas o mensaje de aviso */}
         {!stats ? (
-          <div className="py-8 text-center text-xs text-[var(--foreground-muted)]">
-            No se dispone de estadísticas detalladas para este jugador en este partido.
+          <div className="py-10 text-center text-xs text-[var(--foreground-muted)]">
+            No se dispone de desglose estadístico detallado para este jugador en este partido.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {isGk ? (
-              <StatGroupCard title="Portería">
-                <StatItem label="Paradas" value={stats.saves ?? 0} />
-                <StatItem label="Paradas en área" value={stats.savesInsideBox ?? 0} />
-                <StatItem label="Goles encajados" value={stats.goalsConceded ?? 0} />
-                <StatItem label="Goles evitados" value={stats.goalsPrevented !== null && stats.goalsPrevented !== undefined ? (stats.goalsPrevented > 0 ? `+${stats.goalsPrevented}` : String(stats.goalsPrevented)) : "—"} />
-                <StatItem label="Salidas por alto" value={stats.highClaims ?? 0} />
-                <StatItem label="Despejes de puño" value={stats.punches ?? 0} />
-              </StatGroupCard>
-            ) : (
-              <StatGroupCard title="Ataque">
-                <StatItem label="Goles / Asistencias" value={`${stats.goals} / ${stats.assists}`} />
-                <StatItem label="xG (Goles esperados)" value={stats.expectedGoals !== null ? stats.expectedGoals.toFixed(2) : "—"} />
-                <StatItem label="xGOT (Calidad remate)" value={stats.expectedGoalsOnTarget !== null ? stats.expectedGoalsOnTarget.toFixed(2) : "—"} />
-                <StatItem label="Ocasiones creadas" value={stats.chancesCreated} />
-                <StatItem label="Tiros (a puerta)" value={`${stats.shotsOnTarget} / ${stats.totalShots}`} />
-                <StatItem label="Toques en área rival" value={stats.touchesInBox} />
-              </StatGroupCard>
-            )}
+          <div className="flex flex-col gap-3.5">
+            {/* Banner de Impacto Rápido */}
+            <PlayerImpactBanner stats={stats} isGk={isGk} />
 
-            <StatGroupCard title="Pase y Toques">
-              <StatItem
-                label="Pases precisos"
-                value={`${stats.accuratePasses}/${stats.totalPasses} (${stats.totalPasses > 0 ? Math.round((stats.accuratePasses / stats.totalPasses) * 100) : 0}%)`}
-              />
-              <StatItem
-                label="Pases largos"
-                value={`${stats.accurateLongBalls}/${stats.totalLongBalls}`}
-              />
-              <StatItem label="Pases último tercio" value={stats.passesFinalThird} />
-              <StatItem label="Toques totales" value={stats.touches} />
-              <StatItem label="Pérdidas de balón" value={stats.dispossessed} />
-            </StatGroupCard>
+            {/* Cuadrícula de métricas estructuradas */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Pases y Precisión */}
+              <StatCard title="Pases y Toques">
+                <PlayerStatBar label="Precisión de pases" successful={stats.accuratePasses} total={stats.totalPasses} />
+                <PlayerStatBar label="Balones en largo" successful={stats.accurateLongBalls} total={stats.totalLongBalls} />
+                <StatItem label="Pases último tercio" value={stats.passesFinalThird} />
+                <StatItem label="Toques totales" value={stats.touches} />
+                <StatItem label="Pérdidas de posesión" value={stats.dispossessed} />
+              </StatCard>
 
-            <StatGroupCard title="Defensa">
-              <StatItem label="Acciones defensivas" value={stats.defensiveActions} />
-              <StatItem label="Entradas realizadas" value={stats.tacklesWon} />
-              <StatItem label="Intercepciones" value={stats.interceptions} />
-              <StatItem label="Recuperaciones" value={stats.recoveries} />
-              <StatItem label="Despejes" value={stats.clearances} />
-              <StatItem label="Tiros bloqueados" value={stats.blocks} />
-            </StatGroupCard>
+              {/* Duelos y Físico */}
+              <StatCard title="Duelos y Pugnas">
+                <PlayerStatBar label="Duelos totales" successful={stats.duelsWon} total={stats.duelsWon + stats.duelsLost} />
+                <PlayerStatBar label="Duelos en el suelo" successful={stats.groundDuelsWon} total={stats.totalGroundDuels} />
+                <PlayerStatBar label="Duelos aéreos" successful={stats.aerialDuelsWon} total={stats.totalAerialDuels} />
+                <StatItem label="Faltas recibidas / cometidas" value={`${stats.wasFouled} / ${stats.foulsCommitted}`} />
+              </StatCard>
 
-            <StatGroupCard title="Duelos">
-              <StatItem label="Duelos en suelo" value={`${stats.groundDuelsWon}/${stats.totalGroundDuels} (${stats.totalGroundDuels > 0 ? Math.round((stats.groundDuelsWon / stats.totalGroundDuels) * 100) : 0}%)`} />
-              <StatItem label="Duelos aéreos" value={`${stats.aerialDuelsWon}/${stats.totalAerialDuels} (${stats.totalAerialDuels > 0 ? Math.round((stats.aerialDuelsWon / stats.totalAerialDuels) * 100) : 0}%)`} />
-              <StatItem label="Duelos totales" value={`${stats.duelsWon} ganados / ${stats.duelsLost} perdidos`} />
-              <StatItem label="Faltas recibidas" value={stats.wasFouled} />
-              <StatItem label="Faltas cometidas" value={stats.foulsCommitted} />
-            </StatGroupCard>
+              {/* Defensa */}
+              <StatCard title="Defensa y Recuperación">
+                <StatItem label="Acciones defensivas" value={stats.defensiveActions} />
+                <StatItem label="Entradas ganadas" value={stats.tacklesWon} />
+                <StatItem label="Intercepciones" value={stats.interceptions} />
+                <StatItem label="Recuperaciones" value={stats.recoveries} />
+                <StatItem label="Despejes" value={stats.clearances} />
+                <StatItem label="Tiros bloqueados" value={stats.blocks} />
+              </StatCard>
+
+              {/* Ataque / Portería extra */}
+              {isGk ? (
+                <StatCard title="Juego Aéreo y Portería">
+                  <StatItem label="Salidas por alto" value={stats.highClaims ?? 0} />
+                  <StatItem label="Despejes de puño" value={stats.punches ?? 0} />
+                  <StatItem label="Goles encajados" value={stats.goalsConceded ?? 0} />
+                </StatCard>
+              ) : (
+                <StatCard title="Peligro en Ataque">
+                  <StatItem label="Calidad remate (xGOT)" value={stats.expectedGoalsOnTarget !== null ? stats.expectedGoalsOnTarget.toFixed(2) : "—"} />
+                  <StatItem label="Toques en área rival" value={stats.touchesInBox} />
+                  <StatItem label="Ocasiones creadas" value={stats.chancesCreated} />
+                </StatCard>
+              )}
+            </div>
           </div>
         )}
       </div>

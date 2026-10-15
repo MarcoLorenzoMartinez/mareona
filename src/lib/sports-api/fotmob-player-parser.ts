@@ -109,6 +109,10 @@ export function parseFotMobPlayerStats(
 
     const norm = normalizeAthleteName({ displayName: item.name }).name.toLowerCase();
     result[norm] = parsed;
+    const asciiKey = norm.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    if (asciiKey !== norm) {
+      result[asciiKey] = parsed;
+    }
     result[String(item.id)] = parsed;
     if (item.shirtNumber) {
       if (item.teamId) {

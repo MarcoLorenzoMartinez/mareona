@@ -1,4 +1,5 @@
-import type { DomainLineupPlayer, DomainPlayerMatchStats } from "@/lib/sports-api/types";
+﻿import type { DomainLineupPlayer, DomainPlayerMatchStats } from "@/lib/sports-api/types";
+import { getRatingBadgeStyle } from "./rating-color";
 
 interface BenchRowProps {
   readonly player: DomainLineupPlayer;
@@ -17,6 +18,8 @@ export function BenchRow({
   stats,
   onSelect,
 }: BenchRowProps) {
+  const ratingStyle = stats?.rating ? getRatingBadgeStyle(stats.rating) : null;
+
   return (
     <li className="list-none">
       <button
@@ -46,8 +49,10 @@ export function BenchRow({
           {player.subbedIn && (
             <span className="text-[12px] font-bold text-emerald-600" title="Entró al campo">↑</span>
           )}
-          {stats?.rating ? (
-            <span className="rounded px-1.5 py-0.5 text-[10px] font-bold font-sans tabular-nums text-white bg-neutral-800 shadow-2xs">
+          {stats?.rating && ratingStyle ? (
+            <span
+              className={`rounded px-1.5 py-0.5 text-[10px] font-bold font-sans tabular-nums shadow-2xs ${ratingStyle.bg} ${ratingStyle.text}`}
+            >
               {stats.rating.toFixed(1)}
             </span>
           ) : null}
