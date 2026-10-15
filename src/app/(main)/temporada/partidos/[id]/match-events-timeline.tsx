@@ -45,7 +45,12 @@ export function MatchEventsTimeline({ match }: MatchEventsTimelineProps) {
             </div>
             <ul className="space-y-1">
               {firstHalfEvents.map((event) => (
-                <EventRow key={event.id} event={event} assistLabel={t.assist} />
+                <EventRow
+                  key={event.id}
+                  event={event}
+                  assistLabel={t.assist}
+                  penaltyMissedLabel={t.penaltyMissed}
+                />
               ))}
             </ul>
           </section>
@@ -60,7 +65,12 @@ export function MatchEventsTimeline({ match }: MatchEventsTimelineProps) {
             </div>
             <ul className="space-y-1">
               {secondHalfEvents.map((event) => (
-                <EventRow key={event.id} event={event} assistLabel={t.assist} />
+                <EventRow
+                  key={event.id}
+                  event={event}
+                  assistLabel={t.assist}
+                  penaltyMissedLabel={t.penaltyMissed}
+                />
               ))}
             </ul>
           </section>

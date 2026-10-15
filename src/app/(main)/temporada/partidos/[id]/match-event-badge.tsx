@@ -1,5 +1,6 @@
 import type { DomainMatchEvent } from "@/lib/sports-api/types";
 import { SoccerBallIcon } from "@/components/icons/soccer-ball-icon";
+import { MissedPenaltyIcon } from "@/components/icons/missed-penalty-icon";
 
 interface MatchEventBadgeProps {
   readonly type: DomainMatchEvent["type"];
@@ -8,7 +9,7 @@ interface MatchEventBadgeProps {
 }
 
 /**
- * Visual badge for match events (goal, yellow card, red card).
+ * Visual badge for match events (goal, yellow card, red card, missed penalty).
  * Note: Substitutions handle their own inline indicators directly.
  */
 export function MatchEventBadge({
@@ -63,6 +64,16 @@ export function MatchEventBadge({
           aria-label="Tarjeta roja"
         >
           <span className="h-4 w-3 rounded-[2px] bg-red-600 border border-red-700 shadow-2xs" />
+        </span>
+      );
+    case "penaltyMissed":
+      return (
+        <span
+          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-rose-50 border border-rose-300 shadow-2xs"
+          title="Penalti fallado"
+          aria-label="Penalti fallado"
+        >
+          <MissedPenaltyIcon className="h-4 w-4" size={16} />
         </span>
       );
     default:

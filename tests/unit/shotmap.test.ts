@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { transformFotMobAdvancedStats } from "../../src/lib/sports-api/fotmob.ts";
+import { parseFotMobGoalAssists } from "../../src/lib/sports-api/fotmob-player-parser.ts";
 
 test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones", () => {
   const samplePayload = {
@@ -83,6 +84,26 @@ test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones
           ],
         },
       },
+      playerStats: {
+        "573780": {
+          id: 573780,
+          name: "Jorge Sáenz",
+          shirtNumber: "23",
+          teamId: 9869,
+          isGoalkeeper: false,
+          stats: [
+            {
+              title: "Top stats",
+              stats: {
+                "FotMob rating": { stat: { value: 7.35 } },
+                "Minutes played": { stat: { value: 90 } },
+                "Accurate passes": { stat: { value: 34, total: 40 } },
+                "Defensive actions": { stat: { value: 14 } },
+              },
+            },
+          ],
+        },
+      },
     },
   };
 
@@ -131,4 +152,45 @@ test("transformFotMobAdvancedStats correctly maps shots, xG, and attacking zones
 
   assert.ok(result.momentum);
   assert.equal(result.momentum.length, 3);
+
+  // 4. Verify player stats
+  assert.ok(result.playerStats);
+  const jorge = result.playerStats["jorge sáenz"];
+  assert.ok(jorge);
+  assert.equal(jorge.id, 573780);
+  assert.equal(jorge.rating, 7.35);
+  assert.equal(jorge.minutesPlayed, 90);
+  assert.equal(jorge.accuratePasses, 34);
+  assert.equal(jorge.totalPasses, 40);
+  assert.equal(jorge.defensiveActions, 14);
 });
+
+test("parseFotMobGoalAssists extracts assists accurately from matchFacts/header events", () => {
+  const sampleFacts = {
+    events: {
+      events: {
+        homeTeamGoals: {
+          "Juan Otero": [
+            { timeStr: 40, nameStr: "Juan Otero", assistStr: "assist by Alex Corredera" },
+          ],
+        },
+        awayTeamGoals: {
+          "Dubasin": [
+            { timeStr: 87, nameStr: "Jonathan Dubasin", assistStr: "assist by Pablo García" },
+          ],
+        },
+      },
+    },
+  };
+
+  const assists = parseFotMobGoalAssists(sampleFacts);
+  assert.equal(assists.length, 2);
+  assert.equal(assists[0]?.minute, 40);
+  assert.equal(assists[0]?.scorerName, "Juan Otero");
+  assert.equal(assists[0]?.assistantName, "Alex Corredera");
+
+  assert.equal(assists[1]?.minute, 87);
+  assert.equal(assists[1]?.scorerName, "Jonathan Dubasin");
+  assert.equal(assists[1]?.assistantName, "Pablo García");
+});
+

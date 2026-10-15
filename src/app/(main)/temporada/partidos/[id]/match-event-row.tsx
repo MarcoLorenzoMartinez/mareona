@@ -8,12 +8,14 @@ function cleanName(name: string): string {
 interface EventDetailsProps {
   readonly event: DomainMatchEvent;
   readonly assistLabel: string;
+  readonly penaltyMissedLabel: string;
 }
 
-function EventDetails({ event, assistLabel }: EventDetailsProps) {
+function EventDetails({ event, assistLabel, penaltyMissedLabel }: EventDetailsProps) {
   const playerName = cleanName(event.player.name);
   const secondaryName = event.secondaryPlayer ? cleanName(event.secondaryPlayer.name) : "";
   const isGoal = event.type === "goal";
+  const isPenaltyMissed = event.type === "penaltyMissed";
 
   if (event.type === "substitution") {
     return (
@@ -38,8 +40,20 @@ function EventDetails({ event, assistLabel }: EventDetailsProps) {
         {playerName}
       </span>
       {isGoal && secondaryName && (
-        <span className="text-[10px] text-[var(--foreground-muted)]">
-          {assistLabel}: {secondaryName}
+        <span
+          className={`text-[11px] text-[var(--foreground-muted)] font-normal flex items-center gap-1 ${
+            event.isHome ? "flex-row-reverse" : "flex-row"
+          }`}
+        >
+          <span className="text-neutral-400 font-medium select-none" aria-hidden="true">
+            {event.isHome ? "↲" : "↳"}
+          </span>
+          <span>asist. {secondaryName}</span>
+        </span>
+      )}
+      {isPenaltyMissed && (
+        <span className="text-[10px] font-bold text-rose-600 uppercase tracking-wide">
+          {penaltyMissedLabel || "Penalti fallado"}
         </span>
       )}
     </div>
@@ -49,9 +63,10 @@ function EventDetails({ event, assistLabel }: EventDetailsProps) {
 interface EventRowProps {
   readonly event: DomainMatchEvent;
   readonly assistLabel: string;
+  readonly penaltyMissedLabel: string;
 }
 
-export function EventRow({ event, assistLabel }: EventRowProps) {
+export function EventRow({ event, assistLabel, penaltyMissedLabel }: EventRowProps) {
   const isGoal = event.type === "goal";
   const isSub = event.type === "substitution";
 
@@ -61,7 +76,11 @@ export function EventRow({ event, assistLabel }: EventRowProps) {
       <div className="flex items-center justify-end gap-2 text-right">
         {event.isHome && (
           <>
-            <EventDetails event={event} assistLabel={assistLabel} />
+            <EventDetails
+              event={event}
+              assistLabel={assistLabel}
+              penaltyMissedLabel={penaltyMissedLabel}
+            />
             {!isSub && (
               <MatchEventBadge
                 type={event.type}
@@ -99,7 +118,11 @@ export function EventRow({ event, assistLabel }: EventRowProps) {
                 score={event.score}
               />
             )}
-            <EventDetails event={event} assistLabel={assistLabel} />
+            <EventDetails
+              event={event}
+              assistLabel={assistLabel}
+              penaltyMissedLabel={penaltyMissedLabel}
+            />
           </>
         )}
       </div>

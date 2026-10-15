@@ -349,6 +349,8 @@ function sanitizeMatchDetail(detail: DomainMatchDetail): DomainMatchDetail {
     };
   };
 
+  const assists = detail.advancedStats?.goalAssists ?? [];
+
   return {
     ...detail,
     homeLineup: sanitizeLineup(detail.homeLineup),
@@ -358,9 +360,30 @@ function sanitizeMatchDetail(detail: DomainMatchDetail): DomainMatchDetail {
       let runningAway = 0;
       return detail.events.map((e) => {
         const pNorm = normalizeAthleteName({ id: e.player.id, displayName: e.player.name });
-        const secNorm = e.secondaryPlayer
+        let secNorm = e.secondaryPlayer
           ? normalizeAthleteName({ id: e.secondaryPlayer.id, displayName: e.secondaryPlayer.name })
           : undefined;
+
+        if (e.type === "goal" && !secNorm && assists.length > 0) {
+          const rawMin = e.minute.split("+")[0] ?? "";
+          const eventMin = parseInt(rawMin.replace(/\D/g, ""), 10);
+          const pLower = pNorm.name.toLowerCase();
+
+          const found = assists.find((a) => {
+            const aScorer = a.scorerName.toLowerCase();
+            const minDiff = Number.isNaN(eventMin) ? 0 : Math.abs(eventMin - a.minute);
+            const matchesScorer =
+              pLower.includes(aScorer) ||
+              aScorer.includes(pLower) ||
+              pLower.split(" ").some((part) => part.length > 2 && aScorer.includes(part));
+            return minDiff <= 3 && matchesScorer;
+          });
+
+          if (found?.assistantName) {
+            secNorm = { name: found.assistantName, shortName: found.assistantName };
+          }
+        }
+
         let score = e.score;
         if (e.type === "goal") {
           if (e.isHome) {
@@ -374,10 +397,9 @@ function sanitizeMatchDetail(detail: DomainMatchDetail): DomainMatchDetail {
           ...e,
           score,
           player: { ...e.player, name: pNorm.name },
-          secondaryPlayer:
-            secNorm && e.secondaryPlayer
-              ? { id: e.secondaryPlayer.id, name: secNorm.name }
-              : undefined,
+          secondaryPlayer: secNorm
+            ? { id: e.secondaryPlayer?.id ?? "", name: secNorm.name }
+            : undefined,
         };
       });
     })(),
@@ -455,15 +477,16 @@ export async function fetchMatchDetail(
         advancedStats,
       };
 
+      const sanitized = sanitizeMatchDetail(finalDetail);
       if (supabase) {
         await setCachedPayload(
           supabase,
           cacheKey,
-          finalDetail as unknown as Record<string, unknown>,
+          sanitized as unknown as Record<string, unknown>,
           TTL_FIXTURES_MS
         );
       }
-      return finalDetail;
+      return sanitized;
     }
   } catch {
     // Return null transparently without fake data

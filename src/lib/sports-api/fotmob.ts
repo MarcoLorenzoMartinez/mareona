@@ -1,14 +1,11 @@
-import type {
-  DomainAdvancedStats,
-  DomainShotItem,
-} from "./types.ts";
-import { normalizeAthleteName } from "./types.ts";
+import { normalizeAthleteName, type DomainAdvancedStats, type DomainShotItem } from "./types.ts";
+import {
+  parseFotMobPlayerStats, parseFotMobGoalAssists,
+  type FotMobRawPlayerStatItem, type FotMobGoalFacts,
+} from "./fotmob-player-parser.ts";
 
 const FOTMOB_SPORTING_ID = 9869;
-const FOTMOB_HEADERS = {
-  "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-};
+const FOTMOB_HEADERS = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36" };
 
 interface FotMobRawShot {
   readonly id: number; readonly eventType: string; readonly isGoal?: boolean;
@@ -22,7 +19,9 @@ interface FotMobRawShot {
 
 interface FotMobRawPayload {
   readonly general?: { readonly homeTeam?: { readonly id: number }; readonly awayTeam?: { readonly id: number } };
+  readonly header?: { readonly events?: FotMobGoalFacts };
   readonly content?: {
+    readonly matchFacts?: FotMobGoalFacts;
     readonly stats?: { readonly Periods?: { readonly All?: { readonly stats?: ReadonlyArray<{ readonly stats?: ReadonlyArray<{ readonly title?: string; readonly stats?: ReadonlyArray<string | number | null> }> }> } } };
     readonly shotmap?: { readonly shots?: readonly FotMobRawShot[] };
     readonly attackingZones?: {
@@ -30,6 +29,7 @@ interface FotMobRawPayload {
       readonly away?: { readonly total?: { readonly left: number; readonly center: number; readonly right: number } };
     };
     readonly momentum?: { readonly main?: { readonly data?: ReadonlyArray<{ readonly minute: number; readonly value: number }> } };
+    readonly playerStats?: Record<string, FotMobRawPlayerStatItem>;
   };
 }
 
@@ -124,6 +124,8 @@ export function transformFotMobAdvancedStats(
     homeGroundDuelsWon, awayGroundDuelsWon, homeAerialDuelsWon, awayAerialDuelsWon,
     homeDribblesWon, awayDribblesWon, attackingZones,
     momentum: content?.momentum?.main?.data, shots,
+    playerStats: parseFotMobPlayerStats(content?.playerStats),
+    goalAssists: parseFotMobGoalAssists(data.header?.events ?? content?.matchFacts),
   };
 }
 

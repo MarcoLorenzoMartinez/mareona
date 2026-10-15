@@ -238,7 +238,12 @@ export interface DomainMatchSummary {
   readonly awayScore: number | null;
 }
 
-export type MatchEventType = "goal" | "yellowCard" | "redCard" | "substitution";
+export type MatchEventType =
+  | "goal"
+  | "yellowCard"
+  | "redCard"
+  | "substitution"
+  | "penaltyMissed";
 
 export interface DomainMatchEvent {
   readonly id: string;
@@ -326,6 +331,52 @@ export interface DomainAttackingZones {
   readonly away: { readonly left: number; readonly center: number; readonly right: number };
 }
 
+export interface DomainPlayerMatchStats {
+  readonly id: number;
+  readonly name: string;
+  readonly shirtNumber?: string;
+  readonly isGoalkeeper: boolean;
+  readonly rating: number | null;
+  readonly minutesPlayed: number;
+  readonly goals: number;
+  readonly assists: number;
+  readonly expectedGoals: number | null;
+  readonly expectedGoalsOnTarget: number | null;
+  readonly chancesCreated: number;
+  readonly totalShots: number;
+  readonly shotsOnTarget: number;
+  readonly touchesInBox: number;
+  readonly passesFinalThird: number;
+  readonly touches: number;
+  readonly dispossessed: number;
+  readonly accuratePasses: number;
+  readonly totalPasses: number;
+  readonly accurateLongBalls: number;
+  readonly totalLongBalls: number;
+  readonly defensiveActions: number;
+  readonly tacklesWon: number;
+  readonly interceptions: number;
+  readonly recoveries: number;
+  readonly clearances: number;
+  readonly blocks: number;
+  readonly dribbledPast: number;
+  readonly duelsWon: number;
+  readonly duelsLost: number;
+  readonly groundDuelsWon: number;
+  readonly totalGroundDuels: number;
+  readonly aerialDuelsWon: number;
+  readonly totalAerialDuels: number;
+  readonly wasFouled: number;
+  readonly foulsCommitted: number;
+  readonly saves?: number;
+  readonly savesInsideBox?: number;
+  readonly goalsConceded?: number;
+  readonly xgotFaced?: number | null;
+  readonly goalsPrevented?: number | null;
+  readonly highClaims?: number;
+  readonly punches?: number;
+}
+
 export interface DomainAdvancedStats {
   readonly homeXg: number;
   readonly awayXg: number;
@@ -360,6 +411,12 @@ export interface DomainAdvancedStats {
   readonly attackingZones?: DomainAttackingZones;
   readonly momentum?: ReadonlyArray<{ readonly minute: number; readonly value: number }>;
   readonly shots: readonly DomainShotItem[];
+  readonly playerStats?: Readonly<Record<string, DomainPlayerMatchStats>>;
+  readonly goalAssists?: ReadonlyArray<{
+    readonly minute: number;
+    readonly scorerName: string;
+    readonly assistantName: string;
+  }>;
 }
 
 export interface DomainMatchDetail {
@@ -428,6 +485,7 @@ export const espnMatchKeyEventSchema = z.object({
     })
     .optional(),
   scoringPlay: z.boolean().optional(),
+  shootout: z.boolean().optional(),
   team: z
     .object({
       id: z.string().optional(),
@@ -762,19 +820,55 @@ export function transformEspnMatchDetail(
 
   const isTimeConfirmed = !isTbd && comp.timeValid !== false;
 
-  // Extract key match events (goals, cards, substitutions)
-  const events: DomainMatchEvent[] = (data.keyEvents ?? []).map((e, idx) => {
-    let type: MatchEventType = "goal";
+  // Extract key match events (goals, cards, substitutions, missed penalties)
+  const rawEvents = data.keyEvents ?? [];
+  const parsedEvents: DomainMatchEvent[] = [];
+
+  rawEvents.forEach((e, idx) => {
     const rawType = (e.type?.type || e.type?.text || "").toLowerCase();
-    if (rawType.includes("yellow")) {
+    const rawText = (e.text || "").toLowerCase();
+
+    // 1. Determine event type strictly; NEVER default to "goal"
+    let type: MatchEventType | null = null;
+    if (
+      rawType.includes("yellow") &&
+      !rawType.includes("second") &&
+      !rawText.includes("second yellow")
+    ) {
       type = "yellowCard";
-    } else if (rawType.includes("red")) {
+    } else if (
+      rawType.includes("red") ||
+      rawType.includes("second-yellow") ||
+      rawText.includes("second yellow")
+    ) {
       type = "redCard";
     } else if (rawType.includes("sub")) {
       type = "substitution";
-    } else if (rawType.includes("goal") || e.scoringPlay) {
+    } else if (
+      rawType.includes("penalty---missed") ||
+      rawType.includes("penalty---saved") ||
+      (rawType.includes("penalt") && (rawType.includes("miss") || rawType.includes("save"))) ||
+      (rawText.includes("penalt") && (rawText.includes("miss") || rawText.includes("save")))
+    ) {
+      type = "penaltyMissed";
+    } else if (
+      !e.shootout &&
+      !rawType.includes("disallow") &&
+      !rawText.includes("disallow") &&
+      !rawText.includes("cancelled") &&
+      !rawType.includes("var") &&
+      (e.scoringPlay === true ||
+        rawType === "goal" ||
+        rawType === "own-goal" ||
+        rawType === "penalty" ||
+        rawType === "penalty---scored" ||
+        rawText.includes("goal"))
+    ) {
       type = "goal";
     }
+
+    // Ignore unhandled/administrative events (e.g. fouls, offsides, VAR reviews without goal)
+    if (!type) return;
 
     const minuteStr = e.clock?.displayValue ?? "";
     const parsedMin = parseInt(minuteStr.replace(/\D/g, ""), 10);
@@ -799,7 +893,7 @@ export function transformEspnMatchDetail(
       ? normalizeAthleteName({ id: p1.id, displayName: p1.displayName }).name
       : undefined;
 
-    return {
+    parsedEvents.push({
       id: e.id ?? `event-${idx}`,
       type,
       minute: minuteStr,
@@ -815,17 +909,26 @@ export function transformEspnMatchDetail(
       secondaryPlayer: p1Name
         ? { id: p1?.id ?? "", name: p1Name }
         : undefined,
-    };
+    });
   });
 
-  events.sort((a, b) => {
+  parsedEvents.sort((a, b) => {
     if (a.period !== b.period) return a.period - b.period;
     return a.minuteSort - b.minuteSort;
   });
 
+  // Discard any phantom goals if the official finished match score for that team is 0
+  const validatedEvents = parsedEvents.filter((ev) => {
+    if (ev.type === "goal" && isFinished) {
+      if (ev.isHome && homeScore === 0) return false;
+      if (!ev.isHome && awayScore === 0) return false;
+    }
+    return true;
+  });
+
   let runningHomeScore = 0;
   let runningAwayScore = 0;
-  const eventsWithScores: DomainMatchEvent[] = events.map((ev) => {
+  const eventsWithScores: DomainMatchEvent[] = validatedEvents.map((ev) => {
     if (ev.type === "goal") {
       if (ev.isHome) {
         runningHomeScore += 1;

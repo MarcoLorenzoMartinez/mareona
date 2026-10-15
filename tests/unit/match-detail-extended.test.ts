@@ -205,3 +205,53 @@ test("normalizeAthleteName converts incomplete vendor name 'Jorge' to 'Jorge Sá
   assert.equal(other.name, "Cote");
   assert.equal(other.shortName, "Cote");
 });
+
+test("transformEspnMatchDetail maps missed penalty correctly and does not produce phantom goals in 0-0 match", () => {
+  const sample00 = {
+    header: {
+      id: "401883257",
+      league: { id: "3921", name: "Spanish LALIGA 2" },
+      season: { year: 2026, name: "2026-27 Spanish LALIGA 2" },
+      competitions: [
+        {
+          id: "401883257",
+          date: "2026-08-17T17:00Z",
+          timeValid: true,
+          status: { type: { state: "post", completed: true, description: "Full Time" } },
+          competitors: [
+            { id: "3788", homeAway: "home", score: "0", team: { id: "3788", displayName: "Sporting Gijón" } },
+            { id: "11487", homeAway: "away", score: "0", team: { id: "11487", displayName: "CD Sabadell" } },
+          ],
+        },
+      ],
+    },
+    keyEvents: [
+      {
+        id: "51029903",
+        type: { id: "113", text: "Penalty - Missed", type: "penalty---missed" },
+        text: "Yanis Rahmani (CD Sabadell) Penalty - Missed at 13'",
+        clock: { value: 733, displayValue: "13'" },
+        scoringPlay: false,
+        team: { id: "11487", displayName: "CD Sabadell" },
+        participants: [{ athlete: { id: "245840", displayName: "Yanis Rahmani" } }],
+      },
+    ],
+  };
+
+  const parsed = espnMatchSummaryResponseSchema.safeParse(sample00);
+  assert.equal(parsed.success, true);
+  if (!parsed.success) return;
+
+  const detail = transformEspnMatchDetail(parsed.data, 1);
+  assert.ok(detail);
+  assert.equal(detail.homeScore, 0);
+  assert.equal(detail.awayScore, 0);
+  assert.equal(detail.events.length, 1);
+
+  const penaltyEvent = detail.events[0];
+  assert.equal(penaltyEvent.type, "penaltyMissed");
+  assert.equal(penaltyEvent.minute, "13'");
+  assert.equal(penaltyEvent.player.name, "Yanis Rahmani");
+  assert.equal(penaltyEvent.score, undefined);
+});
+

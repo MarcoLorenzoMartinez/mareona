@@ -61,6 +61,7 @@ export const es = {
         secondHalf: "2.ª Parte",
         goal: "Gol",
         penalty: "Penalti",
+        penaltyMissed: "Penalti fallado",
         ownGoal: "Gol en propia meta",
         yellowCard: "Tarjeta amarilla",
         redCard: "Tarjeta roja",
