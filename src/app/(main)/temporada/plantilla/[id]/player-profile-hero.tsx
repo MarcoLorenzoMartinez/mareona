@@ -3,6 +3,7 @@ import type { DomainPlayer } from "@/lib/sports-api/types";
 import type { DomainPlayerProfile } from "@/lib/sports-api/fotmob-player-profile-types";
 import { PlayerPhoto } from "@/components/media/player-photo";
 import { PlayerAvatarFallback } from "@/components/media/player-avatar-fallback";
+import { translateCountryName } from "@/lib/sports-api/fotmob-player-stats-translations";
 
 interface PlayerProfileHeroProps {
   readonly player: DomainPlayer;
@@ -12,6 +13,7 @@ interface PlayerProfileHeroProps {
 export function PlayerProfileHero({ player, profile }: PlayerProfileHeroProps) {
   const bio = profile?.biometrics;
   const dorsal = player.shirtNumber ?? profile?.shirtNumber;
+  const countryName = bio?.country ?? (player.nationality ? translateCountryName(player.nationality) : null);
 
   return (
     <header className="flex flex-col gap-6">
@@ -86,10 +88,10 @@ export function PlayerProfileHero({ player, profile }: PlayerProfileHeroProps) {
                 </div>
               )}
 
-              {bio?.country && (
+              {countryName && (
                 <div className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 font-semibold text-neutral-700">
                   <span className="text-neutral-600 font-bold">País:</span>
-                  <span className="font-bold text-neutral-900">{bio.country}</span>
+                  <span className="font-bold text-neutral-900">{countryName}</span>
                 </div>
               )}
 

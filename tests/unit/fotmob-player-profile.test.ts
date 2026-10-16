@@ -90,6 +90,7 @@ test("parseFotMobPlayerProfile maps biometrics, positions, heatmap, and recent m
   assert.equal(parsed.biometrics.preferredFoot, "Diestro");
   assert.equal(parsed.biometrics.height, "175 cm");
   assert.equal(parsed.biometrics.age, 26);
+  assert.equal(parsed.biometrics.country, "España");
   assert.equal(parsed.biometrics.countryCode, "ESP");
   assert.equal(parsed.biometrics.contractEnd, "Hasta 2028");
 
@@ -328,4 +329,25 @@ test("translatePlayerStatTitle and translatePlayerStatGroupTitle localize metric
   // Fallback si no existe
   assert.equal(translatePlayerStatTitle("Métrica desconocida"), "Métrica desconocida");
 });
+
+test("translateCountryName normalizes country names into Spanish", async () => {
+  const { translateCountryName } = await import(
+    "../../src/lib/sports-api/fotmob-player-stats-translations.ts"
+  );
+
+  assert.equal(translateCountryName("Spain"), "España");
+  assert.equal(translateCountryName("ESP"), "España");
+  assert.equal(translateCountryName("France"), "Francia");
+  assert.equal(translateCountryName("Russia"), "Rusia");
+  assert.equal(translateCountryName("Uruguay"), "Uruguay");
+  assert.equal(translateCountryName("United States"), "Estados Unidos");
+  assert.equal(translateCountryName("USA"), "Estados Unidos");
+  assert.equal(translateCountryName("Senegal"), "Senegal");
+  assert.equal(translateCountryName("Argentina"), "Argentina");
+  assert.equal(translateCountryName("Colombia"), "Colombia");
+  assert.equal(translateCountryName("Montenegro"), "Montenegro");
+  assert.equal(translateCountryName("Cote d'Ivoire"), "Costa de Marfil");
+  assert.equal(translateCountryName(null), null);
+});
+
 

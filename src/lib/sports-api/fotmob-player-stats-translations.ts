@@ -115,3 +115,52 @@ export function translatePlayerStatTitle(rawTitle: string | null | undefined): s
   const key = rawTitle.trim().toLowerCase();
   return STAT_TITLES[key] || rawTitle;
 }
+
+const COUNTRY_NAMES: Readonly<Record<string, string>> = {
+  spain: "España", españa: "España", esp: "España",
+  france: "Francia", francia: "Francia", fra: "Francia",
+  russia: "Rusia", rusia: "Rusia", rus: "Rusia",
+  uruguay: "Uruguay", ury: "Uruguay",
+  senegal: "Senegal", sen: "Senegal",
+  argentina: "Argentina", arg: "Argentina",
+  colombia: "Colombia", col: "Colombia",
+  usa: "Estados Unidos", "united states": "Estados Unidos",
+  mexico: "México", méxico: "México", mex: "México",
+  montenegro: "Montenegro", mne: "Montenegro",
+  "cote d'ivoire": "Costa de Marfil", "ivory coast": "Costa de Marfil", civ: "Costa de Marfil",
+  cameroon: "Camerún", camerún: "Camerún", cmr: "Camerún",
+  morocco: "Marruecos", marruecos: "Marruecos", mar: "Marruecos",
+  portugal: "Portugal", por: "Portugal",
+  italy: "Italia", italia: "Italia", ita: "Italia",
+  germany: "Alemania", alemania: "Alemania", ger: "Alemania", deu: "Alemania",
+  england: "Inglaterra", inglaterra: "Inglaterra", eng: "Inglaterra",
+  brazil: "Brasil", brasil: "Brasil", bra: "Brasil",
+  chile: "Chile", chl: "Chile",
+  peru: "Perú", perú: "Perú", per: "Perú",
+  venezuela: "Venezuela", ven: "Venezuela",
+  paraguay: "Paraguay", pry: "Paraguay",
+  ecuador: "Ecuador", ecu: "Ecuador",
+  netherlands: "Países Bajos", nld: "Países Bajos",
+  belgium: "Bélgica", bélgica: "Bélgica", bel: "Bélgica",
+  croatia: "Croacia", croacia: "Croacia", hrv: "Croacia",
+  serbia: "Serbia", srb: "Serbia",
+  poland: "Polonia", polonia: "Polonia", pol: "Polonia",
+  sweden: "Suecia", suecia: "Suecia", swe: "Suecia",
+  norway: "Noruega", noruega: "Noruega", nor: "Noruega",
+  denmark: "Dinamarca", dinamarca: "Dinamarca", dnk: "Dinamarca",
+  japan: "Japón", japón: "Japón", jpn: "Japón",
+  "south korea": "Corea del Sur", "korea, south": "Corea del Sur", kor: "Corea del Sur",
+  "equatorial guinea": "Guinea Ecuatorial", gnq: "Guinea Ecuatorial",
+};
+
+/**
+ * Translates a country name or code into canonical Spanish.
+ *
+ * @param rawCountry - Country name or acronym (e.g. "Spain", "ESP").
+ * @returns Spanish country name or original if not in dictionary.
+ */
+export function translateCountryName(rawCountry: string | null | undefined): string | null {
+  if (!rawCountry) return null;
+  const key = rawCountry.trim().toLowerCase();
+  return COUNTRY_NAMES[key] || rawCountry;
+}

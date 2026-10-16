@@ -10,6 +10,7 @@ import type {
 import {
   translatePlayerStatGroupTitle,
   translatePlayerStatTitle,
+  translateCountryName,
 } from "./fotmob-player-stats-translations.ts";
 
 const POSITION_TRANSLATIONS: Record<string, { label: string; short: string }> = {
@@ -68,7 +69,7 @@ export function parseFotMobPlayerProfile(data: FotMobRawPlayerData): DomainPlaye
     age: infoMap.get("age") ? parseInt(String(infoMap.get("age")), 10) : null,
     birthDate: data.birthDate?.utcTime?.slice(0, 10) ?? null,
     preferredFoot,
-    country: typeof infoMap.get("country") === "string" ? String(infoMap.get("country")) : null,
+    country: typeof infoMap.get("country") === "string" ? translateCountryName(String(infoMap.get("country"))) : null,
     countryCode,
     marketValue: typeof infoMap.get("market value") === "string" ? String(infoMap.get("market value")) : null,
     contractEnd: contractYear ? `Hasta ${contractYear}` : null,
