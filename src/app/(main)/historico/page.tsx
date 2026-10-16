@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 export default function HistoricoTrayectoriaPage() {
   const seasons = getAllSeasons();
   const chartPoints = getHistoricalChartPoints();
+  const defaultSeasonId = seasons[0]?.id;
 
   return (
     <div className="flex flex-col gap-6">
@@ -21,7 +22,7 @@ export default function HistoricoTrayectoriaPage() {
       <HistoricalTrayectoriaHub
         seasons={seasons}
         chartPoints={chartPoints}
-        initialSeasonId="1978-79"
+        initialSeasonId={defaultSeasonId}
       />
     </div>
   );

@@ -76,3 +76,4 @@ export {
 };
 
 export { getSquadForSeason, getAssistsForSeason } from "./squads-data.ts";
+export { getMatchesForSeason, getMatchesSummary } from "./matches-data.ts";

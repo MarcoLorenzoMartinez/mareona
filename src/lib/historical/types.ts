@@ -92,3 +92,25 @@ export interface HistoricalSeasonSquad {
   readonly topScorers: readonly HistoricalTopScorer[];
   readonly players: readonly HistoricalPlayer[];
 }
+
+export type HistoricalMatchOutcome = "V" | "E" | "D";
+
+export interface HistoricalMatch {
+  readonly id: string;
+  readonly date: string;
+  readonly competition: string;
+  readonly round: string;
+  readonly homeTeam: string;
+  readonly homeCrestUrl?: string | null;
+  readonly awayTeam: string;
+  readonly awayCrestUrl?: string | null;
+  readonly homeScore: number;
+  readonly awayScore: number;
+  readonly isHome: boolean;
+  readonly outcome: HistoricalMatchOutcome;
+  readonly opponent: string;
+  readonly venue?: string;
+  readonly bdfHomeCrest?: string;
+  readonly bdfAwayCrest?: string;
+}
+

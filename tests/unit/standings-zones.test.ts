@@ -66,6 +66,34 @@ describe("resolveHistoricalZone", () => {
     assert.equal(resolveHistoricalZone(season, 17, 20), "relegation");
   });
 
+  it("resolves 1968-1986 Segunda with top 3 direct promotions (no playoff)", () => {
+    const season = createMockSeason({ tier: 2, startYear: 1969, totalTeams: 20 });
+
+    assert.equal(resolveHistoricalZone(season, 1, 20), "promotion-direct");
+    assert.equal(resolveHistoricalZone(season, 2, 20), "promotion-direct");
+    assert.equal(resolveHistoricalZone(season, 3, 20), "promotion-direct");
+    assert.equal(resolveHistoricalZone(season, 4, 20), "neutral");
+    assert.equal(resolveHistoricalZone(season, 17, 20), "relegation");
+  });
+
+  it("resolves 1950-1967 Segunda with group champion direct and runner-up promotion playoff", () => {
+    const season = createMockSeason({ tier: 2, startYear: 1966, totalTeams: 16 });
+
+    assert.equal(resolveHistoricalZone(season, 1, 16), "promotion-direct");
+    assert.equal(resolveHistoricalZone(season, 2, 16), "promotion-playoff");
+    assert.equal(resolveHistoricalZone(season, 3, 16), "neutral");
+    assert.equal(resolveHistoricalZone(season, 15, 16), "relegation");
+  });
+
+  it("resolves 1929-1932 early Segunda where ONLY position 1 is promoted to Primera", () => {
+    const season = createMockSeason({ tier: 2, startYear: 1929, totalTeams: 10 });
+
+    assert.equal(resolveHistoricalZone(season, 1, 10), "promotion-direct");
+    assert.equal(resolveHistoricalZone(season, 2, 10), "neutral"); // Sporting subcampeon did NOT promote
+    assert.equal(resolveHistoricalZone(season, 3, 10), "neutral");
+    assert.equal(resolveHistoricalZone(season, 10, 10), "relegation");
+  });
+
   it("resolves modern Primera División (2021+) with Champions, Europa, and Conference", () => {
     const season = createMockSeason({ tier: 1, startYear: 2022, totalTeams: 20, tierName: "1.ª División" });
 
@@ -96,10 +124,16 @@ describe("getZoneBadgeStyle", () => {
     const direct = getZoneBadgeStyle("promotion-direct");
     const playoff = getZoneBadgeStyle("promotion-playoff");
 
-    assert.match(direct.badgeClass, /bg-emerald-600/);
-    assert.match(playoff.badgeClass, /bg-emerald-100/);
-    assert.match(playoff.badgeClass, /text-emerald-900/);
-    assert.notEqual(direct.badgeClass, playoff.badgeClass);
+    assert.equal(direct.barClass, "bg-[#16a34a]");
+    assert.equal(playoff.barClass, "bg-[#2563eb]");
+    assert.notEqual(direct.barClass, playoff.barClass);
+  });
+
+  it("assigns green to champion and direct promotion", () => {
+    const champion = getZoneBadgeStyle("champion");
+    const direct = getZoneBadgeStyle("promotion-direct");
+    assert.equal(champion.barClass, "bg-[#16a34a]");
+    assert.equal(direct.barClass, "bg-[#16a34a]");
   });
 
   it("assigns blue to Champions League and orange to Europa League / UEFA", () => {
@@ -107,9 +141,9 @@ describe("getZoneBadgeStyle", () => {
     const uel = getZoneBadgeStyle("europa-league");
     const uefa = getZoneBadgeStyle("uefa");
 
-    assert.match(ucl.badgeClass, /bg-blue-600/);
-    assert.match(uel.badgeClass, /bg-orange-600/);
-    assert.match(uefa.badgeClass, /bg-orange-600/);
+    assert.equal(ucl.barClass, "bg-[#1d4ed8]");
+    assert.equal(uel.barClass, "bg-[#ea580c]");
+    assert.equal(uefa.barClass, "bg-[#ea580c]");
   });
 });
 

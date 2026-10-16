@@ -21,6 +21,13 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
   const isRelegation =
     scope === "total" && totalTeams > 4 ? row.position > totalTeams - 4 : false;
   const goalDiff = row.goalsFor - row.goalsAgainst;
+  const barClass = isDirectPromotion
+    ? "bg-[#16a34a]"
+    : isPlayoff
+      ? "bg-[#2563eb]"
+      : isRelegation
+        ? "bg-[#dc2626]"
+        : "";
 
   return (
     <tr
@@ -30,27 +37,25 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
           : "hover:bg-[var(--surface)] text-[var(--foreground)]"
       }`}
     >
-      <td className="py-2.5 pl-3 text-center">
-        <span
-          className={`inline-flex h-6 w-6 items-center justify-center rounded-sm text-xs font-bold ${
-            isDirectPromotion
-              ? "bg-emerald-600 text-white shadow-2xs"
-              : isPlayoff
-                ? "bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold"
-                : isRelegation
-                  ? "bg-rose-700 text-white shadow-2xs"
-                  : "text-[var(--foreground-muted)]"
-          }`}
-          aria-label={`Posición ${row.position}${
-            isDirectPromotion
-              ? `, ${t.zones.promotion}`
-              : isPlayoff
-                ? `, ${t.zones.playoff}`
-                : isRelegation
-                  ? `, ${t.zones.relegation}`
-                  : ""
-          }`}
-        >
+      <td
+        className="relative py-2.5 pl-3 pr-2 text-center"
+        aria-label={`Posición ${row.position}${
+          isDirectPromotion
+            ? `, ${t.zones.promotion}`
+            : isPlayoff
+              ? `, ${t.zones.playoff}`
+              : isRelegation
+                ? `, ${t.zones.relegation}`
+                : ""
+        }`}
+      >
+        {barClass && (
+          <span
+            className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full ${barClass}`}
+            aria-hidden="true"
+          />
+        )}
+        <span className="text-xs font-bold text-neutral-800 tabular-nums">
           {row.position}
         </span>
       </td>

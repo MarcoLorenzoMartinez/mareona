@@ -1,10 +1,6 @@
 import { TeamCrest } from "@/components/media/team-crest";
 import type { HistoricalStandingRow, HistoricalSeason } from "@/lib/historical/types";
-import {
-  resolveHistoricalZone,
-  getZoneBadgeStyle,
-  getZoneLegendItems,
-} from "@/lib/historical/standings-zones";
+import { resolveHistoricalZone, getZoneBadgeStyle, getZoneLegendItems } from "@/lib/historical/standings-zones";
 
 interface StandingsTableProps {
   readonly rows: readonly HistoricalStandingRow[];
@@ -77,12 +73,18 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
                         : "hover:bg-[var(--surface)] text-[var(--foreground)]"
                     }`}
                   >
-                    {/* Posición con indicador de zona */}
-                    <td className="py-2.5 pl-3 text-center">
-                      <span
-                        className={`inline-flex h-6 w-6 items-center justify-center rounded-sm text-xs font-bold tabular-nums ${badgeStyle.badgeClass}`}
-                        aria-label={`Posición ${row.position}, ${badgeStyle.label}`}
-                      >
+                    {/* Posición con barra vertical de acento */}
+                    <td
+                      className="relative py-2.5 pl-3 pr-2 text-center"
+                      aria-label={`Posición ${row.position}, ${badgeStyle.label}`}
+                    >
+                      {badgeStyle.barClass && (
+                        <span
+                          className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full ${badgeStyle.barClass}`}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <span className="text-xs font-bold text-neutral-800 tabular-nums">
                         {row.position}
                       </span>
                     </td>
@@ -160,7 +162,7 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
           <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
             {legendItems.map((item) => (
               <span key={item.label} className="flex items-center gap-1.5">
-                <span className={`h-2 w-2 rounded-xs ${item.dotClass}`} aria-hidden="true" />
+                <span className={`h-3 w-[3px] rounded-full ${item.barClass}`} aria-hidden="true" />
                 {item.label}
               </span>
             ))}

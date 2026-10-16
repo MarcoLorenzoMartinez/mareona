@@ -80,15 +80,15 @@ export function StandingsTable({
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-xs bg-emerald-600" aria-hidden="true" />
+              <span className="h-3 w-[3px] rounded-full bg-[#16a34a]" aria-hidden="true" />
               {t.zones.promotion}
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-xs bg-emerald-100 border border-emerald-400" aria-hidden="true" />
+              <span className="h-3 w-[3px] rounded-full bg-[#2563eb]" aria-hidden="true" />
               {t.zones.playoff}
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-xs bg-rose-700" aria-hidden="true" />
+              <span className="h-3 w-[3px] rounded-full bg-[#dc2626]" aria-hidden="true" />
               {t.zones.relegation}
             </span>
           </div>

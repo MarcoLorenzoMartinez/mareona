@@ -136,6 +136,28 @@ const CANONICAL_CRESTS: Readonly<Record<string, string>> = {
   "juvenil": "/crests/juvenil.png",
 };
 
+const ALIASES: Readonly<Record<string, string>> = {
+  "atletico-de-madrid": "atletico-madrid",
+  "racing-de-santander": "racing-santander",
+  "racing-de-ferrol": "racing-ferrol",
+  "recreativo-de-huelva": "recreativo-huelva",
+  "albacete-balompie": "albacete",
+  "girona": "girona-fc",
+  "lugo": "cd-lugo",
+  "amorebieta": "sd-amorebieta",
+  "extremadura-ud": "extremadura",
+  "compostela": "sd-compostela",
+  "pontevedra": "pontevedra-cf",
+  "caudal-deportivo": "caudal",
+  "ue-lleida": "lleida",
+  "real-sociedad-b": "real-sociedad",
+  "real-madrid-castilla": "real-madrid",
+  "fc-barcelona-atletic": "fc-barcelona",
+  "villarreal-cf-b": "villarreal-cf",
+  "atletico-malagueno": "malaga-cf",
+  "jaen": "real-jaen",
+};
+
 /**
  * Resolves canonical club crest URL from slug or name, returning null if unmapped.
  *
@@ -143,5 +165,6 @@ const CANONICAL_CRESTS: Readonly<Record<string, string>> = {
  * @returns Remote CDN URL string or null.
  */
 export function getHistoricalCrestUrl(slug: string): string | null {
-  return CANONICAL_CRESTS[slug] ?? null;
+  const resolved = ALIASES[slug] ?? slug;
+  return CANONICAL_CRESTS[resolved] ?? null;
 }

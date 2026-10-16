@@ -53,18 +53,10 @@ export function SeasonSummaryTable({
                     <th scope="col" className="py-2.5 pl-1.5 sm:pl-2 pr-2 text-left">
                       {dict.season.standings.columns.team}
                     </th>
-                    <th
-                      scope="col"
-                      className="w-14 sm:w-16 py-2.5 text-center"
-                      title={dict.season.standings.columnTitles.played}
-                    >
+                    <th scope="col" className="w-14 sm:w-16 py-2.5 text-center" title={dict.season.standings.columnTitles.played}>
                       {dict.season.standings.columns.played}
                     </th>
-                    <th
-                      scope="col"
-                      className="w-14 sm:w-16 py-2.5 pr-3 text-right"
-                      title={dict.season.standings.columnTitles.points}
-                    >
+                    <th scope="col" className="w-14 sm:w-16 py-2.5 pr-3 text-right" title={dict.season.standings.columnTitles.points}>
                       {dict.season.standings.columns.points}
                     </th>
                   </tr>
@@ -75,6 +67,13 @@ export function SeasonSummaryTable({
                     const isPlayoff = row.position >= 3 && row.position <= 6;
                     const isRelegation =
                       standings.length > 4 ? row.position > standings.length - 4 : false;
+                    const barClass = isDirectPromotion
+                      ? "bg-[#16a34a]"
+                      : isPlayoff
+                        ? "bg-[#2563eb]"
+                        : isRelegation
+                          ? "bg-[#dc2626]"
+                          : "";
 
                     return (
                       <tr
@@ -85,28 +84,26 @@ export function SeasonSummaryTable({
                             : "hover:bg-[var(--surface)] text-[var(--foreground)]"
                         }`}
                       >
-                        {/* Posición */}
-                        <td className="py-2.5 pl-3 text-center">
-                          <span
-                            className={`inline-flex h-6 w-6 items-center justify-center rounded-sm text-xs font-bold ${
-                              isDirectPromotion
-                                ? "bg-emerald-600 text-white shadow-2xs"
-                                : isPlayoff
-                                  ? "bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold"
-                                  : isRelegation
-                                    ? "bg-rose-700 text-white shadow-2xs"
-                                    : "text-[var(--foreground-muted)]"
-                            }`}
-                            aria-label={`Posición ${row.position}${
-                              isDirectPromotion
-                                ? ", Ascenso directo"
-                                : isPlayoff
-                                  ? ", Playoff de ascenso"
-                                  : isRelegation
-                                    ? ", Descenso"
-                                    : ""
-                            }`}
-                          >
+                        {/* Posición con barra vertical de acento */}
+                        <td
+                          className="relative py-2.5 pl-3 pr-2 text-center"
+                          aria-label={`Posición ${row.position}${
+                            isDirectPromotion
+                              ? ", Ascenso directo"
+                              : isPlayoff
+                                ? ", Playoff de ascenso"
+                                : isRelegation
+                                  ? ", Descenso"
+                                  : ""
+                          }`}
+                        >
+                          {barClass && (
+                            <span
+                              className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full ${barClass}`}
+                              aria-hidden="true"
+                            />
+                          )}
+                          <span className="text-xs font-bold text-neutral-800 tabular-nums">
                             {row.position}
                           </span>
                         </td>
@@ -149,15 +146,15 @@ export function SeasonSummaryTable({
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-xs bg-emerald-600" aria-hidden="true" />
+                  <span className="h-3 w-[3px] rounded-full bg-[#16a34a]" aria-hidden="true" />
                   {dict.season.standings.zones.promotion}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-xs bg-emerald-100 border border-emerald-400" aria-hidden="true" />
+                  <span className="h-3 w-[3px] rounded-full bg-[#2563eb]" aria-hidden="true" />
                   {dict.season.standings.zones.playoff}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-xs bg-rose-700" aria-hidden="true" />
+                  <span className="h-3 w-[3px] rounded-full bg-[#dc2626]" aria-hidden="true" />
                   {dict.season.standings.zones.relegation}
                 </span>
               </div>

@@ -3,12 +3,13 @@
 
 import { useState, useMemo } from "react";
 import type { HistoricalSeason, HistoricalChartPoint } from "@/lib/historical/types";
-import { getStandings, getSquadForSeason, getAssistsForSeason } from "@/lib/historical/service";
+import { getStandings, getSquadForSeason, getAssistsForSeason, getMatchesForSeason } from "@/lib/historical/service";
 import { HistoricalEvolutionChart } from "./evolution-chart";
 import { HistoricalSeasonSelector } from "./season-picker";
 import { HistoricalStandingsTable } from "./standings-table";
 import { HistoricalSeasonLeaders } from "./season-leaders";
 import { HistoricalSeasonSquadTable } from "./season-squad";
+import { HistoricalSeasonMatches } from "./season-matches";
 
 interface TrayectoriaHubProps {
   readonly seasons: readonly HistoricalSeason[];
@@ -17,16 +18,27 @@ interface TrayectoriaHubProps {
   readonly initialSeasonId?: string;
 }
 
+type SeasonViewTab = "clasificacion" | "partidos" | "plantilla";
+
+const TABS: readonly { readonly id: SeasonViewTab; readonly label: string }[] = [
+  { id: "clasificacion", label: "Clasificación" },
+  { id: "partidos", label: "Partidos" },
+  { id: "plantilla", label: "Plantilla" },
+];
+
 /**
  * Interactive hub coordinating trajectory chart, season selector,
- * official standings table, and club squad dossier for Real Sporting.
+ * official standings table, match results calendar, and club squad dossier for Real Sporting.
  */
 export function HistoricalTrayectoriaHub({
   seasons,
   chartPoints,
-  initialSeasonId = "1978-79",
+  initialSeasonId,
 }: TrayectoriaHubProps) {
-  const [selectedSeasonId, setSelectedSeasonId] = useState<string>(initialSeasonId);
+  const [selectedSeasonId, setSelectedSeasonId] = useState<string>(
+    initialSeasonId ?? seasons[0]?.id ?? "2024-25"
+  );
+  const [activeTab, setActiveTab] = useState<SeasonViewTab>("clasificacion");
 
   const selectedSeason = useMemo(() => {
     return seasons.find((s) => s.id === selectedSeasonId) ?? seasons[0]!;
@@ -42,6 +54,10 @@ export function HistoricalTrayectoriaHub({
 
   const assists = useMemo(() => {
     return getAssistsForSeason(selectedSeason.id);
+  }, [selectedSeason.id]);
+
+  const matches = useMemo(() => {
+    return getMatchesForSeason(selectedSeason.id);
   }, [selectedSeason.id]);
 
   return (
@@ -60,26 +76,51 @@ export function HistoricalTrayectoriaHub({
         onSelectSeason={setSelectedSeasonId}
       />
 
-      {/* 3. Full Official Standings Table */}
-      <HistoricalStandingsTable rows={standingsRows} season={selectedSeason} />
+      {/* 3. Segmented Control Tabs (Clasificación / Partidos / Plantilla) */}
+      <div className="flex items-center justify-center gap-2" role="tablist" aria-label="Secciones de la temporada">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`rounded-full px-5 py-2 text-sm cursor-pointer transition-colors ${
+              activeTab === tab.id
+                ? "bg-[var(--primary)] text-white font-bold shadow-xs"
+                : "bg-[var(--surface)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border)] font-medium"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-      {/* 4. Sporting Dossier: Coaches, Top Scorers, Assists / Appearances */}
-      {squad && (
-        <>
-          <HistoricalSeasonLeaders
-            coaches={squad.coaches}
-            topScorers={squad.topScorers}
-            assists={assists}
-            players={squad.players}
-            seasonLabel={selectedSeason.label}
-          />
+      {/* 4. Active Tab Content */}
+      {activeTab === "clasificacion" && (
+        <div className="flex flex-col gap-6">
+          <HistoricalStandingsTable rows={standingsRows} season={selectedSeason} />
+          {squad && (
+            <HistoricalSeasonLeaders
+              coaches={squad.coaches}
+              topScorers={squad.topScorers}
+              assists={assists}
+              players={squad.players}
+              seasonLabel={selectedSeason.label}
+            />
+          )}
+        </div>
+      )}
 
-          {/* 5. Sporting Dossier: Official Squad with Tactical Filters */}
-          <HistoricalSeasonSquadTable
-            players={squad.players}
-            seasonLabel={selectedSeason.label}
-          />
-        </>
+      {activeTab === "partidos" && (
+        <HistoricalSeasonMatches matches={matches} seasonLabel={selectedSeason.label} />
+      )}
+
+      {activeTab === "plantilla" && squad && (
+        <HistoricalSeasonSquadTable
+          players={squad.players}
+          seasonLabel={selectedSeason.label}
+        />
       )}
     </div>
   );
