@@ -8,6 +8,13 @@ const SQUADS_DATA = rawSquads as Readonly<Record<string, HistoricalSeasonSquad>>
  * For historical campaigns where assists were not tracked by the RFEF, this is empty.
  */
 const MODERN_ASSISTS: Readonly<Record<string, readonly { readonly name: string; readonly assists: number; readonly played: number }[]>> = {
+  "2025-26": [
+    { name: "Dubasin", assists: 8, played: 25 },
+    { name: "Gelabert", assists: 7, played: 25 },
+    { name: "Otero", assists: 5, played: 30 },
+    { name: "Rosas", assists: 4, played: 25 },
+    { name: "Corredera", assists: 4, played: 29 },
+  ],
   "2024-25": [
     { name: "Cote", assists: 5, played: 26 },
     { name: "Dubasin", assists: 5, played: 24 },
@@ -39,6 +46,42 @@ const MODERN_ASSISTS: Readonly<Record<string, readonly { readonly name: string; 
     { name: "Aitor García", assists: 4, played: 39 },
     { name: "Guille Rosas", assists: 3, played: 26 },
     { name: "Saúl García", assists: 3, played: 34 },
+  ],
+  "2019-20": [
+    { name: "Manu García", assists: 8, played: 40 },
+    { name: "Pedro Díaz", assists: 5, played: 29 },
+    { name: "Carmona", assists: 4, played: 33 },
+    { name: "Djurdjević", assists: 3, played: 35 },
+  ],
+  "2018-19": [
+    { name: "Carmona", assists: 6, played: 35 },
+    { name: "Robin Lod", assists: 4, played: 23 },
+    { name: "Cofie", assists: 3, played: 25 },
+    { name: "Álvaro Jiménez", assists: 3, played: 24 },
+  ],
+  "2017-18": [
+    { name: "Carmona", assists: 9, played: 41 },
+    { name: "Rubén García", assists: 8, played: 41 },
+    { name: "Jony", assists: 6, played: 21 },
+    { name: "Michael Santos", assists: 4, played: 36 },
+  ],
+  "2016-17": [
+    { name: "Burgui", assists: 4, played: 32 },
+    { name: "Moi Gómez", assists: 4, played: 26 },
+    { name: "Víctor Rodríguez", assists: 4, played: 26 },
+    { name: "Douglas", assists: 2, played: 21 },
+  ],
+  "2015-16": [
+    { name: "Jony", assists: 9, played: 36 },
+    { name: "Halilović", assists: 5, played: 36 },
+    { name: "Álex Menéndez", assists: 2, played: 21 },
+    { name: "Sanabria", assists: 1, played: 29 },
+  ],
+  "2014-15": [
+    { name: "Jony", assists: 11, played: 41 },
+    { name: "Guerrero", assists: 4, played: 36 },
+    { name: "Pablo Pérez", assists: 3, played: 37 },
+    { name: "Carmona", assists: 3, played: 38 },
   ],
 };
 

@@ -1,11 +1,11 @@
-// Client: Visualización táctica de alineaciones, banquillo y entrenadores con fotos
+// Client: Visualización táctica de alineaciones, banquillo y entrenadores por líneas
 "use client";
 
-import type {
-  HistoricalMatchPlayer,
-  HistoricalMatchCoach,
-} from "@/lib/historical/types";
+import { useMemo } from "react";
+import type { HistoricalMatchPlayer, HistoricalMatchCoach } from "@/lib/historical/types";
 import { PlayerPhoto } from "@/components/media/player-photo";
+import { getTeamPrimaryColor } from "@/lib/sports-api/team-colors";
+import { StarterCard, BenchChip } from "./match-lineup-cards";
 
 interface MatchDetailLineupsProps {
   readonly homeTeam: string;
@@ -18,56 +18,12 @@ interface MatchDetailLineupsProps {
   readonly awayCoach?: HistoricalMatchCoach | null;
 }
 
-function StarterCard({ player }: { readonly player: HistoricalMatchPlayer }) {
-  return (
-    <div className="flex items-center justify-between gap-1.5 py-1 px-2 rounded-lg bg-[var(--surface)]/70 border border-[var(--border)] text-xs hover:bg-[var(--surface)] transition-colors min-w-0">
-      <div className="flex items-center gap-2 min-w-0">
-        <PlayerPhoto
-          photoUrl={player.photoUrl}
-          playerName={player.name}
-          size="sm"
-          className="h-6 w-6 rounded-full border border-[var(--border)] object-cover object-top shrink-0 bg-neutral-100"
-        />
-        <span className="font-semibold text-[var(--foreground)] truncate">{player.name}</span>
-      </div>
-
-      <div className="flex items-center gap-1 shrink-0 tabular-nums text-[10px] font-bold">
-        {player.yellowCard && (
-          <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300" title={`Tarjeta amarilla minuto ${player.yellowCard}`}>
-            <span className="w-1.5 h-2.5 bg-amber-400 rounded-2xs inline-block" />
-            {player.yellowCard}&apos;
-          </span>
-        )}
-        {player.redCard && (
-          <span className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded bg-red-100 text-red-800 border border-red-300" title={`Tarjeta roja minuto ${player.redCard}`}>
-            <span className="w-1.5 h-2.5 bg-red-600 rounded-2xs inline-block" />
-            {player.redCard}&apos;
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function BenchChip({ player }: { readonly player: HistoricalMatchPlayer }) {
-  return (
-    <div className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full bg-white border border-[var(--border)] text-xs shadow-2xs hover:bg-[var(--surface)] transition-colors">
-      <PlayerPhoto
-        photoUrl={player.photoUrl}
-        playerName={player.name}
-        size="sm"
-        className="h-5 w-5 rounded-full border border-[var(--border)] object-cover object-top shrink-0 bg-neutral-100"
-      />
-      <span className="font-medium text-[var(--foreground)]">{player.name}</span>
-      {player.yellowCard && (
-        <span className="w-1.5 h-2.5 bg-amber-400 rounded-2xs inline-block ml-0.5 shrink-0" title={`Amarilla ${player.yellowCard}'`} />
-      )}
-      {player.redCard && (
-        <span className="w-1.5 h-2.5 bg-red-600 rounded-2xs inline-block ml-0.5 shrink-0" title={`Roja ${player.redCard}'`} />
-      )}
-    </div>
-  );
-}
+const POSITION_LINES = [
+  { key: "Portero", label: "Portero" },
+  { key: "Defensa", label: "Defensas" },
+  { key: "Centrocampista", label: "Centrocampistas" },
+  { key: "Delantero", label: "Delanteros" },
+] as const;
 
 function TeamLineupColumn({
   teamName,
@@ -80,17 +36,39 @@ function TeamLineupColumn({
   readonly bench: readonly HistoricalMatchPlayer[];
   readonly coach?: HistoricalMatchCoach | null;
 }) {
+  const isSporting = teamName === "Real Sporting";
+  const teamColor = useMemo(() => getTeamPrimaryColor({ teamName, isSporting }), [teamName, isSporting]);
+
+  const groupedStarters = useMemo(() => {
+    const hasKnownPositions = starters.some((p) => p.position);
+    if (!hasKnownPositions) {
+      return [{ label: "Once Titular", players: [...starters] }];
+    }
+    const groups: { label: string; players: HistoricalMatchPlayer[] }[] = [];
+    for (const line of POSITION_LINES) {
+      const list = starters.filter((p) => p.position === line.key);
+      if (list.length > 0) groups.push({ label: line.label, players: list });
+    }
+    const unassigned = starters.filter((p) => !p.position);
+    if (unassigned.length > 0) groups.push({ label: "Jugadores", players: unassigned });
+    return groups;
+  }, [starters]);
+
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between border-b border-[var(--border)] pb-2 gap-2">
-        <h4 className="text-sm font-bold text-[var(--foreground)] truncate">{teamName}</h4>
+    <div className="flex flex-col gap-3 rounded-2xl border border-[var(--border)] bg-neutral-50/40 p-3 sm:p-4">
+      <div className="flex items-center justify-between border-b border-[var(--border)] pb-2.5 gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs" style={{ backgroundColor: teamColor }} aria-hidden="true" />
+          <h4 className="text-sm font-bold text-[var(--foreground)] truncate">{teamName}</h4>
+        </div>
         {coach && (
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0 bg-white px-2 py-0.5 rounded-full border border-[var(--border)] shadow-2xs">
             <PlayerPhoto
               photoUrl={coach.photoUrl}
               playerName={coach.name}
               size="sm"
-              className="h-6 w-6 rounded-full border border-[var(--border)] object-cover object-top shrink-0 bg-neutral-100"
+              teamColor={teamColor}
+              className="h-5 w-5 rounded-full border border-neutral-200 object-cover object-top shrink-0 bg-neutral-100"
             />
             <span className="text-[11px] text-[var(--foreground-muted)]">
               DT: <strong className="font-semibold text-[var(--foreground)]">{coach.name}</strong>
@@ -99,33 +77,39 @@ function TeamLineupColumn({
         )}
       </div>
 
-      {/* Titulares en Grid compacto de 2 columnas */}
-      <div>
-        <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)] mb-1.5">
-          Titulares
+      {groupedStarters.length > 0 ? (
+        <div className="space-y-2.5 my-1">
+          {groupedStarters.map((group) => (
+            <div key={group.label} className="space-y-1">
+              <div className="flex items-center gap-2">
+                <div className="h-px flex-1 bg-[var(--border)]/60" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)] px-2 py-0.5 rounded-full bg-white border border-[var(--border)]/80 shadow-2xs">
+                  {group.label}
+                </span>
+                <div className="h-px flex-1 bg-[var(--border)]/60" />
+              </div>
+              <div className="flex justify-center items-center gap-1.5 sm:gap-2 flex-wrap">
+                {group.players.map((p) => (
+                  <StarterCard key={p.name} player={p} teamColor={teamColor} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-        {starters.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-            {starters.map((p) => (
-              <StarterCard key={p.name} player={p} />
-            ))}
-          </div>
-        ) : (
-          <div className="p-3 text-center text-xs text-[var(--foreground-muted)] bg-[var(--surface)]/50 rounded-lg">
-            Alineación no disponible
-          </div>
-        )}
-      </div>
+      ) : (
+        <div className="p-3 text-center text-xs text-[var(--foreground-muted)] bg-white rounded-lg border border-[var(--border)]">
+          Alineación no disponible
+        </div>
+      )}
 
-      {/* Banquillo en Chips continuos tipo cápsula */}
       {bench.length > 0 && (
-        <div>
-          <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)] mb-1.5">
+        <div className="pt-2 border-t border-[var(--border)]/70">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)] mb-1.5">
             Banquillo
           </div>
           <div className="flex flex-wrap gap-1.5">
             {bench.map((p) => (
-              <BenchChip key={p.name} player={p} />
+              <BenchChip key={p.name} player={p} teamColor={teamColor} />
             ))}
           </div>
         </div>
@@ -148,19 +132,9 @@ export function HistoricalMatchLineups({
   awayCoach,
 }: MatchDetailLineupsProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4 pt-3 border-t border-[var(--border)]">
-      <TeamLineupColumn
-        teamName={homeTeam}
-        starters={homeStarters}
-        bench={homeBench}
-        coach={homeCoach}
-      />
-      <TeamLineupColumn
-        teamName={awayTeam}
-        starters={awayStarters}
-        bench={awayBench}
-        coach={awayCoach}
-      />
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mt-4 pt-3 border-t border-[var(--border)]">
+      <TeamLineupColumn teamName={homeTeam} starters={homeStarters} bench={homeBench} coach={homeCoach} />
+      <TeamLineupColumn teamName={awayTeam} starters={awayStarters} bench={awayBench} coach={awayCoach} />
     </div>
   );
 }

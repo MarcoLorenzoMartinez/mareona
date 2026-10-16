@@ -85,7 +85,7 @@ function parseSquadHtml(html, season) {
       if (/class="[^"]*\bpor\b[^"]*"/.test(tr)) position = "Portero";
       else if (/class="[^"]*\b(def|cen|ltd|lti)\b[^"]*"/.test(tr)) position = "Defensa";
       else if (/class="[^"]*\b(mig|piv|mp)\b[^"]*"/.test(tr)) position = "Centrocampista";
-      else if (/class="[^"]*\b(dav|ext|del)\b[^"]*"/.test(tr)) position = "Delantero";
+      else if (/class="[^"]*\b(dav|ext|del|dac)\b[^"]*"/.test(tr)) position = "Delantero";
 
       const cells = (tr.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || []).map((td) => td.replace(/<[^>]+>/g, "").trim());
       const goalsCell = cells[cells.length - 1];

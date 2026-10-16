@@ -51,7 +51,7 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
         return;
       }
       setLoading(true);
-      const res = await getHistoricalMatchDetail(match.bdfMatchId, season);
+      const res = await getHistoricalMatchDetail(match.bdfMatchId, season, match.isHome);
       if (!isCancelled) {
         setDetail(res);
         setLoading(false);
@@ -96,13 +96,7 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
         <div id="match-modal-title" className="relative overflow-hidden grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 my-4 py-4 bg-[var(--surface)] rounded-xl border border-[var(--border)] px-3 sm:px-6">
           {stadiumAsset && (
             <div className="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden" aria-hidden="true">
-              <Image
-                src={stadiumAsset.imagePath}
-                alt=""
-                fill
-                sizes="(max-width: 768px) 100vw, 900px"
-                className="object-cover opacity-15"
-              />
+              <Image src={stadiumAsset.imagePath} alt="" fill sizes="(max-width: 768px) 100vw, 900px" className="object-cover opacity-15" />
             </div>
           )}
 
@@ -125,9 +119,17 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
           </div>
         </div>
 
-        {/* Visual Goals Timeline */}
-        {detail && detail.goals.length > 0 && (
-          <HistoricalMatchEvents goals={detail.goals} homeTeam={match.homeTeam} awayTeam={match.awayTeam} />
+        {/* Visual Events Timeline */}
+        {detail && (
+          <HistoricalMatchEvents
+            goals={detail.goals}
+            homeStarters={detail.homeStarters}
+            awayStarters={detail.awayStarters}
+            homeBench={detail.homeBench}
+            awayBench={detail.awayBench}
+            homeTeam={match.homeTeam}
+            awayTeam={match.awayTeam}
+          />
         )}
 
         {/* Venue & Referee */}

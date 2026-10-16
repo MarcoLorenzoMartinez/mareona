@@ -13,7 +13,7 @@ import type {
 const squadsRecord = rawSquads as unknown as Record<
   string,
   {
-    readonly players?: readonly { readonly alias: string; readonly fullName: string; readonly photoUrl?: string | null }[];
+    readonly players?: readonly { readonly alias: string; readonly fullName: string; readonly photoUrl?: string | null; readonly position?: string }[];
     readonly coaches?: readonly { readonly alias: string; readonly fullName: string; readonly photoUrl?: string | null }[];
   }
 >;
@@ -21,11 +21,17 @@ const squadsRecord = rawSquads as unknown as Record<
 /** In-memory cache for loaded match sheets to ensure instant subsequent openings */
 const matchDetailCache = new Map<string, HistoricalMatchDetail>();
 
-function parsePlayerTable(tableHtml: string | undefined, season?: string): HistoricalMatchPlayer[] {
+function parsePlayerTable(
+  tableHtml: string | undefined,
+  season?: string,
+  isStarter = false,
+  isSporting = false
+): HistoricalMatchPlayer[] {
   if (!tableHtml) return [];
   const trs = tableHtml.match(/<tr[\s\S]*?<\/tr>/gi) || [];
   const players: HistoricalMatchPlayer[] = [];
-  const seasonSquad = season ? squadsRecord[season] : undefined;
+  const seasonSquad = isSporting && season ? squadsRecord[season] : undefined;
+  const startYear = season ? parseInt(season.split("-")[0], 10) : 2024;
 
   for (const tr of trs) {
     if (tr.includes("display: none") || tr.includes("<th")) continue;
@@ -37,15 +43,17 @@ function parsePlayerTable(tableHtml: string | undefined, season?: string): Histo
 
     const playerId = linkMatch ? linkMatch[1] : null;
     const name = linkMatch ? linkMatch[2].trim() : nameMatch![1].trim();
+    let position: string | undefined = undefined;
 
     if (seasonSquad?.players) {
       const sp = seasonSquad.players.find(
         (p) =>
           (playerId && p.photoUrl?.match(/\/[jm]\/(\d+)/)?.[1] === playerId) ||
           p.alias.toLowerCase() === name.toLowerCase() ||
-          p.fullName.toLowerCase().includes(name.toLowerCase())
+          p.fullName.toLowerCase() === name.toLowerCase()
       );
       if (sp?.photoUrl) photoUrl = sp.photoUrl;
+      if (sp?.position) position = sp.position;
     }
 
     const subOut = tr.match(/class=['"][^'"]*\bSurt\b[^'"]*['"][^>]*><\/div>\s*(\d+)/)?.[1];
@@ -56,6 +64,7 @@ function parsePlayerTable(tableHtml: string | undefined, season?: string): Histo
     players.push({
       name,
       photoUrl,
+      position,
       subOut: subOut ? parseInt(subOut, 10) : undefined,
       subIn: subIn ? parseInt(subIn, 10) : undefined,
       yellowCard: yellow ? parseInt(yellow, 10) : undefined,
@@ -80,7 +89,7 @@ function parseCoach(tableHtml: string | undefined, season?: string): HistoricalM
       (c) =>
         (coachId && c.photoUrl?.match(/\/l[m]?\/(\d+)/)?.[1] === coachId) ||
         c.alias.toLowerCase() === name.toLowerCase() ||
-        c.fullName.toLowerCase().includes(name.toLowerCase())
+        c.fullName.toLowerCase() === name.toLowerCase()
     );
     if (sc?.photoUrl) photoUrl = sc.photoUrl;
   }
@@ -93,10 +102,33 @@ function parseCoach(tableHtml: string | undefined, season?: string): HistoricalM
 export async function parseHistoricalMatchDetail(
   html: string,
   bdfMatchId: string,
-  season?: string
+  season?: string,
+  isHomeParam?: boolean
 ): Promise<HistoricalMatchDetail> {
   const stadiumMatch = html.match(/<div class=['"]f14['"]>\s*Estadio\s*<\/div>\s*<div[^>]*>(?:<a[^>]*>)?([^<]+)/i);
   const venue = stadiumMatch ? stadiumMatch[1].trim() : undefined;
+
+  const tables = html.match(/<table[^>]*class=['"]taula_estil[^'"]*['"][\s\S]*?<\/table>/gi) || [];
+
+  let isHomeSporting = isHomeParam;
+  if (isHomeSporting === undefined) {
+    const titleMatch = html.match(/<title>([^<]+)<\/title>/i)?.[1];
+    if (titleMatch) {
+      const homeName = titleMatch.split("-")[0]?.trim() || "";
+      isHomeSporting = /sporting|gij[oó]n/i.test(homeName);
+    } else if (season && squadsRecord[season]?.players) {
+      const seasonPlayers = squadsRecord[season]!.players;
+      const countMatches = (tbl?: string) =>
+        tbl
+          ? Array.from(tbl.matchAll(/\/j\/j(\d+)\.html/g), (m) => m[1]).filter((id) =>
+              seasonPlayers.some((p) => p.photoUrl?.includes(`/${id}`))
+            ).length
+          : 0;
+      isHomeSporting = countMatches(tables[0]) >= countMatches(tables[1]);
+    } else {
+      isHomeSporting = true;
+    }
+  }
 
   let referee: HistoricalMatchReferee | null = null;
   const refMatch = html.match(/<a[^>]*href=['"]\.\.\/r\/r\d+\.html['"][^>]*>([\s\S]*?)<\/a>/i);
@@ -108,7 +140,6 @@ export async function parseHistoricalMatchDetail(
     referee = { name, photoUrl };
   }
 
-  const tables = html.match(/<table[^>]*class=['"]taula_estil[^'"]*['"][\s\S]*?<\/table>/gi) || [];
   const goals: HistoricalMatchGoal[] = [];
   const rightIdx = html.indexOf('class="text-right"');
   const leftIdx = html.indexOf('class="text-left"', rightIdx !== -1 ? rightIdx : 0);
@@ -151,12 +182,12 @@ export async function parseHistoricalMatchDetail(
     venue,
     referee,
     goals,
-    homeStarters: parsePlayerTable(tables[0], season),
-    awayStarters: parsePlayerTable(tables[1], season),
-    homeBench: parsePlayerTable(tables[2], season),
-    awayBench: parsePlayerTable(tables[3], season),
-    homeCoach: parseCoach(tables[4], season),
-    awayCoach: parseCoach(tables[5], season),
+    homeStarters: parsePlayerTable(tables[0], season, true, isHomeSporting),
+    awayStarters: parsePlayerTable(tables[1], season, true, !isHomeSporting),
+    homeBench: parsePlayerTable(tables[2], season, false, isHomeSporting),
+    awayBench: parsePlayerTable(tables[3], season, false, !isHomeSporting),
+    homeCoach: parseCoach(tables[4], isHomeSporting ? season : undefined),
+    awayCoach: parseCoach(tables[5], !isHomeSporting ? season : undefined),
   };
 }
 
@@ -180,17 +211,18 @@ function fetchMatchHtml(bdfMatchId: string): Promise<string> {
  */
 export async function getHistoricalMatchDetail(
   bdfMatchId: string,
-  season?: string
+  season?: string,
+  isHome?: boolean
 ): Promise<HistoricalMatchDetail | null> {
   if (!bdfMatchId || !/^\d+$/.test(bdfMatchId)) return null;
 
-  const cacheKey = season ? `${bdfMatchId}-${season}` : bdfMatchId;
+  const cacheKey = season ? `${bdfMatchId}-${season}-${isHome ?? "auto"}` : bdfMatchId;
   const cached = matchDetailCache.get(cacheKey);
   if (cached) return cached;
 
   try {
     const html = await fetchMatchHtml(bdfMatchId);
-    const detail = await parseHistoricalMatchDetail(html, bdfMatchId, season);
+    const detail = await parseHistoricalMatchDetail(html, bdfMatchId, season, isHome);
     matchDetailCache.set(cacheKey, detail);
     return detail;
   } catch {

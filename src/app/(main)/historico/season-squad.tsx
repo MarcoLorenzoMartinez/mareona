@@ -103,8 +103,8 @@ export function HistoricalSeasonSquadTable({ players, seasonLabel }: SeasonSquad
               <th scope="col" onClick={() => handleSort("alias")} className="py-2.5 pl-2 pr-2 cursor-pointer hover:text-[var(--foreground)]">
                 Jugador{renderSortArrow(sortCol, "alias", sortAsc)}
               </th>
-              <th scope="col" onClick={() => handleSort("position")} className="w-28 py-2.5 text-center hidden sm:table-cell cursor-pointer hover:text-[var(--foreground)]">
-                Pos{renderSortArrow(sortCol, "position", sortAsc)}
+              <th scope="col" onClick={() => handleSort("position")} className="w-32 py-2.5 pl-3 text-left hidden sm:table-cell cursor-pointer hover:text-[var(--foreground)]">
+                Posición{renderSortArrow(sortCol, "position", sortAsc)}
               </th>
               <th scope="col" onClick={() => handleSort("played")} className="w-16 py-2.5 text-center cursor-pointer hover:text-[var(--foreground)] font-bold">
                 PJ{renderSortArrow(sortCol, "played", sortAsc)}
@@ -129,11 +129,16 @@ export function HistoricalSeasonSquadTable({ players, seasonLabel }: SeasonSquad
                       size="sm"
                       className="h-8 w-8 rounded-full border border-[var(--border)] object-cover object-top shrink-0 bg-neutral-100"
                     />
-                    <span className="font-bold text-[var(--foreground)] truncate">{player.alias}</span>
+                    <div className="min-w-0 flex flex-col justify-center">
+                      <span className="font-bold text-[var(--foreground)] truncate leading-tight">{player.alias}</span>
+                      <span className="text-[11px] text-[var(--foreground-muted)] font-medium sm:hidden truncate leading-tight mt-0.5">
+                        {player.position}
+                      </span>
+                    </div>
                   </div>
                 </td>
-                <td className="py-2.5 text-center hidden sm:table-cell">
-                  <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold text-neutral-700">{player.position}</span>
+                <td className="py-2.5 pl-3 text-left hidden sm:table-cell text-xs font-medium text-[var(--foreground-muted)]">
+                  {player.position}
                 </td>
                 <td className="py-2.5 text-center tabular-nums font-bold text-[var(--foreground)]">{player.played}</td>
                 <td className="py-2.5 text-center tabular-nums text-xs text-[var(--foreground-muted)] hidden md:table-cell">{player.minutes > 0 ? `${player.minutes}'` : "—"}</td>

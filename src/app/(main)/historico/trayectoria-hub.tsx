@@ -8,6 +8,7 @@ import { HistoricalEvolutionChart } from "./evolution-chart";
 import { HistoricalSeasonSelector } from "./season-picker";
 import { HistoricalStandingsTable } from "./standings-table";
 import { HistoricalSeasonLeaders } from "./season-leaders";
+import { HistoricalSeasonCoaches } from "./season-coaches";
 import { HistoricalSeasonSquadTable } from "./season-squad";
 import { HistoricalSeasonMatches } from "./season-matches";
 
@@ -102,7 +103,6 @@ export function HistoricalTrayectoriaHub({
           <HistoricalStandingsTable rows={standingsRows} season={selectedSeason} />
           {squad && (
             <HistoricalSeasonLeaders
-              coaches={squad.coaches}
               topScorers={squad.topScorers}
               assists={assists}
               players={squad.players}
@@ -117,10 +117,13 @@ export function HistoricalTrayectoriaHub({
       )}
 
       {activeTab === "plantilla" && squad && (
-        <HistoricalSeasonSquadTable
-          players={squad.players}
-          seasonLabel={selectedSeason.label}
-        />
+        <div className="flex flex-col gap-6">
+          <HistoricalSeasonCoaches coaches={squad.coaches} seasonLabel={selectedSeason.label} />
+          <HistoricalSeasonSquadTable
+            players={squad.players}
+            seasonLabel={selectedSeason.label}
+          />
+        </div>
       )}
     </div>
   );

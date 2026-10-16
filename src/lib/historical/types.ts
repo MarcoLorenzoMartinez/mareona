@@ -68,6 +68,10 @@ export interface HistoricalCoach {
   readonly alias: string;
   readonly fullName: string;
   readonly matches?: number;
+  readonly rounds?: string;
+  readonly won?: number;
+  readonly drawn?: number;
+  readonly lost?: number;
   readonly photoUrl?: string | null;
 }
 
@@ -131,6 +135,7 @@ export interface HistoricalMatchGoal {
 export interface HistoricalMatchPlayer {
   readonly name: string;
   readonly photoUrl?: string | null;
+  readonly position?: string;
   readonly subIn?: number;
   readonly subOut?: number;
   readonly yellowCard?: number;

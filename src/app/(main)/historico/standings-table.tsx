@@ -20,11 +20,8 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
       <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
         <div className="mb-4 border-b border-[var(--border)] pb-3">
           <h3 className="text-base font-bold text-[var(--foreground)]">
-            Clasificación Oficial
+            {season.tierName}
           </h3>
-          <span className="text-xs text-[var(--foreground-muted)]">
-            {season.tierName} — Temporada {season.label}
-          </span>
         </div>
 
         {isSingleRow && (
