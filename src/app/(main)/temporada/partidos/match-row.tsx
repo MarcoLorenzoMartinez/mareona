@@ -57,11 +57,11 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-7 sm:gap-4">
+      <div className="grid grid-cols-7 items-center gap-1.5 sm:gap-4">
         {/* Equipo Local */}
-        <div className="flex items-center justify-start gap-2.5 sm:col-span-3 sm:justify-end">
+        <div className="col-span-3 flex items-center justify-end gap-1.5 sm:gap-2.5 min-w-0 text-right">
           <span
-            className={`text-sm truncate ${
+            className={`text-xs sm:text-sm truncate ${
               match.homeTeam.isSporting
                 ? "font-bold text-[var(--primary)]"
                 : "font-medium text-[var(--foreground)]"
@@ -69,41 +69,45 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
           >
             {match.homeTeam.name}
           </span>
-          <TeamCrest
-            crestUrl={match.homeTeam.crestUrl}
-            teamName={match.homeTeam.name}
-            size="sm"
-            isSporting={match.homeTeam.isSporting}
-          />
+          <div className="shrink-0">
+            <TeamCrest
+              crestUrl={match.homeTeam.crestUrl}
+              teamName={match.homeTeam.name}
+              size="sm"
+              isSporting={match.homeTeam.isSporting}
+            />
+          </div>
         </div>
 
         {/* Marcador / Horario */}
-        <div className="flex items-center justify-center sm:col-span-1">
+        <div className="col-span-1 flex items-center justify-center shrink-0">
           {isFinished ? (
-            <span className="inline-flex items-center justify-center rounded-sm bg-neutral-100 px-2.5 py-1 text-sm font-bold tabular-nums text-[var(--foreground)]">
+            <span className="inline-flex items-center justify-center rounded-sm bg-neutral-100 px-2 py-0.5 text-xs font-bold tabular-nums text-[var(--foreground)] sm:px-2.5 sm:py-1 sm:text-sm">
               {match.homeScore} - {match.awayScore}
             </span>
           ) : isConfirmedTime ? (
-            <span className="inline-flex items-center justify-center rounded-sm bg-[var(--surface)] px-2.5 py-1 text-xs font-bold tabular-nums text-[var(--foreground)] border border-[var(--border)]">
+            <span className="inline-flex items-center justify-center rounded-sm bg-[var(--surface)] px-2 py-0.5 text-xs font-bold tabular-nums text-[var(--foreground)] border border-[var(--border)] sm:px-2.5 sm:py-1">
               {timeLabel}
             </span>
           ) : (
-            <span className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[var(--foreground-muted)] uppercase tracking-wider sm:text-xs">
               {matchT.vs}
             </span>
           )}
         </div>
 
         {/* Equipo Visitante */}
-        <div className="flex items-center justify-start gap-2.5 sm:col-span-3">
-          <TeamCrest
-            crestUrl={match.awayTeam.crestUrl}
-            teamName={match.awayTeam.name}
-            size="sm"
-            isSporting={match.awayTeam.isSporting}
-          />
+        <div className="col-span-3 flex items-center justify-start gap-1.5 sm:gap-2.5 min-w-0 text-left">
+          <div className="shrink-0">
+            <TeamCrest
+              crestUrl={match.awayTeam.crestUrl}
+              teamName={match.awayTeam.name}
+              size="sm"
+              isSporting={match.awayTeam.isSporting}
+            />
+          </div>
           <span
-            className={`text-sm truncate ${
+            className={`text-xs sm:text-sm truncate ${
               match.awayTeam.isSporting
                 ? "font-bold text-[var(--primary)]"
                 : "font-medium text-[var(--foreground)]"

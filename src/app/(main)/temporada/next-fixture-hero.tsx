@@ -72,27 +72,37 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
 
         {match && matchKickoff ? (
           <div className="relative z-10">
-            <div className="grid grid-cols-1 items-center gap-6 py-6 md:grid-cols-7">
+            <div className="grid grid-cols-7 items-center gap-2 py-4 md:gap-6 md:py-6">
               {/* Equipo Local */}
-              <div className="flex items-center justify-start gap-3.5 md:col-span-3 md:justify-end">
-                <span className="text-lg font-bold text-[var(--foreground)] md:text-xl">
+              <div className="col-span-3 flex flex-col md:flex-row items-center justify-center md:justify-end gap-1.5 md:gap-3.5 text-center md:text-right min-w-0">
+                <span className="order-2 md:order-1 text-xs sm:text-sm font-bold text-[var(--foreground)] md:text-xl truncate max-w-full">
                   {match.homeTeam.name}
                 </span>
-                <TeamCrest
-                  crestUrl={match.homeTeam.crestUrl}
-                  teamName={match.homeTeam.name}
-                  size="lg"
-                  isSporting={match.homeTeam.isSporting}
-                />
+                <div className="order-1 md:order-2 shrink-0 md:hidden">
+                  <TeamCrest
+                    crestUrl={match.homeTeam.crestUrl}
+                    teamName={match.homeTeam.name}
+                    size="md"
+                    isSporting={match.homeTeam.isSporting}
+                  />
+                </div>
+                <div className="order-1 md:order-2 shrink-0 hidden md:block">
+                  <TeamCrest
+                    crestUrl={match.homeTeam.crestUrl}
+                    teamName={match.homeTeam.name}
+                    size="lg"
+                    isSporting={match.homeTeam.isSporting}
+                  />
+                </div>
               </div>
 
               {/* Marcador / Horario */}
-              <div className="relative flex flex-col items-center justify-center md:col-span-1">
-                <span className="text-[11px] font-bold tracking-widest text-[var(--foreground-muted)] uppercase whitespace-nowrap mb-1 md:mb-0 md:absolute md:-top-5 md:left-1/2 md:-translate-x-1/2">
+              <div className="col-span-1 relative flex flex-col items-center justify-center shrink-0">
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-wider text-[var(--foreground-muted)] uppercase whitespace-nowrap mb-1 md:mb-0 md:absolute md:-top-5 md:left-1/2 md:-translate-x-1/2">
                   {matchKickoff.date}
                 </span>
-                <div className="flex h-12 min-w-[76px] items-center justify-center rounded-md bg-[var(--surface)]/90 backdrop-blur-xs px-3.5 text-center shadow-2xs border border-[var(--border)]/40">
-                  <span className="text-2xl font-black tracking-tight text-[var(--foreground)] tabular-nums leading-none">
+                <div className="flex h-10 md:h-12 min-w-[64px] md:min-w-[76px] items-center justify-center rounded-md bg-[var(--surface)]/90 backdrop-blur-xs px-2.5 md:px-3.5 text-center shadow-2xs border border-[var(--border)]/40">
+                  <span className="text-xl md:text-2xl font-black tracking-tight text-[var(--foreground)] tabular-nums leading-none">
                     {match.status === "finished" &&
                     match.homeScore !== null &&
                     match.awayScore !== null
@@ -105,14 +115,24 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
               </div>
 
               {/* Equipo Visitante */}
-              <div className="flex items-center justify-start gap-3.5 md:col-span-3">
-                <TeamCrest
-                  crestUrl={match.awayTeam.crestUrl}
-                  teamName={match.awayTeam.name}
-                  size="lg"
-                  isSporting={match.awayTeam.isSporting}
-                />
-                <span className="text-lg font-bold text-[var(--foreground)] md:text-xl">
+              <div className="col-span-3 flex flex-col md:flex-row items-center justify-center md:justify-start gap-1.5 md:gap-3.5 text-center md:text-left min-w-0">
+                <div className="shrink-0 md:hidden">
+                  <TeamCrest
+                    crestUrl={match.awayTeam.crestUrl}
+                    teamName={match.awayTeam.name}
+                    size="md"
+                    isSporting={match.awayTeam.isSporting}
+                  />
+                </div>
+                <div className="shrink-0 hidden md:block">
+                  <TeamCrest
+                    crestUrl={match.awayTeam.crestUrl}
+                    teamName={match.awayTeam.name}
+                    size="lg"
+                    isSporting={match.awayTeam.isSporting}
+                  />
+                </div>
+                <span className="text-xs sm:text-sm font-bold text-[var(--foreground)] md:text-xl truncate max-w-full">
                   {match.awayTeam.name}
                 </span>
               </div>

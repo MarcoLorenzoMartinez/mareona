@@ -39,12 +39,6 @@ function MobileNavList({ pathname }: { readonly pathname: string | null }) {
                     }`}
                     aria-hidden="true"
                   />
-                  {isActive && (
-                    <span
-                      className="absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full bg-[var(--primary)]"
-                      aria-hidden="true"
-                    />
-                  )}
                 </div>
                 <span
                   className={`text-[11px] leading-none tracking-tight ${
