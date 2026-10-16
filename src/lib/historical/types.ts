@@ -68,6 +68,7 @@ export interface HistoricalCoach {
   readonly alias: string;
   readonly fullName: string;
   readonly matches?: number;
+  readonly photoUrl?: string | null;
 }
 
 export interface HistoricalPlayer {
@@ -78,6 +79,7 @@ export interface HistoricalPlayer {
   readonly played: number;
   readonly minutes: number;
   readonly goals: number;
+  readonly photoUrl?: string | null;
 }
 
 export interface HistoricalTopScorer {
@@ -85,6 +87,7 @@ export interface HistoricalTopScorer {
   readonly fullName: string;
   readonly goals: number;
   readonly played: number;
+  readonly photoUrl?: string | null;
 }
 
 export interface HistoricalSeasonSquad {
@@ -112,5 +115,48 @@ export interface HistoricalMatch {
   readonly venue?: string;
   readonly bdfHomeCrest?: string;
   readonly bdfAwayCrest?: string;
+  readonly bdfMatchId?: string;
+}
+
+export interface HistoricalMatchGoal {
+  readonly score: string;
+  readonly scorer: string;
+  readonly minute: number;
+  readonly minuteDisplay?: string;
+  readonly isHome?: boolean;
+  readonly isPenalty?: boolean;
+  readonly isOwnGoal?: boolean;
+}
+
+export interface HistoricalMatchPlayer {
+  readonly name: string;
+  readonly photoUrl?: string | null;
+  readonly subIn?: number;
+  readonly subOut?: number;
+  readonly yellowCard?: number;
+  readonly redCard?: number;
+}
+
+export interface HistoricalMatchCoach {
+  readonly name: string;
+  readonly photoUrl?: string | null;
+}
+
+export interface HistoricalMatchReferee {
+  readonly name: string;
+  readonly photoUrl?: string | null;
+}
+
+export interface HistoricalMatchDetail {
+  readonly bdfMatchId: string;
+  readonly venue?: string;
+  readonly referee?: HistoricalMatchReferee | null;
+  readonly goals: readonly HistoricalMatchGoal[];
+  readonly homeStarters: readonly HistoricalMatchPlayer[];
+  readonly awayStarters: readonly HistoricalMatchPlayer[];
+  readonly homeBench: readonly HistoricalMatchPlayer[];
+  readonly awayBench: readonly HistoricalMatchPlayer[];
+  readonly homeCoach?: HistoricalMatchCoach | null;
+  readonly awayCoach?: HistoricalMatchCoach | null;
 }
 

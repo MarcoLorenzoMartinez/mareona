@@ -3,14 +3,19 @@ import assert from "node:assert/strict";
 import { getSquadForSeason, getAssistsForSeason } from "../../src/lib/historical/service.ts";
 
 describe("Historical Squads and Leaders", () => {
-  it("retrieves official squad and top scorer for 1978-79 (Quini 23 goals)", () => {
+  it("retrieves official squad and top scorer for 1978-79 (Quini 23 goals) with photos", () => {
     const squad = getSquadForSeason("1978-79");
     assert.ok(squad);
-    assert.ok(squad.coaches.some((c) => c.alias === "Miera"));
+    const miera = squad.coaches.find((c) => c.alias === "Miera");
+    assert.ok(miera);
+    assert.ok(miera.photoUrl && miera.photoUrl.includes("bdfutbol.com"));
     assert.ok(squad.topScorers.length > 0);
     assert.equal(squad.topScorers[0]?.name, "Quini");
     assert.equal(squad.topScorers[0]?.goals, 23);
+    assert.ok(squad.topScorers[0]?.photoUrl && squad.topScorers[0]?.photoUrl.includes("bdfutbol.com"));
     assert.ok(squad.players.length >= 20);
+    const quini = squad.players.find((p) => p.alias === "Quini");
+    assert.ok(quini?.photoUrl && quini.photoUrl.includes("bdfutbol.com"));
   });
 
   it("retrieves coaches and squad for 2024-25", () => {
@@ -37,5 +42,39 @@ describe("Historical Squads and Leaders", () => {
   it("returns null safely for non-existent season", () => {
     const squad = getSquadForSeason("1899-00");
     assert.equal(squad, null);
+  });
+
+  it("assigns chronological gallery photos across different career stages", () => {
+    // 1. Cote: Young debut in 2008-09 vs adult captain in 2023-24
+    const squad2008 = getSquadForSeason("2008-09");
+    const cote2008 = squad2008?.players.find((p) => p.alias === "Cote");
+    assert.ok(cote2008?.photoUrl);
+    assert.ok(cote2008.photoUrl.endsWith("8510.jpg"), "Cote in 2008-09 should have debut portrait 8510.jpg");
+
+    const squad2023 = getSquadForSeason("2023-24");
+    const cote2023 = squad2023?.players.find((p) => p.alias === "Cote");
+    assert.ok(cote2023?.photoUrl);
+    assert.ok(cote2023.photoUrl.endsWith("8510i.jpg"), "Cote in 2023-24 should have adult captain portrait 8510i.jpg");
+
+    // 2. Guille Rosas: first team portrait in 2023-24 (22624c.jpg)
+    const rosas2023 = squad2023?.players.find((p) => p.alias === "Rosas");
+    assert.ok(rosas2023?.photoUrl);
+    assert.ok(rosas2023.photoUrl.endsWith("22624c.jpg"), "Guille Rosas in 2023-24 should have first team portrait 22624c.jpg");
+
+    // 3. Jony: Los Guajes 2014-15 (201014d.jpg) vs Return 2017-18 (201014e.jpg) vs Return 2021-22 (201014j.jpg)
+    const squad2014 = getSquadForSeason("2014-15");
+    const jony2014 = squad2014?.players.find((p) => p.alias === "Jony");
+    assert.ok(jony2014?.photoUrl);
+    assert.ok(jony2014.photoUrl.endsWith("201014d.jpg"), "Jony in 2014-15 should have 201014d.jpg");
+
+    const squad2017 = getSquadForSeason("2017-18");
+    const jony2017 = squad2017?.players.find((p) => p.alias === "Jony");
+    assert.ok(jony2017?.photoUrl);
+    assert.ok(jony2017.photoUrl.endsWith("201014e.jpg"), "Jony in 2017-18 should have 201014e.jpg");
+
+    const squad2021 = getSquadForSeason("2021-22");
+    const jony2021 = squad2021?.players.find((p) => p.alias === "Jony");
+    assert.ok(jony2021?.photoUrl);
+    assert.ok(jony2021.photoUrl.endsWith("201014j.jpg"), "Jony in 2021-22 should have 201014j.jpg");
   });
 });

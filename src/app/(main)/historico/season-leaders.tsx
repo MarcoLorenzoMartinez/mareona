@@ -1,4 +1,5 @@
 import type { HistoricalCoach, HistoricalTopScorer, HistoricalPlayer } from "@/lib/historical/types";
+import { PlayerPhoto } from "@/components/media/player-photo";
 
 interface SeasonLeadersProps {
   readonly coaches: readonly HistoricalCoach[];
@@ -8,11 +9,25 @@ interface SeasonLeadersProps {
   readonly seasonLabel: string;
 }
 
-function StatRow({ rank, name, value, sub }: { rank: number; name: string; value: string | number; sub: string; color?: string }) {
+interface StatRowProps {
+  readonly rank: number;
+  readonly name: string;
+  readonly value: string | number;
+  readonly sub: string;
+  readonly photoUrl?: string | null;
+}
+
+function StatRow({ rank, name, value, sub, photoUrl }: StatRowProps) {
   return (
-    <div className="flex items-center justify-between text-xs py-1 border-b border-[var(--border)] last:border-0">
+    <div className="flex items-center justify-between text-xs py-1.5 border-b border-[var(--border)] last:border-0">
       <div className="flex items-center gap-2 min-w-0 pr-2">
-        <span className="font-bold text-[11px] text-[var(--foreground-muted)] tabular-nums w-3.5">{rank}.</span>
+        <span className="font-bold text-[11px] text-[var(--foreground-muted)] tabular-nums w-3.5 shrink-0">{rank}.</span>
+        <PlayerPhoto
+          photoUrl={photoUrl}
+          playerName={name}
+          size="sm"
+          className="h-6 w-6 rounded-full border border-[var(--border)] object-cover object-top shrink-0 bg-neutral-100"
+        />
         <span className="font-semibold text-[var(--foreground)] truncate">{name}</span>
       </div>
       <div className="flex items-baseline gap-1 shrink-0 tabular-nums">
@@ -48,7 +63,15 @@ export function HistoricalSeasonLeaders({
         <div className="mt-3 flex flex-col gap-2">
           {coaches.map((c) => (
             <div key={c.fullName} className="flex items-center justify-between rounded-lg bg-[var(--surface)] px-3 py-1.5 text-xs">
-              <span className="font-bold text-[var(--foreground)] truncate">{c.alias}</span>
+              <div className="flex items-center gap-2 min-w-0">
+                <PlayerPhoto
+                  photoUrl={c.photoUrl}
+                  playerName={c.fullName}
+                  size="sm"
+                  className="h-7 w-7 rounded-full border border-[var(--border)] object-cover object-top shrink-0 bg-neutral-100"
+                />
+                <span className="font-bold text-[var(--foreground)] truncate">{c.alias}</span>
+              </div>
               {c.matches !== undefined && (
                 <span className="shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-[var(--foreground-muted)] border border-[var(--border)] tabular-nums">
                   {c.matches} PJ
@@ -68,7 +91,14 @@ export function HistoricalSeasonLeaders({
         </div>
         <div className="mt-3 flex flex-col gap-1">
           {topScorers.slice(0, 4).map((s, i) => (
-            <StatRow key={s.name} rank={i + 1} name={s.name} value={s.goals} sub={`(${s.played} PJ)`} />
+            <StatRow
+              key={s.name}
+              rank={i + 1}
+              name={s.name}
+              value={s.goals}
+              sub={`(${s.played} PJ)`}
+              photoUrl={s.photoUrl}
+            />
           ))}
           {topScorers.length === 0 && <span className="text-xs text-[var(--foreground-muted)]">Sin goles registrados</span>}
         </div>
@@ -86,11 +116,28 @@ export function HistoricalSeasonLeaders({
         </div>
         <div className="mt-3 flex flex-col gap-1">
           {hasAssists
-            ? assists.slice(0, 4).map((a, i) => (
-                <StatRow key={a.name} rank={i + 1} name={a.name} value={a.assists} sub={`(${a.played} PJ)`} />
-              ))
+            ? assists.slice(0, 4).map((a, i) => {
+                const playerObj = players.find((p) => p.alias === a.name || p.fullName.includes(a.name));
+                return (
+                  <StatRow
+                    key={a.name}
+                    rank={i + 1}
+                    name={a.name}
+                    value={a.assists}
+                    sub={`(${a.played} PJ)`}
+                    photoUrl={playerObj?.photoUrl}
+                  />
+                );
+              })
             : appearances.map((p, i) => (
-                <StatRow key={p.alias} rank={i + 1} name={p.alias} value={p.played} sub={`PJ (${p.minutes > 0 ? `${p.minutes}'` : p.position})`} />
+                <StatRow
+                  key={p.alias}
+                  rank={i + 1}
+                  name={p.alias}
+                  value={p.played}
+                  sub={`PJ (${p.minutes > 0 ? `${p.minutes}'` : p.position})`}
+                  photoUrl={p.photoUrl}
+                />
               ))}
         </div>
       </div>

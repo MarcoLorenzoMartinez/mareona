@@ -76,6 +76,7 @@ export function PlayerPhoto({
   }
 
   const isLocal = Boolean(photoUrl?.startsWith("/"));
+  const defaultFit = size === "card" ? "object-contain object-bottom" : "object-cover object-top";
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
@@ -85,7 +86,7 @@ export function PlayerPhoto({
       loading={isLocal ? "eager" : "lazy"}
       decoding="async"
       onError={() => setFailedUrl(photoUrl ?? "")}
-      className={`shrink-0 object-contain object-bottom ${sizeClass} ${className}`}
+      className={`shrink-0 ${defaultFit} ${sizeClass} ${className}`}
     />
   );
 }

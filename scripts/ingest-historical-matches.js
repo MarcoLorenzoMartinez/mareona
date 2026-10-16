@@ -156,8 +156,12 @@ function parseMatchesHtml(html, seasonId) {
 
     const opponent = isSportingHome ? awayTeam : homeTeam;
 
+    const matchIdMatch = tr.match(/href=['"][^'"]*p\.php\?id=(\d+)['"]/i);
+    const bdfMatchId = matchIdMatch ? matchIdMatch[1] : undefined;
+
     matches.push({
       id: `${seasonId}-${i}`,
+      bdfMatchId,
       date,
       competition,
       round,

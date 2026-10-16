@@ -3,6 +3,7 @@
 
 import { useState, useMemo } from "react";
 import type { HistoricalPlayer } from "@/lib/historical/types";
+import { PlayerPhoto } from "@/components/media/player-photo";
 
 interface SeasonSquadProps {
   readonly players: readonly HistoricalPlayer[];
@@ -121,9 +122,14 @@ export function HistoricalSeasonSquadTable({ players, seasonLabel }: SeasonSquad
               <tr key={`${player.alias}-${player.dorsal ?? player.fullName}`} className="hover:bg-[var(--surface)] transition-colors text-sm">
                 <td className="py-2.5 pl-3 text-center tabular-nums text-xs font-bold text-[var(--foreground-muted)]">{player.dorsal ?? "—"}</td>
                 <td className="py-2.5 pl-2 pr-2">
-                  <div className="flex flex-col min-w-0">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <PlayerPhoto
+                      photoUrl={player.photoUrl}
+                      playerName={player.fullName}
+                      size="sm"
+                      className="h-8 w-8 rounded-full border border-[var(--border)] object-cover object-top shrink-0 bg-neutral-100"
+                    />
                     <span className="font-bold text-[var(--foreground)] truncate">{player.alias}</span>
-                    {player.fullName !== player.alias && <span className="text-[11px] text-[var(--foreground-muted)] truncate max-w-[200px] sm:max-w-[320px]">{player.fullName}</span>}
                   </div>
                 </td>
                 <td className="py-2.5 text-center hidden sm:table-cell">

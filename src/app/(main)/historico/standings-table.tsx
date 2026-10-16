@@ -18,17 +18,12 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
   return (
     <section aria-label={`Clasificación oficial de la temporada ${season.label}`} className="w-full">
       <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
-        <div className="mb-4 flex items-center justify-between border-b border-[var(--border)] pb-3">
-          <div>
-            <h3 className="text-base font-bold text-[var(--foreground)]">
-              Clasificación Oficial
-            </h3>
-            <span className="text-xs text-[var(--foreground-muted)]">
-              {season.tierName} — Temporada {season.label}
-            </span>
-          </div>
-          <span className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-bold text-neutral-700">
-            {season.pointsSystem} pts por victoria
+        <div className="mb-4 border-b border-[var(--border)] pb-3">
+          <h3 className="text-base font-bold text-[var(--foreground)]">
+            Clasificación Oficial
+          </h3>
+          <span className="text-xs text-[var(--foreground-muted)]">
+            {season.tierName} — Temporada {season.label}
           </span>
         </div>
 
@@ -158,16 +153,23 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
           </table>
         </div>
 
-        {legendItems.length > 0 && (
-          <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
-            {legendItems.map((item) => (
-              <span key={item.label} className="flex items-center gap-1.5">
-                <span className={`h-3 w-[3px] rounded-full ${item.barClass}`} aria-hidden="true" />
-                {item.label}
-              </span>
-            ))}
+        <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
+          {legendItems.length > 0 ? (
+            <div className="flex flex-wrap items-center gap-4">
+              {legendItems.map((item) => (
+                <span key={item.label} className="flex items-center gap-1.5">
+                  <span className={`h-3 w-[3px] rounded-full ${item.barClass}`} aria-hidden="true" />
+                  {item.label}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div />
+          )}
+          <div className="tabular-nums text-[11px] text-[var(--foreground-muted)] sm:ml-auto">
+            Victoria: <span className="font-semibold text-[var(--foreground)]">{season.pointsSystem} pts</span>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

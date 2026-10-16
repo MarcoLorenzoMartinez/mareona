@@ -32,13 +32,20 @@ function parseSquadHtml(html, season) {
     for (let i = 1; i < trs.length; i++) {
       const tr = trs[i];
       if (tr.includes("<th")) continue;
+
+      const imgMatch = tr.match(/src=['"]([^'"]*(?:\/lm\/|\/l\/)[^'"]+)['"]/i);
+      let photoUrl = null;
+      if (imgMatch && !imgMatch[1].includes("no-foto") && !imgMatch[1].includes("sense-foto")) {
+        photoUrl = imgMatch[1].replace(/^(\.\.\/)+/, "https://www.bdfutbol.com/");
+      }
+
       const nameMatch = tr.match(/<span class="font-weight-bold mr-2 float-left">([^<]+)<\/span>(?:<span class="d-none d-md-block float-left">([^<]+)<\/span>)?/i);
       const cells = (tr.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || []).map((td) => td.replace(/<[^>]+>/g, "").trim());
       if (nameMatch) {
         const alias = nameMatch[1].trim();
         const fullName = nameMatch[2]?.trim() || alias;
         const matchesDirected = parseInt(cells[cells.length - 3], 10) || undefined;
-        coaches.push({ alias, fullName, matches: matchesDirected });
+        coaches.push({ alias, fullName, matches: matchesDirected, photoUrl });
       }
     }
   }
@@ -46,7 +53,7 @@ function parseSquadHtml(html, season) {
   // Fallback to coach in seasons.json if table not found
   if (coaches.length === 0 && season.coach) {
     const names = season.coach.split("/").map((s) => s.trim());
-    names.forEach((n) => coaches.push({ alias: n, fullName: n }));
+    names.forEach((n) => coaches.push({ alias: n, fullName: n, photoUrl: null }));
   }
 
   // 2. Squad / Plantilla
@@ -57,6 +64,12 @@ function parseSquadHtml(html, season) {
     for (let i = 1; i < trs.length; i++) {
       const tr = trs[i];
       if (tr.includes("<th")) continue;
+
+      const imgMatch = tr.match(/src=['"]([^'"]*(?:\/m\/|\/j\/)[^'"]+)['"]/i);
+      let photoUrl = null;
+      if (imgMatch && !imgMatch[1].includes("no-foto") && !imgMatch[1].includes("sense-foto")) {
+        photoUrl = imgMatch[1].replace(/^(\.\.\/)+/, "https://www.bdfutbol.com/");
+      }
 
       const dorsalMatch = tr.match(/<td[^>]*class="fit text-right[^"]*">(\d+)<\/td>/i);
       const dorsal = dorsalMatch ? parseInt(dorsalMatch[1], 10) : null;
@@ -79,7 +92,6 @@ function parseSquadHtml(html, season) {
       let goals = parseInt(goalsCell, 10);
       if (isNaN(goals) || (position === "Portero" && goals < 0)) goals = 0;
 
-      // PJ is usually 9th from end or found in cell
       let played = 0;
       let minutes = 0;
       for (let c = 5; c < cells.length; c++) {
@@ -89,7 +101,6 @@ function parseSquadHtml(html, season) {
           break;
         }
       }
-      // Minutes is cell with > 100 or matching
       for (let c = cells.length - 5; c < cells.length - 1; c++) {
         const val = parseInt(cells[c], 10);
         if (!isNaN(val) && val >= 50) {
@@ -106,6 +117,7 @@ function parseSquadHtml(html, season) {
         played,
         minutes,
         goals,
+        photoUrl,
       });
     }
   }
@@ -122,37 +134,38 @@ function parseSquadHtml(html, season) {
       fullName: p.fullName,
       goals: p.goals,
       played: p.played,
+      photoUrl: p.photoUrl,
     })),
     players,
   };
 }
 
 async function run() {
-  console.log(`Ingesting squads for ${seasons.length} seasons...`);
+  console.log(`Ingesting squads for ${seasons.length} seasons with photographs...`);
   const result = {};
   let successCount = 0;
+  const BATCH_SIZE = 6;
 
-  for (let i = 0; i < seasons.length; i++) {
-    const s = seasons[i];
-    process.stdout.write(`[${i + 1}/${seasons.length}] ${s.id}... `);
-    const html = await fetchPage(s.id);
-    const parsed = parseSquadHtml(html, s);
+  for (let i = 0; i < seasons.length; i += BATCH_SIZE) {
+    const batch = seasons.slice(i, i + BATCH_SIZE);
+    await Promise.all(
+      batch.map(async (s) => {
+        const html = await fetchPage(s.id);
+        const parsed = parseSquadHtml(html, s);
 
-    if (parsed && parsed.players.length > 0) {
-      result[s.id] = parsed;
-      successCount++;
-      console.log(`OK (${parsed.players.length} players, ${parsed.coaches.length} coaches)`);
-    } else {
-      console.log("NO DATA");
-    }
-
-    // Small delay to be polite to the server
-    await new Promise((r) => setTimeout(r, 200));
+        if (parsed && parsed.players.length > 0) {
+          result[s.id] = parsed;
+          successCount++;
+          const withPhoto = parsed.players.filter((p) => p.photoUrl).length;
+          process.stdout.write(` ${s.id} (${withPhoto}/${parsed.players.length}📷) |`);
+        }
+      })
+    );
   }
 
   const outPath = path.join(__dirname, "../src/data/historical/squads.json");
   fs.writeFileSync(outPath, JSON.stringify(result, null, 2), "utf8");
-  console.log(`\nDone! Saved ${successCount} seasons to ${outPath}`);
+  console.log(`\n\nDone! Saved ${successCount} seasons to ${outPath}`);
 }
 
 run().catch(console.error);
