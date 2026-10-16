@@ -14,6 +14,7 @@ interface PitchPlayerNodeProps {
   readonly isSporting: boolean;
   readonly pitchX: number;
   readonly pitchY: number;
+  readonly size?: "compact" | "normal";
   readonly onClick?: () => void;
 }
 
@@ -39,6 +40,7 @@ export function PitchPlayerNode({
   isSporting,
   pitchX,
   pitchY,
+  size = "compact",
   onClick,
 }: PitchPlayerNodeProps) {
   const [hasImgError, setHasImgError] = useState(false);
@@ -46,6 +48,8 @@ export function PitchPlayerNode({
   const ratingStyle = rating ? getRatingBadgeStyle(rating) : null;
   const displayName = getPlayerLastName(starter.name);
   const showPhoto = Boolean(starter.photoUrl && !hasImgError);
+
+  const isComfortable = size === "normal";
 
   return (
     <div
@@ -66,7 +70,9 @@ export function PitchPlayerNode({
     >
       {/* 1. Ficha circular con borde del color del equipo */}
       <div
-        className="relative h-9 w-9 sm:h-13 sm:w-13 md:h-15 md:w-15 rounded-full bg-white shadow-sm border-2 sm:border-[2.5px] group-hover:scale-105 group-focus-visible:ring-2 group-focus-visible:ring-[var(--primary)] transition-all flex items-center justify-center overflow-visible"
+        className={`relative ${
+          isComfortable ? "h-11 w-11 sm:h-13 sm:w-13" : "h-9 w-9 sm:h-13 sm:w-13"
+        } md:h-15 md:w-15 rounded-full bg-white shadow-sm border-2 sm:border-[2.5px] group-hover:scale-105 group-focus-visible:ring-2 group-focus-visible:ring-[var(--primary)] transition-all flex items-center justify-center overflow-visible`}
         style={{ borderColor: teamColor }}
       >
         {showPhoto ? (
@@ -86,7 +92,9 @@ export function PitchPlayerNode({
         {/* 2. Badge de nota con escala de color semántica en la esquina superior derecha */}
         {rating && ratingStyle && (
           <span
-            className={`absolute -top-1 -right-1 flex items-center justify-center rounded-full px-1.5 py-0.2 text-[8px] sm:text-[9px] md:text-[10px] font-bold font-sans tabular-nums border border-white shadow-xs z-20 ${ratingStyle.bg} ${ratingStyle.text}`}
+            className={`absolute -top-1 -right-1 flex items-center justify-center rounded-full px-1.5 py-0.2 ${
+              isComfortable ? "text-[9px]" : "text-[8px]"
+            } sm:text-[9px] md:text-[10px] font-bold font-sans tabular-nums border border-white shadow-xs z-20 ${ratingStyle.bg} ${ratingStyle.text}`}
           >
             {rating.toFixed(1)}
           </span>
@@ -95,7 +103,9 @@ export function PitchPlayerNode({
 
       {/* 3. Tarjeta inferior con tinte del color del equipo, dorsal antes del nombre */}
       <div
-        className="mt-1 flex items-center justify-center rounded-md px-1.5 py-0.5 text-[8px] sm:text-[10px] md:text-[11px] border shadow-2xs backdrop-blur-xs max-w-[56px] sm:max-w-[84px] md:max-w-[96px] truncate transition-colors group-hover:shadow-xs"
+        className={`mt-1 flex items-center justify-center rounded-md px-1.5 py-0.5 ${
+          isComfortable ? "text-[9px] max-w-[70px]" : "text-[8px] max-w-[56px]"
+        } sm:text-[10px] sm:max-w-[84px] md:text-[11px] md:max-w-[96px] border shadow-2xs backdrop-blur-xs truncate transition-colors group-hover:shadow-xs`}
         style={{
           backgroundColor: hexToRgba(teamColor, 0.12),
           borderColor: hexToRgba(teamColor, 0.45),

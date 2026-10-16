@@ -50,7 +50,7 @@ export function SeasonSummaryTable({
                     <th scope="col" className="w-10 sm:w-12 py-2.5 pl-3 text-center">
                       {dict.season.standings.columns.pos}
                     </th>
-                    <th scope="col" className="py-2.5 pr-2">
+                    <th scope="col" className="py-2.5 pl-1.5 sm:pl-2 pr-2 text-left">
                       {dict.season.standings.columns.team}
                     </th>
                     <th
@@ -112,7 +112,7 @@ export function SeasonSummaryTable({
                         </td>
 
                         {/* Equipo */}
-                        <td className="py-2.5 pr-2">
+                        <td className="py-2.5 pl-1.5 sm:pl-2 pr-2">
                           <div className="flex items-center gap-2.5 min-w-0">
                             <TeamCrest
                               crestUrl={row.crestUrl}

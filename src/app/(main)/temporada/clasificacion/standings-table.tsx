@@ -34,7 +34,7 @@ export function StandingsTable({
               <th scope="col" className="w-10 sm:w-12 py-2.5 pl-3 text-center">
                 {t.columns.pos}
               </th>
-              <th scope="col" className="py-2.5 pr-2">
+              <th scope="col" className="py-2.5 pl-1.5 sm:pl-2 pr-2 text-left">
                 {t.columns.team}
               </th>
               <th scope="col" className="w-10 sm:w-12 py-2.5 text-center" title={t.columnTitles.played}>

@@ -1,4 +1,5 @@
 "use client";
+// Client: Interactive touch coordinates heatmap rendered on HTML5 canvas
 
 import { useEffect, useRef } from "react";
 import type { PlayerHeatmapPoint } from "@/lib/sports-api/fotmob-player-profile-types";

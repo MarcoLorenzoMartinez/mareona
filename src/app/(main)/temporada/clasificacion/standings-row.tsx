@@ -55,7 +55,7 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
         </span>
       </td>
 
-      <td className="py-2.5 pr-2">
+      <td className="py-2.5 pl-1.5 sm:pl-2 pr-2">
         <div className="flex items-center gap-2.5 min-w-0">
           <TeamCrest
             crestUrl={row.crestUrl}

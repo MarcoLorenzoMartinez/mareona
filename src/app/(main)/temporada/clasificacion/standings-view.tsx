@@ -12,6 +12,7 @@ import { getDictionary } from "@/i18n";
 import { RealDistanceView } from "./real-distance-view";
 import { EvolutionChart, type DisplayMode } from "./evolution-chart";
 import { StandingsTable } from "./standings-table";
+import { StandingsViewControls } from "./standings-view-controls";
 
 export type ClassificationViewMode = "table" | "distance" | "evolution";
 
@@ -86,88 +87,17 @@ export function StandingsView({
         {t.title} — {dict.season.competitionName} {seasonLabel}
       </h1>
 
-      {/* Top Controls: View selector (left) and secondary pill selector (right) */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div
-          role="radiogroup"
-          aria-label="Tipo de visualización"
-          className="inline-flex self-start rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto"
-        >
-          {viewModeOptions.map((opt) => {
-            const isSelected = mode === opt.id;
-            return (
-              <button
-                key={opt.id}
-                type="button"
-                role="radio"
-                aria-checked={isSelected}
-                onClick={() => setMode(opt.id)}
-                className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-                  isSelected
-                    ? "bg-white text-[var(--foreground)] shadow-xs font-bold"
-                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
-                }`}
-              >
-                {opt.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {mode === "evolution" ? (
-          <div
-            role="radiogroup"
-            aria-label="Series de evolución"
-            className="inline-flex self-start rounded-full border border-red-200 bg-red-50/50 p-1 sm:self-auto"
-          >
-            {evolutionModeOptions.map((opt) => {
-              const isSelected = evolutionMode === opt.id;
-              return (
-                <button
-                  key={opt.id}
-                  type="button"
-                  role="radio"
-                  aria-checked={isSelected}
-                  onClick={() => setEvolutionMode(opt.id)}
-                  className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-                    isSelected
-                      ? "bg-[var(--primary)] text-white shadow-xs font-bold"
-                      : "text-neutral-700 hover:text-[var(--primary)] hover:bg-red-100/50"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              );
-            })}
-          </div>
-        ) : (
-          <div
-            role="radiogroup"
-            aria-label="Filtro de ámbito"
-            className="inline-flex self-start rounded-full border border-red-200 bg-red-50/50 p-1 sm:self-auto"
-          >
-            {scopeOptions.map((opt) => {
-              const isSelected = scope === opt.id;
-              return (
-                <button
-                  key={opt.id}
-                  type="button"
-                  role="radio"
-                  aria-checked={isSelected}
-                  onClick={() => setScope(opt.id)}
-                  className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-                    isSelected
-                      ? "bg-[var(--primary)] text-white shadow-xs font-bold"
-                      : "text-neutral-700 hover:text-[var(--primary)] hover:bg-red-100/50"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <StandingsViewControls
+        mode={mode}
+        onSelectMode={setMode}
+        viewModeOptions={viewModeOptions}
+        scope={scope}
+        onSelectScope={setScope}
+        scopeOptions={scopeOptions}
+        evolutionMode={evolutionMode}
+        onSelectEvolutionMode={setEvolutionMode}
+        evolutionModeOptions={evolutionModeOptions}
+      />
 
       {mode === "evolution" ? (
         <EvolutionChart evolution={evolution} mode={evolutionMode} />

@@ -1,5 +1,5 @@
-﻿"use client";
-// Client: Match lineups view with unified horizontal tactical pitch and player stats modal
+// Client: Match lineups view with mobile vertical pitch toggle and desktop horizontal pitch board
+"use client";
 
 import { useState } from "react";
 import type {
@@ -8,8 +8,10 @@ import type {
   DomainPlayerMatchStats,
 } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
-import { TeamCrest } from "@/components/media/team-crest";
 import { TacticalPitchBoard } from "./tactical-pitch-board";
+import { TacticalVerticalPitch } from "./tactical-vertical-pitch";
+import { LineupsMobileSelector } from "./lineups-mobile-selector";
+import { LineupsDesktopHeader } from "./lineups-desktop-header";
 import { LineupBenchCard } from "./lineup-bench-card";
 import { LineupTeamColumn } from "./lineup-team-column";
 import { PlayerMatchStatsModal } from "./player-match-stats-modal";
@@ -30,6 +32,10 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
   const dict = getDictionary();
   const t = dict.season.matchDetail.lineups;
   const [selected, setSelected] = useState<SelectedPlayerState | null>(null);
+
+  // Default mobile view to Real Sporting if away, otherwise home
+  const defaultMobileTeam: "home" | "away" = match.awayTeam.isSporting ? "away" : "home";
+  const [activeMobileTeam, setActiveMobileTeam] = useState<"home" | "away">(defaultMobileTeam);
 
   const hasLineups = Boolean(match.homeLineup || match.awayLineup);
 
@@ -54,47 +60,67 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
       match.awayLineup
   );
 
+  const activeMobileTactical = activeMobileTeam === "home" ? homeTactical : awayTactical;
+  const activeMobileTeamMeta = activeMobileTeam === "home" ? match.homeTeam : match.awayTeam;
+  const activeMobileStarters =
+    activeMobileTeam === "home" ? match.homeLineup?.starters : match.awayLineup?.starters;
+
+  const handleSelectPlayer = (
+    player: DomainLineupPlayer,
+    stats: DomainPlayerMatchStats | null,
+    team: { readonly name: string; readonly crestUrl?: string | null; readonly isSporting: boolean },
+    teamColor: string,
+    textColor: string
+  ) => setSelected({ player, stats, team, teamColor, textColor });
+
   return (
     <div className="flex flex-col gap-6">
       {hasUnifiedTactical && match.homeLineup && match.awayLineup && homeTactical && awayTactical ? (
         <div className="rounded-2xl border border-[var(--border)] bg-white p-3.5 sm:p-5 shadow-2xs">
-          {/* Cabecera del campo con escudos y nombres limpios de los dos clubes */}
-          <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 mb-4">
-            {/* Local */}
-            <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 max-w-[44%]">
-              <TeamCrest crestUrl={match.homeTeam.crestUrl} teamName={match.homeTeam.name} size="sm" isSporting={match.homeTeam.isSporting} />
-              <span className={`text-xs sm:text-sm truncate ${match.homeTeam.isSporting ? "font-bold text-[var(--primary)]" : "font-bold text-[var(--foreground)]"}`}>
-                {match.homeTeam.name}
-              </span>
-            </div>
+          {/* Mobile View (< md): Team Selector + Dedicated Vertical Tactical Pitch */}
+          <div className="flex flex-col gap-3 md:hidden">
+            <LineupsMobileSelector
+              homeTeam={{
+                name: match.homeTeam.name,
+                crestUrl: match.homeTeam.crestUrl,
+                isSporting: match.homeTeam.isSporting,
+                formation: homeTactical.formation,
+              }}
+              awayTeam={{
+                name: match.awayTeam.name,
+                crestUrl: match.awayTeam.crestUrl,
+                isSporting: match.awayTeam.isSporting,
+                formation: awayTactical.formation,
+              }}
+              activeTeam={activeMobileTeam}
+              onSelectTeam={setActiveMobileTeam}
+            />
 
-            {/* VS Separador */}
-            <span className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold tracking-wider uppercase text-[var(--foreground-muted)] border border-[var(--border)] shrink-0">
-              VS
-            </span>
-
-            {/* Visitante */}
-            <div className="flex items-center justify-end gap-2 sm:gap-2.5 min-w-0 max-w-[44%] text-right">
-              <span className={`text-xs sm:text-sm truncate ${match.awayTeam.isSporting ? "font-bold text-[var(--primary)]" : "font-bold text-[var(--foreground)]"}`}>
-                {match.awayTeam.name}
-              </span>
-              <TeamCrest crestUrl={match.awayTeam.crestUrl} teamName={match.awayTeam.name} size="sm" isSporting={match.awayTeam.isSporting} />
-            </div>
+            {activeMobileTactical && activeMobileStarters && (
+              <TacticalVerticalPitch
+                tactical={activeMobileTactical}
+                team={activeMobileTeamMeta}
+                starters={activeMobileStarters}
+                playerStats={playerStats}
+                onSelectPlayer={handleSelectPlayer}
+              />
+            )}
           </div>
 
-          {/* Campo horizontal único sin scroll */}
-          <TacticalPitchBoard
-            homeTactical={homeTactical}
-            awayTactical={awayTactical}
-            homeTeam={match.homeTeam}
-            awayTeam={match.awayTeam}
-            homeStarters={match.homeLineup.starters}
-            awayStarters={match.awayLineup.starters}
-            playerStats={playerStats}
-            onSelectPlayer={(player, stats, team, teamColor, textColor) =>
-              setSelected({ player, stats, team, teamColor, textColor })
-            }
-          />
+          {/* Desktop View (>= md): Unified 11 vs 11 Horizontal Pitch Board */}
+          <div className="hidden md:flex md:flex-col">
+            <LineupsDesktopHeader homeTeam={match.homeTeam} awayTeam={match.awayTeam} />
+            <TacticalPitchBoard
+              homeTactical={homeTactical}
+              awayTactical={awayTactical}
+              homeTeam={match.homeTeam}
+              awayTeam={match.awayTeam}
+              homeStarters={match.homeLineup.starters}
+              awayStarters={match.awayLineup.starters}
+              playerStats={playerStats}
+              onSelectPlayer={handleSelectPlayer}
+            />
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 items-start">
@@ -102,39 +128,31 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
             lineup={match.homeLineup}
             team={match.homeTeam}
             playerStats={playerStats}
-            onSelectPlayer={(player, stats, team, teamColor, textColor) =>
-              setSelected({ player, stats, team, teamColor, textColor })
-            }
+            onSelectPlayer={handleSelectPlayer}
           />
           <LineupTeamColumn
             lineup={match.awayLineup}
             team={match.awayTeam}
             playerStats={playerStats}
-            onSelectPlayer={(player, stats, team, teamColor, textColor) =>
-              setSelected({ player, stats, team, teamColor, textColor })
-            }
+            onSelectPlayer={handleSelectPlayer}
           />
         </div>
       )}
 
-      {/* Banquillos en 2 columnas para el campo unificado */}
+      {/* Banquillos en 2 columnas */}
       {hasUnifiedTactical && match.homeLineup && match.awayLineup && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <LineupBenchCard
             team={match.homeTeam}
             substitutes={match.homeLineup.substitutes}
             playerStats={playerStats}
-            onSelectPlayer={(player, stats, team, teamColor, textColor) =>
-              setSelected({ player, stats, team, teamColor, textColor })
-            }
+            onSelectPlayer={handleSelectPlayer}
           />
           <LineupBenchCard
             team={match.awayTeam}
             substitutes={match.awayLineup.substitutes}
             playerStats={playerStats}
-            onSelectPlayer={(player, stats, team, teamColor, textColor) =>
-              setSelected({ player, stats, team, teamColor, textColor })
-            }
+            onSelectPlayer={handleSelectPlayer}
           />
         </div>
       )}
