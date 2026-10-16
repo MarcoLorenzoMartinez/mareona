@@ -32,3 +32,15 @@ test("getDictionary returns required standings and match translations", () => {
   assert.equal(dict.season.standings.zones.playoff, "Playoff");
   assert.equal(dict.season.standings.zones.relegation, "Descenso");
 });
+
+test("getDictionary returns required historico translations and tabs", () => {
+  const dict = getDictionary("es");
+  assert.ok(dict.historico);
+  assert.equal(dict.historico.title, "Histórico — Mareona");
+  assert.equal(dict.historico.tabs.trajectory, "Trayectoria");
+  assert.equal(dict.historico.tabs.comparison, "Comparador");
+  assert.equal(dict.historico.tabs.ephemerides, "Efemérides");
+  assert.equal(dict.historico.tabs.rivals, "Rivales");
+  assert.equal(dict.historico.tabs.legacy, "Legado");
+});
+

@@ -1,3 +1,7 @@
+"use client"; // Client: Fallback automático ante fallos de carga de imágenes externas
+
+import { useState } from "react";
+
 interface TeamCrestProps {
   readonly crestUrl: string | null | undefined;
   readonly teamName: string;
@@ -15,6 +19,7 @@ const SIZE_CLASSES = {
 /**
  * Standard team crest component conforming to AGENTS.md rule 3.
  * Preserves external club branding colors while ensuring WCAG 2.2 AA accessibility.
+ * Automatically falls back to an accessible acronym badge if the remote crest fails to load.
  *
  * @param crestUrl Remote URL for the club crest image.
  * @param teamName Full name of the football team.
@@ -29,10 +34,18 @@ export function TeamCrest({
   isDecorative = true,
   isSporting = false,
 }: TeamCrestProps) {
+  const [prevCrestUrl, setPrevCrestUrl] = useState(crestUrl);
+  const [hasError, setHasError] = useState(false);
   const sizeClass = SIZE_CLASSES[size];
   const acronym = teamName.slice(0, 3).toUpperCase();
 
-  if (!crestUrl) {
+  // Reset error state if the URL prop changes between renders
+  if (prevCrestUrl !== crestUrl) {
+    setPrevCrestUrl(crestUrl);
+    setHasError(false);
+  }
+
+  if (!crestUrl || hasError) {
     return (
       <div
         aria-hidden={isDecorative ? "true" : undefined}
@@ -54,7 +67,8 @@ export function TeamCrest({
       src={crestUrl}
       alt={isDecorative ? "" : teamName}
       loading="lazy"
-      className={`shrink-0 rounded-full object-contain ${sizeClass}`}
+      onError={() => setHasError(true)}
+      className={`shrink-0 object-contain ${sizeClass}`}
     />
   );
 }

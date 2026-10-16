@@ -206,6 +206,17 @@ export const es = {
       },
     },
   },
+  historico: {
+    title: "Histórico — Mareona",
+    description: "Archivo histórico, efemérides y leyendas del Real Sporting de Gijón.",
+    tabs: {
+      trajectory: "Trayectoria",
+      comparison: "Comparador",
+      ephemerides: "Efemérides",
+      rivals: "Rivales",
+      legacy: "Legado",
+    },
+  },
 } as const;
 
 export type Dictionary = typeof es;

@@ -34,11 +34,11 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
         <span
           className={`inline-flex h-6 w-6 items-center justify-center rounded-sm text-xs font-bold ${
             isDirectPromotion
-              ? "bg-neutral-800 text-white"
+              ? "bg-emerald-600 text-white shadow-2xs"
               : isPlayoff
-                ? "bg-neutral-200 text-neutral-800"
+                ? "bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold"
                 : isRelegation
-                  ? "bg-red-700 text-white"
+                  ? "bg-rose-700 text-white shadow-2xs"
                   : "text-[var(--foreground-muted)]"
           }`}
           aria-label={`Posición ${row.position}${
