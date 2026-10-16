@@ -1,11 +1,11 @@
 // Client: Requiere usePathname() para evaluar la ruta activa y aplicar aria-current="page", y estado de fallback de imagen
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
-import { MobileNav } from "./mobile-nav";
+import { MobileNav, MobileNavFallback } from "./mobile-nav";
 
 /**
  * Brand logo linking to home/temporada.
@@ -61,62 +61,93 @@ function BrandLogo() {
   );
 }
 
-/**
- * Main dual navigation:
- * - Desktop header: Corporate red background (#e2001a), white text, typographic links only.
- * - Mobile top bar: Matching corporate red header with logo.
- * - Mobile bottom bar: PWA ergonomic touch navigation via MobileNav.
- */
-export function MainNav() {
+function DesktopNavList({ pathname }: { readonly pathname: string | null }) {
+  return (
+    <nav aria-label="Navegación principal">
+      <ul className="flex items-center gap-1.5">
+        {NAV_ITEMS.map((item) => {
+          const isActive =
+            pathname !== null &&
+            (pathname === item.href || pathname.startsWith(`${item.href}/`));
+
+          return (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                className={`relative flex h-10 items-center rounded-md px-3.5 text-sm font-medium tracking-wide transition-colors duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] ${
+                  isActive
+                    ? "bg-white/18 font-bold text-white shadow-2xs"
+                    : "text-white/85 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <span>{item.label}</span>
+                {isActive && (
+                  <span
+                    className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-white"
+                    aria-hidden="true"
+                  />
+                )}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}
+
+function MainNavInner() {
   const pathname = usePathname();
 
   return (
     <>
-      {/* Desktop Header (≥ 768px): Red background, pure white typography */}
       <header className="sticky top-0 z-40 hidden w-full border-b border-[var(--primary-strong)] bg-[var(--primary)] text-white shadow-xs md:block">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <BrandLogo />
-
-          <nav aria-label="Navegación principal">
-            <ul className="flex items-center gap-1.5">
-              {NAV_ITEMS.map((item) => {
-                const isActive =
-                  pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      aria-current={isActive ? "page" : undefined}
-                      className={`relative flex h-10 items-center rounded-md px-3.5 text-sm font-medium tracking-wide transition-colors duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] ${
-                        isActive
-                          ? "bg-white/18 font-bold text-white shadow-2xs"
-                          : "text-white/85 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      <span>{item.label}</span>
-                      {isActive && (
-                        <span
-                          className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-white"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
+          <DesktopNavList pathname={pathname} />
         </div>
       </header>
 
-      {/* Mobile Top Bar (< 768px): Corporate red header */}
       <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b border-[var(--primary-strong)] bg-[var(--primary)] px-4 text-white shadow-xs md:hidden">
         <BrandLogo />
       </header>
 
-      {/* Mobile Bottom Navigation (< 768px, PWA Ergonomics) */}
       <MobileNav />
     </>
+  );
+}
+
+export function MainNavFallback() {
+  return (
+    <>
+      <header className="sticky top-0 z-40 hidden w-full border-b border-[var(--primary-strong)] bg-[var(--primary)] text-white shadow-xs md:block">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <BrandLogo />
+          <DesktopNavList pathname={null} />
+        </div>
+      </header>
+
+      <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b border-[var(--primary-strong)] bg-[var(--primary)] px-4 text-white shadow-xs md:hidden">
+        <BrandLogo />
+      </header>
+
+      <MobileNavFallback />
+    </>
+  );
+}
+
+/**
+ * Main dual navigation:
+ * - Desktop header: Corporate red background (#e2001a), white text, typographic links.
+ * - Mobile top bar: Matching corporate red header with logo.
+ * - Mobile bottom bar: PWA ergonomic touch navigation via MobileNav.
+ * Encapsulates internal Suspense boundary with structural fallback for PPR static shell compatibility.
+ */
+export function MainNav() {
+  return (
+    <Suspense fallback={<MainNavFallback />}>
+      <MainNavInner />
+    </Suspense>
   );
 }

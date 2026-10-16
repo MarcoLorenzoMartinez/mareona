@@ -1,17 +1,12 @@
 // Client: Requiere usePathname() para evaluar la ruta activa en móvil y aplicar aria-current
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
 
-/**
- * Mobile bottom navigation bar (< 768px, PWA Ergonomics)
- * conforming to WCAG 2.2 AA touch targets (≥44px) and active tab indicators.
- */
-export function MobileNav() {
-  const pathname = usePathname();
-
+function MobileNavList({ pathname }: { readonly pathname: string | null }) {
   return (
     <nav
       aria-label="Navegación móvil"
@@ -20,7 +15,8 @@ export function MobileNav() {
       <ul className="grid grid-cols-4 items-center">
         {NAV_ITEMS.map((item) => {
           const isActive =
-            pathname === item.href || pathname.startsWith(`${item.href}/`);
+            pathname !== null &&
+            (pathname === item.href || pathname.startsWith(`${item.href}/`));
           const Icon = item.icon;
 
           return (
@@ -63,5 +59,26 @@ export function MobileNav() {
         })}
       </ul>
     </nav>
+  );
+}
+
+function MobileNavInner() {
+  const pathname = usePathname();
+  return <MobileNavList pathname={pathname} />;
+}
+
+export function MobileNavFallback() {
+  return <MobileNavList pathname={null} />;
+}
+
+/**
+ * Mobile bottom navigation bar (< 768px, PWA Ergonomics).
+ * Encapsulates Suspense boundary to guarantee static HTML shell prerendering with zero layout shift.
+ */
+export function MobileNav() {
+  return (
+    <Suspense fallback={<MobileNavFallback />}>
+      <MobileNavInner />
+    </Suspense>
   );
 }

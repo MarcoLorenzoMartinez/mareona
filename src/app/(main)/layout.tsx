@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { MainNav } from "@/components/layout/main-nav";
 
 /**
@@ -21,13 +20,7 @@ export default function MainLayout({
       </a>
 
       {/* Dual navigation header and mobile bottom bar */}
-      <Suspense
-        fallback={
-          <header className="sticky top-0 z-40 h-14 md:h-16 w-full border-b border-[var(--primary-strong)] bg-[var(--primary)] text-white shadow-xs" />
-        }
-      >
-        <MainNav />
-      </Suspense>
+      <MainNav />
 
       {/* Main content landmark with bottom padding to avoid mobile nav overlap */}
       <main

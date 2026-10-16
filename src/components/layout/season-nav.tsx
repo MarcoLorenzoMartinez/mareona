@@ -1,16 +1,12 @@
 // Client: Requiere usePathname() para evaluar la ruta activa y aplicar aria-current="page"
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getDictionary } from "@/i18n";
 
-/**
- * Secondary navigation bar for the Temporada section.
- * Renders typographic tabs with touch targets >= 44px and WCAG 2.2 AA compliant focus rings.
- */
-export function SeasonNav() {
-  const pathname = usePathname();
+function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
   const dict = getDictionary();
 
   const seasonTabs = [
@@ -28,9 +24,10 @@ export function SeasonNav() {
       <div className="flex items-center gap-1 overflow-x-auto scrollbar-none px-1">
         {seasonTabs.map((tab) => {
           const isActive =
-            tab.href === "/temporada"
+            pathname !== null &&
+            (tab.href === "/temporada"
               ? pathname === "/temporada"
-              : pathname.startsWith(tab.href);
+              : pathname.startsWith(tab.href));
 
           if (!tab.isAvailable) {
             return (
@@ -64,5 +61,26 @@ export function SeasonNav() {
         })}
       </div>
     </nav>
+  );
+}
+
+function SeasonNavInner() {
+  const pathname = usePathname();
+  return <SeasonNavList pathname={pathname} />;
+}
+
+export function SeasonNavFallback() {
+  return <SeasonNavList pathname={null} />;
+}
+
+/**
+ * Secondary navigation bar for the Temporada section.
+ * Encapsulates internal Suspense boundary with structural fallback for PPR static shell compatibility.
+ */
+export function SeasonNav() {
+  return (
+    <Suspense fallback={<SeasonNavFallback />}>
+      <SeasonNavInner />
+    </Suspense>
   );
 }

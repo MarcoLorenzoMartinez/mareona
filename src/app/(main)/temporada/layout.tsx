@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { SeasonNav } from "@/components/layout/season-nav";
 
@@ -14,16 +13,7 @@ export default function TemporadaLayout({
 }) {
   return (
     <div className="flex w-full flex-col gap-6">
-      <Suspense
-        fallback={
-          <nav
-            aria-label="Secciones de la temporada"
-            className="w-full border-b border-[var(--border)] bg-white h-11"
-          />
-        }
-      >
-        <SeasonNav />
-      </Suspense>
+      <SeasonNav />
       {children}
     </div>
   );
