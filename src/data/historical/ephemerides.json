@@ -12,6 +12,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/lm/2157.png"
   },
   {
+    "id": "eph-jan-02-recital-juanele",
+    "month": 1,
+    "day": 2,
+    "year": 1994,
+    "category": "triumph",
+    "categoryLabel": "Gesta Histórica",
+    "title": "Victoria histórica ante el Dream Team (2-0)",
+    "description": "Victoria del Sporting por 2-0 frente al FC Barcelona en El Molinón, con goles de Abelardo y Miner tras dos asistencias de Juanele.",
+    "figure": "Juanele",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1581.jpg"
+  },
+  {
     "id": "eph-jan-02-manu-garcia-birth",
     "month": 1,
     "day": 2,
@@ -21,19 +33,7 @@
     "title": "Nacimiento de Manu García",
     "description": "Nace en Oviedo el talentoso mediapunta forjado en Mareo, internacional absoluto y uno de los mayores valores técnicos salidos de la cantera sportinguista.",
     "figure": "Manu García",
-    "photoUrl": "https://www.bdfutbol.com/i/j/25299.jpg"
-  },
-  {
-    "id": "eph-jan-02-recital-juanele",
-    "month": 1,
-    "day": 2,
-    "year": 1994,
-    "category": "triumph",
-    "categoryLabel": "Gesta Histórica",
-    "title": "Victoria histórica ante el Dream Team (2-0)",
-    "description": "Inolvidable recital de Juanele en El Molinón desarbolando a la zaga del FC Barcelona de Johan Cruyff y asistiendo a Abelardo y Miner para derrotar al vigente campeón.",
-    "figure": "Juanele",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1581.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/25059e.jpg"
   },
   {
     "id": "eph-jan-03-ferrero-birth",
@@ -43,7 +43,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Enzo Ferrero",
-    "description": "Nace en Campana (Argentina) el mago de la banda izquierda, procedente de Boca Juniors y uno de los mayores ídolos y asistentes de la época dorada.",
+    "description": "Nace en Campana (Argentina) Enzo Ferrero, extremo izquierdo del Real Sporting entre 1975 y 1985 con 340 partidos oficiales y 54 goles.",
     "figure": "Enzo Ferrero",
     "photoUrl": "https://www.bdfutbol.com/i/j/3572c.jpg"
   },
@@ -55,9 +55,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Javi Fuego",
-    "description": "Nace en Pola de Siero el sobrio y táctico centrocampista internacional formado en Mareo, capitán y símbolo de entrega en Primera División.",
+    "description": "Nace en Pola de Siero Javi Fuego, centrocampista formado en Mareo que disputó más de 150 partidos con el Real Sporting en Primera y Segunda División.",
     "figure": "Javi Fuego",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1225.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/4138f.jpg"
   },
   {
     "id": "eph-jan-10-scepovic-birth",
@@ -67,9 +67,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Stefan Scepovic",
-    "description": "Nace en Belgrado el artillero balcánico, autor de 23 dianas en su recordada campaña en El Molinón.",
+    "description": "Nace en Belgrado Stefan Scepovic, delantero serbio que anotó 23 goles en la temporada 2013-14 con el Real Sporting en Segunda División.",
     "figure": "Stefan Scepovic",
-    "photoUrl": "https://www.bdfutbol.com/i/j/8702.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/97538b.jpg"
   },
   {
     "id": "eph-jan-22-molinuevo-birth",
@@ -79,9 +79,9 @@
     "category": "legend",
     "categoryLabel": "Memoria Rojiblanca",
     "title": "Nacimiento de José Luis Molinuevo",
-    "description": "Nace en Bilbao el legendario guardameta que defendió con valentía la portería del Real Sporting en los años 30 y 40.",
+    "description": "Nace en Bilbao el guardameta que defendió con valentía la portería del Real Sporting en los años 30 y 40.",
     "figure": "José Luis Molinuevo",
-    "photoUrl": "https://www.bdfutbol.com/i/j/10145.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/lm/8431.png"
   },
   {
     "id": "eph-jan-22-tati-alcalde-birth",
@@ -129,7 +129,7 @@
     "title": "Primer ascenso a 1.ª División (1944)",
     "description": "El club sella matemáticamente su histórico primer salto a la máxima categoría del fútbol español tras liderar la fase de ascenso.",
     "figure": "Amadeo Sánchez",
-    "photoUrl": "/images/historical/el-molinon-historico.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/lm/7831.png"
   },
   {
     "id": "eph-jan-28-churruca-birth",
@@ -151,9 +151,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Mino",
-    "description": "Nace en Antromero (Asturias) Bernardino Serrano 'Mino', central internacional formado en Mareo que destacó en la época dorada de los 80.",
+    "description": "Nace en Antromero (Asturias) Bernardino Serrano 'Mino', defensa central formado en Mareo que disputó 119 partidos oficiales con el club.",
     "figure": "Mino",
-    "photoUrl": "https://www.bdfutbol.com/i/j/2739e.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/317c.jpg"
   },
   {
     "id": "eph-jan-29-isma-lopez-birth",
@@ -165,7 +165,7 @@
     "title": "Nacimiento de Isma López",
     "description": "Nace en Pamplona el veloz carrilero zurdo de 'Los Guajes' de Abelardo, autor de goles memorables en el ascenso de 2015 y en Primera.",
     "figure": "Isma López",
-    "photoUrl": "https://www.bdfutbol.com/i/j/12615.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/100148d.jpg"
   },
   {
     "id": "eph-feb-01-uria-birth",
@@ -199,7 +199,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Jonathan Dubasin",
-    "description": "Nace en La Seu d'Urgell el incansable delantero hispano-belga, máximo artillero del Real Sporting en la temporada 2025-26.",
+    "description": "Nace en La Seu d'Urgell Jonathan Dubasin, delantero del Real Sporting cedido por el FC Basel en la temporada 2024-25.",
     "figure": "Jonathan Dubasin",
     "photoUrl": "https://www.bdfutbol.com/i/j/43126e.jpg"
   },
@@ -213,7 +213,7 @@
     "title": "Nacimiento de Roberto Canella",
     "description": "Nace en Pola de Laviana el lateral zurdo y capitán formado en Mareo, con más de 300 partidos oficiales y dos ascensos a Primera con el Sporting.",
     "figure": "Roberto Canella",
-    "photoUrl": "https://www.bdfutbol.com/i/j/6328.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/6172.jpg"
   },
   {
     "id": "eph-feb-08-goleada-real-madrid-4-0",
@@ -237,7 +237,7 @@
     "title": "Nacimiento de Mario Cotelo",
     "description": "Nace en La Felguera el infatigable centrocampista canterano de Mareo, con más de 130 partidos oficiales con la casaca rojiblanca.",
     "figure": "Mario Cotelo",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1884.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1910f.jpg"
   },
   {
     "id": "eph-feb-16-rivera-birth",
@@ -247,7 +247,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Alberto Rivera",
-    "description": "Nace en Puertollano el virtuoso cerebro del centro del campo, pieza clave e insustituible en el Sporting de Manolo Preciado en Primera División.",
+    "description": "Nace en Puertollano Alberto Rivera, centrocampista del Real Sporting entre 2009 y 2012 con 101 partidos disputados en Primera División.",
     "figure": "Alberto Rivera",
     "photoUrl": "https://www.bdfutbol.com/i/j/72d.jpg"
   },
@@ -273,7 +273,7 @@
     "title": "Nacimiento de Iván Hernández",
     "description": "Nace en Madrid el sobrio y contundente central rojiblanco, capitán en dos etapas gloriosas con Manolo Preciado y Abelardo Fernández.",
     "figure": "Iván Hernández",
-    "photoUrl": "https://www.bdfutbol.com/i/j/4405.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/4902c.jpg"
   },
   {
     "id": "eph-feb-27-quini-farewell",
@@ -295,7 +295,7 @@
     "category": "triumph",
     "categoryLabel": "Gesta a Domicilio",
     "title": "Asalto al Camp Nou: FC Barcelona 0-4 Real Sporting (1987)",
-    "description": "Histórica goleada del Sporting en el Camp Nou ante el líder indiscutible de Terry Venables. Los goles de Lucho Flores, doblete de Eloy Olaya y Luismi coronaron una noche inolvidable en feudo azulgrana.",
+    "description": "Goleada del Sporting por 0-4 ante el FC Barcelona en el Camp Nou con goles de Lucho Flores, doblete de Eloy Olaya y Luismi.",
     "figure": "Eloy Olaya y Lucho Flores",
     "photoUrl": "/images/historical/camp-nou-1987-0-4.jpg"
   },
@@ -307,9 +307,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Uros Djurdjevic 'Djuka'",
-    "description": "Nace en Belgrado el ariete balcánico, autor de 66 goles oficiales con la camiseta del Sporting y segundo máximo artillero extranjero del club.",
+    "description": "Nace en Belgrado Uros Djurdjevic 'Djuka', delantero del Real Sporting entre 2018 y 2024 con 66 goles oficiales en 232 partidos.",
     "figure": "Uros Djurdjevic",
-    "photoUrl": "https://www.bdfutbol.com/i/j/20658.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/27072c.jpg"
   },
   {
     "id": "eph-mar-04-juanma-birth",
@@ -343,7 +343,7 @@
     "category": "signing",
     "categoryLabel": "Fichaje Internacional",
     "title": "Nacimiento de Laurie Cunningham",
-    "description": "Nace en Londres el mítico extremo internacional inglés, cuya incorporación en la campaña 1983-84 desató la admiración de la afición en El Molinón.",
+    "description": "Nace en Londres Laurie Cunningham, extremo internacional inglés que militó en el Real Sporting en la temporada 1983-84.",
     "figure": "Laurie Cunningham",
     "photoUrl": "https://www.bdfutbol.com/i/j/3666g.jpg"
   },
@@ -393,7 +393,7 @@
     "title": "Nacimiento de Michael Santos",
     "description": "Nace en Piriápolis (Uruguay) el combativo delantero internacional charrúa, autor de 17 dianas con el Real Sporting en la temporada 2017-18.",
     "figure": "Michael Santos",
-    "photoUrl": "https://www.bdfutbol.com/i/j/20268.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/20211b.jpg"
   },
   {
     "id": "eph-mar-15-tati-valdes-birth",
@@ -453,7 +453,7 @@
     "title": "Nacimiento de Alberto Lora",
     "description": "Nace en Móstoles el bravo lateral y capitán del Sporting en Primera División, defendiendo la camiseta en más de 250 encuentros oficiales.",
     "figure": "Alberto Lora",
-    "photoUrl": "https://www.bdfutbol.com/i/j/6344.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/6222.jpg"
   },
   {
     "id": "eph-mar-25-aitor-garcia-birth",
@@ -465,7 +465,7 @@
     "title": "Nacimiento de Aitor García",
     "description": "Nace en Olula del Río el potente extremo andaluz, autor de más de una veintena de dianas y golazos inolvidables de media distancia en El Molinón.",
     "figure": "Aitor García",
-    "photoUrl": "https://www.bdfutbol.com/i/j/13840.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/8741d.jpg"
   },
   {
     "id": "eph-mar-27-gaspar-birth",
@@ -513,7 +513,7 @@
     "title": "Nacimiento de Nacho Méndez",
     "description": "Nace en Luanco el mediocentro canterano de Mareo, con más de 200 partidos oficiales vistiendo la camiseta del primer equipo.",
     "figure": "Nacho Méndez",
-    "photoUrl": "https://www.bdfutbol.com/i/j/21702.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/22496b.jpg"
   },
   {
     "id": "eph-apr-02-bernabeu-mourinho",
@@ -549,7 +549,19 @@
     "title": "Nacimiento de Marcos Vales",
     "description": "Nace en A Coruña el talentoso centrocampista internacional que deslumbró en El Molinón a mediados de los 90.",
     "figure": "Marcos Vales",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1882.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1895d.jpg"
+  },
+  {
+    "id": "eph-apr-07-bernabeu-cheryshev",
+    "month": 4,
+    "day": 7,
+    "year": 1996,
+    "category": "triumph",
+    "categoryLabel": "Hazaña a Domicilio",
+    "title": "Victoria en el Bernabéu ante el Real Madrid (0-1)",
+    "description": "El Sporting venció 0-1 al Real Madrid en el estadio Santiago Bernabéu con un gol de Dmitri Cheryshev en el minuto 41.",
+    "figure": "Dmitri Cheryshev",
+    "photoUrl": "https://www.bdfutbol.com/i/j/605c.jpg"
   },
   {
     "id": "eph-apr-10-juanele-birth",
@@ -559,7 +571,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Juan Gómez 'Juanele'",
-    "description": "Nace en Gijón el genio de la zurda indomable y el regate inverosímil, estrella deslumbrante de los años noventa en El Molinón.",
+    "description": "Nace en Gijón Juan Gómez 'Juanele', delantero formado en Mareo que jugó 147 partidos oficiales con el Real Sporting anotando 29 goles.",
     "figure": "Juanele",
     "photoUrl": "https://www.bdfutbol.com/i/j/1581c.jpg"
   },
@@ -573,7 +585,7 @@
     "title": "Nacimiento de Mario Stanic",
     "description": "Nace en Sarajevo el imponente atacante internacional croata, autor de goles memorables durante su estancia en El Molinón.",
     "figure": "Mario Stanic",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1880.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1913.jpg"
   },
   {
     "id": "eph-apr-13-ramon-herrera-birth",
@@ -621,7 +633,7 @@
     "title": "Nacimiento de Luis Hernández",
     "description": "Nace en Madrid el implacable defensa central y saqueador de bandas de largo alcance, capitán y mariscal en el Sporting de los Guajes.",
     "figure": "Luis Hernández",
-    "photoUrl": "https://www.bdfutbol.com/i/j/101315.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/200433c.jpg"
   },
   {
     "id": "eph-apr-16-alcazar-birth",
@@ -643,9 +655,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Jorge Meré",
-    "description": "Nace en Oviedo el central internacional surgido de Mareo, puntal defensivo del Sporting en Primera con solo 18 años.",
+    "description": "Nace en Oviedo Jorge Meré, defensa central formado en Mareo que disputó 63 partidos oficiales con el primer equipo antes de su traspaso a la Bundesliga.",
     "figure": "Jorge Meré",
-    "photoUrl": "https://www.bdfutbol.com/i/j/20054.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/102277b.jpg"
   },
   {
     "id": "eph-apr-19-abelardo-birth",
@@ -667,7 +679,7 @@
     "category": "milestone",
     "categoryLabel": "Patrimonio Rojiblanco",
     "title": "Inauguración de la Escuela de Mareo",
-    "description": "Apertura oficial de las instalaciones de Mareo bajo la presidencia de Manuel Vega-Arango, cuna inagotable de talento futbolístico.",
+    "description": "Instalaciones deportivas de la Escuela de Fútbol de Mareo, inauguradas oficialmente en marzo de 1978.",
     "figure": "Manuel Vega-Arango",
     "photoUrl": "/images/historical/escuela-de-mareo.jpg"
   },
@@ -679,7 +691,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Jorge David López",
-    "description": "Nace en Turón el virtuoso centrocampista canterano, titular en el legendario Sporting subcampeón de Liga de 1978-79.",
+    "description": "Nace en Turón el virtuoso centrocampista canterano, titular en el Sporting subcampeón de Liga de 1978-79.",
     "figure": "Jorge David López",
     "photoUrl": "https://www.bdfutbol.com/i/j/3571b.jpg"
   },
@@ -717,7 +729,7 @@
     "title": "Nacimiento de Chus Bravo",
     "description": "Nace en Gijón Jesús Bravo 'Chus Bravo', zaguero forjado en Mareo que personificó la bravura, la entrega y la fidelidad al escudo rojiblanco.",
     "figure": "Chus Bravo",
-    "photoUrl": "https://www.bdfutbol.com/i/j/4261.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/4597d.jpg"
   },
   {
     "id": "eph-may-08-luis-enrique-birth",
@@ -727,9 +739,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Luis Enrique Martínez",
-    "description": "Nace en Gijón Luis Enrique 'Lucho', emblema universal de Mareo, internacional absoluto y uno de los futbolistas y técnicos más trascendentes del fútbol mundial.",
+    "description": "Nace en Gijón Luis Enrique Martínez, delantero formado en Mareo que disputó 44 partidos oficiales con el Real Sporting anotando 17 goles.",
     "figure": "Luis Enrique Martínez",
-    "photoUrl": "https://www.bdfutbol.com/i/lm/1879.png"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1799e.jpg"
   },
   {
     "id": "eph-may-09-marino-birth",
@@ -741,7 +753,7 @@
     "title": "Nacimiento de Diego Mariño",
     "description": "Nace en Vigo el guardameta que defendió los palos de El Molinón durante más de 200 encuentros oficiales a lo largo de siete temporadas.",
     "figure": "Diego Mariño",
-    "photoUrl": "https://www.bdfutbol.com/i/j/12497.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/14000c.jpg"
   },
   {
     "id": "eph-may-10-miera-birth",
@@ -753,7 +765,7 @@
     "title": "Nacimiento de Vicente Miera",
     "description": "Nace en Peñacastillo el ilustre entrenador que guio al Real Sporting al subcampeonato de Liga 1978-79 y a las competiciones europeas.",
     "figure": "Vicente Miera",
-    "photoUrl": "https://www.bdfutbol.com/i/lm/1429.png"
+    "photoUrl": "https://www.bdfutbol.com/i/j/6064b.jpg"
   },
   {
     "id": "eph-may-10-barral-birth",
@@ -763,9 +775,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de David Barral",
-    "description": "Nace en San Fernando el delantero carismático y luchador incansable del Sporting de Manolo Preciado, con el que logró el ascenso en 2008.",
+    "description": "Nace en San Fernando David Barral, delantero del Real Sporting entre 2006 y 2012 con 55 goles en 213 partidos oficiales.",
     "figure": "David Barral",
-    "photoUrl": "https://www.bdfutbol.com/i/j/6090.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/5643b.jpg"
   },
   {
     "id": "eph-may-11-cheryshev-birth",
@@ -777,7 +789,7 @@
     "title": "Nacimiento de Dmitri Chéryshev",
     "description": "Nace en Nizhni Nóvgorod el imparable velocista e internacional ruso, que enamoró a El Molinón con su zancada vertiginosa y sus 47 goles oficiales.",
     "figure": "Dmitri Chéryshev",
-    "photoUrl": "https://www.bdfutbol.com/i/j/594.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/605c.jpg"
   },
   {
     "id": "eph-may-12-barrera-birth",
@@ -789,7 +801,7 @@
     "title": "Nacimiento de Álex Barrera",
     "description": "Nace en Oviedo el mediapunta de Mareo, miembro del plantel de 'Los Guajes' en la heroica campaña del ascenso de 2015.",
     "figure": "Álex Barrera",
-    "photoUrl": "https://www.bdfutbol.com/i/j/101845.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/200503b.jpg"
   },
   {
     "id": "eph-may-16-maceda-birth",
@@ -859,9 +871,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Igor Lediakhov",
-    "description": "Nace en Sochi el 'Mago Ruso', astro indiscutible de El Molinón durante ocho temporadas con su elegancia y calidad técnica excelsa.",
+    "description": "Nace en Sochi Igor Lediakhov, centrocampista internacional ruso que disputó 234 partidos oficiales y anotó 45 goles con el Sporting entre 1994 y 2002.",
     "figure": "Igor Lediakhov",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1089.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1083b.jpg"
   },
   {
     "id": "eph-may-22-queipo-birth",
@@ -873,7 +885,7 @@
     "title": "Nacimiento de Dani Queipo",
     "description": "Nace en Gijón el eléctrico extremo zurdo de Mareo, formado desde la infancia en la cantera y dotado de desborde y valentía en el uno contra uno.",
     "figure": "Dani Queipo",
-    "photoUrl": "https://www.bdfutbol.com/i/j/43014.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/43018b.jpg"
   },
   {
     "id": "eph-may-23-sergio-fernandez-birth",
@@ -885,7 +897,7 @@
     "title": "Nacimiento de Sergio Fernández",
     "description": "Nace en Avilés el central formado en Mareo, zaguero de jerarquía en Primera División y posterior director deportivo.",
     "figure": "Sergio Fernández",
-    "photoUrl": "https://www.bdfutbol.com/i/j/2485.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/2487b.jpg"
   },
   {
     "id": "eph-may-26-otero-birth",
@@ -919,9 +931,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Carlos Castro",
-    "description": "Nace en Ujo el delantero canterano de Mareo, providencial cazagoles y autor de dianas clave en el inolvidable ascenso a Primera de 2015.",
+    "description": "Nace en Ujo el delantero canterano de Mareo, providencial cazagoles y autor de dianas clave en el ascenso a Primera de 2015.",
     "figure": "Carlos Castro",
-    "photoUrl": "https://www.bdfutbol.com/i/j/102046.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/101311b.jpg"
   },
   {
     "id": "eph-jun-04-joaquin-villa-birth",
@@ -955,9 +967,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Pedro Díaz",
-    "description": "Nace en Mieres el cerebro del mediocampo surgido de Mareo, dotado de un golpeo de balón privilegiado a media y larga distancia.",
+    "description": "Nace en Siero Pedro Díaz, centrocampista formado en Mareo que disputó 155 partidos oficiales con el primer equipo del Real Sporting.",
     "figure": "Pedro Díaz",
-    "photoUrl": "https://www.bdfutbol.com/i/j/21703.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/21156b.jpg"
   },
   {
     "id": "eph-jun-07-roque-mesa-birth",
@@ -969,7 +981,7 @@
     "title": "Nacimiento de Roque Mesa",
     "description": "Nace en Telde el experimentado mediocentro grancanario, de reconocida trayectoria en la élite y organizador de juego en El Molinón.",
     "figure": "Roque Mesa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/20040.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/200585h.jpg"
   },
   {
     "id": "eph-jun-07-villamarin-miracle",
@@ -1063,9 +1075,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Miguel de las Cuevas",
-    "description": "Nace en Alicante el atacante autor del legendario gol en el Bernabéu que rompió el récord de imbatibilidad de José Mourinho.",
+    "description": "Nace en Alicante Miguel de las Cuevas, centrocampista del Real Sporting entre 2009 y 2013 con 133 encuentros oficiales.",
     "figure": "Miguel de las Cuevas",
-    "photoUrl": "https://www.bdfutbol.com/i/j/2655.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/4122c.jpg"
   },
   {
     "id": "eph-jun-20-doria-birth",
@@ -1075,7 +1087,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Víctor Hugo Doria",
-    "description": "Nace en Buenos Aires el formidable defensa central argentino, baluarte insustituible de la retaguardia sportinguista en la época dorada de los 70 y 80.",
+    "description": "Nace en Buenos Aires el formidable defensa central argentino, baluarte insustituible de la retaguardia sportinguista en los años 70 y 80 de los 70 y 80.",
     "figure": "Víctor Hugo Doria",
     "photoUrl": "https://www.bdfutbol.com/i/j/3747b.jpg"
   },
@@ -1099,7 +1111,7 @@
     "category": "milestone",
     "categoryLabel": "Ascenso Campeón",
     "title": "Campeones de Segunda División (1970)",
-    "description": "El Sporting conquista el título de Segunda División y asciende a Primera comandado por Quini, máximo artillero con 24 dianas.",
+    "description": "El Sporting conquista el título de Segunda División y asciende a Primera comandado por Quini, máximo delantero con 24 dianas.",
     "figure": "Enrique Castro 'Quini'",
     "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
@@ -1123,9 +1135,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Diego Castro",
-    "description": "Nace en Pontevedra el mago del regate y del penalti, líder indiscutible del Sporting de Manolo Preciado en Primera División.",
+    "description": "Nace en Pontevedra Diego Castro, extremo del Real Sporting entre 2006 y 2011 con 170 partidos disputados y 43 goles anotados.",
     "figure": "Diego Castro",
-    "photoUrl": "https://www.bdfutbol.com/i/j/6082.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/571b.jpg"
   },
   {
     "id": "eph-jul-04-rezza-birth",
@@ -1159,9 +1171,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Carlos Carmona",
-    "description": "Nace en Palma el versátil centrocampista balear, que defendió la camiseta del Sporting en casi 300 partidos oficiales durante una década.",
+    "description": "Nace en Palma de Mallorca Carlos Carmona, extremo del Real Sporting entre 2012 y 2021 con 293 partidos oficiales y 43 goles.",
     "figure": "Carlos Carmona",
-    "photoUrl": "https://www.bdfutbol.com/i/j/4125.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/354d.jpg"
   },
   {
     "id": "eph-jul-08-dani-martin-birth",
@@ -1173,7 +1185,7 @@
     "title": "Nacimiento de Dani Martín",
     "description": "Nace en Gijón el guardameta formado en Mareo, campeón de Europa sub-21 con la Selección Española.",
     "figure": "Dani Martín",
-    "photoUrl": "https://www.bdfutbol.com/i/j/21704.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/21125b.jpg"
   },
   {
     "id": "eph-jul-09-carmelo-birth",
@@ -1183,9 +1195,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Carmelo González",
-    "description": "Nace en Las Palmas el talentoso mediapunta grancanario, autor de goles inolvidables con la elástica rojiblanca en Primera División.",
+    "description": "Nace en Las Palmas Carmelo González, atacante del Real Sporting entre 2008 y 2013 con 121 partidos oficiales en Primera y Segunda División.",
     "figure": "Carmelo González",
-    "photoUrl": "https://www.bdfutbol.com/i/j/4568.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/398b.jpg"
   },
   {
     "id": "eph-jul-09-jony-birth",
@@ -1195,9 +1207,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Jony Rodríguez",
-    "description": "Nace en Cangas del Narcea el puñal de la banda izquierda de Mareo, héroe del ascenso de Los Guajes y autor de goles imborrables.",
+    "description": "Nace en Cangas del Narcea Jony Rodríguez, extremo formado en Mareo que disputó 119 partidos oficiales con el Sporting anotando 21 goles.",
     "figure": "Jony Rodríguez",
-    "photoUrl": "https://www.bdfutbol.com/i/j/100067b.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/201014d.jpg"
   },
   {
     "id": "eph-jul-09-christian-rivera-birth",
@@ -1231,9 +1243,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Bernardo Espinosa",
-    "description": "Nace en Cali el mariscal de la zaga del ascenso de 'Los Guajes' de 2015, líder carismático y pieza indiscutible de la defensa sportinguista.",
+    "description": "Nace en Cali (Colombia) Bernardo Espinosa, defensa central del Real Sporting entre 2013 y 2016 con 121 partidos oficiales.",
     "figure": "Bernardo Espinosa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/12498.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/6287c.jpg"
   },
   {
     "id": "eph-jul-12-ferrero-signing",
@@ -1257,7 +1269,7 @@
     "title": "Nacimiento de Rubén García",
     "description": "Nace en Xàtiva el refinado centrocampista valenciano, líder de asistencias y magia en la brillante temporada 2017-18 con el Real Sporting.",
     "figure": "Rubén García",
-    "photoUrl": "https://www.bdfutbol.com/i/j/101118.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/301767c.jpg"
   },
   {
     "id": "eph-jul-18-diego-sanchez-birth",
@@ -1279,9 +1291,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Luis Morán",
-    "description": "Nace en Luanco el extremo canterano, autor del legendario segundo gol ante el Eibar que selló el ascenso a Primera en 2008.",
+    "description": "Nace en Luanco el extremo canterano, autor del segundo gol ante el Eibar que selló el ascenso a Primera en 2008.",
     "figure": "Luis Morán",
-    "photoUrl": "https://www.bdfutbol.com/i/j/6347.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/6170.jpg"
   },
   {
     "id": "eph-aug-02-pablo-perez-birth",
@@ -1291,9 +1303,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Pablo Pérez",
-    "description": "Nace en Gijón el delantero de Mareo, siempre entregado a la casaca rojiblanca en más de 180 encuentros oficiales.",
+    "description": "Nace en Gijón Pablo Pérez, mediapunta formado en Mareo que disputó 189 partidos oficiales con el Real Sporting entre 2014 y 2022.",
     "figure": "Pablo Pérez",
-    "photoUrl": "https://www.bdfutbol.com/i/j/101844.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/101315c.jpg"
   },
   {
     "id": "eph-aug-04-ciriaco-birth",
@@ -1329,7 +1341,7 @@
     "title": "Nacimiento de Marcelino García Toral",
     "description": "Nace en Villaviciosa el centrocampista formado en Mareo y posteriormente técnico que rozó el ascenso en la temporada 2003-04.",
     "figure": "Marcelino García Toral",
-    "photoUrl": "https://www.bdfutbol.com/i/lm/6292.png"
+    "photoUrl": "https://www.bdfutbol.com/i/j/2974e.jpg"
   },
   {
     "id": "eph-aug-14-lediakhov-signing",
@@ -1353,7 +1365,7 @@
     "title": "Nacimiento de Manuel Vega-Arango",
     "description": "Nace el presidente más emblemático del club, artífice institucional de la construcción de Mareo y de la época más laureada del Real Sporting.",
     "figure": "Manuel Vega-Arango",
-    "photoUrl": "https://www.bdfutbol.com/i/lm/6987.png"
+    "photoUrl": "https://www.bdfutbol.com/i/j/9584.jpg"
   },
   {
     "id": "eph-aug-21-primer-partido-molinon",
@@ -1387,7 +1399,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de José Luis Ablanedo 'Ablanedo I'",
-    "description": "Nace en Mieres el férreo central de Mareo, baluarte defensivo durante más de 300 encuentros oficiales en la época dorada.",
+    "description": "Nace en Mieres el férreo central de Mareo, baluarte defensivo durante más de 300 encuentros oficiales en los años 70 y 80.",
     "figure": "José Luis Ablanedo",
     "photoUrl": "https://www.bdfutbol.com/i/j/1456b.jpg"
   },
@@ -1425,7 +1437,7 @@
     "title": "Nacimiento de Pablo Lago",
     "description": "Nace en Vegadeo el fino extremo zurdo formado en Mareo, recordado por su exquisito golpeo con la pierna izquierda.",
     "figure": "Pablo Lago",
-    "photoUrl": "https://www.bdfutbol.com/i/j/2180.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/2150c.jpg"
   },
   {
     "id": "eph-aug-31-scepovic-signing",
@@ -1461,7 +1473,7 @@
     "title": "Nacimiento de Juan Pablo Colinas",
     "description": "Nace en León el seguro y sobrio guardameta del Sporting de Manolo Preciado durante las recordadas temporadas de permanencia en Primera División.",
     "figure": "Juan Pablo Colinas",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1601.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1687.jpg"
   },
   {
     "id": "eph-sep-05-cote-birth",
@@ -1473,7 +1485,7 @@
     "title": "Nacimiento de José Ángel Valdés 'Cote'",
     "description": "Nace en Gijón el bravo lateral zurdo de Roces y Mareo, internacional y capitán rojiblanco.",
     "figure": "José Ángel Valdés 'Cote'",
-    "photoUrl": "https://www.bdfutbol.com/i/j/8510.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/8510i.jpg"
   },
   {
     "id": "eph-sep-09-pablo-insua-birth",
@@ -1509,7 +1521,7 @@
     "title": "Nacimiento de Yuri Nikiforov",
     "description": "Nace en Odesa el imponente zaguero central internacional, famoso en El Molinón por su contundencia y sus letales disparos de falta directa.",
     "figure": "Yuri Nikiforov",
-    "photoUrl": "https://www.bdfutbol.com/i/j/2653.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/2660.jpg"
   },
   {
     "id": "eph-sep-16-milan-sacchi",
@@ -1557,7 +1569,7 @@
     "title": "Nacimiento de Marcelino Elena",
     "description": "Nace en Gijón el central internacional formado en la cantera de Mareo, dotado de gran jerarquía aérea y elegancia defensiva.",
     "figure": "Marcelino Elena",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1881.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1872d.jpg"
   },
   {
     "id": "eph-oct-15-enrique-moran-birth",
@@ -1603,7 +1615,7 @@
     "category": "legend",
     "categoryLabel": "Memoria Rojiblanca",
     "title": "Nacimiento de Manuel Meana",
-    "description": "Nace en Gijón el primer jugador internacional en la historia del Real Sporting y mítico capitán que marcó los albores del fútbol asturiano.",
+    "description": "Nace en Gijón el primer jugador internacional en la historia del Real Sporting y capitán que marcó los albores del fútbol asturiano.",
     "figure": "Manuel Meana",
     "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
   },
@@ -1639,7 +1651,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Claudio Silva",
-    "description": "Nace en Gijón Claudio Silva, delantero forjado en la casa rojiblanca que aportó entrega y goles en la época dorada de El Molinón.",
+    "description": "Nace en Gijón Claudio Silva, delantero forjado en la casa rojiblanca que aportó entrega y goles en los años 70 y 80 de El Molinón.",
     "figure": "Claudio Silva",
     "photoUrl": "https://www.bdfutbol.com/i/j/3624c.jpg"
   },
@@ -1651,9 +1663,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Mate Bilic",
-    "description": "Nace en Split el artillero croata más querido por El Molinón, autor del triplete al Sevilla y del gol del ascenso de 2008.",
+    "description": "Nace en Split Mate Bilic, delantero croata del Real Sporting en dos etapas (2003-04 y 2008-13) con 46 goles oficiales en 174 partidos.",
     "figure": "Mate Bilic",
-    "photoUrl": "https://www.bdfutbol.com/i/j/2602.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1942c.jpg"
   },
   {
     "id": "eph-oct-24-steaua-triunfo",
@@ -1663,7 +1675,7 @@
     "category": "triumph",
     "categoryLabel": "Hazaña Europea",
     "title": "Victoria en Bucarest ante el Steaua (1-2)",
-    "description": "Hazaña continental en Copa de la UEFA: el Sporting asalta el estadio del Steaua de Bucarest venciendo 1-2 con goles de Luhový y Abelardo.",
+    "description": "Victoria del Sporting por 1-2 ante el Steaua de Bucarest en dieciseisavos de final de la Copa de la UEFA con goles de Luhový y Abelardo.",
     "figure": "Abelardo Fernández",
     "photoUrl": "https://www.bdfutbol.com/i/lm/5.png"
   },
@@ -1675,7 +1687,7 @@
     "category": "legend",
     "categoryLabel": "Leyenda Eterna",
     "title": "Nacimiento de Manuel Enrique Jiménez",
-    "description": "Nace en Vilagarcía de Arousa el mítico defensa central internacional, segundo jugador con más partidos en la historia del Real Sporting (498 encuentros).",
+    "description": "Nace en Vilagarcía de Arousa Manuel Enrique Jiménez, defensa central con 498 partidos oficiales en el Real Sporting entre 1979 y 1991.",
     "figure": "Manuel Enrique Jiménez",
     "photoUrl": "https://www.bdfutbol.com/i/j/1860c.jpg"
   },
@@ -1716,18 +1728,6 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/1691.jpg"
   },
   {
-    "id": "eph-nov-03-izquierdoz-birth",
-    "month": 11,
-    "day": 3,
-    "year": 1988,
-    "category": "legend",
-    "categoryLabel": "Cumpleaños Rojiblanco",
-    "title": "Nacimiento de Cali Izquierdoz",
-    "description": "Nace en San Carlos de Bariloche (Argentina) Carlos 'Cali' Izquierdoz, líder y mariscal de la zaga sportinguista por su garra y jerarquía.",
-    "figure": "Cali Izquierdoz",
-    "photoUrl": "https://www.bdfutbol.com/i/j/28644b.jpg"
-  },
-  {
     "id": "eph-nov-03-athletic-clemente",
     "month": 11,
     "day": 3,
@@ -1735,9 +1735,21 @@
     "category": "triumph",
     "categoryLabel": "Hazaña a Domicilio",
     "title": "Victoria ante el Athletic de Clemente (1-0)",
-    "description": "Un gol decisivo de un jovencísimo Eloy Olaya en El Molinón tumba al Athletic Club, vigente campeón de Primera División dirigido por Javier Clemente.",
+    "description": "Un gol decisivo de un jovencísimo Eloy Olaya en El Molinón vence al Athletic Club, vigente campeón de Primera División dirigido por Javier Clemente.",
     "figure": "Eloy Olaya",
     "photoUrl": "https://www.bdfutbol.com/i/j/658f.jpg"
+  },
+  {
+    "id": "eph-nov-03-izquierdoz-birth",
+    "month": 11,
+    "day": 3,
+    "year": 1988,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Cali Izquierdoz",
+    "description": "Nace en San Carlos de Bariloche (Argentina) Carlos 'Cali' Izquierdoz, defensa central del Real Sporting entre 2022 y 2024.",
+    "figure": "Cali Izquierdoz",
+    "photoUrl": "https://www.bdfutbol.com/i/j/28644b.jpg"
   },
   {
     "id": "eph-nov-06-gijon-sport-club",
@@ -1752,18 +1764,6 @@
     "photoUrl": "/images/historical/el-molinon-historico.jpg"
   },
   {
-    "id": "eph-nov-10-arnolin-birth",
-    "month": 11,
-    "day": 10,
-    "year": 1980,
-    "category": "legend",
-    "categoryLabel": "Cumpleaños Rojiblanco",
-    "title": "Nacimiento de Grégory Arnolin",
-    "description": "Nace en Livry-Gargan (Francia) el potente defensa central galo, una roca en la retaguardia en el regreso y permanencia en Primera con Manolo Preciado.",
-    "figure": "Grégory Arnolin",
-    "photoUrl": "https://www.bdfutbol.com/i/j/12499.jpg"
-  },
-  {
     "id": "eph-nov-10-triunfo-madrid-1957",
     "month": 11,
     "day": 10,
@@ -1771,9 +1771,21 @@
     "category": "triumph",
     "categoryLabel": "Gesta Histórica",
     "title": "Goleada al Real Madrid de Di Stéfano (3-0)",
-    "description": "Tarde memorable en El Molinón venciendo 3-0 al mítico Real Madrid pentacampeón de Europa con goles de Ricardo, Medina y Biempica.",
+    "description": "Tarde memorable en El Molinón venciendo 3-0 al Real Madrid pentacampeón de Europa con goles de Ricardo, Medina y Biempica.",
     "figure": "Ricardo, Medina y Biempica",
     "photoUrl": "/images/historical/el-molinon-historico.jpg"
+  },
+  {
+    "id": "eph-nov-10-arnolin-birth",
+    "month": 11,
+    "day": 10,
+    "year": 1980,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Grégory Arnolin",
+    "description": "Nace en Livry-Gargan (Francia) Grégory Arnolin, defensa central del Real Sporting entre 2009 y 2013, con 122 partidos oficiales con la camiseta rojiblanca.",
+    "figure": "Grégory Arnolin",
+    "photoUrl": "https://www.bdfutbol.com/i/j/12494b.jpg"
   },
   {
     "id": "eph-nov-13-emilio-isierte-birth",
@@ -1821,7 +1833,7 @@
     "title": "Nacimiento de Manolo Sánchez Murias",
     "description": "Nace en Gijón el extremo de Mareo y posterior técnico y director de fútbol base del Real Sporting.",
     "figure": "Manolo Sánchez Murias",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1883.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1850f.jpg"
   },
   {
     "id": "eph-nov-28-monchu-birth",
@@ -1831,7 +1843,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Monchu",
-    "description": "Nace en Gijón Ramón Suárez del Valle 'Monchu', delantero forjado en Mareo y certero rematador en el área en los años dorados de comienzos de los 90.",
+    "description": "Nace en Gijón Ramón Suárez del Valle 'Monchu', delantero forjado en Mareo y certero rematador en el área en los años 70 y 80 de comienzos de los 90.",
     "figure": "Monchu",
     "photoUrl": "https://www.bdfutbol.com/i/j/2287e.jpg"
   },
@@ -1843,9 +1855,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de David Villa 'El Guaje'",
-    "description": "Nace en Tuilla el máximo goleador histórico de la Selección Española y orgullo formado en Mareo, donde brilló antes de su salto a la élite mundial.",
+    "description": "Nace en Tuilla David Villa, delantero formado en Mareo que anotó 41 goles en 85 partidos oficiales con el Real Sporting antes de su salto a la selección absoluta.",
     "figure": "David Villa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/595.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/554d.jpg"
   },
   {
     "id": "eph-dec-07-luis-sierra-birth",
@@ -1855,7 +1867,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
     "title": "Nacimiento de Luis Sierra",
-    "description": "Nace en Allozo (Palencia) el infranqueable central José Luis Sierra, cerrojo de la defensa sportinguista en Primera durante casi una década.",
+    "description": "Nace en Allozo (Palencia) el central José Luis Sierra, cerrojo de la defensa sportinguista en Primera durante casi una década.",
     "figure": "Luis Sierra",
     "photoUrl": "https://www.bdfutbol.com/i/j/1483e.jpg"
   },
@@ -1867,7 +1879,7 @@
     "category": "legend",
     "categoryLabel": "Banquillo Legendario",
     "title": "Nacimiento de Luis Cid 'Carriega'",
-    "description": "Nace en Allariz (Ourense) el prestigioso entrenador que devolvió al Sporting a Primera en 1970 y sentó las bases competitivas de la época más gloriosa del club.",
+    "description": "Nace en Allariz (Ourense) el prestigioso entrenador que devolvió al Sporting a Primera en 1970 y sentó las bases competitivas de la etapa de mayor éxito del club.",
     "figure": "Luis Cid Carriega",
     "photoUrl": "https://www.bdfutbol.com/i/lm/7450.png"
   },
@@ -1879,7 +1891,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Iván Iglesias",
-    "description": "Nace en Gijón el exquisito mediapunta canterano de Mareo, dotado de una técnica privilegiada, desborde e inteligencia táctica superlativa.",
+    "description": "Nace en Gijón el exquisito mediapunta canterano de Mareo, mediapunta formado en Mareo con 117 partidos oficiales en el primer equipo.",
     "figure": "Iván Iglesias",
     "photoUrl": "https://www.bdfutbol.com/i/j/1145e.jpg"
   },
@@ -1891,7 +1903,7 @@
     "category": "legend",
     "categoryLabel": "Memoria Rojiblanca",
     "title": "Nacimiento de Tamayo",
-    "description": "Nace en Gijón Mauro Álvarez 'Tamayo', legendario defensor gijonés que formó parte de la primera plantilla del Sporting en Primera en 1944.",
+    "description": "Nace en Gijón Mauro Álvarez 'Tamayo', defensor gijonés que formó parte de la primera plantilla del Sporting en Primera en 1944.",
     "figure": "Tamayo",
     "photoUrl": "https://www.bdfutbol.com/i/j/10074.jpg"
   },
@@ -1920,18 +1932,6 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/100261b.jpg"
   },
   {
-    "id": "eph-dec-22-bernabeu-cheryshev",
-    "month": 12,
-    "day": 22,
-    "year": 1996,
-    "category": "triumph",
-    "categoryLabel": "Hazaña a Domicilio",
-    "title": "Victoria en el Bernabéu (0-1)",
-    "description": "Triunfo en Chamartín con gol de Dmitri Cheryshev ante el Real Madrid que acabaría proclamándose campeón de Liga esa temporada.",
-    "figure": "Dmitri Cheryshev",
-    "photoUrl": "https://www.bdfutbol.com/i/j/1126.jpg"
-  },
-  {
     "id": "eph-dec-26-mesa-birth",
     "month": 12,
     "day": 26,
@@ -1939,7 +1939,7 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Manolo Mesa",
-    "description": "Nace en San Roque el mítico 'Siete Pulmones' de la banda derecha, internacional con más de 400 partidos oficiales vistiendo la elástica rojiblanca.",
+    "description": "Nace en San Roque Manolo Mesa, centrocampista internacional que disputó 406 partidos oficiales con el Sporting entre 1975 y 1987, anotando 42 goles.",
     "figure": "Manolo Mesa",
     "photoUrl": "https://www.bdfutbol.com/i/j/3266b.jpg"
   },
@@ -1951,9 +1951,9 @@
     "category": "legend",
     "categoryLabel": "Cumpleaños Legendario",
     "title": "Nacimiento de Kike Mateo",
-    "description": "Nace en Murcia el mago de las faltas y las jugadas de estrategia, ídolo absoluto de la afición de El Molinón y figura clave en el ascenso de Preciado.",
+    "description": "Nace en Murcia Kike Mateo, mediapunta del Real Sporting entre 2007 y 2010 con 104 partidos oficiales y 21 goles.",
     "figure": "Kike Mateo",
-    "photoUrl": "https://www.bdfutbol.com/i/j/4769.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/5034b.jpg"
   },
   {
     "id": "eph-dec-31-manjarin-birth",

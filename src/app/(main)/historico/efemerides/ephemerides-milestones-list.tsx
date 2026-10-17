@@ -6,8 +6,9 @@ interface EphemeridesMilestonesListProps {
 }
 
 /**
- * Renders verified club milestones, legendary birthdays, and iconic moments for the day,
- * featuring official player and stadium photos alongside titles and descriptions.
+ * Renders verified club milestones, legendary birthdays, and iconic moments for the day.
+ * Features a white background, corporate red border, year in a rounded red pill,
+ * authentic photographs, and concise factual descriptions.
  */
 export function EphemeridesMilestonesList({ milestones }: EphemeridesMilestonesListProps) {
   if (milestones.length === 0) return null;
@@ -19,82 +20,44 @@ export function EphemeridesMilestonesList({ milestones }: EphemeridesMilestonesL
       </h3>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {milestones.map((item) => {
-          const isTriumph = item.category === "triumph";
-          const isLegend = item.category === "legend";
-          const isSigning = item.category === "signing";
-
-          return (
-            <article
-              key={item.id}
-              className={`flex flex-col justify-between rounded-xl border p-4 shadow-2xs transition-shadow ${
-                isTriumph
-                  ? "border-amber-500/30 bg-amber-500/5"
-                  : isLegend
-                  ? "border-[var(--primary)]/20 bg-[var(--primary)]/5"
-                  : isSigning
-                  ? "border-emerald-500/25 bg-emerald-500/5"
-                  : "border-[var(--border)] bg-[var(--card)]"
-              }`}
-            >
-              <div className="flex flex-col gap-2.5">
-                {/* Header: Category Badge + Year */}
-                <div className="flex items-center justify-between gap-2">
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
-                      isTriumph
-                        ? "bg-amber-500/20 text-amber-800"
-                        : isLegend
-                        ? "bg-[var(--primary)] text-white"
-                        : isSigning
-                        ? "bg-emerald-500/20 text-emerald-800"
-                        : "bg-[var(--surface)] text-[var(--muted-foreground)]"
-                    }`}
-                  >
-                    {item.categoryLabel}
+        {milestones.map((item) => (
+          <article
+            key={item.id}
+            className="flex flex-col justify-between rounded-xl border border-[var(--primary)] bg-white p-4 shadow-2xs transition-shadow hover:shadow-xs"
+          >
+            <div className="flex flex-col gap-3">
+              {/* Header: Year in rounded red pill + Event Title */}
+              <div className="flex items-center gap-2.5 flex-wrap">
+                {item.year && (
+                  <span className="shrink-0 rounded-full bg-[var(--primary)] px-2.5 py-0.5 text-xs font-bold text-white font-sans tabular-nums shadow-2xs">
+                    {item.year}
                   </span>
-                  {item.year && (
-                    <span className="text-xs font-bold text-[var(--foreground)] font-sans tabular-nums">
-                      Año {item.year}
-                    </span>
-                  )}
-                </div>
-
-                {/* Content: Photo + Title & Description */}
-                <div className="flex items-start gap-3.5">
-                  {item.photoUrl && (
-                    <div className="shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-2xs">
-                      <PlayerPhoto
-                        photoUrl={item.photoUrl}
-                        playerName={item.figure ?? item.title}
-                        size="lg"
-                        className={`h-24 w-24 sm:h-28 sm:w-28 object-cover ${
-                          isLegend || isSigning ? "object-top" : "object-center"
-                        }`}
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex flex-1 flex-col gap-1 min-w-0">
-                    <h4 className="text-sm sm:text-base font-bold text-[var(--foreground)] leading-snug">
-                      {item.title}
-                    </h4>
-                    <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
+                )}
+                <h4 className="text-sm sm:text-base font-bold text-[var(--foreground)] leading-snug">
+                  {item.title}
+                </h4>
               </div>
 
-              {item.figure && (
-                <div className="mt-3 flex items-center justify-between border-t border-[var(--border)]/60 pt-2 text-xs">
-                  <span className="text-[var(--muted-foreground)]">Protagonista:</span>
-                  <span className="font-semibold text-[var(--foreground)]">{item.figure}</span>
-                </div>
-              )}
-            </article>
-          );
-        })}
+              {/* Body: Photo + Factual Description */}
+              <div className="flex items-start gap-3.5">
+                {item.photoUrl && (
+                  <div className="shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-neutral-50 shadow-2xs">
+                    <PlayerPhoto
+                      photoUrl={item.photoUrl}
+                      playerName={item.figure ?? item.title}
+                      size="lg"
+                      className="h-24 w-24 sm:h-28 sm:w-28 object-cover object-center"
+                    />
+                  </div>
+                )}
+
+                <p className="flex-1 text-xs sm:text-sm text-[var(--muted-foreground)] leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
