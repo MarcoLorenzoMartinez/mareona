@@ -10,6 +10,7 @@ export interface EphemerisMilestone {
   readonly title: string;
   readonly description: string;
   readonly figure?: string;
+  readonly photoUrl?: string | null;
 }
 
 export interface DayMatchItem {
