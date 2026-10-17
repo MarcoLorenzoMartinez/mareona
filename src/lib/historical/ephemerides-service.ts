@@ -25,6 +25,7 @@ interface RawMatch {
   readonly venue?: string;
   readonly bdfHomeCrest?: string;
   readonly bdfAwayCrest?: string;
+  readonly bdfMatchId?: string;
 }
 
 const MATCHES_DATA = rawMatches as Readonly<Record<string, readonly RawMatch[]>>;
@@ -91,6 +92,7 @@ export function getEphemeridesForDay(month: number, day: number): DayEphemerides
         venue: m.venue,
         homeCrestUrl: m.bdfHomeCrest ?? null,
         awayCrestUrl: m.bdfAwayCrest ?? null,
+        bdfMatchId: m.bdfMatchId,
       });
     }
   }

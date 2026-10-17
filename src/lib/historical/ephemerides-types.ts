@@ -29,6 +29,7 @@ export interface DayMatchItem {
   readonly venue?: string;
   readonly homeCrestUrl: string | null;
   readonly awayCrestUrl: string | null;
+  readonly bdfMatchId?: string;
 }
 
 export interface DayMatchesBalance {

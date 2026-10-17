@@ -36,6 +36,7 @@ export function EphemeridesMatchesList({ matches }: EphemeridesMatchesListProps)
         outcome: selectedMatch.outcome,
         opponent: selectedMatch.opponent,
         venue: selectedMatch.venue,
+        bdfMatchId: selectedMatch.bdfMatchId,
       }
     : null;
 
