@@ -2,6 +2,7 @@
 
 import https from "node:https";
 import rawSquads from "../../data/historical/squads.json" with { type: "json" };
+import { resolveRivalPositions, inferTacticalPositions } from "./player-positions-resolver.ts";
 import type {
   HistoricalMatchDetail,
   HistoricalMatchGoal,
@@ -177,15 +178,32 @@ export async function parseHistoricalMatchDetail(
 
   goals.sort((a, b) => a.minute - b.minute);
 
+  const homeStarters = parsePlayerTable(tables[0], season, true, isHomeSporting);
+  const awayStarters = parsePlayerTable(tables[1], season, true, !isHomeSporting);
+  const homeBench = parsePlayerTable(tables[2], season, false, isHomeSporting);
+  const awayBench = parsePlayerTable(tables[3], season, false, !isHomeSporting);
+
+  const startYear = season ? parseInt(season.split("-")[0], 10) : undefined;
+  const rivalStarters = isHomeSporting ? awayStarters : homeStarters;
+  const rivalBench = isHomeSporting ? awayBench : homeBench;
+  const sportingStarters = isHomeSporting ? homeStarters : awayStarters;
+
+  await Promise.all([
+    resolveRivalPositions(rivalStarters, true, startYear),
+    resolveRivalPositions(rivalBench, false, startYear),
+  ]);
+
+  inferTacticalPositions(sportingStarters, startYear);
+
   return {
     bdfMatchId,
     venue,
     referee,
     goals,
-    homeStarters: parsePlayerTable(tables[0], season, true, isHomeSporting),
-    awayStarters: parsePlayerTable(tables[1], season, true, !isHomeSporting),
-    homeBench: parsePlayerTable(tables[2], season, false, isHomeSporting),
-    awayBench: parsePlayerTable(tables[3], season, false, !isHomeSporting),
+    homeStarters,
+    awayStarters,
+    homeBench,
+    awayBench,
     homeCoach: parseCoach(tables[4], isHomeSporting ? season : undefined),
     awayCoach: parseCoach(tables[5], !isHomeSporting ? season : undefined),
   };

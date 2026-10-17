@@ -171,6 +171,14 @@ describe("Historical Match Detail Parser", () => {
     assert.equal(enrichedDetail.homeStarters[0].photoUrl, "https://www.bdfutbol.com/i/j/3665f.jpg");
   });
 
+  it("resolves positions for rival players and falls back to tactical inference", async () => {
+    const detail = await parseHistoricalMatchDetail(SAMPLE_MATCH_HTML, "12001", "1977-78", true);
+    // Reina (id 5055) is in the rival starting XI and resolved as Portero
+    assert.equal(detail.awayStarters.length, 1);
+    assert.equal(detail.awayStarters[0].name, "Reina");
+    assert.equal(detail.awayStarters[0].position, "Portero");
+  });
+
   it("handles empty or sparse HTML gracefully", async () => {
     const detail = await parseHistoricalMatchDetail("<html><body></body></html>", "99999");
     assert.equal(detail.bdfMatchId, "99999");

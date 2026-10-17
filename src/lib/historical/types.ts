@@ -135,7 +135,7 @@ export interface HistoricalMatchGoal {
 export interface HistoricalMatchPlayer {
   readonly name: string;
   readonly photoUrl?: string | null;
-  readonly position?: string;
+  position?: string;
   readonly subIn?: number;
   readonly subOut?: number;
   readonly yellowCard?: number;
