@@ -27,20 +27,21 @@ export function EphemeridesCalendar({
   todayDay,
   onSelectDate,
 }: EphemeridesCalendarProps) {
-  const daysInMonth = new Date(2024, selectedMonth, 0).getDate();
-  const firstDayWeekIndex = new Date(2024, selectedMonth - 1, 1).getDay();
+  const currentYear = new Date().getFullYear();
+  const daysInMonth = new Date(currentYear, selectedMonth, 0).getDate();
+  const firstDayWeekIndex = new Date(currentYear, selectedMonth - 1, 1).getDay();
   // Monday is 0, Sunday is 6
   const startOffset = (firstDayWeekIndex + 6) % 7;
 
   const handlePrevMonth = () => {
     const nextM = selectedMonth === 1 ? 12 : selectedMonth - 1;
-    const maxDays = new Date(2024, nextM, 0).getDate();
+    const maxDays = new Date(currentYear, nextM, 0).getDate();
     onSelectDate(nextM, Math.min(selectedDay, maxDays));
   };
 
   const handleNextMonth = () => {
     const nextM = selectedMonth === 12 ? 1 : selectedMonth + 1;
-    const maxDays = new Date(2024, nextM, 0).getDate();
+    const maxDays = new Date(currentYear, nextM, 0).getDate();
     onSelectDate(nextM, Math.min(selectedDay, maxDays));
   };
 
