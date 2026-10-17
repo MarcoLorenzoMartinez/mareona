@@ -46,12 +46,18 @@ function parsePlayerTable(
     let position: string | undefined = undefined;
 
     if (seasonSquad?.players) {
-      const sp = seasonSquad.players.find(
-        (p) =>
-          (playerId && p.photoUrl?.match(/\/[jm]\/(\d+)/)?.[1] === playerId) ||
-          p.alias.toLowerCase() === name.toLowerCase() ||
-          p.fullName.toLowerCase() === name.toLowerCase()
-      );
+      let sp = playerId
+        ? seasonSquad.players.find((p) => p.photoUrl?.match(/\/[jm]\/(\d+)/)?.[1] === playerId)
+        : null;
+
+      if (!sp) {
+        sp = seasonSquad.players.find(
+          (p) =>
+            p.alias.toLowerCase() === name.toLowerCase() ||
+            p.fullName.toLowerCase() === name.toLowerCase()
+        );
+      }
+
       if (sp?.photoUrl) photoUrl = sp.photoUrl;
       if (sp?.position) position = sp.position;
     }
@@ -71,7 +77,25 @@ function parsePlayerTable(
       redCard: red ? parseInt(red, 10) : undefined,
     });
   }
-  return players;
+
+  // Disambiguate duplicate names in the lineup (e.g. Emilio Isierte vs Emilio Gutiérrez)
+  const nameCounts = new Map<string, number>();
+  for (const p of players) {
+    nameCounts.set(p.name, (nameCounts.get(p.name) || 0) + 1);
+  }
+
+  return players.map((p) => {
+    if ((nameCounts.get(p.name) || 0) > 1 && seasonSquad?.players) {
+      const idMatch = p.photoUrl?.match(/\/[jm]\/(\d+)/)?.[1];
+      const sp = idMatch ? seasonSquad.players.find((x) => x.photoUrl?.includes(`/${idMatch}`)) : null;
+      if (sp?.fullName) {
+        const parts = sp.fullName.trim().split(/\s+/);
+        const surname = parts.length > 2 ? parts[parts.length - 2] : parts[parts.length - 1];
+        return { ...p, name: `${p.name} ${surname}` };
+      }
+    }
+    return p;
+  });
 }
 
 function parseCoach(tableHtml: string | undefined, season?: string): HistoricalMatchCoach | null {
@@ -151,10 +175,12 @@ export async function parseHistoricalMatchDetail(
       const content = div[1];
       const scoreMatch = content.match(/<span[^>]*>([^<]+)<\/span>/i);
       const scorerMatch = content.match(/<a[^>]*>([^<]+)<\/a>/i);
-      const minMatch = content.match(/(\d+(?:\+\d+)?)'/);
-      if (scoreMatch && scorerMatch && minMatch) {
-        const minuteDisplay = minMatch[1];
-        const minute = minuteDisplay.split("+").reduce((sum, p) => sum + (parseInt(p, 10) || 0), 0);
+      const minMatch = content.match(/(\d+)(?:\+(\d+))?[\s\?]*'/i) || content.match(/(\d+)[\s\?]/);
+      if (scoreMatch && scorerMatch) {
+        const baseMin = minMatch ? parseInt(minMatch[1], 10) : 0;
+        const extraMin = minMatch?.[2] ? parseInt(minMatch[2], 10) : 0;
+        const minute = baseMin + extraMin;
+        const minuteDisplay = minMatch ? `${minMatch[1]}${minMatch[2] ? `+${minMatch[2]}` : ""}` : "";
         goals.push({
           score: scoreMatch[1].trim(),
           scorer: scorerMatch[1].trim(),

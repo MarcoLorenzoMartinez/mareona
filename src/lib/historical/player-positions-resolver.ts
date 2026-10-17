@@ -34,7 +34,7 @@ function fetchBdfutbolPosition(playerId: string): Promise<string | null> {
             return;
           }
           if (demSection.includes("por")) { resolve("Portero"); return; }
-          if (demSection.includes("def")) { resolve("Defensa"); return; }
+          if (demSection.includes("def") || demSection.includes("cen") || demSection.includes("lti")) { resolve("Defensa"); return; }
           if (demSection.includes("mig")) { resolve("Centrocampista"); return; }
           if (demSection.includes("dav")) { resolve("Delantero"); return; }
         }
@@ -62,9 +62,7 @@ export function inferTacticalPositions(starters: HistoricalMatchPlayer[], startY
   if (starters.length === 0) return;
 
   // The first player in official match report line-ups is invariably the goalkeeper
-  if (!starters[0].position) {
-    starters[0].position = "Portero";
-  }
+  starters[0].position = "Portero";
 
   const isWmEra = startYear !== undefined && startYear <= 1965;
   const defCount = isWmEra ? 3 : 4;

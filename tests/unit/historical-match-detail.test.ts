@@ -179,6 +179,46 @@ describe("Historical Match Detail Parser", () => {
     assert.equal(detail.awayStarters[0].position, "Portero");
   });
 
+  it("correctly parses historical approximate minutes with question mark without dropping goals", async () => {
+    const historicalHtml = `
+      <div class="text-right">
+        <div class="text-blanc"><span>1-0</span> <a href="../j/j40063.html">Rubiera</a> 4'</div>
+        <div class="text-blanc"><span>2-0</span> <a href="../j/j40066.html">Pujol</a> 20?'</div>
+        <div class="text-blanc"><span>3-0</span> <a href="../j/j40063.html">Rubiera</a> 34'</div>
+      </div>
+    `;
+    const detail = await parseHistoricalMatchDetail(historicalHtml, "153692");
+    assert.equal(detail.goals.length, 3);
+    assert.equal(detail.goals[0].score, "1-0");
+    assert.equal(detail.goals[0].minute, 4);
+    assert.equal(detail.goals[1].score, "2-0");
+    assert.equal(detail.goals[1].scorer, "Pujol");
+    assert.equal(detail.goals[1].minute, 20);
+    assert.equal(detail.goals[2].score, "3-0");
+    assert.equal(detail.goals[2].minute, 34);
+  });
+
+  it("disambiguates identical player aliases and guarantees goalkeeper at index 0", async () => {
+    const doubleEmilioHtml = `
+      <table class="taula_estil">
+        <tr><td><a href="../j/j671.html">Emilio</a></td></tr>
+        <tr><td><a href="../j/j289.html">Arturo</a></td></tr>
+        <tr><td><a href="../j/j670.html">Emilio</a></td></tr>
+      </table>
+    `;
+    const detail = await parseHistoricalMatchDetail(doubleEmilioHtml, "18272", "1991-92", true);
+    assert.equal(detail.homeStarters.length, 3);
+    // Starter 0: Emilio Isierte (Goalkeeper)
+    assert.equal(detail.homeStarters[0].name, "Emilio Isierte");
+    assert.equal(detail.homeStarters[0].position, "Portero");
+    assert.equal(detail.homeStarters[0].photoUrl, "https://www.bdfutbol.com/i/j/671f.jpg");
+
+    // Starter 2: Emilio Gutiérrez (Midfielder)
+    assert.equal(detail.homeStarters[2].name, "Emilio Gutiérrez");
+    assert.equal(detail.homeStarters[2].position, "Centrocampista");
+    assert.equal(detail.homeStarters[2].photoUrl, "https://www.bdfutbol.com/i/j/670b.jpg");
+  });
+
   it("handles empty or sparse HTML gracefully", async () => {
     const detail = await parseHistoricalMatchDetail("<html><body></body></html>", "99999");
     assert.equal(detail.bdfMatchId, "99999");
