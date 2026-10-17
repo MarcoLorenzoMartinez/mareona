@@ -37,15 +37,19 @@ export function EphemeridesDaySummary({
           <div className="flex flex-col items-center gap-1"><div className="h-3 w-12 rounded bg-[var(--surface)] animate-pulse" /><div className="h-7 w-8 rounded bg-[var(--surface)] animate-pulse" /></div>
         </div>
 
-        <div className="flex items-center justify-between border-t border-[var(--border)]/70 pt-3">
-          <div className="h-4 w-32 rounded bg-[var(--surface)] animate-pulse" />
-          <div className="h-4 w-24 rounded bg-[var(--surface)] animate-pulse" />
+        <div className="grid grid-cols-2 divide-x divide-[var(--border)] border-t border-[var(--border)]/70 pt-3">
+          <div className="flex flex-col items-center gap-1">
+            <div className="h-2.5 w-20 rounded bg-[var(--surface)] animate-pulse" />
+            <div className="h-6 w-8 rounded bg-[var(--surface)] animate-pulse" />
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <div className="h-2.5 w-20 rounded bg-[var(--surface)] animate-pulse" />
+            <div className="h-6 w-8 rounded bg-[var(--surface)] animate-pulse" />
+          </div>
         </div>
       </div>
     );
   }
-
-  const winPct = balance.played > 0 ? Math.round((balance.won / balance.played) * 100) : 0;
 
   return (
     <div className="flex flex-1 flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs min-h-[300px]">
@@ -102,27 +106,24 @@ export function EphemeridesDaySummary({
         </div>
       )}
 
-      {/* Bottom Insights: Efficiency Rate and Goals */}
+      {/* Bottom Insights: Prominent Goals Balance */}
       {balance.played > 0 && (
-        <div className="border-t border-[var(--border)]/70 pt-3">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[var(--muted-foreground)]">
-            <span>
-              Efectividad:{" "}
-              <strong className="font-bold text-[var(--foreground)] font-sans tabular-nums">
-                {winPct}%
-              </strong>
+        <div className="grid grid-cols-2 divide-x divide-[var(--border)] border-t border-[var(--border)]/70 pt-3 text-center">
+          <div className="flex flex-col items-center px-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
+              Goles a favor
             </span>
-            <span aria-hidden="true" className="text-[var(--border)]">·</span>
-            <span>
-              Goles:{" "}
-              <strong className="font-bold text-[var(--foreground)] font-sans tabular-nums">
-                {balance.goalsFor}
-              </strong>{" "}
-              favor /{" "}
-              <strong className="font-bold text-[var(--foreground)] font-sans tabular-nums">
-                {balance.goalsAgainst}
-              </strong>{" "}
-              contra
+            <span className="mt-0.5 text-xl font-extrabold text-[var(--foreground)] font-sans tabular-nums sm:text-2xl">
+              {balance.goalsFor}
+            </span>
+          </div>
+
+          <div className="flex flex-col items-center px-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
+              Goles en contra
+            </span>
+            <span className="mt-0.5 text-xl font-bold text-[var(--muted-foreground)] font-sans tabular-nums sm:text-2xl">
+              {balance.goalsAgainst}
             </span>
           </div>
         </div>
