@@ -15,14 +15,8 @@ interface EphemeridesHubProps {
   readonly todayDay: number;
 }
 
-const FILTER_ITEMS = [
-  { key: "all", label: "Todo" },
-  { key: "matches", label: "Solo Partidos" },
-  { key: "milestones", label: "Solo Hitos" },
-] as const;
-
 /**
- * Interactive hub coordinating calendar selection, memory cache, category filtering,
+ * Interactive hub coordinating calendar selection, memory cache,
  * and rendering of matches and historic milestones for any chosen day of the year.
  */
 export function EphemeridesHub({
@@ -32,7 +26,6 @@ export function EphemeridesHub({
 }: EphemeridesHubProps) {
   const [currentMonth, setCurrentMonth] = useState<number>(initialData.month);
   const [currentDay, setCurrentDay] = useState<number>(initialData.day);
-  const [activeFilter, setActiveFilter] = useState<"all" | "matches" | "milestones">("all");
   const [cache, setCache] = useState<Record<string, DayEphemeridesResult>>({
     [`${initialData.month}_${initialData.day}`]: initialData,
   });
@@ -77,32 +70,6 @@ export function EphemeridesHub({
         />
       </div>
 
-      {/* Filter Segmented Control Bar */}
-      <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2.5">
-        <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
-          Mostrar contenido
-        </span>
-        <div className="inline-flex rounded-full bg-[var(--surface)] p-1 border border-[var(--border)]">
-          {FILTER_ITEMS.map((item) => {
-            const isActive = activeFilter === item.key;
-            return (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => setActiveFilter(item.key)}
-                className={`rounded-full px-3.5 py-1 text-xs font-semibold transition-colors ${
-                  isActive
-                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
-                    : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Loading Skeleton */}
       {isLoading && (
         <div aria-label="Cargando efemérides" className="flex flex-col gap-3">
@@ -115,12 +82,12 @@ export function EphemeridesHub({
       )}
 
       {/* Milestones section */}
-      {!isLoading && activeData && activeData.milestones.length > 0 && (activeFilter === "all" || activeFilter === "milestones") && (
+      {!isLoading && activeData && activeData.milestones.length > 0 && (
         <EphemeridesMilestonesList milestones={activeData.milestones} />
       )}
 
       {/* Matches section */}
-      {!isLoading && activeData && (activeFilter === "all" || activeFilter === "matches") && (
+      {!isLoading && activeData && (
         <EphemeridesMatchesList matches={activeData.matches} />
       )}
     </div>
