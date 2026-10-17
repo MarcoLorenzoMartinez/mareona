@@ -61,14 +61,16 @@ export function EphemeridesMilestonesList({ milestones }: EphemeridesMilestonesL
                 </div>
 
                 {/* Content: Photo + Title & Description */}
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3.5">
                   {item.photoUrl && (
                     <div className="shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-2xs">
                       <PlayerPhoto
                         photoUrl={item.photoUrl}
                         playerName={item.figure ?? item.title}
-                        size="md"
-                        className="h-16 w-16 object-cover object-top"
+                        size="lg"
+                        className={`h-24 w-24 sm:h-28 sm:w-28 object-cover ${
+                          isLegend || isSigning ? "object-top" : "object-center"
+                        }`}
                       />
                     </div>
                   )}
