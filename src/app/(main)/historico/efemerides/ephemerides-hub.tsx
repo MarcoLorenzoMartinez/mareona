@@ -58,8 +58,8 @@ export function EphemeridesHub({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Top Section: Compact Standard-Sized Calendar + Day Summary */}
-      <div className="flex flex-col lg:flex-row gap-5 items-start">
+      {/* Top Section: Standard Calendar + Harmonized Day Summary (Equal Height) */}
+      <div className="flex flex-col lg:flex-row gap-5 lg:items-stretch">
         <EphemeridesCalendar
           selectedMonth={currentMonth}
           selectedDay={currentDay}
@@ -68,40 +68,38 @@ export function EphemeridesHub({
           onSelectDate={handleDateChange}
         />
 
-        <div className="flex flex-1 flex-col gap-3 w-full">
-          {/* Filter Pills */}
-          <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2.5">
-            <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
-              Mostrar contenido
-            </span>
-            <div className="inline-flex rounded-full bg-[var(--surface)] p-1 border border-[var(--border)]">
-              {FILTER_ITEMS.map((item) => {
-                const isActive = activeFilter === item.key;
-                return (
-                  <button
-                    key={item.key}
-                    type="button"
-                    onClick={() => setActiveFilter(item.key)}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                      isActive
-                        ? "bg-[var(--primary)] text-white font-bold"
-                        : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+        <EphemeridesDaySummary
+          dateLabel={dateLabel}
+          balance={activeData?.balance ?? null}
+          milestonesCount={activeData?.milestones.length ?? 0}
+          isToday={isToday}
+          isLoading={isLoading}
+        />
+      </div>
 
-          <EphemeridesDaySummary
-            dateLabel={dateLabel}
-            balance={activeData?.balance ?? null}
-            milestonesCount={activeData?.milestones.length ?? 0}
-            isToday={isToday}
-            isLoading={isLoading}
-          />
+      {/* Filter Segmented Control Bar */}
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2.5">
+        <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
+          Mostrar contenido
+        </span>
+        <div className="inline-flex rounded-full bg-[var(--surface)] p-1 border border-[var(--border)]">
+          {FILTER_ITEMS.map((item) => {
+            const isActive = activeFilter === item.key;
+            return (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => setActiveFilter(item.key)}
+                className={`rounded-full px-3.5 py-1 text-xs font-semibold transition-colors ${
+                  isActive
+                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                    : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 

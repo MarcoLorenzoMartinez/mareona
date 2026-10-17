@@ -25,14 +25,13 @@ const matchDetailCache = new Map<string, HistoricalMatchDetail>();
 function parsePlayerTable(
   tableHtml: string | undefined,
   season?: string,
-  isStarter = false,
+  _isStarter = false,
   isSporting = false
 ): HistoricalMatchPlayer[] {
   if (!tableHtml) return [];
   const trs = tableHtml.match(/<tr[\s\S]*?<\/tr>/gi) || [];
   const players: HistoricalMatchPlayer[] = [];
   const seasonSquad = isSporting && season ? squadsRecord[season] : undefined;
-  const startYear = season ? parseInt(season.split("-")[0], 10) : 2024;
 
   for (const tr of trs) {
     if (tr.includes("display: none") || tr.includes("<th")) continue;

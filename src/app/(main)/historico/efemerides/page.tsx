@@ -18,15 +18,6 @@ export default async function HistoricoEfemeridesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-1 border-b border-[var(--border)] pb-4">
-        <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)] md:text-3xl">
-          Efemérides Sportinguistas
-        </h1>
-        <p className="text-sm text-[var(--muted-foreground)]">
-          Partidos disputados, aniversarios de oro y efemérides de leyendas en cada día del calendario rojiblanco.
-        </p>
-      </header>
-
       <EphemeridesHub
         initialData={initialData}
         todayMonth={todayMonth}
