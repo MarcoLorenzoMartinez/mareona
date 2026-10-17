@@ -11,6 +11,17 @@
     "figure": "José Manuel Díaz Novoa"
   },
   {
+    "id": "eph-jan-02-manu-garcia-birth",
+    "month": 1,
+    "day": 2,
+    "year": 1998,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Manu García",
+    "description": "Nace en Oviedo el talentoso mediapunta forjado en Mareo, internacional absoluto y uno de los mayores valores técnicos salidos de la cantera sportinguista.",
+    "figure": "Manu García"
+  },
+  {
     "id": "eph-jan-03-ferrero-birth",
     "month": 1,
     "day": 3,
@@ -42,6 +53,28 @@
     "title": "Nacimiento de Stefan Scepovic",
     "description": "Nace en Belgrado el artillero balcánico, autor de 23 dianas en su recordada campaña en El Molinón.",
     "figure": "Stefan Scepovic"
+  },
+  {
+    "id": "eph-jan-22-molinuevo-birth",
+    "month": 1,
+    "day": 22,
+    "year": 1917,
+    "category": "legend",
+    "categoryLabel": "Memoria Rojiblanca",
+    "title": "Nacimiento de José Luis Molinuevo",
+    "description": "Nace en Bilbao el legendario guardameta que defendió con valentía la portería del Real Sporting en los años 30 y 40.",
+    "figure": "José Luis Molinuevo"
+  },
+  {
+    "id": "eph-jan-22-tati-alcalde-birth",
+    "month": 1,
+    "day": 22,
+    "year": 1964,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Tati Alcalde",
+    "description": "Nace en Villaviciosa el polivalente zaguero formado en Mareo que disputó casi 200 partidos oficiales con el Sporting en Primera División.",
+    "figure": "Tati Alcalde"
   },
   {
     "id": "eph-jan-23-jesus-castro-birth",
@@ -121,6 +154,39 @@
     "figure": "Francisco Javier Uría"
   },
   {
+    "id": "eph-feb-01-camp-nou-goleada",
+    "month": 2,
+    "day": 1,
+    "year": 1981,
+    "category": "triumph",
+    "categoryLabel": "Gesta a Domicilio",
+    "title": "Asalto al Camp Nou: FC Barcelona 0-4 Real Sporting (1981)",
+    "description": "El Sporting de Carriega firma una de las mayores exhibiciones ligueras a domicilio de su historia goleando 0-4 al Barça en el Camp Nou con goles de Quini, Ferrero y Morán.",
+    "figure": "Enzo Ferrero y Quini"
+  },
+  {
+    "id": "eph-feb-02-borja-lopez-birth",
+    "month": 2,
+    "day": 2,
+    "year": 1994,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Borja López",
+    "description": "Nace en Gijón el elegante defensa central internacional sub-21, formado en la cantera de Mareo y pilar de la zaga rojiblanca.",
+    "figure": "Borja López"
+  },
+  {
+    "id": "eph-feb-02-dubasin-birth",
+    "month": 2,
+    "day": 2,
+    "year": 2000,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Jonathan Dubasin",
+    "description": "Nace en La Seu d'Urgell el incansable delantero hispano-belga, máximo artillero del Real Sporting en la temporada 2025-26.",
+    "figure": "Jonathan Dubasin"
+  },
+  {
     "id": "eph-feb-07-canella-birth",
     "month": 2,
     "day": 7,
@@ -141,6 +207,28 @@
     "title": "Nacimiento de Mario Cotelo",
     "description": "Nace en La Felguera el infatigable centrocampista canterano de Mareo, con más de 130 partidos oficiales con la casaca rojiblanca.",
     "figure": "Mario Cotelo"
+  },
+  {
+    "id": "eph-feb-16-rivera-birth",
+    "month": 2,
+    "day": 16,
+    "year": 1978,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Alberto Rivera",
+    "description": "Nace en Puertollano el virtuoso cerebro del centro del campo, pieza clave e insustituible en el Sporting de Manolo Preciado en Primera División.",
+    "figure": "Alberto Rivera"
+  },
+  {
+    "id": "eph-feb-18-prendes-birth",
+    "month": 2,
+    "day": 18,
+    "year": 1930,
+    "category": "legend",
+    "categoryLabel": "Memoria Rojiblanca",
+    "title": "Nacimiento de Prendes",
+    "description": "Nace en Gijón José Prendes Vega, letal ariete sportinguista de la década de los 50, autor de más de 100 tantos oficiales con la camiseta rojiblanca.",
+    "figure": "Prendes"
   },
   {
     "id": "eph-feb-27-ivan-hernandez-birth",
@@ -176,6 +264,17 @@
     "figure": "Uros Djurdjevic"
   },
   {
+    "id": "eph-mar-04-juanma-birth",
+    "month": 3,
+    "day": 4,
+    "year": 1966,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Juanma Suárez",
+    "description": "Nace en Gijón el centrocampista canterano Juanma Suárez del Valle, quien defendió la elástica del Sporting en Primera durante más de una década.",
+    "figure": "Juanma Suárez"
+  },
+  {
     "id": "eph-mar-08-redondo-birth",
     "month": 3,
     "day": 8,
@@ -187,6 +286,61 @@
     "figure": "José Antonio Redondo"
   },
   {
+    "id": "eph-mar-08-cunningham-birth",
+    "month": 3,
+    "day": 8,
+    "year": 1956,
+    "category": "signing",
+    "categoryLabel": "Fichaje Internacional",
+    "title": "Nacimiento de Laurie Cunningham",
+    "description": "Nace en Londres el mítico extremo internacional inglés, cuya incorporación en la campaña 1983-84 desató la admiración de la afición en El Molinón.",
+    "figure": "Laurie Cunningham"
+  },
+  {
+    "id": "eph-mar-09-oscar-celada-birth",
+    "month": 3,
+    "day": 9,
+    "year": 1966,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Óscar Celada",
+    "description": "Nace en Luarca el centrocampista internacional formado en Mareo, cerebro de la medular rojiblanca en los 90 y posterior médico de la selección española.",
+    "figure": "Óscar Celada"
+  },
+  {
+    "id": "eph-mar-10-gerardo-noriega-birth",
+    "month": 3,
+    "day": 10,
+    "year": 1982,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Gerardo Noriega",
+    "description": "Nace en Cué (Llanes) el centrocampista formado en Mareo, autor de tantos decisivos y símbolo de compromiso con el primer equipo.",
+    "figure": "Gerardo Noriega"
+  },
+  {
+    "id": "eph-mar-12-clemente-birth",
+    "month": 3,
+    "day": 12,
+    "year": 1950,
+    "category": "legend",
+    "categoryLabel": "Banquillo Rojiblanco",
+    "title": "Nacimiento de Javier Clemente",
+    "description": "Nace en Barakaldo el laureado técnico vasco y exseleccionador nacional, quien dirigió al Sporting en Primera División.",
+    "figure": "Javier Clemente"
+  },
+  {
+    "id": "eph-mar-13-michael-santos-birth",
+    "month": 3,
+    "day": 13,
+    "year": 1993,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Michael Santos",
+    "description": "Nace en Piriápolis (Uruguay) el combativo delantero internacional charrúa, autor de 17 dianas con el Real Sporting en la temporada 2017-18.",
+    "figure": "Michael Santos"
+  },
+  {
     "id": "eph-mar-15-tati-valdes-birth",
     "month": 3,
     "day": 15,
@@ -196,6 +350,28 @@
     "title": "Nacimiento de 'Tati' Valdés",
     "description": "Nace en Mieres Crisanto García Valdés 'Tati Valdés', 'El Maestrín', cerebro y mediapunta genial del Sporting de los años 60 y 70 con casi 300 partidos.",
     "figure": "Tati Valdés"
+  },
+  {
+    "id": "eph-mar-16-pio-birth",
+    "month": 3,
+    "day": 16,
+    "year": 1925,
+    "category": "legend",
+    "categoryLabel": "Memoria Rojiblanca",
+    "title": "Nacimiento de Pío",
+    "description": "Nace en Oviedo Nicasio Jesús Pío Alonso, prolífico atacante rojiblanco y pieza insustituible en las delanteras del Sporting de los años 40 y 50.",
+    "figure": "Pío"
+  },
+  {
+    "id": "eph-mar-19-nacho-martin-birth",
+    "month": 3,
+    "day": 19,
+    "year": 2002,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Nacho Martín",
+    "description": "Nace en Noreña el metrónomo del centro del campo sportinguista, cerebro de Mareo y dueño del dorsal 6 del primer equipo.",
+    "figure": "Nacho Martín"
   },
   {
     "id": "eph-mar-25-quini-liberation",
@@ -220,6 +396,17 @@
     "figure": "Alberto Lora"
   },
   {
+    "id": "eph-mar-25-aitor-garcia-birth",
+    "month": 3,
+    "day": 25,
+    "year": 1994,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Aitor García",
+    "description": "Nace en Olula del Río el potente extremo andaluz, autor de más de una veintena de dianas y golazos inolvidables de media distancia en El Molinón.",
+    "figure": "Aitor García"
+  },
+  {
     "id": "eph-mar-27-gaspar-birth",
     "month": 3,
     "day": 27,
@@ -229,6 +416,28 @@
     "title": "Nacimiento de Gaspar Campos",
     "description": "Nace en Gijón el extremo canterano de Mareo, dotado de gran golpeo exterior y pasión por la camiseta rojiblanca.",
     "figure": "Gaspar Campos"
+  },
+  {
+    "id": "eph-mar-28-inauguracion-mareo",
+    "month": 3,
+    "day": 28,
+    "year": 1978,
+    "category": "milestone",
+    "categoryLabel": "Hito Institucional",
+    "title": "Inauguración de la Escuela de Mareo (1978)",
+    "description": "Bajo la presidencia de Manuel Vega-Arango se inauguran los campos de Mareo, convirtiéndose en el gran templo y modelo formativo del fútbol español.",
+    "figure": "Manuel Vega-Arango"
+  },
+  {
+    "id": "eph-mar-30-zurdi-birth",
+    "month": 3,
+    "day": 30,
+    "year": 1963,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Zurdi",
+    "description": "Nace en Gijón Carlos Horacio González 'Zurdi', descarado y genial extremo zurdo de Mareo que deslumbró con sus fintas en El Molinón durante los 80.",
+    "figure": "Zurdi"
   },
   {
     "id": "eph-mar-30-nacho-mendez-birth",
@@ -251,6 +460,17 @@
     "title": "Asalto al Bernabéu (0-1)",
     "description": "Con gol de Miguel de las Cuevas y Manolo Preciado al mando, el Sporting vence 0-1 al Real Madrid y rompe la racha de 9 años y 150 partidos de Mourinho invicto en casa.",
     "figure": "Miguel de las Cuevas"
+  },
+  {
+    "id": "eph-apr-03-cholo-dindurra-birth",
+    "month": 4,
+    "day": 3,
+    "year": 1919,
+    "category": "legend",
+    "categoryLabel": "Memoria Rojiblanca",
+    "title": "Nacimiento de Cholo Dindurra",
+    "description": "Nace en Gijón José Manuel Sánchez-Dindurra 'Cholo Dindurra', histórico atacante rojiblanco que vistió la elástica gijonesa durante 15 temporadas.",
+    "figure": "Cholo Dindurra"
   },
   {
     "id": "eph-apr-05-marcos-vales-birth",
@@ -286,6 +506,17 @@
     "figure": "Mario Stanic"
   },
   {
+    "id": "eph-apr-13-ramon-herrera-birth",
+    "month": 4,
+    "day": 13,
+    "year": 1907,
+    "category": "legend",
+    "categoryLabel": "Memoria Rojiblanca",
+    "title": "Nacimiento de Ramón Herrera 'El Sabio'",
+    "description": "Nace en Gijón Ramón Herrera Bueno, figura nuclear en la historia sportinguista como maestro del balón, capitán y posteriormente presidente del club.",
+    "figure": "Ramón Herrera"
+  },
+  {
     "id": "eph-apr-13-cundi-birth",
     "month": 4,
     "day": 13,
@@ -306,6 +537,28 @@
     "title": "Segunda Final de Copa del Rey (1982)",
     "description": "El equipo rojiblanco disputa su segunda final copera consecutiva, midiéndose al Real Madrid en el Nuevo Zorrilla de Valladolid.",
     "figure": "Generación Dorada"
+  },
+  {
+    "id": "eph-apr-14-luis-hernandez-birth",
+    "month": 4,
+    "day": 14,
+    "year": 1989,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Luis Hernández",
+    "description": "Nace en Madrid el implacable defensa central y saqueador de bandas de largo alcance, capitán y mariscal en el Sporting de los Guajes.",
+    "figure": "Luis Hernández"
+  },
+  {
+    "id": "eph-apr-16-alcazar-birth",
+    "month": 4,
+    "day": 16,
+    "year": 1967,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Ángel Luis Alcázar",
+    "description": "Nace en Madrid el sobrio y veloz lateral derecho que defendió la banda de El Molinón en Primera División durante casi 200 compromisos ligueros.",
+    "figure": "Ángel Luis Alcázar"
   },
   {
     "id": "eph-apr-17-mere-birth",
@@ -341,6 +594,61 @@
     "figure": "Manuel Vega-Arango"
   },
   {
+    "id": "eph-apr-23-jorge-david-birth",
+    "month": 4,
+    "day": 23,
+    "year": 1956,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Jorge David López",
+    "description": "Nace en Turón el virtuoso centrocampista canterano, titular en el legendario Sporting subcampeón de Liga de 1978-79.",
+    "figure": "Jorge David López"
+  },
+  {
+    "id": "eph-apr-29-kevin-moran-birth",
+    "month": 4,
+    "day": 29,
+    "year": 1956,
+    "category": "signing",
+    "categoryLabel": "Fichaje Internacional",
+    "title": "Nacimiento de Kevin Moran",
+    "description": "Nace en Dublín el férreo defensa central internacional irlandés, procedente del Manchester United, quien aportó garra británica a la zaga gijonesa.",
+    "figure": "Kevin Moran"
+  },
+  {
+    "id": "eph-apr-30-primera-clasificacion-uefa",
+    "month": 4,
+    "day": 30,
+    "year": 1978,
+    "category": "milestone",
+    "categoryLabel": "Hito Europeo",
+    "title": "Primera clasificación para la Copa de la UEFA (1978)",
+    "description": "El Real Sporting concluye la Liga 1977-78 en los puestos de honor y certifica por primera vez en sus más de siete décadas de vida el billete a Europa.",
+    "figure": "Vicente Miera y Enrique Castro Quini"
+  },
+  {
+    "id": "eph-may-03-chus-bravo-birth",
+    "month": 5,
+    "day": 3,
+    "year": 1979,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Chus Bravo",
+    "description": "Nace en Gijón Jesús Bravo 'Chus Bravo', zaguero forjado en Mareo que personificó la bravura, la entrega y la fidelidad al escudo rojiblanco.",
+    "figure": "Chus Bravo"
+  },
+  {
+    "id": "eph-may-08-luis-enrique-birth",
+    "month": 5,
+    "day": 8,
+    "year": 1970,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Luis Enrique Martínez",
+    "description": "Nace en Gijón Luis Enrique 'Lucho', emblema universal de Mareo, internacional absoluto y uno de los futbolistas y técnicos más trascendentes del fútbol mundial.",
+    "figure": "Luis Enrique Martínez"
+  },
+  {
     "id": "eph-may-09-marino-birth",
     "month": 5,
     "day": 9,
@@ -372,6 +680,17 @@
     "title": "Nacimiento de David Barral",
     "description": "Nace en San Fernando el delantero carismático y luchador incansable del Sporting de Manolo Preciado, con el que logró el ascenso en 2008.",
     "figure": "David Barral"
+  },
+  {
+    "id": "eph-may-11-cheryshev-birth",
+    "month": 5,
+    "day": 11,
+    "year": 1969,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Dmitri Chéryshev",
+    "description": "Nace en Nizhni Nóvgorod el imparable velocista e internacional ruso, que enamoró a El Molinón con su zancada vertiginosa y sus 47 goles oficiales.",
+    "figure": "Dmitri Chéryshev"
   },
   {
     "id": "eph-may-12-barrera-birth",
@@ -429,6 +748,17 @@
     "figure": "El Molinón"
   },
   {
+    "id": "eph-may-20-titulo-real-sporting",
+    "month": 5,
+    "day": 20,
+    "year": 1912,
+    "category": "milestone",
+    "categoryLabel": "Hito Institucional",
+    "title": "Concesión del título de 'Real' (1912)",
+    "description": "El Rey Alfonso XIII otorga al club gijonés el título de 'Real', adoptando la corona borbónica en el escudo y pasando a llamarse Real Sporting Club Gijonés.",
+    "figure": "Casa Real Española"
+  },
+  {
     "id": "eph-may-22-lediakhov-birth",
     "month": 5,
     "day": 22,
@@ -438,6 +768,17 @@
     "title": "Nacimiento de Igor Lediakhov",
     "description": "Nace en Sochi el 'Mago Ruso', astro indiscutible de El Molinón durante ocho temporadas con su elegancia y calidad técnica excelsa.",
     "figure": "Igor Lediakhov"
+  },
+  {
+    "id": "eph-may-22-queipo-birth",
+    "month": 5,
+    "day": 22,
+    "year": 2002,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Dani Queipo",
+    "description": "Nace en Gijón el eléctrico extremo zurdo de Mareo, formado desde la infancia en la cantera y dotado de desborde y valentía en el uno contra uno.",
+    "figure": "Dani Queipo"
   },
   {
     "id": "eph-may-23-sergio-fernandez-birth",
@@ -451,15 +792,48 @@
     "figure": "Sergio Fernández"
   },
   {
-    "id": "eph-jun-05-pedro-diaz-birth",
-    "month": 6,
-    "day": 5,
-    "year": 1998,
+    "id": "eph-may-26-otero-birth",
+    "month": 5,
+    "day": 26,
+    "year": 1995,
     "category": "legend",
     "categoryLabel": "Cumpleaños Rojiblanco",
-    "title": "Nacimiento de Pedro Díaz",
-    "description": "Nace en Mieres el cerebro del mediocampo surgido de Mareo, dotado de un golpeo de balón privilegiado a media y larga distancia.",
-    "figure": "Pedro Díaz"
+    "title": "Nacimiento de Juan Otero",
+    "description": "Nace en Sipí (Colombia) el poderoso delantero internacional cafetero, referente ofensivo del Real Sporting por su juego aéreo y potencia física.",
+    "figure": "Juan Otero"
+  },
+  {
+    "id": "eph-may-27-cuellar-birth",
+    "month": 5,
+    "day": 27,
+    "year": 1984,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Iván Cuéllar 'Pichu'",
+    "description": "Nace en Mérida el veterano guardameta y capitán, Trofeo Zamora de 2.ª División en 2014-15 y héroe bajo palos en el regreso a Primera con los Guajes.",
+    "figure": "Iván Cuéllar"
+  },
+  {
+    "id": "eph-jun-01-carlos-castro-birth",
+    "month": 6,
+    "day": 1,
+    "year": 1995,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Carlos Castro",
+    "description": "Nace en Ujo el delantero canterano de Mareo, providencial cazagoles y autor de dianas clave en el inolvidable ascenso a Primera de 2015.",
+    "figure": "Carlos Castro"
+  },
+  {
+    "id": "eph-jun-04-joaquin-villa-birth",
+    "month": 6,
+    "day": 4,
+    "year": 1961,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Joaquín Villa",
+    "description": "Nace en Mieres el hábil atacante internacional de Mareo, protagonista de brillantes campañas en Primera División y semifinalista de Copa del Rey.",
+    "figure": "Joaquín Villa"
   },
   {
     "id": "eph-jun-05-promotion-1977",
@@ -473,6 +847,28 @@
     "figure": "Vicente Miera"
   },
   {
+    "id": "eph-jun-05-pedro-diaz-birth",
+    "month": 6,
+    "day": 5,
+    "year": 1998,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Pedro Díaz",
+    "description": "Nace en Mieres el cerebro del mediocampo surgido de Mareo, dotado de un golpeo de balón privilegiado a media y larga distancia.",
+    "figure": "Pedro Díaz"
+  },
+  {
+    "id": "eph-jun-07-roque-mesa-birth",
+    "month": 6,
+    "day": 7,
+    "year": 1989,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Roque Mesa",
+    "description": "Nace en Telde el experimentado mediocentro grancanario, de reconocida trayectoria en la élite y organizador de juego en El Molinón.",
+    "figure": "Roque Mesa"
+  },
+  {
     "id": "eph-jun-07-villamarin-miracle",
     "month": 6,
     "day": 7,
@@ -482,6 +878,17 @@
     "title": "El Milagro del Villamarín (0-3)",
     "description": "Con una plantilla formada íntegramente por canteranos y sin poder fichar, 'Los Guajes' de Abelardo vencen 0-3 al Betis y conquistan el ascenso directo a Primera.",
     "figure": "Los Guajes de Abelardo"
+  },
+  {
+    "id": "eph-jun-08-arturo-martinez-birth",
+    "month": 6,
+    "day": 8,
+    "year": 1969,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Arturo Martínez",
+    "description": "Nace en Gijón el firme lateral derecho de Mareo, titular indiscutible en la defensa del Sporting a comienzos de los años 90.",
+    "figure": "Arturo Martínez"
   },
   {
     "id": "eph-jun-09-joaquin-birth",
@@ -495,6 +902,17 @@
     "figure": "Joaquín Alonso"
   },
   {
+    "id": "eph-jun-09-regreso-quini",
+    "month": 6,
+    "day": 9,
+    "year": 1984,
+    "category": "signing",
+    "categoryLabel": "Regreso de la Leyenda",
+    "title": "Regreso de Quini a casa (1984)",
+    "description": "El Real Sporting hace oficial el esperado regreso de Enrique Castro 'Quini' al club de sus amores tras cuatro prolíficas campañas en el FC Barcelona.",
+    "figure": "Enrique Castro Quini"
+  },
+  {
     "id": "eph-jun-15-preciado-promotion",
     "month": 6,
     "day": 15,
@@ -504,6 +922,17 @@
     "title": "El regreso a Primera con Preciado (2-0)",
     "description": "Con goles de Bilic y Luis Morán ante 25.000 aficionados en El Molinón, el Sporting derrota al Eibar y pone fin a una década en Segunda División.",
     "figure": "Mate Bilic y Luis Morán"
+  },
+  {
+    "id": "eph-jun-17-debut-david-villa",
+    "month": 6,
+    "day": 17,
+    "year": 2001,
+    "category": "milestone",
+    "categoryLabel": "Debut de una Leyenda",
+    "title": "Debut oficial de David Villa (2001)",
+    "description": "Un joven David Villa debuta con el primer equipo del Real Sporting en El Molinón en la jornada 42 de Segunda División frente al Córdoba CF.",
+    "figure": "David Villa"
   },
   {
     "id": "eph-jun-18-copa-final-1981",
@@ -526,6 +955,17 @@
     "title": "Nacimiento de Miguel de las Cuevas",
     "description": "Nace en Alicante el atacante autor del legendario gol en el Bernabéu que rompió el récord de imbatibilidad de José Mourinho.",
     "figure": "Miguel de las Cuevas"
+  },
+  {
+    "id": "eph-jun-20-doria-birth",
+    "month": 6,
+    "day": 20,
+    "year": 1948,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Víctor Hugo Doria",
+    "description": "Nace en Buenos Aires el formidable defensa central argentino, baluarte insustituible de la retaguardia sportinguista en la época dorada de los 70 y 80.",
+    "figure": "Víctor Hugo Doria"
   },
   {
     "id": "eph-jun-23-angulo-birth",
@@ -572,6 +1012,28 @@
     "figure": "Diego Castro"
   },
   {
+    "id": "eph-jul-04-rezza-birth",
+    "month": 7,
+    "day": 4,
+    "year": 1948,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Ricardo Rezza",
+    "description": "Nace en Berisso (Argentina) el solvente central argentino, figura indiscutible en la zaga del histórico Sporting subcampeón de Liga 1978-79.",
+    "figure": "Ricardo Rezza"
+  },
+  {
+    "id": "eph-jul-05-herrerita-birth",
+    "month": 7,
+    "day": 5,
+    "year": 1914,
+    "category": "legend",
+    "categoryLabel": "Memoria Rojiblanca",
+    "title": "Nacimiento de Herrerita",
+    "description": "Nace en Gijón Eduardo Herrera Bueno 'Herrerita', uno de los mayores genios y atacantes de la historia del fútbol asturiano e internacional con España.",
+    "figure": "Herrerita"
+  },
+  {
     "id": "eph-jul-05-carmona-birth",
     "month": 7,
     "day": 5,
@@ -594,6 +1056,17 @@
     "figure": "Dani Martín"
   },
   {
+    "id": "eph-jul-09-carmelo-birth",
+    "month": 7,
+    "day": 9,
+    "year": 1983,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Carmelo González",
+    "description": "Nace en Las Palmas el talentoso mediapunta grancanario, autor de goles inolvidables con la elástica rojiblanca en Primera División.",
+    "figure": "Carmelo González"
+  },
+  {
     "id": "eph-jul-09-jony-birth",
     "month": 7,
     "day": 9,
@@ -603,6 +1076,17 @@
     "title": "Nacimiento de Jony Rodríguez",
     "description": "Nace en Cangas del Narcea el puñal de la banda izquierda de Mareo, héroe del ascenso de Los Guajes y autor de goles imborrables.",
     "figure": "Jony Rodríguez"
+  },
+  {
+    "id": "eph-jul-09-christian-rivera-birth",
+    "month": 7,
+    "day": 9,
+    "year": 1997,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Christian Rivera",
+    "description": "Nace en Gijón el elegante centrocampista organizador de Mareo, de depurada técnica individual y lectura táctica en la medular.",
+    "figure": "Christian Rivera"
   },
   {
     "id": "eph-jul-10-eloy-birth",
@@ -638,6 +1122,28 @@
     "figure": "Enzo Ferrero"
   },
   {
+    "id": "eph-jul-14-ruben-garcia-birth",
+    "month": 7,
+    "day": 14,
+    "year": 1993,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Rubén García",
+    "description": "Nace en Xàtiva el refinado centrocampista valenciano, líder de asistencias y magia en la brillante temporada 2017-18 con el Real Sporting.",
+    "figure": "Rubén García"
+  },
+  {
+    "id": "eph-jul-18-diego-sanchez-birth",
+    "month": 7,
+    "day": 18,
+    "year": 2003,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Diego Sánchez",
+    "description": "Nace en Avilés el contundente zaguero zurdo de Mareo, baluarte defensivo polivalente tanto en el lateral como de central con el primer equipo.",
+    "figure": "Diego Sánchez"
+  },
+  {
     "id": "eph-jul-26-luis-moran-birth",
     "month": 7,
     "day": 26,
@@ -671,6 +1177,17 @@
     "figure": "Ciriaco Cano"
   },
   {
+    "id": "eph-aug-05-pablo-diaz-birth",
+    "month": 8,
+    "day": 5,
+    "year": 1971,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Pablo Díaz Stalla",
+    "description": "Nace en Buenos Aires el incansable lateral diestro hispano-argentino criado en Mareo, con más de 180 encuentros oficiales con el Sporting.",
+    "figure": "Pablo Díaz Stalla"
+  },
+  {
     "id": "eph-aug-14-marcelino-garcia-birth",
     "month": 8,
     "day": 14,
@@ -702,6 +1219,17 @@
     "title": "Nacimiento de Manuel Vega-Arango",
     "description": "Nace el presidente más emblemático del club, artífice institucional de la construcción de Mareo y de la época más laureada del Real Sporting.",
     "figure": "Manuel Vega-Arango"
+  },
+  {
+    "id": "eph-aug-21-primer-partido-molinon",
+    "month": 8,
+    "day": 21,
+    "year": 1908,
+    "category": "milestone",
+    "categoryLabel": "Hito Histórico",
+    "title": "Primera referencia oficial de El Molinón (1908)",
+    "description": "La prensa local reseña por primera vez un encuentro de fútbol disputado en el campo de El Molinón, el estadio decano del fútbol profesional español.",
+    "figure": "El Molinón"
   },
   {
     "id": "eph-aug-21-villa-de-gijon",
@@ -748,6 +1276,17 @@
     "figure": "Manolo Preciado"
   },
   {
+    "id": "eph-aug-31-pablo-lago-birth",
+    "month": 8,
+    "day": 31,
+    "year": 1974,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Pablo Lago",
+    "description": "Nace en Vegadeo el fino extremo zurdo formado en Mareo, recordado por su exquisito golpeo con la pierna izquierda.",
+    "figure": "Pablo Lago"
+  },
+  {
     "id": "eph-aug-31-scepovic-signing",
     "month": 8,
     "day": 31,
@@ -770,6 +1309,17 @@
     "figure": "Juan Carlos Ablanedo"
   },
   {
+    "id": "eph-sep-02-juan-pablo-colinas-birth",
+    "month": 9,
+    "day": 2,
+    "year": 1978,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Juan Pablo Colinas",
+    "description": "Nace en León el seguro y sobrio guardameta del Sporting de Manolo Preciado durante las recordadas temporadas de permanencia en Primera División.",
+    "figure": "Juan Pablo Colinas"
+  },
+  {
     "id": "eph-sep-05-cote-birth",
     "month": 9,
     "day": 5,
@@ -779,6 +1329,17 @@
     "title": "Nacimiento de José Ángel Valdés 'Cote'",
     "description": "Nace en Gijón el bravo lateral zurdo de Roces y Mareo, internacional y capitán rojiblanco.",
     "figure": "José Ángel Valdés 'Cote'"
+  },
+  {
+    "id": "eph-sep-09-pablo-insua-birth",
+    "month": 9,
+    "day": 9,
+    "year": 1993,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Pablo Insua",
+    "description": "Nace en Arzúa (A Coruña) el experimentado central gallego, jefe de la retaguardia rojiblanca con solidez y jerarquía en El Molinón.",
+    "figure": "Pablo Insua"
   },
   {
     "id": "eph-sep-13-uefa-debut",
@@ -792,6 +1353,28 @@
     "figure": "Vicente Miera"
   },
   {
+    "id": "eph-sep-13-debut-uefa-bohemians",
+    "month": 9,
+    "day": 13,
+    "year": 1978,
+    "category": "milestone",
+    "categoryLabel": "Gesta Europea",
+    "title": "Debut en la Copa de la UEFA: Sporting 3-0 Bohemians Praga (1978)",
+    "description": "Noche mágica e histórica en El Molinón en el estreno continental del Sporting, derrotando 3-0 al Bohemians checo con tantos de Ferrero, Morán y Quini.",
+    "figure": "Enzo Ferrero y Quini"
+  },
+  {
+    "id": "eph-sep-16-nikiforov-birth",
+    "month": 9,
+    "day": 16,
+    "year": 1970,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Yuri Nikiforov",
+    "description": "Nace en Odesa el imponente zaguero central internacional, famoso en El Molinón por su contundencia y sus letales disparos de falta directa.",
+    "figure": "Yuri Nikiforov"
+  },
+  {
     "id": "eph-sep-23-quini-birth",
     "month": 9,
     "day": 23,
@@ -801,6 +1384,17 @@
     "title": "Nacimiento de Enrique Castro 'Quini'",
     "description": "Nace en Oviedo 'El Brujo', máximo goleador de la historia del Sporting, 5 veces Pichichi de Primera y símbolo imborrable del sportinguismo.",
     "figure": "Enrique Castro 'Quini'"
+  },
+  {
+    "id": "eph-sep-24-garcia-cuervo-birth",
+    "month": 9,
+    "day": 24,
+    "year": 1946,
+    "category": "legend",
+    "categoryLabel": "Banquillo Rojiblanco",
+    "title": "Nacimiento de Carlos García Cuervo",
+    "description": "Nace en Gijón el técnico sportinguista que lideró al club a excelentes clasificaciones en Primera y a la Copa de la UEFA en la temporada 1990-91.",
+    "figure": "Carlos García Cuervo"
   },
   {
     "id": "eph-sep-26-marcelino-elena-birth",
@@ -836,6 +1430,17 @@
     "figure": "Enrique Castro 'Quini'"
   },
   {
+    "id": "eph-oct-15-enrique-moran-birth",
+    "month": 10,
+    "day": 15,
+    "year": 1953,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Enrique Morán",
+    "description": "Nace en La Pola de Gordón el veloz y letal delantero internacional, pieza clave en el subcampeonato de Liga de 1979 y goleador de raza en El Molinón.",
+    "figure": "Enrique Morán"
+  },
+  {
     "id": "eph-oct-17-sevilla-triunfo",
     "month": 10,
     "day": 17,
@@ -845,6 +1450,72 @@
     "title": "Victoria en Primera ante el Sevilla (2-0)",
     "description": "El Molinón vibra en la máxima categoría con un sólido triunfo 2-0 frente al Sevilla FC con goles de Gastón Sangoy y Diego Castro.",
     "figure": "Diego Castro y Sangoy"
+  },
+  {
+    "id": "eph-oct-20-esteban-gutierrez-birth",
+    "month": 10,
+    "day": 20,
+    "year": 1960,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Esteban Gutiérrez",
+    "description": "Nace en Oviñana el portentoso lateral zurdo internacional salido de Mareo, dueño indiscutible del carril izquierdo en los 80.",
+    "figure": "Esteban Gutiérrez"
+  },
+  {
+    "id": "eph-oct-21-manuel-meana-birth",
+    "month": 10,
+    "day": 21,
+    "year": 1901,
+    "category": "legend",
+    "categoryLabel": "Memoria Rojiblanca",
+    "title": "Nacimiento de Manuel Meana",
+    "description": "Nace en Gijón el primer jugador internacional en la historia del Real Sporting y mítico capitán que marcó los albores del fútbol asturiano.",
+    "figure": "Manuel Meana"
+  },
+  {
+    "id": "eph-oct-22-jaime-alvarez-birth",
+    "month": 10,
+    "day": 22,
+    "year": 1962,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Jaime Álvarez",
+    "description": "Nace en Gijón el inteligente centrocampista de Mareo, con más de 250 partidos en la élite con el Real Sporting durante los años 80 y 90.",
+    "figure": "Jaime Álvarez"
+  },
+  {
+    "id": "eph-oct-22-rafel-sastre-birth",
+    "month": 10,
+    "day": 22,
+    "year": 1975,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Rafel Sastre",
+    "description": "Nace en Binisalem (Mallorca) el eterno capitán del Sporting de Preciado, protagonista y líder indiscutible del ansiado ascenso a Primera en 2008.",
+    "figure": "Rafel Sastre"
+  },
+  {
+    "id": "eph-oct-22-torino-uefa-molinon",
+    "month": 10,
+    "day": 22,
+    "year": 1980,
+    "category": "triumph",
+    "categoryLabel": "Gesta Europea",
+    "title": "Triunfo europeo ante el Torino en El Molinón (1980)",
+    "description": "El Real Sporting vence por 1-0 al mítico Torino de Graziani y Pecci en los dieciseisavos de final de la Copa de la UEFA con gol de Enzo Ferrero.",
+    "figure": "Enzo Ferrero"
+  },
+  {
+    "id": "eph-oct-23-claudio-silva-birth",
+    "month": 10,
+    "day": 23,
+    "year": 1956,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Claudio Silva",
+    "description": "Nace en Gijón Claudio Silva, delantero forjado en la casa rojiblanca que aportó entrega y goles en la época dorada de El Molinón.",
+    "figure": "Claudio Silva"
   },
   {
     "id": "eph-oct-23-bilic-birth",
@@ -869,6 +1540,61 @@
     "figure": "Abelardo Fernández"
   },
   {
+    "id": "eph-oct-27-jimenez-birth",
+    "month": 10,
+    "day": 27,
+    "year": 1956,
+    "category": "legend",
+    "categoryLabel": "Leyenda Eterna",
+    "title": "Nacimiento de Manuel Enrique Jiménez",
+    "description": "Nace en Vilagarcía de Arousa el mítico defensa central internacional, segundo jugador con más partidos en la historia del Real Sporting (498 encuentros).",
+    "figure": "Manuel Enrique Jiménez"
+  },
+  {
+    "id": "eph-oct-28-primer-gol-quini-primera",
+    "month": 10,
+    "day": 28,
+    "year": 1970,
+    "category": "milestone",
+    "categoryLabel": "Hito Histórico",
+    "title": "Primer gol de Quini en 1.ª División (1970)",
+    "description": "Enrique Castro 'Quini' anota su primera diana en la máxima categoría del fútbol español en la victoria del Sporting por 3-0 frente al RCD Espanyol en El Molinón.",
+    "figure": "Enrique Castro Quini"
+  },
+  {
+    "id": "eph-oct-31-cesar-gelabert-birth",
+    "month": 10,
+    "day": 31,
+    "year": 2000,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de César Gelabert",
+    "description": "Nace en Palencia el talentoso mediapunta rojiblanco, dotado de gran visión entre líneas y técnica asociativa.",
+    "figure": "César Gelabert"
+  },
+  {
+    "id": "eph-nov-02-muniz-birth",
+    "month": 11,
+    "day": 2,
+    "year": 1968,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Juan Ramón López Muñiz",
+    "description": "Nace en Gijón el central canterano de Mareo, sobrio zaguero en Primera con el Sporting y reconocido técnico en el fútbol español.",
+    "figure": "Juan Ramón López Muñiz"
+  },
+  {
+    "id": "eph-nov-03-izquierdoz-birth",
+    "month": 11,
+    "day": 3,
+    "year": 1988,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Cali Izquierdoz",
+    "description": "Nace en San Carlos de Bariloche (Argentina) Carlos 'Cali' Izquierdoz, líder y mariscal de la zaga sportinguista por su garra y jerarquía.",
+    "figure": "Cali Izquierdoz"
+  },
+  {
     "id": "eph-nov-03-camp-nou-juanele",
     "month": 11,
     "day": 3,
@@ -889,6 +1615,50 @@
     "title": "Fundación del Gijón Sport Club",
     "description": "Se funda la sociedad embrionaria precursora del Sporting Gijonés, organizada por jóvenes de la villa pioneros en la práctica del fútbol.",
     "figure": "Pioneros de Gijón"
+  },
+  {
+    "id": "eph-nov-07-goleada-real-madrid-7-1",
+    "month": 11,
+    "day": 7,
+    "year": 1948,
+    "category": "triumph",
+    "categoryLabel": "Gesta Histórica",
+    "title": "Goleada histórica: Real Sporting 7-1 Real Madrid (1948)",
+    "description": "El Molinón vive una de las tardes más apoteósicas de su historia en Primera División con una memorable paliza al Real Madrid por 7-1 con festival goleador rojiblanco.",
+    "figure": "Méndez y Cholo Dindurra"
+  },
+  {
+    "id": "eph-nov-10-arnolin-birth",
+    "month": 11,
+    "day": 10,
+    "year": 1980,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Grégory Arnolin",
+    "description": "Nace en Livry-Gargan (Francia) el potente defensa central galo, una roca en la retaguardia en el regreso y permanencia en Primera con Manolo Preciado.",
+    "figure": "Grégory Arnolin"
+  },
+  {
+    "id": "eph-nov-13-emilio-isierte-birth",
+    "month": 11,
+    "day": 13,
+    "year": 1963,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Emilio Isierte",
+    "description": "Nace en Amposta el sobrio guardameta rojiblanco, titular indiscutible en la clasificación para la Copa de la UEFA de la campaña 1990-91.",
+    "figure": "Emilio Isierte"
+  },
+  {
+    "id": "eph-nov-16-borreguero-birth",
+    "month": 11,
+    "day": 16,
+    "year": 1975,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Dani Borreguero",
+    "description": "Nace en Barcelona el incansable centrocampista recuperador, baluarte del medio campo del Sporting en el inicio de los 2000.",
+    "figure": "Dani Borreguero"
   },
   {
     "id": "eph-nov-25-tomas-birth",
@@ -913,6 +1683,17 @@
     "figure": "Manolo Sánchez Murias"
   },
   {
+    "id": "eph-nov-28-monchu-birth",
+    "month": 11,
+    "day": 28,
+    "year": 1968,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Monchu",
+    "description": "Nace en Gijón Ramón Suárez del Valle 'Monchu', delantero forjado en Mareo y certero rematador en el área en los años dorados de comienzos de los 90.",
+    "figure": "Monchu"
+  },
+  {
     "id": "eph-dec-03-villa-birth",
     "month": 12,
     "day": 3,
@@ -922,6 +1703,61 @@
     "title": "Nacimiento de David Villa 'El Guaje'",
     "description": "Nace en Tuilla el máximo goleador histórico de la Selección Española y orgullo formado en Mareo, donde brilló antes de su salto a la élite mundial.",
     "figure": "David Villa"
+  },
+  {
+    "id": "eph-dec-07-luis-sierra-birth",
+    "month": 12,
+    "day": 7,
+    "year": 1965,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Rojiblanco",
+    "title": "Nacimiento de Luis Sierra",
+    "description": "Nace en Allozo (Palencia) el infranqueable central José Luis Sierra, cerrojo de la defensa sportinguista en Primera durante casi una década.",
+    "figure": "Luis Sierra"
+  },
+  {
+    "id": "eph-dec-09-carriega-birth",
+    "month": 12,
+    "day": 9,
+    "year": 1929,
+    "category": "legend",
+    "categoryLabel": "Banquillo Legendario",
+    "title": "Nacimiento de Luis Cid 'Carriega'",
+    "description": "Nace en Allariz (Ourense) el prestigioso entrenador que devolvió al Sporting a Primera en 1970 y sentó las bases competitivas de la época más gloriosa del club.",
+    "figure": "Luis Cid Carriega"
+  },
+  {
+    "id": "eph-dec-16-ivan-iglesias-birth",
+    "month": 12,
+    "day": 16,
+    "year": 1971,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Iván Iglesias",
+    "description": "Nace en Gijón el exquisito mediapunta canterano de Mareo, dotado de una técnica privilegiada, desborde e inteligencia táctica superlativa.",
+    "figure": "Iván Iglesias"
+  },
+  {
+    "id": "eph-dec-21-tamayo-birth",
+    "month": 12,
+    "day": 21,
+    "year": 1918,
+    "category": "legend",
+    "categoryLabel": "Memoria Rojiblanca",
+    "title": "Nacimiento de Tamayo",
+    "description": "Nace en Gijón Mauro Álvarez 'Tamayo', legendario defensor gijonés que formó parte de la primera plantilla del Sporting en Primera en 1944.",
+    "figure": "Tamayo"
+  },
+  {
+    "id": "eph-dec-22-debut-quini-sporting",
+    "month": 12,
+    "day": 22,
+    "year": 1968,
+    "category": "milestone",
+    "categoryLabel": "Debut de una Leyenda",
+    "title": "Debut oficial de Enrique Castro 'Quini' (1968)",
+    "description": "Un joven Quini se enfunda por primera vez la camiseta oficial del Sporting en Segunda División en el estadio Benito Villamarín frente al Real Betis.",
+    "figure": "Enrique Castro Quini"
   },
   {
     "id": "eph-dec-22-nacho-cases-birth",
@@ -955,6 +1791,17 @@
     "title": "Nacimiento de Manolo Mesa",
     "description": "Nace en San Roque el mítico 'Siete Pulmones' de la banda derecha, internacional con más de 400 partidos oficiales vistiendo la elástica rojiblanca.",
     "figure": "Manolo Mesa"
+  },
+  {
+    "id": "eph-dec-30-kike-mateo-birth",
+    "month": 12,
+    "day": 30,
+    "year": 1979,
+    "category": "legend",
+    "categoryLabel": "Cumpleaños Legendario",
+    "title": "Nacimiento de Kike Mateo",
+    "description": "Nace en Murcia el mago de las faltas y las jugadas de estrategia, ídolo absoluto de la afición de El Molinón y figura clave en el ascenso de Preciado.",
+    "figure": "Kike Mateo"
   },
   {
     "id": "eph-dec-31-manjarin-birth",
