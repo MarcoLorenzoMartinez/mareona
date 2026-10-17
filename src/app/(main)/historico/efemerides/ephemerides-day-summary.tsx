@@ -21,7 +21,7 @@ export function EphemeridesDaySummary({
     return (
       <div className="flex flex-1 flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs min-h-[300px]">
         <div className="flex items-center gap-2.5">
-          <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl">
+          <h2 className="text-xl font-bold tracking-tight text-[var(--primary)] sm:text-2xl">
             {dateLabel}
           </h2>
           {isToday && (
@@ -55,7 +55,7 @@ export function EphemeridesDaySummary({
     <div className="flex flex-1 flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs min-h-[300px]">
       {/* Top Header: Date title + Today badge */}
       <div className="flex items-center gap-2.5">
-        <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)] sm:text-2xl">
+        <h2 className="text-xl font-bold tracking-tight text-[var(--primary)] sm:text-2xl">
           {dateLabel}
         </h2>
         {isToday && (
@@ -69,28 +69,28 @@ export function EphemeridesDaySummary({
       {balance.played > 0 ? (
         <div className="my-auto grid grid-cols-3 divide-x divide-[var(--border)] rounded-xl border border-[var(--border)] bg-neutral-50/40 py-3 text-center sm:py-4">
           <div className="flex flex-col items-center px-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
               Victorias
             </span>
-            <span className="mt-1 text-2xl font-extrabold text-[var(--primary)] font-sans tabular-nums sm:text-3xl">
+            <span className="mt-1 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
               {balance.won}
             </span>
           </div>
 
           <div className="flex flex-col items-center px-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
               Empates
             </span>
-            <span className="mt-1 text-2xl font-bold text-[var(--foreground)] font-sans tabular-nums sm:text-3xl">
+            <span className="mt-1 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
               {balance.drawn}
             </span>
           </div>
 
           <div className="flex flex-col items-center px-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
               Derrotas
             </span>
-            <span className="mt-1 text-2xl font-bold text-[var(--muted-foreground)] font-sans tabular-nums sm:text-3xl">
+            <span className="mt-1 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
               {balance.lost}
             </span>
           </div>
@@ -110,19 +110,19 @@ export function EphemeridesDaySummary({
       {balance.played > 0 && (
         <div className="grid grid-cols-2 divide-x divide-[var(--border)] border-t border-[var(--border)]/70 pt-3 text-center">
           <div className="flex flex-col items-center px-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
               Goles a favor
             </span>
-            <span className="mt-0.5 text-xl font-extrabold text-[var(--foreground)] font-sans tabular-nums sm:text-2xl">
+            <span className="mt-0.5 text-xl font-black text-neutral-900 font-sans tabular-nums sm:text-2xl">
               {balance.goalsFor}
             </span>
           </div>
 
           <div className="flex flex-col items-center px-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted-foreground)]">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
               Goles en contra
             </span>
-            <span className="mt-0.5 text-xl font-bold text-[var(--muted-foreground)] font-sans tabular-nums sm:text-2xl">
+            <span className="mt-0.5 text-xl font-black text-neutral-900 font-sans tabular-nums sm:text-2xl">
               {balance.goalsAgainst}
             </span>
           </div>

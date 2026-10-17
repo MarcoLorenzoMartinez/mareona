@@ -51,36 +51,26 @@ export function EphemeridesCalendar({
     >
       {/* Month Navigation Header */}
       <div className="flex items-center justify-between pb-2.5 border-b border-[var(--border)]">
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={handlePrevMonth}
-            className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface)] active:scale-95 transition-transform"
-            aria-label="Mes anterior"
-          >
-            ‹
-          </button>
+        <button
+          type="button"
+          onClick={handlePrevMonth}
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface)] active:scale-95 transition-transform"
+          aria-label="Mes anterior"
+        >
+          ‹
+        </button>
 
-          <span className="min-w-24 text-center text-sm font-bold text-[var(--foreground)]">
-            {MONTH_NAMES[selectedMonth - 1]}
-          </span>
-
-          <button
-            type="button"
-            onClick={handleNextMonth}
-            className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface)] active:scale-95 transition-transform"
-            aria-label="Mes siguiente"
-          >
-            ›
-          </button>
-        </div>
+        <span className="text-center text-sm font-bold text-[var(--foreground)]">
+          {MONTH_NAMES[selectedMonth - 1]}
+        </span>
 
         <button
           type="button"
-          onClick={() => onSelectDate(todayMonth, todayDay)}
-          className="rounded-full bg-[var(--surface)] px-2.5 py-0.5 text-[11px] font-semibold text-[var(--foreground)] hover:bg-[var(--border)] active:scale-95 transition-colors"
+          onClick={handleNextMonth}
+          className="flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface)] active:scale-95 transition-transform"
+          aria-label="Mes siguiente"
         >
-          Hoy
+          ›
         </button>
       </div>
 

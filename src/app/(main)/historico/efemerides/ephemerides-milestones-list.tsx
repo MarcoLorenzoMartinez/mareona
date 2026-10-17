@@ -46,7 +46,7 @@ export function EphemeridesMilestonesList({ milestones }: EphemeridesMilestonesL
                       photoUrl={item.photoUrl}
                       playerName={item.figure ?? item.title}
                       size="lg"
-                      className="h-24 w-24 sm:h-28 sm:w-28 object-cover object-center"
+                      className="h-24 w-24 sm:h-28 sm:w-28 object-cover object-top"
                     />
                   </div>
                 )}
