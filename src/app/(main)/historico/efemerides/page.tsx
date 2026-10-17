@@ -1,11 +1,21 @@
 import type { Metadata } from "next";
+import { getEphemeridesForDay } from "@/lib/historical/ephemerides-service";
+import { EphemeridesHub } from "./ephemerides-hub";
 
 export const metadata: Metadata = {
   title: "Efemérides Sportinguistas — Histórico — Mareona",
-  description: "Partidos oficiales, hitos y aniversarios vividos un día como hoy en la historia del Sporting.",
+  description:
+    "Partidos oficiales, hitos, aniversarios y momentos icónicos vividos un día como hoy en la historia del Real Sporting.",
 };
 
-export default function HistoricoEfemeridesPage() {
+export default async function HistoricoEfemeridesPage() {
+  "use cache";
+  const now = new Date();
+  const todayMonth = now.getMonth() + 1;
+  const todayDay = now.getDate();
+
+  const initialData = getEphemeridesForDay(todayMonth, todayDay);
+
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1 border-b border-[var(--border)] pb-4">
@@ -13,18 +23,15 @@ export default function HistoricoEfemeridesPage() {
           Efemérides Sportinguistas
         </h1>
         <p className="text-sm text-[var(--muted-foreground)]">
-          Un día como hoy en la historia rojiblanca y efemérides interactivas.
+          Partidos disputados, aniversarios de oro y efemérides de leyendas en cada día del calendario rojiblanco.
         </p>
       </header>
 
-      <section
-        aria-label="Contenido en preparación"
-        className="rounded-lg border border-[var(--border)] bg-[var(--card)] p-6 shadow-2xs"
-      >
-        <div className="rounded-md bg-[var(--surface)] p-4 text-xs text-[var(--muted-foreground)]">
-          Unidad 1 completada — Efemérides de hoy y buscador &ldquo;¿Qué pasó el día que naciste?&rdquo; en desarrollo (Unidad 6).
-        </div>
-      </section>
+      <EphemeridesHub
+        initialData={initialData}
+        todayMonth={todayMonth}
+        todayDay={todayDay}
+      />
     </div>
   );
 }

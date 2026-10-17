@@ -15,7 +15,6 @@ export function HistoricoNav() {
 
   const historicoTabs = [
     { label: dict.historico.tabs.trajectory, href: "/historico" },
-    { label: dict.historico.tabs.comparison, href: "/historico/comparador" },
     { label: dict.historico.tabs.ephemerides, href: "/historico/efemerides" },
     { label: dict.historico.tabs.rivals, href: "/historico/rivales" },
     { label: dict.historico.tabs.legacy, href: "/historico/legado" },
