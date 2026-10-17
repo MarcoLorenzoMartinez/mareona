@@ -48,3 +48,17 @@ export interface DayEphemeridesResult {
   readonly milestones: readonly EphemerisMilestone[];
   readonly balance: DayMatchesBalance;
 }
+
+const SPANISH_MONTHS = [
+  "enero", "febrero", "marzo", "abril", "mayo", "junio",
+  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+] as const;
+
+/**
+ * Formats calendar month and day into Spanish string (e.g. '17 de octubre').
+ */
+export function formatDayMonthLabel(month: number, day: number): string {
+  const safeMonth = Math.min(12, Math.max(1, month));
+  const safeDay = Math.min(31, Math.max(1, day));
+  return `${safeDay} de ${SPANISH_MONTHS[safeMonth - 1]}`;
+}

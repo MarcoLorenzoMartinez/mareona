@@ -2,9 +2,10 @@ import type { DayMatchesBalance } from "@/lib/historical/ephemerides-types";
 
 interface EphemeridesDaySummaryProps {
   readonly dateLabel: string;
-  readonly balance: DayMatchesBalance;
+  readonly balance: DayMatchesBalance | null;
   readonly milestonesCount: number;
   readonly isToday: boolean;
+  readonly isLoading?: boolean;
 }
 
 /**
@@ -15,7 +16,37 @@ export function EphemeridesDaySummary({
   balance,
   milestonesCount,
   isToday,
+  isLoading = false,
 }: EphemeridesDaySummaryProps) {
+  if (isLoading || !balance) {
+    return (
+      <div className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-2xs">
+        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-2.5">
+            <h2 className="text-xl font-bold tracking-tight text-[var(--foreground)] md:text-2xl">
+              {dateLabel}
+            </h2>
+            {isToday && (
+              <span className="rounded-full bg-[var(--primary)] px-2.5 py-0.5 text-[11px] font-bold text-white">
+                Hoy
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-6 w-28 rounded-full bg-[var(--surface)] animate-pulse border border-[var(--border)]" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <div className="h-16 rounded-lg bg-[var(--surface)] p-3 animate-pulse" />
+          <div className="h-16 rounded-lg bg-[var(--surface)] p-3 animate-pulse" />
+          <div className="h-16 rounded-lg bg-[var(--surface)] p-3 animate-pulse" />
+          <div className="h-16 rounded-lg bg-[var(--surface)] p-3 animate-pulse" />
+        </div>
+      </div>
+    );
+  }
+
   const winPct = balance.played > 0 ? Math.round((balance.won / balance.played) * 100) : 0;
 
   return (

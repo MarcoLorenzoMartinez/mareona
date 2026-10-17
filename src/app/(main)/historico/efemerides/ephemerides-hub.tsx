@@ -1,8 +1,8 @@
 // Client: Orquesta la navegación interactiva de fechas, caché local y filtros de efemérides
 "use client";
 
-import { useState, useTransition, useMemo } from "react";
-import type { DayEphemeridesResult } from "@/lib/historical/ephemerides-types";
+import { useState, useTransition } from "react";
+import { formatDayMonthLabel, type DayEphemeridesResult } from "@/lib/historical/ephemerides-types";
 import { fetchEphemeridesForDayAction } from "./ephemerides-action";
 import { EphemeridesCalendar } from "./ephemerides-calendar";
 import { EphemeridesDaySummary } from "./ephemerides-day-summary";
@@ -36,7 +36,7 @@ export function EphemeridesHub({
   const [cache, setCache] = useState<Record<string, DayEphemeridesResult>>({
     [`${initialData.month}_${initialData.day}`]: initialData,
   });
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const handleDateChange = (month: number, day: number) => {
     setCurrentMonth(month);
@@ -50,10 +50,10 @@ export function EphemeridesHub({
     }
   };
 
-  const activeData = useMemo(() => {
-    return cache[`${currentMonth}_${currentDay}`] ?? initialData;
-  }, [cache, currentMonth, currentDay, initialData]);
-
+  const activeKey = `${currentMonth}_${currentDay}`;
+  const activeData = cache[activeKey] ?? null;
+  const isLoading = isPending || activeData === null;
+  const dateLabel = activeData ? activeData.dateLabel : formatDayMonthLabel(currentMonth, currentDay);
   const isToday = currentMonth === todayMonth && currentDay === todayDay;
 
   return (
@@ -96,21 +96,33 @@ export function EphemeridesHub({
           </div>
 
           <EphemeridesDaySummary
-            dateLabel={activeData.dateLabel}
-            balance={activeData.balance}
-            milestonesCount={activeData.milestones.length}
+            dateLabel={dateLabel}
+            balance={activeData?.balance ?? null}
+            milestonesCount={activeData?.milestones.length ?? 0}
             isToday={isToday}
+            isLoading={isLoading}
           />
         </div>
       </div>
 
+      {/* Loading Skeleton */}
+      {isLoading && (
+        <div aria-label="Cargando efemérides" className="flex flex-col gap-3">
+          <div className="h-4 w-36 rounded-full bg-[var(--surface)] animate-pulse" />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="h-28 rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 animate-pulse" />
+            <div className="h-28 rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 animate-pulse" />
+          </div>
+        </div>
+      )}
+
       {/* Milestones section */}
-      {(activeFilter === "all" || activeFilter === "milestones") && (
+      {!isLoading && activeData && activeData.milestones.length > 0 && (activeFilter === "all" || activeFilter === "milestones") && (
         <EphemeridesMilestonesList milestones={activeData.milestones} />
       )}
 
       {/* Matches section */}
-      {(activeFilter === "all" || activeFilter === "matches") && (
+      {!isLoading && activeData && (activeFilter === "all" || activeFilter === "matches") && (
         <EphemeridesMatchesList matches={activeData.matches} />
       )}
     </div>

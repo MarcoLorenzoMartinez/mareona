@@ -1,11 +1,14 @@
 import rawMatches from "../../data/historical/matches.json" with { type: "json" };
 import rawEphemerides from "../../data/historical/ephemerides.json" with { type: "json" };
-import type {
-  DayEphemeridesResult,
-  DayMatchItem,
-  DayMatchesBalance,
-  EphemerisMilestone,
+import {
+  type DayEphemeridesResult,
+  type DayMatchItem,
+  type DayMatchesBalance,
+  type EphemerisMilestone,
+  formatDayMonthLabel,
 } from "./ephemerides-types.ts";
+
+export { formatDayMonthLabel };
 
 interface RawMatch {
   readonly id: string;
@@ -26,20 +29,6 @@ interface RawMatch {
 
 const MATCHES_DATA = rawMatches as Readonly<Record<string, readonly RawMatch[]>>;
 const EPHEMERIDES_DATA = rawEphemerides as readonly EphemerisMilestone[];
-
-const SPANISH_MONTHS = [
-  "enero", "febrero", "marzo", "abril", "mayo", "junio",
-  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
-] as const;
-
-/**
- * Returns formatted date string in Spanish (e.g., '17 de octubre').
- */
-export function formatDayMonthLabel(month: number, day: number): string {
-  const safeMonth = Math.min(12, Math.max(1, month));
-  const safeDay = Math.min(31, Math.max(1, day));
-  return `${safeDay} de ${SPANISH_MONTHS[safeMonth - 1]}`;
-}
 
 /**
  * Parses four-digit year from date string 'DD/MM/YYYY'.
