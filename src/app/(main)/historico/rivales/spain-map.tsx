@@ -1,7 +1,9 @@
-// Client: Mapa interactivo de España dividido en Comunidades Autónomas
+// Client: Mapa interactivo vectorial SVG de España dividido en Comunidades Autónomas
 "use client";
 
+import { useState } from "react";
 import type { RegionRivalSummary } from "@/lib/historical/rivals-types";
+import spainPaths from "@/data/historical/spain-svg-paths.json";
 
 interface SpainMapProps {
   readonly communitySummaries: readonly RegionRivalSummary[];
@@ -10,117 +12,153 @@ interface SpainMapProps {
 }
 
 /**
- * Spanish autonomous communities representation.
- * Follows AGENTS.md aesthetic:
- * - White map background
- * - Fine red border lines (border-[var(--primary)] / stroke-[#e2001a])
- * - Active community highlighted in Sporting red (bg-[#e2001a] text-white)
- * - Clear visual distinction for communities with and without matches (Melilla has 0).
+ * Interactive SVG Map of Spain with fine red borders and hover/active states.
+ * - Map fill: White / light surface
+ * - Borders: Fine Sporting red lines (stroke-[#e2001a] stroke-width="1.2")
+ * - Active state: Sporting red fill (fill-[#e2001a]) with white stroke
+ * - Inactive regions (no matches): Disabled with light gray fill and blocked cursor
  */
-const ALL_SPANISH_REGIONS: readonly { readonly id: string; readonly name: string; readonly shortName: string }[] = [
-  { id: "principado-de-asturias", name: "Principado de Asturias", shortName: "Asturias" },
-  { id: "galicia", name: "Galicia", shortName: "Galicia" },
-  { id: "cantabria", name: "Cantabria", shortName: "Cantabria" },
-  { id: "pais-vasco", name: "País Vasco", shortName: "País Vasco" },
-  { id: "navarra", name: "Navarra", shortName: "Navarra" },
-  { id: "la-rioja", name: "La Rioja", shortName: "La Rioja" },
-  { id: "aragon", name: "Aragón", shortName: "Aragón" },
-  { id: "cataluna", name: "Cataluña", shortName: "Cataluña" },
-  { id: "castilla-y-leon", name: "Castilla y León", shortName: "Castilla y León" },
-  { id: "comunidad-de-madrid", name: "Comunidad de Madrid", shortName: "Madrid" },
-  { id: "castilla-la-mancha", name: "Castilla-La Mancha", shortName: "Castilla-La Mancha" },
-  { id: "comunitat-valenciana", name: "Comunitat Valenciana", shortName: "C. Valenciana" },
-  { id: "extremadura", name: "Extremadura", shortName: "Extremadura" },
-  { id: "andalucia", name: "Andalucía", shortName: "Andalucía" },
-  { id: "region-de-murcia", name: "Región de Murcia", shortName: "Murcia" },
-  { id: "illes-balears", name: "Illes Balears", shortName: "Baleares" },
-  { id: "canarias", name: "Canarias", shortName: "Canarias" },
-  { id: "ceuta", name: "Ceuta", shortName: "Ceuta" },
-  { id: "melilla", name: "Melilla", shortName: "Melilla" },
-];
-
 export function SpainMap({
   communitySummaries,
   onSelectCommunity,
   selectedCommunityName,
 }: SpainMapProps) {
-  const summaryMap = new Map(communitySummaries.map((s) => [s.regionName.toLowerCase(), s]));
+  const [hoveredRegion, setHoveredRegion] = useState<RegionRivalSummary | null>(null);
+
+  const summaryMap = new Map<string, RegionRivalSummary>();
+  for (const s of communitySummaries) {
+    summaryMap.set(s.regionName.toLowerCase(), s);
+  }
 
   return (
     <div className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs sm:p-6">
+      {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--border)] pb-3">
         <div>
           <h3 className="text-base font-bold text-[var(--foreground)]">
-            Comunidades Autónomas
+            Mapa de España por Comunidades Autónomas
           </h3>
           <p className="text-xs text-[var(--muted-foreground)]">
-            Selecciona una comunidad para consultar el cara a cara contra todos sus equipos.
+            Haz clic en cualquier comunidad para ver el balance cara a cara contra todos sus clubes.
           </p>
         </div>
-        <div className="flex items-center gap-3 text-[11px] font-semibold text-neutral-500">
+
+        {/* Legend */}
+        <div className="flex items-center gap-4 text-[11px] font-semibold text-neutral-500">
           <span className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded-full border border-[var(--primary)] bg-white" /> Con partidos
+            <span className="h-3 w-3 rounded-sm border border-[#e2001a] bg-red-50/60" /> Con rivales
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded-full bg-neutral-200 opacity-60" /> Sin enfrentamientos
+            <span className="h-3 w-3 rounded-sm bg-[#e2001a]" /> Seleccionada
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded-sm border border-neutral-300 bg-neutral-100 opacity-60" /> Sin rivales
           </span>
         </div>
       </div>
 
-      {/* Grid of Interactive Community Tiles with Fine Red Borders */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 pt-2">
-        {ALL_SPANISH_REGIONS.map((region) => {
-          const summary = summaryMap.get(region.name.toLowerCase());
-          const hasMatches = Boolean(summary && summary.totalMatches > 0);
-          const isSelected = selectedCommunityName === region.name;
+      {/* SVG Canvas Container */}
+      <div className="relative mx-auto w-full max-w-[820px] aspect-[800/550] overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50/40 p-2 sm:p-4">
+        <svg
+          viewBox="0 0 800 550"
+          className="h-full w-full select-none"
+          role="img"
+          aria-label="Mapa interactivo de España dividido por comunidades autónomas"
+        >
+          {/* Canarias Inset Box Outline */}
+          <rect
+            x="15"
+            y="435"
+            width="190"
+            height="105"
+            fill="none"
+            stroke="#e2001a"
+            strokeWidth="0.8"
+            strokeDasharray="4 4"
+            rx="6"
+          />
+          <text
+            x="25"
+            y="450"
+            fontSize="10"
+            fontWeight="bold"
+            fill="#e2001a"
+            className="font-sans"
+          >
+            Canarias
+          </text>
 
-          if (!summary || !hasMatches) {
+          {/* Autonomous Communities Paths */}
+          {spainPaths.map((region) => {
+            const summary = summaryMap.get(region.name.toLowerCase());
+            const hasMatches = Boolean(summary && summary.totalMatches > 0);
+            const isSelected = selectedCommunityName === region.name;
+
+            let fillClass = "fill-neutral-100/80 stroke-neutral-300 stroke-[0.8] cursor-not-allowed";
+            if (isSelected) {
+              fillClass = "fill-[#e2001a] stroke-white stroke-[1.5] cursor-pointer drop-shadow-sm";
+            } else if (hasMatches) {
+              fillClass = "fill-white hover:fill-red-50/70 stroke-[#e2001a] stroke-[1.2] cursor-pointer transition-colors";
+            }
+
             return (
-              <div
+              <path
                 key={region.id}
-                title="Sin partidos oficiales disputados frente a clubes de esta comunidad"
-                className="flex flex-col justify-between rounded-xl border border-dashed border-neutral-200 bg-neutral-50/70 p-3 opacity-50 cursor-not-allowed select-none"
+                d={region.path}
+                className={fillClass}
+                onClick={() => {
+                  if (hasMatches && summary) {
+                    onSelectCommunity(region.name);
+                  }
+                }}
+                onMouseEnter={() => {
+                  if (summary) setHoveredRegion(summary);
+                }}
+                onMouseLeave={() => setHoveredRegion(null)}
+                aria-label={`${region.name}: ${summary ? summary.totalMatches : 0} partidos`}
               >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-neutral-400">{region.shortName}</span>
-                  <span className="text-[10px] font-bold text-neutral-400">0</span>
-                </div>
-                <span className="mt-2 text-[10px] text-neutral-400">Sin rivales</span>
-              </div>
+                <title>
+                  {region.name}
+                  {summary ? ` (${summary.totalMatches} PJ - ${summary.won}V ${summary.drawn}E ${summary.lost}D)` : " (Sin rivales oficiales)"}
+                </title>
+              </path>
             );
-          }
+          })}
+        </svg>
 
+        {/* Hover Floating Card Tooltip */}
+        {hoveredRegion && (
+          <div className="pointer-events-none absolute bottom-4 right-4 rounded-xl border border-[var(--primary)] bg-white/95 p-3 shadow-md backdrop-blur-xs">
+            <p className="text-xs font-bold text-neutral-900">{hoveredRegion.regionName}</p>
+            <p className="mt-0.5 text-[11px] font-sans font-semibold text-neutral-600 tabular-nums">
+              {hoveredRegion.totalMatches} PJ · {hoveredRegion.won}V - {hoveredRegion.drawn}E - {hoveredRegion.lost}D
+            </p>
+            <p className="text-[10px] text-[var(--primary)] font-bold">
+              {hoveredRegion.totalRivals} {hoveredRegion.totalRivals === 1 ? "rival" : "rivales"}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Quick Select Region Pills Below Map */}
+      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+        <span className="text-[11px] font-bold text-neutral-500 mr-1 uppercase tracking-wider">
+          Acceso rápido:
+        </span>
+        {communitySummaries.map((c) => {
+          const isSelected = selectedCommunityName === c.regionName;
           return (
             <button
-              key={region.id}
+              key={c.regionId}
               type="button"
-              onClick={() => onSelectCommunity(region.name)}
-              aria-pressed={isSelected}
-              className={`flex flex-col justify-between text-left rounded-xl p-3 transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
+              onClick={() => onSelectCommunity(c.regionName)}
+              className={`rounded-full px-2.5 py-1 text-xs font-sans transition-all active:scale-95 ${
                 isSelected
-                  ? "bg-[var(--primary)] text-white shadow-xs border border-[var(--primary)]"
-                  : "bg-white text-[var(--foreground)] border border-[var(--primary)]/40 hover:border-[var(--primary)] hover:bg-neutral-50 shadow-2xs"
+                  ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                  : "border border-[var(--border)] bg-white text-neutral-700 font-semibold hover:border-[var(--primary)] hover:text-[var(--primary)]"
               }`}
             >
-              <div className="flex items-center justify-between gap-1">
-                <span className={`text-xs font-bold truncate ${isSelected ? "text-white" : "text-[var(--foreground)]"}`}>
-                  {region.shortName}
-                </span>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-black font-sans tabular-nums ${
-                  isSelected ? "bg-white/20 text-white" : "bg-neutral-100 text-neutral-900"
-                }`}>
-                  {summary.totalMatches} PJ
-                </span>
-              </div>
-
-              <div className="mt-2.5 flex items-center justify-between text-[11px] font-sans tabular-nums">
-                <span className={`text-[10px] font-medium truncate ${isSelected ? "text-white/80" : "text-neutral-500"}`}>
-                  {summary.totalRivals} {summary.totalRivals === 1 ? "rival" : "rivales"}
-                </span>
-                <span className={`font-black ${isSelected ? "text-white" : "text-neutral-900"}`}>
-                  {summary.won}V - {summary.drawn}E - {summary.lost}D
-                </span>
-              </div>
+              {c.regionName} ({c.totalMatches})
             </button>
           );
         })}

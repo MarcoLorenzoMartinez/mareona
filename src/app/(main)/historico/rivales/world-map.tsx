@@ -1,7 +1,9 @@
-// Client: Mapa/explorador mundial por países de los rivales históricos
+// Client: Mapa interactivo vectorial SVG del mundo por países
 "use client";
 
+import { useState } from "react";
 import type { RegionRivalSummary } from "@/lib/historical/rivals-types";
+import worldPaths from "@/data/historical/world-svg-paths.json";
 
 interface WorldMapProps {
   readonly countrySummaries: readonly RegionRivalSummary[];
@@ -10,112 +12,128 @@ interface WorldMapProps {
 }
 
 /**
- * World / International countries representation.
- * Displays countries with verified competitive matches in red borders,
- * and inactive countries clearly disabled.
+ * Interactive SVG Map of the World highlighting countries with competitive matches.
+ * - Map fill: White / neutral surface
+ * - Active / available countries: Fine red borders (stroke-[#e2001a] stroke-width="1")
+ * - Non-rival countries: Subdued gray fill with disabled cursor
  */
-const NOTABLE_COUNTRIES: readonly { readonly id: string; readonly name: string; readonly flag: string }[] = [
-  { id: "espana", name: "España", flag: "🇪🇸" },
-  { id: "italia", name: "Italia", flag: "🇮🇹" },
-  { id: "alemania", name: "Alemania", flag: "🇩🇪" },
-  { id: "paises-bajos", name: "Países Bajos", flag: "🇳🇱" },
-  { id: "republica-checa", name: "República Checa", flag: "🇨🇿" },
-  { id: "serbia", name: "Serbia", flag: "🇷🇸" },
-  { id: "rumania", name: "Rumanía", flag: "🇷🇴" },
-  { id: "andorra", name: "Andorra", flag: "🇦🇩" },
-  { id: "marruecos", name: "Marruecos", flag: "🇲🇦" },
-  { id: "inglaterra", name: "Inglaterra", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
-  { id: "francia", name: "Francia", flag: "🇫🇷" },
-  { id: "portugal", name: "Portugal", flag: "🇵🇹" },
-  { id: "belgica", name: "Bélgica", flag: "🇧🇪" },
-  { id: "escocia", name: "Escocia", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
-  { id: "suecia", name: "Suecia", flag: "🇸🇪" },
-];
-
 export function WorldMap({
   countrySummaries,
   onSelectCountry,
   selectedCountryName,
 }: WorldMapProps) {
-  const countryMap = new Map(countrySummaries.map((s) => [s.regionName.toLowerCase(), s]));
+  const [hoveredCountry, setHoveredCountry] = useState<RegionRivalSummary | null>(null);
+
+  const countryMap = new Map<string, RegionRivalSummary>();
+  for (const s of countrySummaries) {
+    countryMap.set(s.regionName.toLowerCase(), s);
+  }
 
   return (
     <div className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs sm:p-6">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--border)] pb-3">
         <div>
           <h3 className="text-base font-bold text-[var(--foreground)]">
-            Países y Rivales Internacionales
+            Mapa del Mundo por Países
           </h3>
           <p className="text-xs text-[var(--muted-foreground)]">
-            Enfrentamientos oficiales en competiciones de la UEFA y torneos de ámbito estatal.
+            Haz clic en cualquier país rival para consultar el historial completo en competiciones oficiales.
           </p>
         </div>
-        <div className="flex items-center gap-3 text-[11px] font-semibold text-neutral-500">
+
+        {/* Legend */}
+        <div className="flex items-center gap-4 text-[11px] font-semibold text-neutral-500">
           <span className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded-full border border-[var(--primary)] bg-white" /> Con partidos
+            <span className="h-3 w-3 rounded-sm border border-[#e2001a] bg-red-50/60" /> Con partidos oficiales
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded-full bg-neutral-200 opacity-60" /> Sin partidos oficiales
+            <span className="h-3 w-3 rounded-sm bg-[#e2001a]" /> Seleccionado
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded-sm border border-neutral-300 bg-neutral-100 opacity-60" /> Sin enfrentamientos
           </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 pt-2">
-        {NOTABLE_COUNTRIES.map((item) => {
-          const summary = countryMap.get(item.name.toLowerCase());
-          const hasMatches = Boolean(summary && summary.totalMatches > 0);
-          const isSelected = selectedCountryName === item.name;
+      {/* SVG Canvas Container */}
+      <div className="relative mx-auto w-full max-w-[880px] aspect-[900/450] overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50/40 p-2 sm:p-4">
+        <svg
+          viewBox="0 0 900 450"
+          className="h-full w-full select-none"
+          role="img"
+          aria-label="Mapa interactivo del mundo con países rivales del Real Sporting"
+        >
+          {worldPaths.map((country) => {
+            const summary = countryMap.get(country.name.toLowerCase());
+            const hasMatches = Boolean(summary && summary.totalMatches > 0);
+            const isSelected = selectedCountryName === country.name;
 
-          if (!summary || !hasMatches) {
+            let fillClass = "fill-neutral-100/70 stroke-neutral-200 stroke-[0.5] cursor-not-allowed";
+            if (isSelected) {
+              fillClass = "fill-[#e2001a] stroke-white stroke-[1.2] cursor-pointer drop-shadow-sm";
+            } else if (hasMatches) {
+              fillClass = "fill-white hover:fill-red-50/80 stroke-[#e2001a] stroke-[1] cursor-pointer transition-colors";
+            }
+
             return (
-              <div
-                key={item.id}
-                title="Sin partidos oficiales disputados contra clubes de este país"
-                className="flex flex-col justify-between rounded-xl border border-dashed border-neutral-200 bg-neutral-50/70 p-3 opacity-50 cursor-not-allowed select-none"
+              <path
+                key={country.id}
+                d={country.path}
+                className={fillClass}
+                onClick={() => {
+                  if (hasMatches && summary) {
+                    onSelectCountry(country.name);
+                  }
+                }}
+                onMouseEnter={() => {
+                  if (summary) setHoveredCountry(summary);
+                }}
+                onMouseLeave={() => setHoveredCountry(null)}
+                aria-label={`${country.name}: ${summary ? summary.totalMatches : 0} partidos`}
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-base">{item.flag}</span>
-                  <span className="text-xs font-semibold text-neutral-400">{item.name}</span>
-                </div>
-                <span className="mt-2 text-[10px] text-neutral-400">Sin partidos oficiales</span>
-              </div>
+                <title>
+                  {country.name}
+                  {summary ? ` (${summary.totalMatches} PJ - ${summary.won}V ${summary.drawn}E ${summary.lost}D)` : " (Sin partidos oficiales)"}
+                </title>
+              </path>
             );
-          }
+          })}
+        </svg>
 
+        {/* Hover Floating Card Tooltip */}
+        {hoveredCountry && (
+          <div className="pointer-events-none absolute bottom-4 right-4 rounded-xl border border-[var(--primary)] bg-white/95 p-3 shadow-md backdrop-blur-xs">
+            <p className="text-xs font-bold text-neutral-900">{hoveredCountry.regionName}</p>
+            <p className="mt-0.5 text-[11px] font-sans font-semibold text-neutral-600 tabular-nums">
+              {hoveredCountry.totalMatches} PJ · {hoveredCountry.won}V - {hoveredCountry.drawn}E - {hoveredCountry.lost}D
+            </p>
+            <p className="text-[10px] text-[var(--primary)] font-bold">
+              {hoveredCountry.totalRivals} {hoveredCountry.totalRivals === 1 ? "club" : "clubes"}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Quick Select Country Pills Below Map */}
+      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+        <span className="text-[11px] font-bold text-neutral-500 mr-1 uppercase tracking-wider">
+          Países con rivales oficiales:
+        </span>
+        {countrySummaries.map((c) => {
+          const isSelected = selectedCountryName === c.regionName;
           return (
             <button
-              key={item.id}
+              key={c.regionId}
               type="button"
-              onClick={() => onSelectCountry(item.name)}
-              aria-pressed={isSelected}
-              className={`flex flex-col justify-between text-left rounded-xl p-3 transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
+              onClick={() => onSelectCountry(c.regionName)}
+              className={`rounded-full px-2.5 py-1 text-xs font-sans transition-all active:scale-95 ${
                 isSelected
-                  ? "bg-[var(--primary)] text-white shadow-xs border border-[var(--primary)]"
-                  : "bg-white text-[var(--foreground)] border border-[var(--primary)]/40 hover:border-[var(--primary)] hover:bg-neutral-50 shadow-2xs"
+                  ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                  : "border border-[var(--border)] bg-white text-neutral-700 font-semibold hover:border-[var(--primary)] hover:text-[var(--primary)]"
               }`}
             >
-              <div className="flex items-center justify-between gap-1">
-                <div className="flex items-center gap-1.5 truncate">
-                  <span className="text-base">{item.flag}</span>
-                  <span className={`text-xs font-bold truncate ${isSelected ? "text-white" : "text-[var(--foreground)]"}`}>
-                    {item.name}
-                  </span>
-                </div>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-black font-sans tabular-nums ${
-                  isSelected ? "bg-white/20 text-white" : "bg-neutral-100 text-neutral-900"
-                }`}>
-                  {summary.totalMatches} PJ
-                </span>
-              </div>
-
-              <div className="mt-2.5 flex items-center justify-between text-[11px] font-sans tabular-nums">
-                <span className={`text-[10px] font-medium truncate ${isSelected ? "text-white/80" : "text-neutral-500"}`}>
-                  {summary.totalRivals} {summary.totalRivals === 1 ? "rival" : "rivales"}
-                </span>
-                <span className={`font-black ${isSelected ? "text-white" : "text-neutral-900"}`}>
-                  {summary.won}V - {summary.drawn}E - {summary.lost}D
-                </span>
-              </div>
+              {c.regionName} ({c.totalMatches} PJ)
             </button>
           );
         })}
