@@ -56,24 +56,24 @@ export function WorldMap({
         </div>
       </div>
 
-      {/* SVG Canvas Container */}
-      <div className="relative mx-auto w-full max-w-[880px] aspect-[900/450] overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50/40 p-2 sm:p-4">
+      {/* SVG Canvas Container Zoomed on European/Mediterranean Rival Area */}
+      <div className="relative mx-auto w-full max-w-[820px] aspect-[135/100] overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50/40 p-2 sm:p-4">
         <svg
-          viewBox="0 0 900 450"
+          viewBox="398 75 130 96"
           className="h-full w-full select-none"
           role="img"
-          aria-label="Mapa interactivo del mundo con países rivales del Real Sporting"
+          aria-label="Mapa de países rivales del Real Sporting en competiciones oficiales"
         >
           {worldPaths.map((country) => {
             const summary = countryMap.get(country.name.toLowerCase());
             const hasMatches = Boolean(summary && summary.totalMatches > 0);
             const isSelected = selectedCountryName === country.name;
 
-            let fillClass = "fill-neutral-100/70 stroke-neutral-200 stroke-[0.5] cursor-not-allowed";
+            let fillClass = "fill-neutral-100/70 stroke-neutral-200 stroke-[0.15] cursor-not-allowed";
             if (isSelected) {
-              fillClass = "fill-[#e2001a] stroke-white stroke-[1.2] cursor-pointer drop-shadow-sm";
+              fillClass = "fill-[#e2001a] stroke-white stroke-[0.4] cursor-pointer drop-shadow-sm";
             } else if (hasMatches) {
-              fillClass = "fill-white hover:fill-red-50/80 stroke-[#e2001a] stroke-[1] cursor-pointer transition-colors";
+              fillClass = "fill-white hover:fill-red-50/80 stroke-[#e2001a] stroke-[0.35] cursor-pointer transition-colors";
             }
 
             return (
