@@ -64,7 +64,6 @@ export function EphemeridesHub({
         <EphemeridesDaySummary
           dateLabel={dateLabel}
           balance={activeData?.balance ?? null}
-          milestonesCount={activeData?.milestones.length ?? 0}
           isToday={isToday}
           isLoading={isLoading}
         />
