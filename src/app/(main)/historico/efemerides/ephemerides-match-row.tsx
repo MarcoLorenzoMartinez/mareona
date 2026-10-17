@@ -36,17 +36,19 @@ export function EphemeridesMatchRow({ match, onSelect }: EphemeridesMatchRowProp
         match.competition
       )}`}
     >
-      {/* 1. Context: Year, Competition, Round & Season */}
-      <div className="flex flex-col min-w-0 pr-1 leading-tight">
-        <span className="text-xs sm:text-sm font-extrabold text-[var(--foreground)] font-sans tabular-nums">
+      {/* 1. Context: Year (red rounded badge), Competition, Round & Season */}
+      <div className="flex flex-col items-start min-w-0 pr-1 gap-1">
+        <span className="inline-flex items-center justify-center rounded-full bg-[var(--primary)] px-2.5 py-0.5 text-xs font-bold text-white font-sans tabular-nums shadow-2xs">
           {match.year}
         </span>
-        <span className="text-[11px] sm:text-xs font-semibold text-[var(--foreground)] truncate">
-          {match.competition}
-        </span>
-        <span className="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate font-sans tabular-nums">
-          {match.round} · {match.season}
-        </span>
+        <div className="flex flex-col min-w-0 leading-tight">
+          <span className="text-[11px] sm:text-xs font-semibold text-[var(--foreground)] truncate">
+            {match.competition}
+          </span>
+          <span className="text-[10px] sm:text-[11px] text-[var(--muted-foreground)] truncate font-sans tabular-nums">
+            {match.round} · {match.season}
+          </span>
+        </div>
       </div>
 
       {/* 2. Home Team & Crest */}
