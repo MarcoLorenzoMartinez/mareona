@@ -187,11 +187,8 @@ export async function parseHistoricalMatchDetail(
   const rivalBench = isHomeSporting ? awayBench : homeBench;
   const sportingStarters = isHomeSporting ? homeStarters : awayStarters;
 
-  await Promise.all([
-    resolveRivalPositions(rivalStarters, true, startYear),
-    resolveRivalPositions(rivalBench, false, startYear),
-  ]);
-
+  resolveRivalPositions(rivalStarters, true, startYear);
+  resolveRivalPositions(rivalBench, false, startYear);
   inferTacticalPositions(sportingStarters, startYear);
 
   return {

@@ -74,7 +74,7 @@ describe("Player Positions Resolver", () => {
       { name: "Custom Midfielder", position: "Centrocampista" },
     ];
 
-    await resolveRivalPositions(starters, true, 1954);
+    resolveRivalPositions(starters, true, 1954);
 
     assert.equal(starters[0].position, "Portero");
     assert.equal(starters[1].position, "Defensa");

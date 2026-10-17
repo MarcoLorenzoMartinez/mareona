@@ -24,6 +24,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/25299.jpg"
   },
   {
+    "id": "eph-jan-02-recital-juanele",
+    "month": 1,
+    "day": 2,
+    "year": 1994,
+    "category": "triumph",
+    "categoryLabel": "Gesta Histórica",
+    "title": "Victoria histórica ante el Dream Team (2-0)",
+    "description": "Inolvidable recital de Juanele en El Molinón desarbolando a la zaga del FC Barcelona de Johan Cruyff y asistiendo a Abelardo y Miner para derrotar al vigente campeón.",
+    "figure": "Juanele",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1581.jpg"
+  },
+  {
     "id": "eph-jan-03-ferrero-birth",
     "month": 1,
     "day": 3,
@@ -117,7 +129,7 @@
     "title": "Primer ascenso a 1.ª División (1944)",
     "description": "El club sella matemáticamente su histórico primer salto a la máxima categoría del fútbol español tras liderar la fase de ascenso.",
     "figure": "Amadeo Sánchez",
-    "photoUrl": "/images/historical/sporting-once-historico.jpg"
+    "photoUrl": "/images/historical/el-molinon-historico.jpg"
   },
   {
     "id": "eph-jan-28-churruca-birth",
@@ -168,18 +180,6 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/3749f.jpg"
   },
   {
-    "id": "eph-feb-01-camp-nou-goleada",
-    "month": 2,
-    "day": 1,
-    "year": 1981,
-    "category": "triumph",
-    "categoryLabel": "Gesta a Domicilio",
-    "title": "Asalto al Camp Nou: FC Barcelona 0-4 Real Sporting (1981)",
-    "description": "El Sporting de Carriega firma una de las mayores exhibiciones ligueras a domicilio de su historia goleando 0-4 al Barça en el Camp Nou con goles de Quini, Ferrero y Morán.",
-    "figure": "Enzo Ferrero y Quini",
-    "photoUrl": "/images/historical/camp-nou-match.jpg"
-  },
-  {
     "id": "eph-feb-02-borja-lopez-birth",
     "month": 2,
     "day": 2,
@@ -214,6 +214,18 @@
     "description": "Nace en Pola de Laviana el lateral zurdo y capitán formado en Mareo, con más de 300 partidos oficiales y dos ascensos a Primera con el Sporting.",
     "figure": "Roberto Canella",
     "photoUrl": "https://www.bdfutbol.com/i/j/6328.jpg"
+  },
+  {
+    "id": "eph-feb-08-goleada-real-madrid-4-0",
+    "month": 2,
+    "day": 8,
+    "year": 1981,
+    "category": "triumph",
+    "categoryLabel": "Goleada Histórica",
+    "title": "Goleada histórica: Real Sporting 4-0 Real Madrid (1981)",
+    "description": "Exhibición portentosa en El Molinón ante el Real Madrid, goleando 4-0 con doblete de Enzo Ferrero y tantos de Cundi y Mesa en una de las tardes más gloriosas del club.",
+    "figure": "Enzo Ferrero",
+    "photoUrl": "/images/historical/copa-final-1981.jpg"
   },
   {
     "id": "eph-feb-10-cotelo-birth",
@@ -274,6 +286,18 @@
     "description": "Fallece Enrique Castro 'Quini'. El Molinón se desborda en una despedida multitudinaria y el estadio es rebautizado como Estadio El Molinón-Enrique Castro 'Quini'.",
     "figure": "Enrique Castro 'Quini'",
     "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
+  },
+  {
+    "id": "eph-feb-28-camp-nou-goleada",
+    "month": 2,
+    "day": 28,
+    "year": 1987,
+    "category": "triumph",
+    "categoryLabel": "Gesta a Domicilio",
+    "title": "Asalto al Camp Nou: FC Barcelona 0-4 Real Sporting (1987)",
+    "description": "Histórica goleada del Sporting en el Camp Nou ante el líder indiscutible de Terry Venables. Los goles de Lucho Flores, doblete de Eloy Olaya y Luismi coronaron una noche inolvidable en feudo azulgrana.",
+    "figure": "Eloy Olaya y Lucho Flores",
+    "photoUrl": "/images/historical/camp-nou-1987-0-4.jpg"
   },
   {
     "id": "eph-mar-02-djuka-birth",
@@ -417,7 +441,7 @@
     "title": "Liberación de Enrique Castro 'Quini'",
     "description": "Tras 25 angustiosos días de secuestro que conmocionaron al fútbol español, la Policía rescata ileso a 'El Brujo' en un zulo de Zaragoza.",
     "figure": "Enrique Castro 'Quini'",
-    "photoUrl": "/images/historical/quini-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "eph-mar-25-lora-birth",
@@ -585,7 +609,7 @@
     "title": "Segunda Final de Copa del Rey (1982)",
     "description": "El equipo rojiblanco disputa su segunda final copera consecutiva, midiéndose al Real Madrid en el Nuevo Zorrilla de Valladolid.",
     "figure": "Generación Dorada",
-    "photoUrl": "/images/historical/sporting-once-historico.jpg"
+    "photoUrl": "/images/historical/copa-final-1981.jpg"
   },
   {
     "id": "eph-apr-14-luis-hernandez-birth",
@@ -681,7 +705,7 @@
     "title": "Primera clasificación para la Copa de la UEFA (1978)",
     "description": "El Real Sporting concluye la Liga 1977-78 en los puestos de honor y certifica por primera vez en sus más de siete décadas de vida el billete a Europa.",
     "figure": "Vicente Miera y Enrique Castro Quini",
-    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
+    "photoUrl": "/images/historical/sporting-subcampeon-1979.jpg"
   },
   {
     "id": "eph-may-03-chus-bravo-birth",
@@ -801,7 +825,7 @@
     "title": "Subcampeonato de 1.ª División (1978-79)",
     "description": "El Sporting culmina la mejor temporada de su historia clasificándose subcampeón de Liga tras pugnar hasta la última jornada con el Real Madrid.",
     "figure": "Vicente Miera",
-    "photoUrl": "/images/historical/sporting-once-historico.jpg"
+    "photoUrl": "/images/historical/sporting-subcampeon-1979.jpg"
   },
   {
     "id": "eph-may-20-molinon",
@@ -921,7 +945,7 @@
     "title": "Campeones de Segunda y ascenso a Primera (1977)",
     "description": "El Sporting de Vicente Miera culmina un año arrollador proclamándose campeón de Segunda División con 73 goles a favor para regresar a la élite.",
     "figure": "Vicente Miera",
-    "photoUrl": "/images/historical/sporting-once-historico.jpg"
+    "photoUrl": "/images/historical/sporting-subcampeon-1979.jpg"
   },
   {
     "id": "eph-jun-05-pedro-diaz-birth",
@@ -1029,7 +1053,7 @@
     "title": "Primera Final de Copa del Rey (1981)",
     "description": "El Sporting alcanza por primera vez la final de la Copa de SM el Rey disputada en el Vicente Calderón frente al FC Barcelona.",
     "figure": "Generación Dorada",
-    "photoUrl": "/images/historical/sporting-once-historico.jpg"
+    "photoUrl": "/images/historical/copa-final-1981.jpg"
   },
   {
     "id": "eph-jun-19-cuevas-birth",
@@ -1077,7 +1101,7 @@
     "title": "Campeones de Segunda División (1970)",
     "description": "El Sporting conquista el título de Segunda División y asciende a Primera comandado por Quini, máximo artillero con 24 dianas.",
     "figure": "Enrique Castro 'Quini'",
-    "photoUrl": "/images/historical/sporting-once-historico.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "eph-jul-01-foundation",
@@ -1470,22 +1494,10 @@
     "year": 1978,
     "category": "milestone",
     "categoryLabel": "Debut Continental",
-    "title": "Debut europeo en la Copa de la UEFA",
-    "description": "El Molinón acoge el primer partido oficial continental de la historia del club recibiendo al Bohemians de Praga checoslovaco (3-0).",
-    "figure": "Vicente Miera",
-    "photoUrl": "/images/historical/el-molinon-uefa.jpg"
-  },
-  {
-    "id": "eph-sep-13-debut-uefa-bohemians",
-    "month": 9,
-    "day": 13,
-    "year": 1978,
-    "category": "milestone",
-    "categoryLabel": "Gesta Europea",
-    "title": "Debut en la Copa de la UEFA: Sporting 3-0 Bohemians Praga (1978)",
-    "description": "Noche mágica e histórica en El Molinón en el estreno continental del Sporting, derrotando 3-0 al Bohemians checo con tantos de Ferrero, Morán y Quini.",
-    "figure": "Enzo Ferrero y Quini",
-    "photoUrl": "/images/historical/el-molinon-uefa.jpg"
+    "title": "Debut europeo en la Copa de la UEFA: Sporting 3-0 Torino (1978)",
+    "description": "Noche mágica en El Molinón en el estreno en competiciones europeas. El equipo de Vicente Miera arrolla 3-0 al Torino con dos goles de Enzo Ferrero y uno de Enrique Morán.",
+    "figure": "Enzo Ferrero y Enrique Morán",
+    "photoUrl": "/images/historical/sporting-subcampeon-1979.jpg"
   },
   {
     "id": "eph-sep-16-nikiforov-birth",
@@ -1498,6 +1510,18 @@
     "description": "Nace en Odesa el imponente zaguero central internacional, famoso en El Molinón por su contundencia y sus letales disparos de falta directa.",
     "figure": "Yuri Nikiforov",
     "photoUrl": "https://www.bdfutbol.com/i/j/2653.jpg"
+  },
+  {
+    "id": "eph-sep-16-milan-sacchi",
+    "month": 9,
+    "day": 16,
+    "year": 1987,
+    "category": "triumph",
+    "categoryLabel": "Hazaña Europea",
+    "title": "Victoria épica ante el AC Milan de Sacchi (1-0)",
+    "description": "Golazo histórico de Jaime Álvarez en El Molinón para doblegar al todopoderoso Milan de Baresi, Maldini, Gullit y Van Basten en la Copa de la UEFA.",
+    "figure": "Jaime Álvarez",
+    "photoUrl": "/images/historical/sporting-milan-1987.jpg"
   },
   {
     "id": "eph-sep-23-quini-birth",
@@ -1534,30 +1558,6 @@
     "description": "Nace en Gijón el central internacional formado en la cantera de Mareo, dotado de gran jerarquía aérea y elegancia defensiva.",
     "figure": "Marcelino Elena",
     "photoUrl": "https://www.bdfutbol.com/i/j/1881.jpg"
-  },
-  {
-    "id": "eph-sep-30-milan-sacchi",
-    "month": 9,
-    "day": 30,
-    "year": 1987,
-    "category": "triumph",
-    "categoryLabel": "Hazaña Europea",
-    "title": "Victoria épica ante el AC Milan (1-0)",
-    "description": "El Molinón vive una noche legendaria de Copa de la UEFA venciendo 1-0 con gol de Jaime al portentoso AC Milan de Arrigo Sacchi, Ruud Gullit y Marco van Basten.",
-    "figure": "Jaime Álvarez",
-    "photoUrl": "/images/historical/el-molinon-uefa.jpg"
-  },
-  {
-    "id": "eph-oct-08-manita-madrid",
-    "month": 10,
-    "day": 8,
-    "year": 1978,
-    "category": "triumph",
-    "categoryLabel": "Goleada Histórica",
-    "title": "Histórica 'Manita' al Real Madrid (5-0)",
-    "description": "Exhibición majestuosa en El Molinón con doblete de Quini, goles de Ferrero, Rezza y Ciriaco en una tarde imborrable.",
-    "figure": "Enrique Castro 'Quini'",
-    "photoUrl": "/images/historical/el-molinon-madrid.jpg"
   },
   {
     "id": "eph-oct-15-enrique-moran-birth",
@@ -1632,18 +1632,6 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/4601e.jpg"
   },
   {
-    "id": "eph-oct-22-torino-uefa-molinon",
-    "month": 10,
-    "day": 22,
-    "year": 1980,
-    "category": "triumph",
-    "categoryLabel": "Gesta Europea",
-    "title": "Triunfo europeo ante el Torino en El Molinón (1980)",
-    "description": "El Real Sporting vence por 1-0 al mítico Torino de Graziani y Pecci en los dieciseisavos de final de la Copa de la UEFA con gol de Enzo Ferrero.",
-    "figure": "Enzo Ferrero",
-    "photoUrl": "/images/historical/el-molinon-uefa.jpg"
-  },
-  {
     "id": "eph-oct-23-claudio-silva-birth",
     "month": 10,
     "day": 23,
@@ -1701,7 +1689,7 @@
     "title": "Primer gol de Quini en 1.ª División (1970)",
     "description": "Enrique Castro 'Quini' anota su primera diana en la máxima categoría del fútbol español en la victoria del Sporting por 3-0 frente al RCD Espanyol en El Molinón.",
     "figure": "Enrique Castro Quini",
-    "photoUrl": "/images/historical/quini-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "eph-oct-31-cesar-gelabert-birth",
@@ -1740,16 +1728,16 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/28644b.jpg"
   },
   {
-    "id": "eph-nov-03-camp-nou-juanele",
+    "id": "eph-nov-03-athletic-clemente",
     "month": 11,
     "day": 3,
-    "year": 1993,
+    "year": 1985,
     "category": "triumph",
     "categoryLabel": "Hazaña a Domicilio",
-    "title": "Asalto al Camp Nou del Dream Team (1-3)",
-    "description": "Con una inolvidable cátedra de Juanele (doblete y regate de antología), el Sporting tumba 1-3 al Barcelona de Cruyff en su propio feudo.",
-    "figure": "Juanele",
-    "photoUrl": "/images/historical/camp-nou-action.jpg"
+    "title": "Victoria ante el Athletic de Clemente (1-0)",
+    "description": "Un gol decisivo de un jovencísimo Eloy Olaya en El Molinón tumba al Athletic Club, vigente campeón de Primera División dirigido por Javier Clemente.",
+    "figure": "Eloy Olaya",
+    "photoUrl": "https://www.bdfutbol.com/i/j/658f.jpg"
   },
   {
     "id": "eph-nov-06-gijon-sport-club",
@@ -1764,18 +1752,6 @@
     "photoUrl": "/images/historical/el-molinon-historico.jpg"
   },
   {
-    "id": "eph-nov-07-goleada-real-madrid-7-1",
-    "month": 11,
-    "day": 7,
-    "year": 1948,
-    "category": "triumph",
-    "categoryLabel": "Gesta Histórica",
-    "title": "Goleada histórica: Real Sporting 7-1 Real Madrid (1948)",
-    "description": "El Molinón vive una de las tardes más apoteósicas de su historia en Primera División con una memorable paliza al Real Madrid por 7-1 con festival goleador rojiblanco.",
-    "figure": "Méndez y Cholo Dindurra",
-    "photoUrl": "/images/historical/el-molinon-madrid.jpg"
-  },
-  {
     "id": "eph-nov-10-arnolin-birth",
     "month": 11,
     "day": 10,
@@ -1786,6 +1762,18 @@
     "description": "Nace en Livry-Gargan (Francia) el potente defensa central galo, una roca en la retaguardia en el regreso y permanencia en Primera con Manolo Preciado.",
     "figure": "Grégory Arnolin",
     "photoUrl": "https://www.bdfutbol.com/i/j/12499.jpg"
+  },
+  {
+    "id": "eph-nov-10-triunfo-madrid-1957",
+    "month": 11,
+    "day": 10,
+    "year": 1957,
+    "category": "triumph",
+    "categoryLabel": "Gesta Histórica",
+    "title": "Goleada al Real Madrid de Di Stéfano (3-0)",
+    "description": "Tarde memorable en El Molinón venciendo 3-0 al mítico Real Madrid pentacampeón de Europa con goles de Ricardo, Medina y Biempica.",
+    "figure": "Ricardo, Medina y Biempica",
+    "photoUrl": "/images/historical/el-molinon-historico.jpg"
   },
   {
     "id": "eph-nov-13-emilio-isierte-birth",
@@ -1917,7 +1905,7 @@
     "title": "Debut oficial de Enrique Castro 'Quini' (1968)",
     "description": "Un joven Quini se enfunda por primera vez la camiseta oficial del Sporting en Segunda División en el estadio Benito Villamarín frente al Real Betis.",
     "figure": "Enrique Castro Quini",
-    "photoUrl": "/images/historical/quini-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "eph-dec-22-nacho-cases-birth",
@@ -1941,7 +1929,7 @@
     "title": "Victoria en el Bernabéu (0-1)",
     "description": "Triunfo en Chamartín con gol de Dmitri Cheryshev ante el Real Madrid que acabaría proclamándose campeón de Liga esa temporada.",
     "figure": "Dmitri Cheryshev",
-    "photoUrl": "/images/historical/el-molinon-madrid.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1126.jpg"
   },
   {
     "id": "eph-dec-26-mesa-birth",

@@ -93,11 +93,11 @@ export function inferTacticalPositions(starters: HistoricalMatchPlayer[], startY
  * @param isStarter True if processing starting XI (enables tactical order inference).
  * @param startYear Optional season start year for era-specific tactical alignments.
  */
-export async function resolveRivalPositions(
+export function resolveRivalPositions(
   players: HistoricalMatchPlayer[],
   isStarter = false,
   startYear?: number
-): Promise<void> {
+): void {
   const missingPlayers: { player: HistoricalMatchPlayer; id: string }[] = [];
 
   for (const p of players) {
@@ -114,25 +114,24 @@ export async function resolveRivalPositions(
     }
   }
 
-  // Parallel fetch for un-cached players with strict ceiling to protect response times
+  // Guaranteed instant fallback for starters: complete positions via tactical order inference (0 ms)
+  if (isStarter) {
+    inferTacticalPositions(players, startYear);
+  }
+
+  // Asynchronous background enrichment: caches missing profiles for future queries without blocking the user response
   if (missingPlayers.length > 0) {
-    await Promise.all(
-      missingPlayers.map(async ({ player, id }) => {
+    void Promise.allSettled(
+      missingPlayers.map(async ({ id }) => {
         try {
           const pos = await fetchBdfutbolPosition(id);
           if (pos) {
-            player.position = pos;
             positionsCache.set(id, pos);
           }
         } catch {
-          // Gracefully falls through to tactical inference
+          // Silent background fallback
         }
       })
     );
-  }
-
-  // Guaranteed fallback for starters: complete any gaps via tactical order inference
-  if (isStarter) {
-    inferTacticalPositions(players, startYear);
   }
 }
