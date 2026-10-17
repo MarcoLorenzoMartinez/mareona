@@ -42,7 +42,7 @@ export function EphemeridesMatchesList({ matches }: EphemeridesMatchesListProps)
   return (
     <section aria-label="Partidos oficiales disputados en esta fecha" className="flex flex-col gap-3">
       <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--foreground)]">
-        Partidos de este día en la historia ({matches.length})
+        Partidos
       </h3>
 
       <div className="divide-y divide-[var(--border)] rounded-xl border border-[var(--border)] bg-white shadow-2xs overflow-hidden">

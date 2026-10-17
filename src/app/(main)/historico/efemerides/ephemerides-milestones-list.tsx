@@ -13,7 +13,7 @@ export function EphemeridesMilestonesList({ milestones }: EphemeridesMilestonesL
   return (
     <section aria-label="Hitos y efemérides históricas de la fecha" className="flex flex-col gap-3">
       <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--foreground)]">
-        Hitos y Leyendas de este día ({milestones.length})
+        Hitos
       </h3>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
