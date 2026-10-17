@@ -13,6 +13,7 @@ interface EphemeridesHubProps {
   readonly initialData: DayEphemeridesResult;
   readonly todayMonth: number;
   readonly todayDay: number;
+  readonly currentYear: number;
 }
 
 /**
@@ -23,6 +24,7 @@ export function EphemeridesHub({
   initialData,
   todayMonth,
   todayDay,
+  currentYear,
 }: EphemeridesHubProps) {
   const [currentMonth, setCurrentMonth] = useState<number>(initialData.month);
   const [currentDay, setCurrentDay] = useState<number>(initialData.day);
@@ -58,6 +60,7 @@ export function EphemeridesHub({
           selectedDay={currentDay}
           todayMonth={todayMonth}
           todayDay={todayDay}
+          currentYear={currentYear}
           onSelectDate={handleDateChange}
         />
 

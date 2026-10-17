@@ -13,6 +13,7 @@ export default async function HistoricoEfemeridesPage() {
   const now = new Date();
   const todayMonth = now.getMonth() + 1;
   const todayDay = now.getDate();
+  const currentYear = now.getFullYear();
 
   const initialData = getEphemeridesForDay(todayMonth, todayDay);
 
@@ -22,6 +23,7 @@ export default async function HistoricoEfemeridesPage() {
         initialData={initialData}
         todayMonth={todayMonth}
         todayDay={todayDay}
+        currentYear={currentYear}
       />
     </div>
   );

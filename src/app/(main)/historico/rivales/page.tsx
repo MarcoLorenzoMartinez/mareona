@@ -1,11 +1,21 @@
 import type { Metadata } from "next";
+import {
+  getAllRivalsSummaries,
+  getSummariesByCommunity,
+  getSummariesByCountry,
+} from "@/lib/historical/rivals-service";
+import { RivalsHub } from "./rivals-hub";
 
 export const metadata: Metadata = {
   title: "Historial Cara a Cara (H2H) — Histórico — Mareona",
-  description: "Buscador y balance histórico del Real Sporting frente a todos sus rivales oficiales.",
+  description: "Buscador y balance histórico del Real Sporting frente a todos sus rivales oficiales por comunidad y país.",
 };
 
 export default function HistoricoRivalesPage() {
+  const allRivals = getAllRivalsSummaries();
+  const communitySummaries = getSummariesByCommunity(allRivals);
+  const countrySummaries = getSummariesByCountry(allRivals);
+
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1 border-b border-[var(--border)] pb-4">
@@ -13,18 +23,15 @@ export default function HistoricoRivalesPage() {
           Historial Cara a Cara
         </h1>
         <p className="text-sm text-[var(--muted-foreground)]">
-          Balance histórico, victorias y goles contra todos los rivales a los que se ha enfrentado el Sporting.
+          Balance histórico, victorias y goles contra los {allRivals.length} rivales oficiales del Real Sporting.
         </p>
       </header>
 
-      <section
-        aria-label="Contenido en preparación"
-        className="rounded-lg border border-[var(--border)] bg-[var(--card)] p-6 shadow-2xs"
-      >
-        <div className="rounded-md bg-[var(--surface)] p-4 text-xs text-[var(--muted-foreground)]">
-          Unidad 1 completada — Buscador unificado H2H y ficha de rivales en desarrollo (Unidad 7).
-        </div>
-      </section>
+      <RivalsHub
+        allRivals={allRivals}
+        communitySummaries={communitySummaries}
+        countrySummaries={countrySummaries}
+      />
     </div>
   );
 }

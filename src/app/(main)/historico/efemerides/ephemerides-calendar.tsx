@@ -6,6 +6,7 @@ interface EphemeridesCalendarProps {
   readonly selectedDay: number;
   readonly todayMonth: number;
   readonly todayDay: number;
+  readonly currentYear: number;
   readonly onSelectDate: (month: number, day: number) => void;
 }
 
@@ -25,9 +26,9 @@ export function EphemeridesCalendar({
   selectedDay,
   todayMonth,
   todayDay,
+  currentYear,
   onSelectDate,
 }: EphemeridesCalendarProps) {
-  const currentYear = new Date().getFullYear();
   const daysInMonth = new Date(currentYear, selectedMonth, 0).getDate();
   const firstDayWeekIndex = new Date(currentYear, selectedMonth - 1, 1).getDay();
   // Monday is 0, Sunday is 6
