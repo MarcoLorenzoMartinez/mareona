@@ -1,0 +1,174 @@
+import rawSquads from "../../data/historical/squads.json" with { type: "json" };
+import type { LegacyCoachRecord } from "./legacy-types";
+
+interface RawCoach {
+  readonly alias?: string;
+  readonly fullName?: string;
+  readonly matches?: number;
+  readonly won?: number;
+  readonly drawn?: number;
+  readonly lost?: number;
+  readonly photoUrl?: string | null;
+}
+
+interface RawSeasonSquad {
+  readonly coaches?: readonly RawCoach[];
+}
+
+/**
+ * Trims second Spanish surname, preserving single surnames and compound names.
+ */
+function stripSecondSurname(fullName: string): string {
+  if (!fullName) return "";
+  const trimmed = fullName.trim();
+
+  // Known canonical overrides
+  if (trimmed === "Anacleto José María Peña Salegui") {
+    return "José María Peña";
+  }
+
+  const parts = trimmed.split(/\s+/);
+  if (parts.length <= 2) return trimmed;
+
+  if (
+    parts.length >= 4 &&
+    (parts[parts.length - 2]?.toLowerCase() === "de" ||
+      parts[parts.length - 2]?.toLowerCase() === "del")
+  ) {
+    return parts.slice(0, parts.length - 2).join(" ");
+  }
+
+  return parts.slice(0, parts.length - 1).join(" ");
+}
+
+function formatSeasonSlash(seasonId: string): string {
+  return seasonId.replace("-", "/");
+}
+
+function getSeasonStartYear(seasonId: string): number {
+  return parseInt(seasonId.split("-")[0] ?? "0", 10);
+}
+
+/**
+ * Groups a coach's historical seasons into chronological consecutive eras.
+ */
+export function groupSeasonsIntoEras(seasons: readonly string[]): string[] {
+  if (!seasons || seasons.length === 0) return [];
+
+  const sorted = Array.from(new Set(seasons)).sort(
+    (a, b) => getSeasonStartYear(a) - getSeasonStartYear(b),
+  );
+
+  const eras: string[][] = [];
+  let currentEra: string[] = [sorted[0] as string];
+
+  for (let i = 1; i < sorted.length; i++) {
+    const prevYear = getSeasonStartYear(sorted[i - 1] as string);
+    const currYear = getSeasonStartYear(sorted[i] as string);
+
+    if (currYear === prevYear + 1) {
+      currentEra.push(sorted[i] as string);
+    } else {
+      eras.push(currentEra);
+      currentEra = [sorted[i] as string];
+    }
+  }
+  eras.push(currentEra);
+
+  return eras.map((era) => {
+    const first = formatSeasonSlash(era[0] as string);
+    if (era.length === 1) {
+      return first;
+    }
+    const last = formatSeasonSlash(era[era.length - 1] as string);
+    return `${first} – ${last}`;
+  });
+}
+
+/**
+ * Computes all-time coaches ranking by official matches directed.
+ */
+export function getTopCoaches(limit = 100): LegacyCoachRecord[] {
+  const coachMap = new Map<
+    string,
+    {
+      name: string;
+      fullName: string;
+      matches: number;
+      won: number;
+      drawn: number;
+      lost: number;
+      seasons: string[];
+      photoUrl: string | null;
+    }
+  >();
+
+  const squadsRecord = rawSquads as unknown as Record<string, RawSeasonSquad>;
+
+  for (const [seasonId, seasonData] of Object.entries(squadsRecord)) {
+    if (!seasonData.coaches) continue;
+    for (const c of seasonData.coaches) {
+      const key = c.fullName || c.alias;
+      if (!key) continue;
+
+      const rawFullName = c.fullName || c.alias || key;
+      const formattedName = stripSecondSurname(rawFullName);
+
+      const existing = coachMap.get(key) ?? {
+        name: c.alias || formattedName,
+        fullName: formattedName,
+        matches: 0,
+        won: 0,
+        drawn: 0,
+        lost: 0,
+        seasons: [],
+        photoUrl: c.photoUrl ?? null,
+      };
+
+      existing.matches += c.matches || 0;
+      existing.won += c.won || 0;
+      existing.drawn += c.drawn || 0;
+      existing.lost += c.lost || 0;
+      existing.seasons.push(seasonId);
+      if (!existing.photoUrl && c.photoUrl) {
+        existing.photoUrl = c.photoUrl;
+      }
+
+      coachMap.set(key, existing);
+    }
+  }
+
+  const sorted = Array.from(coachMap.values())
+    .filter((c) => c.matches > 0)
+    .sort(
+      (a, b) =>
+        b.matches - a.matches ||
+        b.won - a.won ||
+        b.drawn - a.drawn ||
+        a.lost - b.lost,
+    );
+
+  return sorted.slice(0, limit).map((c, idx) => {
+    const uniqueSeasons = Array.from(new Set(c.seasons)).sort(
+      (a, b) => parseInt(a, 10) - parseInt(b, 10),
+    );
+    const eras = groupSeasonsIntoEras(c.seasons);
+
+    return {
+      rank: idx + 1,
+      name: c.name,
+      fullName: c.fullName,
+      matches: c.matches,
+      won: c.won,
+      drawn: c.drawn,
+      lost: c.lost,
+      seasonsCount: uniqueSeasons.length,
+      startSeason: uniqueSeasons[0] ? formatSeasonSlash(uniqueSeasons[0]) : "",
+      endSeason: uniqueSeasons[uniqueSeasons.length - 1]
+        ? formatSeasonSlash(uniqueSeasons[uniqueSeasons.length - 1] as string)
+        : "",
+      eras,
+      photoUrl: c.photoUrl,
+    };
+  });
+}

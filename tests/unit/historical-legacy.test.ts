@@ -4,56 +4,61 @@ import {
   getTopAppearancesPlayers,
   getTopScorersPlayers,
   getTopSeasonsPlayers,
-  getIndividualAwards,
   getTopCoaches,
 } from "../../src/lib/historical/legacy-service.ts";
 
-
 describe("Historical Legacy Service", () => {
-  it("calculates all-time appearances ranking correctly (Ablanedo II at #1)", () => {
+  it("calculates all-time appearances ranking correctly (Joaquín #1, Jiménez #2, Quini #3)", () => {
     const ranking = getTopAppearancesPlayers(10);
     assert.equal(ranking.length, 10);
-    assert.equal(ranking[0]?.name, "Ablanedo II");
-    assert.equal(ranking[0]?.totalPlayed, 459);
+    assert.equal(ranking[0]?.name, "Joaquín");
+    assert.equal(ranking[0]?.totalPlayed, 646);
     assert.equal(ranking[0]?.rank, 1);
 
-    // Verify top 5 legends presence
+    assert.equal(ranking[1]?.name, "Jiménez");
+    assert.equal(ranking[1]?.totalPlayed, 534);
+    assert.equal(ranking[1]?.rank, 2);
+
+    assert.equal(ranking[2]?.name, "Quini");
+    assert.equal(ranking[2]?.totalPlayed, 521);
+    assert.equal(ranking[2]?.rank, 3);
+
+    // Verify top legends presence
     const names = ranking.map((p) => p.name);
-    assert.ok(names.includes("Cundi"));
     assert.ok(names.includes("Castro"));
-    assert.ok(names.includes("Joaquín"));
-    assert.ok(names.includes("Quini"));
+    assert.ok(names.includes("Ablanedo II"));
+    assert.ok(names.includes("Mesa"));
+    assert.ok(names.includes("Cundi"));
   });
 
-  it("calculates all-time scorers ranking correctly (Quini at #1)", () => {
+  it("calculates all-time scorers ranking correctly (Quini at #1 with 272 goals)", () => {
     const scorers = getTopScorersPlayers(10);
     assert.equal(scorers.length, 10);
     assert.equal(scorers[0]?.name, "Quini");
-    assert.equal(scorers[0]?.totalGoals, 230);
+    assert.equal(scorers[0]?.totalGoals, 272);
     assert.equal(scorers[0]?.rank, 1);
+
+    assert.equal(scorers[1]?.name, "Ortiz");
+    assert.equal(scorers[1]?.totalGoals, 131);
 
     // Verify legendary scorers
     const names = scorers.map((p) => p.name);
-    assert.ok(names.includes("Ortiz"));
+    assert.ok(names.includes("Pin"));
     assert.ok(names.includes("Pío"));
-    assert.ok(names.includes("Prendes"));
+    assert.ok(names.includes("Pocholo"));
   });
 
-  it("calculates players with most seasons correctly (Castro & Ablanedo II leading)", () => {
+  it("calculates players with most seasons correctly (Castro leading with 18)", () => {
     const seasons = getTopSeasonsPlayers(10);
     assert.ok(seasons.length > 0);
-    assert.ok(seasons[0]?.seasonCount >= 17);
-  });
+    assert.equal(seasons[0]?.name, "Castro");
+    assert.equal(seasons[0]?.seasonCount, 18);
 
-  it("retrieves verified individual awards (5 Pichichis and 3 Zamoras)", () => {
-    const awards = getIndividualAwards();
-    assert.equal(awards.length, 8);
+    assert.equal(seasons[1]?.name, "Ablanedo II");
+    assert.equal(seasons[1]?.seasonCount, 17);
 
-    const pichichis = awards.filter((a) => a.awardName === "Trofeo Pichichi");
-    assert.equal(pichichis.length, 5);
-
-    const zamoras = awards.filter((a) => a.awardName === "Trofeo Zamora");
-    assert.equal(zamoras.length, 3);
+    assert.equal(seasons[2]?.name, "Cundi");
+    assert.equal(seasons[2]?.seasonCount, 17);
   });
 
   it("calculates top coaches ranking by matches directed (Novoa #1, Preciado #2)", () => {
@@ -102,9 +107,27 @@ describe("Historical Legacy Service", () => {
     assert.equal(coaches[gallegoIdx]?.won, 26);
     assert.ok(sandovalIdx < gallegoIdx, "Sandoval (23E) should rank ahead of Gallego (22E)");
   });
+
+  it("formats canonical player start and end seasons accurately without year shifts", () => {
+    const players = getTopAppearancesPlayers(10);
+    const joaquin = players.find((p) => p.name === "Joaquín");
+    assert.equal(joaquin?.startSeason, "1976/77");
+    assert.equal(joaquin?.endSeason, "1991/92");
+
+    const jimenez = players.find((p) => p.name === "Jiménez");
+    assert.equal(jimenez?.startSeason, "1979/80");
+    assert.equal(jimenez?.endSeason, "1990/91");
+
+    const quini = players.find((p) => p.name === "Quini");
+    assert.equal(quini?.startSeason, "1968/69");
+    assert.equal(quini?.endSeason, "1986/87");
+
+    const castro = players.find((p) => p.name === "Castro");
+    assert.equal(castro?.startSeason, "1967/68");
+    assert.equal(castro?.endSeason, "1984/85");
+
+    const ablanedo = players.find((p) => p.name === "Ablanedo II");
+    assert.equal(ablanedo?.startSeason, "1982/83");
+    assert.equal(ablanedo?.endSeason, "1998/99");
+  });
 });
-
-
-
-
-

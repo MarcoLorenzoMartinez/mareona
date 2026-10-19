@@ -1,5 +1,5 @@
 /**
- * Core domain types for Historical Legacy: Player Records, Coaches and Awards.
+ * Core domain types for Historical Legacy: Player Records and Coaches.
  * Strict typing with zero mock data and compliant with WCAG 2.2 AA.
  */
 
@@ -15,16 +15,7 @@ export interface LegacyPlayerRecord {
   readonly seasonCount: number;
   readonly startSeason: string;
   readonly endSeason: string;
-  readonly seasonsList: readonly string[];
-}
-
-export interface IndividualAward {
-  readonly season: string;
-  readonly awardName: string;
-  readonly division: "1.ª División" | "2.ª División";
-  readonly winnerName: string;
-  readonly photoUrl: string;
-  readonly statLabel: string;
+  readonly seasonsList?: readonly string[];
 }
 
 export interface LegacyCoachRecord {

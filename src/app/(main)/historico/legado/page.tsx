@@ -4,21 +4,19 @@ import {
   getTopScorersPlayers,
   getTopSeasonsPlayers,
   getTopCoaches,
-  getIndividualAwards,
 } from "@/lib/historical/legacy-service";
 import { LegacyRankingsView } from "./legacy-rankings-view";
 
 export const metadata: Metadata = {
   title: "Récords y Palmarés — Histórico — Mareona",
-  description: "Récords históricos, palmarés individual y entrenadores del Real Sporting.",
+  description: "Récords históricos y entrenadores del Real Sporting.",
 };
 
 export default function HistoricoLegadoPage() {
-  const topAppearances = getTopAppearancesPlayers(20);
-  const topScorers = getTopScorersPlayers(20);
-  const topSeasons = getTopSeasonsPlayers(20);
-  const topCoaches = getTopCoaches(20);
-  const individualAwards = getIndividualAwards();
+  const topAppearances = getTopAppearancesPlayers(100);
+  const topScorers = getTopScorersPlayers(100);
+  const topSeasons = getTopSeasonsPlayers(100);
+  const topCoaches = getTopCoaches(100);
 
   return (
     <div className="flex flex-col gap-6">
@@ -27,7 +25,6 @@ export default function HistoricoLegadoPage() {
         topScorers={topScorers}
         topSeasons={topSeasons}
         topCoaches={topCoaches}
-        individualAwards={individualAwards}
       />
     </div>
   );
