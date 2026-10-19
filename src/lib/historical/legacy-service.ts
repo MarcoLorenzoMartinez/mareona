@@ -214,7 +214,14 @@ export function getTopCoaches(limit = 20): LegacyCoachRecord[] {
 
   const sorted = Array.from(coachMap.values())
     .filter((c) => c.matches > 0)
-    .sort((a, b) => b.matches - a.matches || b.won - a.won);
+    .sort(
+      (a, b) =>
+        b.matches - a.matches ||
+        b.won - a.won ||
+        b.drawn - a.drawn ||
+        a.lost - b.lost,
+    );
+
 
   return sorted.slice(0, limit).map((c, idx) => {
     const uniqueSeasons = Array.from(new Set(c.seasons)).sort(

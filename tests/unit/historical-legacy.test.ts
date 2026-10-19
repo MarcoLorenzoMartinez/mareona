@@ -91,7 +91,30 @@ describe("Historical Legacy Service", () => {
     assert.equal(coaches[2]?.matches, 173);
     assert.equal(coaches[2]?.rank, 3);
   });
+
+  it("breaks ties in coach rankings by wins, and then by draws", () => {
+    const coaches = getTopCoaches(20);
+
+    // Tie in matches (116 PJ): Molinuevo (59 V) vs Ciriaco (45 V) -> Molinuevo wins tie
+    const molinuevoIdx = coaches.findIndex((c) => c.fullName === "José Luis Molinuevo");
+    const ciriacoIdx = coaches.findIndex((c) => c.fullName === "Ciriaco Cano");
+    assert.ok(molinuevoIdx !== -1 && ciriacoIdx !== -1);
+    assert.equal(coaches[molinuevoIdx]?.matches, 116);
+    assert.equal(coaches[ciriacoIdx]?.matches, 116);
+    assert.ok(molinuevoIdx < ciriacoIdx, "Molinuevo (59V) should rank ahead of Ciriaco (45V)");
+
+    // Tie in matches (70 PJ) and wins (26 V): Sandoval (23 E) vs Gallego (22 E) -> Sandoval wins tie by draws
+    const sandovalIdx = coaches.findIndex((c) => c.fullName === "José Ramón Sandoval");
+    const gallegoIdx = coaches.findIndex((c) => c.fullName === "David Gallego");
+    assert.ok(sandovalIdx !== -1 && gallegoIdx !== -1);
+    assert.equal(coaches[sandovalIdx]?.matches, 70);
+    assert.equal(coaches[gallegoIdx]?.matches, 70);
+    assert.equal(coaches[sandovalIdx]?.won, 26);
+    assert.equal(coaches[gallegoIdx]?.won, 26);
+    assert.ok(sandovalIdx < gallegoIdx, "Sandoval (23E) should rank ahead of Gallego (22E)");
+  });
 });
+
 
 
 
