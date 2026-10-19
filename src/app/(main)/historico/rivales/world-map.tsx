@@ -47,115 +47,87 @@ export function WorldMap({
   }, [countryMap]);
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs sm:p-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--border)] pb-3">
-        <div>
-          <h3 className="text-base font-bold text-[var(--foreground)]">
-            Mapa del Mundo por Países
-          </h3>
-          <p className="text-xs text-[var(--muted-foreground)]">
-            Haz clic en cualquier país rival para consultar el historial completo en competiciones oficiales.
-          </p>
-        </div>
+    <div className="relative mx-auto w-full max-w-[820px] aspect-[135/100] overflow-hidden rounded-xl border border-[var(--border)] bg-white p-2 sm:p-6 shadow-2xs">
+      <svg
+        viewBox="398 75 130 96"
+        className="h-full w-full select-none"
+        role="img"
+        aria-label="Mapa de países rivales del Real Sporting en competiciones oficiales"
+      >
+        {/* Capa 1: Países sin enfrentamientos (fondo gris) */}
+        {inactiveCountries.map((country) => (
+          <path
+            key={country.id}
+            d={country.path}
+            className="fill-neutral-100/70 stroke-neutral-200 stroke-[0.15] cursor-not-allowed"
+          >
+            <title>{country.name} (Sin partidos oficiales)</title>
+          </path>
+        ))}
 
-        {/* Legend */}
-        <div className="flex items-center gap-4 text-[11px] font-semibold text-neutral-500">
-          <span className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded-sm border border-[#e2001a] bg-red-50/60" /> Con partidos oficiales
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded-sm bg-[#e2001a]" /> Seleccionado
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded-sm border border-neutral-300 bg-neutral-100 opacity-60" /> Sin enfrentamientos
-          </span>
-        </div>
-      </div>
+        {/* Capa 2: Rellenos e interactividad de países rivales */}
+        {rivalCountries.map((country) => {
+          const summary = countryMap.get(country.name.toLowerCase());
+          const isSelected = selectedCountryName === country.name;
 
-      {/* SVG Canvas Container Zoomed on European/Mediterranean Rival Area */}
-      <div className="relative mx-auto w-full max-w-[820px] aspect-[135/100] overflow-hidden rounded-xl border border-neutral-100 bg-neutral-50/40 p-2 sm:p-4">
-        <svg
-          viewBox="398 75 130 96"
-          className="h-full w-full select-none"
-          role="img"
-          aria-label="Mapa de países rivales del Real Sporting en competiciones oficiales"
-        >
-          {/* Capa 1: Países sin enfrentamientos (fondo gris) */}
-          {inactiveCountries.map((country) => (
+          return (
             <path
               key={country.id}
               d={country.path}
-              className="fill-neutral-100/70 stroke-neutral-200 stroke-[0.15] cursor-not-allowed"
+              className={
+                isSelected
+                  ? "fill-[#e2001a] cursor-pointer"
+                  : "fill-white hover:fill-red-50/80 cursor-pointer transition-colors"
+              }
+              onClick={() => {
+                if (summary) onSelectCountry(country.name);
+              }}
+              onMouseEnter={() => {
+                if (summary) setHoveredCountry(summary);
+              }}
+              onMouseLeave={() => setHoveredCountry(null)}
+              aria-label={`${country.name}: ${summary ? summary.totalMatches : 0} partidos`}
             >
-              <title>{country.name} (Sin partidos oficiales)</title>
+              <title>
+                {country.name}
+                {summary ? ` (${summary.totalMatches} PJ - ${summary.won}V ${summary.drawn}E ${summary.lost}D)` : ""}
+              </title>
             </path>
-          ))}
+          );
+        })}
 
-          {/* Capa 2: Rellenos e interactividad de países rivales */}
+        {/* Capa 3: Bordes rojos destacados por encima de todos los rellenos */}
+        <g className="pointer-events-none" aria-hidden="true">
           {rivalCountries.map((country) => {
-            const summary = countryMap.get(country.name.toLowerCase());
             const isSelected = selectedCountryName === country.name;
-
             return (
               <path
-                key={country.id}
+                key={`stroke-${country.id}`}
                 d={country.path}
-                className={
-                  isSelected
-                    ? "fill-[#e2001a] cursor-pointer"
-                    : "fill-white hover:fill-red-50/80 cursor-pointer transition-colors"
-                }
-                onClick={() => {
-                  if (summary) onSelectCountry(country.name);
-                }}
-                onMouseEnter={() => {
-                  if (summary) setHoveredCountry(summary);
-                }}
-                onMouseLeave={() => setHoveredCountry(null)}
-                aria-label={`${country.name}: ${summary ? summary.totalMatches : 0} partidos`}
-              >
-                <title>
-                  {country.name}
-                  {summary ? ` (${summary.totalMatches} PJ - ${summary.won}V ${summary.drawn}E ${summary.lost}D)` : ""}
-                </title>
-              </path>
+                fill="none"
+                stroke={isSelected ? "white" : "#e2001a"}
+                strokeWidth={isSelected ? "0.4" : "0.35"}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                className={isSelected ? "drop-shadow-sm" : ""}
+              />
             );
           })}
+        </g>
+      </svg>
 
-          {/* Capa 3: Bordes rojos destacados por encima de todos los rellenos */}
-          <g className="pointer-events-none" aria-hidden="true">
-            {rivalCountries.map((country) => {
-              const isSelected = selectedCountryName === country.name;
-              return (
-                <path
-                  key={`stroke-${country.id}`}
-                  d={country.path}
-                  fill="none"
-                  stroke={isSelected ? "white" : "#e2001a"}
-                  strokeWidth={isSelected ? "0.4" : "0.35"}
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                  className={isSelected ? "drop-shadow-sm" : ""}
-                />
-              );
-            })}
-          </g>
-        </svg>
-
-        {/* Hover Floating Card Tooltip */}
-        {hoveredCountry && (
-          <div className="pointer-events-none absolute bottom-4 right-4 rounded-xl border border-[var(--primary)] bg-white/95 p-3 shadow-md backdrop-blur-xs">
-            <p className="text-xs font-bold text-neutral-900">{hoveredCountry.regionName}</p>
-            <p className="mt-0.5 text-[11px] font-sans font-semibold text-neutral-600 tabular-nums">
-              {hoveredCountry.totalMatches} PJ · {hoveredCountry.won}V - {hoveredCountry.drawn}E - {hoveredCountry.lost}D
-            </p>
-            <p className="text-[10px] text-[var(--primary)] font-bold">
-              {hoveredCountry.totalRivals} {hoveredCountry.totalRivals === 1 ? "club" : "clubes"}
-            </p>
-          </div>
-        )}
-      </div>
+      {/* Hover Floating Card Tooltip */}
+      {hoveredCountry && (
+        <div className="pointer-events-none absolute bottom-4 right-4 rounded-xl border border-[var(--primary)] bg-white/95 p-3 shadow-md backdrop-blur-xs">
+          <p className="text-xs font-bold text-neutral-900">{hoveredCountry.regionName}</p>
+          <p className="mt-0.5 text-[11px] font-sans font-semibold text-neutral-600 tabular-nums">
+            {hoveredCountry.totalMatches} PJ · {hoveredCountry.won}V - {hoveredCountry.drawn}E - {hoveredCountry.lost}D
+          </p>
+          <p className="text-[10px] text-[var(--primary)] font-bold">
+            {hoveredCountry.totalRivals} {hoveredCountry.totalRivals === 1 ? "club" : "clubes"}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
