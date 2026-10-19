@@ -67,17 +67,9 @@ export function LegacyCoachesTable({ coaches }: LegacyCoachesTableProps) {
                   <span className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider">
                     partidos dirigidos
                   </span>
-                  <div className="mt-1.5 flex items-center justify-center gap-1 font-sans tabular-nums text-[10px] font-bold">
-                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-900" title={`${coach.won} Victorias`}>
-                      {coach.won}V
-                    </span>
-                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-600" title={`${coach.drawn} Empates`}>
-                      {coach.drawn}E
-                    </span>
-                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-500" title={`${coach.lost} Derrotas`}>
-                      {coach.lost}D
-                    </span>
-                  </div>
+                  <span className="mt-1 text-[11px] font-medium text-neutral-500 font-sans tabular-nums">
+                    {coach.won}V · {coach.drawn}E · {coach.lost}D
+                  </span>
                 </div>
               </div>
             );
@@ -94,7 +86,9 @@ export function LegacyCoachesTable({ coaches }: LegacyCoachesTableProps) {
               <th scope="col" className="py-2.5 px-3">Entrenador</th>
               <th scope="col" className="py-2.5 px-3 text-center">Periodos</th>
               <th scope="col" className="py-2.5 px-3 text-center">Temporadas</th>
-              <th scope="col" className="py-2.5 px-3 text-center">Balance</th>
+              <th scope="col" className="py-2.5 px-3 text-center w-12" title="Victorias">V</th>
+              <th scope="col" className="py-2.5 px-3 text-center w-12" title="Empates">E</th>
+              <th scope="col" className="py-2.5 px-3 text-center w-12" title="Derrotas">D</th>
               <th scope="col" className="py-2.5 px-3 text-right">Partidos Dirigidos</th>
             </tr>
           </thead>
@@ -131,20 +125,15 @@ export function LegacyCoachesTable({ coaches }: LegacyCoachesTableProps) {
                 <td className="py-2.5 px-3 text-center font-semibold text-neutral-700">
                   {coach.seasonsCount} temp.
                 </td>
-                <td className="py-2.5 px-3 text-center">
-                  <div className="inline-flex items-center gap-1 font-sans tabular-nums text-[11px] font-bold">
-                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-900" title={`${coach.won} Victorias`}>
-                      {coach.won}V
-                    </span>
-                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-600" title={`${coach.drawn} Empates`}>
-                      {coach.drawn}E
-                    </span>
-                    <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-500" title={`${coach.lost} Derrotas`}>
-                      {coach.lost}D
-                    </span>
-                  </div>
+                <td className="py-2.5 px-3 text-center font-bold text-neutral-900">
+                  {coach.won}
                 </td>
-
+                <td className="py-2.5 px-3 text-center font-medium text-neutral-600">
+                  {coach.drawn}
+                </td>
+                <td className="py-2.5 px-3 text-center font-medium text-neutral-500">
+                  {coach.lost}
+                </td>
                 <td className="py-2.5 px-3 text-right font-black text-neutral-900 text-sm">
                   {coach.matches} partidos
                 </td>
