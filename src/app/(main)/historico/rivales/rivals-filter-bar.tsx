@@ -52,7 +52,7 @@ export function RivalsFilterBar({
                 : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
             }`}
           >
-            Lista de Rivales ({filteredRivalsCount})
+            Lista de Rivales
           </button>
 
           <button
