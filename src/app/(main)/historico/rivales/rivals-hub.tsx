@@ -3,11 +3,7 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import type {
-  RegionRivalSummary,
-  RivalH2HSummary,
-  RivalLayoutMode,
-  RivalScopeFilter,
-  RivalSortOption,
+  RegionRivalSummary, RivalH2HSummary, RivalLayoutMode, RivalScopeFilter, RivalSortOption,
 } from "@/lib/historical/rivals-types";
 import type { DayMatchItem } from "@/lib/historical/ephemerides-types";
 import type { HistoricalMatch } from "@/lib/historical/types";
@@ -15,9 +11,7 @@ import { filterRivals, sortRivals } from "@/lib/historical/rivals-service";
 import { RivalsFilterBar } from "./rivals-filter-bar";
 import { RivalsListView } from "./rivals-list-view";
 import { RivalDetailView } from "./rival-detail-view";
-import { RegionDetailView } from "./region-detail-view";
-import { SpainMap } from "./spain-map";
-import { WorldMap } from "./world-map";
+import { RivalsMapTabs } from "./rivals-map-tabs";
 import { HistoricalMatchDetailModal } from "../match-detail-modal";
 
 interface RivalsHubProps {
@@ -121,7 +115,9 @@ export function RivalsHub({
       {selectedRival && (
         <>
           <RivalDetailView
+            key={selectedRival.name}
             rival={selectedRival}
+            initialScope={activeScope}
             onBack={handleBackFromRival}
             onSelectMatch={setSelectedMatch}
           />
@@ -163,38 +159,17 @@ export function RivalsHub({
           </section>
         )}
 
-        {activeTab === "spain-map" && (
-          <div className="flex flex-col gap-6">
-            <SpainMap
-              communitySummaries={communitySummaries}
-              onSelectCommunity={handleSelectCommunity}
-              selectedCommunityName={selectedRegion && !selectedRegion.isCountry ? selectedRegion.regionName : null}
-            />
-            {selectedRegion && !selectedRegion.isCountry && (
-              <RegionDetailView
-                region={selectedRegion}
-                onBack={() => setSelectedRegion(null)}
-                onSelectRival={handleSelectRival}
-              />
-            )}
-          </div>
-        )}
-
-        {activeTab === "world-map" && (
-          <div className="flex flex-col gap-6">
-            <WorldMap
-              countrySummaries={countrySummaries}
-              onSelectCountry={handleSelectCountry}
-              selectedCountryName={selectedRegion && selectedRegion.isCountry ? selectedRegion.regionName : null}
-            />
-            {selectedRegion && selectedRegion.isCountry && (
-              <RegionDetailView
-                region={selectedRegion}
-                onBack={() => setSelectedRegion(null)}
-                onSelectRival={handleSelectRival}
-              />
-            )}
-          </div>
+        {activeTab !== "list" && (
+          <RivalsMapTabs
+            activeTab={activeTab}
+            communitySummaries={communitySummaries}
+            countrySummaries={countrySummaries}
+            selectedRegion={selectedRegion}
+            onSelectCommunity={handleSelectCommunity}
+            onSelectCountry={handleSelectCountry}
+            onBackRegion={() => setSelectedRegion(null)}
+            onSelectRival={handleSelectRival}
+          />
         )}
       </div>
     </div>

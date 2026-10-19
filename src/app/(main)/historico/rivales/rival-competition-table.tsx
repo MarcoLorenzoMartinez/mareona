@@ -5,13 +5,19 @@ import type { CompetitionStats } from "@/lib/historical/rivals-types";
 
 interface RivalCompetitionTableProps {
   readonly stats: readonly CompetitionStats[];
+  readonly activeCompetition?: string;
+  readonly onSelectCompetition?: (competition: string) => void;
 }
 
 /**
  * Editorial table breaking down head-to-head records by competition/division.
  * Adheres to AGENTS.md rule 5: font-sans tabular-nums, clean border-b styling.
  */
-export function RivalCompetitionTable({ stats }: RivalCompetitionTableProps) {
+export function RivalCompetitionTable({
+  stats,
+  activeCompetition,
+  onSelectCompetition,
+}: RivalCompetitionTableProps) {
   if (stats.length === 0) return null;
 
   return (
@@ -32,8 +38,28 @@ export function RivalCompetitionTable({ stats }: RivalCompetitionTableProps) {
         <tbody className="divide-y divide-[var(--border)]/70 font-sans tabular-nums">
           {stats.map((c) => {
             const diff = c.goalsFor - c.goalsAgainst;
+            const isActive = activeCompetition === c.competition;
             return (
-              <tr key={c.competition} className="hover:bg-neutral-50/50 transition-colors">
+              <tr
+                key={c.competition}
+                onClick={() => onSelectCompetition?.(c.competition)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelectCompetition?.(c.competition);
+                  }
+                }}
+                tabIndex={onSelectCompetition ? 0 : undefined}
+                role={onSelectCompetition ? "button" : undefined}
+                aria-pressed={onSelectCompetition ? isActive : undefined}
+                className={`transition-colors ${
+                  onSelectCompetition ? "cursor-pointer" : ""
+                } ${
+                  isActive
+                    ? "bg-red-50/60 hover:bg-red-50/80 font-bold border-l-2 border-l-[var(--primary)]"
+                    : "hover:bg-neutral-50/50"
+                }`}
+              >
                 <td className="py-2.5 px-3 font-bold text-[var(--foreground)]">{c.competition}</td>
                 <td className="py-2.5 px-3 text-center font-black text-neutral-900">{c.played}</td>
                 <td className="py-2.5 px-3 text-center font-semibold text-neutral-900">{c.won}</td>

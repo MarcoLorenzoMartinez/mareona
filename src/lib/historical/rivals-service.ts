@@ -172,6 +172,7 @@ export function getAllRivalsSummaries(): RivalH2HSummary[] {
       winPercentage,
       competitionsBreakdown,
       matches: sortedMatches,
+      allMatches: sortedMatches,
       firstMatchDate: sortedMatches[sortedMatches.length - 1]?.date,
       lastMatchDate: sortedMatches[0]?.date,
     });
@@ -181,7 +182,86 @@ export function getAllRivalsSummaries(): RivalH2HSummary[] {
 }
 
 /**
- * Filter rival summaries by scope and search query.
+ * Determines whether a match competition matches the selected scope filter.
+ */
+export function isMatchInScope(competition: string, scope: RivalScopeFilter): boolean {
+  switch (scope) {
+    case "primera":
+      return competition.includes("1.ª");
+    case "segunda":
+      return competition.includes("2.ª");
+    case "copa":
+      return competition.includes("Copa") && !competition.includes("UEFA");
+    case "uefa":
+      return competition.includes("UEFA");
+    case "promocion":
+      return competition.includes("Promoción");
+    case "all":
+    default:
+      return true;
+  }
+}
+
+/**
+ * Re-computes a rival's H2H summary restricted to the matches of a specific competition scope.
+ * Returns null if the rival never faced Sporting in that competition scope.
+ */
+export function computeScopedSummary(
+  rival: RivalH2HSummary,
+  scope: RivalScopeFilter
+): RivalH2HSummary | null {
+  if (scope === "all") return rival;
+
+  const sourceMatches = rival.allMatches && rival.allMatches.length > 0 ? rival.allMatches : rival.matches;
+  const scopedMatches = sourceMatches.filter((m) => isMatchInScope(m.competition, scope));
+
+  if (scopedMatches.length === 0) {
+    return null;
+  }
+
+  let won = 0;
+  let drawn = 0;
+  let lost = 0;
+  let goalsFor = 0;
+  let goalsAgainst = 0;
+
+  for (const m of scopedMatches) {
+    if (m.outcome === "V") won++;
+    else if (m.outcome === "E") drawn++;
+    else if (m.outcome === "D") lost++;
+
+    const scFor = m.isHome ? (m.homeScore ?? 0) : (m.awayScore ?? 0);
+    const scAgainst = m.isHome ? (m.awayScore ?? 0) : (m.homeScore ?? 0);
+    goalsFor += scFor;
+    goalsAgainst += scAgainst;
+  }
+
+  const played = scopedMatches.length;
+  const winPercentage = played > 0 ? Math.round((won / played) * 100) : 0;
+  const scopedBreakdown = rival.competitionsBreakdown.filter((c) =>
+    isMatchInScope(c.competition, scope)
+  );
+
+  return {
+    ...rival,
+    played,
+    won,
+    drawn,
+    lost,
+    goalsFor,
+    goalsAgainst,
+    goalDiff: goalsFor - goalsAgainst,
+    winPercentage,
+    competitionsBreakdown: scopedBreakdown.length > 0 ? scopedBreakdown : rival.competitionsBreakdown,
+    matches: scopedMatches,
+    allMatches: sourceMatches,
+    firstMatchDate: scopedMatches[scopedMatches.length - 1]?.date,
+    lastMatchDate: scopedMatches[0]?.date,
+  };
+}
+
+/**
+ * Filter rival summaries by scope and search query, recalculating contextual metrics when scoped.
  */
 export function filterRivals(
   rivals: readonly RivalH2HSummary[],
@@ -189,39 +269,31 @@ export function filterRivals(
   scope: RivalScopeFilter
 ): RivalH2HSummary[] {
   const normalizedQuery = query.trim().toLowerCase();
+  const result: RivalH2HSummary[] = [];
 
-  return rivals.filter((r) => {
-    // Search query matching by team name, province, or community
+  for (const r of rivals) {
+    // Search query matching by team name, province, community, or country
     if (normalizedQuery) {
       const matchName = r.name.toLowerCase().includes(normalizedQuery);
       const matchProvince = r.province.toLowerCase().includes(normalizedQuery);
       const matchCommunity = r.community.toLowerCase().includes(normalizedQuery);
       const matchCountry = r.country.toLowerCase().includes(normalizedQuery);
       if (!matchName && !matchProvince && !matchCommunity && !matchCountry) {
-        return false;
+        continue;
       }
     }
 
-    // Scope filter
-    if (scope === "all") return true;
-    if (scope === "primera") {
-      return r.competitionsBreakdown.some((c) => c.competition.includes("1.ª"));
+    if (scope === "all") {
+      result.push(r);
+    } else {
+      const scoped = computeScopedSummary(r, scope);
+      if (scoped) {
+        result.push(scoped);
+      }
     }
-    if (scope === "segunda") {
-      return r.competitionsBreakdown.some((c) => c.competition.includes("2.ª"));
-    }
-    if (scope === "copa") {
-      return r.competitionsBreakdown.some((c) => c.competition.includes("Copa"));
-    }
-    if (scope === "uefa") {
-      return r.isInternational || r.competitionsBreakdown.some((c) => c.competition.includes("UEFA"));
-    }
-    if (scope === "promocion") {
-      return r.competitionsBreakdown.some((c) => c.competition.includes("Promoción"));
-    }
+  }
 
-    return true;
-  });
+  return result;
 }
 
 /**

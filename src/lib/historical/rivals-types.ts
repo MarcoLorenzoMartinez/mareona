@@ -74,6 +74,7 @@ export interface RivalH2HSummary {
   readonly winPercentage: number;
   readonly competitionsBreakdown: readonly CompetitionStats[];
   readonly matches: readonly RivalH2HMatch[];
+  readonly allMatches?: readonly RivalH2HMatch[];
   readonly firstMatchDate?: string;
   readonly lastMatchDate?: string;
 }
