@@ -67,14 +67,7 @@ export function LegacyRankingsTable({ players, category }: LegacyRankingsTablePr
                       size="sm"
                       className="h-7 w-7 rounded-full object-cover object-top shrink-0"
                     />
-                    <div className="flex flex-col min-w-0">
-                      <span className="truncate">{player.name}</span>
-                      {player.fullName && player.fullName !== player.name && (
-                        <span className="text-[10px] font-normal text-neutral-400 truncate">
-                          {player.fullName}
-                        </span>
-                      )}
-                    </div>
+                    <span className="truncate">{player.name}</span>
                   </div>
                 </td>
 
