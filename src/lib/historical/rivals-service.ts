@@ -1,6 +1,7 @@
 import matchesData from "../../data/historical/matches.json" with { type: "json" };
 import rivalsGeoData from "../../data/historical/rivals-geo.json" with { type: "json" };
 import seasonsData from "../../data/historical/seasons.json" with { type: "json" };
+import { canonicalizeOpponentName } from "./canonical-opponents.ts";
 import type {
   CompetitionStats,
   RegionRivalSummary,
@@ -31,7 +32,8 @@ interface RawMatch {
 
 const geoLookup = new Map<string, RivalGeoInfo>();
 for (const item of rivalsGeoData as RivalGeoInfo[]) {
-  geoLookup.set(item.name.toLowerCase(), item);
+  const canonName = canonicalizeOpponentName(item.name);
+  geoLookup.set(canonName.toLowerCase(), { ...item, name: canonName });
 }
 
 const seasonTierMap = new Map<string, string>();
@@ -59,7 +61,7 @@ export function getAllRivalsSummaries(): RivalH2HSummary[] {
     if (!Array.isArray(rawList)) continue;
 
     for (const m of rawList) {
-      const opp = m.opponent;
+      const opp = canonicalizeOpponentName(m.opponent);
       if (!opp) continue;
 
       const refinedComp = resolveRefinedCompetition(m.competition, season);
@@ -73,8 +75,8 @@ export function getAllRivalsSummaries(): RivalH2HSummary[] {
         year: parsedYear,
         competition: refinedComp,
         round: m.round,
-        homeTeam: m.homeTeam,
-        awayTeam: m.awayTeam,
+        homeTeam: canonicalizeOpponentName(m.homeTeam),
+        awayTeam: canonicalizeOpponentName(m.awayTeam),
         homeScore: m.homeScore,
         awayScore: m.awayScore,
         isHome: m.isHome,

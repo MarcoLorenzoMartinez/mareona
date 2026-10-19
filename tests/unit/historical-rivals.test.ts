@@ -11,10 +11,63 @@ import {
 describe("Historical Rivals Service", () => {
   const allRivals = getAllRivalsSummaries();
 
-  it("loads all 164 verified historical rivals in alphabetical order", () => {
-    assert.equal(allRivals.length, 164);
+  it("loads all 151 verified historical rivals in alphabetical order", () => {
+    assert.equal(allRivals.length, 151);
     assert.equal(allRivals[0]?.name, "AD Ceuta FC");
     assert.equal(allRivals[allRivals.length - 1]?.name, "Zamora");
+  });
+
+  it("canonicalizes duplicate clubs and historical names into unified identities", () => {
+    // Real Madrid absorbs 1932-33 II Republic "Madrid" matches
+    const realMadrid = allRivals.find((r) => r.name === "Real Madrid");
+    assert.ok(realMadrid);
+    assert.equal(realMadrid.played, 107);
+    assert.equal(realMadrid.won, 18);
+    assert.equal(realMadrid.drawn, 28);
+    assert.equal(realMadrid.lost, 61);
+    assert.equal(realMadrid.goalsFor, 103);
+    assert.equal(realMadrid.goalsAgainst, 226);
+
+    // Real Sociedad absorbs 1932-33 II Republic "Donostia" matches
+    const realSociedad = allRivals.find((r) => r.name === "Real Sociedad");
+    assert.ok(realSociedad);
+    assert.equal(realSociedad.played, 102);
+
+    // Girona FC unifies Gerona and Girona
+    const girona = allRivals.find((r) => r.name === "Girona FC");
+    assert.ok(girona);
+    assert.equal(girona.played, 21);
+    assert.equal(girona.won, 11);
+    assert.equal(girona.drawn, 5);
+    assert.equal(girona.lost, 5);
+
+    // Terrassa FC unifies Tarrasa and Terrassa
+    const terrassa = allRivals.find((r) => r.name === "Terrassa FC");
+    assert.ok(terrassa);
+    assert.equal(terrassa.played, 16);
+    assert.equal(terrassa.won, 7);
+
+    // Gimnàstic de Tarragona unifies Gimnástico and Gimnàstic
+    const nastic = allRivals.find((r) => r.name === "Gimnàstic de Tarragona");
+    assert.ok(nastic);
+    assert.equal(nastic.played, 18);
+    assert.equal(nastic.won, 7);
+
+    // Barakaldo CF unifies Baracaldo and Baracaldo Oriamendi
+    const barakaldo = allRivals.find((r) => r.name === "Barakaldo CF");
+    assert.ok(barakaldo);
+    assert.equal(barakaldo.played, 34);
+
+    // CD Ourense unifies Orense and Ourense
+    const ourense = allRivals.find((r) => r.name === "CD Ourense");
+    assert.ok(ourense);
+    assert.equal(ourense.played, 18);
+
+    // Unmerged duplicate names must no longer exist as standalone entries
+    const duplicateNames = ["Madrid", "Donostia", "Gerona", "Tarrasa", "Gimnástico de Tarragona", "Baracaldo", "Orense", "Castilla"];
+    for (const dup of duplicateNames) {
+      assert.equal(allRivals.find((r) => r.name === dup), undefined, `${dup} must not exist as standalone rival`);
+    }
   });
 
   it("calculates accurate head-to-head record against Real Oviedo", () => {
@@ -43,10 +96,10 @@ describe("Historical Rivals Service", () => {
 
   it("filters rivals dynamically by search query and competition scope", () => {
     const madridRivals = filterRivals(allRivals, "Madrid", "all");
-    assert.ok(madridRivals.length >= 7, "Should match Real Madrid, Atlético, Rayo, Leganés, etc.");
+    assert.ok(madridRivals.length >= 6, "Should match Real Madrid, Atlético, Rayo, Leganés, etc.");
 
     const uefaRivals = filterRivals(allRivals, "", "uefa");
-    assert.ok(uefaRivals.length >= 8, "Should find European rivals");
+    assert.equal(uefaRivals.length, 8, "Should find exactly 8 European rivals across 16 UEFA matches");
   });
 
   it("aggregates rivals accurately by Spanish Autonomous Community", () => {
@@ -62,7 +115,7 @@ describe("Historical Rivals Service", () => {
     const countries = getSummariesByCountry(allRivals);
     const spain = countries.find((c) => c.regionName === "España");
     assert.ok(spain, "Spain must be top country");
-    assert.equal(spain.totalRivals, 154);
+    assert.equal(spain.totalRivals, 141);
 
     const italy = countries.find((c) => c.regionName === "Italia");
     assert.ok(italy, "Italy must exist (Torino and Milan)");

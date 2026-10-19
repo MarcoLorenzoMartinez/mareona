@@ -31,8 +31,8 @@ function cleanTeamName(raw) {
   if (/athletic club|athletic de bilbao|bilbao/i.test(t)) return "Athletic Club";
   if (/barcelona b|barcelona atl/i.test(t)) return "FC Barcelona Atlètic";
   if (/barcelona/i.test(t)) return "FC Barcelona";
-  if (/plus ultra|real madrid castilla/i.test(t)) return "Real Madrid Castilla";
-  if (/real madrid/i.test(t)) return "Real Madrid";
+  if (/plus ultra|real madrid castilla|^castilla$/i.test(t)) return "Real Madrid Castilla";
+  if (/real madrid|^madrid$/i.test(t)) return "Real Madrid";
   if (/betis/i.test(t)) return "Real Betis";
   if (/sevilla.*atl[eé]tico/i.test(t)) return "Sevilla Atlético";
   if (/sevilla/i.test(t)) return "Sevilla FC";
@@ -42,7 +42,7 @@ function cleanTeamName(raw) {
   if (/celta/i.test(t)) return "RC Celta";
   if (/deportivo.*coru[ñn]a/i.test(t)) return "RC Deportivo";
   if (/san sebasti[aá]n|real sociedad b/i.test(t)) return "Real Sociedad B";
-  if (/real sociedad/i.test(t)) return "Real Sociedad";
+  if (/real sociedad|^donostia$/i.test(t)) return "Real Sociedad";
   if (/zaragoza|iberia/i.test(t)) return "Real Zaragoza";
   if (/valladolid/i.test(t)) return "Real Valladolid";
   if (/santander|racing de santander/i.test(t)) return "Racing de Santander";
@@ -90,9 +90,17 @@ function cleanTeamName(raw) {
   if (/avil[eé]s/i.test(t)) return "Real Avilés";
   if (/caudal/i.test(t)) return "Caudal Deportivo";
   if (/sestao/i.test(t)) return "Sestao Sport";
-  if (/barakaldo/i.test(t)) return "Barakaldo CF";
+  if (/baracaldo|barakaldo/i.test(t)) return "Barakaldo CF";
   if (/arenas/i.test(t)) return "Arenas Club";
-  if (/real uni[oó]n/i.test(t)) return "Real Unión";
+  if (/real uni[oó]n|uni[oó]n ir[uú]n/i.test(t)) return "Real Unión";
+  if (/girona|gerona/i.test(t)) return "Girona FC";
+  if (/tarrasa|terrassa/i.test(t)) return "Terrassa FC";
+  if (/gimn[aá]st.*tarragona/i.test(t)) return "Gimnàstic de Tarragona";
+  if (/orense|ourense/i.test(t)) return "CD Ourense";
+  if (/xerez/i.test(t)) return "Xerez CD";
+  if (/españa industrial|condal/i.test(t)) return "CD Condal";
+  if (/deportivo torrelavega/i.test(t)) return "Gimnástica de Torrelavega";
+  if (/^catalunya$/i.test(t)) return "CE Europa";
   if (/europa/i.test(t)) return "CE Europa";
   return t;
 }

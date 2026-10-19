@@ -98,15 +98,8 @@
     "country": "España"
   },
   {
-    "name": "Baracaldo",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/99g.png",
-    "community": "País Vasco",
-    "province": "Bizkaia",
-    "country": "España"
-  },
-  {
-    "name": "Baracaldo Oriamendi",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/99e.png",
+    "name": "Barakaldo CF",
+    "crestUrl": "https://www.bdfutbol.com/i/eg/99.png",
     "community": "País Vasco",
     "province": "Bizkaia",
     "country": "España"
@@ -168,20 +161,6 @@
     "country": "España"
   },
   {
-    "name": "Castilla",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/61d.png",
-    "community": "Comunidad de Madrid",
-    "province": "Madrid",
-    "country": "España"
-  },
-  {
-    "name": "Catalunya",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/89c.png",
-    "community": "Cataluña",
-    "province": "Barcelona",
-    "country": "España"
-  },
-  {
     "name": "Caudal Deportivo",
     "crestUrl": "https://www.bdfutbol.com/i/eg/201.png",
     "community": "Principado de Asturias",
@@ -200,6 +179,13 @@
     "crestUrl": "https://www.bdfutbol.com/i/eg/41.png",
     "community": "Comunitat Valenciana",
     "province": "Castellón",
+    "country": "España"
+  },
+  {
+    "name": "CD Condal",
+    "crestUrl": "https://www.bdfutbol.com/i/eg/83.png",
+    "community": "Cataluña",
+    "province": "Barcelona",
     "country": "España"
   },
   {
@@ -224,6 +210,13 @@
     "country": "España"
   },
   {
+    "name": "CD Ourense",
+    "crestUrl": "https://www.bdfutbol.com/i/eg/68b.png",
+    "community": "Galicia",
+    "province": "Ourense",
+    "country": "España"
+  },
+  {
     "name": "CD Tenerife",
     "crestUrl": "https://www.bdfutbol.com/i/eg/35.png",
     "community": "Canarias",
@@ -239,7 +232,7 @@
   },
   {
     "name": "CE Europa",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/89d.png",
+    "crestUrl": "https://www.bdfutbol.com/i/eg/89c.png",
     "community": "Cataluña",
     "province": "Barcelona",
     "country": "España"
@@ -270,13 +263,6 @@
     "crestUrl": "https://www.bdfutbol.com/i/eg/12.png",
     "community": "Galicia",
     "province": "A Coruña",
-    "country": "España"
-  },
-  {
-    "name": "Condal",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/83e.png",
-    "community": "Cataluña",
-    "province": "Barcelona",
     "country": "España"
   },
   {
@@ -329,20 +315,6 @@
     "country": "España"
   },
   {
-    "name": "Deportivo Torrelavega",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/148b.png",
-    "community": "Cantabria",
-    "province": "Cantabria",
-    "country": "España"
-  },
-  {
-    "name": "Donostia",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/30e.png",
-    "community": "País Vasco",
-    "province": "Gipuzkoa",
-    "country": "España"
-  },
-  {
     "name": "Écija",
     "crestUrl": "https://www.bdfutbol.com/i/eg/70b.png",
     "community": "Andalucía",
@@ -368,13 +340,6 @@
     "crestUrl": "https://www.bdfutbol.com/i/eg/376b.png",
     "community": "País Vasco",
     "province": "Bizkaia",
-    "country": "España"
-  },
-  {
-    "name": "España Industrial",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/83c.png",
-    "community": "Cataluña",
-    "province": "Barcelona",
     "country": "España"
   },
   {
@@ -434,13 +399,6 @@
     "country": "España"
   },
   {
-    "name": "Gerona",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/78f.png",
-    "community": "Cataluña",
-    "province": "Girona",
-    "country": "España"
-  },
-  {
     "name": "Getafe CF",
     "crestUrl": "https://www.bdfutbol.com/i/eg/16.png",
     "community": "Comunidad de Madrid",
@@ -456,7 +414,7 @@
   },
   {
     "name": "Gimnástica de Torrelavega",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/148d.png",
+    "crestUrl": "https://www.bdfutbol.com/i/eg/148b.png",
     "community": "Cantabria",
     "province": "Cantabria",
     "country": "España"
@@ -469,14 +427,7 @@
     "country": "España"
   },
   {
-    "name": "Gimnástico de Tarragona",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/17c.png",
-    "community": "Cataluña",
-    "province": "Tarragona",
-    "country": "España"
-  },
-  {
-    "name": "Girona",
+    "name": "Girona FC",
     "crestUrl": "https://www.bdfutbol.com/i/eg/78.png",
     "community": "Cataluña",
     "province": "Girona",
@@ -644,13 +595,6 @@
     "country": "España"
   },
   {
-    "name": "Madrid",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/2g.png",
-    "community": "Comunidad de Madrid",
-    "province": "Madrid",
-    "country": "España"
-  },
-  {
     "name": "Málaga CF",
     "crestUrl": "https://www.bdfutbol.com/i/eg/23.png",
     "community": "Andalucía",
@@ -707,24 +651,10 @@
     "country": "España"
   },
   {
-    "name": "Orense",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/68d.png",
-    "community": "Galicia",
-    "province": "Ourense",
-    "country": "España"
-  },
-  {
     "name": "Oriamendi",
     "crestUrl": "https://www.bdfutbol.com/i/eg/430.png",
     "community": "Principado de Asturias",
     "province": "Asturias",
-    "country": "España"
-  },
-  {
-    "name": "Ourense",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/68b.png",
-    "community": "Galicia",
-    "province": "Ourense",
     "country": "España"
   },
   {
@@ -834,14 +764,14 @@
   },
   {
     "name": "Real Madrid",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/2.png",
+    "crestUrl": "https://www.bdfutbol.com/i/eg/2g.png",
     "community": "Comunidad de Madrid",
     "province": "Madrid",
     "country": "España"
   },
   {
     "name": "Real Madrid Castilla",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/2.png",
+    "crestUrl": "https://www.bdfutbol.com/i/eg/61d.png",
     "community": "Comunidad de Madrid",
     "province": "Madrid",
     "country": "España"
@@ -855,7 +785,7 @@
   },
   {
     "name": "Real Sociedad",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/30.png",
+    "crestUrl": "https://www.bdfutbol.com/i/eg/30e.png",
     "community": "País Vasco",
     "province": "Gipuzkoa",
     "country": "España"
@@ -980,14 +910,7 @@
     "country": "Rumanía"
   },
   {
-    "name": "Tarrasa",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/54h.png",
-    "community": "Cataluña",
-    "province": "Barcelona",
-    "country": "España"
-  },
-  {
-    "name": "Terrassa",
+    "name": "Terrassa FC",
     "crestUrl": "https://www.bdfutbol.com/i/eg/54h.png",
     "community": "Cataluña",
     "province": "Barcelona",
@@ -1057,13 +980,6 @@
     "country": "España"
   },
   {
-    "name": "Unión Irún",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/88f.png",
-    "community": "País Vasco",
-    "province": "Gipuzkoa",
-    "country": "España"
-  },
-  {
     "name": "Unión Montañesa",
     "crestUrl": "https://www.bdfutbol.com/i/eg/11206.png",
     "community": "Cantabria",
@@ -1127,15 +1043,8 @@
     "country": "España"
   },
   {
-    "name": "Xerez",
+    "name": "Xerez CD",
     "crestUrl": "https://www.bdfutbol.com/i/eg/53.png",
-    "community": "Andalucía",
-    "province": "Cádiz",
-    "country": "España"
-  },
-  {
-    "name": "Xerez Club",
-    "crestUrl": "https://www.bdfutbol.com/i/eg/387.png",
     "community": "Andalucía",
     "province": "Cádiz",
     "country": "España"
