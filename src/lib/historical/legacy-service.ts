@@ -1,10 +1,9 @@
 import rawSquads from "../../data/historical/squads.json" with { type: "json" };
-import legendsData from "../../data/historical/legends.json" with { type: "json" };
+import awardsData from "../../data/historical/awards.json" with { type: "json" };
 import type {
   IndividualAward,
   LegacyCoachRecord,
   LegacyPlayerRecord,
-  LegendProfile,
 } from "./legacy-types";
 
 
@@ -63,14 +62,7 @@ export function getTopSeasonsPlayers(limit = 20): LegacyPlayerRecord[] {
  * Returns all verified individual awards (Pichichis, Zamoras).
  */
 export function getIndividualAwards(): IndividualAward[] {
-  return legendsData.awards as unknown as IndividualAward[];
-}
-
-/**
- * Returns verified legendary profiles for the Legends Wall.
- */
-export function getLegendProfiles(): LegendProfile[] {
-  return legendsData.legends as unknown as LegendProfile[];
+  return awardsData as unknown as IndividualAward[];
 }
 
 interface RawCoach {

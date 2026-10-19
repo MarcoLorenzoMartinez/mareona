@@ -1,9 +1,7 @@
 /**
- * Core domain types for Historical Legacy, Legends Wall, Stadium and Records.
+ * Core domain types for Historical Legacy: Player Records, Coaches and Awards.
  * Strict typing with zero mock data and compliant with WCAG 2.2 AA.
  */
-
-export type LegacyTab = "records" | "legends";
 
 export interface LegacyPlayerRecord {
   readonly rank: number;
@@ -18,24 +16,6 @@ export interface LegacyPlayerRecord {
   readonly startSeason: string;
   readonly endSeason: string;
   readonly seasonsList: readonly string[];
-}
-
-export interface LegendProfile {
-  readonly id: string;
-  readonly name: string;
-  readonly fullName: string;
-  readonly alias: string;
-  readonly role: "player" | "coach" | "president" | "icon";
-  readonly position?: string;
-  readonly era: "pioneers" | "golden" | "nineties" | "modern";
-  readonly eraLabel: string;
-  readonly yearsActive: string;
-  readonly totalPlayed?: number;
-  readonly totalGoals?: number;
-  readonly titles?: readonly string[];
-  readonly photoUrl: string;
-  readonly summary: string;
-  readonly highlights: readonly string[];
 }
 
 export interface IndividualAward {
@@ -61,6 +41,3 @@ export interface LegacyCoachRecord {
   readonly eras: readonly string[];
   readonly photoUrl?: string | null;
 }
-
-
-

@@ -5,7 +5,6 @@ import {
   getTopScorersPlayers,
   getTopSeasonsPlayers,
   getIndividualAwards,
-  getLegendProfiles,
   getTopCoaches,
 } from "../../src/lib/historical/legacy-service.ts";
 
@@ -55,16 +54,6 @@ describe("Historical Legacy Service", () => {
 
     const zamoras = awards.filter((a) => a.awardName === "Trofeo Zamora");
     assert.equal(zamoras.length, 3);
-  });
-
-  it("retrieves legend profiles with verified highlights", () => {
-    const legends = getLegendProfiles();
-    assert.ok(legends.length >= 8);
-
-    const quini = legends.find((l) => l.id === "quini");
-    assert.ok(quini);
-    assert.equal(quini.role, "player");
-    assert.ok(quini.highlights.length >= 3);
   });
 
   it("calculates top coaches ranking by matches directed (Novoa #1, Preciado #2)", () => {
