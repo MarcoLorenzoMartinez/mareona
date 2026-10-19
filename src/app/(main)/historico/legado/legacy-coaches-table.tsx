@@ -92,7 +92,7 @@ export function LegacyCoachesTable({ coaches }: LegacyCoachesTableProps) {
             <tr className="border-b border-[var(--border)] bg-neutral-50/70 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
               <th scope="col" className="py-2.5 px-3 text-center w-12">Pos</th>
               <th scope="col" className="py-2.5 px-3">Entrenador</th>
-              <th scope="col" className="py-2.5 px-3 text-center">Periodo</th>
+              <th scope="col" className="py-2.5 px-3 text-center">Periodos</th>
               <th scope="col" className="py-2.5 px-3 text-center">Temporadas</th>
               <th scope="col" className="py-2.5 px-3 text-center">Balance</th>
               <th scope="col" className="py-2.5 px-3 text-right">Partidos Dirigidos</th>
