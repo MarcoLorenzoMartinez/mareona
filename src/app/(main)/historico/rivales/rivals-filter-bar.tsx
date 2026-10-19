@@ -95,7 +95,8 @@ export function RivalsFilterBar({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Buscar por equipo o provincia..."
-            className="w-full rounded-full border border-[var(--border)] bg-neutral-50 px-4 py-2 text-xs font-medium text-[var(--foreground)] placeholder:text-neutral-400 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20"
+            autoComplete="off"
+            className="w-full rounded-full border border-[var(--border)] bg-neutral-50 pl-4 pr-8 py-2 text-xs font-medium text-[var(--foreground)] placeholder:text-neutral-400 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
           />
           {searchQuery && (
             <button
