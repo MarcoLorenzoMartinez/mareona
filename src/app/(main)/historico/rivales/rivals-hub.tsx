@@ -1,17 +1,19 @@
-// Client: Orquestador interactivo de la sección de Rivales
+// Client: Orquestador interactivo de la sección de Rivales con mapas interactivos y preservación de scroll
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import type {
   RegionRivalSummary,
   RivalH2HSummary,
+  RivalLayoutMode,
   RivalScopeFilter,
+  RivalSortOption,
 } from "@/lib/historical/rivals-types";
 import type { DayMatchItem } from "@/lib/historical/ephemerides-types";
 import type { HistoricalMatch } from "@/lib/historical/types";
-import { filterRivals } from "@/lib/historical/rivals-service";
+import { filterRivals, sortRivals } from "@/lib/historical/rivals-service";
 import { RivalsFilterBar } from "./rivals-filter-bar";
-import { RivalCard } from "./rival-card";
+import { RivalsListView } from "./rivals-list-view";
 import { RivalDetailView } from "./rival-detail-view";
 import { RegionDetailView } from "./region-detail-view";
 import { SpainMap } from "./spain-map";
@@ -24,11 +26,6 @@ interface RivalsHubProps {
   readonly countrySummaries: readonly RegionRivalSummary[];
 }
 
-/**
- * Main interactive hub for Historical Rivals & H2H exploration.
- * Manages view mode (List, Spain Map, World Map), live search, scope filters,
- * selected rival/region drills, and official match sheet modals.
- */
 export function RivalsHub({
   allRivals,
   communitySummaries,
@@ -37,139 +34,169 @@ export function RivalsHub({
   const [activeTab, setActiveTab] = useState<"list" | "spain-map" | "world-map">("list");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeScope, setActiveScope] = useState<RivalScopeFilter>("all");
+  const [activeSort, setActiveSort] = useState<RivalSortOption>("alpha");
+  const [layoutMode, setLayoutMode] = useState<RivalLayoutMode>("grid");
   const [selectedRival, setSelectedRival] = useState<RivalH2HSummary | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<RegionRivalSummary | null>(null);
   const [selectedMatch, setSelectedMatch] = useState<DayMatchItem | null>(null);
+  const scrollYRef = useRef<number>(0);
 
-  // Compute live filtered rivals based on query and scope
-  const filteredRivals = useMemo(() => {
-    return filterRivals(allRivals, searchQuery, activeScope);
-  }, [allRivals, searchQuery, activeScope]);
+  const sortedRivals = useMemo(() => {
+    const filtered = filterRivals(allRivals, searchQuery, activeScope);
+    return sortRivals(filtered, activeSort);
+  }, [allRivals, searchQuery, activeScope, activeSort]);
 
-  // Handle selection from Spain map
-  const handleSelectCommunity = (communityName: string) => {
-    const found = communitySummaries.find(
-      (c) => c.regionName.toLowerCase() === communityName.toLowerCase()
-    );
-    if (found) {
-      setSelectedRegion(found);
+  const handleSelectRival = (rival: RivalH2HSummary) => {
+    scrollYRef.current = window.scrollY;
+    setSelectedRival(rival);
+    const url = new URL(window.location.href);
+    url.searchParams.set("rival", rival.name);
+    window.history.pushState({ rival: rival.name }, "", url.toString());
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  const handleBackFromRival = () => {
+    if (window.history.state?.rival) {
+      window.history.back();
+    } else {
+      setSelectedRival(null);
+      const url = new URL(window.location.href);
+      url.searchParams.delete("rival");
+      window.history.replaceState({}, "", url.toString());
+      requestAnimationFrame(() => window.scrollTo({ top: scrollYRef.current, behavior: "instant" }));
     }
   };
 
-  // Handle selection from World map
-  const handleSelectCountry = (countryName: string) => {
-    const found = countrySummaries.find(
-      (c) => c.regionName.toLowerCase() === countryName.toLowerCase()
-    );
-    if (found) {
-      setSelectedRegion(found);
+  const handleTabChange = (tab: "list" | "spain-map" | "world-map") => {
+    setActiveTab(tab);
+    setSelectedRegion(null);
+  };
+
+  useEffect(() => {
+    const syncFromUrl = () => {
+      const rivalName = new URLSearchParams(window.location.search).get("rival");
+      if (rivalName) {
+        const found = allRivals.find((r) => r.name.toLowerCase() === rivalName.toLowerCase());
+        if (found) {
+          setSelectedRival(found);
+          return;
+        }
+      }
+      setSelectedRival(null);
+      requestAnimationFrame(() => window.scrollTo({ top: scrollYRef.current, behavior: "instant" }));
+    };
+
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, [allRivals]);
+
+  const handleSelectCommunity = (name: string) => {
+    if (selectedRegion && selectedRegion.regionName.toLowerCase() === name.toLowerCase()) {
+      setSelectedRegion(null);
+      return;
     }
+    const found = communitySummaries.find((c) => c.regionName.toLowerCase() === name.toLowerCase());
+    if (found) setSelectedRegion(found);
+  };
+
+  const handleSelectCountry = (name: string) => {
+    if (selectedRegion && selectedRegion.regionName.toLowerCase() === name.toLowerCase()) {
+      setSelectedRegion(null);
+      return;
+    }
+    const found = countrySummaries.find((c) => c.regionName.toLowerCase() === name.toLowerCase());
+    if (found) setSelectedRegion(found);
   };
 
   const matchForModal: HistoricalMatch | null = selectedMatch
     ? {
-        id: selectedMatch.id,
-        date: selectedMatch.date,
-        competition: selectedMatch.competition,
-        round: selectedMatch.round,
-        homeTeam: selectedMatch.homeTeam,
-        homeCrestUrl: selectedMatch.homeCrestUrl,
-        awayTeam: selectedMatch.awayTeam,
-        awayCrestUrl: selectedMatch.awayCrestUrl,
-        homeScore: selectedMatch.homeScore,
-        awayScore: selectedMatch.awayScore,
-        isHome: selectedMatch.isHome,
-        outcome: selectedMatch.outcome,
-        opponent: selectedMatch.opponent,
-        venue: selectedMatch.venue,
-        bdfMatchId: selectedMatch.bdfMatchId,
+        ...selectedMatch,
+        outcome: selectedMatch.outcome === "V" || selectedMatch.outcome === "D" ? selectedMatch.outcome : "E",
       }
     : null;
 
-  // 1. Drilled down to a specific Rival Profile
-  if (selectedRival) {
-    return (
-      <>
-        <RivalDetailView
-          rival={selectedRival}
-          onBack={() => setSelectedRival(null)}
-          onSelectMatch={setSelectedMatch}
-        />
-        {matchForModal && selectedMatch && (
-          <HistoricalMatchDetailModal
-            match={matchForModal}
-            season={selectedMatch.season}
-            onClose={() => setSelectedMatch(null)}
-          />
-        )}
-      </>
-    );
-  }
-
-  // 2. Drilled down to a specific Region or Country
-  if (selectedRegion) {
-    return (
-      <RegionDetailView
-        region={selectedRegion}
-        onBack={() => setSelectedRegion(null)}
-        onSelectRival={(rival) => {
-          setSelectedRegion(null);
-          setSelectedRival(rival);
-        }}
-      />
-    );
-  }
-
-  // 3. Main Explorer View (List / Spain Map / World Map)
   return (
     <div className="flex flex-col gap-5">
-      <RivalsFilterBar
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        activeScope={activeScope}
-        onScopeChange={setActiveScope}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        totalMatchesCount={allRivals.length}
-        filteredRivalsCount={filteredRivals.length}
-      />
-
-      {activeTab === "list" && (
-        <section aria-label="Lista alfabética de rivales">
-          {filteredRivals.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {filteredRivals.map((rival) => (
-                <RivalCard key={rival.name} rival={rival} onSelect={setSelectedRival} />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-xl border border-[var(--border)] bg-white p-8 text-center shadow-2xs">
-              <p className="text-sm font-semibold text-[var(--foreground)]">
-                No se encontraron rivales con esos criterios
-              </p>
-              <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-                Prueba con otro término de búsqueda o selecciona el filtro &quot;Todos&quot;.
-              </p>
-            </div>
+      {selectedRival && (
+        <>
+          <RivalDetailView
+            rival={selectedRival}
+            onBack={handleBackFromRival}
+            onSelectMatch={setSelectedMatch}
+          />
+          {matchForModal && selectedMatch && (
+            <HistoricalMatchDetailModal
+              match={matchForModal}
+              season={selectedMatch.season}
+              onClose={() => setSelectedMatch(null)}
+            />
           )}
-        </section>
+        </>
       )}
 
-      {activeTab === "spain-map" && (
-        <SpainMap
-          communitySummaries={communitySummaries}
-          onSelectCommunity={handleSelectCommunity}
-          selectedCommunityName={null}
+      <div className={selectedRival ? "hidden" : "contents"}>
+        <RivalsFilterBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          activeScope={activeScope}
+          onScopeChange={setActiveScope}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          activeSort={activeSort}
+          onSortChange={setActiveSort}
+          layoutMode={layoutMode}
+          onLayoutModeChange={setLayoutMode}
+          totalMatchesCount={allRivals.length}
+          filteredRivalsCount={sortedRivals.length}
         />
-      )}
 
-      {activeTab === "world-map" && (
-        <WorldMap
-          countrySummaries={countrySummaries}
-          onSelectCountry={handleSelectCountry}
-          selectedCountryName={null}
-        />
-      )}
+        {activeTab === "list" && (
+          <section aria-label="Explorador de rivales del Sporting">
+            <RivalsListView
+              rivals={sortedRivals}
+              layoutMode={layoutMode}
+              activeSort={activeSort}
+              onSortChange={setActiveSort}
+              onSelect={handleSelectRival}
+            />
+          </section>
+        )}
+
+        {activeTab === "spain-map" && (
+          <div className="flex flex-col gap-6">
+            <SpainMap
+              communitySummaries={communitySummaries}
+              onSelectCommunity={handleSelectCommunity}
+              selectedCommunityName={selectedRegion && !selectedRegion.isCountry ? selectedRegion.regionName : null}
+            />
+            {selectedRegion && !selectedRegion.isCountry && (
+              <RegionDetailView
+                region={selectedRegion}
+                onBack={() => setSelectedRegion(null)}
+                onSelectRival={handleSelectRival}
+              />
+            )}
+          </div>
+        )}
+
+        {activeTab === "world-map" && (
+          <div className="flex flex-col gap-6">
+            <WorldMap
+              countrySummaries={countrySummaries}
+              onSelectCountry={handleSelectCountry}
+              selectedCountryName={selectedRegion && selectedRegion.isCountry ? selectedRegion.regionName : null}
+            />
+            {selectedRegion && selectedRegion.isCountry && (
+              <RegionDetailView
+                region={selectedRegion}
+                onBack={() => setSelectedRegion(null)}
+                onSelectRival={handleSelectRival}
+              />
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

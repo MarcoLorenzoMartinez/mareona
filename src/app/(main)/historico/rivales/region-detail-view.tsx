@@ -15,29 +15,21 @@ interface RegionDetailViewProps {
  */
 export function RegionDetailView({ region, onBack, onSelectRival }: RegionDetailViewProps) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 animate-in fade-in duration-200">
       {/* Header Card */}
       <div className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs sm:p-6">
-        <div className="flex items-center justify-between">
-          <button
-            type="button"
-            onClick={onBack}
-            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-neutral-50 px-3 py-1 text-xs font-semibold text-[var(--foreground)] hover:bg-neutral-100 active:scale-95 transition-all"
-          >
-            ← Volver al mapa
-          </button>
-          <span className="text-xs font-semibold text-[var(--primary)] uppercase tracking-wider">
-            {region.isCountry ? "País" : "Comunidad Autónoma"}
-          </span>
-        </div>
-
-        <div>
+        <div className="flex items-center justify-between pb-1">
           <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl">
             {region.regionName}
           </h2>
-          <p className="text-xs text-[var(--muted-foreground)]">
-            {region.totalRivals} {region.totalRivals === 1 ? "rival enfrentado" : "rivales enfrentados"} en competiciones oficiales
-          </p>
+          <button
+            type="button"
+            onClick={onBack}
+            className="group inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 py-1 text-xs font-semibold text-[var(--muted-foreground)] hover:border-neutral-300 hover:text-[var(--foreground)] transition-all cursor-pointer active:scale-95"
+            aria-label="Cerrar detalle de la región"
+          >
+            ✕ Cerrar
+          </button>
         </div>
 
         {/* Metrics Strip */}

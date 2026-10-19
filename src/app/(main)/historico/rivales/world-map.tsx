@@ -114,30 +114,6 @@ export function WorldMap({
           </div>
         )}
       </div>
-
-      {/* Quick Select Country Pills Below Map */}
-      <div className="flex flex-wrap items-center gap-1.5 pt-1">
-        <span className="text-[11px] font-bold text-neutral-500 mr-1 uppercase tracking-wider">
-          Países con rivales oficiales:
-        </span>
-        {countrySummaries.map((c) => {
-          const isSelected = selectedCountryName === c.regionName;
-          return (
-            <button
-              key={c.regionId}
-              type="button"
-              onClick={() => onSelectCountry(c.regionName)}
-              className={`rounded-full px-2.5 py-1 text-xs font-sans transition-all active:scale-95 ${
-                isSelected
-                  ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
-                  : "border border-[var(--border)] bg-white text-neutral-700 font-semibold hover:border-[var(--primary)] hover:text-[var(--primary)]"
-              }`}
-            >
-              {c.regionName} ({c.totalMatches} PJ)
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }

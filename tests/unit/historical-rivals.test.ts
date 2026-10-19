@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   getAllRivalsSummaries,
   filterRivals,
+  sortRivals,
   getSummariesByCommunity,
   getSummariesByCountry,
 } from "../../src/lib/historical/rivals-service.ts";
@@ -67,5 +68,17 @@ describe("Historical Rivals Service", () => {
     assert.ok(italy, "Italy must exist (Torino and Milan)");
     assert.equal(italy.totalRivals, 2);
     assert.equal(italy.totalMatches, 4);
+  });
+
+  it("sorts rivals accurately by games played, wins, and win rate", () => {
+    const byPlayed = sortRivals(allRivals, "played");
+    assert.ok(byPlayed[0]!.played >= 100, "Most played rival should have over 100 matches");
+    assert.ok(byPlayed[0]!.played >= byPlayed[1]!.played, "First must have >= matches than second");
+
+    const byWon = sortRivals(allRivals, "won");
+    assert.ok(byWon[0]!.won >= byWon[1]!.won, "First must have >= victories than second");
+
+    const byAlpha = sortRivals(allRivals, "alpha");
+    assert.equal(byAlpha[0]?.name, "AD Ceuta FC");
   });
 });

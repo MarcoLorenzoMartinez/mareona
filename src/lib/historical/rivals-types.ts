@@ -11,6 +11,15 @@ export type RivalScopeFilter =
   | "uefa"
   | "promocion";
 
+export type RivalSortOption =
+  | "played"
+  | "alpha"
+  | "won"
+  | "winRate"
+  | "diff";
+
+export type RivalLayoutMode = "grid" | "table";
+
 export interface RivalGeoInfo {
   readonly name: string;
   readonly crestUrl: string | null;

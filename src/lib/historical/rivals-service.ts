@@ -8,6 +8,7 @@ import type {
   RivalH2HMatch,
   RivalH2HSummary,
   RivalScopeFilter,
+  RivalSortOption,
 } from "./rivals-types";
 
 interface RawMatch {
@@ -221,6 +222,29 @@ export function filterRivals(
 
     return true;
   });
+}
+
+/**
+ * Sorts rival summaries by specified criterion (played, alpha, won, winRate, goalDiff).
+ */
+export function sortRivals(
+  rivals: readonly RivalH2HSummary[],
+  sortOption: RivalSortOption
+): RivalH2HSummary[] {
+  const list = [...rivals];
+  switch (sortOption) {
+    case "played":
+      return list.sort((a, b) => b.played - a.played || a.name.localeCompare(b.name, "es"));
+    case "won":
+      return list.sort((a, b) => b.won - a.won || b.played - a.played);
+    case "winRate":
+      return list.sort((a, b) => b.winPercentage - a.winPercentage || b.played - a.played);
+    case "diff":
+      return list.sort((a, b) => b.goalDiff - a.goalDiff || b.played - a.played);
+    case "alpha":
+    default:
+      return list.sort((a, b) => a.name.localeCompare(b.name, "es"));
+  }
 }
 
 /**
