@@ -58,7 +58,9 @@ export interface LegacyCoachRecord {
   readonly seasonsCount: number;
   readonly startSeason: string;
   readonly endSeason: string;
+  readonly eras: readonly string[];
   readonly photoUrl?: string | null;
 }
+
 
 

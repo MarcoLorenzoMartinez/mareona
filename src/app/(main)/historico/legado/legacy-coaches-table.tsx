@@ -113,8 +113,12 @@ export function LegacyCoachesTable({ coaches }: LegacyCoachesTableProps) {
                     <span className="truncate">{coach.fullName}</span>
                   </div>
                 </td>
-                <td className="py-2.5 px-3 text-center text-neutral-600 font-medium">
-                  {coach.startSeason} – {coach.endSeason}
+                <td className="py-2.5 px-3 text-center text-neutral-600 font-medium font-sans tabular-nums">
+                  <div className="flex flex-col items-center gap-0.5 whitespace-nowrap text-[11px]">
+                    {coach.eras.map((era) => (
+                      <span key={era}>{era}</span>
+                    ))}
+                  </div>
                 </td>
                 <td className="py-2.5 px-3 text-center font-semibold text-neutral-700">
                   {coach.seasonsCount} temp.

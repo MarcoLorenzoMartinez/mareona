@@ -74,16 +74,25 @@ describe("Historical Legacy Service", () => {
     assert.equal(coaches[0]?.matches, 230);
     assert.equal(coaches[0]?.won, 82);
     assert.equal(coaches[0]?.rank, 1);
+    assert.deepEqual(coaches[0]?.eras, [
+      "1979/80",
+      "1981/82",
+      "1984/85 – 1987/88",
+      "1995/96",
+      "1997/98",
+    ]);
 
     assert.equal(coaches[1]?.fullName, "Manuel Preciado");
     assert.equal(coaches[1]?.matches, 218);
     assert.equal(coaches[1]?.rank, 2);
+    assert.deepEqual(coaches[1]?.eras, ["2006/07 – 2011/12"]);
 
     assert.equal(coaches[2]?.fullName, "Amadeo Sánchez");
     assert.equal(coaches[2]?.matches, 173);
     assert.equal(coaches[2]?.rank, 3);
   });
 });
+
 
 
 

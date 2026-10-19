@@ -114,6 +114,51 @@ function stripSecondSurname(fullName: string): string {
   return parts.slice(0, parts.length - 1).join(" ");
 }
 
+function formatSeasonSlash(seasonId: string): string {
+  return seasonId.replace("-", "/");
+}
+
+function getSeasonStartYear(seasonId: string): number {
+  return parseInt(seasonId.split("-")[0] ?? "0", 10);
+}
+
+/**
+ * Groups a coach's historical seasons into chronological consecutive eras.
+ * Formats individual seasons with slash 'YYYY/YY' notation.
+ */
+export function groupSeasonsIntoEras(seasons: readonly string[]): string[] {
+  if (!seasons || seasons.length === 0) return [];
+
+  const sorted = Array.from(new Set(seasons)).sort(
+    (a, b) => getSeasonStartYear(a) - getSeasonStartYear(b),
+  );
+
+  const eras: string[][] = [];
+  let currentEra: string[] = [sorted[0] as string];
+
+  for (let i = 1; i < sorted.length; i++) {
+    const prevYear = getSeasonStartYear(sorted[i - 1] as string);
+    const currYear = getSeasonStartYear(sorted[i] as string);
+
+    if (currYear === prevYear + 1) {
+      currentEra.push(sorted[i] as string);
+    } else {
+      eras.push(currentEra);
+      currentEra = [sorted[i] as string];
+    }
+  }
+  eras.push(currentEra);
+
+  return eras.map((era) => {
+    const first = formatSeasonSlash(era[0] as string);
+    if (era.length === 1) {
+      return first;
+    }
+    const last = formatSeasonSlash(era[era.length - 1] as string);
+    return `${first} – ${last}`;
+  });
+}
+
 /**
  * Computes all-time coaches ranking by official matches directed.
  */
@@ -175,6 +220,7 @@ export function getTopCoaches(limit = 20): LegacyCoachRecord[] {
     const uniqueSeasons = Array.from(new Set(c.seasons)).sort(
       (a, b) => parseInt(a, 10) - parseInt(b, 10),
     );
+    const eras = groupSeasonsIntoEras(c.seasons);
 
     return {
       rank: idx + 1,
@@ -185,12 +231,16 @@ export function getTopCoaches(limit = 20): LegacyCoachRecord[] {
       drawn: c.drawn,
       lost: c.lost,
       seasonsCount: uniqueSeasons.length,
-      startSeason: uniqueSeasons[0] ?? "",
-      endSeason: uniqueSeasons[uniqueSeasons.length - 1] ?? "",
+      startSeason: uniqueSeasons[0] ? formatSeasonSlash(uniqueSeasons[0]) : "",
+      endSeason: uniqueSeasons[uniqueSeasons.length - 1]
+        ? formatSeasonSlash(uniqueSeasons[uniqueSeasons.length - 1] as string)
+        : "",
+      eras,
       photoUrl: c.photoUrl,
     };
   });
 }
+
 
 
 
