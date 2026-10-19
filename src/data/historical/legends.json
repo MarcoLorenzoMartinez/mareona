@@ -65,50 +65,6 @@
       "statLabel": "25 goles encajados (0.80)"
     }
   ],
-  "templeMilestones": [
-    {
-      "year": 1908,
-      "temple": "molinon",
-      "title": "Primer partido documentado",
-      "description": "Se disputa el primer encuentro documentado en los terrenos de El Molinón entre La Bella Sportiva y El Balón, origen del recinto más antiguo de España.",
-      "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
-    },
-    {
-      "year": 1917,
-      "temple": "molinon",
-      "title": "Construcción de la primera grada cubierta",
-      "description": "El Sporting acomete las primeras obras de tribuna de madera techada para albergar el crecimiento de aficionados en los campeonatos regionales.",
-      "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
-    },
-    {
-      "year": 1978,
-      "temple": "mareo",
-      "title": "Inauguración de la Escuela de Mareo",
-      "description": "El presidente Manuel Vega-Arango inaugura la Escuela de Fútbol de Mareo, pionera en España y fábrica de talentos de la cantera rojiblanca.",
-      "photoUrl": "/images/historical/escuela-de-mareo.jpg"
-    },
-    {
-      "year": 1982,
-      "temple": "molinon",
-      "title": "Sede de la Copa Mundial de la FIFA 1982",
-      "description": "El Molinón se transforma con nueva visera y tribunas para acoger los partidos de la fase de grupos de la Copa del Mundo de 1982.",
-      "photoUrl": "https://www.bdfutbol.com/i/j/1284i.jpg"
-    },
-    {
-      "year": 2010,
-      "temple": "molinon",
-      "title": "Reforma integral y nueva fachada",
-      "description": "Concluyen las obras de modernización que renuevan la tribuna norte y cierran el perímetro del estadio con su fachada contemporánea.",
-      "photoUrl": "https://www.bdfutbol.com/i/j/571.jpg"
-    },
-    {
-      "year": 2018,
-      "temple": "molinon",
-      "title": "Denominación oficial El Molinón - Enrique Castro Quini",
-      "description": "El Ayuntamiento de Gijón y el club formalizan el nombramiento del estadio en memoria perpetua de la máxima leyenda del sportinguismo.",
-      "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
-    }
-  ],
   "legends": [
     {
       "id": "quini",

@@ -3,7 +3,7 @@
  * Strict typing with zero mock data and compliant with WCAG 2.2 AA.
  */
 
-export type LegacyTab = "records" | "legends" | "temples" | "coaches";
+export type LegacyTab = "records" | "legends";
 
 export interface LegacyPlayerRecord {
   readonly rank: number;
@@ -47,19 +47,3 @@ export interface IndividualAward {
   readonly statLabel: string;
 }
 
-export interface TempleMilestone {
-  readonly year: number;
-  readonly title: string;
-  readonly temple: "molinon" | "mareo";
-  readonly description: string;
-  readonly photoUrl?: string;
-}
-
-export interface CoachRecord {
-  readonly rank: number;
-  readonly name: string;
-  readonly seasonsCount: number;
-  readonly seasonsList: readonly string[];
-  readonly photoUrl?: string;
-  readonly milestone?: string;
-}

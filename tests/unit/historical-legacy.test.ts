@@ -5,9 +5,7 @@ import {
   getTopScorersPlayers,
   getTopSeasonsPlayers,
   getIndividualAwards,
-  getTempleMilestones,
   getLegendProfiles,
-  getTopCoaches,
 } from "../../src/lib/historical/legacy-service.ts";
 
 describe("Historical Legacy Service", () => {
@@ -57,12 +55,6 @@ describe("Historical Legacy Service", () => {
     assert.equal(zamoras.length, 3);
   });
 
-  it("retrieves El Molinón and Mareo temple milestones chronologically", () => {
-    const milestones = getTempleMilestones();
-    assert.ok(milestones.length >= 6);
-    assert.equal(milestones[0]?.year, 1908);
-  });
-
   it("retrieves legend profiles with verified highlights", () => {
     const legends = getLegendProfiles();
     assert.ok(legends.length >= 8);
@@ -72,13 +64,5 @@ describe("Historical Legacy Service", () => {
     assert.equal(quini.role, "player");
     assert.ok(quini.highlights.length >= 3);
   });
-
-  it("calculates top coaches ranking (Meana & Novoa at top)", () => {
-    const coaches = getTopCoaches(10);
-    assert.equal(coaches.length, 10);
-    assert.equal(coaches[0]?.name, "Manuel Meana");
-    assert.equal(coaches[0]?.seasonsCount, 9);
-    assert.equal(coaches[1]?.name, "José Manuel Díaz Novoa");
-    assert.equal(coaches[1]?.seasonsCount, 8);
-  });
 });
+

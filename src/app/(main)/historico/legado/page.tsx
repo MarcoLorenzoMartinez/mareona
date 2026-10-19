@@ -5,14 +5,12 @@ import {
   getTopSeasonsPlayers,
   getIndividualAwards,
   getLegendProfiles,
-  getTempleMilestones,
-  getTopCoaches,
 } from "@/lib/historical/legacy-service";
 import { LegacyHub } from "./legacy-hub";
 
 export const metadata: Metadata = {
-  title: "Muro de Leyendas y El Molinón — Histórico — Mareona",
-  description: "Récords históricos, leyendas rojiblancas y la memoria de El Molinón y Mareo.",
+  title: "Récords y Leyendas — Histórico — Mareona",
+  description: "Récords históricos, palmarés y muro de leyendas rojiblancas.",
 };
 
 export default function HistoricoLegadoPage() {
@@ -21,8 +19,6 @@ export default function HistoricoLegadoPage() {
   const topSeasons = getTopSeasonsPlayers(20);
   const individualAwards = getIndividualAwards();
   const legends = getLegendProfiles();
-  const templeMilestones = getTempleMilestones();
-  const topCoaches = getTopCoaches(15);
 
   return (
     <div className="flex flex-col gap-6">
@@ -32,9 +28,8 @@ export default function HistoricoLegadoPage() {
         topSeasons={topSeasons}
         individualAwards={individualAwards}
         legends={legends}
-        templeMilestones={templeMilestones}
-        topCoaches={topCoaches}
       />
     </div>
   );
 }
+

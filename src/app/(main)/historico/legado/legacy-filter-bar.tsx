@@ -11,9 +11,8 @@ interface LegacyFilterBarProps {
 const TABS: readonly { readonly id: LegacyTab; readonly label: string }[] = [
   { id: "records", label: "Récords y Palmarés" },
   { id: "legends", label: "Muro de Leyendas" },
-  { id: "temples", label: "El Molinón y Mareo" },
-  { id: "coaches", label: "Banquillo" },
 ];
+
 
 /**
  * Filter bar adhering to AGENTS.md rules 8 and 9:

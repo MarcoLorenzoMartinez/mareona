@@ -1,12 +1,9 @@
 import rawSquads from "../../data/historical/squads.json" with { type: "json" };
-import seasonsData from "../../data/historical/seasons.json" with { type: "json" };
 import legendsData from "../../data/historical/legends.json" with { type: "json" };
 import type {
-  CoachRecord,
   IndividualAward,
   LegacyPlayerRecord,
   LegendProfile,
-  TempleMilestone,
 } from "./legacy-types";
 
 interface RawPlayer {
@@ -20,12 +17,6 @@ interface RawPlayer {
   readonly photoUrl?: string | null;
 }
 
-interface RawSeason {
-  readonly id: string;
-  readonly label: string;
-  readonly played: number;
-  readonly coach?: string;
-}
 
 /**
  * Computes all-time player rankings by appearances (matches played).
@@ -74,52 +65,12 @@ export function getIndividualAwards(): IndividualAward[] {
 }
 
 /**
- * Returns historical milestones of El Molinón and Mareo.
- */
-export function getTempleMilestones(): TempleMilestone[] {
-  const list = legendsData.templeMilestones as unknown as TempleMilestone[];
-  return [...list].sort((a, b) => a.year - b.year);
-}
-
-/**
  * Returns verified legendary profiles for the Legends Wall.
  */
 export function getLegendProfiles(): LegendProfile[] {
   return legendsData.legends as unknown as LegendProfile[];
 }
 
-/**
- * Computes all-time coaches ranking by seasons and matches directed.
- */
-export function getTopCoaches(limit = 15): CoachRecord[] {
-  const coachMap = new Map<string, { seasons: string[]; games: number; photoUrl?: string }>();
-
-  for (const s of seasonsData as RawSeason[]) {
-    if (!s.coach) continue;
-    const names = s.coach.split("/").map((n) => n.trim());
-    for (const name of names) {
-      if (!name) continue;
-      const existing = coachMap.get(name) ?? { seasons: [], games: 0 };
-      existing.seasons.push(s.label);
-      existing.games += Math.round(s.played / names.length);
-      coachMap.set(name, existing);
-    }
-  }
-
-  const list: CoachRecord[] = Array.from(coachMap.entries()).map(([name, data]) => ({
-    rank: 0,
-    name,
-    seasonsCount: data.seasons.length,
-    seasonsList: data.seasons,
-  }));
-
-  list.sort((a, b) => b.seasonsCount - a.seasonsCount);
-
-  return list.slice(0, limit).map((c, idx) => ({
-    ...c,
-    rank: idx + 1,
-  }));
-}
 
 /**
  * Helper: aggregates 900+ players from squads.json.

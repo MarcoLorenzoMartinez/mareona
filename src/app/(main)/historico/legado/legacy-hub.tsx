@@ -3,18 +3,14 @@
 
 import { useState } from "react";
 import type {
-  CoachRecord,
   IndividualAward,
   LegacyPlayerRecord,
   LegacyTab,
   LegendProfile,
-  TempleMilestone,
 } from "@/lib/historical/legacy-types";
 import { LegacyFilterBar } from "./legacy-filter-bar";
 import { LegacyRankingsView } from "./legacy-rankings-view";
 import { LegacyLegendsWall } from "./legacy-legends-wall";
-import { LegacyTemplesView } from "./legacy-temples-view";
-import { LegacyCoachesView } from "./legacy-coaches-view";
 
 interface LegacyHubProps {
   readonly topAppearances: readonly LegacyPlayerRecord[];
@@ -22,8 +18,6 @@ interface LegacyHubProps {
   readonly topSeasons: readonly LegacyPlayerRecord[];
   readonly individualAwards: readonly IndividualAward[];
   readonly legends: readonly LegendProfile[];
-  readonly templeMilestones: readonly TempleMilestone[];
-  readonly topCoaches: readonly CoachRecord[];
 }
 
 export function LegacyHub({
@@ -32,8 +26,6 @@ export function LegacyHub({
   topSeasons,
   individualAwards,
   legends,
-  templeMilestones,
-  topCoaches,
 }: LegacyHubProps) {
   const [activeTab, setActiveTab] = useState<LegacyTab>("records");
 
@@ -55,16 +47,7 @@ export function LegacyHub({
       {activeTab === "legends" && (
         <LegacyLegendsWall legends={legends} />
       )}
-
-      {/* Tab 3: Temples (El Molinón & Mareo) */}
-      {activeTab === "temples" && (
-        <LegacyTemplesView milestones={templeMilestones} />
-      )}
-
-      {/* Tab 4: Historical Coaches */}
-      {activeTab === "coaches" && (
-        <LegacyCoachesView coaches={topCoaches} />
-      )}
     </div>
   );
 }
+
