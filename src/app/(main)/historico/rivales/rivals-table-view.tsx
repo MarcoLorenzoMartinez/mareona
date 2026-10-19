@@ -3,6 +3,7 @@
 
 import type { RivalH2HSummary, RivalSortOption } from "@/lib/historical/rivals-types";
 import { TeamCrest } from "@/components/media/team-crest";
+import { RivalBalanceBar } from "./rival-balance-bar";
 
 interface RivalsTableViewProps {
   readonly rivals: readonly RivalH2HSummary[];
@@ -154,12 +155,13 @@ export function RivalsTableView({
                       <span className={`text-xs font-bold tabular-nums ${rival.winPercentage >= 50 ? "text-[var(--primary)] font-black" : "text-neutral-700"}`}>
                         {rival.winPercentage}%
                       </span>
-                      <div className="hidden sm:block h-1 w-10 rounded-full bg-neutral-200/80 overflow-hidden" aria-hidden="true">
-                        <div
-                          className="h-full rounded-full bg-[var(--primary)] transition-all"
-                          style={{ width: `${rival.winPercentage}%` }}
-                        />
-                      </div>
+                      <RivalBalanceBar
+                        won={rival.won}
+                        drawn={rival.drawn}
+                        lost={rival.lost}
+                        played={rival.played}
+                        winPercentage={rival.winPercentage}
+                      />
                     </div>
                   </td>
                 </tr>
