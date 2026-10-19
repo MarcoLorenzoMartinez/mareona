@@ -88,6 +88,33 @@ interface RawSeasonSquad {
 }
 
 /**
+ * Trims second Spanish surname, preserving single surnames and compound names.
+ */
+function stripSecondSurname(fullName: string): string {
+  if (!fullName) return "";
+  const trimmed = fullName.trim();
+
+  // Known canonical overrides
+  if (trimmed === "Anacleto José María Peña Salegui") {
+    return "José María Peña";
+  }
+
+  const parts = trimmed.split(/\s+/);
+  if (parts.length <= 2) return trimmed;
+
+  // Handle compound second surnames like 'de Santiago' or 'de Trabanco'
+  if (
+    parts.length >= 4 &&
+    (parts[parts.length - 2]?.toLowerCase() === "de" ||
+      parts[parts.length - 2]?.toLowerCase() === "del")
+  ) {
+    return parts.slice(0, parts.length - 2).join(" ");
+  }
+
+  return parts.slice(0, parts.length - 1).join(" ");
+}
+
+/**
  * Computes all-time coaches ranking by official matches directed.
  */
 export function getTopCoaches(limit = 20): LegacyCoachRecord[] {
@@ -113,9 +140,12 @@ export function getTopCoaches(limit = 20): LegacyCoachRecord[] {
       const key = c.fullName || c.alias;
       if (!key) continue;
 
+      const rawFullName = c.fullName || c.alias || key;
+      const formattedName = stripSecondSurname(rawFullName);
+
       const existing = coachMap.get(key) ?? {
-        name: c.alias || key,
-        fullName: c.fullName || c.alias || key,
+        name: c.alias || formattedName,
+        fullName: formattedName,
         matches: 0,
         won: 0,
         drawn: 0,
@@ -161,6 +191,7 @@ export function getTopCoaches(limit = 20): LegacyCoachRecord[] {
     };
   });
 }
+
 
 
 

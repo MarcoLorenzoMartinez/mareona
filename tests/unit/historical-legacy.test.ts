@@ -70,19 +70,20 @@ describe("Historical Legacy Service", () => {
   it("calculates top coaches ranking by matches directed (Novoa #1, Preciado #2)", () => {
     const coaches = getTopCoaches(10);
     assert.equal(coaches.length, 10);
-    assert.equal(coaches[0]?.fullName, "José Manuel Díaz Novoa");
+    assert.equal(coaches[0]?.fullName, "José Manuel Díaz");
     assert.equal(coaches[0]?.matches, 230);
     assert.equal(coaches[0]?.won, 82);
     assert.equal(coaches[0]?.rank, 1);
 
-    assert.equal(coaches[1]?.fullName, "Manuel Preciado Rebolledo");
+    assert.equal(coaches[1]?.fullName, "Manuel Preciado");
     assert.equal(coaches[1]?.matches, 218);
     assert.equal(coaches[1]?.rank, 2);
 
-    assert.equal(coaches[2]?.fullName, "Amadeo Sánchez Álvarez");
+    assert.equal(coaches[2]?.fullName, "Amadeo Sánchez");
     assert.equal(coaches[2]?.matches, 173);
     assert.equal(coaches[2]?.rank, 3);
   });
 });
+
 
 

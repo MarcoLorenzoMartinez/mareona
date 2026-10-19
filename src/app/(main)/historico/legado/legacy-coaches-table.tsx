@@ -110,14 +110,7 @@ export function LegacyCoachesTable({ coaches }: LegacyCoachesTableProps) {
                       size="sm"
                       className="h-7 w-7 rounded-full object-cover object-top shrink-0"
                     />
-                    <div className="flex flex-col min-w-0">
-                      <span className="truncate">{coach.fullName}</span>
-                      {coach.name && coach.name !== coach.fullName && (
-                        <span className="text-[10px] font-normal text-neutral-400 truncate">
-                          Conocido como {coach.name}
-                        </span>
-                      )}
-                    </div>
+                    <span className="truncate">{coach.fullName}</span>
                   </div>
                 </td>
                 <td className="py-2.5 px-3 text-center text-neutral-600 font-medium">
