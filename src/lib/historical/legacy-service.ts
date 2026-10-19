@@ -2,9 +2,11 @@ import rawSquads from "../../data/historical/squads.json" with { type: "json" };
 import legendsData from "../../data/historical/legends.json" with { type: "json" };
 import type {
   IndividualAward,
+  LegacyCoachRecord,
   LegacyPlayerRecord,
   LegendProfile,
 } from "./legacy-types";
+
 
 interface RawPlayer {
   readonly alias?: string;
@@ -70,6 +72,96 @@ export function getIndividualAwards(): IndividualAward[] {
 export function getLegendProfiles(): LegendProfile[] {
   return legendsData.legends as unknown as LegendProfile[];
 }
+
+interface RawCoach {
+  readonly alias?: string;
+  readonly fullName?: string;
+  readonly matches?: number;
+  readonly won?: number;
+  readonly drawn?: number;
+  readonly lost?: number;
+  readonly photoUrl?: string | null;
+}
+
+interface RawSeasonSquad {
+  readonly coaches?: readonly RawCoach[];
+}
+
+/**
+ * Computes all-time coaches ranking by official matches directed.
+ */
+export function getTopCoaches(limit = 20): LegacyCoachRecord[] {
+  const coachMap = new Map<
+    string,
+    {
+      name: string;
+      fullName: string;
+      matches: number;
+      won: number;
+      drawn: number;
+      lost: number;
+      seasons: string[];
+      photoUrl: string | null;
+    }
+  >();
+
+  const squadsRecord = rawSquads as unknown as Record<string, RawSeasonSquad>;
+
+  for (const [seasonId, seasonData] of Object.entries(squadsRecord)) {
+    if (!seasonData.coaches) continue;
+    for (const c of seasonData.coaches) {
+      const key = c.fullName || c.alias;
+      if (!key) continue;
+
+      const existing = coachMap.get(key) ?? {
+        name: c.alias || key,
+        fullName: c.fullName || c.alias || key,
+        matches: 0,
+        won: 0,
+        drawn: 0,
+        lost: 0,
+        seasons: [],
+        photoUrl: c.photoUrl ?? null,
+      };
+
+      existing.matches += c.matches || 0;
+      existing.won += c.won || 0;
+      existing.drawn += c.drawn || 0;
+      existing.lost += c.lost || 0;
+      existing.seasons.push(seasonId);
+      if (!existing.photoUrl && c.photoUrl) {
+        existing.photoUrl = c.photoUrl;
+      }
+
+      coachMap.set(key, existing);
+    }
+  }
+
+  const sorted = Array.from(coachMap.values())
+    .filter((c) => c.matches > 0)
+    .sort((a, b) => b.matches - a.matches || b.won - a.won);
+
+  return sorted.slice(0, limit).map((c, idx) => {
+    const uniqueSeasons = Array.from(new Set(c.seasons)).sort(
+      (a, b) => parseInt(a, 10) - parseInt(b, 10),
+    );
+
+    return {
+      rank: idx + 1,
+      name: c.name,
+      fullName: c.fullName,
+      matches: c.matches,
+      won: c.won,
+      drawn: c.drawn,
+      lost: c.lost,
+      seasonsCount: uniqueSeasons.length,
+      startSeason: uniqueSeasons[0] ?? "",
+      endSeason: uniqueSeasons[uniqueSeasons.length - 1] ?? "",
+      photoUrl: c.photoUrl,
+    };
+  });
+}
+
 
 
 /**

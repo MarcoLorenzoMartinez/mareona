@@ -3,6 +3,7 @@ import {
   getTopAppearancesPlayers,
   getTopScorersPlayers,
   getTopSeasonsPlayers,
+  getTopCoaches,
   getIndividualAwards,
   getLegendProfiles,
 } from "@/lib/historical/legacy-service";
@@ -17,6 +18,7 @@ export default function HistoricoLegadoPage() {
   const topAppearances = getTopAppearancesPlayers(20);
   const topScorers = getTopScorersPlayers(20);
   const topSeasons = getTopSeasonsPlayers(20);
+  const topCoaches = getTopCoaches(20);
   const individualAwards = getIndividualAwards();
   const legends = getLegendProfiles();
 
@@ -26,10 +28,12 @@ export default function HistoricoLegadoPage() {
         topAppearances={topAppearances}
         topScorers={topScorers}
         topSeasons={topSeasons}
+        topCoaches={topCoaches}
         individualAwards={individualAwards}
         legends={legends}
       />
     </div>
   );
 }
+
 

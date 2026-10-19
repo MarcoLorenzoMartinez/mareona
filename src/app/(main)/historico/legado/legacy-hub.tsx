@@ -4,6 +4,7 @@
 import { useState } from "react";
 import type {
   IndividualAward,
+  LegacyCoachRecord,
   LegacyPlayerRecord,
   LegacyTab,
   LegendProfile,
@@ -16,6 +17,7 @@ interface LegacyHubProps {
   readonly topAppearances: readonly LegacyPlayerRecord[];
   readonly topScorers: readonly LegacyPlayerRecord[];
   readonly topSeasons: readonly LegacyPlayerRecord[];
+  readonly topCoaches: readonly LegacyCoachRecord[];
   readonly individualAwards: readonly IndividualAward[];
   readonly legends: readonly LegendProfile[];
 }
@@ -24,6 +26,7 @@ export function LegacyHub({
   topAppearances,
   topScorers,
   topSeasons,
+  topCoaches,
   individualAwards,
   legends,
 }: LegacyHubProps) {
@@ -39,9 +42,11 @@ export function LegacyHub({
           topAppearances={topAppearances}
           topScorers={topScorers}
           topSeasons={topSeasons}
+          topCoaches={topCoaches}
           individualAwards={individualAwards}
         />
       )}
+
 
       {/* Tab 2: Legends Wall */}
       {activeTab === "legends" && (

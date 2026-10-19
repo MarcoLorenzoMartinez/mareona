@@ -47,3 +47,18 @@ export interface IndividualAward {
   readonly statLabel: string;
 }
 
+export interface LegacyCoachRecord {
+  readonly rank: number;
+  readonly name: string;
+  readonly fullName: string;
+  readonly matches: number;
+  readonly won: number;
+  readonly drawn: number;
+  readonly lost: number;
+  readonly seasonsCount: number;
+  readonly startSeason: string;
+  readonly endSeason: string;
+  readonly photoUrl?: string | null;
+}
+
+
