@@ -62,7 +62,7 @@ export function RegionDetailView({ region, onBack, onSelectRival }: RegionDetail
       {/* Rivals Grid */}
       <section aria-label="Equipos de la región" className="flex flex-col gap-3">
         <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--foreground)]">
-          Equipos de {region.regionName} ({region.rivals.length})
+          Equipos
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {region.rivals.map((rival) => (
