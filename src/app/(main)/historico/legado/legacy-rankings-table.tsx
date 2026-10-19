@@ -19,8 +19,8 @@ export function LegacyRankingsTable({ players, category }: LegacyRankingsTablePr
             <th scope="col" className="py-2.5 px-3">Futbolista</th>
             {category === "scorers" && (
               <>
-                <th scope="col" className="py-2.5 px-3 text-center">Partidos (PJ)</th>
-                <th scope="col" className="py-2.5 px-3 text-center">Promedio (Gol/PJ)</th>
+                <th scope="col" className="py-2.5 px-3 text-center">Partidos</th>
+                <th scope="col" className="py-2.5 px-3 text-center">Promedio (gol/partido)</th>
                 <th scope="col" className="py-2.5 px-3 text-right">Total Goles</th>
               </>
             )}
@@ -36,7 +36,7 @@ export function LegacyRankingsTable({ players, category }: LegacyRankingsTablePr
               <>
                 <th scope="col" className="py-2.5 px-3">Posición</th>
                 <th scope="col" className="py-2.5 px-3 text-center">Periodo Activo</th>
-                <th scope="col" className="py-2.5 px-3 text-center">Partidos (PJ)</th>
+                <th scope="col" className="py-2.5 px-3 text-center">Partidos</th>
                 <th scope="col" className="py-2.5 px-3 text-right">Total Temporadas</th>
               </>
             )}
@@ -74,11 +74,11 @@ export function LegacyRankingsTable({ players, category }: LegacyRankingsTablePr
                 {category === "scorers" && (
                   <>
                     <td className="py-2.5 px-3 text-center text-neutral-700 font-semibold">
-                      {player.totalPlayed} PJ
+                      {player.totalPlayed}
                     </td>
                     <td className="py-2.5 px-3 text-center font-semibold text-neutral-600">
                       <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] font-bold text-neutral-800">
-                        {goalRatio} / PJ
+                        {goalRatio}
                       </span>
                     </td>
                     <td className="py-2.5 px-3 text-right font-black text-neutral-900 text-sm">
@@ -114,7 +114,7 @@ export function LegacyRankingsTable({ players, category }: LegacyRankingsTablePr
                       {player.startSeason} – {player.endSeason}
                     </td>
                     <td className="py-2.5 px-3 text-center text-neutral-700 font-semibold">
-                      {player.totalPlayed} PJ
+                      {player.totalPlayed}
                     </td>
                     <td className="py-2.5 px-3 text-right font-black text-neutral-900 text-sm">
                       {player.seasonCount} temporadas
