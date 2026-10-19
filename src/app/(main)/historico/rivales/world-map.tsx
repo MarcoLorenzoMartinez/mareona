@@ -1,7 +1,7 @@
 // Client: Mapa interactivo vectorial SVG del mundo por países
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { RegionRivalSummary } from "@/lib/historical/rivals-types";
 import worldPaths from "@/data/historical/world-svg-paths.json";
 
@@ -13,9 +13,8 @@ interface WorldMapProps {
 
 /**
  * Interactive SVG Map of the World highlighting countries with competitive matches.
- * - Map fill: White / neutral surface
- * - Active / available countries: Fine red borders (stroke-[#e2001a] stroke-width="1")
- * - Non-rival countries: Subdued gray fill with disabled cursor
+ * Uses layered rendering to ensure border strokes are never occluded by neighboring polygon fills.
+ * Conforms to AGENTS.md rule 5: strictly <= 180 lines.
  */
 export function WorldMap({
   countrySummaries,
@@ -24,10 +23,28 @@ export function WorldMap({
 }: WorldMapProps) {
   const [hoveredCountry, setHoveredCountry] = useState<RegionRivalSummary | null>(null);
 
-  const countryMap = new Map<string, RegionRivalSummary>();
-  for (const s of countrySummaries) {
-    countryMap.set(s.regionName.toLowerCase(), s);
-  }
+  const countryMap = useMemo(() => {
+    const map = new Map<string, RegionRivalSummary>();
+    for (const s of countrySummaries) {
+      map.set(s.regionName.toLowerCase(), s);
+    }
+    return map;
+  }, [countrySummaries]);
+
+  const { inactiveCountries, rivalCountries } = useMemo(() => {
+    const inactive: typeof worldPaths = [];
+    const rivals: typeof worldPaths = [];
+
+    for (const country of worldPaths) {
+      const summary = countryMap.get(country.name.toLowerCase());
+      if (summary && summary.totalMatches > 0) {
+        rivals.push(country);
+      } else {
+        inactive.push(country);
+      }
+    }
+    return { inactiveCountries: inactive, rivalCountries: rivals };
+  }, [countryMap]);
 
   return (
     <div className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs sm:p-6">
@@ -64,27 +81,33 @@ export function WorldMap({
           role="img"
           aria-label="Mapa de países rivales del Real Sporting en competiciones oficiales"
         >
-          {worldPaths.map((country) => {
-            const summary = countryMap.get(country.name.toLowerCase());
-            const hasMatches = Boolean(summary && summary.totalMatches > 0);
-            const isSelected = selectedCountryName === country.name;
+          {/* Capa 1: Países sin enfrentamientos (fondo gris) */}
+          {inactiveCountries.map((country) => (
+            <path
+              key={country.id}
+              d={country.path}
+              className="fill-neutral-100/70 stroke-neutral-200 stroke-[0.15] cursor-not-allowed"
+            >
+              <title>{country.name} (Sin partidos oficiales)</title>
+            </path>
+          ))}
 
-            let fillClass = "fill-neutral-100/70 stroke-neutral-200 stroke-[0.15] cursor-not-allowed";
-            if (isSelected) {
-              fillClass = "fill-[#e2001a] stroke-white stroke-[0.4] cursor-pointer drop-shadow-sm";
-            } else if (hasMatches) {
-              fillClass = "fill-white hover:fill-red-50/80 stroke-[#e2001a] stroke-[0.35] cursor-pointer transition-colors";
-            }
+          {/* Capa 2: Rellenos e interactividad de países rivales */}
+          {rivalCountries.map((country) => {
+            const summary = countryMap.get(country.name.toLowerCase());
+            const isSelected = selectedCountryName === country.name;
 
             return (
               <path
                 key={country.id}
                 d={country.path}
-                className={fillClass}
+                className={
+                  isSelected
+                    ? "fill-[#e2001a] cursor-pointer"
+                    : "fill-white hover:fill-red-50/80 cursor-pointer transition-colors"
+                }
                 onClick={() => {
-                  if (hasMatches && summary) {
-                    onSelectCountry(country.name);
-                  }
+                  if (summary) onSelectCountry(country.name);
                 }}
                 onMouseEnter={() => {
                   if (summary) setHoveredCountry(summary);
@@ -94,11 +117,30 @@ export function WorldMap({
               >
                 <title>
                   {country.name}
-                  {summary ? ` (${summary.totalMatches} PJ - ${summary.won}V ${summary.drawn}E ${summary.lost}D)` : " (Sin partidos oficiales)"}
+                  {summary ? ` (${summary.totalMatches} PJ - ${summary.won}V ${summary.drawn}E ${summary.lost}D)` : ""}
                 </title>
               </path>
             );
           })}
+
+          {/* Capa 3: Bordes rojos destacados por encima de todos los rellenos */}
+          <g className="pointer-events-none" aria-hidden="true">
+            {rivalCountries.map((country) => {
+              const isSelected = selectedCountryName === country.name;
+              return (
+                <path
+                  key={`stroke-${country.id}`}
+                  d={country.path}
+                  fill="none"
+                  stroke={isSelected ? "white" : "#e2001a"}
+                  strokeWidth={isSelected ? "0.4" : "0.35"}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  className={isSelected ? "drop-shadow-sm" : ""}
+                />
+              );
+            })}
+          </g>
         </svg>
 
         {/* Hover Floating Card Tooltip */}
