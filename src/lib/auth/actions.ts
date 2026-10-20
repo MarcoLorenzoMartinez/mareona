@@ -11,14 +11,9 @@ import {
   type ProfileUpdateInput,
 } from "./schemas";
 import type { Database } from "@/types/database.types";
+import type { UserProfile, AuthActionResult } from "./types";
 
-export type UserProfile = Database["public"]["Tables"]["profiles"]["Row"];
-
-export interface AuthActionResult<T = void> {
-  readonly success: boolean;
-  readonly error?: string;
-  readonly data?: T;
-}
+export type { UserProfile, AuthActionResult };
 
 /**
  * Signs in an existing user using email and password.
@@ -44,10 +39,8 @@ export async function signInWithPassword(
   });
 
   if (error) {
-    if (error.message.includes("Invalid login credentials")) {
-      return { success: false, error: "Correo o contraseña incorrectos" };
-    }
-    return { success: false, error: error.message };
+    const isInvalid = error.message.includes("Invalid login credentials");
+    return { success: false, error: isInvalid ? "Correo o contraseña incorrectos" : error.message };
   }
 
   revalidatePath("/", "layout");
@@ -137,15 +130,9 @@ export async function updateProfile(
   }
 
   const updates: Partial<Database["public"]["Tables"]["profiles"]["Update"]> = {};
-  if (parsed.data.username !== undefined) {
-    updates.username = parsed.data.username;
-  }
-  if (parsed.data.displayName !== undefined) {
-    updates.display_name = parsed.data.displayName;
-  }
-  if (parsed.data.avatarUrl !== undefined) {
-    updates.avatar_url = parsed.data.avatarUrl;
-  }
+  if (parsed.data.username !== undefined) updates.username = parsed.data.username;
+  if (parsed.data.displayName !== undefined) updates.display_name = parsed.data.displayName;
+  if (parsed.data.avatarUrl !== undefined) updates.avatar_url = parsed.data.avatarUrl;
 
   const { error } = await supabase
     .from("profiles")
@@ -175,10 +162,7 @@ export async function updateProfile(
 export async function getCurrentUserProfile(): Promise<UserProfile | null> {
   try {
     const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
+    const { data: { user } } = await supabase.auth.getUser();
     if (!user) return null;
 
     const { data: profile } = await supabase
