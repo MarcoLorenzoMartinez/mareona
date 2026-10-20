@@ -54,6 +54,7 @@ export const es = {
         stats: "Estadísticas",
         lineups: "Alineaciones",
         info: "Detalles",
+        grada: "Grada",
       },
       events: {
         title: "Cronología del Partido",

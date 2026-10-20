@@ -8,12 +8,13 @@ import { MatchEventsTimeline } from "./match-events-timeline";
 import { MatchStatsPanel } from "./match-stats-panel";
 import { MatchLineupsView } from "./match-lineups-view";
 import { MatchInfo } from "./match-info";
+import { MatchCommunityTab } from "./match-community-tab";
 
 interface MatchTabsProps {
   readonly match: DomainMatchDetail;
 }
 
-type TabKey = "events" | "stats" | "lineups" | "info";
+type TabKey = "events" | "stats" | "lineups" | "info" | "grada";
 
 export function MatchTabs({ match }: MatchTabsProps) {
   const dict = getDictionary();
@@ -29,6 +30,7 @@ export function MatchTabs({ match }: MatchTabsProps) {
     { key: "stats", label: t.stats },
     { key: "lineups", label: t.lineups },
     { key: "info", label: t.info },
+    { key: "grada", label: t.grada },
   ];
 
   return (
@@ -74,6 +76,7 @@ export function MatchTabs({ match }: MatchTabsProps) {
         {activeTab === "stats" && <MatchStatsPanel match={match} />}
         {activeTab === "lineups" && <MatchLineupsView match={match} />}
         {activeTab === "info" && <MatchInfo match={match} />}
+        {activeTab === "grada" && <MatchCommunityTab match={match} />}
       </div>
     </div>
   );

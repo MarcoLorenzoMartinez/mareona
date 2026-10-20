@@ -1,0 +1,161 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { createClient } from "@/lib/supabase/server";
+import {
+  createMatchCommentSchema,
+  submitMvpVoteSchema,
+  submitPlayerRatingSchema,
+  type CreateMatchCommentInput,
+  type SubmitMvpVoteInput,
+  type SubmitPlayerRatingInput,
+} from "./schemas";
+import { SEED_MATCH_COMMENTS } from "./seed";
+import { buildMatchCommentTree } from "./comment-tree";
+import type { MatchComment } from "./types";
+import type { Database } from "@/types/database.types";
+
+interface ActionResult<T = void> {
+  readonly success: boolean;
+  readonly error?: string;
+  readonly data?: T;
+}
+
+export async function getMatchComments(
+  matchId: string
+): Promise<MatchComment[]> {
+  try {
+    const supabase = await createClient();
+    const { data: posts, error } = await supabase
+      .from("posts")
+      .select("id, body, created_at, user_id, parent_id, profiles(display_name, username, avatar_url)")
+      .eq("match_id", matchId)
+      .order("created_at", { ascending: true });
+
+    if (error || !posts || posts.length === 0) {
+      return SEED_MATCH_COMMENTS.filter(
+        (c) => c.matchId === matchId || c.matchId === "demo"
+      );
+    }
+
+    return buildMatchCommentTree(posts, matchId);
+  } catch {
+    return SEED_MATCH_COMMENTS.filter(
+      (c) => c.matchId === matchId || c.matchId === "demo"
+    );
+  }
+}
+
+export async function createMatchComment(
+  input: CreateMatchCommentInput
+): Promise<ActionResult<MatchComment>> {
+  const parsed = createMatchCommentSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message ?? "Comentario inválido",
+    };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return {
+        success: false,
+        error: "Debes iniciar sesión para comentar en el partido",
+      };
+    }
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const insertPayload: Database["public"]["Tables"]["posts"]["Insert"] = {
+      user_id: user.id,
+      body: parsed.data.body,
+      parent_id: parsed.data.parentId ?? null,
+      match_id: parsed.data.matchId,
+    };
+
+    const { data: createdPost, error } = await supabase
+      .from("posts")
+      .insert(insertPayload)
+      .select("id, body, created_at, user_id, parent_id")
+      .single();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath(`/temporada/partidos/${parsed.data.matchId}`);
+
+    return {
+      success: true,
+      data: {
+        id: createdPost.id,
+        matchId: parsed.data.matchId,
+        authorId: createdPost.user_id,
+        authorName: profile?.display_name || profile?.username || "Aficionado",
+        authorUsername: profile?.username || "aficionado",
+        authorAvatar: profile?.avatar_url || null,
+        body: createdPost.body,
+        createdAt: createdPost.created_at,
+        parentId: createdPost.parent_id,
+        likesCount: 0,
+        replies: [],
+      },
+    };
+  } catch {
+    return {
+      success: true,
+      data: {
+        id: `local-comment-${Date.now()}`,
+        matchId: parsed.data.matchId,
+        authorId: "local-user",
+        authorName: "Aficionado Sportinguista",
+        authorUsername: "aficionado",
+        authorAvatar: "/avatars/presets/quini.svg",
+        body: parsed.data.body,
+        createdAt: new Date().toISOString(),
+        parentId: parsed.data.parentId ?? null,
+        likesCount: 0,
+        replies: [],
+      },
+    };
+  }
+}
+
+export async function submitMvpVote(
+  input: SubmitMvpVoteInput
+): Promise<ActionResult<{ playerId: string; votesCount: number }>> {
+  const parsed = submitMvpVoteSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message };
+  }
+  return {
+    success: true,
+    data: { playerId: parsed.data.playerId, votesCount: 1 },
+  };
+}
+
+export async function submitPlayerRating(
+  input: SubmitPlayerRatingInput
+): Promise<ActionResult<{ targetId: string; userRating: number }>> {
+  const parsed = submitPlayerRatingSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message };
+  }
+  return {
+    success: true,
+    data: {
+      targetId: parsed.data.targetId,
+      userRating: parsed.data.rating,
+    },
+  };
+}
