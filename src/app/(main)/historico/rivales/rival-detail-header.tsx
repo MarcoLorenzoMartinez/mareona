@@ -4,6 +4,8 @@
 import type { RivalH2HSummary } from "@/lib/historical/rivals-types";
 import { TeamCrest } from "@/components/media/team-crest";
 
+import { formatRivalLocation } from "@/lib/historical/rival-location";
+
 interface RivalDetailHeaderProps {
   readonly rival: RivalH2HSummary;
   readonly selectedComp: string;
@@ -48,19 +50,21 @@ export function RivalDetailHeader({
           </svg>
           <span>Volver a rivales</span>
         </button>
-        <span className="rounded-full bg-[var(--surface)] border border-[var(--border)] px-3 py-1 text-xs font-semibold text-[var(--muted-foreground)]">
-          {rival.isInternational ? rival.country : `${rival.province} (${rival.community})`}
-        </span>
       </div>
 
       <div className="flex items-center gap-4">
         <TeamCrest crestUrl={rival.crestUrl} teamName={rival.name} size="lg" isSporting={false} />
         <div className="flex flex-col min-w-0">
-          <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl truncate">
-            {rival.name}
-          </h2>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl truncate">
+              {rival.name}
+            </h2>
+            <span className="inline-flex items-center rounded-full bg-neutral-100 border border-[var(--border)] px-2.5 py-0.5 text-xs font-semibold text-neutral-600">
+              {formatRivalLocation(rival)}
+            </span>
+          </div>
           {selectedComp !== "all" && (
-            <span className="text-xs font-semibold text-[var(--primary)] mt-0.5">
+            <span className="text-xs font-semibold text-[var(--primary)] mt-1">
               Balance en {selectedComp}
             </span>
           )}

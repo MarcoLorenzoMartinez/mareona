@@ -7,6 +7,7 @@ import {
   getSummariesByCommunity,
   getSummariesByCountry,
 } from "../../src/lib/historical/rivals-service.ts";
+import { formatRivalLocation } from "../../src/lib/historical/rival-location.ts";
 
 describe("Historical Rivals Service", () => {
   const allRivals = getAllRivalsSummaries();
@@ -70,16 +71,38 @@ describe("Historical Rivals Service", () => {
     }
   });
 
-  it("calculates accurate head-to-head record against Real Oviedo", () => {
+  it("calculates accurate head-to-head record against Real Oviedo including Campeonato Regional", () => {
     const oviedo = allRivals.find((r) => r.name === "Real Oviedo");
     assert.ok(oviedo, "Real Oviedo must exist");
-    assert.equal(oviedo.played, 105);
-    assert.equal(oviedo.won, 36);
-    assert.equal(oviedo.drawn, 27);
-    assert.equal(oviedo.lost, 42);
-    assert.equal(oviedo.goalsFor, 137);
-    assert.equal(oviedo.goalsAgainst, 133);
+    assert.equal(oviedo.played, 123);
+    assert.equal(oviedo.won, 41);
+    assert.equal(oviedo.drawn, 32);
+    assert.equal(oviedo.lost, 50);
+    assert.equal(oviedo.goalsFor, 173);
+    assert.equal(oviedo.goalsAgainst, 179);
     assert.equal(oviedo.community, "Principado de Asturias");
+
+    // Verify competitions breakdown
+    const regional = oviedo.competitionsBreakdown.find((c) => c.competition === "Campeonato Regional");
+    assert.ok(regional, "Campeonato Regional must be present in breakdown");
+    assert.equal(regional.played, 18);
+    assert.equal(regional.won, 5);
+    assert.equal(regional.drawn, 5);
+    assert.equal(regional.lost, 8);
+    assert.equal(regional.goalsFor, 36);
+    assert.equal(regional.goalsAgainst, 46);
+
+    const primera = oviedo.competitionsBreakdown.find((c) => c.competition === "1.ª División");
+    assert.equal(primera?.played, 40);
+
+    const segunda = oviedo.competitionsBreakdown.find((c) => c.competition === "2.ª División");
+    assert.equal(segunda?.played, 50);
+
+    const copa = oviedo.competitionsBreakdown.find((c) => c.competition === "Copa del Rey");
+    assert.equal(copa?.played, 14);
+
+    const copaFed = oviedo.competitionsBreakdown.find((c) => c.competition === "Copa Federación");
+    assert.equal(copaFed?.played, 1);
   });
 
   it("calculates accurate European head-to-head record against Torino", () => {
@@ -148,7 +171,7 @@ describe("Historical Rivals Service", () => {
     assert.equal(oviedo.goalDiff, -11);
     assert.equal(oviedo.winPercentage, 20);
     assert.equal(oviedo.matches.length, 40);
-    assert.equal(oviedo.allMatches?.length, 105, "Preserves all 105 matches in allMatches");
+    assert.equal(oviedo.allMatches?.length, 123, "Preserves all 123 matches in allMatches");
 
     // Rivals who never played in Primera are excluded
     const torinoInPrimera = filterRivals(allRivals, "Torino", "primera");
@@ -181,4 +204,68 @@ describe("Historical Rivals Service", () => {
     assert.equal(oviedo.goalsFor, 31);
     assert.equal(oviedo.goalsAgainst, 25);
   });
+
+  describe("formatRivalLocation", () => {
+    it("deduplicates uniprovincial communities without redundant parentheses", () => {
+      assert.equal(
+        formatRivalLocation({ province: "Asturias", community: "Principado de Asturias" }),
+        "Asturias"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "Madrid", community: "Comunidad de Madrid" }),
+        "Madrid"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "Cantabria", community: "Cantabria" }),
+        "Cantabria"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "Navarra", community: "Comunidad Foral de Navarra" }),
+        "Navarra"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "Murcia", community: "Región de Murcia" }),
+        "Murcia"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "La Rioja", community: "La Rioja" }),
+        "La Rioja"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "Illes Balears", community: "Illes Balears" }),
+        "Illes Balears"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "Ceuta", community: "Ceuta" }),
+        "Ceuta"
+      );
+    });
+
+    it("formats pluriprovincial Spanish communities with clean dot separator", () => {
+      assert.equal(
+        formatRivalLocation({ province: "Bizkaia", community: "País Vasco" }),
+        "Bizkaia · País Vasco"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "Burgos", community: "Castilla y León" }),
+        "Burgos · Castilla y León"
+      );
+      assert.equal(
+        formatRivalLocation({ province: "Sevilla", community: "Andalucía" }),
+        "Sevilla · Andalucía"
+      );
+    });
+
+    it("formats international rivals with their country name", () => {
+      assert.equal(
+        formatRivalLocation({ isInternational: true, country: "Italia" }),
+        "Italia"
+      );
+      assert.equal(
+        formatRivalLocation({ isInternational: true, country: "República Checa" }),
+        "República Checa"
+      );
+    });
+  });
 });
+

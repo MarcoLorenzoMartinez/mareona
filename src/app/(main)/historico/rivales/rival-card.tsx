@@ -3,6 +3,7 @@
 
 import type { RivalH2HSummary } from "@/lib/historical/rivals-types";
 import { TeamCrest } from "@/components/media/team-crest";
+import { formatRivalLocation } from "@/lib/historical/rival-location";
 
 interface RivalCardProps {
   readonly rival: RivalH2HSummary;
@@ -44,7 +45,7 @@ export function RivalCard({ rival, onSelect }: RivalCardProps) {
             {rival.name}
           </h3>
           <span className="text-[11px] font-medium text-[var(--muted-foreground)] truncate">
-            {rival.isInternational ? rival.country : `${rival.province} (${rival.community})`}
+            {formatRivalLocation(rival)}
           </span>
         </div>
       </div>

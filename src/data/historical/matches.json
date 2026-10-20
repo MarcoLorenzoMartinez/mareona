@@ -57648,6 +57648,38 @@
   ],
   "1933-34": [
     {
+      "id": "1933-34-reg-2",
+      "date": "12/11/1933",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 2,
+      "awayScore": 8,
+      "isHome": true,
+      "outcome": "D",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34h.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28d.png"
+    },
+    {
+      "id": "1933-34-reg-1",
+      "date": "08/10/1933",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 2,
+      "awayScore": 2,
+      "isHome": false,
+      "outcome": "E",
+      "opponent": "Real Oviedo",
+      "venue": "Buenavista",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28d.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34h.png"
+    },
+    {
       "id": "1933-34-1",
       "bdfMatchId": "154553",
       "date": "05/11/1933",
@@ -58016,6 +58048,38 @@
     }
   ],
   "1935-36": [
+    {
+      "id": "1935-36-reg-2",
+      "date": "20/10/1935",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 3,
+      "awayScore": 2,
+      "isHome": false,
+      "outcome": "D",
+      "opponent": "Real Oviedo",
+      "venue": "Buenavista",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28d.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34h.png"
+    },
+    {
+      "id": "1935-36-reg-1",
+      "date": "15/09/1935",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 0,
+      "awayScore": 5,
+      "isHome": true,
+      "outcome": "D",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34h.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28d.png"
+    },
     {
       "id": "1935-36-1",
       "bdfMatchId": "154213",
@@ -58510,6 +58574,38 @@
     }
   ],
   "1934-35": [
+    {
+      "id": "1934-35-reg-2",
+      "date": "28/10/1934",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 4,
+      "awayScore": 2,
+      "isHome": false,
+      "outcome": "D",
+      "opponent": "Real Oviedo",
+      "venue": "Buenavista",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28d.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34h.png"
+    },
+    {
+      "id": "1934-35-reg-1",
+      "date": "16/09/1934",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 2,
+      "awayScore": 3,
+      "isHome": true,
+      "outcome": "D",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34h.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28d.png"
+    },
     {
       "id": "1934-35-1",
       "bdfMatchId": "154389",
@@ -60064,6 +60160,38 @@
   ],
   "1928-29": [
     {
+      "id": "1928-29-reg-2",
+      "date": "18/11/1928",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 3,
+      "awayScore": 3,
+      "isHome": true,
+      "outcome": "E",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34g.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28c.png"
+    },
+    {
+      "id": "1928-29-reg-1",
+      "date": "07/10/1928",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 2,
+      "awayScore": 2,
+      "isHome": false,
+      "outcome": "E",
+      "opponent": "Real Oviedo",
+      "venue": "Teatinos",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28c.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34g.png"
+    },
+    {
       "id": "1928-29-1",
       "bdfMatchId": "517339",
       "date": "09/12/1928",
@@ -60422,6 +60550,38 @@
     }
   ],
   "1931-32": [
+    {
+      "id": "1931-32-reg-2",
+      "date": "25/10/1931",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 0,
+      "awayScore": 2,
+      "isHome": false,
+      "outcome": "V",
+      "opponent": "Real Oviedo",
+      "venue": "Teatinos",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28d.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34h.png"
+    },
+    {
+      "id": "1931-32-reg-1",
+      "date": "20/09/1931",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 0,
+      "awayScore": 1,
+      "isHome": true,
+      "outcome": "D",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34h.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28d.png"
+    },
     {
       "id": "1931-32-1",
       "bdfMatchId": "154644",
@@ -60828,6 +60988,38 @@
   ],
   "1932-33": [
     {
+      "id": "1932-33-reg-2",
+      "date": "06/11/1932",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 2,
+      "awayScore": 2,
+      "isHome": true,
+      "outcome": "E",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34h.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28d.png"
+    },
+    {
+      "id": "1932-33-reg-1",
+      "date": "02/10/1932",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 5,
+      "awayScore": 1,
+      "isHome": false,
+      "outcome": "D",
+      "opponent": "Real Oviedo",
+      "venue": "Buenavista",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28d.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34h.png"
+    },
+    {
       "id": "1932-33-1",
       "bdfMatchId": "131112",
       "date": "27/11/1932",
@@ -61213,6 +61405,38 @@
   ],
   "1929-30": [
     {
+      "id": "1929-30-reg-2",
+      "date": "24/11/1929",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 4,
+      "awayScore": 2,
+      "isHome": true,
+      "outcome": "V",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34g.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28c.png"
+    },
+    {
+      "id": "1929-30-reg-1",
+      "date": "20/10/1929",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 1,
+      "awayScore": 1,
+      "isHome": false,
+      "outcome": "E",
+      "opponent": "Real Oviedo",
+      "venue": "Teatinos",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28c.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34g.png"
+    },
+    {
       "id": "1929-30-1",
       "bdfMatchId": "154824",
       "date": "01/12/1929",
@@ -61555,6 +61779,38 @@
   ],
   "1930-31": [
     {
+      "id": "1930-31-reg-2",
+      "date": "09/11/1930",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 6,
+      "awayScore": 1,
+      "isHome": true,
+      "outcome": "V",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34g.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28c.png"
+    },
+    {
+      "id": "1930-31-reg-1",
+      "date": "05/10/1930",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 1,
+      "awayScore": 2,
+      "isHome": false,
+      "outcome": "V",
+      "opponent": "Real Oviedo",
+      "venue": "Teatinos",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28c.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34g.png"
+    },
+    {
       "id": "1930-31-1",
       "bdfMatchId": "154733",
       "date": "07/12/1930",
@@ -61888,6 +62144,40 @@
       "venue": "El Molinón",
       "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34g.png",
       "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/88d.png"
+    }
+  ],
+  "1926-27": [
+    {
+      "id": "1926-27-reg-2",
+      "date": "20/02/1927",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 2",
+      "homeTeam": "Real Oviedo",
+      "awayTeam": "Real Sporting",
+      "homeScore": 2,
+      "awayScore": 1,
+      "isHome": false,
+      "outcome": "D",
+      "opponent": "Real Oviedo",
+      "venue": "Teatinos",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/28c.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/34g.png"
+    },
+    {
+      "id": "1926-27-reg-1",
+      "date": "05/12/1926",
+      "competition": "Campeonato Regional",
+      "round": "Jornada 1",
+      "homeTeam": "Real Sporting",
+      "awayTeam": "Real Oviedo",
+      "homeScore": 2,
+      "awayScore": 1,
+      "isHome": true,
+      "outcome": "V",
+      "opponent": "Real Oviedo",
+      "venue": "El Molinón",
+      "bdfHomeCrest": "https://www.bdfutbol.com/i/eg/34g.png",
+      "bdfAwayCrest": "https://www.bdfutbol.com/i/eg/28c.png"
     }
   ]
 }
