@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
 import { MobileNav, MobileNavFallback } from "./mobile-nav";
+import { UserNav } from "@/components/auth/user-nav";
 
 /**
  * Brand logo linking to home/temporada.
@@ -105,12 +106,16 @@ function MainNavInner() {
       <header className="sticky top-0 z-40 hidden w-full border-b border-[var(--primary-strong)] bg-[var(--primary)] text-white shadow-xs md:block">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <BrandLogo />
-          <DesktopNavList pathname={pathname} />
+          <div className="flex items-center gap-5">
+            <DesktopNavList pathname={pathname} />
+            <UserNav />
+          </div>
         </div>
       </header>
 
       <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b border-[var(--primary-strong)] bg-[var(--primary)] px-4 text-white shadow-xs md:hidden">
         <BrandLogo />
+        <UserNav />
       </header>
 
       <MobileNav />
@@ -124,12 +129,16 @@ export function MainNavFallback() {
       <header className="sticky top-0 z-40 hidden w-full border-b border-[var(--primary-strong)] bg-[var(--primary)] text-white shadow-xs md:block">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <BrandLogo />
-          <DesktopNavList pathname={null} />
+          <div className="flex items-center gap-5">
+            <DesktopNavList pathname={null} />
+            <div className="h-9 w-9 rounded-full bg-white/20" aria-hidden="true" />
+          </div>
         </div>
       </header>
 
       <header className="sticky top-0 z-40 flex h-14 w-full items-center justify-between border-b border-[var(--primary-strong)] bg-[var(--primary)] px-4 text-white shadow-xs md:hidden">
         <BrandLogo />
+        <div className="h-9 w-9 rounded-full bg-white/20" aria-hidden="true" />
       </header>
 
       <MobileNavFallback />
