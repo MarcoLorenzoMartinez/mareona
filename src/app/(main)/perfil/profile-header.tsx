@@ -9,7 +9,6 @@ export function ProfileHeader() {
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
   const username = profile?.username || "aficionado";
-  const points = profile?.points ?? 0;
 
   // Format creation timestamp
   const createdAtFormatted = profile?.created_at
@@ -34,8 +33,8 @@ export function ProfileHeader() {
             <h1 className="text-2xl font-bold tracking-tight text-neutral-900 truncate">
               {displayName}
             </h1>
-            <span className="inline-flex items-center self-center sm:self-auto rounded-full bg-red-50 border border-red-200 px-2.5 py-0.5 text-xs font-bold text-[var(--primary)] tabular-nums">
-              {points} puntos
+            <span className="inline-flex items-center self-center sm:self-auto rounded-full bg-neutral-100 border border-neutral-200 px-2.5 py-0.5 text-xs font-semibold text-neutral-600">
+              Aficionado
             </span>
           </div>
 

@@ -54,7 +54,7 @@ export function UserNav() {
   }
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
-  const points = profile?.points ?? 0;
+  const username = profile?.username || "aficionado";
 
   return (
     <div className="relative" ref={menuRef}>
@@ -75,8 +75,8 @@ export function UserNav() {
           <span className="text-xs font-bold truncate max-w-[120px]">
             {displayName}
           </span>
-          <span className="text-[10px] font-semibold text-white/80 tabular-nums">
-            {points} pts
+          <span className="text-[10px] font-medium text-white/80 truncate max-w-[120px]">
+            @{username}
           </span>
         </div>
       </button>
@@ -89,8 +89,8 @@ export function UserNav() {
         >
           <div className="border-b border-neutral-100 px-3 py-2">
             <p className="text-xs font-bold text-neutral-900 truncate">{displayName}</p>
-            <p className="text-[11px] font-semibold text-[var(--primary)] tabular-nums mt-0.5">
-              {points} puntos conseguidos
+            <p className="text-[11px] font-medium text-neutral-500 mt-0.5">
+              @{username}
             </p>
           </div>
 
@@ -105,18 +105,6 @@ export function UserNav() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               <span>Mi Perfil</span>
-            </Link>
-
-            <Link
-              href="/juegos"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 transition-colors"
-              role="menuitem"
-            >
-              <svg className="h-4 w-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <span>Mis Porras</span>
             </Link>
           </div>
 

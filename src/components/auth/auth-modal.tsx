@@ -42,27 +42,19 @@ export function AuthModal() {
       onClick={closeAuthModal}
     >
       <div
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl border border-neutral-100 transition-all"
+        className="relative w-full max-w-sm rounded-2xl bg-white p-6 pt-16 shadow-2xl border border-neutral-100 transition-all"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between pb-4">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-[var(--primary)]" />
-            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-              Comunidad Mareona
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={closeAuthModal}
-            className="rounded-full p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors"
-            aria-label="Cerrar ventana"
-          >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={closeAuthModal}
+          className="absolute top-3.5 right-3.5 flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
+          aria-label="Cerrar ventana"
+        >
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
 
         {step === "onboarding" ? (
           <OnboardingStep onFinish={closeAuthModal} />
