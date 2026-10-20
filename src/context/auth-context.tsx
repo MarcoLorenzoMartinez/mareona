@@ -23,6 +23,8 @@ interface AuthContextValue {
   readonly closeAuthModal: () => void;
   readonly refreshProfile: () => Promise<void>;
   readonly handleSignOut: () => Promise<void>;
+  readonly setDemoSession: (user: User, profile: UserProfile) => void;
+  readonly updateLocalProfile: (updates: Partial<UserProfile>) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -124,6 +126,16 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
     setProfile(null);
   }, []);
 
+  const setDemoSession = useCallback((demoUser: User, demoProfile: UserProfile) => {
+    setUser(demoUser);
+    setProfile(demoProfile);
+    setIsLoading(false);
+  }, []);
+
+  const updateLocalProfile = useCallback((updates: Partial<UserProfile>) => {
+    setProfile((prev) => (prev ? { ...prev, ...updates } : null));
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -136,6 +148,8 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
         closeAuthModal,
         refreshProfile,
         handleSignOut,
+        setDemoSession,
+        updateLocalProfile,
       }}
     >
       {children}

@@ -12,7 +12,7 @@ interface OnboardingStepProps {
 }
 
 export function OnboardingStep({ onFinish }: OnboardingStepProps) {
-  const { profile, refreshProfile } = useAuth();
+  const { profile, refreshProfile, updateLocalProfile } = useAuth();
   const [selectedAvatar, setSelectedAvatar] = useState<string>(
     SPORTING_AVATAR_PRESETS[0].url
   );
@@ -24,6 +24,17 @@ export function OnboardingStep({ onFinish }: OnboardingStepProps) {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage(null);
+
+    // Support instant local demo update
+    if (profile?.id.startsWith("00000000-0000-4000-8000")) {
+      updateLocalProfile({
+        username: username.trim() || profile.username,
+        avatar_url: selectedAvatar,
+      });
+      setIsSubmitting(false);
+      onFinish();
+      return;
+    }
 
     const res = await updateProfile({
       username: username.trim() || undefined,

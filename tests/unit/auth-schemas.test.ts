@@ -90,4 +90,30 @@ describe("Auth Schemas", () => {
       );
     });
   });
+
+  describe("DEMO_CREDENTIALS & evaluateDemoAuth", () => {
+    it("recognizes demo-login account and returns pre-populated sporting profile", async () => {
+      const { evaluateDemoAuth } = await import("../../src/lib/auth/demo-credentials.ts");
+      const res = evaluateDemoAuth("demo-login@mareona.com", "sporting1905", "signin");
+      assert.equal(res.isDemo, true);
+      assert.equal(res.isNewUser, false);
+      assert.equal(res.profile?.username, "quini_1905");
+      assert.equal(res.profile?.points, 125);
+    });
+
+    it("recognizes demo-registro account and sets isNewUser flag for onboarding", async () => {
+      const { evaluateDemoAuth } = await import("../../src/lib/auth/demo-credentials.ts");
+      const res = evaluateDemoAuth("demo-registro@mareona.com", "sporting1905", "signup");
+      assert.equal(res.isDemo, true);
+      assert.equal(res.isNewUser, true);
+      assert.equal(res.profile?.username, "aficionado_nuevo");
+    });
+
+    it("rejects invalid password for demo accounts", async () => {
+      const { evaluateDemoAuth } = await import("../../src/lib/auth/demo-credentials.ts");
+      const res = evaluateDemoAuth("demo-login@mareona.com", "wrongpass", "signin");
+      assert.equal(res.isDemo, true);
+      assert.match(res.error ?? "", /Contraseña incorrecta/);
+    });
+  });
 });

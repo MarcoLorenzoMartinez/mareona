@@ -4,6 +4,8 @@
 import { useState } from "react";
 import { signInWithPassword, signUpWithPassword } from "@/lib/auth/actions";
 import { createClient } from "@/lib/supabase/client";
+import { useAuth } from "@/context/auth-context";
+import { evaluateDemoAuth } from "@/lib/auth/demo-credentials";
 
 interface AuthCredentialsFormProps {
   readonly initialMode: "signin" | "signup";
@@ -14,6 +16,7 @@ export function AuthCredentialsForm({
   initialMode,
   onSuccess,
 }: AuthCredentialsFormProps) {
+  const { setDemoSession } = useAuth();
   const [tab, setTab] = useState<"signin" | "signup">(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +40,21 @@ export function AuthCredentialsForm({
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage(null);
+
+    // Development demo bypass
+    const demo = evaluateDemoAuth(email, password, tab);
+    if (demo.isDemo) {
+      setIsSubmitting(false);
+      if (demo.error) {
+        setErrorMessage(demo.error);
+        return;
+      }
+      if (demo.user && demo.profile) {
+        setDemoSession(demo.user, demo.profile);
+        onSuccess(Boolean(demo.isNewUser));
+      }
+      return;
+    }
 
     if (tab === "signin") {
       const res = await signInWithPassword({ email, password });
@@ -63,22 +81,14 @@ export function AuthCredentialsForm({
         <button
           type="button"
           onClick={() => { setTab("signin"); setErrorMessage(null); }}
-          className={`rounded-lg py-2 transition-all ${
-            tab === "signin"
-              ? "bg-white text-neutral-900 shadow-2xs font-bold"
-              : "text-neutral-600 hover:text-neutral-900"
-          }`}
+          className={`rounded-lg py-2 transition-all ${tab === "signin" ? "bg-white text-neutral-900 shadow-2xs font-bold" : "text-neutral-600 hover:text-neutral-900"}`}
         >
           Iniciar sesión
         </button>
         <button
           type="button"
           onClick={() => { setTab("signup"); setErrorMessage(null); }}
-          className={`rounded-lg py-2 transition-all ${
-            tab === "signup"
-              ? "bg-white text-neutral-900 shadow-2xs font-bold"
-              : "text-neutral-600 hover:text-neutral-900"
-          }`}
+          className={`rounded-lg py-2 transition-all ${tab === "signup" ? "bg-white text-neutral-900 shadow-2xs font-bold" : "text-neutral-600 hover:text-neutral-900"}`}
         >
           Crear cuenta
         </button>
