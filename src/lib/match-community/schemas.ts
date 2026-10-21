@@ -25,7 +25,7 @@ export const submitPlayerRatingSchema = z.object({
   targetId: z.string().min(1, "El identificador del destinatario es obligatorio"),
   rating: z
     .number()
-    .min(1, "La nota mínima es 1")
+    .min(0, "La nota mínima es 0 (No calificable)")
     .max(10, "La nota máxima es 10"),
 });
 
