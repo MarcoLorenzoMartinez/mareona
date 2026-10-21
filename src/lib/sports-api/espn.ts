@@ -456,7 +456,7 @@ export async function fetchEspnMatchDetail(
     const res = await fetch(url, {
       method: "GET",
       headers: { "User-Agent": "Mareona/1.0" },
-      next: { revalidate: 3600 },
+      next: { revalidate: 15 },
     });
 
     if (!res.ok) {

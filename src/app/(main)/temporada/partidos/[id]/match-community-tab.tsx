@@ -1,9 +1,8 @@
-// Client: Pestaña Grada con tertulia de partido, votación MVP y notas
+// Client: Pestaña Grada con tertulia de partido y calificaciones unificadas (MVP + Notas)
 "use client";
 
 import { useState, useEffect } from "react";
 import { MatchCommentsThread } from "./match-comments-thread";
-import { MatchMvpVoting } from "./match-mvp-voting";
 import { MatchPlayerRatings } from "./match-player-ratings";
 import { getMatchComments } from "@/lib/match-community/actions";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
@@ -13,7 +12,7 @@ interface MatchCommunityTabProps {
   readonly match: DomainMatchDetail;
 }
 
-type SubSection = "comments" | "mvp" | "ratings";
+type SubSection = "comments" | "ratings";
 
 export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
   const isFinished = match.status === "finished";
@@ -63,19 +62,6 @@ export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
             <button
               type="button"
               role="tab"
-              aria-selected={activeSection === "mvp"}
-              onClick={() => setActiveSection("mvp")}
-              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
-                activeSection === "mvp"
-                  ? "bg-[var(--primary)] text-white shadow-xs"
-                  : "text-[var(--foreground-muted)] hover:text-neutral-900"
-              }`}
-            >
-              Votar MVP
-            </button>
-            <button
-              type="button"
-              role="tab"
               aria-selected={activeSection === "ratings"}
               onClick={() => setActiveSection("ratings")}
               className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
@@ -84,13 +70,13 @@ export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
                   : "text-[var(--foreground-muted)] hover:text-neutral-900"
               }`}
             >
-              Poner Notas
+              Calificaciones
             </button>
           </div>
         </div>
       ) : (
         <div className="rounded-xl border border-neutral-100 bg-neutral-50/70 p-3.5 text-center text-xs text-[var(--foreground-muted)]">
-          La votación del MVP y las notas a los jugadores se abrirán al finalizar el partido. ¡Comenta el encuentro en directo con la afición!
+          Las calificaciones y el MVP del partido se abrirán al finalizar el encuentro. ¡Comenta el partido en directo con la afición!
         </div>
       )}
 
@@ -108,10 +94,6 @@ export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
             />
           )}
         </>
-      )}
-
-      {isFinished && activeSection === "mvp" && (
-        <MatchMvpVoting match={match} />
       )}
 
       {isFinished && activeSection === "ratings" && (

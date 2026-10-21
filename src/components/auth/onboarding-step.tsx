@@ -58,9 +58,6 @@ export function OnboardingStep({ onFinish }: OnboardingStepProps) {
         <h2 className="text-xl font-bold tracking-tight text-neutral-900">
           ¡Bienvenido a Mareona!
         </h2>
-        <p className="mt-1 text-xs text-neutral-500">
-          Confirma tu apodo rojiblanco o sube tu foto de perfil.
-        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

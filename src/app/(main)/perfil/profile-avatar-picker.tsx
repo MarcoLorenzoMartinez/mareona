@@ -93,9 +93,9 @@ export function ProfileAvatarPicker({
         aria-label="Seleccionar foto de perfil desde galería o cámara"
       />
 
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-4">
+      <div className="flex items-center justify-between gap-4 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-3.5">
         {/* Vista previa del avatar actual (foto o iniciales sobre rojo) */}
-        <div className="relative inline-flex self-start sm:self-auto">
+        <div className="relative inline-flex">
           <AuthAvatar
             src={hasCustomPhoto ? selectedAvatar : null}
             alt={displayName}
@@ -107,15 +107,6 @@ export function ProfileAvatarPicker({
               <Loader2 className="h-5 w-5 animate-spin text-white" />
             </div>
           )}
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold text-neutral-900">
-            {hasCustomPhoto ? "Foto personalizada activa" : "Iniciales por defecto (blanco sobre rojo)"}
-          </p>
-          <p className="text-[11px] text-neutral-500 mt-0.5">
-            Sube una imagen de tu galería o cámara (JPG, PNG o WebP, máx. 3 MB).
-          </p>
         </div>
 
         {/* Acciones */}

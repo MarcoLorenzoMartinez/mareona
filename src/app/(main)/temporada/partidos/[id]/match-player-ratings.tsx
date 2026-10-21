@@ -1,11 +1,14 @@
-// Client: Calificaciones y notas a jugadores y entrenador con confirmación de envío
+// Client: Calificaciones y notas a jugadores y entrenador con selector express de MVP integrado
 "use client";
 
-import { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { useState, useMemo } from "react";
 import { useAuth } from "@/context/auth-context";
-import { submitPlayerRating } from "@/lib/match-community/actions";
-import { MatchPlayerRatingRow } from "./match-player-rating-row";
+import { submitPlayerRating, submitMvpVote } from "@/lib/match-community/actions";
+import { applyMvpVoteTransition } from "@/lib/match-community/mvp";
+import { useLocalVote } from "@/lib/match-community/use-local-vote";
+import { MatchRatingsSubmitBar } from "./match-ratings-submit-bar";
+import { MatchMvpExpressBar } from "./match-mvp-express-bar";
+import { MatchRatingsSectionList } from "./match-ratings-section-list";
 import { buildMatchRatingTargets } from "./rating-targets";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 
@@ -15,20 +18,49 @@ interface MatchPlayerRatingsProps {
 
 export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
   const { user, openAuthModal } = useAuth();
-  const [userRatings, setUserRatings] = useState<Record<string, number>>({});
-  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const storedRatingsRaw = useLocalVote(`mareona_ratings_${match.externalId}`);
+  const storedMvpId = useLocalVote(`mareona_mvp_${match.externalId}`);
+
+  const [draftRatings, setDraftRatings] = useState<Record<string, number>>({});
+  const [draftMvpId, setDraftMvpId] = useState<string | null>(null);
+  const [localSubmitted, setLocalSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Las notas solo se abren al finalizar el partido
+  const storedRatings: Record<string, number> = useMemo(() => {
+    if (!storedRatingsRaw) return {};
+    try {
+      const parsed = JSON.parse(storedRatingsRaw);
+      return typeof parsed === "object" && parsed !== null ? parsed : {};
+    } catch {
+      return {};
+    }
+  }, [storedRatingsRaw]);
+
+  const hasSubmitted = localSubmitted || Boolean(storedRatingsRaw) || Boolean(storedMvpId);
+  const effectiveRatings = hasSubmitted && Object.keys(storedRatings).length > 0
+    ? storedRatings
+    : draftRatings;
+  const effectiveMvpId = storedMvpId ?? draftMvpId;
+
+  const { starters, substitutes, coach } = buildMatchRatingTargets(match);
+  const candidates = [...starters, ...substitutes];
+
+  const [mvpVotes, setMvpVotes] = useState<Record<string, number>>(() => {
+    const initial: Record<string, number> = {};
+    if (starters[0]) initial[starters[0].id] = 14;
+    if (starters[1]) initial[starters[1].id] = 9;
+    return initial;
+  });
+
+  const totalMvpVotes = Object.values(mvpVotes).reduce((sum, count) => sum + count, 0);
+
   if (match.status !== "finished") {
     return (
       <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center text-xs text-[var(--foreground-muted)]">
-        Las notas a los futbolistas y entrenador se abrirán al finalizar el partido.
+        Las calificaciones y la votación del MVP se abrirán al finalizar el partido.
       </div>
     );
   }
-
-  const { starters, substitutes, coach } = buildMatchRatingTargets(match);
 
   if (starters.length === 0) {
     return (
@@ -40,30 +72,47 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
 
   const handleScoreChange = (targetId: string, score: number) => {
     if (hasSubmitted) return;
-    setUserRatings((prev) => ({ ...prev, [targetId]: score }));
+    setDraftRatings((prev) => ({ ...prev, [targetId]: score }));
   };
 
-  const ratedCount = Object.keys(userRatings).length;
+  const handleSelectMvp = (playerId: string) => {
+    if (hasSubmitted) return;
+    setDraftMvpId((prev) => (prev === playerId ? null : playerId));
+  };
 
-  const handleSubmitRatings = async () => {
+  const ratedCount = Object.keys(effectiveRatings).length;
+
+  const handleSubmit = async () => {
     if (!user) {
       openAuthModal("signin");
       return;
     }
-    if (ratedCount === 0 || hasSubmitted || isSubmitting) return;
+    const canSubmit = Boolean(draftMvpId) || ratedCount > 0;
+    if (!canSubmit || hasSubmitted || isSubmitting) return;
 
     setIsSubmitting(true);
     try {
-      setHasSubmitted(true);
-      await Promise.all(
-        Object.entries(userRatings).map(([targetId, rating]) =>
-          submitPlayerRating({
-            matchId: match.externalId,
-            targetId,
-            rating,
-          })
-        )
-      );
+      setLocalSubmitted(true);
+      const chosenMvpId = draftMvpId ?? Object.keys(draftRatings)[0] ?? null;
+
+      if (chosenMvpId) {
+        setMvpVotes((prev) => applyMvpVoteTransition(prev, chosenMvpId, null));
+        try {
+          localStorage.setItem(`mareona_mvp_${match.externalId}`, chosenMvpId);
+        } catch {}
+        await submitMvpVote({ matchId: match.externalId, playerId: chosenMvpId });
+      }
+
+      if (Object.keys(draftRatings).length > 0) {
+        try {
+          localStorage.setItem(`mareona_ratings_${match.externalId}`, JSON.stringify(draftRatings));
+        } catch {}
+        await Promise.all(
+          Object.entries(draftRatings).map(([targetId, rating]) =>
+            submitPlayerRating({ matchId: match.externalId, targetId, rating })
+          )
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -71,102 +120,35 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
 
   return (
     <div className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs space-y-6">
-      {/* Titulares */}
-      <section aria-labelledby="heading-titulares">
-        <div className="mb-2.5">
-          <h4
-            id="heading-titulares"
-            className="text-xs font-bold uppercase tracking-wider text-neutral-900"
-          >
-            Titulares
-          </h4>
-        </div>
-        <div className="space-y-2">
-          {starters.map((target) => (
-            <MatchPlayerRatingRow
-              key={target.id}
-              target={target}
-              userScore={userRatings[target.id] ?? null}
-              isSubmitted={hasSubmitted}
-              onScoreChange={handleScoreChange}
-            />
-          ))}
-        </div>
-      </section>
+      {/* 1. Selector Express de MVP (o tarjeta destacada del ganador tras enviar) */}
+      <MatchMvpExpressBar
+        candidates={candidates}
+        selectedMvpId={effectiveMvpId}
+        hasSubmitted={hasSubmitted}
+        mvpVotes={mvpVotes}
+        totalVotes={totalMvpVotes}
+        effectiveVotedId={effectiveMvpId}
+        onSelectMvp={handleSelectMvp}
+      />
 
-      {/* Jugadores que entraron en los cambios */}
-      {substitutes.length > 0 && (
-        <section aria-labelledby="heading-cambios">
-          <div className="mb-2.5">
-            <h4
-              id="heading-cambios"
-              className="text-xs font-bold uppercase tracking-wider text-neutral-900"
-            >
-              Cambios
-            </h4>
-          </div>
-          <div className="space-y-2">
-            {substitutes.map((target) => (
-              <MatchPlayerRatingRow
-                key={target.id}
-                target={target}
-                userScore={userRatings[target.id] ?? null}
-                isSubmitted={hasSubmitted}
-                onScoreChange={handleScoreChange}
-              />
-            ))}
-          </div>
-        </section>
-      )}
+      {/* 2. Listado de calificaciones (Titulares, Cambios, Cuerpo Técnico) */}
+      <MatchRatingsSectionList
+        starters={starters}
+        substitutes={substitutes}
+        coach={coach}
+        effectiveRatings={effectiveRatings}
+        hasSubmitted={hasSubmitted}
+        onScoreChange={handleScoreChange}
+      />
 
-      {/* Entrenador */}
-      <section aria-labelledby="heading-entrenador">
-        <div className="mb-2.5">
-          <h4
-            id="heading-entrenador"
-            className="text-xs font-bold uppercase tracking-wider text-neutral-900"
-          >
-            Entrenador
-          </h4>
-        </div>
-        <div className="space-y-2">
-          <MatchPlayerRatingRow
-            key={coach.id}
-            target={coach}
-            userScore={userRatings[coach.id] ?? null}
-            isSubmitted={hasSubmitted}
-            onScoreChange={handleScoreChange}
-          />
-        </div>
-      </section>
-
-      {/* Botón de envío y bloqueo */}
-      <div className="flex flex-col items-center gap-2 border-t border-[var(--border)] pt-4">
-        {!hasSubmitted ? (
-          <>
-            <button
-              type="button"
-              disabled={ratedCount === 0 || isSubmitting}
-              onClick={handleSubmitRatings}
-              className="w-full sm:w-auto min-w-[200px] rounded-full bg-[var(--primary)] px-6 py-2.5 text-xs font-bold text-white transition-all hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isSubmitting
-                ? "Enviando puntuaciones..."
-                : ratedCount > 0
-                ? `Enviar notas (${ratedCount})`
-                : "Enviar notas"}
-            </button>
-            <p className="text-[11px] text-[var(--foreground-muted)]">
-              Una vez enviadas tus notas, no se podrán modificar.
-            </p>
-          </>
-        ) : (
-          <div className="flex items-center gap-2 rounded-xl bg-neutral-50 px-4 py-2.5 text-xs font-semibold text-neutral-700">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-            <span>Puntuaciones registradas. Medias generales desbloqueadas.</span>
-          </div>
-        )}
-      </div>
+      {/* 3. Barra única de confirmación y bloqueo */}
+      <MatchRatingsSubmitBar
+        hasSubmitted={hasSubmitted}
+        isSubmitting={isSubmitting}
+        ratedCount={ratedCount}
+        hasSelectedMvp={Boolean(draftMvpId)}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

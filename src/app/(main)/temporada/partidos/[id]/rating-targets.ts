@@ -1,6 +1,8 @@
 import type { RatingTarget } from "./match-player-rating-row";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 
+export type { RatingTarget };
+
 export interface MatchRatingGroupedTargets {
   readonly starters: readonly RatingTarget[];
   readonly substitutes: readonly RatingTarget[];
@@ -26,9 +28,8 @@ export function buildMatchRatingTargets(
 
   const coach: RatingTarget = {
     id: "coach-sporting",
-    name: "Rubén Albés",
+    name: "Cuerpo Técnico",
     role: "coach",
-    photoUrl: "https://www.bdfutbol.com/i/lm/500439.png",
     averageRating: 6.8,
   };
 

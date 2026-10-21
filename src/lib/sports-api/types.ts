@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { MatchStatus } from "@/types/database.types";
+export type { MatchStatus };
 
 export const LALIGA_HYPERMOTION_LEAGUE_ID = 141;
 export const SPORTING_GIJON_TEAM_ID = 731;

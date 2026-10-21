@@ -30,7 +30,11 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
     <li className="group">
       <Link
         href={`/temporada/partidos/${match.externalId}`}
-        aria-label={`${matchT.matchday} ${match.matchday ?? "—"}: ${match.homeTeam.name} vs ${match.awayTeam.name}`}
+        aria-label={
+          match.competition === "Copa del Rey"
+            ? `Copa del Rey: ${match.homeTeam.name} vs ${match.awayTeam.name}`
+            : `${matchT.matchday} ${match.matchday ?? "—"}: ${match.homeTeam.name} vs ${match.awayTeam.name}`
+        }
         className={`block p-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
           isNext
             ? "bg-red-50/50 border-l-4 border-l-[var(--primary)] hover:bg-red-50"
@@ -39,9 +43,15 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
       >
       <div className="mb-2.5 flex items-center justify-between text-xs text-[var(--foreground-muted)]">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-[var(--foreground)]">
-            {matchT.matchday} {match.matchday ?? "—"}
-          </span>
+          {match.competition === "Copa del Rey" ? (
+            <span className="rounded-full bg-amber-50 border border-amber-200/80 px-2 py-0.5 text-[10px] font-bold text-amber-800 uppercase tracking-wide">
+              Copa del Rey
+            </span>
+          ) : (
+            <span className="font-bold text-[var(--foreground)]">
+              {matchT.matchday} {match.matchday ?? "—"}
+            </span>
+          )}
           <span>·</span>
           <span className="capitalize">{dateLabel}</span>
           {isNext && (

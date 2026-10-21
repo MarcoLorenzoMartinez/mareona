@@ -169,8 +169,8 @@ describe("Match Community Schemas", () => {
       assert.equal(result.substitutes[0]?.name, "Queipo");
       assert.equal(result.substitutes[0]?.averageRating, 6.8);
 
-      // Head coach is assigned correctly
-      assert.equal(result.coach.name, "Rubén Albés");
+      // Coaching staff target is assigned correctly
+      assert.equal(result.coach.name, "Cuerpo Técnico");
       assert.equal(result.coach.role, "coach");
     });
   });

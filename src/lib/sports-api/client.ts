@@ -19,6 +19,7 @@ import {
   TTL_STANDINGS_MS,
   TTL_FIXTURES_MS,
   TTL_SQUAD_MS,
+  resolveMatchDetailTtlMs,
 } from "./cache.ts";
 import {
   fetchEspnLiveStandings,
@@ -28,6 +29,8 @@ import {
   fetchEspnSportingRoster,
 } from "./espn.ts";
 import { fetchFotMobAdvancedStats } from "./fotmob.ts";
+import { fetchSportingCopaMatches } from "./copa.ts";
+import { fetchFotMobMatchDetail } from "./fotmob-match-detail.ts";
 import type { createClient } from "@/lib/supabase/server";
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
@@ -299,9 +302,17 @@ export async function fetchSportingSeasonMatches(
     }
   }
 
-  // 2. Fetch live full season matches from ESPN
+  // 2. Fetch live full season matches from ESPN (League) and FotMob (Copa del Rey)
   try {
-    const matches = await fetchEspnSportingSeasonMatches();
+    const [leagueMatches, copaMatches] = await Promise.all([
+      fetchEspnSportingSeasonMatches(),
+      fetchSportingCopaMatches(),
+    ]);
+
+    const matches = [...leagueMatches, ...copaMatches].sort(
+      (a, b) => new Date(a.kickoffAt).getTime() - new Date(b.kickoffAt).getTime()
+    );
+
     if (matches.length > 0) {
       memoryCachedSeasonMatches = {
         data: matches,
@@ -485,7 +496,22 @@ export async function fetchMatchDetail(
           supabase,
           cacheKey,
           sanitized as unknown as Record<string, unknown>,
-          TTL_FIXTURES_MS
+          resolveMatchDetailTtlMs(sanitized.status)
+        );
+      }
+      return sanitized;
+    }
+
+    // 4. If ESPN does not have this match (e.g. Copa del Rey), fallback to FotMob
+    const fotmobDetail = await fetchFotMobMatchDetail(matchId);
+    if (fotmobDetail) {
+      const sanitized = sanitizeMatchDetail(fotmobDetail);
+      if (supabase) {
+        await setCachedPayload(
+          supabase,
+          cacheKey,
+          sanitized as unknown as Record<string, unknown>,
+          resolveMatchDetailTtlMs(sanitized.status)
         );
       }
       return sanitized;

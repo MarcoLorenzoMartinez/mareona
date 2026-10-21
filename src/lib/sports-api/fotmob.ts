@@ -137,7 +137,7 @@ export async function fetchFotMobAdvancedStats(
   try {
     const teamRes = await fetch(`https://www.fotmob.com/api/data/teams?id=${FOTMOB_SPORTING_ID}`, {
       headers: FOTMOB_HEADERS,
-      next: { revalidate: 3600 },
+      next: { revalidate: 15 },
     });
     if (!teamRes.ok) return null;
 
@@ -163,7 +163,7 @@ export async function fetchFotMobAdvancedStats(
 
     const detailRes = await fetch(`https://www.fotmob.com/api/data/matchDetails?matchId=${match.id}`, {
       headers: FOTMOB_HEADERS,
-      next: { revalidate: 3600 },
+      next: { revalidate: 15 },
     });
     if (!detailRes.ok) return null;
 

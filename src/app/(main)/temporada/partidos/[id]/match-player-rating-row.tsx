@@ -1,6 +1,7 @@
 // Client: Fila de puntuación (1 a 10) para un jugador o entrenador
 "use client";
 
+import { Users } from "lucide-react";
 import { PlayerPhoto } from "@/components/media/player-photo";
 
 export interface RatingTarget {
@@ -47,14 +48,18 @@ export function MatchPlayerRatingRow({
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-white p-3.5 transition-all hover:border-neutral-300">
       <div className="flex items-center gap-3 min-w-0">
-        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-neutral-200 bg-neutral-100">
-          <PlayerPhoto
-            photoUrl={target.photoUrl}
-            playerName={target.name}
-            shirtNumber={target.jersey}
-            size="sm"
-            className="h-full w-full object-cover"
-          />
+        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-neutral-200 bg-neutral-100 flex items-center justify-center">
+          {target.role === "coach" ? (
+            <Users className="h-5 w-5 text-neutral-600" aria-hidden="true" />
+          ) : (
+            <PlayerPhoto
+              photoUrl={target.photoUrl}
+              playerName={target.name}
+              shirtNumber={target.jersey}
+              size="sm"
+              className="h-full w-full object-cover"
+            />
+          )}
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">

@@ -4,8 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { fetchMatchDetail } from "@/lib/sports-api/client";
 import { getDictionary } from "@/i18n";
-import { MatchHeader } from "./match-header";
-import { MatchTabs } from "./match-tabs";
+import { MatchDetailView } from "./match-detail-view";
 
 interface MatchDetailPageProps {
   readonly params: Promise<{ id: string }>;
@@ -77,8 +76,7 @@ async function MatchDetailContent({ params }: MatchDetailPageProps) {
         </Link>
       </nav>
 
-      <MatchHeader match={match} />
-      <MatchTabs match={match} />
+      <MatchDetailView initialMatch={match} />
     </div>
   );
 }

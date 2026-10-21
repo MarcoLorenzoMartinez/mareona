@@ -3,9 +3,20 @@ import type { createClient } from "@/lib/supabase/server";
 export const TTL_STANDINGS_MS = 60 * 60 * 1000; // 1 hour
 export const TTL_FIXTURES_MS = 12 * 60 * 60 * 1000; // 12 hours
 export const TTL_LIVE_MS = 60 * 1000; // 1 minute
+export const TTL_LIVE_MATCH_MS = 15 * 1000; // 15 seconds for live matches in play
 export const TTL_SQUAD_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
+
+/**
+ * Resolves the appropriate cache TTL for a match depending on whether it is live in play.
+ *
+ * @param status The match status ('scheduled' | 'live' | 'finished').
+ * @returns TTL in milliseconds (15s for live, 12h for scheduled/finished).
+ */
+export function resolveMatchDetailTtlMs(status: string): number {
+  return status === "live" ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+}
 
 /**
  * Checks whether a given cache timestamp is still within its validity window.
