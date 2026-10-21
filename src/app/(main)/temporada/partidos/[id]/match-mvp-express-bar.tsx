@@ -44,58 +44,55 @@ export function MatchMvpExpressBar({
     const votedPlayer = candidates.find((c) => c.id === effectiveVotedId);
 
     return (
-      <div className="rounded-xl border border-[var(--border)] bg-gradient-to-r from-red-50/70 via-white to-neutral-50/50 p-4 shadow-2xs">
-        <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--primary)] uppercase tracking-wider mb-3">
-          <Trophy className="h-4 w-4 text-[var(--primary)]" />
-          <span>MVP Oficial de la Afición</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="relative shrink-0">
+            <PlayerPhoto
+              photoUrl={leader.photoUrl}
+              playerName={leader.name}
+              size="md"
+            />
+            <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--primary)] text-[10px] font-bold text-white shadow-xs">
+              ★
+            </span>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--primary)] uppercase tracking-wider">
+              <Trophy className="h-3.5 w-3.5" />
+              <span>MVP Oficial de la Afición</span>
+            </div>
+            <p className="text-base font-bold text-neutral-900 mt-0.5">{leader.name}</p>
+            <p className="text-xs text-[var(--foreground-muted)] font-sans tabular-nums">
+              {leaderPercentage}% de los votos ({leaderVotes}{" "}
+              {leaderVotes === 1 ? "voto" : "votos"})
+            </p>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <PlayerPhoto
-                photoUrl={leader.photoUrl}
-                playerName={leader.name}
-                size="md"
-              />
-              <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--primary)] text-[10px] font-bold text-white shadow-xs">
-                ★
+        <div className="flex items-center gap-3 self-end sm:self-auto">
+          {leader.averageRating && (
+            <div className="text-right">
+              <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-semibold block">
+                Media
+              </span>
+              <span className="text-lg font-bold text-[var(--primary)] font-sans tabular-nums">
+                {leader.averageRating.toFixed(1)}
               </span>
             </div>
-            <div>
-              <p className="text-sm font-bold text-neutral-900">{leader.name}</p>
-              <p className="text-xs text-[var(--foreground-muted)] font-sans tabular-nums">
-                {leaderPercentage}% de los votos ({leaderVotes}{" "}
-                {leaderVotes === 1 ? "voto" : "votos"})
-              </p>
+          )}
+          {votedPlayer && (
+            <div className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-700">
+              Tu voto: <span className="font-bold">{votedPlayer.name}</span>
             </div>
-          </div>
-
-          <div className="flex items-center gap-3 self-end sm:self-auto">
-            {leader.averageRating && (
-              <div className="text-right">
-                <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-semibold block">
-                  Media
-                </span>
-                <span className="text-base font-bold text-[var(--primary)] font-sans tabular-nums">
-                  {leader.averageRating.toFixed(1)}
-                </span>
-              </div>
-            )}
-            {votedPlayer && (
-              <div className="rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-700">
-                Tu voto: <span className="font-bold">{votedPlayer.name}</span>
-              </div>
-            )}
-          </div>
+          )}
         </div>
       </div>
     );
   }
 
-  // Si aún no se ha enviado: Selector táctil de 1 toque (MVP Express)
+  // Si aún no se ha enviado: Cuadrícula simétrica y ordenada de jugadores
   return (
-    <div className="space-y-2.5">
+    <div className="space-y-3">
       <div className="flex items-center gap-1.5">
         <Star className="h-3.5 w-3.5 text-[var(--primary)] fill-[var(--primary)]" />
         <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-900">
@@ -103,7 +100,7 @@ export function MatchMvpExpressBar({
         </h4>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
         {candidates.map((player) => {
           const isSelected = selectedMvpId === player.id;
           return (
@@ -111,22 +108,42 @@ export function MatchMvpExpressBar({
               key={player.id}
               type="button"
               onClick={() => onSelectMvp(player.id)}
-              className={`inline-flex min-h-[44px] items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] active:scale-95 ${
+              className={`group flex items-center justify-between min-h-[48px] rounded-xl border px-3 py-2 text-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] active:scale-[0.98] ${
                 isSelected
-                  ? "border-[var(--primary)] bg-red-50 text-[var(--primary)] shadow-xs"
-                  : "border-[var(--border)] bg-white text-neutral-700 hover:border-neutral-300 hover:bg-neutral-50/80"
+                  ? "border-[var(--primary)] bg-red-50/80 text-[var(--primary)] ring-1 ring-[var(--primary)] shadow-2xs font-bold"
+                  : "border-[var(--border)] bg-white text-neutral-800 hover:border-neutral-300 hover:bg-neutral-50/80 font-medium"
               }`}
             >
-              <PlayerPhoto
-                photoUrl={player.photoUrl}
-                playerName={player.name}
-                size="sm"
-                className="h-6 w-6"
-              />
-              <span>{player.name}</span>
-              {isSelected ? (
-                <Check className="h-3.5 w-3.5 text-[var(--primary)] stroke-[3]" />
-              ) : null}
+              <div className="flex items-center gap-2.5 min-w-0">
+                <PlayerPhoto
+                  photoUrl={player.photoUrl}
+                  playerName={player.name}
+                  size="sm"
+                  className="h-7 w-7 shrink-0"
+                />
+                <div className="min-w-0 text-left">
+                  <p className="truncate text-xs font-semibold leading-tight">
+                    {player.name}
+                  </p>
+                  {player.jersey ? (
+                    <span className="text-[10px] text-neutral-400 font-sans tabular-nums">
+                      #{player.jersey}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="shrink-0 ml-1.5">
+                {isSelected ? (
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--primary)] text-white shadow-2xs">
+                    <Check className="h-3 w-3 stroke-[3]" />
+                  </span>
+                ) : (
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full border border-neutral-200 text-neutral-300 group-hover:border-neutral-300 group-hover:text-neutral-400 transition-colors">
+                    <Star className="h-3 w-3" />
+                  </span>
+                )}
+              </div>
             </button>
           );
         })}

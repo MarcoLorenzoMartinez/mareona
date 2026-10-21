@@ -119,36 +119,46 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
   };
 
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs space-y-6">
-      {/* 1. Selector Express de MVP (o tarjeta destacada del ganador tras enviar) */}
-      <MatchMvpExpressBar
-        candidates={candidates}
-        selectedMvpId={effectiveMvpId}
-        hasSubmitted={hasSubmitted}
-        mvpVotes={mvpVotes}
-        totalVotes={totalMvpVotes}
-        effectiveVotedId={effectiveMvpId}
-        onSelectMvp={handleSelectMvp}
-      />
+    <div className="space-y-6">
+      {/* Recuadro 1: MVP del Partido */}
+      <section
+        aria-label="Votación del MVP"
+        className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs"
+      >
+        <MatchMvpExpressBar
+          candidates={candidates}
+          selectedMvpId={effectiveMvpId}
+          hasSubmitted={hasSubmitted}
+          mvpVotes={mvpVotes}
+          totalVotes={totalMvpVotes}
+          effectiveVotedId={effectiveMvpId}
+          onSelectMvp={handleSelectMvp}
+        />
+      </section>
 
-      {/* 2. Listado de calificaciones (Titulares, Cambios, Cuerpo Técnico) */}
-      <MatchRatingsSectionList
-        starters={starters}
-        substitutes={substitutes}
-        coach={coach}
-        effectiveRatings={effectiveRatings}
-        hasSubmitted={hasSubmitted}
-        onScoreChange={handleScoreChange}
-      />
+      {/* Recuadro 2: Calificaciones individuales y cuerpo técnico */}
+      <section
+        aria-label="Calificaciones de futbolistas y cuerpo técnico"
+        className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs space-y-6"
+      >
+        <MatchRatingsSectionList
+          starters={starters}
+          substitutes={substitutes}
+          coach={coach}
+          effectiveRatings={effectiveRatings}
+          hasSubmitted={hasSubmitted}
+          onScoreChange={handleScoreChange}
+        />
 
-      {/* 3. Barra única de confirmación y bloqueo */}
-      <MatchRatingsSubmitBar
-        hasSubmitted={hasSubmitted}
-        isSubmitting={isSubmitting}
-        ratedCount={ratedCount}
-        hasSelectedMvp={Boolean(draftMvpId)}
-        onSubmit={handleSubmit}
-      />
+        {/* Barra única de confirmación y bloqueo */}
+        <MatchRatingsSubmitBar
+          hasSubmitted={hasSubmitted}
+          isSubmitting={isSubmitting}
+          ratedCount={ratedCount}
+          hasSelectedMvp={Boolean(draftMvpId)}
+          onSubmit={handleSubmit}
+        />
+      </section>
     </div>
   );
 }
