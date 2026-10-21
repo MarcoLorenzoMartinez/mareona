@@ -1,59 +1,155 @@
-// Client: Selector accesible de avatares temáticos del Real Sporting
+// Client: Gestión de foto de perfil con subida desde galería o cámara y fallback a iniciales rojiblancas
 "use client";
 
-import Image from "next/image";
-import { SPORTING_AVATAR_PRESETS } from "@/lib/auth/schemas";
+import { useState, useRef } from "react";
+import { Camera, Trash2, Loader2 } from "lucide-react";
+import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { validateAvatarFile } from "@/lib/auth/avatar-validation";
+import { uploadAvatarImage } from "@/lib/auth/avatar-upload";
+import { useAuth } from "@/context/auth-context";
 
 interface ProfileAvatarPickerProps {
-  readonly selectedAvatar: string;
-  readonly onSelect: (url: string) => void;
+  readonly selectedAvatar: string | null;
+  readonly onSelect: (url: string | null) => void;
+  readonly displayName?: string;
 }
 
 export function ProfileAvatarPicker({
   selectedAvatar,
   onSelect,
+  displayName = "Aficionado",
 }: ProfileAvatarPickerProps) {
+  const { user } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const hasCustomPhoto =
+    Boolean(selectedAvatar) && !selectedAvatar?.includes("/avatars/presets/");
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadError(null);
+    const validation = validateAvatarFile(file);
+    if (!validation.valid) {
+      setUploadError(validation.error ?? "Archivo no válido");
+      return;
+    }
+
+    setIsUploading(true);
+
+    // Support instant local demo/offline preview via DataURL
+    const isDemo = !user || user.id.startsWith("00000000-0000-4000-8000");
+
+    if (isDemo) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          onSelect(reader.result);
+        }
+        setIsUploading(false);
+      };
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await uploadAvatarImage(formData);
+    setIsUploading(false);
+
+    if (!res.success || !res.data) {
+      setUploadError(res.error ?? "No se pudo subir la foto");
+      return;
+    }
+
+    onSelect(res.data.url);
+  };
+
+  const handleRemovePhoto = () => {
+    setUploadError(null);
+    onSelect(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
-    <div>
-      <label className="block text-xs font-semibold text-neutral-700 mb-2">
-        Avatar sportinguista
+    <div className="space-y-3">
+      <label className="block text-xs font-semibold text-neutral-700">
+        Foto de perfil
       </label>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {SPORTING_AVATAR_PRESETS.map((preset) => {
-          const isSelected = selectedAvatar === preset.url;
-          return (
+
+      {/* Input oculto para galería / cámara */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        onChange={handleFileChange}
+        className="hidden"
+        aria-label="Seleccionar foto de perfil desde galería o cámara"
+      />
+
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-4">
+        {/* Vista previa del avatar actual (foto o iniciales sobre rojo) */}
+        <div className="relative inline-flex self-start sm:self-auto">
+          <AuthAvatar
+            src={hasCustomPhoto ? selectedAvatar : null}
+            alt={displayName}
+            size="lg"
+            className="border-2 border-white shadow-xs"
+          />
+          {isUploading && (
+            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
+              <Loader2 className="h-5 w-5 animate-spin text-white" />
+            </div>
+          )}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold text-neutral-900">
+            {hasCustomPhoto ? "Foto personalizada activa" : "Iniciales por defecto (blanco sobre rojo)"}
+          </p>
+          <p className="text-[11px] text-neutral-500 mt-0.5">
+            Sube una imagen de tu galería o cámara (JPG, PNG o WebP, máx. 3 MB).
+          </p>
+        </div>
+
+        {/* Acciones */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-700 shadow-2xs hover:bg-neutral-50 hover:border-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
+          >
+            <Camera className="h-4 w-4" />
+            <span>{hasCustomPhoto ? "Cambiar foto" : "Subir foto"}</span>
+          </button>
+
+          {hasCustomPhoto && (
             <button
               type="button"
-              key={preset.id}
-              onClick={() => onSelect(preset.url)}
-              className={`flex items-center gap-2.5 rounded-xl border p-2.5 transition-all text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
-                isSelected
-                  ? "border-[var(--primary)] bg-red-50/50 shadow-xs"
-                  : "border-neutral-200 hover:border-neutral-300 bg-white"
-              }`}
-              aria-pressed={isSelected}
+              onClick={handleRemovePhoto}
+              disabled={isUploading}
+              aria-label="Quitar foto y usar iniciales rojiblancas"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-50"
             >
-              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-neutral-100 shadow-2xs">
-                <Image
-                  src={preset.url}
-                  alt={preset.label}
-                  width={40}
-                  height={40}
-                  unoptimized
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <span
-                className={`text-xs font-medium ${
-                  isSelected ? "font-bold text-[var(--primary)]" : "text-neutral-700"
-                }`}
-              >
-                {preset.label}
-              </span>
+              <Trash2 className="h-4 w-4" />
+              <span>Quitar</span>
             </button>
-          );
-        })}
+          )}
+        </div>
       </div>
+
+      {uploadError && (
+        <p role="alert" className="text-xs text-[var(--primary)] font-medium">
+          {uploadError}
+        </p>
+      )}
     </div>
   );
 }

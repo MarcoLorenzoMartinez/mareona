@@ -1,12 +1,11 @@
-// Client: Paso 2 opcional de bienvenida y personalización de perfil rojiblanco
+// Client: Paso 2 opcional de bienvenida y personalización de perfil
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { SPORTING_AVATAR_PRESETS } from "@/lib/auth/schemas";
 import { generateUsernameFromEmail } from "@/lib/auth/username";
 import { updateProfile } from "@/lib/auth/actions";
 import { useAuth } from "@/context/auth-context";
+import { ProfileAvatarPicker } from "@/app/(main)/perfil/profile-avatar-picker";
 
 interface OnboardingStepProps {
   readonly onFinish: () => void;
@@ -14,9 +13,7 @@ interface OnboardingStepProps {
 
 export function OnboardingStep({ onFinish }: OnboardingStepProps) {
   const { user, profile, refreshProfile, updateLocalProfile } = useAuth();
-  const [selectedAvatar, setSelectedAvatar] = useState<string>(
-    SPORTING_AVATAR_PRESETS[0].url
-  );
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const defaultUsername =
     profile?.username || (user?.email ? generateUsernameFromEmail(user.email) : "");
   const [username, setUsername] = useState<string>(defaultUsername);
@@ -62,52 +59,16 @@ export function OnboardingStep({ onFinish }: OnboardingStepProps) {
           ¡Bienvenido a Mareona!
         </h2>
         <p className="mt-1 text-xs text-neutral-500">
-          Personaliza tu imagen y apodo rojiblanco o continúa directamente.
+          Confirma tu apodo rojiblanco o sube tu foto de perfil.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-xs font-semibold text-neutral-700 mb-2">
-            Elige tu avatar sportinguista
-          </label>
-          <div className="grid grid-cols-4 gap-2.5">
-            {SPORTING_AVATAR_PRESETS.map((preset) => {
-              const isSelected = selectedAvatar === preset.url;
-              return (
-                <button
-                  type="button"
-                  key={preset.id}
-                  onClick={() => setSelectedAvatar(preset.url)}
-                  className={`group flex flex-col items-center gap-1.5 rounded-xl border p-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
-                    isSelected
-                      ? "border-[var(--primary)] bg-red-50/50 shadow-xs"
-                      : "border-neutral-200 hover:border-neutral-300 bg-white"
-                  }`}
-                  aria-pressed={isSelected}
-                >
-                  <div className="relative h-11 w-11 overflow-hidden rounded-full border border-neutral-100 shadow-2xs">
-                    <Image
-                      src={preset.url}
-                      alt={preset.label}
-                      width={44}
-                      height={44}
-                      unoptimized
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <span
-                    className={`text-[10px] font-medium leading-none ${
-                      isSelected ? "font-bold text-[var(--primary)]" : "text-neutral-600"
-                    }`}
-                  >
-                    {preset.label}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <ProfileAvatarPicker
+          selectedAvatar={selectedAvatar}
+          onSelect={setSelectedAvatar}
+          displayName={username || user?.email || "Aficionado"}
+        />
 
         <div>
           <label
@@ -142,21 +103,20 @@ export function OnboardingStep({ onFinish }: OnboardingStepProps) {
           </div>
         )}
 
-        <div className="pt-2 flex flex-col gap-2">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-lg bg-[var(--primary)] py-2.5 text-sm font-bold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
-          >
-            {isSubmitting ? "Guardando..." : "Guardar mi perfil"}
-          </button>
+        <div className="flex items-center justify-between pt-2">
           <button
             type="button"
             onClick={onFinish}
-            disabled={isSubmitting}
-            className="w-full py-1.5 text-xs font-semibold text-neutral-500 hover:text-neutral-800 transition-colors"
+            className="text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors"
           >
             Omitir por ahora
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="rounded-lg bg-[var(--primary)] px-5 py-2 text-xs font-bold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            {isSubmitting ? "Guardando..." : "Comenzar"}
           </button>
         </div>
       </form>

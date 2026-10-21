@@ -120,7 +120,7 @@ export async function createMatchComment(
         authorId: "local-user",
         authorName: "Aficionado Sportinguista",
         authorUsername: "aficionado",
-        authorAvatar: "/avatars/presets/quini.svg",
+        authorAvatar: null,
         body: parsed.data.body,
         createdAt: new Date().toISOString(),
         parentId: parsed.data.parentId ?? null,
@@ -133,14 +133,17 @@ export async function createMatchComment(
 
 export async function submitMvpVote(
   input: SubmitMvpVoteInput
-): Promise<ActionResult<{ playerId: string; votesCount: number }>> {
+): Promise<ActionResult<{ playerId: string; previousPlayerId?: string | null }>> {
   const parsed = submitMvpVoteSchema.safeParse(input);
   if (!parsed.success) {
     return { success: false, error: parsed.error.issues[0]?.message };
   }
   return {
     success: true,
-    data: { playerId: parsed.data.playerId, votesCount: 1 },
+    data: {
+      playerId: parsed.data.playerId,
+      previousPlayerId: parsed.data.previousPlayerId ?? null,
+    },
   };
 }
 

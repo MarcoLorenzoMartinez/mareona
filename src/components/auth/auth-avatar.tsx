@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { getAvatarInitials } from "@/lib/auth/initials";
 
 interface AuthAvatarProps {
   readonly src: string | null | undefined;
@@ -38,14 +39,10 @@ export function AuthAvatar({
   const sizeClass = SIZE_MAP[size];
   const pixelDimension = PIXEL_MAP[size];
 
-  // Derive up to 2 uppercase initials from the display name or username
-  const cleanAlt = alt.trim() || "Aficionado";
-  const initials = cleanAlt
-    .replace(/^aficionado_/i, "RSG")
-    .slice(0, 2)
-    .toUpperCase();
+  const initials = getAvatarInitials(alt);
+  const isCustomPhoto = Boolean(src) && !src?.includes("/avatars/presets/");
 
-  if (src && !hasError) {
+  if (isCustomPhoto && !hasError && src) {
     return (
       <div
         className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/20 bg-neutral-100 shadow-2xs ${sizeClass} ${className}`}
@@ -57,7 +54,11 @@ export function AuthAvatar({
           height={pixelDimension}
           className="h-full w-full object-cover"
           onError={() => setHasError(true)}
-          unoptimized={src.endsWith(".svg")}
+          unoptimized={
+            src.startsWith("data:") ||
+            src.startsWith("blob:") ||
+            src.endsWith(".svg")
+          }
         />
       </div>
     );
@@ -69,7 +70,7 @@ export function AuthAvatar({
       role="img"
       className={`inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--primary)] font-bold text-white shadow-2xs select-none ${sizeClass} ${className}`}
     >
-      <span>{initials}</span>
+      <span className="font-sans font-bold tracking-wider">{initials}</span>
     </div>
   );
 }

@@ -3,7 +3,6 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/auth-context";
-import { SPORTING_AVATAR_PRESETS } from "@/lib/auth/schemas";
 import { updateProfile } from "@/lib/auth/actions";
 import { ProfileAvatarPicker } from "./profile-avatar-picker";
 
@@ -11,8 +10,8 @@ export function ProfileEditForm() {
   const { profile, refreshProfile, updateLocalProfile } = useAuth();
   const [displayName, setDisplayName] = useState(profile?.display_name ?? "");
   const [username, setUsername] = useState(profile?.username ?? "");
-  const [selectedAvatar, setSelectedAvatar] = useState(
-    profile?.avatar_url ?? SPORTING_AVATAR_PRESETS[0].url
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
+    profile?.avatar_url ?? null
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
@@ -72,6 +71,7 @@ export function ProfileEditForm() {
         <ProfileAvatarPicker
           selectedAvatar={selectedAvatar}
           onSelect={setSelectedAvatar}
+          displayName={displayName || profile?.display_name || "Aficionado"}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

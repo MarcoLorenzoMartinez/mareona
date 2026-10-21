@@ -90,7 +90,7 @@ export async function createSocialPost(
         userId: "local-user",
         authorName: "Aficionado Sportinguista",
         authorUsername: "aficionado",
-        authorAvatar: "/avatars/presets/quini.svg",
+        authorAvatar: null,
         body: parsed.data.body,
         createdAt: new Date().toISOString(),
         parentId: parsed.data.parentId ?? null,

@@ -15,6 +15,7 @@ export type CreateMatchCommentInput = z.infer<typeof createMatchCommentSchema>;
 export const submitMvpVoteSchema = z.object({
   matchId: z.string().min(1, "El identificador del partido es obligatorio"),
   playerId: z.string().min(1, "El identificador del jugador es obligatorio"),
+  previousPlayerId: z.string().optional().nullable(),
 });
 
 export type SubmitMvpVoteInput = z.infer<typeof submitMvpVoteSchema>;
