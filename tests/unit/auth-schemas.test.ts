@@ -106,7 +106,7 @@ describe("Auth Schemas", () => {
       const res = evaluateDemoAuth("demo-registro@mareona.com", "sporting1905", "signup");
       assert.equal(res.isDemo, true);
       assert.equal(res.isNewUser, true);
-      assert.equal(res.profile?.username, "aficionado_nuevo");
+      assert.equal(res.profile?.username, "demo_registro");
     });
 
     it("rejects invalid password for demo accounts", async () => {

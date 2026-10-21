@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { SPORTING_AVATAR_PRESETS } from "@/lib/auth/schemas";
+import { generateUsernameFromEmail } from "@/lib/auth/username";
 import { updateProfile } from "@/lib/auth/actions";
 import { useAuth } from "@/context/auth-context";
 
@@ -12,11 +13,13 @@ interface OnboardingStepProps {
 }
 
 export function OnboardingStep({ onFinish }: OnboardingStepProps) {
-  const { profile, refreshProfile, updateLocalProfile } = useAuth();
+  const { user, profile, refreshProfile, updateLocalProfile } = useAuth();
   const [selectedAvatar, setSelectedAvatar] = useState<string>(
     SPORTING_AVATAR_PRESETS[0].url
   );
-  const [username, setUsername] = useState<string>(profile?.username ?? "");
+  const defaultUsername =
+    profile?.username || (user?.email ? generateUsernameFromEmail(user.email) : "");
+  const [username, setUsername] = useState<string>(defaultUsername);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 

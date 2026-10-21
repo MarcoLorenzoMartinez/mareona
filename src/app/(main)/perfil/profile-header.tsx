@@ -33,9 +33,6 @@ export function ProfileHeader() {
             <h1 className="text-2xl font-bold tracking-tight text-neutral-900 truncate">
               {displayName}
             </h1>
-            <span className="inline-flex items-center self-center sm:self-auto rounded-full bg-neutral-100 border border-neutral-200 px-2.5 py-0.5 text-xs font-semibold text-neutral-600">
-              Aficionado
-            </span>
           </div>
 
           <p className="text-sm font-semibold text-neutral-500 mt-0.5">
@@ -43,7 +40,7 @@ export function ProfileHeader() {
           </p>
 
           <p className="text-xs text-neutral-400 mt-2">
-            Aficionado sportinguista desde {createdAtFormatted}
+            Desde {createdAtFormatted}
             {user?.email && (
               <span className="block sm:inline sm:ml-2 sm:border-l sm:border-neutral-200 sm:pl-2 text-neutral-500">
                 {user.email}

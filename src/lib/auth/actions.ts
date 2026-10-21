@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { generateUsernameFromEmail, resolveUsernameCollision } from "./username";
 import {
   signInSchema,
   signUpSchema,
@@ -12,14 +13,10 @@ import {
 } from "./schemas";
 import type { Database } from "@/types/database.types";
 import type { UserProfile, AuthActionResult } from "./types";
-
 export type { UserProfile, AuthActionResult };
 
 /**
  * Signs in an existing user using email and password.
- *
- * @param input - Validated email and password credentials.
- * @returns Object indicating success or Spanish error description.
  */
 export async function signInWithPassword(
   input: SignInInput
@@ -48,11 +45,7 @@ export async function signInWithPassword(
 }
 
 /**
- * Registers a new user with email and password.
- * Triggers automatic profile creation in the database (handle_new_user).
- *
- * @param input - Validated email and password.
- * @returns Object indicating success or localized error.
+ * Registers a new user with email and password, resolving username collisions.
  */
 export async function signUpWithPassword(
   input: SignUpInput
@@ -65,10 +58,22 @@ export async function signUpWithPassword(
     };
   }
 
+  const baseHandle = generateUsernameFromEmail(parsed.data.email);
   const supabase = await createClient();
+  const { data: existing } = await supabase
+    .from("profiles")
+    .select("username")
+    .ilike("username", `${baseHandle}%`);
+
+  const takenSet = new Set((existing ?? []).map((p) => p.username));
+  const finalHandle = resolveUsernameCollision(baseHandle, takenSet);
+
   const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
+    options: {
+      data: { username: finalHandle, display_name: finalHandle },
+    },
   });
 
   if (error) {
@@ -79,34 +84,25 @@ export async function signUpWithPassword(
   }
 
   revalidatePath("/", "layout");
-  return {
-    success: true,
-    data: { isNewUser: Boolean(data.user) },
-  };
+  return { success: true, data: { isNewUser: Boolean(data.user) } };
 }
 
 /**
  * Closes the active session and revalidates cached layouts.
- *
- * @returns Object confirming sign out.
  */
 export async function signOut(): Promise<AuthActionResult> {
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    return { success: false, error: error.message };
+  try {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : "Error al cerrar sesión" };
   }
-
-  revalidatePath("/", "layout");
-  return { success: true };
 }
 
 /**
  * Updates public profile attributes for the authenticated user.
- *
- * @param input - Validated profile fields (username, displayName, avatarUrl).
- * @returns Result confirming update or reporting collision/format error.
  */
 export async function updateProfile(
   input: ProfileUpdateInput
@@ -120,10 +116,7 @@ export async function updateProfile(
   }
 
   const supabase = await createClient();
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
 
   if (authError || !user) {
     return { success: false, error: "Debes iniciar sesión para editar tu perfil" };
@@ -134,19 +127,14 @@ export async function updateProfile(
   if (parsed.data.displayName !== undefined) updates.display_name = parsed.data.displayName;
   if (parsed.data.avatarUrl !== undefined) updates.avatar_url = parsed.data.avatarUrl;
 
-  const { error } = await supabase
-    .from("profiles")
-    .update(updates)
-    .eq("id", user.id);
+  const { error } = await supabase.from("profiles").update(updates).eq("id", user.id);
 
   if (error) {
-    if (error.code === "23505") {
-      return {
-        success: false,
-        error: "Ese apodo ya está en uso por otro aficionado. Elige otro.",
-      };
-    }
-    return { success: false, error: error.message };
+    const isConflict = error.code === "23505";
+    return {
+      success: false,
+      error: isConflict ? "Ese apodo ya está en uso por otro aficionado. Elige otro." : error.message,
+    };
   }
 
   revalidatePath("/", "layout");
@@ -155,9 +143,6 @@ export async function updateProfile(
 
 /**
  * Retrieves the currently authenticated user and their profile.
- * Intended for Server Components or layout hydration.
- *
- * @returns User profile or null if anonymous.
  */
 export async function getCurrentUserProfile(): Promise<UserProfile | null> {
   try {

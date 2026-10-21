@@ -67,9 +67,6 @@ export function ProfileEditForm() {
       <h2 className="text-base font-bold text-neutral-900">
         Personalizar Identidad
       </h2>
-      <p className="mt-1 text-xs text-neutral-500">
-        Modifica tu nombre público, apodo y avatar rojiblanco.
-      </p>
 
       <form onSubmit={handleSubmit} className="mt-5 space-y-4">
         <ProfileAvatarPicker

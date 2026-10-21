@@ -1,4 +1,5 @@
 import type { User } from "@supabase/supabase-js";
+import { generateUsernameFromEmail } from "./schemas.ts";
 import type { UserProfile } from "./actions";
 
 /**
@@ -42,8 +43,8 @@ export const DEMO_CREDENTIALS = {
     password: "sporting1905",
     profile: {
       id: "00000000-0000-4000-8000-000000000002",
-      username: "aficionado_nuevo",
-      display_name: "Nuevo Aficionado",
+      username: "demo_registro",
+      display_name: "demo_registro",
       avatar_url: "/avatars/presets/molinon.svg",
       points: 0,
       created_at: "2026-10-20T12:00:00Z",
@@ -102,7 +103,11 @@ export function evaluateDemoAuth(
       isDemo: true,
       isNewUser: true,
       user: createMockUser(DEMO_CREDENTIALS.register.profile.id, cleanEmail),
-      profile: DEMO_CREDENTIALS.register.profile,
+      profile: {
+        ...DEMO_CREDENTIALS.register.profile,
+        username: generateUsernameFromEmail(cleanEmail),
+        display_name: generateUsernameFromEmail(cleanEmail),
+      },
     };
   }
 
