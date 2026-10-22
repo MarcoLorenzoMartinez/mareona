@@ -20,7 +20,7 @@ const CREST_IMAGE_BY_ERA: Record<HistoricalCrestEra, string> = {
   republic: "/crests/historical/sporting-republic.png",
   classic_1950: "/crests/historical/sporting-classic-1950.png",
   golden_1980: "/crests/historical/sporting-golden-1980.png",
-  modern: "/logo.png",
+  modern: "/crests/historical/sporting-modern.png",
 };
 
 /**
@@ -34,7 +34,7 @@ export function HistoricalCrestBadge({
 }: HistoricalCrestBadgeProps) {
   const isSm = size === "sm";
   const label = ERA_LABELS[era];
-  const crestPath = CREST_IMAGE_BY_ERA[era] ?? "/logo.png";
+  const crestPath = CREST_IMAGE_BY_ERA[era] ?? "/crests/historical/sporting-modern.png";
   const sizePx = isSm ? 32 : 40;
   const dimensionClass = isSm ? "h-8 w-8" : "h-10 w-10";
 
