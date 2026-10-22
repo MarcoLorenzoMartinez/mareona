@@ -7,7 +7,7 @@ describe("Historical Card Presentation Suite", () => {
     const quini = HISTORICAL_CARDS_SEED.find((c) => c.slug === "quini-1979")!;
     assert.strictEqual(quini.knownAs, "Quini");
     assert.strictEqual(quini.position, "forward");
-    assert.strictEqual(quini.matchesPlayed, 499);
+    assert.strictEqual(quini.matchesPlayed, 521);
     assert.strictEqual(quini.attackPower, 99);
     assert.strictEqual(quini.defensePower, 42);
     assert.strictEqual(quini.ovr, 98);

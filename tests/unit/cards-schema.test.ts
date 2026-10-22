@@ -52,7 +52,7 @@ describe("Cards Domain & Seed Suite", () => {
 
     const quini = HISTORICAL_CARDS_SEED.find((c) => c.slug === "quini-1979");
     assert.ok(quini);
-    assert.strictEqual(quini.matchesPlayed, 499);
+    assert.strictEqual(quini.matchesPlayed, 521);
     assert.strictEqual(quini.attackPower, 99);
     assert.strictEqual(quini.ovr, 98);
 
@@ -71,7 +71,7 @@ describe("Cards Domain & Seed Suite", () => {
     // Quini (99 ATQ) beats David Villa (95 ATQ)
     assert.strictEqual(resolveCardStatComparison(quini, villa, "attack_power"), "host");
 
-    // Joaquín (514 PJ) beats Quini (499 PJ)
+    // Joaquín (649 PJ) beats Quini (521 PJ)
     assert.strictEqual(resolveCardStatComparison(quini, joaquin, "matches_played"), "guest");
 
     // Ablanedo (98 DEF) beats David Villa (40 DEF)
