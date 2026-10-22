@@ -24,7 +24,7 @@ export function DuelMatchView({ allCards }: DuelMatchViewProps) {
   const [aiPlayedCardIds, setAiPlayedCardIds] = useState<Set<string>>(new Set());
 
   const [aiAttackPending, setAiAttackPending] = useState<{
-    position: Card["position"];
+    position: NonNullable<Card["position"]>;
     statKey: CardStatKey;
     aiCard: Card;
   } | null>(null);
@@ -97,7 +97,7 @@ export function DuelMatchView({ allCards }: DuelMatchViewProps) {
       const aiAvailable = aiLineup.filter((c) => !aiPlayedCardIds.has(c.id));
       const aiMove = decideAiAttackMove(aiAvailable);
       setAiAttackPending({
-        position: aiMove.card.position,
+        position: aiMove.card.position ?? "midfielder",
         statKey: aiMove.statKey,
         aiCard: aiMove.card,
       });

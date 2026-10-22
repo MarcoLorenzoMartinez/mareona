@@ -10,8 +10,11 @@ import {
 import type { Card } from "../../src/lib/cards/types.ts";
 
 describe("Cards Domain & Seed Suite", () => {
-  it("validates all 24 historical seed cards against Zod cardSchema", () => {
-    assert.strictEqual(HISTORICAL_CARDS_SEED.length, 24);
+  it("validates all historical seed cards against Zod cardSchema", () => {
+    assert.ok(
+      HISTORICAL_CARDS_SEED.length >= 450 && HISTORICAL_CARDS_SEED.length <= 550,
+      `Expected ~500 cards, got ${HISTORICAL_CARDS_SEED.length}`
+    );
 
     for (const card of HISTORICAL_CARDS_SEED) {
       const parsed = cardSchema.safeParse(card);
@@ -19,6 +22,26 @@ describe("Cards Domain & Seed Suite", () => {
         parsed.success,
         `Card ${card.slug} failed schema validation: ${JSON.stringify(parsed.error?.issues)}`
       );
+    }
+  });
+
+  it("includes commemorative crest and moment cards without competitive stats", () => {
+    const crests = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "crest");
+    const moments = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "moment");
+
+    assert.ok(crests.length >= 10, "Expected at least 10 historical crests");
+    assert.ok(moments.length >= 10, "Expected at least 10 historical moments");
+
+    for (const crest of crests) {
+      assert.strictEqual(crest.position, undefined);
+      assert.strictEqual(crest.ovr, undefined);
+      assert.ok(crest.eraLabel.length > 0);
+    }
+
+    for (const moment of moments) {
+      assert.strictEqual(moment.position, undefined);
+      assert.strictEqual(moment.ovr, undefined);
+      assert.ok(moment.year !== undefined || moment.eraLabel.length > 0);
     }
   });
 

@@ -19,11 +19,20 @@ export function DuelFormationPicker({
   const req = FORMATION_REQUIREMENTS[selectedFormation];
 
   const handleStart = () => {
-    // Autocompletar con las mejores cartas de la colección que satisfacen la formación
-    const gks = availableCards.filter((c) => c.position === "goalkeeper").sort((a, b) => b.ovr - a.ovr);
-    const defs = availableCards.filter((c) => c.position === "defender").sort((a, b) => b.ovr - a.ovr);
-    const mids = availableCards.filter((c) => c.position === "midfielder").sort((a, b) => b.ovr - a.ovr);
-    const fwds = availableCards.filter((c) => c.position === "forward").sort((a, b) => b.ovr - a.ovr);
+    // Autocompletar con las mejores cartas de futbolistas que satisfacen la formación
+    const playableCards = availableCards.filter((c) => !c.kind || c.kind === "player");
+    const gks = playableCards
+      .filter((c) => c.position === "goalkeeper")
+      .sort((a, b) => (b.ovr ?? 0) - (a.ovr ?? 0));
+    const defs = playableCards
+      .filter((c) => c.position === "defender")
+      .sort((a, b) => (b.ovr ?? 0) - (a.ovr ?? 0));
+    const mids = playableCards
+      .filter((c) => c.position === "midfielder")
+      .sort((a, b) => (b.ovr ?? 0) - (a.ovr ?? 0));
+    const fwds = playableCards
+      .filter((c) => c.position === "forward")
+      .sort((a, b) => (b.ovr ?? 0) - (a.ovr ?? 0));
 
     const lineup: Card[] = [
       ...gks.slice(0, req.goalkeepers),

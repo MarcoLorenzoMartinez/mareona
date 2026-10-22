@@ -3,7 +3,7 @@
 import type { CardDecade } from "@/lib/cards/types";
 import { CARD_DECADES } from "@/lib/cards/schemas";
 
-export type AlbumFilter = CardDecade | "all" | "duplicates";
+export type AlbumFilter = CardDecade | "all" | "duplicates" | "crests" | "moments";
 
 interface AlbumHeaderProps {
   readonly selectedFilter: AlbumFilter;
@@ -90,6 +90,30 @@ export function AlbumHeader({
               {duplicateCount}
             </span>
           )}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onSelectFilter("crests")}
+          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+            selectedFilter === "crests"
+              ? "bg-[#e2001a] text-white"
+              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
+          }`}
+        >
+          Escudos
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onSelectFilter("moments")}
+          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+            selectedFilter === "moments"
+              ? "bg-[#e2001a] text-white"
+              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
+          }`}
+        >
+          Momentos
         </button>
 
         {CARD_DECADES.map((dec) => (

@@ -42,20 +42,22 @@ export const TACTICAL_FORMATIONS = [
 export const cardSchema = z.object({
   id: z.string().uuid(),
   slug: z.string().min(1).max(100),
+  kind: z.enum(["player", "crest", "moment"]).default("player"),
   fullName: z.string().min(1).max(120),
   knownAs: z.string().min(1).max(60),
   decade: z.enum(CARD_DECADES),
   eraLabel: z.string().min(1).max(60),
-  position: z.enum(CARD_POSITIONS),
-  matchesPlayed: z.number().int().nonnegative(),
-  attackPower: z.number().int().min(30).max(99),
-  defensePower: z.number().int().min(30).max(99),
-  ovr: z.number().int().min(50).max(99),
+  position: z.enum(CARD_POSITIONS).optional(),
+  matchesPlayed: z.number().int().nonnegative().optional(),
+  attackPower: z.number().int().min(30).max(99).optional(),
+  defensePower: z.number().int().min(30).max(99).optional(),
+  ovr: z.number().int().min(50).max(99).optional(),
   photoUrl: z.string().min(1),
   historicalCrestUrl: z.string().nullable().optional(),
   historicalCrestEra: z.enum(["1905", "republic", "classic_1950", "golden_1980", "modern"]),
   bioSnippet: z.string().nullable().optional(),
   isActive: z.boolean().default(true),
+  year: z.number().int().optional(),
 });
 
 export const openPackInputSchema = z.object({

@@ -5,6 +5,8 @@
 
 export type CardPosition = "goalkeeper" | "defender" | "midfielder" | "forward";
 
+export type CardKind = "player" | "crest" | "moment";
+
 export type CardDecade =
   | "1920s"
   | "1930s"
@@ -30,20 +32,22 @@ export type HistoricalCrestEra =
 export interface Card {
   readonly id: string;
   readonly slug: string;
+  readonly kind?: CardKind;
   readonly fullName: string;
   readonly knownAs: string;
   readonly decade: CardDecade;
   readonly eraLabel: string;
-  readonly position: CardPosition;
-  readonly matchesPlayed: number;
-  readonly attackPower: number;
-  readonly defensePower: number;
-  readonly ovr: number;
+  readonly position?: CardPosition;
+  readonly matchesPlayed?: number;
+  readonly attackPower?: number;
+  readonly defensePower?: number;
+  readonly ovr?: number;
   readonly photoUrl: string;
   readonly historicalCrestUrl?: string | null;
   readonly historicalCrestEra: HistoricalCrestEra;
   readonly bioSnippet?: string | null;
   readonly isActive: boolean;
+  readonly year?: number;
 }
 
 export interface UserCardSummary {

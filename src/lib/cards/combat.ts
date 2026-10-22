@@ -38,13 +38,13 @@ export function resolveCardStatComparison(
 export function getCardStatValue(card: Card, statKey: CardStatKey): number {
   switch (statKey) {
     case "matches_played":
-      return card.matchesPlayed;
+      return card.matchesPlayed ?? 0;
     case "attack_power":
-      return card.attackPower;
+      return card.attackPower ?? 0;
     case "defense_power":
-      return card.defensePower;
+      return card.defensePower ?? 0;
     case "ovr":
-      return card.ovr;
+      return card.ovr ?? 0;
   }
 }
 
@@ -63,6 +63,12 @@ export function validateTacticalFormation(
   const counts = { goalkeeper: 0, defender: 0, midfielder: 0, forward: 0 };
 
   for (const card of cards) {
+    if (!card.position) {
+      return {
+        isValid: false,
+        reason: `La carta ${card.knownAs} no es un futbolista de campo para competir`,
+      };
+    }
     counts[card.position]++;
   }
 

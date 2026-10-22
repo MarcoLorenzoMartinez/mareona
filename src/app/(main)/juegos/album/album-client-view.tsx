@@ -51,6 +51,12 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     if (selectedFilter === "duplicates") {
       return (userInventory[card.slug] ?? 0) > 1;
     }
+    if (selectedFilter === "crests") {
+      return card.kind === "crest";
+    }
+    if (selectedFilter === "moments") {
+      return card.kind === "moment";
+    }
     if (selectedFilter === "all") return true;
     return card.decade === selectedFilter;
   });

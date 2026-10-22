@@ -7,10 +7,11 @@ import { HISTORICAL_CARDS_SEED } from "./seed-data.ts";
  */
 export function buildAiLineup(formation: TacticalFormation): Card[] {
   const req = FORMATION_REQUIREMENTS[formation];
-  const gks = HISTORICAL_CARDS_SEED.filter((c) => c.position === "goalkeeper");
-  const defs = HISTORICAL_CARDS_SEED.filter((c) => c.position === "defender");
-  const mids = HISTORICAL_CARDS_SEED.filter((c) => c.position === "midfielder");
-  const fwds = HISTORICAL_CARDS_SEED.filter((c) => c.position === "forward");
+  const playable = HISTORICAL_CARDS_SEED.filter((c) => !c.kind || c.kind === "player");
+  const gks = playable.filter((c) => c.position === "goalkeeper");
+  const defs = playable.filter((c) => c.position === "defender");
+  const mids = playable.filter((c) => c.position === "midfielder");
+  const fwds = playable.filter((c) => c.position === "forward");
 
   return [
     ...gks.slice(0, req.goalkeepers),

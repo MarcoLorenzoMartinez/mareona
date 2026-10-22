@@ -10,7 +10,7 @@ interface DuelCombatArenaProps {
   readonly playerScore: number;
   readonly aiScore: number;
   readonly isPlayerTurn: boolean;
-  readonly aiAttackPending: { position: Card["position"]; statKey: CardStatKey } | null;
+  readonly aiAttackPending: { position: NonNullable<Card["position"]>; statKey: CardStatKey } | null;
   readonly playerLineup: readonly Card[];
   readonly playedCardIds: ReadonlySet<string>;
   readonly lastResolution: {
@@ -31,7 +31,7 @@ const STAT_LABELS: Record<CardStatKey, string> = {
   ovr: "OVR (Media)",
 };
 
-const POS_LABELS: Record<Card["position"], string> = {
+const POS_LABELS: Record<NonNullable<Card["position"]>, string> = {
   goalkeeper: "PORTERO",
   defender: "DEFENSA",
   midfielder: "CENTROCAMPISTA",
