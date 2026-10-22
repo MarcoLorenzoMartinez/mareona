@@ -9,14 +9,7 @@ export const metadata: Metadata = {
 export default function JuegosPage() {
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-1 border-b border-[var(--border)] pb-4">
-        <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)] md:text-3xl">
-          Juegos y Pasatiempos
-        </h1>
-        <p className="text-sm text-[var(--foreground-muted)]">
-          Compite pronosticando resultados, colecciona cromos históricos y reta con tu once inicial.
-        </p>
-      </header>
+      <h1 className="sr-only">Juegos y Pasatiempos</h1>
 
       <section
         aria-label="Zona de juegos"
