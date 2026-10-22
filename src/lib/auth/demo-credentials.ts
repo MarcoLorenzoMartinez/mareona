@@ -53,6 +53,19 @@ export const DEMO_CREDENTIALS = {
   },
 } as const;
 
+/**
+ * Checks whether an email belongs to an official demo account or sandbox profile.
+ */
+export function isDemoEmail(email?: string | null): boolean {
+  if (!email) return false;
+  const clean = email.trim().toLowerCase();
+  return (
+    clean === DEMO_CREDENTIALS.login.email ||
+    clean === DEMO_CREDENTIALS.register.email ||
+    clean.includes("demo")
+  );
+}
+
 export interface DemoAuthCheckResult {
   readonly isDemo: boolean;
   readonly error?: string;

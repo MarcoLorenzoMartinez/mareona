@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import type { Card } from "@/lib/cards/types";
+import { useAuth } from "@/context/auth-context";
+import { isDemoEmail } from "@/lib/auth/demo-credentials";
 import { HistoricalCard } from "@/components/cards/historical-card";
 import { AlbumHeader, type AlbumFilter } from "./album-header";
+import { AlbumDemoToolbar, type AlbumDemoViewMode } from "./album-demo-toolbar";
 import { PackOpeningModal } from "./pack-opening-modal";
 
 interface AlbumClientViewProps {
@@ -11,6 +14,9 @@ interface AlbumClientViewProps {
 }
 
 export function AlbumClientView({ allCards }: AlbumClientViewProps) {
+  const { user } = useAuth();
+  const isDemo = isDemoEmail(user?.email);
+  const [demoViewMode, setDemoViewMode] = useState<AlbumDemoViewMode>("starter");
   const [selectedFilter, setSelectedFilter] = useState<AlbumFilter>("all");
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
@@ -47,9 +53,22 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     return packCards;
   };
 
+  const getCardStatus = (slug: string): { isOwned: boolean; quantity: number } => {
+    if (demoViewMode === "all-revealed") {
+      const rawQty = userInventory[slug] ?? 0;
+      return { isOwned: true, quantity: rawQty > 1 ? rawQty : 1 };
+    }
+    if (demoViewMode === "all-hidden") {
+      return { isOwned: false, quantity: 0 };
+    }
+    const qty = userInventory[slug] ?? 0;
+    return { isOwned: qty > 0, quantity: qty };
+  };
+
   const filteredCards = allCards.filter((card) => {
     if (selectedFilter === "duplicates") {
-      return (userInventory[card.slug] ?? 0) > 1;
+      const { quantity } = getCardStatus(card.slug);
+      return quantity > 1;
     }
     if (selectedFilter === "crests") {
       return card.kind === "crest";
@@ -61,11 +80,32 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     return card.decade === selectedFilter;
   });
 
-  const ownedCount = allCards.filter((c) => (userInventory[c.slug] ?? 0) > 0).length;
-  const duplicateCount = allCards.filter((c) => (userInventory[c.slug] ?? 0) > 1).length;
+  const ownedCount =
+    demoViewMode === "all-revealed"
+      ? allCards.length
+      : demoViewMode === "all-hidden"
+        ? 0
+        : allCards.filter((c) => (userInventory[c.slug] ?? 0) > 0).length;
+
+  const duplicateCount =
+    demoViewMode === "all-hidden"
+      ? 0
+      : allCards.filter((c) => (userInventory[c.slug] ?? 0) > 1).length;
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Barra de herramientas para cuentas de evaluación Demo */}
+      {isDemo && user?.email && (
+        <AlbumDemoToolbar
+          userEmail={user.email}
+          viewMode={demoViewMode}
+          totalCards={allCards.length}
+          onRevealAll={() => setDemoViewMode("all-revealed")}
+          onHideAll={() => setDemoViewMode("all-hidden")}
+          onResetStarter={() => setDemoViewMode("starter")}
+        />
+      )}
+
       <AlbumHeader
         selectedFilter={selectedFilter}
         onSelectFilter={setSelectedFilter}
@@ -82,14 +122,13 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 justify-items-center"
         >
           {filteredCards.map((card) => {
-            const qty = userInventory[card.slug] ?? 0;
-            const isOwned = qty > 0;
+            const { isOwned, quantity } = getCardStatus(card.slug);
             return (
               <HistoricalCard
                 key={card.id}
                 card={card}
                 isOwned={isOwned}
-                quantity={qty}
+                quantity={quantity}
                 size="sm"
               />
             );

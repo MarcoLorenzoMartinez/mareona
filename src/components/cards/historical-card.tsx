@@ -27,7 +27,6 @@ const POSITION_LABELS = {
 export function HistoricalCard({
   card,
   isOwned = true,
-  quantity: _quantity = 1,
   isSelected = false,
   onCardClick,
   size = "md",
@@ -78,8 +77,14 @@ export function HistoricalCard({
       </div>
 
       {/* 2. Ventana Central Biselada de Retrato (The Heritage Window) */}
-      <div className="relative w-full flex-1 min-h-0 overflow-hidden rounded-none border-2 border-white/90 bg-neutral-950 shadow-[inset_0_2px_8px_rgba(0,0,0,0.7)]">
-        <CardStadiumBackground isOwned={isOwned} />
+      <div
+        className={`relative w-full flex-1 min-h-0 overflow-hidden rounded-none border-2 border-white/90 ${
+          card.kind === "crest"
+            ? "bg-white shadow-[inset_0_2px_6px_rgba(0,0,0,0.12)]"
+            : "bg-neutral-950 shadow-[inset_0_2px_8px_rgba(0,0,0,0.7)]"
+        }`}
+      >
+        {card.kind !== "crest" && <CardStadiumBackground isOwned={isOwned} />}
 
         {!imgError ? (
           <Image
@@ -90,7 +95,7 @@ export function HistoricalCard({
             sizes="(max-width: 640px) 176px, 208px"
             className={`transition-transform duration-200 group-hover:scale-105 ${
               card.kind === "crest"
-                ? "object-contain p-4"
+                ? "object-contain p-3.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]"
                 : "object-cover object-[center_20%]"
             } ${!isOwned ? "opacity-35 brightness-50" : ""}`}
             onError={() => setImgError(true)}

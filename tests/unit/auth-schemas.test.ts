@@ -115,5 +115,15 @@ describe("Auth Schemas", () => {
       assert.equal(res.isDemo, true);
       assert.match(res.error ?? "", /Contraseña incorrecta/);
     });
+
+    it("identifies demo accounts accurately via isDemoEmail", async () => {
+      const { isDemoEmail } = await import("../../src/lib/auth/demo-credentials.ts");
+      assert.equal(isDemoEmail("demo-login@mareona.com"), true);
+      assert.equal(isDemoEmail("demo-registro@mareona.com"), true);
+      assert.equal(isDemoEmail("DEMO-USER@test.com"), true);
+      assert.equal(isDemoEmail("real-user@gmail.com"), false);
+      assert.equal(isDemoEmail(null), false);
+      assert.equal(isDemoEmail(undefined), false);
+    });
   });
 });
