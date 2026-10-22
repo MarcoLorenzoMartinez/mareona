@@ -1,5 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import { cardSchema, openPackInputSchema, duelRoundMoveSchema } from "../../src/lib/cards/schemas.ts";
 import { HISTORICAL_CARDS_SEED } from "../../src/lib/cards/seed-data.ts";
 import {
@@ -33,6 +35,12 @@ describe("Cards Domain & Seed Suite", () => {
     const crestPhotos = new Set(crests.map((c) => c.photoUrl));
     assert.strictEqual(crestPhotos.size, 5, "All historical crests must have unique graphical assets without duplicates");
     assert.ok(moments.length >= 10, "Expected at least 10 historical moments");
+    const momentPhotos = new Set(moments.map((m) => m.photoUrl));
+    assert.strictEqual(
+      momentPhotos.size,
+      moments.length,
+      "All historical moments must have unique, non-duplicated photographic assets"
+    );
 
     for (const crest of crests) {
       assert.strictEqual(crest.position, undefined);
@@ -44,6 +52,16 @@ describe("Cards Domain & Seed Suite", () => {
       assert.strictEqual(moment.position, undefined);
       assert.strictEqual(moment.ovr, undefined);
       assert.ok(moment.year !== undefined || moment.eraLabel.length > 0);
+
+      const diskPath = path.join(process.cwd(), "public", moment.photoUrl);
+      assert.ok(
+        fs.existsSync(diskPath),
+        `Physical image missing on disk for moment ${moment.knownAs}: ${diskPath}`
+      );
+      assert.ok(
+        fs.statSync(diskPath).size > 1000,
+        `Image corrupt or too small for moment ${moment.knownAs}: ${diskPath}`
+      );
     }
   });
 
