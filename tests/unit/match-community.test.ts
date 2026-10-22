@@ -173,5 +173,48 @@ describe("Match Community Schemas", () => {
       assert.equal(result.coach.name, "Cuerpo Técnico");
       assert.equal(result.coach.role, "coach");
     });
+
+    it("sorts starters tactically from goalkeeper to forward, and right to left within lines", () => {
+      const dummyMatch = {
+        externalId: "match-sort",
+        status: "finished",
+        homeLineup: {
+          isSporting: true,
+          starters: [
+            { id: "p-st", name: "Otero", jersey: 19, position: "forward", subposition: "DC" },
+            { id: "p-li", name: "Diego Sánchez", jersey: 3, position: "defender", subposition: "LI" },
+            { id: "p-gk", name: "Rubén Yáñez", jersey: 1, position: "goalkeeper", subposition: "POR" },
+            { id: "p-ld", name: "Guillermo Rosas", jersey: 2, position: "defender", subposition: "LD" },
+            { id: "p-dfc", name: "Jorge Sáenz", jersey: 23, position: "defender", subposition: "DFC" },
+          ],
+          substitutes: [],
+        },
+        advancedStats: {
+          tacticalLineups: {
+            home: {
+              formation: "4-2-3-1",
+              starters: [
+                { id: 19, name: "Otero", shirtNumber: "19", x: 0.5, y: 0.85 },
+                { id: 3, name: "Diego Sánchez", shirtNumber: "3", x: 0.85, y: 0.25 },
+                { id: 1, name: "Rubén Yáñez", shirtNumber: "1", x: 0.5, y: 0.1 },
+                { id: 2, name: "Guillermo Rosas", shirtNumber: "2", x: 0.15, y: 0.25 },
+                { id: 23, name: "Jorge Sáenz", shirtNumber: "23", x: 0.5, y: 0.25 },
+              ],
+            },
+          },
+        },
+      } as unknown as DomainMatchDetail;
+
+      const result = buildMatchRatingTargets(dummyMatch);
+      const names = result.starters.map((s) => s.name);
+
+      assert.deepEqual(names, [
+        "Rubén Yáñez", // 1. Portero
+        "Guillermo Rosas", // 2. Lateral derecho (x = 0.15)
+        "Jorge Sáenz", // 3. Central (x = 0.50)
+        "Diego Sánchez", // 4. Lateral izquierdo (x = 0.85)
+        "Otero", // 5. Delantero (y = 0.85)
+      ]);
+    });
   });
 });
