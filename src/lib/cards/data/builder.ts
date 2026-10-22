@@ -138,3 +138,40 @@ export function m(input: MomentCardInput): Card {
     year: input.year,
   };
 }
+
+/**
+ * Parameter definition for authentic historical coach card creation.
+ */
+export interface CoachCardInput {
+  readonly id: string;
+  readonly slug: string;
+  readonly fullName: string;
+  readonly knownAs: string;
+  readonly decade: CardDecade;
+  readonly eraLabel: string;
+  readonly photoUrl: string;
+  readonly historicalCrestEra: HistoricalCrestEra;
+  readonly bioSnippet: string;
+  readonly matchesPlayed: number;
+}
+
+/**
+ * Creates an authentic historical coach card without competitive duel stats.
+ */
+export function coach(input: CoachCardInput): Card {
+  return {
+    id: input.id,
+    slug: input.slug,
+    kind: "coach",
+    fullName: input.fullName,
+    knownAs: input.knownAs,
+    decade: input.decade,
+    eraLabel: input.eraLabel,
+    matchesPlayed: input.matchesPlayed,
+    photoUrl: input.photoUrl,
+    historicalCrestEra: input.historicalCrestEra,
+    bioSnippet: input.bioSnippet,
+    isActive: true,
+  };
+}
+

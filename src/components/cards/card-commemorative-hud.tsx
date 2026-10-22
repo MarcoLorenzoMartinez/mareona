@@ -1,7 +1,7 @@
 interface CardCommemorativeHudProps {
   readonly title: string;
   readonly subtitle: string;
-  readonly kind: "crest" | "moment";
+  readonly kind: "crest" | "moment" | "coach";
 }
 
 /**

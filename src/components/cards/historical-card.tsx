@@ -32,15 +32,18 @@ export function HistoricalCard({
   size = "md",
 }: HistoricalCardProps) {
   const [imgError, setImgError] = useState(false);
-  const isCommemorative = card.kind === "crest" || card.kind === "moment";
+  const isCommemorative =
+    card.kind === "crest" || card.kind === "moment" || card.kind === "coach";
   const badgeLabel =
     card.kind === "crest"
       ? "ESCUDO"
       : card.kind === "moment"
         ? "MOMENTO"
-        : card.position
-          ? POSITION_LABELS[card.position]
-          : "JUG";
+        : card.kind === "coach"
+          ? "MÍSTER"
+          : card.position
+            ? POSITION_LABELS[card.position]
+            : "JUG";
 
   const cardWidthClass =
     size === "sm" ? "w-44 text-xs" : size === "lg" ? "w-64 text-sm" : "w-52 text-xs";
@@ -146,13 +149,13 @@ export function HistoricalCard({
         <CardCommemorativeHud
           title={card.knownAs}
           subtitle={
-            card.kind === "crest"
+            card.kind === "crest" || card.kind === "coach"
               ? card.eraLabel
               : card.year
                 ? `${card.year}`
                 : card.eraLabel
           }
-          kind={card.kind ?? "crest"}
+          kind={card.kind ?? "coach"}
         />
       ) : (
         <CardStatsHud

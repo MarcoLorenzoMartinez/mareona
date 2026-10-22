@@ -5,7 +5,7 @@
 
 export type CardPosition = "goalkeeper" | "defender" | "midfielder" | "forward";
 
-export type CardKind = "player" | "crest" | "moment";
+export type CardKind = "player" | "crest" | "moment" | "coach";
 
 export type CardDecade =
   | "1920s"

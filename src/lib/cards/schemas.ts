@@ -42,7 +42,7 @@ export const TACTICAL_FORMATIONS = [
 export const cardSchema = z.object({
   id: z.string().uuid(),
   slug: z.string().min(1).max(100),
-  kind: z.enum(["player", "crest", "moment"]).default("player"),
+  kind: z.enum(["player", "crest", "moment", "coach"]).default("player"),
   fullName: z.string().min(1).max(120),
   knownAs: z.string().min(1).max(60),
   decade: z.enum(CARD_DECADES),

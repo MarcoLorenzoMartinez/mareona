@@ -3,7 +3,13 @@
 import type { CardDecade } from "@/lib/cards/types";
 import { CARD_DECADES } from "@/lib/cards/schemas";
 
-export type AlbumFilter = CardDecade | "all" | "duplicates" | "crests" | "moments";
+export type AlbumFilter =
+  | CardDecade
+  | "all"
+  | "duplicates"
+  | "crests"
+  | "moments"
+  | "coaches";
 
 interface AlbumHeaderProps {
   readonly selectedFilter: AlbumFilter;
@@ -114,6 +120,18 @@ export function AlbumHeader({
           }`}
         >
           Momentos
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onSelectFilter("coaches")}
+          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+            selectedFilter === "coaches"
+              ? "bg-[#e2001a] text-white"
+              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
+          }`}
+        >
+          Entrenadores
         </button>
 
         {CARD_DECADES.map((dec) => (

@@ -65,6 +65,37 @@ describe("Cards Domain & Seed Suite", () => {
     }
   });
 
+  it("includes commemorative coach cards without competitive duel stats", () => {
+    const coaches = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "coach");
+    assert.strictEqual(coaches.length, 12, "Expected exactly 12 canonical historical coaches");
+
+    const coachPhotos = new Set(coaches.map((c) => c.photoUrl));
+    assert.strictEqual(
+      coachPhotos.size,
+      12,
+      "All historical coaches must have unique, non-duplicated photographic assets"
+    );
+
+    for (const ch of coaches) {
+      assert.strictEqual(ch.position, undefined, "Coaches must not have tactical positions");
+      assert.strictEqual(ch.ovr, undefined, "Coaches must not have duel OVR rating");
+      assert.strictEqual(ch.attackPower, undefined);
+      assert.strictEqual(ch.defensePower, undefined);
+      assert.ok(ch.eraLabel.length > 0, "Coaches must have era/tenure label");
+      assert.ok((ch.matchesPlayed ?? 0) > 0, "Coaches must have official matches coached");
+
+      const diskPath = path.join(process.cwd(), "public", ch.photoUrl);
+      assert.ok(
+        fs.existsSync(diskPath),
+        `Physical image missing on disk for coach ${ch.knownAs}: ${diskPath}`
+      );
+      assert.ok(
+        fs.statSync(diskPath).size > 1000,
+        `Image corrupt or too small for coach ${ch.knownAs}: ${diskPath}`
+      );
+    }
+  });
+
   it("ensures every decade from 1920s to 2020s is represented in the seed", () => {
     const decades = new Set(HISTORICAL_CARDS_SEED.map((c) => c.decade));
     const expectedDecades = [

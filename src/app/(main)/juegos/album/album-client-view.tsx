@@ -76,6 +76,9 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     if (selectedFilter === "moments") {
       return card.kind === "moment";
     }
+    if (selectedFilter === "coaches") {
+      return card.kind === "coach";
+    }
     if (selectedFilter === "all") return true;
     return card.decade === selectedFilter;
   });
