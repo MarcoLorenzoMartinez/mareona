@@ -94,8 +94,6 @@ export function MatchMvpExpressBar({
     );
   }
 
-  const selectedCandidate = candidates.find((c) => c.id === selectedMvpId);
-
   // Si aún no se ha enviado: Cuadrícula simétrica con botón directo de envío
   return (
     <div className="space-y-4">
@@ -156,12 +154,7 @@ export function MatchMvpExpressBar({
       </div>
 
       {/* Botón de envío directo en el recuadro del MVP */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-[var(--border)]">
-        <span className="text-[11px] text-[var(--foreground-muted)]">
-          {selectedCandidate
-            ? `Candidato seleccionado: ${selectedCandidate.name}`
-            : "Toca a tu candidato para votar"}
-        </span>
+      <div className="flex justify-end pt-3 border-t border-[var(--border)]">
         <button
           type="button"
           disabled={!selectedMvpId || isSubmitting}
