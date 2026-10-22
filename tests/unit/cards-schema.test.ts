@@ -144,4 +144,50 @@ describe("Cards Domain & Seed Suite", () => {
     });
     assert.ok(validMove.success);
   });
+
+  it("enforces canonical BDFutbol ID for all player card photographs", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const squads = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), "src/data/historical/squads.json"), "utf8")
+    );
+
+    const bdfIdsInSquads = new Set<string>();
+    for (const seasonData of Object.values<{ players: Array<{ photoUrl?: string | null }> }>(squads)) {
+      for (const p of seasonData.players) {
+        if (!p.photoUrl) continue;
+        const m = p.photoUrl.match(/\/j\/(\d+)/);
+        if (m) bdfIdsInSquads.add(m[1]);
+      }
+    }
+
+    const playerCards = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "player");
+    assert.strictEqual(playerCards.length, 455);
+
+    for (const card of playerCards) {
+      const match = card.photoUrl.match(/\/images\/cards\/historical\/bdf-(\d+)\.jpg$/);
+      assert.ok(
+        match,
+        `Card ${card.slug} does not use canonical BDFutbol ID image format: ${card.photoUrl}`
+      );
+
+      const bdfId = match[1];
+      assert.ok(
+        bdfIdsInSquads.has(bdfId),
+        `Card ${card.knownAs} has unknown BDFutbol ID ${bdfId} not found in historical squads`
+      );
+
+      const diskPath = path.join(process.cwd(), "public", card.photoUrl);
+      assert.ok(
+        fs.existsSync(diskPath),
+        `Physical image missing on disk for card ${card.knownAs} (${bdfId}): ${diskPath}`
+      );
+
+      const stat = fs.statSync(diskPath);
+      assert.ok(
+        stat.size > 300,
+        `Image on disk is corrupt or empty (<300 bytes) for ${card.knownAs}: ${diskPath}`
+      );
+    }
+  });
 });
