@@ -97,3 +97,13 @@ El objetivo visual de Mareona es una interfaz deportiva **sobria, directa y sin 
   - No usar cajas grises cuadradas por defecto. Si se encapsula un dato (minuto, tanteo, filtro o badge de estado), usar la estética cápsula (`rounded-full`, paddings compactos como `px-2.5 py-0.5`, tipografía `font-sans` limpia).
   - En filtros o selectores agrupados, emplear la barra segmentada tipo píldora (`rounded-full` con fondo/borde coordinado y elemento activo en rojo primario con texto blanco).
   - Para eventos de partido en listas densas, priorizar texto corrido y reservar las cápsulas únicamente para el dato principal (por ejemplo, el resultado final o el estado en directo).
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
