@@ -55,7 +55,7 @@ export function HistoricalCard({
     >
       {/* Cabecera Superior Integrada en el Borde Rojo: Escudo Histórico y Demarcación */}
       <div className="flex items-center justify-between pb-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-none bg-white p-0.5 shadow-xs border border-white/40">
+        <div className="flex h-8 w-8 items-center justify-center rounded-none bg-white p-0.5 shadow-xs">
           <HistoricalCrestBadge era={card.historicalCrestEra} size="sm" />
         </div>
         <div className="flex items-center gap-1.5">
@@ -70,10 +70,8 @@ export function HistoricalCard({
         </div>
       </div>
 
-      {/* Marco Interior de la Imagen: Fotografía a Cuerpo Completo Enmarcada por el Borde Rojo */}
-      <div
-        className={`relative w-full ${photoHeightClass} overflow-hidden rounded-none border-2 border-white bg-gradient-to-b from-neutral-100 via-white to-neutral-200/90 shadow-inner`}
-      >
+      {/* Fotografía Ajustada Directamente al Borde Rojo (Sin reborde gris ni márgenes) */}
+      <div className={`relative w-full ${photoHeightClass} overflow-hidden rounded-none bg-neutral-900`}>
         {!imgError ? (
           <Image
             src={card.photoUrl}
@@ -81,11 +79,11 @@ export function HistoricalCard({
             fill
             unoptimized
             sizes="(max-width: 640px) 176px, 208px"
-            className="object-contain object-bottom p-1 drop-shadow-sm transition-transform duration-200 group-hover:scale-102"
+            className="object-cover object-top transition-transform duration-200 group-hover:scale-102"
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-red-50 text-[#e2001a]">
+          <div className="flex h-full w-full items-center justify-center bg-red-800 text-white">
             <span className="text-3xl font-black">{card.knownAs.slice(0, 2).toUpperCase()}</span>
           </div>
         )}
@@ -112,7 +110,7 @@ export function HistoricalCard({
 
       {/* Estadísticas Integradas en el Borde Rojo (Panini Style: Bloques Rectangulares Nítidos) */}
       <div className="mt-auto grid grid-cols-4 gap-1 pt-1">
-        <div className="rounded-none bg-white py-1 text-center shadow-2xs border border-white/60">
+        <div className="rounded-none bg-white py-1 text-center shadow-2xs">
           <span className="block text-[8px] font-black tracking-tight text-neutral-500 uppercase">
             PJ
           </span>
@@ -120,7 +118,7 @@ export function HistoricalCard({
             {card.matchesPlayed}
           </span>
         </div>
-        <div className="rounded-none bg-white py-1 text-center shadow-2xs border border-white/60">
+        <div className="rounded-none bg-white py-1 text-center shadow-2xs">
           <span className="block text-[8px] font-black tracking-tight text-neutral-500 uppercase">
             DEF
           </span>
@@ -128,7 +126,7 @@ export function HistoricalCard({
             {card.defensePower}
           </span>
         </div>
-        <div className="rounded-none bg-white py-1 text-center shadow-2xs border border-white/60">
+        <div className="rounded-none bg-white py-1 text-center shadow-2xs">
           <span className="block text-[8px] font-black tracking-tight text-[#e2001a] uppercase">
             ATQ
           </span>
@@ -136,7 +134,7 @@ export function HistoricalCard({
             {card.attackPower}
           </span>
         </div>
-        <div className="rounded-none bg-amber-400 py-1 text-center shadow-2xs border border-amber-300">
+        <div className="rounded-none bg-amber-400 py-1 text-center shadow-2xs">
           <span className="block text-[8px] font-black tracking-tight text-amber-950 uppercase">
             OVR
           </span>
