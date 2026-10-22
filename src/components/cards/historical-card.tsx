@@ -34,6 +34,7 @@ export function HistoricalCard({
 
   const cardWidthClass =
     size === "sm" ? "w-44 text-xs" : size === "lg" ? "w-64 text-sm" : "w-52 text-xs";
+  const photoHeightClass = size === "sm" ? "h-44" : size === "lg" ? "h-64" : "h-52";
 
   return (
     <article
@@ -46,14 +47,14 @@ export function HistoricalCard({
           onCardClick(card);
         }
       }}
-      className={`relative flex flex-col rounded-xl border transition-all duration-150 select-none ${cardWidthClass} ${
+      className={`relative flex flex-col rounded-2xl border-2 border-[#e2001a] bg-white transition-all duration-150 select-none ${cardWidthClass} ${
         isSelected
-          ? "border-[#e2001a] ring-2 ring-[#e2001a] shadow-md -translate-y-1"
-          : "border-[var(--border)] bg-white shadow-2xs hover:border-[#e2001a]/50"
+          ? "ring-2 ring-offset-2 ring-[#e2001a] shadow-lg -translate-y-1"
+          : "shadow-xs hover:shadow-md hover:-translate-y-0.5"
       } ${!isOwned ? "opacity-60 grayscale bg-[var(--surface)]" : ""}`}
     >
-      {/* Cabecera del Cromo: Escudo Histórico y Píldora de Posición */}
-      <div className="flex items-center justify-between p-2.5 pb-1.5">
+      {/* Cabecera del Cromo: Escudo Histórico de la época y Píldora de Posición */}
+      <div className="flex items-center justify-between px-3 pt-2.5 pb-2">
         <HistoricalCrestBadge era={card.historicalCrestEra} size="sm" />
         <div className="flex items-center gap-1.5">
           {quantity > 1 && (
@@ -61,14 +62,16 @@ export function HistoricalCard({
               x{quantity}
             </span>
           )}
-          <span className="rounded-full bg-[#e2001a] px-2 py-0.5 text-[10px] font-bold text-white tracking-wide">
+          <span className="rounded-full bg-[#e2001a] px-2.5 py-0.5 text-[10px] font-black tracking-wider text-white uppercase shadow-2xs">
             {posLabel}
           </span>
         </div>
       </div>
 
-      {/* Contenedor de Fotografía */}
-      <div className="relative mx-2.5 h-36 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]">
+      {/* Contenedor de Fotografía: Más grande y con retrato completo sin zoom agresivo */}
+      <div
+        className={`relative mx-2.5 ${photoHeightClass} overflow-hidden rounded-xl border border-red-100/70 bg-gradient-to-b from-neutral-50 via-white to-neutral-100/90`}
+      >
         {!imgError ? (
           <Image
             src={card.photoUrl}
@@ -76,12 +79,12 @@ export function HistoricalCard({
             fill
             unoptimized
             sizes="(max-width: 640px) 176px, 208px"
-            className="object-cover object-top"
+            className="object-contain object-bottom p-1 drop-shadow-2xs"
             onError={() => setImgError(true)}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-red-50 text-[#e2001a]">
-            <span className="text-xl font-bold">{card.knownAs.slice(0, 2).toUpperCase()}</span>
+            <span className="text-xl font-black">{card.knownAs.slice(0, 2).toUpperCase()}</span>
           </div>
         )}
 
@@ -92,16 +95,16 @@ export function HistoricalCard({
         )}
       </div>
 
-      {/* Información del Jugador */}
-      <div className="flex flex-col px-2.5 pt-2 pb-1">
-        <h3 className="truncate font-bold text-[var(--foreground)] text-sm" title={card.knownAs}>
+      {/* Información del Jugador: Nombre Centrado y Período */}
+      <div className="flex flex-col px-3 pt-2 pb-1 text-center">
+        <h3 className="truncate font-black text-sm text-[var(--foreground)] tracking-tight" title={card.knownAs}>
           {card.knownAs}
         </h3>
-        <p className="truncate text-[11px] text-[var(--foreground-muted)]">{card.eraLabel}</p>
+        <p className="truncate text-[11px] font-medium text-[var(--foreground-muted)]">{card.eraLabel}</p>
       </div>
 
       {/* Fila de Estadísticas Tabulares (PJ · ATQ · DEF · OVR) */}
-      <div className="mt-auto grid grid-cols-4 divide-x divide-[var(--border)] border-t border-[var(--border)] bg-[var(--surface)]/50 py-1.5 text-center">
+      <div className="mt-auto grid grid-cols-4 divide-x divide-red-100 border-t border-red-100 bg-red-50/30 py-2 text-center rounded-b-[14px]">
         <div>
           <span className="block text-[9px] font-bold tracking-tight text-[var(--foreground-muted)]">
             PJ
@@ -111,10 +114,10 @@ export function HistoricalCard({
           </span>
         </div>
         <div>
-          <span className="block text-[9px] font-bold tracking-tight text-[var(--foreground-muted)]">
+          <span className="block text-[9px] font-bold tracking-tight text-[#e2001a]">
             ATQ
           </span>
-          <span className="font-sans font-bold tabular-nums text-xs text-[#e2001a]">
+          <span className="font-sans font-black tabular-nums text-xs text-[#e2001a]">
             {card.attackPower}
           </span>
         </div>
@@ -130,7 +133,7 @@ export function HistoricalCard({
           <span className="block text-[9px] font-bold tracking-tight text-[var(--foreground-muted)]">
             OVR
           </span>
-          <span className="font-sans font-bold tabular-nums text-xs text-[var(--foreground)]">
+          <span className="font-sans font-black tabular-nums text-xs text-[var(--foreground)]">
             {card.ovr}
           </span>
         </div>
