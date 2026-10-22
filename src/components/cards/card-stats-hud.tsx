@@ -8,6 +8,24 @@ interface CardStatsHudProps {
 }
 
 /**
+ * Calculates adaptive font size and tracking based on text length
+ * to ensure player names fit cleanly in the plate without ever clipping or showing ellipsis.
+ */
+function getAdaptiveNameStyle(name: string): string {
+  const len = name.length;
+  if (len <= 9) {
+    return "text-xs sm:text-sm tracking-wider";
+  }
+  if (len <= 13) {
+    return "text-[10.5px] sm:text-xs tracking-normal";
+  }
+  if (len <= 16) {
+    return "text-[9.5px] sm:text-[11px] tracking-tight";
+  }
+  return "text-[8.5px] sm:text-[9.5px] tracking-tighter";
+}
+
+/**
  * Heritage-style nameplate and stats panel for classic trading cards.
  * Combines an engraved player plate with four precision metric boxes.
  */
@@ -19,12 +37,14 @@ export function CardStatsHud({
   ovr,
   isOwned,
 }: CardStatsHudProps) {
+  const nameStyle = getAdaptiveNameStyle(knownAs);
+
   return (
     <div className="relative z-10 w-full shrink-0 select-none pt-1">
-      {/* 1. Placa de Nombre: Estilo Grabado Heritage en Rojo Corporativo y Oro */}
-      <div className="relative overflow-hidden rounded-none border border-amber-300/60 bg-gradient-to-r from-[#990011] via-[#e2001a] to-[#990011] px-1.5 py-0.5 sm:py-1 text-center shadow-xs">
+      {/* 1. Placa de Nombre: Estilo Grabado Heritage en Rojo Corporativo y Oro (sin puntos suspensivos) */}
+      <div className="relative flex items-center justify-center overflow-hidden rounded-none border border-amber-300/60 bg-gradient-to-r from-[#990011] via-[#e2001a] to-[#990011] px-1 py-0.5 sm:py-1 text-center shadow-xs">
         <h3
-          className="truncate font-sans font-black text-xs sm:text-sm uppercase tracking-wider text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] leading-tight"
+          className={`whitespace-nowrap overflow-hidden font-sans font-black uppercase text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] leading-tight ${nameStyle}`}
           title={knownAs}
         >
           {knownAs}

@@ -162,7 +162,7 @@ describe("Cards Domain & Seed Suite", () => {
     }
 
     const playerCards = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "player");
-    assert.strictEqual(playerCards.length, 455);
+    assert.strictEqual(playerCards.length, 485);
 
     for (const card of playerCards) {
       const match = card.photoUrl.match(/\/images\/cards\/historical\/bdf-(\d+)\.jpg$/);
