@@ -16,6 +16,16 @@ interface MatchPlayerRatingsProps {
   readonly match: DomainMatchDetail;
 }
 
+function parseRatingsJson(raw: string | null): Record<string, number> {
+  if (!raw) return {};
+  try {
+    const p = JSON.parse(raw);
+    return typeof p === "object" && p !== null ? p : {};
+  } catch {
+    return {};
+  }
+}
+
 export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
   const { user, openAuthModal } = useAuth();
   const storedRatingsRaw = useLocalVote(`mareona_ratings_${match.externalId}`);
@@ -23,21 +33,16 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
 
   const [draftRatings, setDraftRatings] = useState<Record<string, number>>({});
   const [draftMvpId, setDraftMvpId] = useState<string | null>(null);
-  const [localSubmitted, setLocalSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localSubmittedMvp, setLocalSubmittedMvp] = useState(false);
+  const [localSubmittedRatings, setLocalSubmittedRatings] = useState(false);
+  const [isSubmittingMvp, setIsSubmittingMvp] = useState(false);
+  const [isSubmittingRatings, setIsSubmittingRatings] = useState(false);
 
-  const storedRatings: Record<string, number> = useMemo(() => {
-    if (!storedRatingsRaw) return {};
-    try {
-      const parsed = JSON.parse(storedRatingsRaw);
-      return typeof parsed === "object" && parsed !== null ? parsed : {};
-    } catch {
-      return {};
-    }
-  }, [storedRatingsRaw]);
+  const storedRatings = useMemo(() => parseRatingsJson(storedRatingsRaw), [storedRatingsRaw]);
+  const hasSubmittedMvp = localSubmittedMvp || Boolean(storedMvpId);
+  const hasSubmittedRatings = localSubmittedRatings || Boolean(storedRatingsRaw);
 
-  const hasSubmitted = localSubmitted || Boolean(storedRatingsRaw) || Boolean(storedMvpId);
-  const effectiveRatings = hasSubmitted && Object.keys(storedRatings).length > 0
+  const effectiveRatings = hasSubmittedRatings && Object.keys(storedRatings).length > 0
     ? storedRatings
     : draftRatings;
   const effectiveMvpId = storedMvpId ?? draftMvpId;
@@ -45,12 +50,10 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
   const { starters, substitutes, coach } = buildMatchRatingTargets(match);
   const candidates = [...starters, ...substitutes];
 
-  const [mvpVotes, setMvpVotes] = useState<Record<string, number>>(() => {
-    const initial: Record<string, number> = {};
-    if (starters[0]) initial[starters[0].id] = 14;
-    if (starters[1]) initial[starters[1].id] = 9;
-    return initial;
-  });
+  const [mvpVotes, setMvpVotes] = useState<Record<string, number>>(() => ({
+    ...(starters[0] ? { [starters[0].id]: 14 } : {}),
+    ...(starters[1] ? { [starters[1].id]: 9 } : {}),
+  }));
 
   const totalMvpVotes = Object.values(mvpVotes).reduce((sum, count) => sum + count, 0);
 
@@ -71,39 +74,49 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
   }
 
   const handleScoreChange = (targetId: string, score: number) => {
-    if (hasSubmitted) return;
+    if (hasSubmittedRatings) return;
     setDraftRatings((prev) => ({ ...prev, [targetId]: score }));
   };
 
   const handleSelectMvp = (playerId: string) => {
-    if (hasSubmitted) return;
+    if (hasSubmittedMvp) return;
     setDraftMvpId((prev) => (prev === playerId ? null : playerId));
   };
 
   const ratedCount = Object.keys(effectiveRatings).length;
 
-  const handleSubmit = async () => {
-    if (!user) {
-      openAuthModal("signin");
-      return;
-    }
-    const canSubmit = Boolean(draftMvpId) || ratedCount > 0;
-    if (!canSubmit || hasSubmitted || isSubmitting) return;
-
-    setIsSubmitting(true);
+  const commitMvpVote = async (playerId: string) => {
+    setMvpVotes((prev) => applyMvpVoteTransition(prev, playerId, null));
+    setLocalSubmittedMvp(true);
     try {
-      setLocalSubmitted(true);
-      const chosenMvpId = draftMvpId ?? Object.keys(draftRatings)[0] ?? null;
+      localStorage.setItem(`mareona_mvp_${match.externalId}`, playerId);
+    } catch {}
+    await submitMvpVote({ matchId: match.externalId, playerId });
+  };
 
-      if (chosenMvpId) {
-        setMvpVotes((prev) => applyMvpVoteTransition(prev, chosenMvpId, null));
-        try {
-          localStorage.setItem(`mareona_mvp_${match.externalId}`, chosenMvpId);
-        } catch {}
-        await submitMvpVote({ matchId: match.externalId, playerId: chosenMvpId });
+  const handleSubmitMvp = async () => {
+    if (!user) return openAuthModal("signin");
+    if (!draftMvpId || hasSubmittedMvp || isSubmittingMvp) return;
+    setIsSubmittingMvp(true);
+    try {
+      await commitMvpVote(draftMvpId);
+    } finally {
+      setIsSubmittingMvp(false);
+    }
+  };
+
+  const handleSubmitRatings = async () => {
+    if (!user) return openAuthModal("signin");
+    const canSubmit = ratedCount > 0 || (!hasSubmittedMvp && Boolean(draftMvpId));
+    if (!canSubmit || hasSubmittedRatings || isSubmittingRatings) return;
+
+    setIsSubmittingRatings(true);
+    try {
+      if (!hasSubmittedMvp && draftMvpId) {
+        await commitMvpVote(draftMvpId);
       }
-
       if (Object.keys(draftRatings).length > 0) {
+        setLocalSubmittedRatings(true);
         try {
           localStorage.setItem(`mareona_ratings_${match.externalId}`, JSON.stringify(draftRatings));
         } catch {}
@@ -114,49 +127,41 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
         );
       }
     } finally {
-      setIsSubmitting(false);
+      setIsSubmittingRatings(false);
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Recuadro 1: MVP del Partido */}
-      <section
-        aria-label="Votación del MVP"
-        className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs"
-      >
+      <section aria-label="Votación del MVP" className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs">
         <MatchMvpExpressBar
           candidates={candidates}
           selectedMvpId={effectiveMvpId}
-          hasSubmitted={hasSubmitted}
+          hasSubmitted={hasSubmittedMvp}
           mvpVotes={mvpVotes}
           totalVotes={totalMvpVotes}
           effectiveVotedId={effectiveMvpId}
+          isSubmitting={isSubmittingMvp}
           onSelectMvp={handleSelectMvp}
+          onSubmitMvp={handleSubmitMvp}
         />
       </section>
 
-      {/* Recuadro 2: Calificaciones individuales y cuerpo técnico */}
-      <section
-        aria-label="Calificaciones de futbolistas y cuerpo técnico"
-        className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs space-y-6"
-      >
+      <section aria-label="Calificaciones de futbolistas" className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs space-y-6">
         <MatchRatingsSectionList
           starters={starters}
           substitutes={substitutes}
           coach={coach}
           effectiveRatings={effectiveRatings}
-          hasSubmitted={hasSubmitted}
+          hasSubmitted={hasSubmittedRatings}
           onScoreChange={handleScoreChange}
         />
-
-        {/* Barra única de confirmación y bloqueo */}
         <MatchRatingsSubmitBar
-          hasSubmitted={hasSubmitted}
-          isSubmitting={isSubmitting}
+          hasSubmitted={hasSubmittedRatings}
+          isSubmitting={isSubmittingRatings}
           ratedCount={ratedCount}
-          hasSelectedMvp={Boolean(draftMvpId)}
-          onSubmit={handleSubmit}
+          hasSelectedMvp={!hasSubmittedMvp && Boolean(draftMvpId)}
+          onSubmit={handleSubmitRatings}
         />
       </section>
     </div>

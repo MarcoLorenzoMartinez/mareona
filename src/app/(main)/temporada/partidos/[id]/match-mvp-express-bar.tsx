@@ -12,7 +12,9 @@ interface MatchMvpExpressBarProps {
   readonly mvpVotes: Record<string, number>;
   readonly totalVotes: number;
   readonly effectiveVotedId: string | null;
+  readonly isSubmitting?: boolean;
   readonly onSelectMvp: (id: string) => void;
+  readonly onSubmitMvp?: () => void;
 }
 
 export function MatchMvpExpressBar({
@@ -22,7 +24,9 @@ export function MatchMvpExpressBar({
   mvpVotes,
   totalVotes,
   effectiveVotedId,
+  isSubmitting = false,
   onSelectMvp,
+  onSubmitMvp,
 }: MatchMvpExpressBarProps) {
   if (candidates.length === 0) return null;
 
@@ -90,9 +94,11 @@ export function MatchMvpExpressBar({
     );
   }
 
-  // Si aún no se ha enviado: Cuadrícula simétrica y ordenada de jugadores
+  const selectedCandidate = candidates.find((c) => c.id === selectedMvpId);
+
+  // Si aún no se ha enviado: Cuadrícula simétrica con botón directo de envío
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="flex items-center gap-1.5">
         <Star className="h-3.5 w-3.5 text-[var(--primary)] fill-[var(--primary)]" />
         <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-900">
@@ -147,6 +153,23 @@ export function MatchMvpExpressBar({
             </button>
           );
         })}
+      </div>
+
+      {/* Botón de envío directo en el recuadro del MVP */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-[var(--border)]">
+        <span className="text-[11px] text-[var(--foreground-muted)]">
+          {selectedCandidate
+            ? `Candidato seleccionado: ${selectedCandidate.name}`
+            : "Toca a tu candidato para votar"}
+        </span>
+        <button
+          type="button"
+          disabled={!selectedMvpId || isSubmitting}
+          onClick={onSubmitMvp}
+          className="w-full sm:w-auto inline-flex items-center justify-center min-h-[40px] min-w-[170px] rounded-full bg-[var(--primary)] px-5 py-2 text-xs font-bold text-white transition-all hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 shadow-2xs"
+        >
+          {isSubmitting ? "Enviando voto..." : "Enviar voto MVP"}
+        </button>
       </div>
     </div>
   );
