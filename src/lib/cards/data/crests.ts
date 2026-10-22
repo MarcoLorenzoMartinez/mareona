@@ -47,7 +47,7 @@ export const HISTORICAL_CRESTS: readonly Card[] = [
     id: "00000000-0000-4000-8000-000000000004",
     slug: "escudo-eurosporting-1970",
     fullName: "Escudo Clásico EuroSporting",
-    knownAs: "Escudo EuroSporting",
+    knownAs: "EuroSporting",
     decade: "1980s",
     eraLabel: "1970 – 1997",
     photoUrl: "/crests/historical/sporting-golden-1980.png",
