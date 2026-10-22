@@ -29,7 +29,9 @@ describe("Cards Domain & Seed Suite", () => {
     const crests = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "crest");
     const moments = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "moment");
 
-    assert.ok(crests.length >= 10, "Expected at least 10 historical crests");
+    assert.strictEqual(crests.length, 5, "Expected exactly 5 canonical historical crests");
+    const crestPhotos = new Set(crests.map((c) => c.photoUrl));
+    assert.strictEqual(crestPhotos.size, 5, "All historical crests must have unique graphical assets without duplicates");
     assert.ok(moments.length >= 10, "Expected at least 10 historical moments");
 
     for (const crest of crests) {
