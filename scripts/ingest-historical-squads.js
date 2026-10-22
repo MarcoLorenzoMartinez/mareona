@@ -61,6 +61,11 @@ function parseSquadHtml(html, season) {
   const players = [];
   if (squadMatch) {
     const trs = squadMatch[0].match(/<tr[\s\S]*?<\/tr>/gi) || [];
+    const ths = (trs[0]?.match(/<th[^>]*>([\s\S]*?)<\/th>/gi) || []).map((th) => th.replace(/<[^>]+>/g, "").trim());
+    const pjIdx = ths.findIndex((h) => h === "PJ");
+    const minIdx = ths.findIndex((h) => h === "Min");
+    const goalsIdx = ths.findIndex((h) => h === "G");
+
     for (let i = 1; i < trs.length; i++) {
       const tr = trs[i];
       if (tr.includes("<th")) continue;
@@ -88,26 +93,11 @@ function parseSquadHtml(html, season) {
       else if (/class="[^"]*\b(dav|ext|del|dac)\b[^"]*"/.test(tr)) position = "Delantero";
 
       const cells = (tr.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || []).map((td) => td.replace(/<[^>]+>/g, "").trim());
-      const goalsCell = cells[cells.length - 1];
-      let goals = parseInt(goalsCell, 10);
+      
+      const played = pjIdx !== -1 && cells[pjIdx] ? parseInt(cells[pjIdx], 10) || 0 : 0;
+      const minutes = minIdx !== -1 && cells[minIdx] ? parseInt(cells[minIdx], 10) || 0 : 0;
+      let goals = goalsIdx !== -1 && cells[goalsIdx] ? parseInt(cells[goalsIdx], 10) || 0 : 0;
       if (isNaN(goals) || (position === "Portero" && goals < 0)) goals = 0;
-
-      let played = 0;
-      let minutes = 0;
-      for (let c = 5; c < cells.length; c++) {
-        const val = parseInt(cells[c], 10);
-        if (!isNaN(val) && val > 0 && val <= 46) {
-          played = val;
-          break;
-        }
-      }
-      for (let c = cells.length - 5; c < cells.length - 1; c++) {
-        const val = parseInt(cells[c], 10);
-        if (!isNaN(val) && val >= 50) {
-          minutes = val;
-          break;
-        }
-      }
 
       players.push({
         dorsal,
