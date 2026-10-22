@@ -74,6 +74,7 @@ export function HistoricalCard({
             src={card.photoUrl}
             alt={isOwned ? `Fotografía de ${card.knownAs}` : "Cromo pendiente de desbloquear"}
             fill
+            unoptimized
             sizes="(max-width: 640px) 176px, 208px"
             className="object-cover object-top"
             onError={() => setImgError(true)}
