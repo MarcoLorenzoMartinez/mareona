@@ -3,19 +3,23 @@
 import type { CardDecade } from "@/lib/cards/types";
 import { CARD_DECADES } from "@/lib/cards/schemas";
 
+export type AlbumFilter = CardDecade | "all" | "duplicates";
+
 interface AlbumHeaderProps {
-  readonly selectedDecade: CardDecade | "all";
-  readonly onSelectDecade: (decade: CardDecade | "all") => void;
+  readonly selectedFilter: AlbumFilter;
+  readonly onSelectFilter: (filter: AlbumFilter) => void;
   readonly ownedCount: number;
   readonly totalCount: number;
+  readonly duplicateCount?: number;
   readonly onOpenPackClick: () => void;
 }
 
 export function AlbumHeader({
-  selectedDecade,
-  onSelectDecade,
+  selectedFilter,
+  onSelectFilter,
   ownedCount,
   totalCount,
+  duplicateCount = 0,
   onOpenPackClick,
 }: AlbumHeaderProps) {
   const progressPct = totalCount > 0 ? Math.round((ownedCount / totalCount) * 100) : 0;
@@ -51,26 +55,50 @@ export function AlbumHeader({
         </button>
       </div>
 
-      {/* Selector de Décadas tipo Píldora (Horizontal Scrollable) */}
+      {/* Selector de Décadas y Duplicados tipo Píldora (Horizontal Scrollable) */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
         <button
           type="button"
-          onClick={() => onSelectDecade("all")}
+          onClick={() => onSelectFilter("all")}
           className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-            selectedDecade === "all"
+            selectedFilter === "all"
               ? "bg-[#e2001a] text-white"
               : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
           }`}
         >
           Todas
         </button>
+
+        <button
+          type="button"
+          onClick={() => onSelectFilter("duplicates")}
+          className={`shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+            selectedFilter === "duplicates"
+              ? "bg-[#e2001a] text-white"
+              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
+          }`}
+        >
+          <span>Duplicados</span>
+          {duplicateCount > 0 && (
+            <span
+              className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
+                selectedFilter === "duplicates"
+                  ? "bg-white text-[#e2001a]"
+                  : "bg-neutral-100 text-neutral-700"
+              }`}
+            >
+              {duplicateCount}
+            </span>
+          )}
+        </button>
+
         {CARD_DECADES.map((dec) => (
           <button
             key={dec}
             type="button"
-            onClick={() => onSelectDecade(dec)}
+            onClick={() => onSelectFilter(dec)}
             className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-              selectedDecade === dec
+              selectedFilter === dec
                 ? "bg-[#e2001a] text-white"
                 : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
             }`}

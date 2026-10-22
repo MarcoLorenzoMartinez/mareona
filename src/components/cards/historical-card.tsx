@@ -26,7 +26,7 @@ const POSITION_LABELS = {
 export function HistoricalCard({
   card,
   isOwned = true,
-  quantity = 1,
+  quantity: _quantity = 1,
   isSelected = false,
   onCardClick,
   size = "md",
@@ -63,16 +63,9 @@ export function HistoricalCard({
         <div className="flex h-7 w-7 items-center justify-center rounded-none bg-white p-0.5 border border-amber-300 shadow-xs">
           <HistoricalCrestBadge era={card.historicalCrestEra} size="sm" />
         </div>
-        <div className="flex items-center gap-1.5">
-          {quantity > 1 && (
-            <span className="rounded-none bg-black/85 px-1.5 py-0.5 text-[8.5px] font-black text-amber-300 uppercase border border-amber-300/40">
-              x{quantity}
-            </span>
-          )}
-          <span className="rounded-none bg-white px-2 py-0.5 text-[10px] font-black tracking-wider text-[#e2001a] uppercase shadow-xs border border-amber-300/40">
-            {posLabel}
-          </span>
-        </div>
+        <span className="rounded-none bg-white px-2 py-0.5 text-[10px] font-black tracking-wider text-[#e2001a] uppercase shadow-xs border border-amber-300/40">
+          {posLabel}
+        </span>
       </div>
 
       {/* 2. Ventana Central Biselada de Retrato (The Heritage Window) */}

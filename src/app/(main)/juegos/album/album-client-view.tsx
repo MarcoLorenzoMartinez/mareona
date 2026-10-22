@@ -1,9 +1,9 @@
 "use client"; // Client: Gestión interactiva de colección, filtros de décadas y sobres
 
 import { useState } from "react";
-import type { Card, CardDecade } from "@/lib/cards/types";
+import type { Card } from "@/lib/cards/types";
 import { HistoricalCard } from "@/components/cards/historical-card";
-import { AlbumHeader } from "./album-header";
+import { AlbumHeader, type AlbumFilter } from "./album-header";
 import { PackOpeningModal } from "./pack-opening-modal";
 
 interface AlbumClientViewProps {
@@ -11,7 +11,7 @@ interface AlbumClientViewProps {
 }
 
 export function AlbumClientView({ allCards }: AlbumClientViewProps) {
-  const [selectedDecade, setSelectedDecade] = useState<CardDecade | "all">("all");
+  const [selectedFilter, setSelectedFilter] = useState<AlbumFilter>("all");
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
 
   // Inicializamos al usuario con una baraja inicial auténtica de 6 cromos reales
@@ -48,41 +48,61 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   };
 
   const filteredCards = allCards.filter((card) => {
-    if (selectedDecade === "all") return true;
-    return card.decade === selectedDecade;
+    if (selectedFilter === "duplicates") {
+      return (userInventory[card.slug] ?? 0) > 1;
+    }
+    if (selectedFilter === "all") return true;
+    return card.decade === selectedFilter;
   });
 
   const ownedCount = allCards.filter((c) => (userInventory[c.slug] ?? 0) > 0).length;
+  const duplicateCount = allCards.filter((c) => (userInventory[c.slug] ?? 0) > 1).length;
 
   return (
     <div className="flex flex-col gap-6">
       <AlbumHeader
-        selectedDecade={selectedDecade}
-        onSelectDecade={setSelectedDecade}
+        selectedFilter={selectedFilter}
+        onSelectFilter={setSelectedFilter}
         ownedCount={ownedCount}
         totalCount={allCards.length}
+        duplicateCount={duplicateCount}
         onOpenPackClick={() => setIsPackModalOpen(true)}
       />
 
       {/* Cuadrícula Responsiva de Cromos */}
-      <section
-        aria-label="Cuadrícula del Álbum de Cromos"
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 justify-items-center"
-      >
-        {filteredCards.map((card) => {
-          const qty = userInventory[card.slug] ?? 0;
-          const isOwned = qty > 0;
-          return (
-            <HistoricalCard
-              key={card.id}
-              card={card}
-              isOwned={isOwned}
-              quantity={qty}
-              size="sm"
-            />
-          );
-        })}
-      </section>
+      {filteredCards.length > 0 ? (
+        <section
+          aria-label="Cuadrícula del Álbum de Cromos"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 justify-items-center"
+        >
+          {filteredCards.map((card) => {
+            const qty = userInventory[card.slug] ?? 0;
+            const isOwned = qty > 0;
+            return (
+              <HistoricalCard
+                key={card.id}
+                card={card}
+                isOwned={isOwned}
+                quantity={qty}
+                size="sm"
+              />
+            );
+          })}
+        </section>
+      ) : (
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-neutral-50/50 py-12 px-4 text-center">
+          <p className="text-sm font-bold text-neutral-800">
+            {selectedFilter === "duplicates"
+              ? "No tienes cromos duplicados en este momento"
+              : "No se encontraron cromos en esta categoría"}
+          </p>
+          <p className="mt-1 text-xs text-neutral-500">
+            {selectedFilter === "duplicates"
+              ? "Abre nuevos sobres para conseguir cartas repetidas y compartirlas."
+              : "Prueba seleccionando otra década o abre nuevos sobres."}
+          </p>
+        </div>
+      )}
 
       {/* Modal Interactivo de Apertura de Sobres */}
       <PackOpeningModal
