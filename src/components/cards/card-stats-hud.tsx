@@ -1,6 +1,5 @@
 interface CardStatsHudProps {
   readonly knownAs: string;
-  readonly eraLabel: string;
   readonly matchesPlayed: number;
   readonly defensePower: number;
   readonly attackPower: number;
@@ -14,7 +13,6 @@ interface CardStatsHudProps {
  */
 export function CardStatsHud({
   knownAs,
-  eraLabel,
   matchesPlayed,
   defensePower,
   attackPower,
@@ -24,16 +22,13 @@ export function CardStatsHud({
   return (
     <div className="relative z-10 w-full shrink-0 select-none pt-1">
       {/* 1. Placa de Nombre: Estilo Grabado Heritage en Rojo Corporativo y Oro */}
-      <div className="relative overflow-hidden rounded-none border border-amber-300/60 bg-gradient-to-r from-[#990011] via-[#e2001a] to-[#990011] px-2 py-1 text-center shadow-xs">
+      <div className="relative overflow-hidden rounded-none border border-amber-300/60 bg-gradient-to-r from-[#990011] via-[#e2001a] to-[#990011] px-1.5 py-0.5 sm:py-1 text-center shadow-xs">
         <h3
-          className="truncate font-sans font-black text-xs sm:text-sm uppercase tracking-wider text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+          className="truncate font-sans font-black text-xs sm:text-sm uppercase tracking-wider text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] leading-tight"
           title={knownAs}
         >
           {knownAs}
         </h3>
-        <p className="truncate text-[8.5px] sm:text-[9.5px] font-bold text-amber-200 tracking-wide">
-          {eraLabel}
-        </p>
       </div>
 
       {/* 2. Cuadrícula de Estadísticas: 4 Casillas Nítidas */}

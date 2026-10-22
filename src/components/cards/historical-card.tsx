@@ -33,7 +33,6 @@ export function HistoricalCard({
 }: HistoricalCardProps) {
   const [imgError, setImgError] = useState(false);
   const posLabel = POSITION_LABELS[card.position];
-  const isCutout = card.photoUrl.endsWith(".png");
 
   const cardWidthClass =
     size === "sm" ? "w-44 text-xs" : size === "lg" ? "w-64 text-sm" : "w-52 text-xs";
@@ -49,7 +48,7 @@ export function HistoricalCard({
           onCardClick(card);
         }
       }}
-      className={`group relative flex flex-col justify-between rounded-none p-2 shadow-lg transition-all duration-150 select-none aspect-[63/90] ${cardWidthClass} ${
+      className={`group relative flex flex-col justify-between rounded-none p-1.5 sm:p-2 shadow-lg transition-all duration-150 select-none aspect-[63/90] ${cardWidthClass} ${
         isSelected
           ? "ring-4 ring-amber-400 shadow-2xl -translate-y-1.5"
           : "hover:shadow-2xl hover:-translate-y-1"
@@ -60,7 +59,7 @@ export function HistoricalCard({
       }`}
     >
       {/* 1. Cabecera Heritage: Escudo Histórico y Demarcación */}
-      <div className="relative z-10 flex shrink-0 items-center justify-between pb-1.5">
+      <div className="relative z-10 flex shrink-0 items-center justify-between pb-1">
         <div className="flex h-7 w-7 items-center justify-center rounded-none bg-white p-0.5 border border-amber-300 shadow-xs">
           <HistoricalCrestBadge era={card.historicalCrestEra} size="sm" />
         </div>
@@ -88,11 +87,9 @@ export function HistoricalCard({
             fill
             unoptimized
             sizes="(max-width: 640px) 176px, 208px"
-            className={`transition-transform duration-200 group-hover:scale-105 ${
-              isCutout
-                ? "object-contain object-bottom drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]"
-                : "object-cover object-top"
-            } ${!isOwned ? "opacity-35 brightness-50" : ""}`}
+            className={`transition-transform duration-200 group-hover:scale-105 object-cover object-[center_20%] ${
+              !isOwned ? "opacity-35 brightness-50" : ""
+            }`}
             onError={() => setImgError(true)}
           />
         ) : (
@@ -132,7 +129,6 @@ export function HistoricalCard({
       {/* 3. Placa Inferior de Nombre y Cuadrícula de 4 Estadísticas */}
       <CardStatsHud
         knownAs={card.knownAs}
-        eraLabel={card.eraLabel}
         matchesPlayed={card.matchesPlayed}
         defensePower={card.defensePower}
         attackPower={card.attackPower}
