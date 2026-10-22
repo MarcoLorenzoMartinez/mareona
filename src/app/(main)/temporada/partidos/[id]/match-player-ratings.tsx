@@ -107,25 +107,19 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
 
   const handleSubmitRatings = async () => {
     if (!user) return openAuthModal("signin");
-    const canSubmit = ratedCount > 0 || (!hasSubmittedMvp && Boolean(draftMvpId));
-    if (!canSubmit || hasSubmittedRatings || isSubmittingRatings) return;
+    if (ratedCount === 0 || hasSubmittedRatings || isSubmittingRatings) return;
 
     setIsSubmittingRatings(true);
     try {
-      if (!hasSubmittedMvp && draftMvpId) {
-        await commitMvpVote(draftMvpId);
-      }
-      if (Object.keys(draftRatings).length > 0) {
-        setLocalSubmittedRatings(true);
-        try {
-          localStorage.setItem(`mareona_ratings_${match.externalId}`, JSON.stringify(draftRatings));
-        } catch {}
-        await Promise.all(
-          Object.entries(draftRatings).map(([targetId, rating]) =>
-            submitPlayerRating({ matchId: match.externalId, targetId, rating })
-          )
-        );
-      }
+      setLocalSubmittedRatings(true);
+      try {
+        localStorage.setItem(`mareona_ratings_${match.externalId}`, JSON.stringify(draftRatings));
+      } catch {}
+      await Promise.all(
+        Object.entries(draftRatings).map(([targetId, rating]) =>
+          submitPlayerRating({ matchId: match.externalId, targetId, rating })
+        )
+      );
     } finally {
       setIsSubmittingRatings(false);
     }
@@ -160,7 +154,6 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
           hasSubmitted={hasSubmittedRatings}
           isSubmitting={isSubmittingRatings}
           ratedCount={ratedCount}
-          hasSelectedMvp={!hasSubmittedMvp && Boolean(draftMvpId)}
           onSubmit={handleSubmitRatings}
         />
       </section>
