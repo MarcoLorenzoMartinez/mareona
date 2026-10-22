@@ -49,81 +49,62 @@ export function HistoricalCard({
           onCardClick(card);
         }
       }}
-      className={`group relative flex flex-col justify-between overflow-hidden rounded-none shadow-xl transition-all duration-150 select-none aspect-[63/90] ${cardWidthClass} ${
+      className={`group relative flex flex-col justify-between rounded-none p-2 shadow-lg transition-all duration-150 select-none aspect-[63/90] ${cardWidthClass} ${
         isSelected
           ? "ring-4 ring-amber-400 shadow-2xl -translate-y-1.5"
           : "hover:shadow-2xl hover:-translate-y-1"
-      } border-2 ${isOwned ? "border-amber-400/90" : "border-amber-700/50"}`}
+      } ${
+        isOwned
+          ? "bg-[#e2001a] border-2 border-amber-300/80"
+          : "bg-gradient-to-b from-[#5c030b] to-[#2d0105] border-2 border-amber-800/40"
+      }`}
     >
-      {/* 1. Fondo Deportivo a Sangre: El Molinón con focos e iluminación nocturna */}
-      <CardStadiumBackground isLegend={!isCutout} />
-
-      {/* 2. Cabecera Superior: Sello Metálico con Escudo de la Época y Demarcación */}
-      <div className="relative z-10 flex shrink-0 items-center justify-between p-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white p-1 border-2 border-amber-400 shadow-md">
+      {/* 1. Cabecera Heritage: Escudo Histórico y Demarcación */}
+      <div className="relative z-10 flex shrink-0 items-center justify-between pb-1.5">
+        <div className="flex h-7 w-7 items-center justify-center rounded-none bg-white p-0.5 border border-amber-300 shadow-xs">
           <HistoricalCrestBadge era={card.historicalCrestEra} size="sm" />
         </div>
         <div className="flex items-center gap-1.5">
           {quantity > 1 && (
-            <span className="rounded-none bg-neutral-950/90 px-1.5 py-0.5 text-[8.5px] font-black text-amber-300 uppercase border border-amber-400/50 shadow-xs">
+            <span className="rounded-none bg-black/85 px-1.5 py-0.5 text-[8.5px] font-black text-amber-300 uppercase border border-amber-300/40">
               x{quantity}
             </span>
           )}
-          <span className="rounded-none bg-neutral-950/90 px-2 py-0.5 text-[10px] font-black tracking-wider text-amber-300 uppercase border border-amber-400/50 shadow-xs">
+          <span className="rounded-none bg-white px-2 py-0.5 text-[10px] font-black tracking-wider text-[#e2001a] uppercase shadow-xs border border-amber-300/40">
             {posLabel}
           </span>
         </div>
       </div>
 
-      {/* 3. Escenario Central: Silueta Atlética (Modernos) o Prisma Dorado (Leyendas) */}
-      <div className="relative z-0 flex flex-1 w-full min-h-0 items-end justify-center px-2 pb-1">
+      {/* 2. Ventana Central Biselada de Retrato (The Heritage Window) */}
+      <div className="relative w-full flex-1 min-h-0 overflow-hidden rounded-none border-2 border-white/90 bg-neutral-950 shadow-[inset_0_2px_8px_rgba(0,0,0,0.7)]">
+        {/* Fondo sutil de El Molinón integrado con armonía */}
+        <CardStadiumBackground isOwned={isOwned} />
+
         {!imgError ? (
-          isCutout ? (
-            /* Jugador Moderno en Silueta Recortada apoyada sobre El Molinón */
-            <div className="relative h-full w-full">
-              <Image
-                src={card.photoUrl}
-                alt={isOwned ? `Cromo de ${card.knownAs}` : "Cromo pendiente de desbloquear"}
-                fill
-                unoptimized
-                sizes="(max-width: 640px) 180px, 220px"
-                className={`object-contain object-bottom drop-shadow-[0_0_12px_rgba(255,255,255,0.7)] drop-shadow-[0_8px_16px_rgba(0,0,0,0.85)] transition-transform duration-200 group-hover:scale-105 ${
-                  !isOwned ? "opacity-30 brightness-50" : ""
-                }`}
-                onError={() => setImgError(true)}
-              />
-            </div>
-          ) : (
-            /* Leyenda Histórica de Archivo: Retrato Nítido en Prisma Dorado Adrenalyn */
-            <div className="relative mb-1 flex flex-col items-center">
-              <span className="mb-0.5 rounded-none bg-amber-400 px-2 py-0.5 text-[8px] font-black tracking-widest text-neutral-950 uppercase shadow-xs">
-                Leyenda
-              </span>
-              <div
-                className={`relative h-32 w-28 sm:h-36 sm:w-32 overflow-hidden border-2 border-amber-400 bg-neutral-950 shadow-[0_0_16px_rgba(245,158,11,0.35)] ${
-                  !isOwned ? "opacity-30 brightness-50" : ""
-                }`}
-              >
-                <Image
-                  src={card.photoUrl}
-                  alt={isOwned ? `Cromo de ${card.knownAs}` : "Cromo pendiente de desbloquear"}
-                  fill
-                  unoptimized
-                  sizes="(max-width: 640px) 140px, 160px"
-                  className="object-cover object-top transition-transform duration-200 group-hover:scale-105"
-                  onError={() => setImgError(true)}
-                />
-                <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-amber-300/40" />
-              </div>
-            </div>
-          )
+          <Image
+            src={card.photoUrl}
+            alt={isOwned ? `Cromo de ${card.knownAs}` : "Cromo pendiente de desbloquear"}
+            fill
+            unoptimized
+            sizes="(max-width: 640px) 176px, 208px"
+            className={`transition-transform duration-200 group-hover:scale-105 ${
+              isCutout
+                ? "object-contain object-bottom drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]"
+                : "object-cover object-top"
+            } ${!isOwned ? "opacity-35 brightness-50" : ""}`}
+            onError={() => setImgError(true)}
+          />
         ) : (
-          <div className="flex h-28 w-28 items-center justify-center bg-red-950 text-white border border-amber-400">
+          <div className="flex h-full w-full items-center justify-center bg-red-950 text-white">
             <span className="text-3xl font-black">{card.knownAs.slice(0, 2).toUpperCase()}</span>
           </div>
         )}
 
-        {/* Overlay Mítico para Cromos "Por Descubrir" */}
+        {/* Filete interior sutil de marco de cuadro */}
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-amber-400/30" />
+
+        {/* Overlay clásico para cromo "Por descubrir" */}
         {!isOwned && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-[2px]">
             <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-amber-400/80 bg-neutral-950/80 text-amber-300 shadow-xl">
@@ -141,14 +122,14 @@ export function HistoricalCard({
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
             </div>
-            <span className="mt-2 border border-amber-400/70 bg-neutral-950/90 px-2 py-0.5 text-[8.5px] font-black tracking-widest text-amber-300 uppercase shadow-md">
+            <span className="mt-2 border border-amber-400/60 bg-neutral-950/90 px-2 py-0.5 text-[8.5px] font-black tracking-widest text-amber-300 uppercase shadow-md">
               Por descubrir
             </span>
           </div>
         )}
       </div>
 
-      {/* 4. Pie de Cromo: Barra HUD Unificada (Identidad + Telemetría de Estadísticas) */}
+      {/* 3. Placa Inferior de Nombre y Cuadrícula de 4 Estadísticas */}
       <CardStatsHud
         knownAs={card.knownAs}
         eraLabel={card.eraLabel}
