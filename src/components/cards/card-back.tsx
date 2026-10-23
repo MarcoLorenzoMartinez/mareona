@@ -1,0 +1,65 @@
+import Image from "next/image";
+
+interface CardBackProps {
+  readonly size?: "sm" | "md" | "lg";
+  readonly isSelected?: boolean;
+  readonly onClick?: () => void;
+  readonly className?: string;
+  readonly title?: string;
+}
+
+/**
+ * Authentic black card back for unowned cards and face-down decks.
+ * Displays pure black background with centered white Mareona wave logo.
+ */
+export function CardBack({
+  size = "md",
+  isSelected = false,
+  onClick,
+  className = "",
+  title = "Cromo no desbloqueado",
+}: CardBackProps) {
+  const cardWidthClass =
+    size === "sm" ? "w-44 text-xs" : size === "lg" ? "w-64 text-sm" : "w-52 text-xs";
+
+  return (
+    <article
+      onClick={onClick}
+      role={onClick ? "button" : "article"}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={(e) => {
+        if (onClick && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      title={title}
+      aria-label={title}
+      className={`group relative flex flex-col items-center justify-center rounded-none p-2 sm:p-2.5 shadow-lg transition-all duration-150 select-none aspect-[63/90] bg-black border-2 border-neutral-800 ${cardWidthClass} ${
+        isSelected
+          ? "ring-4 ring-amber-400 shadow-2xl -translate-y-1.5"
+          : onClick
+            ? "hover:shadow-2xl hover:-translate-y-1 cursor-pointer"
+            : "hover:shadow-xl"
+      } ${className}`}
+    >
+      {/* Filete perimetral interior con sutil relieve heritage */}
+      <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-none border border-neutral-800/80 bg-neutral-950 p-4 shadow-[inset_0_2px_12px_rgba(0,0,0,0.9)]">
+        {/* Marco de doble línea clásico de naipe/cromo */}
+        <div className="pointer-events-none absolute inset-1.5 border border-neutral-800/40" />
+
+        {/* Logo de Mareona: La ola blanca sin fondo centrada */}
+        <div className="relative flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center">
+          <Image
+            src="/images/cards/card-back-logo.png"
+            alt="Mareona"
+            width={128}
+            height={128}
+            priority={false}
+            className="h-auto w-full object-contain transition-transform duration-200 group-hover:scale-105 drop-shadow-[0_2px_12px_rgba(255,255,255,0.08)] pointer-events-none select-none"
+          />
+        </div>
+      </div>
+    </article>
+  );
+}

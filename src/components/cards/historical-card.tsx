@@ -7,6 +7,7 @@ import { HistoricalCrestBadge } from "./historical-crest-badge";
 import { CardStadiumBackground } from "./card-stadium-background";
 import { CardStatsHud } from "./card-stats-hud";
 import { CardCommemorativeHud } from "./card-commemorative-hud";
+import { CardBack } from "./card-back";
 
 export interface HistoricalCardProps {
   readonly card: Card;
@@ -32,6 +33,19 @@ export function HistoricalCard({
   size = "md",
 }: HistoricalCardProps) {
   const [imgError, setImgError] = useState(false);
+
+  // Si el usuario aún no posee el cromo, se muestra el reverso oficial de Mareona (negro con la ola blanca)
+  if (!isOwned) {
+    return (
+      <CardBack
+        size={size}
+        isSelected={isSelected}
+        onClick={onCardClick ? () => onCardClick(card) : undefined}
+        title="Cromo por descubrir"
+      />
+    );
+  }
+
   const isCommemorative =
     card.kind === "crest" || card.kind === "moment" || card.kind === "coach";
   const badgeLabel =
@@ -63,11 +77,7 @@ export function HistoricalCard({
         isSelected
           ? "ring-4 ring-amber-400 shadow-2xl -translate-y-1.5"
           : "hover:shadow-2xl hover:-translate-y-1"
-      } ${
-        isOwned
-          ? "bg-[#e2001a] border-2 border-amber-300/80"
-          : "bg-gradient-to-b from-[#5c030b] to-[#2d0105] border-2 border-amber-800/40"
-      }`}
+      } bg-[#e2001a] border-2 border-amber-300/80`}
     >
       {/* 1. Cabecera Heritage: Escudo Histórico y Demarcación / Tipo */}
       <div className="relative z-10 flex shrink-0 items-center justify-between pb-1">
@@ -87,12 +97,12 @@ export function HistoricalCard({
             : "bg-neutral-950 shadow-[inset_0_2px_8px_rgba(0,0,0,0.7)]"
         }`}
       >
-        {card.kind !== "crest" && <CardStadiumBackground isOwned={isOwned} />}
+        {card.kind !== "crest" && <CardStadiumBackground isOwned={true} />}
 
         {!imgError ? (
           <Image
             src={card.photoUrl}
-            alt={isOwned ? `Cromo de ${card.knownAs}` : "Cromo pendiente de desbloquear"}
+            alt={`Cromo de ${card.knownAs}`}
             fill
             unoptimized
             sizes="(max-width: 640px) 176px, 208px"
@@ -100,7 +110,7 @@ export function HistoricalCard({
               card.kind === "crest"
                 ? "object-contain p-3.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]"
                 : "object-cover object-[center_20%]"
-            } ${!isOwned ? "opacity-35 brightness-50" : ""}`}
+            }`}
             onError={() => setImgError(true)}
           />
         ) : (
@@ -118,30 +128,6 @@ export function HistoricalCard({
 
         {/* Filete interior sutil de marco de cuadro */}
         <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-amber-400/30" />
-
-        {/* Overlay clásico para cromo "Por descubrir" */}
-        {!isOwned && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-[2px]">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-amber-400/80 bg-neutral-950/80 text-amber-300 shadow-xl">
-              <svg
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-            </div>
-            <span className="mt-2 border border-amber-400/60 bg-neutral-950/90 px-2 py-0.5 text-[8.5px] font-black tracking-widest text-amber-300 uppercase shadow-md">
-              Por descubrir
-            </span>
-          </div>
-        )}
       </div>
 
       {/* 3. Placa Inferior: Conmemorativa o Cuadrícula de 4 Estadísticas */}
@@ -164,7 +150,7 @@ export function HistoricalCard({
           defensePower={card.defensePower ?? 50}
           attackPower={card.attackPower ?? 50}
           ovr={card.ovr ?? 50}
-          isOwned={isOwned}
+          isOwned={true}
         />
       )}
     </article>
