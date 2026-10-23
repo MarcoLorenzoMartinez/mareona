@@ -519,6 +519,30 @@ export interface Database {
           },
         ];
       };
+      card_match_sync: {
+        Row: {
+          match_id: string;
+          competition: string;
+          match_date: string;
+          synced_card_slugs: string[];
+          processed_at: string;
+        };
+        Insert: {
+          match_id: string;
+          competition: string;
+          match_date: string;
+          synced_card_slugs?: string[];
+          processed_at?: string;
+        };
+        Update: {
+          match_id?: string;
+          competition?: string;
+          match_date?: string;
+          synced_card_slugs?: string[];
+          processed_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
