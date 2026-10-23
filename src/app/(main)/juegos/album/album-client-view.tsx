@@ -8,10 +8,13 @@ import { HistoricalCard } from "@/components/cards/historical-card";
 import { AlbumHeader, type AlbumFilter } from "./album-header";
 import { AlbumDemoToolbar, type AlbumDemoViewMode } from "./album-demo-toolbar";
 import { PackOpeningModal } from "./pack-opening-modal";
+import { AlbumSpreadView } from "./album-spread-view";
 
 interface AlbumClientViewProps {
   readonly allCards: readonly Card[];
 }
+
+type ViewMode = "album" | "grid";
 
 export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   const { user } = useAuth();
@@ -19,6 +22,8 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   const [demoViewMode, setDemoViewMode] = useState<AlbumDemoViewMode>("starter");
   const [selectedFilter, setSelectedFilter] = useState<AlbumFilter>("all");
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("album");
+  const [newlyAcquiredSlugs, setNewlyAcquiredSlugs] = useState<Set<string>>(new Set());
 
   // Inicializamos al usuario con una baraja inicial auténtica de 6 cromos reales
   const [userInventory, setUserInventory] = useState<Record<string, number>>(() => {
@@ -50,6 +55,9 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
       return next;
     });
 
+    // Track newly acquired cards for the paste animation in album view
+    setNewlyAcquiredSlugs(new Set(packCards.map((c) => c.slug)));
+
     return packCards;
   };
 
@@ -70,15 +78,9 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
       const { quantity } = getCardStatus(card.slug);
       return quantity > 1;
     }
-    if (selectedFilter === "crests") {
-      return card.kind === "crest";
-    }
-    if (selectedFilter === "moments") {
-      return card.kind === "moment";
-    }
-    if (selectedFilter === "coaches") {
-      return card.kind === "coach";
-    }
+    if (selectedFilter === "crests") return card.kind === "crest";
+    if (selectedFilter === "moments") return card.kind === "moment";
+    if (selectedFilter === "coaches") return card.kind === "coach";
     if (selectedFilter === "all") return true;
     return card.decade === selectedFilter;
   });
@@ -111,51 +113,62 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
 
       <AlbumHeader
         selectedFilter={selectedFilter}
-        onSelectFilter={setSelectedFilter}
+        onSelectFilter={(f) => { setSelectedFilter(f); }}
         ownedCount={ownedCount}
         totalCount={allCards.length}
         duplicateCount={duplicateCount}
         onOpenPackClick={() => setIsPackModalOpen(true)}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
       />
 
-      {/* Cuadrícula Responsiva de Cromos */}
-      {filteredCards.length > 0 ? (
-        <section
-          aria-label="Cuadrícula del Álbum de Cromos"
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 justify-items-center"
-        >
-          {filteredCards.map((card) => {
-            const { isOwned, quantity } = getCardStatus(card.slug);
-            return (
-              <HistoricalCard
-                key={card.id}
-                card={card}
-                isOwned={isOwned}
-                quantity={quantity}
-                size="sm"
-              />
-            );
-          })}
-        </section>
+      {/* Vista Álbum (pliegos de cartón con casillas troqueladas) */}
+      {viewMode === "album" ? (
+        <AlbumSpreadView
+          cards={filteredCards}
+          getCardStatus={getCardStatus}
+          newlyAcquiredSlugs={newlyAcquiredSlugs}
+        />
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-neutral-50/50 py-12 px-4 text-center">
-          <p className="text-sm font-bold text-neutral-800">
-            {selectedFilter === "duplicates"
-              ? "No tienes cromos duplicados en este momento"
-              : "No se encontraron cromos en esta categoría"}
-          </p>
-          <p className="mt-1 text-xs text-neutral-500">
-            {selectedFilter === "duplicates"
-              ? "Abre nuevos sobres para conseguir cartas repetidas y compartirlas."
-              : "Prueba seleccionando otra década o abre nuevos sobres."}
-          </p>
-        </div>
+        /* Vista Cuadrícula (original) */
+        filteredCards.length > 0 ? (
+          <section
+            aria-label="Cuadrícula del Álbum de Cromos"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 justify-items-center"
+          >
+            {filteredCards.map((card) => {
+              const { isOwned, quantity } = getCardStatus(card.slug);
+              return (
+                <HistoricalCard
+                  key={card.id}
+                  card={card}
+                  isOwned={isOwned}
+                  quantity={quantity}
+                  size="sm"
+                />
+              );
+            })}
+          </section>
+        ) : (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-neutral-50/50 py-12 px-4 text-center">
+            <p className="text-sm font-bold text-neutral-800">
+              {selectedFilter === "duplicates"
+                ? "No tienes cromos duplicados en este momento"
+                : "No se encontraron cromos en esta categoría"}
+            </p>
+            <p className="mt-1 text-xs text-neutral-500">
+              {selectedFilter === "duplicates"
+                ? "Abre nuevos sobres para conseguir cartas repetidas y compartirlas."
+                : "Prueba seleccionando otra década o abre nuevos sobres."}
+            </p>
+          </div>
+        )
       )}
 
       {/* Modal Interactivo de Apertura de Sobres */}
       <PackOpeningModal
         isOpen={isPackModalOpen}
-        onClose={() => setIsPackModalOpen(false)}
+        onClose={() => { setIsPackModalOpen(false); setNewlyAcquiredSlugs(new Set()); }}
         onOpenPack={handleOpenPack}
       />
     </div>
