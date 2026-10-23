@@ -1,6 +1,7 @@
-"use client"; // Client: Pliego abierto de álbum físico de cromos sin bordes oscuros artificiales
+"use client"; // Client: Pliego abierto de álbum físico de cromos con riel deslizador integrado
 
 import type { ReactNode } from "react";
+import { AlbumPageNav } from "./album-page-nav";
 
 interface AlbumBookSpreadProps {
   readonly children: ReactNode;
@@ -12,6 +13,7 @@ interface AlbumBookSpreadProps {
   readonly turnDirection: "next" | "prev" | "none";
   readonly onPrevPage: () => void;
   readonly onNextPage: () => void;
+  readonly onPageChange: (targetPage: number) => void;
   readonly canPrev: boolean;
   readonly canNext: boolean;
 }
@@ -19,7 +21,8 @@ interface AlbumBookSpreadProps {
 /**
  * Open double-page spread of an authentic sticker album.
  * Renders genuine satin cream/ivory pages with central spine shadow,
- * page-stack depth, and floating tactile page-turn triggers.
+ * page-stack depth, floating tactile page-turn triggers, and an integrated
+ * vintage page scrubber rail.
  */
 export function AlbumBookSpread({
   children,
@@ -31,6 +34,7 @@ export function AlbumBookSpread({
   turnDirection,
   onPrevPage,
   onNextPage,
+  onPageChange,
   canPrev,
   canNext,
 }: AlbumBookSpreadProps) {
@@ -75,11 +79,10 @@ export function AlbumBookSpread({
         </button>
       )}
 
-      {/* Pliego físico abierto del álbum (sin reborde negro artificial) */}
+      {/* Pliego físico abierto del álbum con papel crema y textura continua */}
       <section
-        key={pageNumber}
         aria-label={`Página ${pageNumber} de ${totalPages}: ${pageTitle}`}
-        className={`relative w-full rounded-t-lg overflow-hidden border border-amber-900/15 ${turnAnimationClass}`}
+        className="relative w-full rounded-lg overflow-hidden border border-amber-900/15"
         style={{
           background:
             "linear-gradient(160deg, #faf6ee 0%, #f4ecdb 35%, #efe5d1 60%, #f4ecdb 100%)",
@@ -87,65 +90,77 @@ export function AlbumBookSpread({
             "0 10px 30px rgba(80,50,15,0.08), 0 2px 6px rgba(80,50,15,0.04), inset 0 0 0 1px rgba(180,140,60,0.18)",
         }}
       >
-        {/* Filete perimetral tenue de imprenta editorial clásica */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-2"
-          style={{ border: "1px solid rgba(160,120,50,0.20)" }}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-3"
-          style={{ border: "0.5px solid rgba(160,120,50,0.12)" }}
-        />
+        {/* Contenido animado de la página */}
+        <div key={pageNumber} className={`relative w-full ${turnAnimationClass}`}>
+          {/* Filete perimetral tenue de imprenta editorial clásica */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-2"
+            style={{ border: "1px solid rgba(160,120,50,0.20)" }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-3"
+            style={{ border: "0.5px solid rgba(160,120,50,0.12)" }}
+          />
 
-        {/* Sombra central del lomo / hendidura de encuadernación */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 hidden md:block"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent 0%, rgba(80,45,10,0.08) 35%, rgba(60,30,5,0.16) 50%, rgba(80,45,10,0.08) 65%, transparent 100%)",
-          }}
-        />
+          {/* Sombra central del lomo / hendidura de encuadernación */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 hidden md:block"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(80,45,10,0.08) 35%, rgba(60,30,5,0.16) 50%, rgba(80,45,10,0.08) 65%, transparent 100%)",
+            }}
+          />
 
-        {/* Cabecera del pliego: Título del capítulo, subtítulo y progreso */}
-        <header className="relative z-10 flex items-start justify-between px-4 sm:px-6 pt-4 pb-2 border-b border-amber-800/15">
-          <div>
-            <h2
-              className="font-sans text-xs sm:text-sm font-black uppercase tracking-[0.16em] text-amber-950/85"
-              style={{ textShadow: "0 1px 0 rgba(255,250,235,0.8)" }}
-            >
-              {pageTitle}
-            </h2>
-            {pageSubtitle && (
-              <p className="mt-0.5 text-[9.5px] sm:text-[10.5px] font-semibold uppercase tracking-wider text-amber-900/60">
-                {pageSubtitle}
-              </p>
-            )}
-          </div>
+          {/* Cabecera del pliego: Título del capítulo, subtítulo y progreso */}
+          <header className="relative z-10 flex items-start justify-between px-4 sm:px-6 pt-4 pb-2 border-b border-amber-800/15">
+            <div>
+              <h2
+                className="font-sans text-xs sm:text-sm font-black uppercase tracking-[0.16em] text-amber-950/85"
+                style={{ textShadow: "0 1px 0 rgba(255,250,235,0.8)" }}
+              >
+                {pageTitle}
+              </h2>
+              {pageSubtitle && (
+                <p className="mt-0.5 text-[9.5px] sm:text-[10.5px] font-semibold uppercase tracking-wider text-amber-900/60">
+                  {pageSubtitle}
+                </p>
+              )}
+            </div>
 
-          <div className="flex flex-col items-end gap-0.5">
-            <span className="font-sans text-xs font-black tabular-nums text-amber-950/85">
-              Página {pageNumber} de {totalPages}
-            </span>
-            <span className="text-[9px] font-bold text-amber-900/60 tabular-nums">
-              {pct}% completado
-            </span>
-          </div>
-        </header>
+            <div className="flex flex-col items-end gap-0.5">
+              <span className="font-sans text-xs font-black tabular-nums text-amber-950/85">
+                Página {pageNumber} de {totalPages}
+              </span>
+              <span className="text-[9px] font-bold text-amber-900/60 tabular-nums">
+                {pct}% completado
+              </span>
+            </div>
+          </header>
 
-        {/* Cuadrícula de 12 cromos ajustados perfectamente */}
-        <div className="relative z-10 p-3 sm:p-5">{children}</div>
+          {/* Cuadrícula de 12 cromos ajustados perfectamente */}
+          <div className="relative z-10 p-3 sm:p-5">{children}</div>
 
-        {/* Pie de página impreso del pliego */}
-        <footer
-          aria-hidden="true"
-          className="relative z-10 flex items-center justify-between px-6 pb-2 pt-0.5 text-[8px] font-bold uppercase tracking-widest text-amber-900/40"
-        >
-          <span>Real Sporting de Gijón · Colección Oficial</span>
-          <span>Pág. {pageNumber}</span>
-        </footer>
+          {/* Pie de página impreso del pliego */}
+          <footer
+            aria-hidden="true"
+            className="relative z-10 flex items-center justify-between px-6 pb-2 pt-0.5 text-[8px] font-bold uppercase tracking-widest text-amber-900/40"
+          >
+            <span>Real Sporting de Gijón · Colección Oficial</span>
+            <span>Pág. {pageNumber}</span>
+          </footer>
+        </div>
+
+        {/* Riel antiguo de hojear páginas integrado en el mismo pergamino */}
+        <div className="border-t border-amber-900/15">
+          <AlbumPageNav
+            currentPage={pageNumber}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
+        </div>
       </section>
     </div>
   );

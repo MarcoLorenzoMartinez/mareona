@@ -7,7 +7,6 @@ import { AlbumCardSlot } from "./album-card-slot";
 import { AlbumPastedCard } from "./album-pasted-card";
 import { AlbumChapterTabs } from "./album-chapter-tabs";
 import { AlbumBookSpread } from "./album-book-spread";
-import { AlbumPageNav } from "./album-page-nav";
 import {
   CARDS_PER_PAGE,
   sortCardsChronologically,
@@ -124,6 +123,7 @@ export function AlbumSpreadView({
         onNextPage={() => handleTurnToPage(currentPage + 1)}
         canPrev={currentPage > 1}
         canNext={currentPage < totalPages}
+        onPageChange={handleTurnToPage}
       >
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
           {slots.map((_, idx) => {
@@ -165,13 +165,6 @@ export function AlbumSpreadView({
           })}
         </div>
       </AlbumBookSpread>
-
-      {/* 3. Bottom bookmark ribbon console */}
-      <AlbumPageNav
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handleTurnToPage}
-      />
     </div>
   );
 }

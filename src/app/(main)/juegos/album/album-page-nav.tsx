@@ -1,4 +1,4 @@
-"use client"; // Client: Cinta de control integrada en el pie del pliego del álbum
+"use client"; // Client: Riel deslizador antiguo integrado en el papel del álbum
 
 interface AlbumPageNavProps {
   readonly currentPage: number;
@@ -7,133 +7,65 @@ interface AlbumPageNavProps {
 }
 
 /**
- * Bottom console integrated into the album page spread.
- * Styled in warm cardstock matching the physical album pages, with Sporting red actions.
+ * Vintage page scrubber slider integrated directly into the physical album paper.
+ * Features an engraved parchment groove and an authentic carmine-red wax/brass knob.
  */
 export function AlbumPageNav({
   currentPage,
   totalPages,
   onPageChange,
 }: AlbumPageNavProps) {
-  const handleSubmitInput = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const input = form.elements.namedItem("pageNumber") as HTMLInputElement | null;
-    if (!input) return;
-    const num = parseInt(input.value, 10);
-    if (!Number.isNaN(num)) {
-      const clamped = Math.max(1, Math.min(totalPages, num));
-      onPageChange(clamped);
-      input.value = String(clamped);
-    }
-  };
-
-  const canPrev = currentPage > 1;
-  const canNext = currentPage < totalPages;
-
   return (
     <nav
-      aria-label="Controles de navegación del álbum"
-      className="relative flex flex-col items-center gap-2.5 rounded-b-lg border-x border-b border-amber-900/15 bg-white p-3 text-neutral-800 shadow-sm"
+      aria-label="Selector de página del álbum"
+      className="relative z-10 w-full px-4 sm:px-8 pt-1.5 pb-2.5"
     >
-      <div className="flex w-full flex-wrap items-center justify-between gap-3 px-1 sm:px-3">
-        {/* Controles de salto a la izquierda: -5 y Página anterior */}
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            disabled={!canPrev}
-            onClick={() => onPageChange(Math.max(1, currentPage - 5))}
-            className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-100 hover:bg-neutral-200 px-3 py-1 text-xs font-bold text-neutral-700 transition-all disabled:pointer-events-none disabled:opacity-30 active:scale-95 shadow-2xs"
-            title="Retroceder 5 páginas (Shift + ←)"
-          >
-            <span>−5</span>
-            <span className="hidden sm:inline text-[10px] text-neutral-500">págs</span>
-          </button>
-
-          <button
-            type="button"
-            disabled={!canPrev}
-            onClick={() => onPageChange(currentPage - 1)}
-            className="flex items-center gap-1.5 rounded-full bg-[#e2001a] hover:bg-[#b30015] px-3.5 py-1 text-xs font-bold text-white transition-all disabled:pointer-events-none disabled:opacity-30 active:scale-95 shadow-2xs"
-            title="Página anterior (←)"
-          >
-            <span aria-hidden="true">←</span>
-            <span>Anterior</span>
-          </button>
-        </div>
-
-        {/* Centro: Salto directo a página */}
-        <form
-          onSubmit={handleSubmitInput}
-          className="flex items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs shadow-2xs"
+      {/* Indicador tipográfico de imprenta clásica */}
+      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-amber-900/60 pb-1 select-none">
+        <span className="tabular-nums">Pág. 1</span>
+        <span
+          className="text-[10.5px] font-black text-amber-950/85 tracking-[0.2em]"
+          style={{ textShadow: "0 1px 0 rgba(255,250,235,0.8)" }}
         >
-          <span className="font-semibold text-neutral-500 text-[11px] uppercase tracking-wider">
-            Pág.
-          </span>
-          <input
-            key={currentPage}
-            name="pageNumber"
-            type="number"
-            min={1}
-            max={totalPages}
-            defaultValue={currentPage}
-            onBlur={(e) => {
-              const num = parseInt(e.target.value, 10);
-              if (!Number.isNaN(num)) {
-                onPageChange(Math.max(1, Math.min(totalPages, num)));
-              }
-            }}
-            aria-label="Número de página a visitar"
-            className="w-12 rounded-sm border border-neutral-300 bg-white text-center font-sans font-bold tabular-nums text-neutral-900 focus:border-[#e2001a] focus:outline-hidden py-0.5 text-xs shadow-2xs"
-          />
-          <span className="font-sans font-bold tabular-nums text-neutral-600">
-            de {totalPages}
-          </span>
-        </form>
-
-        {/* Controles de salto a la derecha: Siguiente y +5 */}
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            disabled={!canNext}
-            onClick={() => onPageChange(currentPage + 1)}
-            className="flex items-center gap-1.5 rounded-full bg-[#e2001a] hover:bg-[#b30015] px-3.5 py-1 text-xs font-bold text-white transition-all disabled:pointer-events-none disabled:opacity-30 active:scale-95 shadow-2xs"
-            title="Página siguiente (→)"
-          >
-            <span>Siguiente</span>
-            <span aria-hidden="true">→</span>
-          </button>
-
-          <button
-            type="button"
-            disabled={!canNext}
-            onClick={() => onPageChange(Math.min(totalPages, currentPage + 5))}
-            className="flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-100 hover:bg-neutral-200 px-3 py-1 text-xs font-bold text-neutral-700 transition-all disabled:pointer-events-none disabled:opacity-30 active:scale-95 shadow-2xs"
-            title="Avanzar 5 páginas (Shift + →)"
-          >
-            <span>+5</span>
-            <span className="hidden sm:inline text-[10px] text-neutral-500">págs</span>
-          </button>
-        </div>
+          Página {currentPage} de {totalPages}
+        </span>
+        <span className="tabular-nums">Pág. {totalPages}</span>
       </div>
 
-      {/* Cinta deslizadora continua */}
-      <div className="flex w-full items-center gap-3 px-2 pt-0.5">
-        <span className="text-[9.5px] font-bold uppercase tracking-wider text-neutral-400 shrink-0">
-          Hojear
-        </span>
+      {/* Riel deslizador con hendidura troquelada y tirador en rojo Sporting */}
+      <div className="relative flex items-center w-full">
         <input
           type="range"
           min={1}
           max={totalPages}
           value={currentPage}
           onChange={(e) => onPageChange(Number(e.target.value))}
-          aria-label="Cinta deslizadora de páginas"
-          className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-neutral-200 accent-[#e2001a]"
+          aria-label="Deslizar para seleccionar página del álbum"
+          aria-valuemin={1}
+          aria-valuemax={totalPages}
+          aria-valuenow={currentPage}
+          className="h-2 sm:h-2.5 w-full cursor-pointer appearance-none rounded-full bg-[#dfd3be] border border-amber-900/30 shadow-[inset_0_1px_3px_rgba(70,40,10,0.35)] focus:outline-hidden
+            [&::-webkit-slider-thumb]:appearance-none
+            [&::-webkit-slider-thumb]:h-5
+            [&::-webkit-slider-thumb]:w-5
+            [&::-webkit-slider-thumb]:rounded-full
+            [&::-webkit-slider-thumb]:bg-[#e2001a]
+            [&::-webkit-slider-thumb]:border-2
+            [&::-webkit-slider-thumb]:border-[#fcedc7]
+            [&::-webkit-slider-thumb]:shadow-[0_2px_4px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)]
+            [&::-webkit-slider-thumb]:cursor-grab
+            [&::-webkit-slider-thumb]:active:cursor-grabbing
+            [&::-webkit-slider-thumb]:active:scale-110
+            [&::-webkit-slider-thumb]:transition-transform
+            [&::-moz-range-thumb]:h-5
+            [&::-moz-range-thumb]:w-5
+            [&::-moz-range-thumb]:rounded-full
+            [&::-moz-range-thumb]:bg-[#e2001a]
+            [&::-moz-range-thumb]:border-2
+            [&::-moz-range-thumb]:border-[#fcedc7]
+            [&::-moz-range-thumb]:shadow-[0_2px_4px_rgba(0,0,0,0.35)]
+            [&::-moz-range-thumb]:cursor-grab"
         />
-        <span className="text-[9px] text-neutral-400 hidden sm:inline shrink-0 font-medium">
-          Usa teclas ← / →
-        </span>
       </div>
     </nav>
   );
