@@ -19,10 +19,19 @@ const OFFICIAL_COMPETITIONS = [
   "laliga 2",
   "copa del rey",
   "copa de s.m. el rey",
+  "copa uefa",
+  "uefa",
+  "europa league",
+  "copa de la liga",
+  "promocion",
+  "copa federacion",
+  "campeonato regional",
+  "fase previa",
 ] as const;
 
 /**
- * Checks whether a competition is an official recognized tournament (Liga or Copa).
+ * Checks whether a competition belongs to an official tournament included in
+ * the all-competitions appearance total.
  */
 export function isOfficialCompetition(competitionName: string): boolean {
   const norm = competitionName

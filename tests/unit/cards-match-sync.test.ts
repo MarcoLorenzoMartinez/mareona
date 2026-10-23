@@ -11,12 +11,19 @@ import type { DomainMatchDetail, DomainLineupPlayer } from "../../src/lib/sports
 import type { Card } from "../../src/lib/cards/types.ts";
 
 describe("Cards Finished Matches Sync Suite", () => {
-  it("recognizes official competitions (Segunda & Copa del Rey) and filters out friendlies", () => {
+  it("recognizes all supported official competitions and filters out friendlies", () => {
     assert.equal(isOfficialCompetition("LALIGA HYPERMOTION"), true);
     assert.equal(isOfficialCompetition("Segunda División"), true);
     assert.equal(isOfficialCompetition("LaLiga 2"), true);
     assert.equal(isOfficialCompetition("Copa del Rey"), true);
     assert.equal(isOfficialCompetition("Copa de S.M. El Rey"), true);
+    assert.equal(isOfficialCompetition("Copa UEFA"), true);
+    assert.equal(isOfficialCompetition("UEFA Europa League"), true);
+    assert.equal(isOfficialCompetition("Copa de la Liga"), true);
+    assert.equal(isOfficialCompetition("Promoción de ascenso"), true);
+    assert.equal(isOfficialCompetition("Copa Federación"), true);
+    assert.equal(isOfficialCompetition("Campeonato Regional"), true);
+    assert.equal(isOfficialCompetition("Fase Previa 1ª"), true);
 
     assert.equal(isOfficialCompetition("Amistoso"), false);
     assert.equal(isOfficialCompetition("Club Friendly"), false);
