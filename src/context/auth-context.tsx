@@ -1,115 +1,26 @@
 // Client: Provee estado global de sesión de usuario y control del modal de acceso
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-  type ReactNode,
-} from "react";
-import type { User } from "@supabase/supabase-js";
-import { createClient } from "@/lib/supabase/client";
-import { signOut as serverSignOut, type UserProfile } from "@/lib/auth/actions";
-
-interface AuthContextValue {
-  readonly user: User | null;
-  readonly profile: UserProfile | null;
-  readonly isLoading: boolean;
-  readonly isAuthModalOpen: boolean;
-  readonly authModalMode: "signin" | "signup";
-  readonly openAuthModal: (mode?: "signin" | "signup") => void;
-  readonly closeAuthModal: () => void;
-  readonly refreshProfile: () => Promise<void>;
-  readonly handleSignOut: () => Promise<void>;
-  readonly setDemoSession: (user: User, profile: UserProfile) => void;
-  readonly updateLocalProfile: (updates: Partial<UserProfile>) => void;
-}
+import { createContext, useContext, useState, useCallback } from "react";
+import { signOut as serverSignOut } from "@/lib/auth/actions";
+import { useAuthSession } from "./use-auth-session";
+import type { AuthContextValue, AuthProviderProps } from "./auth-types";
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-export function AuthProvider({ children }: { readonly children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export function AuthProvider({ children }: AuthProviderProps) {
+  const {
+    user,
+    profile,
+    isLoading,
+    refreshProfile,
+    setDemoSession,
+    updateLocalProfile,
+    clearSession,
+  } = useAuthSession();
+
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<"signin" | "signup">("signin");
-
-  const fetchProfile = useCallback(async (userId: string) => {
-    try {
-      const supabase = createClient();
-      const { data } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .maybeSingle();
-
-      if (data) setProfile(data);
-    } catch {
-      // In offline or fallback mode, keep profile as null
-    }
-  }, []);
-
-  const refreshProfile = useCallback(async () => {
-    if (user?.id) {
-      await fetchProfile(user.id);
-    }
-  }, [user, fetchProfile]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    async function initSession() {
-      try {
-        const supabase = createClient();
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (!mounted) return;
-        const currentUser = session?.user ?? null;
-        setUser(currentUser);
-        if (currentUser) {
-          await fetchProfile(currentUser.id);
-        }
-      } catch {
-        // Fallback for offline/ssr
-      } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    void initSession();
-
-    try {
-      const supabase = createClient();
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange(async (_event, session) => {
-        if (!mounted) return;
-        const currentUser = session?.user ?? null;
-        setUser(currentUser);
-        if (currentUser) {
-          await fetchProfile(currentUser.id);
-        } else {
-          setProfile(null);
-        }
-        setIsLoading(false);
-      });
-
-      return () => {
-        mounted = false;
-        subscription.unsubscribe();
-      };
-    } catch {
-      return () => {
-        mounted = false;
-      };
-    }
-  }, [fetchProfile]);
 
   const openAuthModal = useCallback((mode: "signin" | "signup" = "signin") => {
     setAuthModalMode(mode);
@@ -121,20 +32,9 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
   }, []);
 
   const handleSignOut = useCallback(async () => {
+    clearSession();
     await serverSignOut();
-    setUser(null);
-    setProfile(null);
-  }, []);
-
-  const setDemoSession = useCallback((demoUser: User, demoProfile: UserProfile) => {
-    setUser(demoUser);
-    setProfile(demoProfile);
-    setIsLoading(false);
-  }, []);
-
-  const updateLocalProfile = useCallback((updates: Partial<UserProfile>) => {
-    setProfile((prev) => (prev ? { ...prev, ...updates } : null));
-  }, []);
+  }, [clearSession]);
 
   return (
     <AuthContext.Provider
