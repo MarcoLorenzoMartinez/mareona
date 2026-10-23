@@ -106,11 +106,11 @@ export function HistoricalCard({
             fill
             unoptimized
             sizes="(max-width: 640px) 176px, 208px"
-            className={`transition-transform duration-200 group-hover:scale-105 ${
+            className={
               card.kind === "crest"
                 ? "object-contain p-3.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]"
                 : "object-cover object-[center_20%]"
-            }`}
+            }
             onError={() => setImgError(true)}
           />
         ) : (

@@ -56,7 +56,7 @@ export function CardBack({
             width={128}
             height={128}
             priority={false}
-            className="h-auto w-full object-contain transition-transform duration-200 group-hover:scale-105 drop-shadow-[0_2px_12px_rgba(255,255,255,0.08)] pointer-events-none select-none"
+            className="h-auto w-full object-contain drop-shadow-[0_2px_12px_rgba(255,255,255,0.08)] pointer-events-none select-none"
           />
         </div>
       </div>
