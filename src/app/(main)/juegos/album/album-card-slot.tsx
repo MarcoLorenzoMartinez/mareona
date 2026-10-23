@@ -30,7 +30,7 @@ export function AlbumCardSlot({ card, cardNumber }: AlbumCardSlotProps) {
 
   return (
     <div
-      className="relative flex aspect-[63/90] w-full flex-col items-center justify-between rounded-sm p-2"
+      className="relative flex aspect-[63/90] w-full h-full flex-col items-center justify-between rounded-none p-1.5 sm:p-2"
       style={{
         background:
           "linear-gradient(135deg, rgba(200,185,155,0.22) 0%, rgba(220,205,175,0.10) 100%)",

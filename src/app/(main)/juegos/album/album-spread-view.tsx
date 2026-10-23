@@ -125,7 +125,7 @@ export function AlbumSpreadView({
         canPrev={currentPage > 1}
         canNext={currentPage < totalPages}
       >
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-3.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
           {slots.map((_, idx) => {
             const card = pageCards[idx];
             const globalNumber = (currentPage - 1) * CARDS_PER_PAGE + idx + 1;
@@ -134,7 +134,7 @@ export function AlbumSpreadView({
               return (
                 <div
                   key={`empty-${idx}`}
-                  className="flex aspect-[63/90] w-full flex-col items-center justify-center rounded-sm border border-dashed border-amber-800/20 bg-amber-950/5 p-2 text-center"
+                  className="flex aspect-[63/90] w-full h-full flex-col items-center justify-center rounded-none border border-dashed border-amber-800/25 bg-amber-950/5 p-2 text-center"
                 >
                   <span className="text-[7.5px] font-bold text-amber-800/40 uppercase tracking-widest">
                     Casilla #{globalNumber}
@@ -147,14 +147,14 @@ export function AlbumSpreadView({
             const isNew = newlyAcquiredSlugs.has(card.slug);
 
             return (
-              <div key={card.id} className="relative w-full">
+              <div key={card.id} className="relative w-full aspect-[63/90]">
                 {isOwned ? (
-                  <AlbumPastedCard rotationSeed={idx + currentPage * 7} isNew={isNew}>
+                  <AlbumPastedCard isNew={isNew}>
                     <HistoricalCard
                       card={card}
                       isOwned
                       quantity={quantity}
-                      size="sm"
+                      size="fill"
                     />
                   </AlbumPastedCard>
                 ) : (

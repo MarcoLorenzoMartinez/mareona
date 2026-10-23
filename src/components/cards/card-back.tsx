@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 interface CardBackProps {
-  readonly size?: "sm" | "md" | "lg";
+  readonly size?: "sm" | "md" | "lg" | "fill";
   readonly isSelected?: boolean;
   readonly onClick?: () => void;
   readonly className?: string;
@@ -20,7 +20,13 @@ export function CardBack({
   title = "Cromo no desbloqueado",
 }: CardBackProps) {
   const cardWidthClass =
-    size === "sm" ? "w-44 text-xs" : size === "lg" ? "w-64 text-sm" : "w-52 text-xs";
+    size === "fill"
+      ? "w-full text-xs"
+      : size === "sm"
+        ? "w-44 text-xs"
+        : size === "lg"
+          ? "w-64 text-sm"
+          : "w-52 text-xs";
 
   return (
     <article

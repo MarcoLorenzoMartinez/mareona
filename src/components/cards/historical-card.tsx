@@ -15,7 +15,7 @@ export interface HistoricalCardProps {
   readonly quantity?: number;
   readonly isSelected?: boolean;
   readonly onCardClick?: (card: Card) => void;
-  readonly size?: "sm" | "md" | "lg";
+  readonly size?: "sm" | "md" | "lg" | "fill";
 }
 
 const POSITION_LABELS = {
@@ -38,7 +38,7 @@ export function HistoricalCard({
   if (!isOwned) {
     return (
       <CardBack
-        size={size}
+        size={size === "fill" ? "fill" : size}
         isSelected={isSelected}
         onClick={onCardClick ? () => onCardClick(card) : undefined}
         title="Cromo por descubrir"
@@ -60,7 +60,15 @@ export function HistoricalCard({
             : "JUG";
 
   const cardWidthClass =
-    size === "sm" ? "w-44 text-xs" : size === "lg" ? "w-64 text-sm" : "w-52 text-xs";
+    size === "fill"
+      ? "w-full text-xs"
+      : size === "sm"
+        ? "w-44 text-xs"
+        : size === "lg"
+          ? "w-64 text-sm"
+          : "w-52 text-xs";
+
+  const paddingClass = size === "fill" ? "p-1 sm:p-1.5" : "p-1.5 sm:p-2";
 
   return (
     <article
@@ -73,10 +81,10 @@ export function HistoricalCard({
           onCardClick(card);
         }
       }}
-      className={`group relative flex flex-col justify-between rounded-none p-1.5 sm:p-2 shadow-lg transition-all duration-150 select-none aspect-[63/90] ${cardWidthClass} ${
+      className={`group relative flex flex-col justify-between rounded-none ${paddingClass} shadow-md transition-all duration-150 select-none aspect-[63/90] ${cardWidthClass} ${
         isSelected
-          ? "ring-4 ring-amber-400 shadow-2xl -translate-y-1.5"
-          : "hover:shadow-2xl hover:-translate-y-1"
+          ? "ring-4 ring-amber-400 shadow-2xl -translate-y-1.5 z-20"
+          : "hover:shadow-xl hover:-translate-y-0.5 hover:z-10"
       } bg-[#e2001a] border-2 border-amber-300/80`}
     >
       {/* 1. Cabecera Heritage: Escudo Histórico y Demarcación / Tipo */}
