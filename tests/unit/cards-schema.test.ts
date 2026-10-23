@@ -13,9 +13,16 @@ import type { Card } from "../../src/lib/cards/types.ts";
 
 describe("Cards Domain & Seed Suite", () => {
   it("validates all historical seed cards against Zod cardSchema", () => {
+    assert.strictEqual(
+      HISTORICAL_CARDS_SEED.length,
+      500,
+      `Expected exactly 500 cards, got ${HISTORICAL_CARDS_SEED.length}`
+    );
+
+    const players = HISTORICAL_CARDS_SEED.filter((c) => !c.kind || c.kind === "player");
     assert.ok(
-      HISTORICAL_CARDS_SEED.length >= 450 && HISTORICAL_CARDS_SEED.length <= 550,
-      `Expected ~500 cards, got ${HISTORICAL_CARDS_SEED.length}`
+      players.every((p) => (p.matchesPlayed ?? 0) >= 1),
+      "All historical player cards must have at least 1 official match played"
     );
 
     for (const card of HISTORICAL_CARDS_SEED) {
@@ -222,7 +229,7 @@ describe("Cards Domain & Seed Suite", () => {
     }
 
     const playerCards = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "player");
-    assert.strictEqual(playerCards.length, 485);
+    assert.strictEqual(playerCards.length, 469);
 
     for (const card of playerCards) {
       const match = card.photoUrl.match(/\/images\/cards\/historical\/bdf-(\d+)\.jpg$/);
