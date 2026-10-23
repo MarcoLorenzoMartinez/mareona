@@ -226,7 +226,7 @@
         "fullName": "Iker Venteo Plaza",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/28945b.jpg"
       },
@@ -326,7 +326,7 @@
         "fullName": "Miguel Conde Piñeiro",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/207929b.jpg"
       },
@@ -346,7 +346,7 @@
         "fullName": "Yann Mael Kembo Diantela",
         "position": "Defensa",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/40510c.jpg"
       },
@@ -366,7 +366,7 @@
         "fullName": "Enol Prendes Ortiz",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/111331.jpg"
       },
@@ -376,7 +376,7 @@
         "fullName": "Alejandro García Oyón",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12219b.jpg"
       },
@@ -386,7 +386,7 @@
         "fullName": "Álex Diego García",
         "position": "Defensa",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/102227.jpg"
       },
@@ -396,7 +396,7 @@
         "fullName": "Nicolás Riestra Coalla",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/308760.jpg"
       },
@@ -406,7 +406,7 @@
         "fullName": "Mario Ordóñez Álvarez",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1096068.jpg"
       },
@@ -416,7 +416,7 @@
         "fullName": "Joshua Dalai Mancha García",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/111332.jpg"
       },
@@ -426,7 +426,7 @@
         "fullName": "Gerard Moreno García",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/210220.jpg"
       },
@@ -436,7 +436,7 @@
         "fullName": "Iker Martínez Martínez",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/13691.jpg"
       },
@@ -446,7 +446,7 @@
         "fullName": "Alejandro Lozano Cárdenas",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/110910b.jpg"
       },
@@ -456,7 +456,7 @@
         "fullName": "Guillermo Iglesias Marín",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/210796.jpg"
       },
@@ -466,7 +466,7 @@
         "fullName": "Diego Matabuena Álvarez",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/725665.jpg"
       },
@@ -476,7 +476,7 @@
         "fullName": "Daniel Paul Dalton Casais",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/104057.jpg"
       },
@@ -486,7 +486,7 @@
         "fullName": "Mario Fernández Rodríguez",
         "position": "Delantero",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/104062.jpg"
       },
@@ -496,7 +496,7 @@
         "fullName": "Christian Ferreres Laviada",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/43017c.jpg"
       },
@@ -506,7 +506,7 @@
         "fullName": "Marcos Fernández Segado",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/57087.jpg"
       },
@@ -516,7 +516,7 @@
         "fullName": "Carlos Hernández Costales",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1117968.jpg"
       },
@@ -526,7 +526,7 @@
         "fullName": "Bruno Rubio Argüelles",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/309089.jpg"
       }
@@ -749,7 +749,7 @@
         "fullName": "Florentin Lucien Jean Bloch",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/25748c.jpg"
       },
@@ -849,7 +849,7 @@
         "fullName": "Ignacio Alejandro Jeraldino Jil",
         "position": "Delantero",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/82117b.jpg"
       },
@@ -869,7 +869,7 @@
         "fullName": "Jorge Giovanni Zarfino Calandria",
         "position": "Centrocampista",
         "played": 32,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/24651e.jpg"
       },
@@ -879,7 +879,7 @@
         "fullName": "Jordán Carrillo Rodríguez",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/29483.jpg"
       },
@@ -889,7 +889,7 @@
         "fullName": "Axel Bamba",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/46768.jpg"
       },
@@ -899,7 +899,7 @@
         "fullName": "Pierre Noble Mbemba",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/209495.jpg"
       },
@@ -909,7 +909,7 @@
         "fullName": "Cristian Acerete Pañeda",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/204295.jpg"
       },
@@ -919,7 +919,7 @@
         "fullName": "Marcos Fernández Segado",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/57087.jpg"
       },
@@ -929,7 +929,7 @@
         "fullName": "Óscar Castro Dorta",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/23597d.jpg"
       },
@@ -939,7 +939,7 @@
         "fullName": "Yann Mael Kembo Diantela",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/40510.jpg"
       },
@@ -949,7 +949,7 @@
         "fullName": "Alejandro García Oyón",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12219b.jpg"
       },
@@ -959,7 +959,7 @@
         "fullName": "Tomás Valentín Fuentes Alonso",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/27647.jpg"
       },
@@ -969,7 +969,7 @@
         "fullName": "Borja Montes Jaular",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22718.jpg"
       },
@@ -979,7 +979,7 @@
         "fullName": "Diego Boza Fernández",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/43019.jpg"
       },
@@ -989,7 +989,7 @@
         "fullName": "Pablo Díez Coro",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/28973b.jpg"
       }
@@ -1222,7 +1222,7 @@
         "fullName": "Guillermo Rafael de Amores Ravelo",
         "position": "Portero",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/55016.jpg"
       },
@@ -1362,7 +1362,7 @@
         "fullName": "Leonel Miquel Francisco Miguel",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/28811b.jpg"
       },
@@ -1382,7 +1382,7 @@
         "fullName": "Florentin Lucien Jean Bloch",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/25748c.jpg"
       },
@@ -1392,7 +1392,7 @@
         "fullName": "Juan Aspra Fernández",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12203b.jpg"
       },
@@ -1402,7 +1402,7 @@
         "fullName": "David Argüelles Álvarez",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/27600b.jpg"
       },
@@ -1412,7 +1412,7 @@
         "fullName": "Gaspar Campos-Ansó Fernández",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22661c.jpg"
       },
@@ -1422,7 +1422,7 @@
         "fullName": "Alejandro Lozano Cárdenas",
         "position": "Delantero",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/110910.jpg"
       },
@@ -1432,7 +1432,7 @@
         "fullName": "Alejandro García Oyón",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12219b.jpg"
       },
@@ -1442,7 +1442,7 @@
         "fullName": "Lucas Suárez Estrada",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/28403.jpg"
       },
@@ -1452,7 +1452,7 @@
         "fullName": "Damián Cáceres Rodríguez",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/110143.jpg"
       },
@@ -1462,7 +1462,7 @@
         "fullName": "Hugo Donate González",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/107808.jpg"
       },
@@ -1472,7 +1472,7 @@
         "fullName": "Marcos Fernández Segado",
         "position": "Delantero",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/57087.jpg"
       }
@@ -1715,7 +1715,7 @@
         "fullName": "Joel Jiménez Portero",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21709b.jpg"
       },
@@ -1815,7 +1815,7 @@
         "fullName": "César García Menéndez",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/25940b.jpg"
       },
@@ -1835,7 +1835,7 @@
         "fullName": "David Argüelles Álvarez",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/27600b.jpg"
       },
@@ -1845,7 +1845,7 @@
         "fullName": "Álvaro Santamaría Arenas",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/27562.jpg"
       },
@@ -1855,7 +1855,7 @@
         "fullName": "Enol Coto Serrano",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/25941.jpg"
       },
@@ -1865,7 +1865,7 @@
         "fullName": "Ignacio Martín Gómez",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/43013.jpg"
       },
@@ -1875,7 +1875,7 @@
         "fullName": "Alejandro García Oyón",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12219b.jpg"
       },
@@ -1885,7 +1885,7 @@
         "fullName": "Diego Sánchez Pérez",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/43015b.jpg"
       },
@@ -1895,7 +1895,7 @@
         "fullName": "Javier Mecerreyes Campal",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22981b.jpg"
       },
@@ -1905,7 +1905,7 @@
         "fullName": "Álvaro Vázquez García",
         "position": "Delantero",
         "played": 30,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/300472h.jpg"
       },
@@ -1915,7 +1915,7 @@
         "fullName": "Christian Joel Sánchez Leal",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22499b.jpg"
       },
@@ -1925,7 +1925,7 @@
         "fullName": "David Fernández Fernández",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/26831b.jpg"
       },
@@ -1935,7 +1935,7 @@
         "fullName": "Javier Izquierdo Cuervo",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/304046b.jpg"
       },
@@ -1945,7 +1945,7 @@
         "fullName": "Marcos García Trabanco",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/27944b.jpg"
       },
@@ -1955,7 +1955,7 @@
         "fullName": "Daniel Queipo Menéndez",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/43018b.jpg"
       },
@@ -1965,7 +1965,7 @@
         "fullName": "Fernando Somolinos Bravo",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/40544.jpg"
       }
@@ -2188,7 +2188,7 @@
         "fullName": "Joel Jiménez Portero",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21709b.jpg"
       },
@@ -2278,7 +2278,7 @@
         "fullName": "Pedro Alejandro Zalaya Galardón",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/23091b.jpg"
       },
@@ -2288,7 +2288,7 @@
         "fullName": "Alberto González García",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22495b.jpg"
       },
@@ -2298,7 +2298,7 @@
         "fullName": "Neftali Benedic Manzambi",
         "position": "Delantero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/20676c.jpg"
       },
@@ -2308,7 +2308,7 @@
         "fullName": "Mateo Arellano Jiménez",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21293b.jpg"
       },
@@ -2318,7 +2318,7 @@
         "fullName": "Marcos García Trabanco",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/27944b.jpg"
       },
@@ -2328,7 +2328,7 @@
         "fullName": "Pelayo Morilla Cabal",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22627b.jpg"
       },
@@ -2338,7 +2338,7 @@
         "fullName": "David Argüelles Álvarez",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/27600b.jpg"
       },
@@ -2348,7 +2348,7 @@
         "fullName": "Javier Mecerreyes Campal",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22981b.jpg"
       },
@@ -2358,7 +2358,7 @@
         "fullName": "Gonzalo Ardura González",
         "position": "Portero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11357.jpg"
       },
@@ -2368,7 +2368,7 @@
         "fullName": "César García Menéndez",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/25940b.jpg"
       },
@@ -2378,7 +2378,7 @@
         "fullName": "Pablo Díez Coro",
         "position": "Portero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/28973.jpg"
       },
@@ -2388,7 +2388,7 @@
         "fullName": "Hernán Daniel Santana Trujillo",
         "position": "Centrocampista",
         "played": 30,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8632c.jpg"
       }
@@ -2621,7 +2621,7 @@
         "fullName": "Elmo Henriksson",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/48807b.jpg"
       },
@@ -2701,7 +2701,7 @@
         "fullName": "Alejandro García Oyón",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12219b.jpg"
       },
@@ -2711,7 +2711,7 @@
         "fullName": "Yann Mael Kembo Diantela",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/40510.jpg"
       },
@@ -2721,7 +2721,7 @@
         "fullName": "Pierre Noble Mbemba",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/209495.jpg"
       },
@@ -2731,7 +2731,7 @@
         "fullName": "Iker Martínez Martínez",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/13691.jpg"
       },
@@ -2741,7 +2741,7 @@
         "fullName": "Amadou Matar Coundoul",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/110340b.jpg"
       },
@@ -2751,7 +2751,7 @@
         "fullName": "Aarón Quintana Francisco",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/712735.jpg"
       },
@@ -2761,7 +2761,7 @@
         "fullName": "Esteban Lozano Solana",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/23986.jpg"
       },
@@ -2771,7 +2771,7 @@
         "fullName": "Gerard Moreno García",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/210220.jpg"
       },
@@ -2781,7 +2781,7 @@
         "fullName": "Borja Montes Jaular",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22718.jpg"
       },
@@ -2791,7 +2791,7 @@
         "fullName": "Alejandro Lozano Cárdenas",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/110910b.jpg"
       }
@@ -3024,7 +3024,7 @@
         "fullName": "Daniel Martín Fernández",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21125b.jpg"
       },
@@ -3164,7 +3164,7 @@
         "fullName": "Carlos Cordero Pérez",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22493.jpg"
       },
@@ -3174,7 +3174,7 @@
         "fullName": "Víctor José Ruiz Ramos",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21003b.jpg"
       },
@@ -3184,7 +3184,7 @@
         "fullName": "Pedro Díaz Fanjul",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21156b.jpg"
       },
@@ -3194,7 +3194,7 @@
         "fullName": "Daniel Arnaud Ndi",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/102276b.jpg"
       }
@@ -3587,7 +3587,7 @@
         "fullName": "José Gragera Amado",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22623b.jpg"
       },
@@ -3597,7 +3597,7 @@
         "fullName": "Ángel Javier Velasco Benítez",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21259b.jpg"
       },
@@ -3607,7 +3607,7 @@
         "fullName": "Alberto Espeso Fernández",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21295b.jpg"
       },
@@ -3617,7 +3617,7 @@
         "fullName": "Rachid Aït-Atmane",
         "position": "Centrocampista",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/102278.jpg"
       }
@@ -3800,7 +3800,7 @@
         "fullName": "Christian Joel Sánchez Leal",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22499b.jpg"
       },
@@ -3850,7 +3850,7 @@
         "fullName": "Ángel Javier Velasco Benítez",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21259b.jpg"
       },
@@ -3960,7 +3960,7 @@
         "fullName": "Hernán Daniel Santana Trujillo",
         "position": "Centrocampista",
         "played": 29,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8632c.jpg"
       },
@@ -3970,7 +3970,7 @@
         "fullName": "Neftali Benedic Manzambi",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/20676.jpg"
       },
@@ -3980,7 +3980,7 @@
         "fullName": "Guillermo Rosas Alonso",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/22624b.jpg"
       },
@@ -3990,7 +3990,7 @@
         "fullName": "Ismael Aizpiri Lérida",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21080.jpg"
       },
@@ -4000,7 +4000,7 @@
         "fullName": "Alberto Espeso Fernández",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21295b.jpg"
       },
@@ -4010,7 +4010,7 @@
         "fullName": "César García Menéndez",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/25940.jpg"
       }
@@ -4233,7 +4233,7 @@
         "fullName": "Dennis Díaz Fernández",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/201105.jpg"
       },
@@ -4303,7 +4303,7 @@
         "fullName": "Iván Hernández Soto",
         "position": "Defensa",
         "played": 34,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4902.jpg"
       },
@@ -4323,7 +4323,7 @@
         "fullName": "Julio César Rodríguez López",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/101880.jpg"
       },
@@ -4333,7 +4333,7 @@
         "fullName": "Álvaro Bustos Sandoval",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/101309.jpg"
       }
@@ -4566,7 +4566,7 @@
         "fullName": "Óscar Alexander Whalley Guardado",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/202077b.jpg"
       },
@@ -4686,7 +4686,7 @@
         "fullName": "Pablo Fernández Blanco",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/21151.jpg"
       },
@@ -4696,7 +4696,7 @@
         "fullName": "Rubén Sánchez Pérez-Cejuela",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/202388.jpg"
       },
@@ -4706,7 +4706,7 @@
         "fullName": "Cristian Salvador González",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/201298b.jpg"
       }
@@ -4929,7 +4929,7 @@
         "fullName": "Dennis Díaz Fernández",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/201105b.jpg"
       },
@@ -5049,7 +5049,7 @@
         "fullName": "Sergio Mendiguchía Iglesias",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/201049b.jpg"
       },
@@ -5059,7 +5059,7 @@
         "fullName": "Armando Sosa Peña",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/300028b.jpg"
       }
@@ -5382,7 +5382,7 @@
         "fullName": "Marcos Landeira Álvarez",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5622.jpg"
       },
@@ -5392,7 +5392,7 @@
         "fullName": "Cristian Portilla Rodríguez",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/458b.jpg"
       },
@@ -5402,7 +5402,7 @@
         "fullName": "Javier Poves Gómez",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100267.jpg"
       },
@@ -5412,7 +5412,7 @@
         "fullName": "Juan Muñiz Gallego",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12495.jpg"
       },
@@ -5422,7 +5422,7 @@
         "fullName": "Guillermo Méndez Pereiro",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8623.jpg"
       },
@@ -5432,7 +5432,7 @@
         "fullName": "Pedro Orfila Artime",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100266.jpg"
       },
@@ -5442,7 +5442,7 @@
         "fullName": "Alain Álvarez Menéndez",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100249.jpg"
       }
@@ -5765,7 +5765,7 @@
         "fullName": "Pablo de Lucas Torres",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5616.jpg"
       },
@@ -5775,7 +5775,7 @@
         "fullName": "Sergio Sánchez Izquierdo",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100270.jpg"
       }
@@ -5948,7 +5948,7 @@
         "fullName": "Raúl Domínguez Carral",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/6899.jpg"
       },
@@ -5998,7 +5998,7 @@
         "fullName": "Iván Cuéllar Sacristán",
         "position": "Portero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1140.jpg"
       },
@@ -6098,7 +6098,7 @@
         "fullName": "Borja Navarro García",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12493.jpg"
       },
@@ -6128,7 +6128,7 @@
         "fullName": "Juan Muñiz Gallego",
         "position": "Centrocampista",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12495.jpg"
       },
@@ -6138,7 +6138,7 @@
         "fullName": "Sergio Sánchez Izquierdo",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100270.jpg"
       },
@@ -6148,7 +6148,7 @@
         "fullName": "Andreu Guerao Mayoral",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5572c.jpg"
       },
@@ -6158,7 +6158,7 @@
         "fullName": "Pedro Orfila Artime",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100266.jpg"
       },
@@ -6168,7 +6168,7 @@
         "fullName": "Guillermo Pérez Moreno",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100297.jpg"
       },
@@ -6178,7 +6178,7 @@
         "fullName": "Alain Álvarez Menéndez",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100249.jpg"
       }
@@ -6421,7 +6421,7 @@
         "fullName": "Dennis Díaz Fernández",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/201105.jpg"
       },
@@ -6561,7 +6561,7 @@
         "fullName": "Juan Muñiz Gallego",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12495.jpg"
       },
@@ -6571,7 +6571,7 @@
         "fullName": "Raúl Domínguez Carral",
         "position": "Portero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/6899.jpg"
       },
@@ -6581,7 +6581,7 @@
         "fullName": "Alain Álvarez Menéndez",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100249.jpg"
       }
@@ -6954,7 +6954,7 @@
         "fullName": "Hugo Filipe da Costa Oliveira",
         "position": "Delantero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/16342.jpg"
       },
@@ -6974,7 +6974,7 @@
         "fullName": "Adama Touré",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/101306.jpg"
       },
@@ -6984,7 +6984,7 @@
         "fullName": "Moisés García Rosa",
         "position": "Defensa",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9417b.jpg"
       }
@@ -7217,7 +7217,7 @@
         "fullName": "Dennis Díaz Fernández",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/201105.jpg"
       },
@@ -7327,7 +7327,7 @@
         "fullName": "Julio César Rodríguez López",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/101880.jpg"
       },
@@ -7337,7 +7337,7 @@
         "fullName": "Yacine Qasmi",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/101876b.jpg"
       },
@@ -7347,7 +7347,7 @@
         "fullName": "Alberto González Marín",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/201101.jpg"
       },
@@ -7357,7 +7357,7 @@
         "fullName": "Guillermo Donoso Alonso",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/101879.jpg"
       }
@@ -7580,7 +7580,7 @@
         "fullName": "Alejandro García Torre",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5615b.jpg"
       },
@@ -7680,7 +7680,7 @@
         "fullName": "Carlos Agustín Casquero Ruiz",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4882.jpg"
       },
@@ -7700,7 +7700,7 @@
         "fullName": "Jesús María López Riego",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4994.jpg"
       },
@@ -7710,7 +7710,7 @@
         "fullName": "Antonio Domingo Rojas Melero",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4997b.jpg"
       },
@@ -7730,7 +7730,7 @@
         "fullName": "David Lago Rodríguez",
         "position": "Delantero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4883.jpg"
       }
@@ -7953,7 +7953,7 @@
         "fullName": "Alejandro García Torre",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5615b.jpg"
       },
@@ -8053,7 +8053,7 @@
         "fullName": "Miguel Cobas Obarrio",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4379c.jpg"
       },
@@ -8063,7 +8063,7 @@
         "fullName": "Salvador Álvarez Gutiérrez",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/200165c.jpg"
       },
@@ -8073,7 +8073,7 @@
         "fullName": "Ismael Piñera Zapatero",
         "position": "Defensa",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1124.jpg"
       }
@@ -8396,7 +8396,7 @@
         "fullName": "Pablo Fernández Antuña",
         "position": "Defensa",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4375b.jpg"
       },
@@ -8406,7 +8406,7 @@
         "fullName": "Gerardo Noriega Santoveña",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4884c.jpg"
       },
@@ -8416,7 +8416,7 @@
         "fullName": "Miguel Ángel González González",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9343b.jpg"
       },
@@ -8426,7 +8426,7 @@
         "fullName": "Ismael Piñera Zapatero",
         "position": "Defensa",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1124.jpg"
       },
@@ -8436,7 +8436,7 @@
         "fullName": "Igor Anatolyevich Lediakhov",
         "position": "Centrocampista",
         "played": 34,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1083b.jpg"
       }
@@ -8749,7 +8749,7 @@
         "fullName": "Manuel Lucena Medina",
         "position": "Defensa",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5620.jpg"
       },
@@ -8759,7 +8759,7 @@
         "fullName": "Moisés Blanco Frieda",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5624.jpg"
       },
@@ -8769,7 +8769,7 @@
         "fullName": "José Ángel Blanco Hevia",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5619.jpg"
       },
@@ -8779,7 +8779,7 @@
         "fullName": "Álvaro Varela Álvarez",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4697.jpg"
       },
@@ -8789,7 +8789,7 @@
         "fullName": "Iván Guardado Díaz",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5617.jpg"
       },
@@ -8799,7 +8799,7 @@
         "fullName": "Jonathan López Rodríguez",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/6169.jpg"
       },
@@ -8809,7 +8809,7 @@
         "fullName": "Carlos Agustín Casquero Ruiz",
         "position": "Centrocampista",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4882.jpg"
       },
@@ -8819,7 +8819,7 @@
         "fullName": "Ibon Íñigo Díez Garamendi",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4995b.jpg"
       },
@@ -8829,7 +8829,7 @@
         "fullName": "Pablo Fernández Antuña",
         "position": "Defensa",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4375b.jpg"
       }
@@ -9052,7 +9052,7 @@
         "fullName": "Manuel Fernández Muñiz",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5621.jpg"
       },
@@ -9152,7 +9152,7 @@
         "fullName": "Iván Guardado Díaz",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5617.jpg"
       },
@@ -9162,7 +9162,7 @@
         "fullName": "Carlos Álvarez Sánchez",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/6220b.jpg"
       },
@@ -9172,7 +9172,7 @@
         "fullName": "Alberto Lora Ramos",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/6222.jpg"
       },
@@ -9182,7 +9182,7 @@
         "fullName": "Sergio Fernández Prendes",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/6171.jpg"
       }
@@ -9405,7 +9405,7 @@
         "fullName": "Sergio Sánchez Izquierdo",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100270.jpg"
       },
@@ -9505,7 +9505,7 @@
         "fullName": "Carlos Álvarez Sánchez",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/6220b.jpg"
       },
@@ -9515,7 +9515,7 @@
         "fullName": "Alberto Lora Ramos",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/6222.jpg"
       },
@@ -9525,7 +9525,7 @@
         "fullName": "Alain Álvarez Menéndez",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/100249.jpg"
       },
@@ -9535,7 +9535,7 @@
         "fullName": "Jesús Manuel Bravo Suárez",
         "position": "Defensa",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4597d.jpg"
       }
@@ -9918,7 +9918,7 @@
         "fullName": "Darío Rodolfo Passaggio",
         "position": "Portero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9205.jpg"
       },
@@ -9928,7 +9928,7 @@
         "fullName": "David Villa Sánchez",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/554d.jpg"
       },
@@ -9938,7 +9938,7 @@
         "fullName": "Jesús Manuel Bravo Suárez",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4597d.jpg"
       },
@@ -9948,7 +9948,7 @@
         "fullName": "Daniel Lastra Ramos",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4600.jpg"
       },
@@ -9958,7 +9958,7 @@
         "fullName": "Ramón Suárez del Valle",
         "position": "Delantero",
         "played": 32,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2287e.jpg"
       },
@@ -9968,7 +9968,7 @@
         "fullName": "Miguel Cobas Obarrio",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4379c.jpg"
       },
@@ -9978,7 +9978,7 @@
         "fullName": "Alejandro García Torre",
         "position": "Portero",
         "played": 16,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5615b.jpg"
       },
@@ -9988,7 +9988,7 @@
         "fullName": "David Durán Hernanz",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/201346b.jpg"
       }
@@ -10764,7 +10764,7 @@
         "fullName": "Rubén Blaya Cayuela",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2406b.jpg"
       },
@@ -10774,7 +10774,7 @@
         "fullName": "Urbano Santos Palicio",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2562d.jpg"
       },
@@ -10794,7 +10794,7 @@
         "fullName": "Sergio Sánchez Sánchez",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2498b.jpg"
       }
@@ -11207,7 +11207,7 @@
         "fullName": "Óscar Fernández Rodríguez",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2119.jpg"
       },
@@ -11217,7 +11217,7 @@
         "fullName": "Alfredo Lobeiras Sánchez",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/115b.jpg"
       },
@@ -11227,7 +11227,7 @@
         "fullName": "Sergio Sánchez Sánchez",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2498b.jpg"
       },
@@ -11237,7 +11237,7 @@
         "fullName": "Avelino Riopedre Muiña",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/300c.jpg"
       },
@@ -11247,7 +11247,7 @@
         "fullName": "Urbano Santos Palicio",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2562d.jpg"
       }
@@ -11690,7 +11690,7 @@
         "fullName": "Alejandro Méndez Fernández",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/301495.jpg"
       }
@@ -11973,7 +11973,7 @@
         "fullName": "Miguel Ángel López-Cedrón Freije",
         "position": "Delantero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2006c.jpg"
       },
@@ -11983,7 +11983,7 @@
         "fullName": "Alejandro Fernández Vázquez",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4599e.jpg"
       },
@@ -11993,7 +11993,7 @@
         "fullName": "Gerardo Noriega Santoveña",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4884c.jpg"
       },
@@ -12003,7 +12003,7 @@
         "fullName": "Javier Fuego Martínez",
         "position": "Centrocampista",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4138f.jpg"
       },
@@ -12013,7 +12013,7 @@
         "fullName": "Pablo Fernández Antuña",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4375b.jpg"
       },
@@ -12023,7 +12023,7 @@
         "fullName": "Francisco Abel Segovia Vega",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4696.jpg"
       },
@@ -12033,7 +12033,7 @@
         "fullName": "Rubén Suárez Estrada",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4377b.jpg"
       },
@@ -12043,7 +12043,7 @@
         "fullName": "Miguel Ángel González González",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9343b.jpg"
       }
@@ -12216,7 +12216,7 @@
         "fullName": "Roberto Rodríguez Basulto",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2360c.jpg"
       },
@@ -12266,7 +12266,7 @@
         "fullName": "Juan Carlos Ablanedo Iglesias",
         "position": "Portero",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1612e.jpg"
       },
@@ -12356,7 +12356,7 @@
         "fullName": "José Díez Calleja",
         "position": "Defensa",
         "played": 29,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1359c.jpg"
       },
@@ -12366,7 +12366,7 @@
         "fullName": "Juan Carlos Justes Abiol",
         "position": "Centrocampista",
         "played": 29,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1620i.jpg"
       },
@@ -12376,7 +12376,7 @@
         "fullName": "Ramón Ruiz Fernández",
         "position": "Portero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2286.jpg"
       },
@@ -12386,7 +12386,7 @@
         "fullName": "Alberto Bodelón Alfonso",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/65b.jpg"
       },
@@ -12396,7 +12396,7 @@
         "fullName": "José Luis Ablanedo Iglesias",
         "position": "Defensa",
         "played": 29,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1456b.jpg"
       }
@@ -12689,7 +12689,7 @@
         "fullName": "Ricardo Pérez Baldó",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/301444.jpg"
       },
@@ -12699,7 +12699,7 @@
         "fullName": "Francisco Javier Castaño Allende",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/845d.jpg"
       },
@@ -12709,7 +12709,7 @@
         "fullName": "David García Cortés",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/531c.jpg"
       },
@@ -12719,7 +12719,7 @@
         "fullName": "Jaime Francisco Álvarez González",
         "position": "Centrocampista",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2777c.jpg"
       },
@@ -12729,7 +12729,7 @@
         "fullName": "Roberto Rodríguez Basulto",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2360c.jpg"
       },
@@ -12739,7 +12739,7 @@
         "fullName": "José Díez Calleja",
         "position": "Defensa",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1359c.jpg"
       },
@@ -12749,7 +12749,7 @@
         "fullName": "Antonio Jiménez Torres",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2779d.jpg"
       },
@@ -12759,7 +12759,7 @@
         "fullName": "Juan Ramón López Muñiz",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1691.jpg"
       },
@@ -12769,7 +12769,7 @@
         "fullName": "Ramón Suárez del Valle",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2287e.jpg"
       },
@@ -12779,7 +12779,7 @@
         "fullName": "Tomás Alberto Hervás Girón",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2553f.jpg"
       },
@@ -12789,7 +12789,7 @@
         "fullName": "Juan Castaño Quirós",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1581c.jpg"
       }
@@ -13022,7 +13022,7 @@
         "fullName": "Ramón Ruiz Fernández",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2286.jpg"
       },
@@ -13092,7 +13092,7 @@
         "fullName": "Hans Peter Joakim Nilsson",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1019.jpg"
       },
@@ -13102,7 +13102,7 @@
         "fullName": "Agustín Menéndez Campiña",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/26c.jpg"
       },
@@ -13112,7 +13112,7 @@
         "fullName": "Daniel Díaz Fernández",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/484.jpg"
       },
@@ -13122,7 +13122,7 @@
         "fullName": "Carlos Ovidio Bango Cuervo",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/397d.jpg"
       },
@@ -13132,7 +13132,7 @@
         "fullName": "Manuel Montilla Díaz",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9124b.jpg"
       },
@@ -13142,7 +13142,7 @@
         "fullName": "Iván García Cortés",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1143b.jpg"
       },
@@ -13152,7 +13152,7 @@
         "fullName": "Ramón Suárez del Valle",
         "position": "Delantero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2287e.jpg"
       }
@@ -13455,7 +13455,7 @@
         "fullName": "Roberto Rodríguez Basulto",
         "position": "Portero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2360c.jpg"
       },
@@ -13465,7 +13465,7 @@
         "fullName": "Mario Gutiérrez Cotelo",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1910f.jpg"
       },
@@ -13475,7 +13475,7 @@
         "fullName": "José Manuel Colmenero Crespo",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1490b.jpg"
       },
@@ -13485,7 +13485,7 @@
         "fullName": "David Sánchez Cano",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/552b.jpg"
       },
@@ -13495,7 +13495,7 @@
         "fullName": "Rogelio Lamar Heredia",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2387b.jpg"
       },
@@ -13505,7 +13505,7 @@
         "fullName": "Manuel Montilla Díaz",
         "position": "Defensa",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9124b.jpg"
       },
@@ -13515,7 +13515,7 @@
         "fullName": "Carlos Ovidio Bango Cuervo",
         "position": "Centrocampista",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/397d.jpg"
       },
@@ -13525,7 +13525,7 @@
         "fullName": "Valentín Aller García",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2567b.jpg"
       }
@@ -13918,7 +13918,7 @@
         "fullName": "Rubén Darío Acebal Vázquez",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2423b.jpg"
       },
@@ -13928,7 +13928,7 @@
         "fullName": "Carlos Ovidio Bango Cuervo",
         "position": "Centrocampista",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/397d.jpg"
       }
@@ -14171,7 +14171,7 @@
         "fullName": "Juan José González Argüelles",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1655c.jpg"
       },
@@ -14301,7 +14301,7 @@
         "fullName": "Alejandro Fernández Sama",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/85c.jpg"
       },
@@ -14311,7 +14311,7 @@
         "fullName": "Rafael Navarro Rivas",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4252b.jpg"
       },
@@ -14321,7 +14321,7 @@
         "fullName": "Marcos Sequeiros Estévez",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1894c.jpg"
       }
@@ -14614,7 +14614,7 @@
         "fullName": "Joaquín Villa García",
         "position": "Delantero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1283f.jpg"
       },
@@ -14624,7 +14624,7 @@
         "fullName": "Arnaldo Llabrés Picó",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3201.jpg"
       },
@@ -14634,7 +14634,7 @@
         "fullName": "José Luis Ablanedo Iglesias",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1456b.jpg"
       },
@@ -14644,7 +14644,7 @@
         "fullName": "Iñaki Eraña Cassi",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1064e.jpg"
       },
@@ -14654,7 +14654,7 @@
         "fullName": "Jesús Antonio de Castro González",
         "position": "Portero",
         "played": 33,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3665f.jpg"
       },
@@ -14664,7 +14664,7 @@
         "fullName": "Mario Pasantes García",
         "position": "Delantero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12055c.jpg"
       },
@@ -14674,7 +14674,7 @@
         "fullName": "Alberto Bernardo Murcia",
         "position": "Centrocampista",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3166b.jpg"
       },
@@ -14684,7 +14684,7 @@
         "fullName": "Roberto Entrialgo Sánchez",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2976.jpg"
       },
@@ -14774,7 +14774,7 @@
         "fullName": "Pedro Luis Marino Freile",
         "position": "Defensa",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4167.jpg"
       },
@@ -14784,7 +14784,7 @@
         "fullName": "Rogelio Rionda García",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/303279b.jpg"
       },
@@ -14794,7 +14794,7 @@
         "fullName": "Alfredo Álvarez Fernández",
         "position": "Portero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1000583.jpg"
       }
@@ -15017,7 +15017,7 @@
         "fullName": "Isidro Fernández Álvarez",
         "position": "Portero",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1118.jpg"
       },
@@ -15077,7 +15077,7 @@
         "fullName": "Tomás Orbegozo Eguiguren",
         "position": "Defensa",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3348b.jpg"
       },
@@ -15087,7 +15087,7 @@
         "fullName": "Faustino Balbino García Méndez",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3351c.jpg"
       },
@@ -15097,7 +15097,7 @@
         "fullName": "Nicolás Pereda Ortega",
         "position": "Defensa",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3349.jpg"
       },
@@ -15107,7 +15107,7 @@
         "fullName": "Fernando Tocornal Linares",
         "position": "Defensa",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/774h.jpg"
       },
@@ -15117,7 +15117,7 @@
         "fullName": "Roberto Entrialgo Sánchez",
         "position": "Defensa",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2976.jpg"
       },
@@ -15127,7 +15127,7 @@
         "fullName": "Iñaki Eraña Cassi",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1064e.jpg"
       }
@@ -15350,7 +15350,7 @@
         "fullName": "Isidro Fernández Álvarez",
         "position": "Portero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1118.jpg"
       },
@@ -15410,7 +15410,7 @@
         "fullName": "Arturo Martínez Noval",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/289c.jpg"
       },
@@ -15420,7 +15420,7 @@
         "fullName": "Marino Solares González",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3161.jpg"
       }
@@ -15593,7 +15593,7 @@
         "fullName": "Isidro Fernández Álvarez",
         "position": "Portero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1118.jpg"
       },
@@ -15643,7 +15643,7 @@
         "fullName": "Pedro Rodríguez Alfaro",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2975c.jpg"
       },
@@ -15713,7 +15713,7 @@
         "fullName": "Joaquín Villa García",
         "position": "Delantero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1283f.jpg"
       },
@@ -15723,7 +15723,7 @@
         "fullName": "Roberto Entrialgo Sánchez",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2976.jpg"
       },
@@ -15733,7 +15733,7 @@
         "fullName": "Donato Alcalde Tieles",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/615c.jpg"
       },
@@ -15743,7 +15743,7 @@
         "fullName": "Luis Miguel Sánchez García",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3160.jpg"
       },
@@ -15753,7 +15753,7 @@
         "fullName": "Iñaki Eraña Cassi",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1064e.jpg"
       },
@@ -15763,7 +15763,7 @@
         "fullName": "Andrés Bernal Arranz",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12263.jpg"
       }
@@ -15996,7 +15996,7 @@
         "fullName": "Pedro Rodríguez Alfaro",
         "position": "Portero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2975c.jpg"
       },
@@ -16086,7 +16086,7 @@
         "fullName": "Luis Enrique Martínez García",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1799e.jpg"
       },
@@ -16096,7 +16096,7 @@
         "fullName": "Vicente Javier Roca Forés",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/7107.jpg"
       },
@@ -16106,7 +16106,7 @@
         "fullName": "Marco Antonio Pernas Méndez",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/103133.jpg"
       },
@@ -16116,7 +16116,7 @@
         "fullName": "José Luis Ballesteros Arienza",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3074.jpg"
       },
@@ -16126,7 +16126,7 @@
         "fullName": "Secundino Suárez Vázquez",
         "position": "Defensa",
         "played": 34,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2973d.jpg"
       },
@@ -16136,7 +16136,7 @@
         "fullName": "Pedro José Jordá Carreres",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/403682b.jpg"
       }
@@ -16419,7 +16419,7 @@
         "fullName": "Jorge Omar Ferrer",
         "position": "Centrocampista",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3086b.jpg"
       },
@@ -16429,7 +16429,7 @@
         "fullName": "Luis Miguel Sánchez García",
         "position": "Delantero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3160.jpg"
       },
@@ -16439,7 +16439,7 @@
         "fullName": "José Luis Ballesteros Arienza",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3074.jpg"
       },
@@ -16449,7 +16449,7 @@
         "fullName": "Javier Manjarín Pereda",
         "position": "Delantero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1207e.jpg"
       }
@@ -16672,7 +16672,7 @@
         "fullName": "Claudio Silva García",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3624c.jpg"
       },
@@ -16712,7 +16712,7 @@
         "fullName": "Crisanto García Valdés",
         "position": "Centrocampista",
         "played": 31,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5229e.jpg"
       },
@@ -16722,7 +16722,7 @@
         "fullName": "Francisco Javier Menéndez Frechilla",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3331d.jpg"
       },
@@ -16732,7 +16732,7 @@
         "fullName": "Andrés Fernández Ramón",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3011f.jpg"
       },
@@ -16742,7 +16742,7 @@
         "fullName": "Antonio Menéndez Frechilla",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/14024d.jpg"
       }
@@ -16965,7 +16965,7 @@
         "fullName": "Claudio Silva García",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3624c.jpg"
       },
@@ -17015,7 +17015,7 @@
         "fullName": "Paulino Rojo Martínez",
         "position": "Delantero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/104287b.jpg"
       },
@@ -17025,7 +17025,7 @@
         "fullName": "Eusebio Bejarano Vilaro",
         "position": "Defensa",
         "played": 31,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5148.jpg"
       },
@@ -17035,7 +17035,7 @@
         "fullName": "Óscar Ferrero Águila",
         "position": "Delantero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3820b.jpg"
       },
@@ -17045,7 +17045,7 @@
         "fullName": "José Luis Urbano Martínez",
         "position": "Centrocampista",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5228b.jpg"
       },
@@ -17055,7 +17055,7 @@
         "fullName": "Eloy José Olaya Prendes",
         "position": "Delantero",
         "played": 15,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/658f.jpg"
       }
@@ -17278,7 +17278,7 @@
         "fullName": "Claudio Silva García",
         "position": "Portero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3624c.jpg"
       },
@@ -17298,7 +17298,7 @@
         "fullName": "Pedro González Llosa",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 2,
         "photoUrl": "https://www.bdfutbol.com/i/j/3723b.jpg"
       },
@@ -17308,7 +17308,7 @@
         "fullName": "Francisco Javier Menéndez Frechilla",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3331d.jpg"
       },
@@ -17318,7 +17318,7 @@
         "fullName": "José Manuel García Fernández",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/15052b.jpg"
       },
@@ -17328,7 +17328,7 @@
         "fullName": "José Luis Ablanedo Iglesias",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1456b.jpg"
       },
@@ -17338,7 +17338,7 @@
         "fullName": "César Coloma Campal",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9183.jpg"
       },
@@ -17348,7 +17348,7 @@
         "fullName": "Álvaro González González",
         "position": "Delantero",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/104340b.jpg"
       },
@@ -17358,7 +17358,7 @@
         "fullName": "Bernardino Serrano Mori",
         "position": "Defensa",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/317c.jpg"
       },
@@ -17368,7 +17368,7 @@
         "fullName": "Carlos Horacio González González",
         "position": "Delantero",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/392c.jpg"
       }
@@ -17661,7 +17661,7 @@
         "fullName": "José Emilio Blanco Cabezón",
         "position": "Centrocampista",
         "played": 17,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/666g.jpg"
       },
@@ -17671,7 +17671,7 @@
         "fullName": "Claudio Silva García",
         "position": "Portero",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3624c.jpg"
       },
@@ -17681,7 +17681,7 @@
         "fullName": "Sebastián Franch Ramis",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/204107b.jpg"
       },
@@ -17691,7 +17691,7 @@
         "fullName": "Alberto Calvo Vallina",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3667b.jpg"
       },
@@ -17701,7 +17701,7 @@
         "fullName": "Bernardino Serrano Mori",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/317c.jpg"
       }
@@ -18014,7 +18014,7 @@
         "fullName": "Juan Carlos Pérez Fernández",
         "position": "Portero",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/104093.jpg"
       },
@@ -18024,7 +18024,7 @@
         "fullName": "Ciriaco Cano González",
         "position": "Centrocampista",
         "played": 33,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3746b.jpg"
       },
@@ -18034,7 +18034,7 @@
         "fullName": "Carlos Horacio González González",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/392c.jpg"
       }
@@ -18337,7 +18337,7 @@
         "fullName": "Manuel Campuzano Domènech",
         "position": "Delantero",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3664b.jpg"
       }
@@ -18560,7 +18560,7 @@
         "fullName": "Juan José Rodríguez Álvarez",
         "position": "Portero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/14341c.jpg"
       },
@@ -18610,7 +18610,7 @@
         "fullName": "Ángel Herrero Morales",
         "position": "Centrocampista",
         "played": 30,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5984.jpg"
       },
@@ -18620,7 +18620,7 @@
         "fullName": "Jorge Domínguez Rodríguez",
         "position": "Centrocampista",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10682.jpg"
       },
@@ -18630,7 +18630,7 @@
         "fullName": "Juan Antonio Martínez Gómez",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8925c.jpg"
       },
@@ -18640,7 +18640,7 @@
         "fullName": "Manuel Arturo Prieto Pérez",
         "position": "Defensa",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8856.jpg"
       },
@@ -18650,7 +18650,7 @@
         "fullName": "Benjamín Mortera Argüelles",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/13961.jpg"
       },
@@ -18660,7 +18660,7 @@
         "fullName": "Juan Manuel García Valdés",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5191d.jpg"
       }
@@ -18903,7 +18903,7 @@
         "fullName": "José Aurelio Rivero Rodríguez",
         "position": "Portero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3578.jpg"
       },
@@ -18953,7 +18953,7 @@
         "fullName": "José Luis Garzón Fito",
         "position": "Centrocampista",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5483b.jpg"
       },
@@ -18963,7 +18963,7 @@
         "fullName": "Emilio González Morán",
         "position": "Defensa",
         "played": 32,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5809.jpg"
       },
@@ -18973,7 +18973,7 @@
         "fullName": "Jorge Domínguez Rodríguez",
         "position": "Centrocampista",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10682.jpg"
       },
@@ -18983,7 +18983,7 @@
         "fullName": "Óscar Alberto Lacrampe Bonilla",
         "position": "Defensa",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/12081b.jpg"
       },
@@ -18993,7 +18993,7 @@
         "fullName": "José Antonio Novo Guardado",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/4598c.jpg"
       },
@@ -19003,7 +19003,7 @@
         "fullName": "Secundino Suárez Vázquez",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2973d.jpg"
       }
@@ -19176,7 +19176,7 @@
         "fullName": "José Aurelio Rivero Rodríguez",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3578.jpg"
       },
@@ -19226,7 +19226,7 @@
         "fullName": "Claudio Silva García",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3624c.jpg"
       },
@@ -19276,7 +19276,7 @@
         "fullName": "Alfonso Fanjul Fernández",
         "position": "Centrocampista",
         "played": 31,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5310.jpg"
       },
@@ -19286,7 +19286,7 @@
         "fullName": "Andrés Fernández Ramón",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3011f.jpg"
       }
@@ -19509,7 +19509,7 @@
         "fullName": "José Ignacio Pérez Solmo",
         "position": "Portero",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5486d.jpg"
       },
@@ -19569,7 +19569,7 @@
         "fullName": "Guillermo Valentín Esperante Iglesias",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8803b.jpg"
       },
@@ -19579,7 +19579,7 @@
         "fullName": "Enrique Morán Blanco",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3374d.jpg"
       }
@@ -19752,7 +19752,7 @@
         "fullName": "José Aurelio Rivero Rodríguez",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3578.jpg"
       },
@@ -19802,7 +19802,7 @@
         "fullName": "José Ignacio Pérez Solmo",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5486d.jpg"
       },
@@ -19852,7 +19852,7 @@
         "fullName": "Ángel Antonio Landucci Ferrarín",
         "position": "Centrocampista",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5485.jpg"
       },
@@ -19862,7 +19862,7 @@
         "fullName": "Hertz Gonzales Alcántara",
         "position": "Delantero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5480.jpg"
       },
@@ -19872,7 +19872,7 @@
         "fullName": "Manuel González Díaz",
         "position": "Defensa",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5227.jpg"
       },
@@ -19882,7 +19882,7 @@
         "fullName": "Secundino Suárez Vázquez",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2973d.jpg"
       },
@@ -19892,7 +19892,7 @@
         "fullName": "Nicolás Argüelles Aller",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/13207e.jpg"
       }
@@ -20125,7 +20125,7 @@
         "fullName": "José Ignacio Pérez Solmo",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5486d.jpg"
       },
@@ -20205,7 +20205,7 @@
         "fullName": "Antonio Maceda Francés",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3136d.jpg"
       },
@@ -20215,7 +20215,7 @@
         "fullName": "Alfredo Megido Sánchez",
         "position": "Delantero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3852d.jpg"
       },
@@ -20225,7 +20225,7 @@
         "fullName": "Enrique Morán Blanco",
         "position": "Delantero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3374d.jpg"
       }
@@ -20781,7 +20781,7 @@
         "fullName": "Gonzalo González de Córdoba González",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/16160b.jpg"
       },
@@ -20791,7 +20791,7 @@
         "fullName": "Manuel Abelardo Echevarría García",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5900.jpg"
       },
@@ -20801,7 +20801,7 @@
         "fullName": "José Manuel Fernández García",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5311b.jpg"
       }
@@ -21317,7 +21317,7 @@
         "fullName": "José Lucrecio Luquin Sagasti",
         "position": "Portero",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8382d.jpg"
       },
@@ -21367,7 +21367,7 @@
         "fullName": "Juan Antonio Martínez Gómez",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8925c.jpg"
       },
@@ -21377,7 +21377,7 @@
         "fullName": "Rafael Juan del Riego Villaverde",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8871b.jpg"
       }
@@ -21550,7 +21550,7 @@
         "fullName": "Carlos Manuel García Cuervo",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5829.jpg"
       },
@@ -21660,7 +21660,7 @@
         "fullName": "Juan Antonio Martínez Gómez",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8925c.jpg"
       }
@@ -21893,7 +21893,7 @@
         "fullName": "Carlos Manuel García Cuervo",
         "position": "Portero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5829.jpg"
       },
@@ -21963,7 +21963,7 @@
         "fullName": "Rafael Juan del Riego Villaverde",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8871b.jpg"
       }
@@ -22286,7 +22286,7 @@
         "fullName": "Manuel Álvarez Sión",
         "position": "Portero",
         "played": 32,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg"
       },
@@ -22296,7 +22296,7 @@
         "fullName": "Fernando Staatsmann Legleiter",
         "position": "Defensa",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9619.jpg"
       }
@@ -22519,7 +22519,7 @@
         "fullName": "Alfredo Álvarez Lombardía",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5797d.jpg"
       },
@@ -22559,7 +22559,7 @@
         "fullName": "José Ramón Lastra Castro",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/15513d.jpg"
       },
@@ -22569,7 +22569,7 @@
         "fullName": "José Andrés Gradín Martínez",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/13917d.jpg"
       },
@@ -22862,7 +22862,7 @@
         "fullName": "Rogelio Altisent Prats",
         "position": "Defensa",
         "played": 32,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg"
       },
@@ -22872,7 +22872,7 @@
         "fullName": "Amador Fernández Rodríguez",
         "position": "Portero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9196c.jpg"
       },
@@ -22882,7 +22882,7 @@
         "fullName": "José Manuel Díaz Novoa",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/2157.jpg"
       }
@@ -23215,7 +23215,7 @@
         "fullName": "José María González Rodríguez",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/13939d.jpg"
       },
@@ -23225,7 +23225,7 @@
         "fullName": "Luis Castañer Viñas",
         "position": "Defensa",
         "played": 29,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg"
       },
@@ -23235,7 +23235,7 @@
         "fullName": "Juan Manuel Iglesias Moro",
         "position": "Delantero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/16613b.jpg"
       },
@@ -23245,7 +23245,7 @@
         "fullName": "Hilario Velasco Buendía",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/7867.jpg"
       },
@@ -23255,7 +23255,7 @@
         "fullName": "Miguel Ángel Alonso Muñiz",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5808.jpg"
       },
@@ -23265,7 +23265,7 @@
         "fullName": "José Antonio Ansuriza Fernández",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/14882.jpg"
       }
@@ -23498,7 +23498,7 @@
         "fullName": "Alfredo Álvarez Lombardía",
         "position": "Portero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5797d.jpg"
       },
@@ -23548,7 +23548,7 @@
         "fullName": "José María Cobo Elosua",
         "position": "Portero",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8307.jpg"
       },
@@ -23558,7 +23558,7 @@
         "fullName": "Joaquín Mosteo Cárdenas",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8304b.jpg"
       }
@@ -23781,7 +23781,7 @@
         "fullName": "Alfredo Álvarez Lombardía",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/5797d.jpg"
       },
@@ -23831,7 +23831,7 @@
         "fullName": "José Andrés Gradín Martínez",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/13917d.jpg"
       }
@@ -24054,7 +24054,7 @@
         "fullName": "Matías García González",
         "position": "Portero",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg"
       },
@@ -24164,7 +24164,7 @@
         "fullName": "Manuel Robledo Núñez",
         "position": "Delantero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10147.jpg"
       },
@@ -24174,7 +24174,7 @@
         "fullName": "José María Medina Velázquez",
         "position": "Defensa",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10070.jpg"
       }
@@ -24447,7 +24447,7 @@
         "fullName": "Enrique Díaz López",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/16601.jpg"
       },
@@ -24457,7 +24457,7 @@
         "fullName": "José Antonio García-Rendueles González",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/15351c.jpg"
       }
@@ -24680,7 +24680,7 @@
         "fullName": "José Ramón Muñiz Hevia",
         "position": "Portero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10072b.jpg"
       },
@@ -24760,7 +24760,7 @@
         "fullName": "Evaristo Suárez Sánchez",
         "position": "Delantero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/17293.jpg"
       }
@@ -25023,7 +25023,7 @@
         "fullName": "Gumersindo Pérez Rodríguez",
         "position": "Delantero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/17226b.jpg"
       },
@@ -25033,7 +25033,7 @@
         "fullName": "Luis Sánchez Bellón",
         "position": "Centrocampista",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/8102.jpg"
       },
@@ -25043,7 +25043,7 @@
         "fullName": "Manuel Vega-Arango Alvaré",
         "position": "Centrocampista",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9584.jpg"
       },
@@ -25366,7 +25366,7 @@
         "fullName": "José Antonio García-Rendueles González",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/15351c.jpg"
       }
@@ -25599,7 +25599,7 @@
         "fullName": "Alfredo Vera Buendía",
         "position": "Portero",
         "played": 29,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9601c.jpg"
       },
@@ -25659,7 +25659,7 @@
         "fullName": "Manuel Álvarez Sión",
         "position": "Portero",
         "played": 31,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg"
       },
@@ -25669,7 +25669,7 @@
         "fullName": "Eliseo Siso Sánchez",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/15789.jpg"
       },
@@ -25679,7 +25679,7 @@
         "fullName": "Manuel Vega-Arango Alvaré",
         "position": "Centrocampista",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9584.jpg"
       },
@@ -25689,7 +25689,7 @@
         "fullName": "Amador Fernández Rodríguez",
         "position": "Portero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9196c.jpg"
       }
@@ -25912,7 +25912,7 @@
         "fullName": "Héctor García García",
         "position": "Portero",
         "played": 34,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10573.jpg"
       },
@@ -26598,7 +26598,7 @@
         "fullName": "Carlos Pérez Miyar",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/16985.jpg"
       }
@@ -26821,7 +26821,7 @@
         "fullName": "Cristóbal Castro Dávila",
         "position": "Portero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11693c.jpg"
       },
@@ -27054,7 +27054,7 @@
         "fullName": "José Surribas Coderch",
         "position": "Portero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10148b.jpg"
       },
@@ -27104,7 +27104,7 @@
         "fullName": "Alberto Pérez Zabala",
         "position": "Portero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10214b.jpg"
       },
@@ -27457,7 +27457,7 @@
         "fullName": "Alfredo Martínez Ladreda",
         "position": "Defensa",
         "played": 29,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10143.jpg"
       },
@@ -27467,7 +27467,7 @@
         "fullName": "Juan Parcet Poblet",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9481.jpg"
       },
@@ -27477,7 +27477,7 @@
         "fullName": "Fernando Sagrado Alonso",
         "position": "Defensa",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/16482d.jpg"
       }
@@ -27659,7 +27659,7 @@
         "fullName": "José Guillamón Rodríguez",
         "position": "Portero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11207c.jpg"
       },
@@ -27709,7 +27709,7 @@
         "fullName": "Victoriano Marcelo Gutiérrez Díaz",
         "position": "Portero",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11387b.jpg"
       },
@@ -27749,7 +27749,7 @@
         "fullName": "Andrés Pandiella Villabona",
         "position": "Centrocampista",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/18802.jpg"
       },
@@ -27759,7 +27759,7 @@
         "fullName": "Manuel Parra Turrillo",
         "position": "Centrocampista",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/18633.jpg"
       },
@@ -27769,7 +27769,7 @@
         "fullName": "Pablo Mateo Tormos",
         "position": "Portero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/15946.jpg"
       }
@@ -27942,7 +27942,7 @@
         "fullName": "Gregorio Saturnino Leicea Larrabeiti",
         "position": "Portero",
         "played": 30,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10834d.jpg"
       },
@@ -27992,7 +27992,7 @@
         "fullName": "Victoriano Marcelo Gutiérrez Díaz",
         "position": "Portero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11387b.jpg"
       },
@@ -28042,7 +28042,7 @@
         "fullName": "Cesáreo Bachiller Fernández",
         "position": "Centrocampista",
         "played": 29,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11029.jpg"
       },
@@ -28052,7 +28052,7 @@
         "fullName": "Domingo García García",
         "position": "Delantero",
         "played": 27,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10424.jpg"
       },
@@ -28062,7 +28062,7 @@
         "fullName": "José María Marculeta Barbería",
         "position": "Defensa",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10152b.jpg"
       },
@@ -28072,7 +28072,7 @@
         "fullName": "José Díaz Fernández",
         "position": "Delantero",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10827.jpg"
       }
@@ -28558,7 +28558,7 @@
         "fullName": "Héctor García García",
         "position": "Portero",
         "played": 31,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10573.jpg"
       },
@@ -28911,7 +28911,7 @@
         "fullName": "José María Marculeta Barbería",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10152b.jpg"
       }
@@ -29487,7 +29487,7 @@
         "fullName": "Joaquín González Campomanes",
         "position": "Delantero",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10298b.jpg"
       },
@@ -29497,7 +29497,7 @@
         "fullName": "Félix Rotaeta Bilbao",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/404358.jpg"
       },
@@ -29507,7 +29507,7 @@
         "fullName": "Manuel García Vega",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/204939.jpg"
       },
@@ -29517,7 +29517,7 @@
         "fullName": "Alberto Margolles de la Vega",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/404357c.jpg"
       }
@@ -29770,7 +29770,7 @@
         "fullName": "José Manuel Sánchez-Dindurra Álvarez",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10142c.jpg"
       },
@@ -29780,7 +29780,7 @@
         "fullName": "Félix Rodríguez García",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10742e.jpg"
       }
@@ -30083,7 +30083,7 @@
         "fullName": "José Gutiérrez Mijares",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/17714b.jpg"
       },
@@ -30093,7 +30093,7 @@
         "fullName": "Manuel Menéndez Gutiérrez",
         "position": "Delantero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11064b.jpg"
       }
@@ -30609,7 +30609,7 @@
         "fullName": "José María Sión Mortera",
         "position": "Defensa",
         "played": 28,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11553b.jpg"
       },
@@ -30619,7 +30619,7 @@
         "fullName": "Ceferino Arias Arce",
         "position": "Centrocampista",
         "played": 23,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/40081b.jpg"
       },
@@ -30629,7 +30629,7 @@
         "fullName": "José Luis García Álvarez",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11067.jpg"
       },
@@ -30639,7 +30639,7 @@
         "fullName": "Gervasio Celestino Costales Argüelles",
         "position": "Centrocampista",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/105425.jpg"
       }
@@ -30882,7 +30882,7 @@
         "fullName": "César Menéndez Miranda",
         "position": "Defensa",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/15950.jpg"
       },
@@ -30892,7 +30892,7 @@
         "fullName": "José de la Fuente Valle",
         "position": "Centrocampista",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/18705b.jpg"
       },
@@ -30902,7 +30902,7 @@
         "fullName": "Enrique Victorero Ordieres",
         "position": "Defensa",
         "played": 19,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/10662.jpg"
       }
@@ -31174,7 +31174,7 @@
         "fullName": "Corsino Menéndez Solar",
         "position": "Centrocampista",
         "played": 25,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/42045b.jpg"
       },
@@ -31184,7 +31184,7 @@
         "fullName": "José Ramón Moris Lafuente",
         "position": "Delantero",
         "played": 18,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/1019731.jpg"
       }
@@ -31357,7 +31357,7 @@
         "fullName": "Marino Fernández de Arriba",
         "position": "Portero",
         "played": 20,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/28467.jpg"
       },
@@ -31427,7 +31427,7 @@
         "fullName": "Guillermo Villagrá Azcona",
         "position": "Defensa",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/11412b.jpg"
       }
@@ -31720,7 +31720,7 @@
         "fullName": "Elicio Morales Baute",
         "position": "Defensa",
         "played": 26,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/28584.jpg"
       },
@@ -31730,7 +31730,7 @@
         "fullName": "Antonio Huelga Fernández-Canteli",
         "position": "Defensa",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/204945.jpg"
       },
@@ -31740,7 +31740,7 @@
         "fullName": "Francisco Quirós Álvarez",
         "position": "Delantero",
         "played": 21,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/28536.jpg"
       },
@@ -31973,7 +31973,7 @@
         "fullName": "Francisco Carril Blanco",
         "position": "Portero",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": null
       },
@@ -32003,7 +32003,7 @@
         "fullName": "Adolfo Suárez Morán",
         "position": "Delantero",
         "played": 24,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/3028.jpg"
       },
@@ -32013,7 +32013,7 @@
         "fullName": "José Ramón Rodríguez Rodríguez",
         "position": "Defensa",
         "played": 22,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/205028.jpg"
       }
@@ -32286,7 +32286,7 @@
         "fullName": "Manuel López Llamosas",
         "position": "Delantero",
         "played": 30,
-        "minutes": 0,
+        "minutes": null,
         "goals": 0,
         "photoUrl": "https://www.bdfutbol.com/i/j/9159.jpg"
       },

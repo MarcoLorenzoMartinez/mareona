@@ -74,23 +74,23 @@ describe("Historical Rivals Service", () => {
   it("calculates accurate head-to-head record against Real Oviedo including Campeonato Regional", () => {
     const oviedo = allRivals.find((r) => r.name === "Real Oviedo");
     assert.ok(oviedo, "Real Oviedo must exist");
-    assert.equal(oviedo.played, 123);
-    assert.equal(oviedo.won, 41);
+    assert.equal(oviedo.played, 121);
+    assert.equal(oviedo.won, 40);
     assert.equal(oviedo.drawn, 32);
-    assert.equal(oviedo.lost, 50);
-    assert.equal(oviedo.goalsFor, 173);
-    assert.equal(oviedo.goalsAgainst, 179);
+    assert.equal(oviedo.lost, 49);
+    assert.equal(oviedo.goalsFor, 170);
+    assert.equal(oviedo.goalsAgainst, 176);
     assert.equal(oviedo.community, "Principado de Asturias");
 
     // Verify competitions breakdown
     const regional = oviedo.competitionsBreakdown.find((c) => c.competition === "Campeonato Regional");
     assert.ok(regional, "Campeonato Regional must be present in breakdown");
-    assert.equal(regional.played, 18);
-    assert.equal(regional.won, 5);
+    assert.equal(regional.played, 16);
+    assert.equal(regional.won, 4);
     assert.equal(regional.drawn, 5);
-    assert.equal(regional.lost, 8);
-    assert.equal(regional.goalsFor, 36);
-    assert.equal(regional.goalsAgainst, 46);
+    assert.equal(regional.lost, 7);
+    assert.equal(regional.goalsFor, 33);
+    assert.equal(regional.goalsAgainst, 43);
 
     const primera = oviedo.competitionsBreakdown.find((c) => c.competition === "1.ª División");
     assert.equal(primera?.played, 40);
@@ -171,7 +171,7 @@ describe("Historical Rivals Service", () => {
     assert.equal(oviedo.goalDiff, -11);
     assert.equal(oviedo.winPercentage, 20);
     assert.equal(oviedo.matches.length, 40);
-    assert.equal(oviedo.allMatches?.length, 123, "Preserves all 123 matches in allMatches");
+    assert.equal(oviedo.allMatches?.length, 121, "Preserves all 121 supported matches in allMatches");
 
     // Rivals who never played in Primera are excluded
     const torinoInPrimera = filterRivals(allRivals, "Torino", "primera");
@@ -268,4 +268,3 @@ describe("Historical Rivals Service", () => {
     });
   });
 });
-

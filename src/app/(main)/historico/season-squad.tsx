@@ -61,9 +61,9 @@ export function HistoricalSeasonSquadTable({ players, seasonLabel }: SeasonSquad
       } else if (sortCol === "alias") {
         diff = a.alias.localeCompare(b.alias);
       } else if (sortCol === "played") {
-        diff = a.played - b.played || a.minutes - b.minutes;
+        diff = a.played - b.played || (a.minutes ?? -1) - (b.minutes ?? -1);
       } else if (sortCol === "minutes") {
-        diff = a.minutes - b.minutes;
+        diff = (a.minutes ?? -1) - (b.minutes ?? -1);
       } else if (sortCol === "goals") {
         diff = a.goals - b.goals || a.played - b.played;
       }
@@ -141,7 +141,9 @@ export function HistoricalSeasonSquadTable({ players, seasonLabel }: SeasonSquad
                   {player.position}
                 </td>
                 <td className="py-2.5 text-center tabular-nums font-bold text-[var(--foreground)]">{player.played}</td>
-                <td className="py-2.5 text-center tabular-nums text-xs text-[var(--foreground-muted)] hidden md:table-cell">{player.minutes > 0 ? `${player.minutes}'` : "—"}</td>
+                <td className="py-2.5 text-center tabular-nums text-xs text-[var(--foreground-muted)] hidden md:table-cell">
+                  {player.minutes !== null ? `${player.minutes}'` : "No consta"}
+                </td>
                 <td className="py-2.5 pr-3 text-right tabular-nums font-black text-sm">
                   {player.goals > 0 ? <span className="text-[var(--primary)]">{player.goals}</span> : <span className="text-neutral-400 font-normal">0</span>}
                 </td>

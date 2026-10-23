@@ -47,10 +47,13 @@ export function HistoricalSeasonLeaders({
   players,
   seasonLabel,
 }: SeasonLeadersProps) {
-  const appearances = [...players].sort((a, b) => b.played - a.played || b.minutes - a.minutes).slice(0, 5);
-  const minuteLeaders = [...players].sort((a, b) => b.minutes - a.minutes || b.played - a.played).slice(0, 5);
+  const appearances = [...players].sort((a, b) => b.played - a.played || (b.minutes ?? -1) - (a.minutes ?? -1)).slice(0, 5);
+  const minuteLeaders = [...players]
+    .filter((player) => player.minutes !== null)
+    .sort((a, b) => (b.minutes ?? -1) - (a.minutes ?? -1) || b.played - a.played)
+    .slice(0, 5);
   const hasAssists = assists.length > 0;
-  const hasMinutes = minuteLeaders.some((p) => p.minutes > 0);
+  const hasMinutes = minuteLeaders.length > 0;
 
   return (
     <section
@@ -68,7 +71,7 @@ export function HistoricalSeasonLeaders({
               key={p.alias}
               rank={i + 1}
               name={p.alias}
-              value={hasMinutes ? `${p.minutes.toLocaleString("es-ES")}'` : `${p.played} PJ`}
+              value={hasMinutes && p.minutes !== null ? `${p.minutes.toLocaleString("es-ES")}'` : `${p.played} PJ`}
               photoUrl={p.photoUrl}
             />
           ))}

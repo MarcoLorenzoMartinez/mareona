@@ -126,7 +126,8 @@ function parseMatchesHtml(html, seasonId) {
 
     const rawComp = cells[1].replace(/<[^>]+>/g, "").trim();
     let competition = rawComp;
-    if (/liga/i.test(rawComp)) competition = "Liga";
+    if (/copa de la liga/i.test(rawComp)) competition = "Copa de la Liga";
+    else if (/liga/i.test(rawComp)) competition = "Liga";
     else if (/copa del rey|copa del general[ií]simo|copa presidente|copa de la rep/i.test(rawComp)) competition = "Copa del Rey";
     else if (/copa uefa|uefa/i.test(rawComp)) competition = "Copa UEFA";
     else if (/promoci[oó]n/i.test(rawComp)) competition = "Promoción";
@@ -186,7 +187,11 @@ function parseMatchesHtml(html, seasonId) {
     });
   }
 
-  return matches;
+  return matches.sort((a, b) => {
+    const [aDay, aMonth, aYear] = a.date.split("/").map(Number);
+    const [bDay, bMonth, bYear] = b.date.split("/").map(Number);
+    return Date.UTC(aYear, aMonth - 1, aDay) - Date.UTC(bYear, bMonth - 1, bDay);
+  });
 }
 
 async function main() {

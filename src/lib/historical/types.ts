@@ -81,7 +81,7 @@ export interface HistoricalPlayer {
   readonly fullName: string;
   readonly position: "Portero" | "Defensa" | "Centrocampista" | "Delantero";
   readonly played: number;
-  readonly minutes: number;
+  readonly minutes: number | null;
   readonly goals: number;
   readonly photoUrl?: string | null;
 }
@@ -164,4 +164,3 @@ export interface HistoricalMatchDetail {
   readonly homeCoach?: HistoricalMatchCoach | null;
   readonly awayCoach?: HistoricalMatchCoach | null;
 }
-

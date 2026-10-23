@@ -95,7 +95,8 @@ function parseSquadHtml(html, season) {
       const cells = (tr.match(/<td[^>]*>([\s\S]*?)<\/td>/gi) || []).map((td) => td.replace(/<[^>]+>/g, "").trim());
       
       const played = pjIdx !== -1 && cells[pjIdx] ? parseInt(cells[pjIdx], 10) || 0 : 0;
-      const minutes = minIdx !== -1 && cells[minIdx] ? parseInt(cells[minIdx], 10) || 0 : 0;
+      const minutesValue = minIdx !== -1 && cells[minIdx] ? parseInt(cells[minIdx], 10) : NaN;
+      const minutes = Number.isFinite(minutesValue) ? minutesValue : null;
       let goals = goalsIdx !== -1 && cells[goalsIdx] ? parseInt(cells[goalsIdx], 10) || 0 : 0;
       if (isNaN(goals) || (position === "Portero" && goals < 0)) goals = 0;
 
