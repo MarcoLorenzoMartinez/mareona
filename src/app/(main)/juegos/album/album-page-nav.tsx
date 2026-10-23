@@ -1,4 +1,4 @@
-"use client"; // Client: Riel deslizador antiguo integrado en el papel del álbum
+"use client"; // Client: Riel deslizador independiente debajo del álbum
 
 interface AlbumPageNavProps {
   readonly currentPage: number;
@@ -7,8 +7,8 @@ interface AlbumPageNavProps {
 }
 
 /**
- * Vintage page scrubber slider integrated directly into the physical album paper.
- * Features an engraved parchment groove and an authentic carmine-red wax/brass knob.
+ * Vintage page scrubber slider placed below the album spread.
+ * Features classic typography and an antique recessed rail with a carmine wax seal knob.
  */
 export function AlbumPageNav({
   currentPage,
@@ -18,15 +18,12 @@ export function AlbumPageNav({
   return (
     <nav
       aria-label="Selector de página del álbum"
-      className="relative z-10 w-full px-4 sm:px-8 pt-1.5 pb-2.5"
+      className="w-full pt-1 pb-2"
     >
       {/* Indicador tipográfico de imprenta clásica */}
-      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-amber-900/60 pb-1 select-none">
+      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500 pb-1.5 select-none">
         <span className="tabular-nums">Pág. 1</span>
-        <span
-          className="text-[10.5px] font-black text-amber-950/85 tracking-[0.2em]"
-          style={{ textShadow: "0 1px 0 rgba(255,250,235,0.8)" }}
-        >
+        <span className="text-[11px] font-black text-neutral-800 tracking-[0.2em]">
           Página {currentPage} de {totalPages}
         </span>
         <span className="tabular-nums">Pág. {totalPages}</span>
