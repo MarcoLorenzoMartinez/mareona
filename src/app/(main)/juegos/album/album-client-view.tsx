@@ -85,6 +85,8 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     return card.decade === selectedFilter;
   });
 
+  const ownedGridCards = filteredCards.filter((card) => getCardStatus(card.slug).isOwned);
+
   const ownedCount =
     demoViewMode === "all-revealed"
       ? allCards.length
@@ -122,27 +124,27 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
         onViewModeChange={setViewMode}
       />
 
-      {/* Vista Álbum (pliegos de cartón con casillas troqueladas) */}
+      {/* Vista Álbum (pliegos físicos de papel) */}
       {viewMode === "album" ? (
         <AlbumSpreadView
-          cards={filteredCards}
+          cards={allCards}
           getCardStatus={getCardStatus}
           newlyAcquiredSlugs={newlyAcquiredSlugs}
         />
       ) : (
-        /* Vista Cuadrícula (original) */
-        filteredCards.length > 0 ? (
+        /* Vista Cuadrícula: exclusivamente cartas conseguidas */
+        ownedGridCards.length > 0 ? (
           <section
-            aria-label="Cuadrícula del Álbum de Cromos"
+            aria-label="Cuadrícula de Cromos en Propiedad"
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 justify-items-center"
           >
-            {filteredCards.map((card) => {
-              const { isOwned, quantity } = getCardStatus(card.slug);
+            {ownedGridCards.map((card) => {
+              const { quantity } = getCardStatus(card.slug);
               return (
                 <HistoricalCard
                   key={card.id}
                   card={card}
-                  isOwned={isOwned}
+                  isOwned
                   quantity={quantity}
                   size="sm"
                 />
@@ -154,12 +156,12 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
             <p className="text-sm font-bold text-neutral-800">
               {selectedFilter === "duplicates"
                 ? "No tienes cromos duplicados en este momento"
-                : "No se encontraron cromos en esta categoría"}
+                : "Aún no tienes cromos en esta categoría"}
             </p>
             <p className="mt-1 text-xs text-neutral-500">
               {selectedFilter === "duplicates"
                 ? "Abre nuevos sobres para conseguir cartas repetidas y compartirlas."
-                : "Prueba seleccionando otra década o abre nuevos sobres."}
+                : "Abre nuevos sobres para desbloquear cartas de esta categoría."}
             </p>
           </div>
         )

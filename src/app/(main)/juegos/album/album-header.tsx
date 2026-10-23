@@ -1,4 +1,4 @@
-"use client"; // Client: Gestión interactiva de filtros de década y eventos de UI
+"use client"; // Client: Cabecera con selector de vista (Álbum / Cuadrícula) y filtros
 
 import type { CardDecade } from "@/lib/cards/types";
 import { CARD_DECADES } from "@/lib/cards/schemas";
@@ -24,6 +24,14 @@ interface AlbumHeaderProps {
   readonly onViewModeChange: (mode: ViewMode) => void;
 }
 
+const CATEGORY_FILTERS: readonly { readonly id: AlbumFilter; readonly label: string }[] = [
+  { id: "all", label: "Todas" },
+  { id: "duplicates", label: "Duplicados" },
+  { id: "crests", label: "Escudos" },
+  { id: "moments", label: "Momentos" },
+  { id: "coaches", label: "Entrenadores" },
+];
+
 export function AlbumHeader({
   selectedFilter,
   onSelectFilter,
@@ -37,10 +45,10 @@ export function AlbumHeader({
   const progressPct = totalCount > 0 ? Math.round((ownedCount / totalCount) * 100) : 0;
 
   return (
-    <header className="flex flex-col gap-3 border-b border-[var(--border)] pb-4">
+    <header className="flex flex-col gap-3 border-b border-[var(--border)] pb-3">
       <h1 className="sr-only">Colección de Cromos Históricos</h1>
 
-      {/* Barra de Progreso Minimalista con acción directa de sobre y selector de vista */}
+      {/* Barra de Progreso con acción de apertura de sobre y alternador de vista */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-[var(--border)] bg-white p-3">
         <div className="flex flex-col gap-1.5 flex-1">
           <div className="flex items-center justify-between text-xs sm:pr-4">
@@ -58,7 +66,7 @@ export function AlbumHeader({
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          {/* View mode toggle: Album / Grid */}
+          {/* Alternador de vista: Álbum o Cuadrícula */}
           <div className="flex rounded-full border border-[var(--border)] bg-[var(--surface)] p-0.5 text-xs font-bold">
             <button
               type="button"
@@ -67,17 +75,11 @@ export function AlbumHeader({
               aria-pressed={viewMode === "album"}
               className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all ${
                 viewMode === "album"
-                  ? "bg-[#e2001a] text-white shadow-sm"
+                  ? "bg-[#e2001a] text-white shadow-2xs"
                   : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
               }`}
             >
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="currentColor"
-                aria-hidden="true"
-              >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
                 <rect x="0" y="0" width="5" height="7" rx="0.5" />
                 <rect x="7" y="0" width="5" height="7" rx="0.5" />
                 <rect x="0" y="9" width="5" height="3" rx="0.5" />
@@ -92,17 +94,11 @@ export function AlbumHeader({
               aria-pressed={viewMode === "grid"}
               className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all ${
                 viewMode === "grid"
-                  ? "bg-[#e2001a] text-white shadow-sm"
+                  ? "bg-[#e2001a] text-white shadow-2xs"
                   : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
               }`}
             >
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="currentColor"
-                aria-hidden="true"
-              >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
                 <rect x="0" y="0" width="3.5" height="3.5" rx="0.5" />
                 <rect x="4.25" y="0" width="3.5" height="3.5" rx="0.5" />
                 <rect x="8.5" y="0" width="3.5" height="3.5" rx="0.5" />
@@ -128,94 +124,52 @@ export function AlbumHeader({
         </div>
       </div>
 
-      {/* Selector de Décadas y Duplicados tipo Píldora (Horizontal Scrollable) */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-        <button
-          type="button"
-          onClick={() => onSelectFilter("all")}
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-            selectedFilter === "all"
-              ? "bg-[#e2001a] text-white"
-              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
-          }`}
-        >
-          Todas
-        </button>
+      {/* Selectores de Décadas y Categorías: SOLO visibles en modo Cuadrícula, con wrap para que se vean todos */}
+      {viewMode === "grid" && (
+        <nav aria-label="Filtros de cuadrícula" className="flex flex-wrap items-center gap-1.5 pt-1">
+          {CATEGORY_FILTERS.map((cat) => {
+            const isSelected = selectedFilter === cat.id;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => onSelectFilter(cat.id)}
+                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+                  isSelected
+                    ? "bg-[#e2001a] text-white"
+                    : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
+                }`}
+              >
+                <span>{cat.label}</span>
+                {cat.id === "duplicates" && duplicateCount > 0 && (
+                  <span
+                    className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
+                      isSelected ? "bg-white text-[#e2001a]" : "bg-neutral-100 text-neutral-700"
+                    }`}
+                  >
+                    {duplicateCount}
+                  </span>
+                )}
+              </button>
+            );
+          })}
 
-        <button
-          type="button"
-          onClick={() => onSelectFilter("duplicates")}
-          className={`shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-            selectedFilter === "duplicates"
-              ? "bg-[#e2001a] text-white"
-              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
-          }`}
-        >
-          <span>Duplicados</span>
-          {duplicateCount > 0 && (
-            <span
-              className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
-                selectedFilter === "duplicates"
-                  ? "bg-white text-[#e2001a]"
-                  : "bg-neutral-100 text-neutral-700"
+          {CARD_DECADES.map((dec) => (
+            <button
+              key={dec}
+              type="button"
+              onClick={() => onSelectFilter(dec)}
+              className={`rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+                selectedFilter === dec
+                  ? "bg-[#e2001a] text-white"
+                  : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
               }`}
             >
-              {duplicateCount}
-            </span>
-          )}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onSelectFilter("crests")}
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-            selectedFilter === "crests"
-              ? "bg-[#e2001a] text-white"
-              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
-          }`}
-        >
-          Escudos
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onSelectFilter("moments")}
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-            selectedFilter === "moments"
-              ? "bg-[#e2001a] text-white"
-              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
-          }`}
-        >
-          Momentos
-        </button>
-
-        <button
-          type="button"
-          onClick={() => onSelectFilter("coaches")}
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-            selectedFilter === "coaches"
-              ? "bg-[#e2001a] text-white"
-              : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
-          }`}
-        >
-          Entrenadores
-        </button>
-
-        {CARD_DECADES.map((dec) => (
-          <button
-            key={dec}
-            type="button"
-            onClick={() => onSelectFilter(dec)}
-            className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-              selectedFilter === dec
-                ? "bg-[#e2001a] text-white"
-                : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
-            }`}
-          >
-            {dec}
-          </button>
-        ))}
-      </div>
+              {dec}
+            </button>
+          ))}
+        </nav>
+      )}
     </header>
   );
 }
