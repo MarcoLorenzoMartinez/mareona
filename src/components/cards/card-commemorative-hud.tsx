@@ -23,6 +23,21 @@ function getAdaptiveTitleStyle(title: string): string {
 }
 
 /**
+ * Calculates adaptive font size and tracking based on subtitle length
+ * to ensure single years, year ranges, or multi-stage tenures fit cleanly without ellipsis.
+ */
+function getAdaptiveSubtitleStyle(subtitle: string): string {
+  const len = subtitle.length;
+  if (len <= 15) {
+    return "text-[9px] sm:text-[10px] tracking-widest";
+  }
+  if (len <= 26) {
+    return "text-[8px] sm:text-[9px] tracking-normal";
+  }
+  return "text-[7px] sm:text-[8px] tracking-tighter";
+}
+
+/**
  * Commemorative plate for non-competitive cards (crests and historical moments).
  * Displays title with maximum visual space, and places year/era in the bottom compact box.
  * Guarantees zero ellipsis and authentic club typography.
@@ -32,6 +47,7 @@ export function CardCommemorativeHud({
   subtitle,
 }: CardCommemorativeHudProps) {
   const titleStyle = getAdaptiveTitleStyle(title);
+  const subtitleStyle = getAdaptiveSubtitleStyle(subtitle);
 
   return (
     <div className="relative z-10 w-full shrink-0 select-none pt-1">
@@ -46,8 +62,8 @@ export function CardCommemorativeHud({
       </div>
 
       {/* 2. Recuadro Inferior más compacto con el año o rango de fechas con su formato y color original */}
-      <div className="mt-1 flex items-center justify-center rounded-none border border-amber-400/50 bg-amber-950/40 py-0.5 text-center shadow-2xs">
-        <span className="font-sans font-bold text-[9px] sm:text-[10px] uppercase tracking-widest text-amber-200">
+      <div className="mt-1 flex items-center justify-center overflow-hidden rounded-none border border-amber-400/50 bg-amber-950/40 py-0.5 text-center shadow-2xs">
+        <span className={`whitespace-nowrap font-sans font-bold uppercase text-amber-200 px-0.5 ${subtitleStyle}`}>
           {subtitle}
         </span>
       </div>

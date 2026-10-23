@@ -76,6 +76,9 @@ describe("Cards Domain & Seed Suite", () => {
       "All historical coaches must have unique, non-duplicated photographic assets"
     );
 
+    const playerCards = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "player");
+    const playerPhotoUrls = new Set(playerCards.map((p) => p.photoUrl));
+
     for (const ch of coaches) {
       assert.strictEqual(ch.position, undefined, "Coaches must not have tactical positions");
       assert.strictEqual(ch.ovr, undefined, "Coaches must not have duel OVR rating");
@@ -83,6 +86,12 @@ describe("Cards Domain & Seed Suite", () => {
       assert.strictEqual(ch.defensePower, undefined);
       assert.ok(ch.eraLabel.length > 0, "Coaches must have era/tenure label");
       assert.ok((ch.matchesPlayed ?? 0) > 0, "Coaches must have official matches coached");
+
+      // Verify that coach photos are dedicated manager portraits, not reusing player cards
+      assert.ok(
+        !playerPhotoUrls.has(ch.photoUrl),
+        `Coach card ${ch.knownAs} must use dedicated manager photo, not player photo: ${ch.photoUrl}`
+      );
 
       const diskPath = path.join(process.cwd(), "public", ch.photoUrl);
       assert.ok(
