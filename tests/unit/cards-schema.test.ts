@@ -15,8 +15,8 @@ describe("Cards Domain & Seed Suite", () => {
   it("validates all historical seed cards against Zod cardSchema", () => {
     assert.strictEqual(
       HISTORICAL_CARDS_SEED.length,
-      500,
-      `Expected exactly 500 cards, got ${HISTORICAL_CARDS_SEED.length}`
+      522,
+      `Expected exactly 522 cards, got ${HISTORICAL_CARDS_SEED.length}`
     );
 
     const players = HISTORICAL_CARDS_SEED.filter((c) => !c.kind || c.kind === "player");
@@ -74,12 +74,12 @@ describe("Cards Domain & Seed Suite", () => {
 
   it("includes commemorative coach cards without competitive duel stats", () => {
     const coaches = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "coach");
-    assert.strictEqual(coaches.length, 12, "Expected exactly 12 canonical historical coaches");
+    assert.strictEqual(coaches.length, 13, "Expected exactly 13 canonical historical coaches");
 
     const coachPhotos = new Set(coaches.map((c) => c.photoUrl));
     assert.strictEqual(
       coachPhotos.size,
-      12,
+      13,
       "All historical coaches must have unique, non-duplicated photographic assets"
     );
 
@@ -229,7 +229,7 @@ describe("Cards Domain & Seed Suite", () => {
     }
 
     const playerCards = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "player");
-    assert.strictEqual(playerCards.length, 469);
+    assert.strictEqual(playerCards.length, 486);
 
     for (const card of playerCards) {
       const match = card.photoUrl.match(/\/images\/cards\/historical\/bdf-(\d+)\.jpg$/);

@@ -26,7 +26,7 @@ describe("Album Pagination & Chronological Suite", () => {
 
   it("sorts historical cards chronologically from origins through recent eras", () => {
     const sorted = sortCardsChronologically(HISTORICAL_CARDS_SEED);
-    assert.strictEqual(sorted.length, 500);
+    assert.strictEqual(sorted.length, 522);
 
     // Escudos at the front
     assert.strictEqual(sorted[0].kind, "crest");

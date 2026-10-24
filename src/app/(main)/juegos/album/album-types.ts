@@ -13,8 +13,8 @@ export interface AlbumChapter {
 
 export function getCardChronologicalWeight(card: Card): number {
   if (card.kind === "crest") return 1000;
-  if (card.kind === "moment") return 9000;
-  if (card.kind === "coach") return 8000;
+  if (card.kind === "coach") return 1100;
+  if (card.kind === "moment") return 9500;
 
   const decadeWeight: Record<string, number> = {
     "1920s": 2000,
@@ -26,12 +26,12 @@ export function getCardChronologicalWeight(card: Card): number {
     "1980s": 7000,
     "1990s": 7500,
     "2000s": 7800,
-    "2010s": 7900,
-    "2020s": 7950,
+    "2010s": 8000,
+    "2020s": 8500,
   };
 
   const base = decadeWeight[card.decade] ?? 5000;
-  const yearOffset = card.year ? card.year - 1900 : 0;
+  const yearOffset = card.year ? (card.year - 1900) * 0.01 : 0;
   return base + yearOffset;
 }
 
@@ -60,19 +60,19 @@ export function paginateCards(cards: readonly Card[], pageSize = CARDS_PER_PAGE)
 }
 
 const CHAPTER_TITLES: Record<string, { label: string; shortLabel: string; subtitle: string }> = {
-  crests: { label: "Escudos", shortLabel: "Escudos", subtitle: "Orígenes e Identidad (1905–Hoy)" },
-  "1920s": { label: "Años 20-30", shortLabel: "'20-30", subtitle: "Primeros Pasos y Liga (1920–1939)" },
-  "1930s": { label: "Años 20-30", shortLabel: "'20-30", subtitle: "Primeros Pasos y Liga (1920–1939)" },
-  "1940s": { label: "Años 40-50", shortLabel: "'40-50", subtitle: "Primer Ascenso a Primera (1940–1959)" },
-  "1950s": { label: "Años 40-50", shortLabel: "'40-50", subtitle: "Primer Ascenso a Primera (1940–1959)" },
+  crests: { label: "Escudos y Místers", shortLabel: "Identidad", subtitle: "Orígenes, Emblemas y Técnicos Históricos" },
+  coaches: { label: "Escudos y Místers", shortLabel: "Identidad", subtitle: "Orígenes, Emblemas y Técnicos Históricos" },
+  "1920s": { label: "Años 20", shortLabel: "'20s", subtitle: "Fundadores y Primeros Pasos (1920–1929)" },
+  "1930s": { label: "Años 30", shortLabel: "'30s", subtitle: "Debut en Liga Nacional (1930–1939)" },
+  "1940s": { label: "Años 40", shortLabel: "'40s", subtitle: "Primer Ascenso a Primera (1940–1949)" },
+  "1950s": { label: "Años 50", shortLabel: "'50s", subtitle: "El Equipo de los 100 Goles (1950–1959)" },
   "1960s": { label: "Años 60", shortLabel: "'60s", subtitle: "Asentamiento en Primera (1960–1969)" },
   "1970s": { label: "Años 70", shortLabel: "'70s", subtitle: "La Década Dorada y Quini (1970–1979)" },
-  "1980s": { label: "Años 80", shortLabel: "'80s", subtitle: "El EuroSporting y Copa UEFA (1980–1989)" },
+  "1980s": { label: "Años 80", shortLabel: "'80s", subtitle: "El EuroSporting y Finales de Copa (1980–1989)" },
   "1990s": { label: "Años 90", shortLabel: "'90s", subtitle: "Gesta en Belgrado y Desafíos (1990–1999)" },
-  "2000s": { label: "Años 2000", shortLabel: "'00s", subtitle: "Era Villa y Ascenso de Preciado (2000–2015)" },
-  "2010s": { label: "2015–Hoy", shortLabel: "Actual", subtitle: "Los Guajes y Época Actual (2015–Hoy)" },
-  "2020s": { label: "2015–Hoy", shortLabel: "Actual", subtitle: "Los Guajes y Época Actual (2015–Hoy)" },
-  coaches: { label: "Místers", shortLabel: "Místers", subtitle: "Técnicos que Forjaron la Historia" },
+  "2000s": { label: "Años 2000", shortLabel: "'00s", subtitle: "Era Villa y Ascenso de Preciado (2000–2009)" },
+  "2010s": { label: "Años 2010", shortLabel: "'10s", subtitle: "Los Guajes y Permanencia Heroica (2010–2019)" },
+  "2020s": { label: "Actualidad", shortLabel: "Actual", subtitle: "El Sporting de Hoy (2020–Actualidad)" },
   moments: { label: "Momentos", shortLabel: "Momentos", subtitle: "Partidos y Gestas Legendarias" },
 };
 

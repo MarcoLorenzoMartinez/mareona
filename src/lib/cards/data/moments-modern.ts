@@ -65,4 +65,16 @@ export const MOMENTS_MODERN: readonly Card[] = [
     bioSnippet: "Jony y Sergio sellan la salvación con un Molinón desbordado de emoción.",
     year: 2016,
   }),
+  m({
+    id: "00000000-0000-4000-8000-000000000117",
+    slug: "momento-1996-gran-derbi",
+    fullName: "El Gran Derbi Asturiano",
+    knownAs: "El Gran Derbi",
+    decade: "1990s",
+    eraLabel: "1996",
+    photoUrl: "/images/historical/el-molinon-derbi.jpg",
+    historicalCrestEra: "golden_1980",
+    bioSnippet: "Victoria emocionante y vibrante en El Molinón en la máxima rivalidad regional asturiana.",
+    year: 1996,
+  }),
 ] as const;

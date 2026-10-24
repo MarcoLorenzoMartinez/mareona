@@ -150,4 +150,16 @@ export const HISTORICAL_COACHES: readonly Card[] = [
     historicalCrestEra: "golden_1980",
     bioSnippet: "Prestigioso técnico internacional europeo que dirigió al Sporting en competiciones europeas y Liga a principios de los 80.",
   }),
+  coach({
+    id: "00000000-0000-4000-8000-000000000213",
+    slug: "entrenador-garcia-cuervo",
+    fullName: "Carlos Manuel García Cuervo",
+    knownAs: "García Cuervo",
+    decade: "1990s",
+    eraLabel: "1988 – 1993",
+    matchesPlayed: 107,
+    photoUrl: "/images/cards/historical/bdf-coach-5829.jpg",
+    historicalCrestEra: "golden_1980",
+    bioSnippet: "Hombre de la casa y artífice de la clasificación del Real Sporting para la Copa de la UEFA en la temporada 1990-91.",
+  }),
 ] as const;
