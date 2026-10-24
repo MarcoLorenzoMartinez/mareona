@@ -6,20 +6,20 @@ interface CardCommemorativeHudProps {
 
 /**
  * Calculates adaptive font size and tracking based on title length
- * to ensure commemorative titles fit cleanly in the plate without ever clipping or showing ellipsis.
+ * to ensure commemorative titles fit cleanly in the plate without clipping or ellipsis.
  */
 function getAdaptiveTitleStyle(title: string): string {
   const len = title.length;
   if (len <= 12) {
-    return "text-xs sm:text-sm tracking-wider";
+    return "text-xs tracking-wider";
   }
   if (len <= 16) {
-    return "text-[10.5px] sm:text-xs tracking-normal";
+    return "text-[11px] tracking-normal";
   }
   if (len <= 20) {
-    return "text-[9.5px] sm:text-[10.5px] tracking-tight";
+    return "text-[9.5px] tracking-tight";
   }
-  return "text-[8.5px] sm:text-[9.5px] tracking-tighter";
+  return "text-[8.5px] tracking-tighter";
 }
 
 /**
@@ -29,18 +29,17 @@ function getAdaptiveTitleStyle(title: string): string {
 function getAdaptiveSubtitleStyle(subtitle: string): string {
   const len = subtitle.length;
   if (len <= 15) {
-    return "text-[9px] sm:text-[10px] tracking-widest";
+    return "text-[9px] tracking-widest";
   }
   if (len <= 26) {
-    return "text-[8px] sm:text-[9px] tracking-normal";
+    return "text-[8px] tracking-normal";
   }
-  return "text-[7.5px] sm:text-[8px] tracking-tight";
+  return "text-[7.5px] tracking-tight";
 }
 
 /**
  * Commemorative plate for non-competitive cards (crests, historical moments, coaches).
- * Displays title with maximum visual space, and places year/era/tenures in the bottom compact box.
- * Guarantees zero ellipsis, no clipping for multi-tenure coaches, and authentic club typography.
+ * Keeps a compact vertical profile to maximize photo height.
  */
 export function CardCommemorativeHud({
   title,
@@ -55,9 +54,9 @@ export function CardCommemorativeHud({
     : null;
 
   return (
-    <div className="relative z-10 w-full shrink-0 select-none pt-1">
+    <div className="relative z-10 w-full shrink-0 select-none pt-0.5">
       {/* 1. Placa Heritage Superior: Nombre completo del momento, escudo o entrenador */}
-      <div className="relative flex items-center justify-center overflow-hidden rounded-none border border-amber-300/60 bg-gradient-to-r from-[#990011] via-[#e2001a] to-[#990011] px-1 py-1 sm:py-1.5 text-center shadow-xs">
+      <div className="relative flex items-center justify-center overflow-hidden rounded-none border border-amber-300/60 bg-gradient-to-r from-[#990011] via-[#e2001a] to-[#990011] px-1 py-0.5 text-center shadow-xs">
         <h3
           className={`whitespace-nowrap overflow-hidden font-sans font-black uppercase text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] leading-tight ${titleStyle}`}
           title={title}
@@ -66,8 +65,8 @@ export function CardCommemorativeHud({
         </h3>
       </div>
 
-      {/* 2. Recuadro Inferior: Fechas, años o etapas de entrenador con ajuste multietapa sin cortes */}
-      <div className="mt-1 flex items-center justify-center rounded-none border border-amber-400/50 bg-amber-950/40 px-1 py-0.5 text-center shadow-2xs min-h-[20px]">
+      {/* 2. Recuadro Inferior: Fechas, años o etapas de entrenador con ajuste multietapa */}
+      <div className="mt-0.5 flex items-center justify-center rounded-none border border-amber-400/50 bg-amber-950/40 px-1 py-0.5 text-center shadow-2xs min-h-[18px]">
         {tenures && tenures.length > 1 ? (
           <div
             className={`flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 font-sans font-bold uppercase text-amber-200 leading-tight ${subtitleStyle}`}
