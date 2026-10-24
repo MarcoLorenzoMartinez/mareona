@@ -76,7 +76,7 @@ export function WordleArchiveModal({
       let status: 'WON' | 'LOST' | 'UNPLAYED' = 'UNPLAYED';
       if (!isFuture && !isPastEpoch) {
         try {
-          const saved = localStorage.getItem(`mareona_wordle_state_${dateStr}`);
+          const saved = localStorage.getItem(`mareona_wordle_v2_state_${dateStr}`);
           if (saved) {
             const parsed = JSON.parse(saved);
             if (parsed.status === 'WON') status = 'WON';

@@ -6,8 +6,8 @@ import type { WordleChallengeState, WordleDailyWord, WordleStats } from './types
 import { evaluateGuess, getMaxAttemptsForLength, normalizeWord } from './engine';
 import { isValidWordGuess } from './words';
 
-const STORAGE_KEY_PREFIX = 'mareona_wordle_state_';
-const STATS_STORAGE_KEY = 'mareona_wordle_stats_v1';
+const STORAGE_KEY_PREFIX = 'mareona_wordle_v2_state_';
+const STATS_STORAGE_KEY = 'mareona_wordle_v2_stats';
 
 const INITIAL_STATS: WordleStats = {
   played: 0,
