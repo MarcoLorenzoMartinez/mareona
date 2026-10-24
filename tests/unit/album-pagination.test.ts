@@ -28,12 +28,15 @@ describe("Album Pagination & Chronological Suite", () => {
     const sorted = sortCardsChronologically(HISTORICAL_CARDS_SEED);
     assert.strictEqual(sorted.length, 522);
 
-    // Escudos at the front
+    // Escudos and identity at the front
     assert.strictEqual(sorted[0].kind, "crest");
 
-    // Moments and coaches towards the back
+    // Second chapter is moments (from card 19 onwards)
+    assert.strictEqual(sorted[18].kind, "moment");
+
+    // Last cards are modern players from the 2020s
     const lastCard = sorted[sorted.length - 1];
-    assert.ok(lastCard.kind === "moment" || lastCard.kind === "coach");
+    assert.strictEqual(lastCard.decade, "2020s");
   });
 
   it("computes album chapters with contiguous valid page boundaries", () => {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import type { Card } from "@/lib/cards/types";
+import { AlbumChapterTabs } from "./album-chapter-tabs";
 import { AlbumBookSpread } from "./album-book-spread";
 import { AlbumPageSection } from "./album-page-section";
 import { AlbumPageNav } from "./album-page-nav";
@@ -111,7 +112,14 @@ export function AlbumSpreadView({
         touchStartX.current = null;
       }}
     >
-      {/* Pliego físico abierto del álbum (1 página en móvil, 2 en escritorio) */}
+      {/* 1. Viñetas de capítulos físicas integradas sobre el álbum */}
+      <AlbumChapterTabs
+        chapters={chapters}
+        currentPage={activePage}
+        onSelectPage={handleTurnToPage}
+      />
+
+      {/* 2. Pliego físico abierto del álbum (1 página en móvil, 2 en escritorio) */}
       <AlbumBookSpread
         pageNumber={activePage}
         totalPages={totalPages}

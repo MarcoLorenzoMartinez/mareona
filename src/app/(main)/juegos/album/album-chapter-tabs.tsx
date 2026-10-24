@@ -1,5 +1,6 @@
 "use client"; // Client: Pestañas troqueladas físicas pegadas al lomo superior del álbum
 
+import { useEffect, useRef } from "react";
 import type { AlbumChapter } from "./album-types";
 
 interface AlbumChapterTabsProps {
@@ -18,10 +19,20 @@ export function AlbumChapterTabs({
   currentPage,
   onSelectPage,
 }: AlbumChapterTabsProps) {
+  const activeTabRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    activeTabRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [currentPage]);
+
   return (
     <nav
       aria-label="Pestañas de capítulos del álbum"
-      className="relative z-10 flex w-full items-end gap-0.5 sm:gap-1 px-1 sm:px-2.5 mb-[-1px] select-none"
+      className="relative z-10 flex w-full items-end gap-0.5 sm:gap-1 px-1 sm:px-2.5 mb-[-1px] select-none overflow-x-auto scrollbar-none"
     >
       {chapters.map((ch) => {
         const isActive = currentPage >= ch.startPage && currentPage <= ch.endPage;
@@ -29,10 +40,11 @@ export function AlbumChapterTabs({
         return (
           <button
             key={ch.id}
+            ref={isActive ? activeTabRef : undefined}
             type="button"
             onClick={() => onSelectPage(ch.startPage)}
             aria-current={isActive ? "page" : undefined}
-            className={`group relative flex flex-1 min-w-0 flex-col items-center justify-center rounded-t-md transition-all duration-150 ${
+            className={`group relative flex flex-1 min-w-[54px] md:min-w-0 flex-col items-center justify-center rounded-t-md transition-all duration-150 shrink-0 md:shrink ${
               isActive
                 ? "bg-[#e2001a] text-white shadow-md z-20 py-1.5 sm:py-2 border-t-2 border-x-2 border-[#b30015] -translate-y-0.5 ring-1 ring-black/10"
                 : "bg-[#eadbc3] text-amber-950/80 hover:bg-[#e2d0b5] hover:text-amber-950 border-t border-x border-amber-900/20 py-1 sm:py-1.5 opacity-90 hover:opacity-100 z-10"

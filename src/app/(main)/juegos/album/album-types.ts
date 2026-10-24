@@ -14,7 +14,10 @@ export interface AlbumChapter {
 export function getCardChronologicalWeight(card: Card): number {
   if (card.kind === "crest") return 1000;
   if (card.kind === "coach") return 1100;
-  if (card.kind === "moment") return 9500;
+  if (card.kind === "moment") {
+    const yearOffset = card.year ? (card.year - 1900) * 0.01 : 0;
+    return 1200 + yearOffset;
+  }
 
   const decadeWeight: Record<string, number> = {
     "1920s": 2000,
@@ -60,8 +63,9 @@ export function paginateCards(cards: readonly Card[], pageSize = CARDS_PER_PAGE)
 }
 
 const CHAPTER_TITLES: Record<string, { label: string; shortLabel: string; subtitle: string }> = {
-  crests: { label: "Escudos y Místers", shortLabel: "Identidad", subtitle: "Orígenes, Emblemas y Técnicos Históricos" },
-  coaches: { label: "Escudos y Místers", shortLabel: "Identidad", subtitle: "Orígenes, Emblemas y Técnicos Históricos" },
+  crests: { label: "Identidad", shortLabel: "Identidad", subtitle: "Orígenes, Emblemas y Técnicos Históricos" },
+  coaches: { label: "Identidad", shortLabel: "Identidad", subtitle: "Orígenes, Emblemas y Técnicos Históricos" },
+  moments: { label: "Momentos", shortLabel: "Momentos", subtitle: "Partidos y Gestas Legendarias" },
   "1920s": { label: "Años 20", shortLabel: "'20s", subtitle: "Fundadores y Primeros Pasos (1920–1929)" },
   "1930s": { label: "Años 30", shortLabel: "'30s", subtitle: "Debut en Liga Nacional (1930–1939)" },
   "1940s": { label: "Años 40", shortLabel: "'40s", subtitle: "Primer Ascenso a Primera (1940–1949)" },
@@ -72,8 +76,7 @@ const CHAPTER_TITLES: Record<string, { label: string; shortLabel: string; subtit
   "1990s": { label: "Años 90", shortLabel: "'90s", subtitle: "Gesta en Belgrado y Desafíos (1990–1999)" },
   "2000s": { label: "Años 2000", shortLabel: "'00s", subtitle: "Era Villa y Ascenso de Preciado (2000–2009)" },
   "2010s": { label: "Años 2010", shortLabel: "'10s", subtitle: "Los Guajes y Permanencia Heroica (2010–2019)" },
-  "2020s": { label: "Actualidad", shortLabel: "Actual", subtitle: "El Sporting de Hoy (2020–Actualidad)" },
-  moments: { label: "Momentos", shortLabel: "Momentos", subtitle: "Partidos y Gestas Legendarias" },
+  "2020s": { label: "Años 2020", shortLabel: "'20s", subtitle: "El Sporting de Hoy (2020–Actualidad)" },
 };
 
 /**

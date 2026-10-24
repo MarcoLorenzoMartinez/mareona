@@ -78,7 +78,7 @@ export function AlbumBookSpread({
       <section
         key={pageNumber}
         aria-label={`Páginas ${pageNumber} y ${Math.min(totalPages, pageNumber + 1)} de ${totalPages}`}
-        className={`relative w-full rounded-xl overflow-hidden border border-amber-900/20 ${turnAnimationClass}`}
+        className={`relative w-full rounded-b-xl rounded-t-sm overflow-hidden border border-amber-900/20 ${turnAnimationClass}`}
         style={{
           background:
             "linear-gradient(160deg, #faf6ee 0%, #f4ecdb 35%, #efe5d1 60%, #f4ecdb 100%)",
