@@ -1,10 +1,9 @@
 import React from 'react';
-import type { WordleDailyWord, WordleStats } from '@/lib/wordle/types';
+import type { WordleDailyWord } from '@/lib/wordle/types';
 
 interface WordleHeaderProps {
   challenge: WordleDailyWord;
   isArchive: boolean;
-  stats: WordleStats;
   onOpenArchive: () => void;
   onOpenStats: () => void;
 }
@@ -12,7 +11,6 @@ interface WordleHeaderProps {
 export function WordleHeader({
   challenge,
   isArchive,
-  stats,
   onOpenArchive,
   onOpenStats,
 }: WordleHeaderProps) {
@@ -47,10 +45,10 @@ export function WordleHeader({
         <button
           type="button"
           onClick={onOpenStats}
-          className="flex items-center gap-1 rounded-full border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
-          aria-label="Ver estadísticas"
+          className="flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
+          aria-label="Ver estadísticas del usuario"
         >
-          <span>Racha: <strong className="text-[#e2001a] font-bold">{stats.currentStreak}</strong></span>
+          <span>Estadísticas</span>
         </button>
       </div>
     </header>

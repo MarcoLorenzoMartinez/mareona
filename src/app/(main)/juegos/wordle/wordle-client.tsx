@@ -74,7 +74,6 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
       <WordleHeader
         challenge={challenge}
         isArchive={challenge.id !== todayId}
-        stats={stats}
         onOpenArchive={() => setIsArchiveOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
       />
