@@ -10,6 +10,8 @@ import { WordleBoard } from './wordle-board';
 import { WordleKeyboard } from './wordle-keyboard';
 import { WordleArchiveModal } from './wordle-archive-modal';
 import { WordleStatsModal } from './wordle-stats-modal';
+import { useAuth } from '@/context/auth-context';
+import { isDemoEmail } from '@/lib/auth/demo-credentials';
 
 interface WordleClientProps {
   initialChallenge?: WordleDailyWord;
@@ -22,6 +24,9 @@ const DEFAULT_CHALLENGE: WordleDailyWord = {
 };
 
 export function WordleClient({ initialChallenge }: WordleClientProps) {
+  const { user } = useAuth();
+  const isDemo = isDemoEmail(user?.email);
+
   const [challenge, setChallenge] = useState<WordleDailyWord>(() => {
     if (initialChallenge) return initialChallenge;
     // Client-side initialization fallback
@@ -112,7 +117,7 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
         challenge={challenge}
         isGameOver={isGameOver}
         hasWon={hasWon}
-        onResetStats={resetAllProgress}
+        onResetStats={isDemo ? resetAllProgress : undefined}
       />
     </div>
   );
