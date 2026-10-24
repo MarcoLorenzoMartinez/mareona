@@ -125,7 +125,7 @@ export function AlbumSpreadView({
         canPrev={currentPage > 1}
         canNext={currentPage < totalPages}
       >
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3.5 max-w-2xl mx-auto">
           {slots.map((_, idx) => {
             const card = pageCards[idx];
             const globalNumber = (currentPage - 1) * CARDS_PER_PAGE + idx + 1;

@@ -1,6 +1,6 @@
 import type { Card } from "@/lib/cards/types";
 
-export const CARDS_PER_PAGE = 12;
+export const CARDS_PER_PAGE = 9;
 
 export interface AlbumChapter {
   readonly id: string;
