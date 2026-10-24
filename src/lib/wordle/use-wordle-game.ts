@@ -76,6 +76,7 @@ export function useWordleGame(challenge: WordleDailyWord) {
   );
   const [stats, setStats] = useState<WordleStats>(() => getInitialStats());
   const [shakeRow, setShakeRow] = useState(false);
+  const [justFinished, setJustFinished] = useState(false);
   const [, startTransition] = useTransition();
 
   // Reset or switch state during render when challenge date changes
@@ -83,6 +84,7 @@ export function useWordleGame(challenge: WordleDailyWord) {
     setActiveDate(challenge.id);
     setGameState(getInitialState(challenge.id, targetWord));
     setCurrentGuess('');
+    setJustFinished(false);
   }
 
   // Persist game state
@@ -173,6 +175,7 @@ export function useWordleGame(challenge: WordleDailyWord) {
     setCurrentGuess('');
 
     if (isWin || isLoss) {
+      setJustFinished(true);
       updateStatsOnCompletion(isWin, nextGuesses.length, challenge.id);
     }
   }, [
@@ -259,5 +262,6 @@ export function useWordleGame(challenge: WordleDailyWord) {
     deleteLetter,
     submitGuess,
     resetAllProgress,
+    justFinished,
   };
 }

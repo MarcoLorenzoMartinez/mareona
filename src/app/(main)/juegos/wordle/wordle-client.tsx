@@ -53,18 +53,19 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
     deleteLetter,
     submitGuess,
     resetAllProgress,
+    justFinished,
   } = useWordleGame(challenge);
 
   const isGameOver = gameState.status !== 'IN_PROGRESS';
   const hasWon = gameState.status === 'WON';
 
-  // Open stats modal automatically when game finishes
+  // Open stats modal automatically ONLY when the user finishes a game in the current session
   useEffect(() => {
-    if (isGameOver) {
+    if (justFinished) {
       const timer = setTimeout(() => setIsStatsOpen(true), 800);
       return () => clearTimeout(timer);
     }
-  }, [isGameOver]);
+  }, [justFinished]);
 
   const handleSelectHistoricalDate = (date: string) => {
     setChallenge(getChallengeForDate(date));
