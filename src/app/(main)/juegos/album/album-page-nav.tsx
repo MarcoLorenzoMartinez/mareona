@@ -4,6 +4,7 @@ interface AlbumPageNavProps {
   readonly currentPage: number;
   readonly totalPages: number;
   readonly onPageChange: (targetPage: number) => void;
+  readonly label?: string;
 }
 
 /**
@@ -14,17 +15,20 @@ export function AlbumPageNav({
   currentPage,
   totalPages,
   onPageChange,
+  label,
 }: AlbumPageNavProps) {
+  const displayLabel = label ?? `Página ${currentPage} de ${totalPages}`;
+
   return (
     <nav
       aria-label="Selector de página del álbum"
-      className="w-full pt-1 pb-2"
+      className="w-full pt-1 pb-2 select-none"
     >
       {/* Indicador tipográfico de imprenta clásica */}
-      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500 pb-1.5 select-none">
+      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500 pb-1.5">
         <span className="tabular-nums">Pág. 1</span>
         <span className="text-[11px] font-black text-neutral-800 tracking-[0.2em]">
-          Página {currentPage} de {totalPages}
+          {displayLabel}
         </span>
         <span className="tabular-nums">Pág. {totalPages}</span>
       </div>

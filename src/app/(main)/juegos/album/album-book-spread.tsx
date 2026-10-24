@@ -1,14 +1,15 @@
-"use client"; // Client: Pliego abierto de álbum físico de cromos
+"use client"; // Client: Pliego abierto de álbum físico de cromos con 9 cromos a la izquierda y 9 a la derecha
 
 import type { ReactNode } from "react";
 
+const GRAIN_SVG =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.1 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")";
+
 interface AlbumBookSpreadProps {
-  readonly children: ReactNode;
+  readonly leftPage: ReactNode;
+  readonly rightPage?: ReactNode;
   readonly pageNumber: number;
   readonly totalPages: number;
-  readonly pageTitle: string;
-  readonly pageSubtitle?: string;
-  readonly progress: number;
   readonly turnDirection: "next" | "prev" | "none";
   readonly onPrevPage: () => void;
   readonly onNextPage: () => void;
@@ -18,24 +19,20 @@ interface AlbumBookSpreadProps {
 
 /**
  * Open double-page spread of an authentic sticker album.
- * Renders genuine satin cream/ivory pages with central spine shadow,
- * page-stack depth, and floating tactile page-turn triggers.
+ * Renders genuine satin cream pages, central spine crease, paper grain texture,
+ * and 9 cards on the left plus 9 cards on the right.
  */
 export function AlbumBookSpread({
-  children,
+  leftPage,
+  rightPage,
   pageNumber,
   totalPages,
-  pageTitle,
-  pageSubtitle,
-  progress,
   turnDirection,
   onPrevPage,
   onNextPage,
   canPrev,
   canNext,
 }: AlbumBookSpreadProps) {
-  const pct = Math.round(progress * 100);
-
   const turnAnimationClass =
     turnDirection === "next"
       ? "animate-in slide-in-from-right-6 fade-in-80 duration-200 ease-out"
@@ -45,14 +42,14 @@ export function AlbumBookSpread({
 
   return (
     <div className="relative w-full">
-      {/* Botón flotante lateral: Página anterior */}
+      {/* Botón flotante lateral: Página/Pliego anterior */}
       {canPrev && (
         <button
           type="button"
           onClick={onPrevPage}
-          aria-label="Página anterior (←)"
+          aria-label="Pliego anterior (←)"
           className="group absolute -left-2.5 sm:-left-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white text-neutral-800 shadow-xl border border-neutral-300 hover:border-[#e2001a] hover:bg-[#e2001a] hover:text-white transition-all active:scale-95"
-          title="Página anterior (←)"
+          title="Pliego anterior (←)"
         >
           <span className="font-sans font-black text-lg transition-transform group-hover:-translate-x-0.5">
             ‹
@@ -60,14 +57,14 @@ export function AlbumBookSpread({
         </button>
       )}
 
-      {/* Botón flotante lateral: Página siguiente */}
+      {/* Botón flotante lateral: Página/Pliego siguiente */}
       {canNext && (
         <button
           type="button"
           onClick={onNextPage}
-          aria-label="Página siguiente (→)"
+          aria-label="Pliego siguiente (→)"
           className="group absolute -right-2.5 sm:-right-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white text-neutral-800 shadow-xl border border-neutral-300 hover:border-[#e2001a] hover:bg-[#e2001a] hover:text-white transition-all active:scale-95"
-          title="Página siguiente (→)"
+          title="Pliego siguiente (→)"
         >
           <span className="font-sans font-black text-lg transition-transform group-hover:translate-x-0.5">
             ›
@@ -75,10 +72,10 @@ export function AlbumBookSpread({
         </button>
       )}
 
-      {/* Pliego físico abierto del álbum con papel crema y textura continua */}
+      {/* Pliego físico abierto del álbum con textura de papel y hendidura central */}
       <section
         key={pageNumber}
-        aria-label={`Página ${pageNumber} de ${totalPages}: ${pageTitle}`}
+        aria-label={`Páginas ${pageNumber} y ${Math.min(totalPages, pageNumber + 1)} de ${totalPages}`}
         className={`relative w-full rounded-lg overflow-hidden border border-amber-900/15 ${turnAnimationClass}`}
         style={{
           background:
@@ -87,6 +84,13 @@ export function AlbumBookSpread({
             "0 10px 30px rgba(80,50,15,0.08), 0 2px 6px rgba(80,50,15,0.04), inset 0 0 0 1px rgba(180,140,60,0.18)",
         }}
       >
+        {/* Grano auténtico de papel de imprenta */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-30 mix-blend-multiply"
+          style={{ backgroundImage: GRAIN_SVG }}
+        />
+
         {/* Filete perimetral tenue de imprenta editorial clásica */}
         <div
           aria-hidden="true"
@@ -99,53 +103,26 @@ export function AlbumBookSpread({
           style={{ border: "0.5px solid rgba(160,120,50,0.12)" }}
         />
 
-        {/* Sombra central del lomo / hendidura de encuadernación */}
+        {/* Sombra central del lomo / hendidura de encuadernación (divide página izquierda y derecha) */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 hidden md:block"
+          className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 hidden md:block z-20"
           style={{
             background:
-              "linear-gradient(90deg, transparent 0%, rgba(80,45,10,0.08) 35%, rgba(60,30,5,0.16) 50%, rgba(80,45,10,0.08) 65%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, rgba(80,45,10,0.08) 35%, rgba(60,30,5,0.18) 50%, rgba(80,45,10,0.08) 65%, transparent 100%)",
           }}
         />
 
-        {/* Cabecera del pliego: Título del capítulo, subtítulo y progreso */}
-        <header className="relative z-10 flex items-start justify-between px-4 sm:px-6 pt-4 pb-2 border-b border-amber-800/15">
-          <div>
-            <h2
-              className="font-sans text-xs sm:text-sm font-black uppercase tracking-[0.16em] text-amber-950/85"
-              style={{ textShadow: "0 1px 0 rgba(255,250,235,0.8)" }}
-            >
-              {pageTitle}
-            </h2>
-            {pageSubtitle && (
-              <p className="mt-0.5 text-[9.5px] sm:text-[10.5px] font-semibold uppercase tracking-wider text-amber-900/60">
-                {pageSubtitle}
-              </p>
-            )}
-          </div>
+        {/* Vista Escritorio / Tablet: 9 cromos a la izquierda y 9 cromos a la derecha */}
+        <div className="relative z-10 hidden md:grid md:grid-cols-2 divide-x divide-transparent">
+          <div className="p-3 sm:p-5 pr-4 md:pr-7">{leftPage}</div>
+          <div className="p-3 sm:p-5 pl-4 md:pl-7">{rightPage ?? leftPage}</div>
+        </div>
 
-          <div className="flex flex-col items-end gap-0.5">
-            <span className="font-sans text-xs font-black tabular-nums text-amber-950/85">
-              Página {pageNumber} de {totalPages}
-            </span>
-            <span className="text-[9px] font-bold text-amber-900/60 tabular-nums">
-              {pct}% completado
-            </span>
-          </div>
-        </header>
-
-        {/* Cuadrícula de 12 cromos ajustados perfectamente */}
-        <div className="relative z-10 p-3 sm:p-5">{children}</div>
-
-        {/* Pie de página impreso del pliego */}
-        <footer
-          aria-hidden="true"
-          className="relative z-10 flex items-center justify-between px-6 pb-2.5 pt-0.5 text-[8px] font-bold uppercase tracking-widest text-amber-900/40"
-        >
-          <span>Real Sporting de Gijón · Colección Oficial</span>
-          <span>Pág. {pageNumber}</span>
-        </footer>
+        {/* Vista Móvil (< md): Página individual para lectura y ergonomía táctil */}
+        <div className="relative z-10 block md:hidden p-3 sm:p-4">
+          {leftPage}
+        </div>
       </section>
     </div>
   );

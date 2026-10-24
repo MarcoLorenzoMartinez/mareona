@@ -1,6 +1,6 @@
-"use client"; // Client: Contenedor de cromo pegado recto y ajustado a la casilla del álbum
+"use client"; // Client: Contenedor de cromo pegado con animación física y brillo satinado
 
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 interface AlbumPastedCardProps {
   readonly children: ReactNode;
@@ -9,32 +9,33 @@ interface AlbumPastedCardProps {
 
 /**
  * Wraps a HistoricalCard to sit squarely and flush within its album slot.
- * Ensures zero rotation (no tilt) and strictly proportional dimensions matching the album grid cell.
- * For newly acquired cards, animates a gentle entrance.
+ * Ensures strictly proportional dimensions matching the album grid cell,
+ * physical sticking animation for newly acquired cards, and a subtle satin gloss sheen.
  */
 export function AlbumPastedCard({
   children,
   isNew = false,
 }: AlbumPastedCardProps) {
-  const [landed, setLanded] = useState(!isNew);
-
-  useEffect(() => {
-    if (isNew) {
-      const t = setTimeout(() => setLanded(true), 30);
-      return () => clearTimeout(t);
-    }
-  }, [isNew]);
-
   return (
     <div
-      className={`relative w-full h-full aspect-[63/90] transition-all duration-200 ${
-        isNew && !landed ? "opacity-0 scale-95" : "opacity-100 scale-100"
+      className={`relative w-full h-full aspect-[63/90] ${
+        isNew ? "animate-sticker-stick" : ""
       }`}
     >
       {/* Sombra plana de cromo adherido al cartón */}
       <div className="h-full w-full rounded-none shadow-[0_2px_6px_rgba(50,30,10,0.20)]">
         {children}
       </div>
+
+      {/* Brillo tenue de cromo satinado */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(115deg, rgba(255,255,255,0.22) 0%, transparent 35%, transparent 70%, rgba(255,255,255,0.10) 100%)",
+        }}
+      />
     </div>
   );
 }

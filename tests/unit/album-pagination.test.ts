@@ -11,7 +11,7 @@ import { HISTORICAL_CARDS_SEED } from "../../src/lib/cards/seed-data.ts";
 describe("Album Pagination & Chronological Suite", () => {
   it("guarantees every paginated page has exactly CARDS_PER_PAGE or fewer on the last page", () => {
     const pages = paginateCards(HISTORICAL_CARDS_SEED, CARDS_PER_PAGE);
-    assert.strictEqual(pages.length, Math.ceil(500 / 12));
+    assert.strictEqual(pages.length, Math.ceil(HISTORICAL_CARDS_SEED.length / CARDS_PER_PAGE));
 
     for (let i = 0; i < pages.length - 1; i++) {
       assert.strictEqual(
