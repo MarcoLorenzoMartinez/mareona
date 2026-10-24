@@ -39,6 +39,36 @@ describe("Album Pagination & Chronological Suite", () => {
     assert.strictEqual(lastCard.decade, "2020s");
   });
 
+  it("orders players within each era by position from goalkeepers to forwards with sequential IDs", () => {
+    const sorted = sortCardsChronologically(HISTORICAL_CARDS_SEED);
+    const players = sorted.filter((c) => c.kind === "player");
+    const posRank: Record<string, number> = {
+      goalkeeper: 1,
+      defender: 2,
+      midfielder: 3,
+      forward: 4,
+    };
+
+    const decades = [...new Set(players.map((p) => p.decade))];
+    for (const decade of decades) {
+      const inDecade = players.filter((p) => p.decade === decade);
+      for (let i = 1; i < inDecade.length; i++) {
+        const prev = inDecade[i - 1];
+        const curr = inDecade[i];
+        const prevRank = posRank[prev.position ?? ""] ?? 99;
+        const currRank = posRank[curr.position ?? ""] ?? 99;
+        assert.ok(
+          prevRank <= currRank,
+          `In ${decade}, ${prev.knownAs} (${prev.position}) appeared after ${curr.knownAs} (${curr.position})`
+        );
+        assert.ok(
+          prev.id < curr.id,
+          `In ${decade}, expected sequential ID ordering: ${prev.id} < ${curr.id}`
+        );
+      }
+    }
+  });
+
   it("computes album chapters with contiguous valid page boundaries", () => {
     const sorted = sortCardsChronologically(HISTORICAL_CARDS_SEED);
     const pages = paginateCards(sorted, CARDS_PER_PAGE);

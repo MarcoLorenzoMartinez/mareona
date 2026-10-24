@@ -98,7 +98,19 @@ export function sortGridCards(
       const wa = getCardChronologicalWeight(a);
       const wb = getCardChronologicalWeight(b);
       if (wa !== wb) return (wa - wb) * dir;
-      return a.knownAs.localeCompare(b.knownAs) * dir;
+      if (a.kind === "player" && b.kind === "player") {
+        const posOrder: Record<string, number> = {
+          goalkeeper: 1,
+          defender: 2,
+          midfielder: 3,
+          forward: 4,
+        };
+        const posA = a.position ? (posOrder[a.position] ?? 5) : 5;
+        const posB = b.position ? (posOrder[b.position] ?? 5) : 5;
+        if (posA !== posB) return (posA - posB) * dir;
+        return a.id.localeCompare(b.id) * dir;
+      }
+      return a.id.localeCompare(b.id) * dir;
     }
 
     if (sortField === "ovr") {

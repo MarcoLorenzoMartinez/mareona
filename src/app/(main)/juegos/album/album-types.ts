@@ -38,15 +38,32 @@ export function getCardChronologicalWeight(card: Card): number {
   return base + yearOffset;
 }
 
+const POSITION_SORT_ORDER: Record<string, number> = {
+  goalkeeper: 1,
+  defender: 2,
+  midfielder: 3,
+  forward: 4,
+};
+
 /**
  * Sorts cards strictly chronologically for the album progression.
+ * Within each era, players are ordered by position (Goalkeepers -> Defenders -> Midfielders -> Forwards)
+ * and then by sequential card identifier.
  */
 export function sortCardsChronologically(cards: readonly Card[]): Card[] {
   return [...cards].sort((a, b) => {
     const wa = getCardChronologicalWeight(a);
     const wb = getCardChronologicalWeight(b);
     if (wa !== wb) return wa - wb;
-    return a.knownAs.localeCompare(b.knownAs);
+
+    if (a.kind === "player" && b.kind === "player") {
+      const posA = a.position ? (POSITION_SORT_ORDER[a.position] ?? 5) : 5;
+      const posB = b.position ? (POSITION_SORT_ORDER[b.position] ?? 5) : 5;
+      if (posA !== posB) return posA - posB;
+      return a.id.localeCompare(b.id);
+    }
+
+    return a.id.localeCompare(b.id);
   });
 }
 
