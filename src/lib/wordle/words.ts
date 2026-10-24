@@ -64,15 +64,17 @@ export function getChallengeForDate(dateStr: string): WordleDailyWord {
 
 /**
  * Gets today's challenge based on Europe/Madrid timezone (CET/CEST) where midnight resets.
+ * Allows passing an optional date string or timestamp to prevent server prerender timing issues.
  */
-export function getTodayChallenge(): WordleDailyWord {
+export function getTodayChallenge(customDate?: Date): WordleDailyWord {
+  const d = customDate || new Date();
   const formatter = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'Europe/Madrid',
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
   });
-  const todayDateStr = formatter.format(new Date());
+  const todayDateStr = formatter.format(d);
   return getChallengeForDate(todayDateStr);
 }
 

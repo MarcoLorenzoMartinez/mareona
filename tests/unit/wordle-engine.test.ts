@@ -52,8 +52,10 @@ describe('Wordle Engine Suite', () => {
       assert.equal(result.every((r) => r.status === 'correct'), true);
     });
 
-    it('throws when guess length differs from target length', () => {
-      assert.throws(() => evaluateGuess('QUINI', 'MOLINON'), /length mismatch/);
+    it('handles guess length differs from target length safely without throwing', () => {
+      const result = evaluateGuess('QUINI', 'MOLINON');
+      assert.equal(result.length, 5);
+      assert.equal(result.every((r) => r.status === 'absent'), true);
     });
   });
 

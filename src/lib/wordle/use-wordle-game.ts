@@ -28,7 +28,13 @@ function getInitialState(challengeId: string, targetWord: string): WordleChallen
   }
   try {
     const saved = localStorage.getItem(`${STORAGE_KEY_PREFIX}${challengeId}`);
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const parsed: WordleChallengeState = JSON.parse(saved);
+      // Guard against old stored guesses from a challenge with different target word/length
+      if (parsed.word === targetWord) {
+        return parsed;
+      }
+    }
   } catch {
     // LocalStorage inaccessible
   }

@@ -15,11 +15,28 @@ interface WordleClientProps {
   initialChallenge?: WordleDailyWord;
 }
 
+const DEFAULT_CHALLENGE: WordleDailyWord = {
+  id: '2026-10-01',
+  word: 'MAJO',
+  trivia: 'Majo, emblemático jugador sportinguista de las primeras décadas del club en El Molinón.',
+};
+
 export function WordleClient({ initialChallenge }: WordleClientProps) {
-  const [todayChallenge] = useState<WordleDailyWord>(() => {
-    return initialChallenge || getTodayChallenge();
+  const [challenge, setChallenge] = useState<WordleDailyWord>(() => {
+    if (initialChallenge) return initialChallenge;
+    // Client-side initialization fallback
+    if (typeof window !== 'undefined') {
+      return getTodayChallenge();
+    }
+    return DEFAULT_CHALLENGE;
   });
-  const [challenge, setChallenge] = useState<WordleDailyWord>(todayChallenge);
+  const [todayId] = useState<string>(() => {
+    if (initialChallenge) return initialChallenge.id;
+    if (typeof window !== 'undefined') {
+      return getTodayChallenge().id;
+    }
+    return '2026-10-01';
+  });
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
 
@@ -56,7 +73,7 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
     <div className="flex flex-col gap-4 max-w-xl mx-auto w-full">
       <WordleHeader
         challenge={challenge}
-        isArchive={challenge.id !== todayChallenge.id}
+        isArchive={challenge.id !== todayId}
         stats={stats}
         onOpenArchive={() => setIsArchiveOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}

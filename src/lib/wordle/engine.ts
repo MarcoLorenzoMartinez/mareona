@@ -37,9 +37,8 @@ export function evaluateGuess(guess: string, target: string): EvaluatedLetter[] 
   const normTarget = normalizeWord(target);
 
   if (normGuess.length !== normTarget.length) {
-    throw new Error(
-      `Word length mismatch: guess (${normGuess.length}) != target (${normTarget.length})`
-    );
+    // If length doesn't match (e.g. stale state from different word length), return absent letters safely
+    return normGuess.split('').map((char) => ({ char, status: 'absent' }));
   }
 
   const length = normGuess.length;
