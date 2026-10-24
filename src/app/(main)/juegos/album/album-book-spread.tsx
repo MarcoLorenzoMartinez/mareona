@@ -1,9 +1,6 @@
-"use client"; // Client: Página de álbum físico de cromos con encuadernación realista
+"use client"; // Client: Pliego abierto de álbum físico de cromos
 
 import type { ReactNode } from "react";
-
-const GRAIN_SVG =
-  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.1 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")";
 
 interface AlbumBookSpreadProps {
   readonly children: ReactNode;
@@ -20,9 +17,9 @@ interface AlbumBookSpreadProps {
 }
 
 /**
- * Single page of an authentic physical sticker album.
- * Renders genuine satin cream/ivory paper with paper grain texture,
- * central spine shadow, perimeter rules, and floating tactile page-turn triggers.
+ * Open double-page spread of an authentic sticker album.
+ * Renders genuine satin cream/ivory pages with central spine shadow,
+ * page-stack depth, and floating tactile page-turn triggers.
  */
 export function AlbumBookSpread({
   children,
@@ -90,13 +87,6 @@ export function AlbumBookSpread({
             "0 10px 30px rgba(80,50,15,0.08), 0 2px 6px rgba(80,50,15,0.04), inset 0 0 0 1px rgba(180,140,60,0.18)",
         }}
       >
-        {/* Grano auténtico de papel de imprenta */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-30 mix-blend-multiply"
-          style={{ backgroundImage: GRAIN_SVG }}
-        />
-
         {/* Filete perimetral tenue de imprenta editorial clásica */}
         <div
           aria-hidden="true"
@@ -145,7 +135,7 @@ export function AlbumBookSpread({
           </div>
         </header>
 
-        {/* Cuadrícula de cromos ajustados perfectamente */}
+        {/* Cuadrícula de 12 cromos ajustados perfectamente */}
         <div className="relative z-10 p-3 sm:p-5">{children}</div>
 
         {/* Pie de página impreso del pliego */}
@@ -153,7 +143,7 @@ export function AlbumBookSpread({
           aria-hidden="true"
           className="relative z-10 flex items-center justify-between px-6 pb-2.5 pt-0.5 text-[8px] font-bold uppercase tracking-widest text-amber-900/40"
         >
-          <span>Real Sporting · Colección Oficial</span>
+          <span>Real Sporting de Gijón · Colección Oficial</span>
           <span>Pág. {pageNumber}</span>
         </footer>
       </section>
