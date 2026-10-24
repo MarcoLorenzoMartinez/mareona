@@ -52,6 +52,7 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
     addLetter,
     deleteLetter,
     submitGuess,
+    resetAllProgress,
   } = useWordleGame(challenge);
 
   const isGameOver = gameState.status !== 'IN_PROGRESS';
@@ -110,6 +111,7 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
         challenge={challenge}
         isGameOver={isGameOver}
         hasWon={hasWon}
+        onResetStats={resetAllProgress}
       />
     </div>
   );

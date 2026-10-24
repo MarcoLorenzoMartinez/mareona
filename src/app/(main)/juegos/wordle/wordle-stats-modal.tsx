@@ -8,6 +8,7 @@ interface WordleStatsModalProps {
   challenge: WordleDailyWord;
   isGameOver: boolean;
   hasWon: boolean;
+  onResetStats?: () => void;
 }
 
 export function WordleStatsModal({
@@ -17,6 +18,7 @@ export function WordleStatsModal({
   challenge,
   isGameOver,
   hasWon,
+  onResetStats,
 }: WordleStatsModalProps) {
   if (!isOpen) return null;
 
@@ -111,13 +113,25 @@ export function WordleStatsModal({
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-5 w-full rounded-full bg-[#e2001a] py-2.5 text-xs font-bold text-white hover:bg-[#b30015] transition-colors"
-        >
-          Cerrar
-        </button>
+        <div className="mt-5 flex flex-col gap-2">
+          {onResetStats && (
+            <button
+              type="button"
+              onClick={onResetStats}
+              className="w-full rounded-full border border-rose-200 bg-rose-50/50 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-100/70 transition-colors"
+            >
+              Reiniciar mis partidas y estadísticas
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full rounded-full bg-[#e2001a] py-2.5 text-xs font-bold text-white hover:bg-[#b30015] transition-colors"
+          >
+            Cerrar
+          </button>
+        </div>
       </div>
     </div>
   );

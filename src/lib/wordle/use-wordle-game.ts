@@ -221,6 +221,31 @@ export function useWordleGame(challenge: WordleDailyWord) {
     }
   }
 
+  // Reset all stored games and player stats
+  const resetAllProgress = useCallback(() => {
+    try {
+      localStorage.removeItem(STATS_STORAGE_KEY);
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(STORAGE_KEY_PREFIX)) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach((k) => localStorage.removeItem(k));
+    } catch {
+      // storage unavailable
+    }
+    setStats(INITIAL_STATS);
+    setGameState({
+      date: challenge.id,
+      word: targetWord,
+      guesses: [],
+      status: 'IN_PROGRESS',
+    });
+    setCurrentGuess('');
+  }, [challenge.id, targetWord]);
+
   return {
     gameState,
     currentGuess,
@@ -233,5 +258,6 @@ export function useWordleGame(challenge: WordleDailyWord) {
     addLetter,
     deleteLetter,
     submitGuess,
+    resetAllProgress,
   };
 }
