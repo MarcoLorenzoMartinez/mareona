@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
-import { getTodayChallenge } from '@/lib/wordle/words';
 import { WordleClient } from './wordle-client';
-
-export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Wordle Sportinguista — Mareona',
@@ -10,11 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function WordlePage() {
-  const todayChallenge = getTodayChallenge();
-
   return (
     <main className="w-full py-2">
-      <WordleClient initialChallenge={todayChallenge} />
+      <WordleClient />
     </main>
   );
 }

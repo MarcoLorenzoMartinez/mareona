@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import type { WordleDailyWord } from '@/lib/wordle/types';
+import { getTodayChallenge, getChallengeForDate } from '@/lib/wordle/words';
 import { useWordleGame } from '@/lib/wordle/use-wordle-game';
 import { WordleHeader } from './wordle-header';
 import { WordleBoard } from './wordle-board';
@@ -11,11 +12,14 @@ import { WordleArchiveModal } from './wordle-archive-modal';
 import { WordleStatsModal } from './wordle-stats-modal';
 
 interface WordleClientProps {
-  initialChallenge: WordleDailyWord;
+  initialChallenge?: WordleDailyWord;
 }
 
 export function WordleClient({ initialChallenge }: WordleClientProps) {
-  const [challenge, setChallenge] = useState<WordleDailyWord>(initialChallenge);
+  const [todayChallenge] = useState<WordleDailyWord>(() => {
+    return initialChallenge || getTodayChallenge();
+  });
+  const [challenge, setChallenge] = useState<WordleDailyWord>(todayChallenge);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
 
@@ -45,17 +49,14 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
   }, [isGameOver]);
 
   const handleSelectHistoricalDate = (date: string) => {
-    // Import dynamically or get from registry
-    import('@/lib/wordle/words').then(({ getChallengeForDate }) => {
-      setChallenge(getChallengeForDate(date));
-    });
+    setChallenge(getChallengeForDate(date));
   };
 
   return (
     <div className="flex flex-col gap-4 max-w-xl mx-auto w-full">
       <WordleHeader
         challenge={challenge}
-        isArchive={challenge.id !== initialChallenge.id}
+        isArchive={challenge.id !== todayChallenge.id}
         stats={stats}
         onOpenArchive={() => setIsArchiveOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
