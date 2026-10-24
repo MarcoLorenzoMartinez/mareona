@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { getTodayChallenge } from '@/lib/wordle/words';
 import { WordleClient } from './wordle-client';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Wordle Sportinguista — Mareona',
   description: 'Adivina la palabra del Real Sporting de hoy en 6 intentos.',
