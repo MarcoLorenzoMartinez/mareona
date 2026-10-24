@@ -11,10 +11,10 @@ export function WordleTile({ letter = '', status, isRevealing = false }: WordleT
   let bgClasses = 'bg-white border-[var(--border)] text-[var(--foreground)]';
 
   if (status === 'correct') {
-    // Red Sporting brand color for correct match (primary)
-    bgClasses = 'bg-[#e2001a] border-[#e2001a] text-white';
+    // Universal Wordle emerald green for exact position match
+    bgClasses = 'bg-emerald-600 border-emerald-600 text-white';
   } else if (status === 'present') {
-    // Warm amber for present
+    // Warm amber for present letters in different positions
     bgClasses = 'bg-amber-500 border-amber-500 text-white';
   } else if (status === 'absent') {
     // Muted gray for absent

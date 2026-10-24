@@ -29,7 +29,7 @@ export function WordleKeyboard({
     }
 
     if (status === 'correct') {
-      return `${base} bg-[#e2001a] text-white border border-[#e2001a]`;
+      return `${base} bg-emerald-600 text-white border border-emerald-600`;
     }
     if (status === 'present') {
       return `${base} bg-amber-500 text-white border border-amber-500`;
