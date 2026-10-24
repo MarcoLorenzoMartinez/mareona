@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Juegos — Mareona",
-  description: "Cromos históricos, Duelo de Once Inicial, La Porra de El Molinón y pasatiempos sportinguistas.",
+  description: "Cromos históricos, La Porra de El Molinón y pasatiempos sportinguistas.",
 };
 
 export default function JuegosPage() {
@@ -13,7 +13,7 @@ export default function JuegosPage() {
 
       <section
         aria-label="Zona de juegos"
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
       >
         {/* Colección de Cromos Históricos */}
         <article className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs hover:border-[#e2001a]/50 transition-colors">
@@ -23,7 +23,7 @@ export default function JuegosPage() {
                 Álbum
               </span>
               <span className="text-[11px] font-medium text-[var(--foreground-muted)]">
-                24 leyendas
+                Colección
               </span>
             </div>
             <h2 className="mt-3 text-base font-bold text-[var(--foreground)]">
@@ -38,32 +38,6 @@ export default function JuegosPage() {
             className="mt-5 inline-flex items-center justify-center rounded-full bg-[#e2001a] px-4 py-2 text-xs font-bold text-white hover:bg-[#b30015] transition-colors"
           >
             Abrir mi Álbum
-          </Link>
-        </article>
-
-        {/* Duelo de Once Inicial */}
-        <article className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs hover:border-[#e2001a]/50 transition-colors">
-          <div>
-            <div className="flex items-center justify-between">
-              <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
-                11 vs 11
-              </span>
-              <span className="text-[11px] font-medium text-[var(--foreground-muted)]">
-                Táctico
-              </span>
-            </div>
-            <h2 className="mt-3 text-base font-bold text-[var(--foreground)]">
-              Duelo de Once Inicial
-            </h2>
-            <p className="mt-1.5 text-xs text-[var(--foreground-muted)]">
-              Elige tu formación (4-3-3, 4-4-2...), despliega tu once y combate ronda a ronda con niebla de guerra.
-            </p>
-          </div>
-          <Link
-            href="/juegos/duelo"
-            className="mt-5 inline-flex items-center justify-center rounded-full bg-[var(--foreground)] px-4 py-2 text-xs font-bold text-white hover:bg-[var(--foreground)]/90 transition-colors"
-          >
-            Jugar Duelo
           </Link>
         </article>
 
@@ -83,18 +57,29 @@ export default function JuegosPage() {
         </article>
 
         {/* Wordle Sportinguista */}
-        <article className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-[var(--card)] p-5 shadow-2xs">
+        <article className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs hover:border-[#e2001a]/50 transition-colors">
           <div>
-            <h2 className="text-base font-semibold text-[var(--foreground)]">
+            <div className="flex items-center justify-between">
+              <span className="rounded-full bg-[#e2001a] px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
+                Diario
+              </span>
+              <span className="text-[11px] font-medium text-[var(--foreground-muted)]">
+                Pasatiempos
+              </span>
+            </div>
+            <h2 className="mt-3 text-base font-bold text-[var(--foreground)]">
               Wordle Sportinguista
             </h2>
-            <p className="mt-2 text-xs text-[var(--foreground-muted)]">
-              Adivina la palabra secreta de temática rojiblanca en 6 intentos sin límite de tiempo.
+            <p className="mt-1.5 text-xs text-[var(--foreground-muted)]">
+              Adivina la palabra del Real Sporting de hoy en 6 intentos. Nueva palabra cada día a las 00:00 y archivo de retos anteriores.
             </p>
           </div>
-          <div className="mt-4 rounded-md bg-[var(--surface)] p-2.5 text-center text-xs font-medium text-[var(--foreground-muted)]">
-            Fase 1 — En desarrollo
-          </div>
+          <Link
+            href="/juegos/wordle"
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-[#e2001a] px-4 py-2 text-xs font-bold text-white hover:bg-[#b30015] transition-colors"
+          >
+            Jugar al Wordle
+          </Link>
         </article>
       </section>
     </div>
