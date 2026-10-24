@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import type { Card } from "@/lib/cards/types";
-import { AlbumChapterTabs } from "./album-chapter-tabs";
 import { AlbumBookSpread } from "./album-book-spread";
 import { AlbumPageSection } from "./album-page-section";
 import { AlbumPageNav } from "./album-page-nav";
@@ -112,14 +111,7 @@ export function AlbumSpreadView({
         touchStartX.current = null;
       }}
     >
-      {/* 1. Pestañas de capítulos físicas pegadas al borde superior del álbum */}
-      <AlbumChapterTabs
-        chapters={chapters}
-        currentPage={activePage}
-        onSelectPage={handleTurnToPage}
-      />
-
-      {/* 2. Pliego físico abierto del álbum (1 página en móvil, 2 en escritorio) */}
+      {/* Pliego físico abierto del álbum (1 página en móvil, 2 en escritorio) */}
       <AlbumBookSpread
         pageNumber={activePage}
         totalPages={totalPages}
@@ -133,7 +125,7 @@ export function AlbumSpreadView({
             pageNumber={leftPageNum}
             totalPages={totalPages}
             pageTitle={leftChapter?.label ?? "Colección de Cromos"}
-            pageSubtitle={leftChapter?.eraSubtitle}
+            showHeaderTitle={true}
             cards={leftCards}
             getCardStatus={getCardStatus}
             newlyAcquiredSlugs={newlyAcquiredSlugs}
@@ -144,7 +136,7 @@ export function AlbumSpreadView({
             pageNumber={rightPageNum}
             totalPages={totalPages}
             pageTitle={rightChapter?.label ?? "Colección de Cromos"}
-            pageSubtitle={rightChapter?.eraSubtitle}
+            showHeaderTitle={false}
             cards={rightCards}
             getCardStatus={getCardStatus}
             newlyAcquiredSlugs={newlyAcquiredSlugs}
@@ -155,7 +147,7 @@ export function AlbumSpreadView({
             pageNumber={currentPage}
             totalPages={totalPages}
             pageTitle={mobileChapter?.label ?? "Colección de Cromos"}
-            pageSubtitle={mobileChapter?.eraSubtitle}
+            showHeaderTitle={true}
             cards={mobileCards}
             getCardStatus={getCardStatus}
             newlyAcquiredSlugs={newlyAcquiredSlugs}

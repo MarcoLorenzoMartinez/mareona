@@ -8,9 +8,9 @@ import { CARDS_PER_PAGE } from "./album-types";
 
 interface AlbumPageSectionProps {
   readonly pageNumber: number;
-  readonly totalPages: number;
+  readonly totalPages?: number;
   readonly pageTitle: string;
-  readonly pageSubtitle?: string;
+  readonly showHeaderTitle?: boolean;
   readonly cards: readonly Card[];
   readonly getCardStatus: (slug: string) => { isOwned: boolean; quantity: number };
   readonly newlyAcquiredSlugs?: ReadonlySet<string>;
@@ -22,44 +22,32 @@ interface AlbumPageSectionProps {
  */
 export function AlbumPageSection({
   pageNumber,
-  totalPages,
   pageTitle,
-  pageSubtitle,
+  showHeaderTitle = true,
   cards,
   getCardStatus,
   newlyAcquiredSlugs = new Set(),
 }: AlbumPageSectionProps) {
-  const ownedOnPage = cards.filter((c) => getCardStatus(c.slug).isOwned).length;
-  const pageProgress = cards.length > 0 ? Math.round((ownedOnPage / cards.length) * 100) : 0;
   const slots = Array.from({ length: CARDS_PER_PAGE });
 
   return (
     <div className="flex h-full flex-col justify-between select-none">
-      {/* Cabecera de la página */}
-      <header className="flex items-start justify-between border-b border-amber-800/15 pb-1 sm:pb-1.5 mb-1.5 sm:mb-2">
-        <div className="min-w-0 pr-2">
+      {/* Cabecera de la página: solo título de la sección en la parte superior izquierda */}
+      {showHeaderTitle ? (
+        <header className="flex h-6 items-center border-b border-amber-800/15 mb-2 sm:mb-2.5">
           <h3
             className="truncate font-sans text-[11px] sm:text-xs font-black uppercase tracking-[0.14em] text-amber-950/85"
             style={{ textShadow: "0 1px 0 rgba(255,250,235,0.8)" }}
           >
             {pageTitle}
           </h3>
-          {pageSubtitle && (
-            <p className="truncate text-[8px] sm:text-[9.5px] font-semibold uppercase tracking-wider text-amber-900/60">
-              {pageSubtitle}
-            </p>
-          )}
-        </div>
-
-        <div className="flex shrink-0 flex-col items-end gap-0.5">
-          <span className="font-sans text-[9px] sm:text-[10px] font-black tabular-nums text-amber-950/85">
-            Pág. {pageNumber} de {totalPages}
-          </span>
-          <span className="text-[8px] sm:text-[8.5px] font-bold text-amber-900/60 tabular-nums">
-            {pageProgress}%
-          </span>
-        </div>
-      </header>
+        </header>
+      ) : (
+        <div
+          className="h-6 border-b border-amber-800/15 mb-2 sm:mb-2.5"
+          aria-hidden="true"
+        />
+      )}
 
       {/* Cuadrícula de 9 cromos: 3 columnas x 3 filas */}
       <div className="my-auto grid grid-cols-3 gap-1.5 sm:gap-2">
