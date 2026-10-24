@@ -5,6 +5,7 @@ export const CARDS_PER_PAGE = 9;
 export interface AlbumChapter {
   readonly id: string;
   readonly label: string;
+  readonly shortLabel?: string;
   readonly startPage: number;
   readonly endPage: number;
   readonly eraSubtitle: string;
@@ -58,21 +59,21 @@ export function paginateCards(cards: readonly Card[], pageSize = CARDS_PER_PAGE)
   return pages;
 }
 
-const CHAPTER_TITLES: Record<string, { label: string; subtitle: string }> = {
-  crests: { label: "Escudos", subtitle: "Orígenes e Identidad (1905–Hoy)" },
-  "1920s": { label: "Años 20 y 30", subtitle: "Primeros Pasos y Liga (1920–1939)" },
-  "1930s": { label: "Años 20 y 30", subtitle: "Primeros Pasos y Liga (1920–1939)" },
-  "1940s": { label: "Años 40 y 50", subtitle: "Primer Ascenso a Primera (1940–1959)" },
-  "1950s": { label: "Años 40 y 50", subtitle: "Primer Ascenso a Primera (1940–1959)" },
-  "1960s": { label: "Años 60", subtitle: "Asentamiento en Primera (1960–1969)" },
-  "1970s": { label: "Años 70", subtitle: "La Década Dorada y Quini (1970–1979)" },
-  "1980s": { label: "Años 80", subtitle: "El EuroSporting y Copa UEFA (1980–1989)" },
-  "1990s": { label: "Años 90", subtitle: "Gesta en Belgrado y Desafíos (1990–1999)" },
-  "2000s": { label: "Años 2000", subtitle: "Era Villa y Ascenso de Preciado (2000–2015)" },
-  "2010s": { label: "2015–Hoy", subtitle: "Los Guajes y Época Actual (2015–Hoy)" },
-  "2020s": { label: "2015–Hoy", subtitle: "Los Guajes y Época Actual (2015–Hoy)" },
-  coaches: { label: "Místers", subtitle: "Técnicos que Forjaron la Historia" },
-  moments: { label: "Momentos", subtitle: "Partidos y Gestas Legendarias" },
+const CHAPTER_TITLES: Record<string, { label: string; shortLabel: string; subtitle: string }> = {
+  crests: { label: "Escudos", shortLabel: "Escudos", subtitle: "Orígenes e Identidad (1905–Hoy)" },
+  "1920s": { label: "Años 20-30", shortLabel: "'20-30", subtitle: "Primeros Pasos y Liga (1920–1939)" },
+  "1930s": { label: "Años 20-30", shortLabel: "'20-30", subtitle: "Primeros Pasos y Liga (1920–1939)" },
+  "1940s": { label: "Años 40-50", shortLabel: "'40-50", subtitle: "Primer Ascenso a Primera (1940–1959)" },
+  "1950s": { label: "Años 40-50", shortLabel: "'40-50", subtitle: "Primer Ascenso a Primera (1940–1959)" },
+  "1960s": { label: "Años 60", shortLabel: "'60s", subtitle: "Asentamiento en Primera (1960–1969)" },
+  "1970s": { label: "Años 70", shortLabel: "'70s", subtitle: "La Década Dorada y Quini (1970–1979)" },
+  "1980s": { label: "Años 80", shortLabel: "'80s", subtitle: "El EuroSporting y Copa UEFA (1980–1989)" },
+  "1990s": { label: "Años 90", shortLabel: "'90s", subtitle: "Gesta en Belgrado y Desafíos (1990–1999)" },
+  "2000s": { label: "Años 2000", shortLabel: "'00s", subtitle: "Era Villa y Ascenso de Preciado (2000–2015)" },
+  "2010s": { label: "2015–Hoy", shortLabel: "Actual", subtitle: "Los Guajes y Época Actual (2015–Hoy)" },
+  "2020s": { label: "2015–Hoy", shortLabel: "Actual", subtitle: "Los Guajes y Época Actual (2015–Hoy)" },
+  coaches: { label: "Místers", shortLabel: "Místers", subtitle: "Técnicos que Forjaron la Historia" },
+  moments: { label: "Momentos", shortLabel: "Momentos", subtitle: "Partidos y Gestas Legendarias" },
 };
 
 /**
@@ -96,7 +97,7 @@ export function computeAlbumChapters(pages: readonly Card[][]): AlbumChapter[] {
             ? "coaches"
             : firstCard.decade;
 
-    const meta = CHAPTER_TITLES[rawKey] ?? { label: rawKey, subtitle: "" };
+    const meta = CHAPTER_TITLES[rawKey] ?? { label: rawKey, shortLabel: rawKey, subtitle: "" };
     const label = meta.label;
 
     if (label !== currentKey) {
@@ -104,6 +105,7 @@ export function computeAlbumChapters(pages: readonly Card[][]): AlbumChapter[] {
       chapters.push({
         id: `chapter-${pageNum}`,
         label,
+        shortLabel: meta.shortLabel,
         startPage: pageNum,
         endPage: pageNum,
         eraSubtitle: meta.subtitle,

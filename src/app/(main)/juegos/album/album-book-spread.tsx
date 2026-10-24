@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 
 const GRAIN_SVG =
-  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.1 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")";
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0.1 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")";
 
 interface AlbumBookSpreadProps {
   readonly leftPage: ReactNode;
@@ -76,7 +76,7 @@ export function AlbumBookSpread({
       <section
         key={pageNumber}
         aria-label={`Páginas ${pageNumber} y ${Math.min(totalPages, pageNumber + 1)} de ${totalPages}`}
-        className={`relative w-full rounded-lg overflow-hidden border border-amber-900/15 ${turnAnimationClass}`}
+        className={`relative w-full rounded-b-xl rounded-t-sm overflow-hidden border border-amber-900/20 ${turnAnimationClass}`}
         style={{
           background:
             "linear-gradient(160deg, #faf6ee 0%, #f4ecdb 35%, #efe5d1 60%, #f4ecdb 100%)",

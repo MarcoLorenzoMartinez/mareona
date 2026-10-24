@@ -88,7 +88,7 @@ export function AlbumSpreadView({
 
   return (
     <div
-      className="flex flex-col gap-3 select-none"
+      className="flex flex-col select-none"
       onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
       onTouchEnd={(e) => {
         if (touchStartX.current === null) return;
@@ -100,7 +100,7 @@ export function AlbumSpreadView({
         touchStartX.current = null;
       }}
     >
-      {/* 1. Pestañas de capítulos cronológicos */}
+      {/* 1. Pestañas de capítulos físicas pegadas al borde superior del álbum */}
       <AlbumChapterTabs
         chapters={chapters}
         currentPage={leftPageNum}
@@ -141,16 +141,18 @@ export function AlbumSpreadView({
       />
 
       {/* 3. Riel deslizador antiguo debajo del álbum */}
-      <AlbumPageNav
-        currentPage={leftPageNum}
-        totalPages={totalPages}
-        onPageChange={handleTurnToPage}
-        label={
-          leftPageNum === rightPageNum
-            ? `Página ${leftPageNum} de ${totalPages}`
-            : `Páginas ${leftPageNum}–${rightPageNum} de ${totalPages}`
-        }
-      />
+      <div className="mt-4">
+        <AlbumPageNav
+          currentPage={leftPageNum}
+          totalPages={totalPages}
+          onPageChange={handleTurnToPage}
+          label={
+            leftPageNum === rightPageNum
+              ? `Página ${leftPageNum} de ${totalPages}`
+              : `Páginas ${leftPageNum}–${rightPageNum} de ${totalPages}`
+          }
+        />
+      </div>
     </div>
   );
 }

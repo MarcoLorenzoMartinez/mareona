@@ -1,4 +1,4 @@
-"use client"; // Client: Pestañas de capítulos físicos para navegación rápida entre épocas
+"use client"; // Client: Pestañas troqueladas físicas pegadas al lomo superior del álbum
 
 import type { AlbumChapter } from "./album-types";
 
@@ -9,8 +9,9 @@ interface AlbumChapterTabsProps {
 }
 
 /**
- * Physical index tabs protruding from the top edge of the album.
- * Emulates vintage stitched leather/cardboard chapter tabs for instant chronological jumps.
+ * Pestañas troqueladas de capítulos integradas físicamente en el borde superior del álbum.
+ * Emula los separadores indexados de un álbum o archivador coleccionista, ocupando
+ * el ancho completo de forma proporcional sin cortes ni desbordamientos laterales.
  */
 export function AlbumChapterTabs({
   chapters,
@@ -20,7 +21,7 @@ export function AlbumChapterTabs({
   return (
     <nav
       aria-label="Pestañas de capítulos del álbum"
-      className="relative z-10 flex w-full items-end gap-1 overflow-x-auto px-4 pb-0 scrollbar-none"
+      className="relative z-10 flex w-full items-end gap-0.5 sm:gap-1 px-1 sm:px-2.5 mb-[-1px] select-none"
     >
       {chapters.map((ch) => {
         const isActive = currentPage >= ch.startPage && currentPage <= ch.endPage;
@@ -31,31 +32,34 @@ export function AlbumChapterTabs({
             type="button"
             onClick={() => onSelectPage(ch.startPage)}
             aria-current={isActive ? "page" : undefined}
-            className={`group relative flex shrink-0 items-center justify-center rounded-t-md px-3 py-1.5 text-xs font-bold transition-all duration-150 select-none ${
+            className={`group relative flex flex-1 min-w-0 flex-col items-center justify-center rounded-t-md transition-all duration-150 ${
               isActive
-                ? "bg-[#e2001a] text-white shadow-md -translate-y-0.5 border-t-2 border-x-2 border-amber-300 ring-1 ring-black/10 z-20"
-                : "bg-amber-100/80 text-amber-950/80 hover:bg-amber-200/90 hover:text-amber-950 border-t border-x border-amber-700/20 opacity-90 hover:opacity-100"
+                ? "bg-[#e2001a] text-white shadow-md z-20 py-1.5 sm:py-2 border-t-2 border-x-2 border-[#b30015] -translate-y-0.5 ring-1 ring-black/10"
+                : "bg-[#eadbc3] text-amber-950/80 hover:bg-[#e2d0b5] hover:text-amber-950 border-t border-x border-amber-900/20 py-1 sm:py-1.5 opacity-90 hover:opacity-100 z-10"
             }`}
             title={`Ir a ${ch.label} (Pág. ${ch.startPage})`}
           >
-            {/* Visual stitching simulation along the tab */}
+            {/* Pespunte decorativo sutil en el borde superior de cada pestaña */}
             <span
               aria-hidden="true"
-              className={`absolute inset-x-1.5 top-0.5 border-t border-dashed ${
-                isActive ? "border-amber-200/60" : "border-amber-800/20"
+              className={`absolute inset-x-1 top-0.5 border-t border-dashed ${
+                isActive ? "border-red-300/40" : "border-amber-900/20"
               }`}
             />
 
-            <span className="flex items-center gap-1.5 font-sans tracking-wide">
-              <span>{ch.label}</span>
+            <div className="flex w-full min-w-0 flex-col items-center justify-center px-0.5 leading-tight">
+              <span className="w-full truncate text-center text-[9px] sm:text-[10.5px] lg:text-xs font-bold tracking-tight">
+                <span className="hidden md:inline">{ch.label}</span>
+                <span className="md:hidden">{ch.shortLabel ?? ch.label}</span>
+              </span>
               <span
-                className={`text-[9.5px] tabular-nums font-semibold ${
-                  isActive ? "text-amber-200" : "text-amber-800/60"
+                className={`text-[8px] sm:text-[9.5px] tabular-nums font-semibold ${
+                  isActive ? "text-amber-200" : "text-amber-900/60"
                 }`}
               >
                 p.{ch.startPage}
               </span>
-            </span>
+            </div>
           </button>
         );
       })}
