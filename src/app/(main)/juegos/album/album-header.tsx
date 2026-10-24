@@ -1,43 +1,18 @@
-"use client"; // Client: Cabecera con selector de vista (Álbum / Cuadrícula) y filtros
-
-import type { CardDecade } from "@/lib/cards/types";
-import { CARD_DECADES } from "@/lib/cards/schemas";
-
-export type AlbumFilter =
-  | CardDecade
-  | "all"
-  | "duplicates"
-  | "crests"
-  | "moments"
-  | "coaches";
+"use client"; // Client: Cabecera con selector de vista (Álbum / Cuadrícula) y progreso de colección
 
 type ViewMode = "album" | "grid";
 
 interface AlbumHeaderProps {
-  readonly selectedFilter: AlbumFilter;
-  readonly onSelectFilter: (filter: AlbumFilter) => void;
   readonly ownedCount: number;
   readonly totalCount: number;
-  readonly duplicateCount?: number;
   readonly onOpenPackClick: () => void;
   readonly viewMode: ViewMode;
   readonly onViewModeChange: (mode: ViewMode) => void;
 }
 
-const CATEGORY_FILTERS: readonly { readonly id: AlbumFilter; readonly label: string }[] = [
-  { id: "all", label: "Todas" },
-  { id: "duplicates", label: "Duplicados" },
-  { id: "crests", label: "Escudos" },
-  { id: "moments", label: "Momentos" },
-  { id: "coaches", label: "Entrenadores" },
-];
-
 export function AlbumHeader({
-  selectedFilter,
-  onSelectFilter,
   ownedCount,
   totalCount,
-  duplicateCount = 0,
   onOpenPackClick,
   viewMode,
   onViewModeChange,
@@ -123,53 +98,6 @@ export function AlbumHeader({
           </button>
         </div>
       </div>
-
-      {/* Selectores de Décadas y Categorías: SOLO visibles en modo Cuadrícula, con wrap para que se vean todos */}
-      {viewMode === "grid" && (
-        <nav aria-label="Filtros de cuadrícula" className="flex flex-wrap items-center gap-1.5 pt-1">
-          {CATEGORY_FILTERS.map((cat) => {
-            const isSelected = selectedFilter === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => onSelectFilter(cat.id)}
-                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-                  isSelected
-                    ? "bg-[#e2001a] text-white"
-                    : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
-                }`}
-              >
-                <span>{cat.label}</span>
-                {cat.id === "duplicates" && duplicateCount > 0 && (
-                  <span
-                    className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
-                      isSelected ? "bg-white text-[#e2001a]" : "bg-neutral-100 text-neutral-700"
-                    }`}
-                  >
-                    {duplicateCount}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-
-          {CARD_DECADES.map((dec) => (
-            <button
-              key={dec}
-              type="button"
-              onClick={() => onSelectFilter(dec)}
-              className={`rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-                selectedFilter === dec
-                  ? "bg-[#e2001a] text-white"
-                  : "border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a]/50"
-              }`}
-            >
-              {dec}
-            </button>
-          ))}
-        </nav>
-      )}
     </header>
   );
 }
