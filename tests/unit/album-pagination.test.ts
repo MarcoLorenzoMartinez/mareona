@@ -46,6 +46,18 @@ describe("Album Pagination & Chronological Suite", () => {
 
     assert.ok(chapters.length >= 6, "Expected at least 6 main historical chapters");
     assert.strictEqual(chapters[0].startPage, 1);
+    assert.strictEqual(chapters[0].label, "Identidad");
+    assert.strictEqual(chapters[0].endPage, 2);
+
+    assert.strictEqual(chapters[1].label, "Momentos");
+    assert.strictEqual(chapters[1].startPage, 3);
+    assert.strictEqual(chapters[1].endPage, 4);
+
+    assert.strictEqual(chapters[2].label, "Años 20");
+    assert.strictEqual(chapters[2].startPage, 5);
+    assert.strictEqual(chapters[2].endPage, 6);
+
+    assert.strictEqual(chapters[chapters.length - 1].label, "Años 2020");
 
     for (let i = 0; i < chapters.length; i++) {
       const ch = chapters[i];
