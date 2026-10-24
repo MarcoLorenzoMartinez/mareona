@@ -25,7 +25,7 @@ export function WordleBoard({
     <div
       role="grid"
       aria-label="Tablero de Wordle"
-      className="mx-auto flex flex-col gap-2 w-full max-w-[340px] sm:max-w-[400px] py-2"
+      className="mx-auto flex flex-col items-center gap-1.5 sm:gap-2 w-full py-2"
     >
       {rows.map((_, rowIndex) => {
         const isCurrentRow = rowIndex === guesses.length;
@@ -50,10 +50,7 @@ export function WordleBoard({
           <div
             key={rowIndex}
             role="row"
-            className={`grid gap-1.5 transition-transform ${isShaking ? 'animate-bounce' : ''}`}
-            style={{
-              gridTemplateColumns: `repeat(${targetLength}, minmax(0, 1fr))`,
-            }}
+            className={`flex justify-center gap-1.5 transition-transform ${isShaking ? 'animate-bounce' : ''}`}
           >
             {letters.map((cell, colIndex) => (
               <WordleTile

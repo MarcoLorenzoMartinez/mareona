@@ -26,7 +26,7 @@ export function WordleTile({ letter = '', status, isRevealing = false }: WordleT
 
   return (
     <div
-      className={`flex items-center justify-center rounded-lg border-2 font-bold text-lg sm:text-xl md:text-2xl uppercase transition-transform duration-150 tabular-nums select-none aspect-square ${bgClasses} ${
+      className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg border-2 font-bold text-base sm:text-lg md:text-xl uppercase transition-transform duration-150 tabular-nums select-none ${bgClasses} ${
         isRevealing ? 'animate-in fade-in zoom-in-95' : ''
       }`}
       aria-label={letter ? `${letter} ${status || ''}` : 'casilla vacía'}
