@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { WordleDailyWord } from '@/lib/wordle/types';
-import { SPORTING_DAILY_WORDS } from '@/lib/wordle/words';
+import { getHistoricalChallenges } from '@/lib/wordle/words';
 
 interface WordleArchiveModalProps {
   isOpen: boolean;
@@ -15,6 +15,11 @@ export function WordleArchiveModal({
   onSelectDate,
   selectedDate,
 }: WordleArchiveModalProps) {
+  const challenges = useMemo(() => {
+    if (!isOpen) return [];
+    return getHistoricalChallenges();
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -40,7 +45,7 @@ export function WordleArchiveModal({
         </div>
 
         <div className="flex-1 overflow-y-auto py-3 space-y-2 pr-1">
-          {SPORTING_DAILY_WORDS.map((item: WordleDailyWord) => {
+          {challenges.map((item: WordleDailyWord) => {
             const isSelected = item.id === selectedDate;
             let statusBadge = null;
             try {

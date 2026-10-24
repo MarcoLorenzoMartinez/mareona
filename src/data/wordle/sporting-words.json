@@ -1,0 +1,668 @@
+[
+  {
+    "slug": "cote",
+    "word": "COTE",
+    "trivia": "José Ángel Valdés 'Cote', canterano de Roces y Mareo, lateral internacional y capitán rojiblanco.",
+    "orderAdded": 1
+  },
+  {
+    "slug": "ciri",
+    "word": "CIRI",
+    "trivia": "Ciriaco Cano, histórico centrocampista rojiblanco y posterior técnico del club.",
+    "orderAdded": 2
+  },
+  {
+    "slug": "majo",
+    "word": "MAJO",
+    "trivia": "Majo, emblemático jugador sportinguista de las primeras décadas del club en El Molinón.",
+    "orderAdded": 3
+  },
+  {
+    "slug": "luis",
+    "word": "LUIS",
+    "trivia": "Luis Flores, delantero mexicano mundialista que militó con gran acierto en el Sporting en Primera.",
+    "orderAdded": 4
+  },
+  {
+    "slug": "pepe",
+    "word": "PEPE",
+    "trivia": "Pepe Ortiz, mítico extremo derecho y uno de los jugadores más carismáticos de los años 50 y 60.",
+    "orderAdded": 5
+  },
+  {
+    "slug": "dori",
+    "word": "DORI",
+    "trivia": "Doria, referente en la zaga sportinguista en la historia del club.",
+    "orderAdded": 6
+  },
+  {
+    "slug": "pozo",
+    "word": "POZO",
+    "trivia": "Ángel Pozo, histórico guardameta rojiblanco de la década de los años 40.",
+    "orderAdded": 7
+  },
+  {
+    "slug": "gayo",
+    "word": "GAYO",
+    "trivia": "Gayo, jugador combativo en el centro del campo sportinguista.",
+    "orderAdded": 8
+  },
+  {
+    "slug": "seco",
+    "word": "SECO",
+    "trivia": "Seco, figura defensiva rojiblanca en los años fundacionales de la competición nacional.",
+    "orderAdded": 9
+  },
+  {
+    "slug": "novo",
+    "word": "NOVO",
+    "trivia": "Novo, jugador de banda de gran velocidad en la historia rojiblanca.",
+    "orderAdded": 10
+  },
+  {
+    "slug": "rico",
+    "word": "RICO",
+    "trivia": "Rico, defensa que defendió la elástica del Sporting con entrega total.",
+    "orderAdded": 11
+  },
+  {
+    "slug": "sion",
+    "word": "SION",
+    "trivia": "Sión, histórico guardameta de El Molinón durante los años 40.",
+    "orderAdded": 12
+  },
+  {
+    "slug": "vila",
+    "word": "VILA",
+    "trivia": "Vila, delantero de gran olfato que vistió la camiseta del Sporting.",
+    "orderAdded": 13
+  },
+  {
+    "slug": "rato",
+    "word": "RATO",
+    "trivia": "Rato, histórico defensa gijonés de los años treinta.",
+    "orderAdded": 14
+  },
+  {
+    "slug": "rosa",
+    "word": "ROSA",
+    "trivia": "Rosa, interior técnico y de gran visión de juego de la cantera asturiana.",
+    "orderAdded": 15
+  },
+  {
+    "slug": "pons",
+    "word": "PONS",
+    "trivia": "Pons, centrocampista balear que militó en las filas rojiblancas.",
+    "orderAdded": 16
+  },
+  {
+    "slug": "tifo",
+    "word": "TIFO",
+    "trivia": "Los impresionantes mosaicos y pancartas que la afición rojiblanca despliega en las grandes citas.",
+    "orderAdded": 17
+  },
+  {
+    "slug": "copa",
+    "word": "COPA",
+    "trivia": "La Copa del Rey, torneo en el que el Real Sporting alcanzó dos finales históricas consecutivas (1981 y 1982).",
+    "orderAdded": 18
+  },
+  {
+    "slug": "gol",
+    "word": "GOL",
+    "trivia": "La explosión de júbilo que hace vibrar los cimientos centenarios de El Molinón.",
+    "orderAdded": 19
+  },
+  {
+    "slug": "once",
+    "word": "ONCE",
+    "trivia": "El once titular rojiblanco que salta al césped al ritmo del himno sportinguista.",
+    "orderAdded": 20
+  },
+  {
+    "slug": "sede",
+    "word": "SEDE",
+    "trivia": "La sede social del Real Sporting, históricamente situada en el corazón de Gijón.",
+    "orderAdded": 21
+  },
+  {
+    "slug": "quini",
+    "word": "QUINI",
+    "trivia": "Enrique Castro 'Quini', El Brujo. Máximo goleador histórico del Sporting y leyenda eterna con 7 Pichichis.",
+    "orderAdded": 22
+  },
+  {
+    "slug": "mareo",
+    "word": "MAREO",
+    "trivia": "Escuela de Fútbol de Mareo, inaugurada en 1978 y referente absoluto de formación de cantera en España.",
+    "orderAdded": 23
+  },
+  {
+    "slug": "piles",
+    "word": "PILES",
+    "trivia": "El río Piles, que abraza los aledaños del estadio de El Molinón antes de desembocar en San Lorenzo.",
+    "orderAdded": 24
+  },
+  {
+    "slug": "derbi",
+    "word": "DERBI",
+    "trivia": "El Derbi Asturiano, máxima rivalidad regional entre el Real Sporting y el Real Oviedo.",
+    "orderAdded": 25
+  },
+  {
+    "slug": "campo",
+    "word": "CAMPO",
+    "trivia": "El terreno de juego donde generaciones de sportinguistas han forjado la leyenda de El Molinón.",
+    "orderAdded": 26
+  },
+  {
+    "slug": "guaje",
+    "word": "GUAJE",
+    "trivia": "Término asturiano con el que se conoce a los jóvenes canteranos de la Escuela de Fútbol de Mareo.",
+    "orderAdded": 27
+  },
+  {
+    "slug": "futbo",
+    "word": "FUTBO",
+    "trivia": "La pasión que mueve a toda la ciudad de Gijón desde la fundación del club en 1905.",
+    "orderAdded": 28
+  },
+  {
+    "slug": "grada",
+    "word": "GRADA",
+    "trivia": "El corazón palpitante de El Molinón, donde la Mareona nunca deja de cantar los 90 minutos.",
+    "orderAdded": 29
+  },
+  {
+    "slug": "cante",
+    "word": "CANTE",
+    "trivia": "La cantera inagotable de Mareo, orgullo e identidad innegociable de la afición sportinguista.",
+    "orderAdded": 30
+  },
+  {
+    "slug": "himno",
+    "word": "HIMNO",
+    "trivia": "El himno oficial del Real Sporting, compuesto para emocionar a cada aficionado en El Molinón.",
+    "orderAdded": 31
+  },
+  {
+    "slug": "palco",
+    "word": "PALCO",
+    "trivia": "El palco presidencial de El Molinón, testigo de más de un siglo de historia y visitas ilustres.",
+    "orderAdded": 32
+  },
+  {
+    "slug": "union",
+    "word": "UNION",
+    "trivia": "El Sporting Gijonés nació de la unión de jóvenes entusiastas del deporte en la playa de San Lorenzo.",
+    "orderAdded": 33
+  },
+  {
+    "slug": "fiesta",
+    "word": "FIESTA",
+    "trivia": "El ambiente festivo y hermanado que la Mareona despliega en cada desplazamiento por España.",
+    "orderAdded": 34
+  },
+  {
+    "slug": "roces",
+    "word": "ROCES",
+    "trivia": "Barrio de Gijón con profunda tradición futbolística y estrecho vínculo histórico con Mareo.",
+    "orderAdded": 35
+  },
+  {
+    "slug": "somio",
+    "word": "SOMIO",
+    "trivia": "Parroquia gijonesa residencial cercana a la costa y ligada a la vida de la ciudad.",
+    "orderAdded": 36
+  },
+  {
+    "slug": "trema",
+    "word": "TREMA",
+    "trivia": "Tremañes, parroquia gijonesa cuna de grandes deportistas y aficionados al Sporting.",
+    "orderAdded": 37
+  },
+  {
+    "slug": "zurdo",
+    "word": "ZURDO",
+    "trivia": "La pierna prodigiosa de extremos inolvidables que levantaron a El Molinón por su banda.",
+    "orderAdded": 38
+  },
+  {
+    "slug": "doria",
+    "word": "DORIA",
+    "trivia": "Doria, férreo zaguero que vistió la camiseta rojiblanca con honor.",
+    "orderAdded": 39
+  },
+  {
+    "slug": "moran",
+    "word": "MORAN",
+    "trivia": "Enrique Morán, extremo rápido y goleador de la mítica plantilla subcampeona de Liga.",
+    "orderAdded": 40
+  },
+  {
+    "slug": "novoa",
+    "word": "NOVOA",
+    "trivia": "José Manuel Díaz Novoa, técnico con más partidos dirigidos en la historia del Real Sporting.",
+    "orderAdded": 41
+  },
+  {
+    "slug": "miera",
+    "word": "MIERA",
+    "trivia": "Vicente Miera, técnico que guió al Sporting al histórico subcampeonato de Liga en 1979.",
+    "orderAdded": 42
+  },
+  {
+    "slug": "djuka",
+    "word": "DJUKA",
+    "trivia": "Uros Djurdjevic 'Djuka', delantero internacional montenegrino y máximo artillero del club en Segunda.",
+    "orderAdded": 43
+  },
+  {
+    "slug": "manolo",
+    "word": "MANOLO",
+    "trivia": "Manolo Preciado, inolvidable líder humano y técnico del ascenso rojiblanco de 2008.",
+    "orderAdded": 44
+  },
+  {
+    "slug": "chema",
+    "word": "CHEMA",
+    "trivia": "Chema, talentoso centrocampista asturiano forjado en los campos de Mareo.",
+    "orderAdded": 45
+  },
+  {
+    "slug": "yuste",
+    "word": "YUSTE",
+    "trivia": "Yuste, guardameta que defendió con reflejos la portería rojiblanca.",
+    "orderAdded": 46
+  },
+  {
+    "slug": "coter",
+    "word": "COTER",
+    "trivia": "Cote, el orgullo de Roces defendiendo el carril izquierdo de El Molinón.",
+    "orderAdded": 47
+  },
+  {
+    "slug": "leal",
+    "word": "LEAL",
+    "trivia": "Leal, entrega y coraje en la medular sportinguista.",
+    "orderAdded": 48
+  },
+  {
+    "slug": "savas",
+    "word": "SAVAS",
+    "trivia": "Savvas Kofidis, primer internacional griego en la historia de la Primera División con el Sporting.",
+    "orderAdded": 49
+  },
+  {
+    "slug": "valdes",
+    "word": "VALDES",
+    "trivia": "José Ángel Valdés 'Cote', zurda prodigiosa y alma de la capitanía sportinguista.",
+    "orderAdded": 50
+  },
+  {
+    "slug": "castro",
+    "word": "CASTRO",
+    "trivia": "Jesús Castro, legendario portero rojiblanco y héroe civil que dio su vida salvando a dos niños en Pechón.",
+    "orderAdded": 51
+  },
+  {
+    "slug": "ferrer",
+    "word": "FERRER",
+    "trivia": "Enzo Ferrero, extremo argentino considerado uno de los futbolistas más virtuosos de la historia de El Molinón.",
+    "orderAdded": 52
+  },
+  {
+    "slug": "maceda",
+    "word": "MACEDA",
+    "trivia": "Antonio Maceda, central internacional indiscutible y uno de los mejores defensas de la historia de España.",
+    "orderAdded": 53
+  },
+  {
+    "slug": "urruti",
+    "word": "URRUTI",
+    "trivia": "Javier Urruticoechea 'Urruti', guardameta carismático y Trofeo Zamora con el Sporting en Primera.",
+    "orderAdded": 54
+  },
+  {
+    "slug": "medina",
+    "word": "MEDINA",
+    "trivia": "Medina, central expeditivo que formó parte de la guardia pretoriana de El Molinón.",
+    "orderAdded": 55
+  },
+  {
+    "slug": "rivera",
+    "word": "RIVERA",
+    "trivia": "Alberto Rivera, cerebro del centro del campo que orquestó el ascenso a Primera en 2008.",
+    "orderAdded": 56
+  },
+  {
+    "slug": "diego",
+    "word": "DIEGO",
+    "trivia": "Diego Castro, talento descomunal, clase y lanzador infalible de penaltis en El Molinón.",
+    "orderAdded": 57
+  },
+  {
+    "slug": "botia",
+    "word": "BOTIA",
+    "trivia": "Alberto Botía, joven central que formó una pareja defensiva memorable con Gregory en Primera.",
+    "orderAdded": 58
+  },
+  {
+    "slug": "garcia",
+    "word": "GARCIA",
+    "trivia": "Dani García Lara o Sergio García, delanteros que dejaron su impronta en la vanguardia rojiblanca.",
+    "orderAdded": 59
+  },
+  {
+    "slug": "canela",
+    "word": "CANELA",
+    "trivia": "La Canela, tradicional golosina asturiana vinculada a las tardes de fútbol de domingo en El Molinón.",
+    "orderAdded": 60
+  },
+  {
+    "slug": "blanco",
+    "word": "BLANCO",
+    "trivia": "Uno de los dos colores sagrados que forman la bandera y camiseta centenaria del Sporting.",
+    "orderAdded": 61
+  },
+  {
+    "slug": "escudo",
+    "word": "ESCUDO",
+    "trivia": "El blasón coronado con la bandera de Gijón y las barras rojiblancas que los jugadores besan al marcar.",
+    "orderAdded": 62
+  },
+  {
+    "slug": "zamora",
+    "word": "ZAMORA",
+    "trivia": "El prestigioso trofeo al portero menos goleado ganado por leyendas de Mareo como Ablanedo.",
+    "orderAdded": 63
+  },
+  {
+    "slug": "canter",
+    "word": "CANTER",
+    "trivia": "La cantera de Mareo, motor continuo de identidad, valores y sentimiento sportinguista.",
+    "orderAdded": 64
+  },
+  {
+    "slug": "sector",
+    "word": "SECTOR",
+    "trivia": "Cada sector de la grada de El Molinón custodia décadas de anécdotas de familias rojiblancas.",
+    "orderAdded": 65
+  },
+  {
+    "slug": "aficion",
+    "word": "AFICION",
+    "trivia": "La afición del Real Sporting, reconocida en toda España por su fidelidad incondicional.",
+    "orderAdded": 66
+  },
+  {
+    "slug": "pasion",
+    "word": "PASION",
+    "trivia": "El sentimiento inextinguible transmitido de abuelos a nietos en la tribuna oeste.",
+    "orderAdded": 67
+  },
+  {
+    "slug": "coraje",
+    "word": "CORAJE",
+    "trivia": "El sello de identidad de los equipos de Mareo: pelear cada balón hasta el minuto 95.",
+    "orderAdded": 68
+  },
+  {
+    "slug": "madera",
+    "word": "MADERA",
+    "trivia": "Las míticas gradas de madera del primitivo El Molinón que resistieron temporales del Cantábrico.",
+    "orderAdded": 69
+  },
+  {
+    "slug": "tiempo",
+    "word": "TIEMPO",
+    "trivia": "Los dos tiempos de 45 minutos donde la Mareona empuja al equipo hacia la victoria.",
+    "orderAdded": 70
+  },
+  {
+    "slug": "jugada",
+    "word": "JUGADA",
+    "trivia": "Las paredes y triangulaciones mágicas que Ferrero y Quini bordaban en la frontal del área.",
+    "orderAdded": 71
+  },
+  {
+    "slug": "centro",
+    "word": "CENTRO",
+    "trivia": "El centro medido al corazón del área para el cabezazo inapelable de los delanteros rojiblancos.",
+    "orderAdded": 72
+  },
+  {
+    "slug": "arbitr",
+    "word": "ARBITR",
+    "trivia": "Figura siempre escrutada bajo la intensa acústica de las tribunas de El Molinón.",
+    "orderAdded": 73
+  },
+  {
+    "slug": "molinon",
+    "word": "MOLINON",
+    "trivia": "El Molinón - Enrique Castro Quini, el estadio más antiguo del fútbol profesional español (1908).",
+    "orderAdded": 74
+  },
+  {
+    "slug": "mareona",
+    "word": "MAREONA",
+    "trivia": "La Mareona, marea humana rojiblanca que acompaña al Sporting con cánticos y deportividad.",
+    "orderAdded": 75
+  },
+  {
+    "slug": "juanele",
+    "word": "JUANELE",
+    "trivia": "Juan Alberto Juanele, genio y figura del regate formado en Mareo, ídolo indiscutible de los 90.",
+    "orderAdded": 76
+  },
+  {
+    "slug": "jimenez",
+    "word": "JIMENEZ",
+    "trivia": "Manuel Jiménez, el jugador con más partidos oficiales disputados en la historia del Real Sporting (498).",
+    "orderAdded": 77
+  },
+  {
+    "slug": "redondo",
+    "word": "REDONDO",
+    "trivia": "José Manuel Redondo, lateral derecho histórico indiscutible del mejor Sporting de la historia.",
+    "orderAdded": 78
+  },
+  {
+    "slug": "barroso",
+    "word": "BARROSO",
+    "trivia": "Barroso, delantero combativo que celebró grandes victorias con la hinchada rojiblanca.",
+    "orderAdded": 79
+  },
+  {
+    "slug": "megido",
+    "word": "MEGIDO",
+    "trivia": "Alfredo Megido, delantero asturiano internacional que firmó goles antológicos en El Molinón.",
+    "orderAdded": 80
+  },
+  {
+    "slug": "felipe",
+    "word": "FELIPE",
+    "trivia": "Felipe Miñambres, extremo técnico y desequilibrante formado en la fructífera cantera de Mareo.",
+    "orderAdded": 81
+  },
+  {
+    "slug": "herrero",
+    "word": "HERRERO",
+    "trivia": "Chus Herrero o David Herrero, futbolistas de entrega que defendieron con orgullo el escudo.",
+    "orderAdded": 82
+  },
+  {
+    "slug": "gregory",
+    "word": "GREGORY",
+    "trivia": "Gregory Arnolin, imponente central francés que se ganó el cariño de la afición por su entrega y pundonor.",
+    "orderAdded": 83
+  },
+  {
+    "slug": "deblasis",
+    "word": "DEBLASIS",
+    "trivia": "Jugador de talento ofensivo y trabajo incansable en las filas del club gijonés.",
+    "orderAdded": 84
+  },
+  {
+    "slug": "hector",
+    "word": "HECTOR",
+    "trivia": "Héctor Yuste, mediocentro sobrio y de gran despliegue táctico en el fútbol español.",
+    "orderAdded": 85
+  },
+  {
+    "slug": "canario",
+    "word": "CANARIO",
+    "trivia": "Darcy Silveira dos Santos 'Canario', mítico jugador de enorme clase que brilló en El Molinón.",
+    "orderAdded": 86
+  },
+  {
+    "slug": "domingo",
+    "word": "DOMINGO",
+    "trivia": "El día sagrado del fútbol en el que la afición peregrina al templo a la vera del Piles.",
+    "orderAdded": 87
+  },
+  {
+    "slug": "segunda",
+    "word": "SEGUNDA",
+    "trivia": "División de plata en la que el Sporting ha demostrado una y otra vez su grandeza para resurgir.",
+    "orderAdded": 88
+  },
+  {
+    "slug": "primera",
+    "word": "PRIMERA",
+    "trivia": "La máxima categoría del fútbol español, donde el Sporting ostenta un puesto histórico de privilegio.",
+    "orderAdded": 89
+  },
+  {
+    "slug": "ascenso",
+    "word": "ASCENSO",
+    "trivia": "Las celebraciones apoteósicas en la plaza del Marqués con miles de sportinguistas celebrando el retorno a Primera.",
+    "orderAdded": 90
+  },
+  {
+    "slug": "pichici",
+    "word": "PICHICI",
+    "trivia": "El Trofeo Pichichi conquistado 7 veces por el inigualable Quini (5 en Primera, 2 en Segunda).",
+    "orderAdded": 91
+  },
+  {
+    "slug": "equipo",
+    "word": "EQUIPO",
+    "trivia": "El bloque compacto que representa la humildad, el trabajo y el pundonor de la gente asturiana.",
+    "orderAdded": 92
+  },
+  {
+    "slug": "capitan",
+    "word": "CAPITAN",
+    "trivia": "El portador del brazalete rojiblanco, custodio de los valores y la historia centenaria de Mareona.",
+    "orderAdded": 93
+  },
+  {
+    "slug": "estadio",
+    "word": "ESTADIO",
+    "trivia": "El santuario centenario junto al parque de Isabel la Católica donde late el sportinguismo.",
+    "orderAdded": 94
+  },
+  {
+    "slug": "cancion",
+    "word": "CANCION",
+    "trivia": "Los himnos y cánticos populares como 'Gijón del alma' entonados al unísono por la afición.",
+    "orderAdded": 95
+  },
+  {
+    "slug": "cultura",
+    "word": "CULTURA",
+    "trivia": "La cultura sportinguista, arraigada profundamente en la identidad cívica y social de Gijón.",
+    "orderAdded": 96
+  },
+  {
+    "slug": "ablanedo",
+    "word": "ABLANEDO",
+    "trivia": "Juan Carlos Ablanedo, 'El Gatu', mítico portero irrepetible, tres veces Trofeo Zamora de Primera.",
+    "orderAdded": 97
+  },
+  {
+    "slug": "preciado",
+    "word": "PRECIADO",
+    "trivia": "Manolo Preciado, técnico del histórico ascenso de 2008 y símbolo eterno de coraje y bonhomía.",
+    "orderAdded": 98
+  },
+  {
+    "slug": "churruca",
+    "word": "CHURRUCA",
+    "trivia": "Iñaki Churruca, extremo zurdo magistral que formó junto a Quini una de las mejores delanteras de Europa.",
+    "orderAdded": 99
+  },
+  {
+    "slug": "manjarin",
+    "word": "MANJARIN",
+    "trivia": "Javier Manjarín, delantero de oro formado en Mareo y campeón olímpico en Barcelona 92.",
+    "orderAdded": 100
+  },
+  {
+    "slug": "abelardo",
+    "word": "ABELARDO",
+    "trivia": "Abelardo Fernández, 'El Pitu', central internacional de Mareo y técnico del recordado ascenso de los Guajes.",
+    "orderAdded": 101
+  },
+  {
+    "slug": "flotats",
+    "word": "FLOTATS",
+    "trivia": "Isidre Flotats, técnico de gran rigor y disciplina que dirigió al club en momentos determinantes.",
+    "orderAdded": 102
+  },
+  {
+    "slug": "montes",
+    "word": "MONTES",
+    "trivia": "Ángel Montes, mediocampista de gran despliegue y compromiso con los colores rojiblancos.",
+    "orderAdded": 103
+  },
+  {
+    "slug": "canabal",
+    "word": "CANABAL",
+    "trivia": "Manuel Canabal, delantero centro de gran envergadura y potencia aérea en El Molinón.",
+    "orderAdded": 104
+  },
+  {
+    "slug": "luisenri",
+    "word": "LUISENRI",
+    "trivia": "Luis Enrique Martínez, astro forjado en Mareo, estrella mundial y embajador del sportinguismo.",
+    "orderAdded": 105
+  },
+  {
+    "slug": "canteras",
+    "word": "CANTERAS",
+    "trivia": "La cantera de Mareo, ejemplo internacional de formación futbolística y humana desde 1978.",
+    "orderAdded": 106
+  },
+  {
+    "slug": "triburo",
+    "word": "TRIBURO",
+    "trivia": "Las tribunas de El Molinón que acogen a varias generaciones de familias rojiblancas unidas.",
+    "orderAdded": 107
+  },
+  {
+    "slug": "banquill",
+    "word": "BANQUILL",
+    "trivia": "El banquillo de El Molinón por donde han pasado figuras legendarias del fútbol continental.",
+    "orderAdded": 108
+  },
+  {
+    "slug": "futbolis",
+    "word": "FUTBOLIS",
+    "trivia": "Los futbolistas que han tenido el privilegio de vestir la camiseta del decano del fútbol profesional.",
+    "orderAdded": 109
+  },
+  {
+    "slug": "orgullo",
+    "word": "ORGULLO",
+    "trivia": "El orgullo de pertenencia a unos colores y a una ciudad que vive por y para el Real Sporting.",
+    "orderAdded": 110
+  },
+  {
+    "slug": "victoria",
+    "word": "VICTORIA",
+    "trivia": "El premio al esfuerzo colectivo tras noventa minutos de entrega sobre el césped gijonés.",
+    "orderAdded": 111
+  }
+]
