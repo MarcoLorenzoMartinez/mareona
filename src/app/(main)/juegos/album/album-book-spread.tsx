@@ -8,6 +8,7 @@ const GRAIN_SVG =
 interface AlbumBookSpreadProps {
   readonly leftPage: ReactNode;
   readonly rightPage?: ReactNode;
+  readonly mobilePage?: ReactNode;
   readonly pageNumber: number;
   readonly totalPages: number;
   readonly turnDirection: "next" | "prev" | "none";
@@ -25,6 +26,7 @@ interface AlbumBookSpreadProps {
 export function AlbumBookSpread({
   leftPage,
   rightPage,
+  mobilePage,
   pageNumber,
   totalPages,
   turnDirection,
@@ -121,7 +123,7 @@ export function AlbumBookSpread({
 
         {/* Vista Móvil (< md): Página individual para lectura y ergonomía táctil */}
         <div className="relative z-10 block md:hidden p-3 sm:p-4">
-          {leftPage}
+          {mobilePage ?? leftPage}
         </div>
       </section>
     </div>

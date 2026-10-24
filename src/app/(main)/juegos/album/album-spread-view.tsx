@@ -30,13 +30,23 @@ export function AlbumSpreadView({
 
   const [currentPage, setCurrentPage] = useState(1);
   const [turnDirection, setTurnDirection] = useState<"next" | "prev" | "none">("none");
+  const [isDoublePage, setIsDoublePage] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   const totalPages = Math.max(1, pages.length);
 
-  // Calcula las páginas izquierda y derecha del pliego abierto
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setIsDoublePage(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  const step = isDoublePage ? 2 : 1;
   const leftPageNum = currentPage % 2 === 0 ? currentPage - 1 : currentPage;
   const rightPageNum = Math.min(totalPages, leftPageNum + 1);
+  const activePage = isDoublePage ? leftPageNum : currentPage;
 
   const handleTurnToPage = useCallback(
     (target: number) => {
@@ -48,7 +58,7 @@ export function AlbumSpreadView({
     [currentPage, totalPages]
   );
 
-  // Atajos de teclado para hojear el álbum físico
+  // Atajos de teclado para hojear el álbum físico (1 página en móvil, 2 en escritorio)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
@@ -56,10 +66,10 @@ export function AlbumSpreadView({
       }
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        handleTurnToPage(e.shiftKey ? Math.max(1, leftPageNum - 10) : Math.max(1, leftPageNum - 2));
+        handleTurnToPage(e.shiftKey ? activePage - (isDoublePage ? 10 : 5) : activePage - step);
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
-        handleTurnToPage(e.shiftKey ? Math.min(totalPages, leftPageNum + 10) : Math.min(totalPages, leftPageNum + 2));
+        handleTurnToPage(e.shiftKey ? activePage + (isDoublePage ? 10 : 5) : activePage + step);
       } else if (e.key === "Home") {
         e.preventDefault();
         handleTurnToPage(1);
@@ -71,20 +81,23 @@ export function AlbumSpreadView({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [leftPageNum, totalPages, handleTurnToPage]);
+  }, [activePage, step, isDoublePage, totalPages, handleTurnToPage]);
+
+  const getChapter = (p: number) => chapters.find((c) => p >= c.startPage && p <= c.endPage);
+  const leftChapter = getChapter(leftPageNum);
+  const rightChapter = getChapter(rightPageNum);
+  const mobileChapter = getChapter(currentPage);
 
   const leftCards = pages[leftPageNum - 1] ?? [];
   const rightCards = pages[rightPageNum - 1] ?? [];
+  const mobileCards = pages[currentPage - 1] ?? [];
 
-  const leftChapter = chapters.find(
-    (c) => leftPageNum >= c.startPage && leftPageNum <= c.endPage
-  );
-  const rightChapter = chapters.find(
-    (c) => rightPageNum >= c.startPage && rightPageNum <= c.endPage
-  );
-
-  const canPrev = leftPageNum > 1;
-  const canNext = rightPageNum < totalPages;
+  const canPrev = isDoublePage ? leftPageNum > 1 : currentPage > 1;
+  const canNext = isDoublePage ? rightPageNum < totalPages : currentPage < totalPages;
+  const navLabel =
+    isDoublePage && leftPageNum !== rightPageNum
+      ? `Páginas ${leftPageNum}–${rightPageNum} de ${totalPages}`
+      : `Página ${activePage} de ${totalPages}`;
 
   return (
     <div
@@ -94,8 +107,7 @@ export function AlbumSpreadView({
         if (touchStartX.current === null) return;
         const diff = touchStartX.current - e.changedTouches[0].clientX;
         if (Math.abs(diff) > 40) {
-          if (diff > 0) handleTurnToPage(Math.min(totalPages, leftPageNum + 2));
-          else handleTurnToPage(Math.max(1, leftPageNum - 2));
+          handleTurnToPage(diff > 0 ? activePage + step : activePage - step);
         }
         touchStartX.current = null;
       }}
@@ -103,17 +115,17 @@ export function AlbumSpreadView({
       {/* 1. Pestañas de capítulos físicas pegadas al borde superior del álbum */}
       <AlbumChapterTabs
         chapters={chapters}
-        currentPage={leftPageNum}
+        currentPage={activePage}
         onSelectPage={handleTurnToPage}
       />
 
-      {/* 2. Pliego físico abierto del álbum (9 cromos a la izquierda y 9 a la derecha) */}
+      {/* 2. Pliego físico abierto del álbum (1 página en móvil, 2 en escritorio) */}
       <AlbumBookSpread
-        pageNumber={leftPageNum}
+        pageNumber={activePage}
         totalPages={totalPages}
         turnDirection={turnDirection}
-        onPrevPage={() => handleTurnToPage(Math.max(1, leftPageNum - 2))}
-        onNextPage={() => handleTurnToPage(Math.min(totalPages, leftPageNum + 2))}
+        onPrevPage={() => handleTurnToPage(activePage - step)}
+        onNextPage={() => handleTurnToPage(activePage + step)}
         canPrev={canPrev}
         canNext={canNext}
         leftPage={
@@ -138,19 +150,26 @@ export function AlbumSpreadView({
             newlyAcquiredSlugs={newlyAcquiredSlugs}
           />
         }
+        mobilePage={
+          <AlbumPageSection
+            pageNumber={currentPage}
+            totalPages={totalPages}
+            pageTitle={mobileChapter?.label ?? "Colección de Cromos"}
+            pageSubtitle={mobileChapter?.eraSubtitle}
+            cards={mobileCards}
+            getCardStatus={getCardStatus}
+            newlyAcquiredSlugs={newlyAcquiredSlugs}
+          />
+        }
       />
 
       {/* 3. Riel deslizador antiguo debajo del álbum */}
       <div className="mt-4">
         <AlbumPageNav
-          currentPage={leftPageNum}
+          currentPage={activePage}
           totalPages={totalPages}
           onPageChange={handleTurnToPage}
-          label={
-            leftPageNum === rightPageNum
-              ? `Página ${leftPageNum} de ${totalPages}`
-              : `Páginas ${leftPageNum}–${rightPageNum} de ${totalPages}`
-          }
+          label={navLabel}
         />
       </div>
     </div>
