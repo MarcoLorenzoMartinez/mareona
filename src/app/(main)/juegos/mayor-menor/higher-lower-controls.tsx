@@ -1,0 +1,44 @@
+import React from 'react';
+import type { HigherLowerGuess } from '@/lib/higher-lower/types';
+
+interface HigherLowerControlsProps {
+  onGuess: (guess: HigherLowerGuess) => void;
+  disabled?: boolean;
+  comparedPlayerName: string;
+}
+
+export function HigherLowerControls({
+  onGuess,
+  disabled = false,
+  comparedPlayerName,
+}: HigherLowerControlsProps) {
+  return (
+    <div className="flex flex-col items-center gap-2.5 w-full max-w-xs mx-auto">
+      <span className="text-xs font-semibold text-[var(--foreground-muted)] text-center">
+        ¿Tiene más o menos que <strong className="text-[var(--foreground)]">{comparedPlayerName}</strong>?
+      </span>
+
+      <div className="grid grid-cols-2 gap-2.5 w-full">
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={() => onGuess('higher')}
+          className="flex h-12 items-center justify-center gap-1.5 rounded-full bg-[#e2001a] px-4 text-sm font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Más"
+        >
+          <span>Más ▲</span>
+        </button>
+
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={() => onGuess('lower')}
+          className="flex h-12 items-center justify-center gap-1.5 rounded-full border-2 border-[#e2001a] bg-white px-4 text-sm font-bold text-[#e2001a] shadow-2xs hover:bg-[#e2001a]/5 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Menos"
+        >
+          <span>Menos ▼</span>
+        </button>
+      </div>
+    </div>
+  );
+}

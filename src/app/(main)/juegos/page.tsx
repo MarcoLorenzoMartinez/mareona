@@ -81,6 +81,31 @@ export default function JuegosPage() {
             Jugar al Wordle
           </Link>
         </article>
+        {/* ¿Mayor o Menor? */}
+        <article className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs hover:border-[#e2001a]/50 transition-colors">
+          <div>
+            <div className="flex items-center justify-between">
+              <span className="rounded-full bg-[#e2001a] px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
+                Desafío
+              </span>
+              <span className="text-[11px] font-medium text-[var(--foreground-muted)]">
+                Pasatiempos
+              </span>
+            </div>
+            <h2 className="mt-3 text-base font-bold text-[var(--foreground)]">
+              ¿Mayor o Menor?
+            </h2>
+            <p className="mt-1.5 text-xs text-[var(--foreground-muted)]">
+              Pon a prueba tus conocimientos comparando futbolistas del Sporting por partidos jugados, goles oficiales y minutos.
+            </p>
+          </div>
+          <Link
+            href="/juegos/mayor-menor"
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-[#e2001a] px-4 py-2 text-xs font-bold text-white hover:bg-[#b30015] transition-colors"
+          >
+            Jugar a Mayor o Menor
+          </Link>
+        </article>
       </section>
     </div>
   );
