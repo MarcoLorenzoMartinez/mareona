@@ -1,29 +1,34 @@
-// Client: Token interactivo con soporte de drag & drop, foco accesible y selección
+// Client: Token táctico minimalista y moderno con fotos ampliadas y nombre conciso
 "use client";
 
+import { useMemo } from "react";
 import { SafePlayerAvatar } from "./safe-player-avatar";
+import { getConcisePlayerName } from "@/lib/lineup-builder/player-name-formatter";
 import type { PitchAssignedPlayer } from "@/lib/lineup-builder/types";
 
 interface PlayerTokenProps {
   readonly assigned: PitchAssignedPlayer;
   readonly isSelected: boolean;
   readonly onSelect: (slotId: string) => void;
-  readonly onDragStart?: (e: React.DragEvent<HTMLDivElement>, slotId: string) => void;
   readonly onPointerDown?: (e: React.PointerEvent<HTMLDivElement>, slotId: string) => void;
 }
 
 /**
- * Player token node placed dynamically on the tactical grass pitch.
- * Displays circular cutout photo, dorsal pill, player name and tactical role.
+ * Modern minimalist player token node placed on the tactical grass pitch.
+ * Focuses on prominent footballer photo cutouts with clean typography (no clutter).
  */
 export function PlayerToken({
   assigned,
   isSelected,
   onSelect,
-  onDragStart,
   onPointerDown,
 }: PlayerTokenProps) {
   const { player, role, coord, slotId } = assigned;
+
+  const shortName = useMemo(() => {
+    if (!player) return "Asignar";
+    return getConcisePlayerName(player.displayName);
+  }, [player]);
 
   return (
     <div
@@ -31,7 +36,7 @@ export function PlayerToken({
       tabIndex={0}
       aria-label={
         player
-          ? `Posición ${role}: ${player.displayName}`
+          ? `Posición ${role}: ${shortName}`
           : `Posición ${role}: Vacía. Pulsa para asignar jugador.`
       }
       aria-pressed={isSelected}
@@ -42,8 +47,8 @@ export function PlayerToken({
           onSelect(slotId);
         }
       }}
-      draggable={Boolean(player)}
-      onDragStart={(e) => onDragStart?.(e, slotId)}
+      draggable={false}
+      onDragStart={(e) => e.preventDefault()}
       onPointerDown={(e) => onPointerDown?.(e, slotId)}
       style={{
         left: `${coord.x}%`,
@@ -54,14 +59,14 @@ export function PlayerToken({
       }`}
     >
       <div className="flex flex-col items-center">
-        {/* Token Circular Avatar Container */}
+        {/* Token Circular Avatar Container — Mayor tamaño (14/16) y borde fino blanco con sombra */}
         <div
-          className={`relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 bg-[#e5e9e5] shadow-md ${
+          className={`relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 bg-[#f3f4f3] shadow-md transition-shadow ${
             isSelected
-              ? "border-[#e2001a] ring-3 ring-white shadow-lg"
+              ? "border-[#e2001a] ring-3 ring-white/90 shadow-xl"
               : player
-              ? "border-white/90"
-              : "border-dashed border-white/60 bg-black/40 hover:border-white"
+              ? "border-white shadow-md hover:shadow-lg"
+              : "border-dashed border-white/60 bg-black/30 hover:border-white"
           }`}
         >
           {player ? (
@@ -69,31 +74,20 @@ export function PlayerToken({
               <SafePlayerAvatar
                 photoUrl={player.photoUrl}
                 displayName={player.displayName}
-                sizes="(max-width: 640px) 48px, 56px"
+                sizes="(max-width: 640px) 56px, 64px"
                 isToken
               />
             </div>
           ) : (
             <span className="text-white/80 text-xl font-light leading-none">+</span>
           )}
-
-          {/* Role badge top-right */}
-          <span className="absolute -top-1 -right-1 rounded-full bg-neutral-900/95 px-1.5 py-0.2 text-[9px] font-bold text-white shadow-xs border border-white/20">
-            {role}
-          </span>
         </div>
 
-        {/* Player Name and Shirt Number capsule */}
-        <div className="mt-1 flex flex-col items-center max-w-[85px] sm:max-w-[100px]">
-          <span className="rounded-full bg-black/85 px-2 py-0.5 text-center text-[10px] sm:text-[11px] font-semibold text-white shadow-xs truncate w-full border border-white/10 backdrop-blur-xs">
-            {player?.displayName ?? "Asignar"}
+        {/* Minimalist Player Name Label */}
+        <div className="mt-1 flex flex-col items-center max-w-[90px] sm:max-w-[105px]">
+          <span className="rounded-full bg-black/80 px-2.5 py-0.5 text-center text-[10px] sm:text-[11px] font-bold text-white shadow-xs truncate w-full border border-white/10 backdrop-blur-xs">
+            {shortName}
           </span>
-
-          {player?.shirtNumber !== null && player?.shirtNumber !== undefined && (
-            <span className="mt-0.5 text-[9px] font-bold text-white/90 drop-shadow-md tabular-nums">
-              #{player.shirtNumber}
-            </span>
-          )}
         </div>
       </div>
     </div>

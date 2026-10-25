@@ -140,25 +140,20 @@ export function RosterDrawer({
 
       {/* Selector de demarcación */}
       <div className="mt-2 flex items-center gap-1">
-        {["all", "POR", "DEF", "MED", "DEL"].map((pos) => {
-          const isSuggested = targetPosition === pos;
-          return (
-            <button
-              key={pos}
-              type="button"
-              onClick={() => setSelectedPosition(pos)}
-              className={`relative rounded-md px-2 py-0.5 text-[10px] font-bold transition-colors ${
-                selectedPosition === pos
-                  ? "bg-neutral-900 text-white"
-                  : isSuggested
-                  ? "bg-red-50 text-[#e2001a] border border-[#e2001a]/30 hover:bg-red-100"
-                  : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
-              }`}
-            >
-              {pos === "all" ? "Líneas" : pos}
-            </button>
-          );
-        })}
+        {["all", "POR", "DEF", "MED", "DEL"].map((pos) => (
+          <button
+            key={pos}
+            type="button"
+            onClick={() => setSelectedPosition(pos)}
+            className={`rounded-md px-2 py-0.5 text-[10px] font-bold transition-colors ${
+              selectedPosition === pos
+                ? "bg-neutral-900 text-white"
+                : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
+            }`}
+          >
+            {pos === "all" ? "Líneas" : pos}
+          </button>
+        ))}
       </div>
 
       {/* Lista de futbolistas ordenados con prioridad inteligente */}

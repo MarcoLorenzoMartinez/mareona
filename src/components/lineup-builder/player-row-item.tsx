@@ -40,15 +40,16 @@ export function PlayerRowItem({
 
       <button
         type="button"
+        disabled={isAssigned}
         onClick={() => onAssign(player)}
-        aria-label={`Asignar ${player.displayName}`}
-        className={`ml-2 shrink-0 rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+        aria-label={isAssigned ? `${player.displayName} ya está alineado` : `Alinear a ${player.displayName}`}
+        className={`ml-2 shrink-0 rounded-full px-3 py-1.5 text-xs font-bold transition-all ${
           isAssigned
-            ? "border border-neutral-200 bg-neutral-200 text-neutral-600 hover:bg-neutral-300"
-            : "bg-[#e2001a] text-white hover:bg-[#b30015]"
+            ? "border border-neutral-200/80 bg-neutral-100 text-neutral-400 cursor-not-allowed opacity-60"
+            : "bg-[#e2001a] text-white hover:bg-[#b30015] shadow-xs active:scale-95"
         }`}
       >
-        {isAssigned ? "Colocado" : "Alinear"}
+        {isAssigned ? "Alineado" : "Alinear"}
       </button>
     </li>
   );

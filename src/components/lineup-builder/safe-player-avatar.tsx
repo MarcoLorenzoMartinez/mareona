@@ -21,13 +21,13 @@ export function SafePlayerAvatar({
 
   if (photoUrl && !hasError) {
     return (
-      <div className="relative h-full w-full bg-[#f3f4f3]">
+      <div className="relative h-full w-full bg-[#f3f4f3] pointer-events-none select-none">
         <Image
           src={photoUrl}
           alt=""
           fill
           sizes={sizes}
-          className="object-cover object-top"
+          className="object-cover object-top pointer-events-none select-none"
           onError={() => setHasError(true)}
           unoptimized
         />

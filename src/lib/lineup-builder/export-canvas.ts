@@ -1,4 +1,5 @@
 import type { PitchAssignedPlayer, LineupPlayer } from "./types";
+import { getConcisePlayerName } from "./player-name-formatter";
 
 interface ExportLineupOptions {
   readonly formationLabel: string;
@@ -45,8 +46,9 @@ function roundRect(
 }
 
 /**
- * Generates a high-definition PNG Blob of the lineup board rendered directly
- * onto an HTML5 Canvas, completely free of external dependencies.
+ * Generates a modern, clean, full-pitch PNG of the tactical lineup.
+ * No ugly black margins or bulky headers: edge-to-edge grass canvas
+ * with prominent player cutouts, minimalist name capsules, and subtle branding.
  *
  * @param options Lineup data with starters, formation and team title
  * @returns Promise resolving to a PNG Blob
@@ -58,8 +60,9 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
     starters,
   } = options;
 
+  // Formato vertical óptimo 1080 x 1440 (aspecto 3:4 ideal para Instagram / X / WhatsApp)
   const width = 1080;
-  const height = 1520;
+  const height = 1440;
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
@@ -67,92 +70,97 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Could not acquire 2D canvas context");
 
-  // 1. Fondo oscuro elegante
-  ctx.fillStyle = "#121212";
-  ctx.fillRect(0, 0, width, height);
-
-  // 2. Cabecera visual de Mareona
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 44px sans-serif";
-  ctx.fillText("MI ONCE", 60, 80);
-
-  ctx.fillStyle = "#e2001a";
-  ctx.fillRect(260, 48, 4, 40);
-
-  ctx.fillStyle = "#a3a3a3";
-  ctx.font = "600 28px sans-serif";
-  ctx.fillText(`${teamTitle} · ${formationLabel}`, 280, 80);
-
-  // 3. Terreno de juego de césped
-  const pitchX = 60;
-  const pitchY = 120;
-  const pitchW = 960;
-  const pitchH = 1320;
-
-  // Fondo césped con franjas
-  ctx.save();
-  roundRect(ctx, pitchX, pitchY, pitchW, pitchH, 32);
-  ctx.clip();
-
+  // 1. Césped de borde a borde (full canvas) con franjas realistas
   const stripes = 7;
-  const stripeH = pitchH / stripes;
+  const stripeH = height / stripes;
   for (let i = 0; i < stripes; i++) {
     ctx.fillStyle = i % 2 === 0 ? "#256e36" : "#216431";
-    ctx.fillRect(pitchX, pitchY + i * stripeH, pitchW, stripeH);
+    ctx.fillRect(0, i * stripeH, width, stripeH);
   }
 
-  // Líneas reglamentarias del campo
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+  // 2. Líneas reglamentarias del campo
+  const pad = 48;
+  const pW = width - pad * 2;
+  const pH = height - pad * 2;
+
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.75)";
   ctx.lineWidth = 4;
 
   // Perímetro
-  ctx.strokeRect(pitchX + 30, pitchY + 30, pitchW - 60, pitchH - 60);
+  ctx.strokeRect(pad, pad, pW, pH);
 
   // Medio campo
-  const midY = pitchY + pitchH / 2;
+  const midY = height / 2;
   ctx.beginPath();
-  ctx.moveTo(pitchX + 30, midY);
-  ctx.lineTo(pitchX + pitchW - 30, midY);
+  ctx.moveTo(pad, midY);
+  ctx.lineTo(width - pad, midY);
   ctx.stroke();
 
   // Círculo central
   ctx.beginPath();
-  ctx.arc(pitchX + pitchW / 2, midY, 110, 0, Math.PI * 2);
+  ctx.arc(width / 2, midY, 130, 0, Math.PI * 2);
   ctx.stroke();
 
-  // Áreas
-  const areaW = 440;
+  // Punto central
+  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+  ctx.beginPath();
+  ctx.arc(width / 2, midY, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Áreas reglamentarias
+  const areaW = 460;
   const areaH = 200;
-  const areaX = pitchX + (pitchW - areaW) / 2;
+  const areaX = (width - areaW) / 2;
 
   // Área rival (arriba)
-  ctx.strokeRect(areaX, pitchY + 30, areaW, areaH);
+  ctx.strokeRect(areaX, pad, areaW, areaH);
   // Área propia (abajo)
-  ctx.strokeRect(areaX, pitchY + pitchH - 30 - areaH, areaW, areaH);
+  ctx.strokeRect(areaX, height - pad - areaH, areaW, areaH);
 
-  // 4. Dibujar jugadores iniciales
+  // 3. Etiqueta superior integrada (píldora translúcida sobria, sin bordes negros molestos)
+  const headerText = `${teamTitle.toUpperCase()} · ${formationLabel}`;
+  ctx.font = "bold 24px sans-serif";
+  const headW = ctx.measureText(headerText).width + 36;
+  const headX = 36;
+  const headY = 32;
+
+  ctx.save();
+  ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
+  roundRect(ctx, headX, headY, headW, 40, 20);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.fillStyle = "#ffffff";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  ctx.fillText(headerText, headX + 18, headY + 20);
+  ctx.restore();
+
+  // 4. Dibujar jugadores titulares con fotos ampliadas y diseño minimalista
   for (const starter of starters) {
-    const px = pitchX + (starter.coord.x / 100) * pitchW;
-    const py = pitchY + (starter.coord.y / 100) * pitchH;
-    const radius = 42;
+    const px = pad + (starter.coord.x / 100) * pW;
+    const py = pad + (starter.coord.y / 100) * pH;
+    const radius = 54; // Mayor tamaño de foto para máxima visibilidad
 
     // Sombra del token
     ctx.save();
-    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-    ctx.shadowBlur = 12;
+    ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
+    ctx.shadowBlur = 16;
     ctx.shadowOffsetY = 6;
 
-    // Círculo exterior blanco
+    // Círculo exterior blanco con base clara
     ctx.beginPath();
     ctx.arc(px, py, radius, 0, Math.PI * 2);
-    ctx.fillStyle = "#1e1e1e";
+    ctx.fillStyle = "#f3f4f3";
     ctx.fill();
     ctx.lineWidth = 4;
     ctx.strokeStyle = "#ffffff";
     ctx.stroke();
     ctx.restore();
 
-    // Foto o iniciales
+    // Foto o silueta atlética
     if (starter.player?.photoUrl) {
       try {
         const pImg = await loadImage(starter.player.photoUrl);
@@ -163,57 +171,46 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
         ctx.drawImage(pImg, px - radius, py - radius, radius * 2, radius * 2);
         ctx.restore();
       } catch {
-        // Fallback iniciales si falla la carga externa
-        drawFallbackInitials(ctx, px, py, radius, starter.player.displayName);
+        drawFallbackSilhouette(ctx, px, py, radius);
       }
     } else if (starter.player) {
-      drawFallbackInitials(ctx, px, py, radius, starter.player.displayName);
+      drawFallbackSilhouette(ctx, px, py, radius);
     }
 
-    // Role badge
-    ctx.fillStyle = "#121212";
-    roundRect(ctx, px + radius - 26, py - radius - 4, 34, 22, 6);
+    // Etiqueta del nombre (conciso, solo apellido/nombre de juego, sin rol ni número)
+    const rawName = starter.player ? starter.player.displayName : "Vacante";
+    const displayName = starter.player ? getConcisePlayerName(rawName) : "Vacante";
+
+    ctx.font = "bold 22px sans-serif";
+    const nameWidth = ctx.measureText(displayName).width + 30;
+    const pillH = 34;
+
+    ctx.save();
+    ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetY = 3;
+
+    ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+    roundRect(ctx, px - nameWidth / 2, py + radius + 10, nameWidth, pillH, 17);
     ctx.fill();
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 13px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(starter.role, px + radius - 9, py - radius + 12);
-
-    // Etiqueta del nombre (píldora oscura)
-    const name = starter.player ? starter.player.displayName : "Vacante";
-    ctx.font = "bold 18px sans-serif";
-    const nameWidth = ctx.measureText(name).width + 24;
-    const pillH = 30;
-
-    ctx.fillStyle = "rgba(0, 0, 0, 0.88)";
-    roundRect(ctx, px - nameWidth / 2, py + radius + 10, nameWidth, pillH, 15);
-    ctx.fill();
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
     ctx.lineWidth = 1;
     ctx.stroke();
+    ctx.restore();
 
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
-    ctx.fillText(name, px, py + radius + 31);
-
-    // Dorsal
-    if (starter.player?.shirtNumber !== null && starter.player?.shirtNumber !== undefined) {
-      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-      ctx.font = "bold 14px sans-serif";
-      ctx.fillText(`#${starter.player.shirtNumber}`, px, py + radius + 55);
-    }
+    ctx.textBaseline = "middle";
+    ctx.font = "bold 20px sans-serif";
+    ctx.fillText(displayName, px, py + radius + 10 + pillH / 2);
   }
 
-  // Watermark Mareona en esquina inferior del césped
-  ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-  ctx.font = "bold 20px sans-serif";
+  // 5. Marca de agua discreta en esquina inferior
+  ctx.save();
+  ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+  ctx.font = "bold 18px sans-serif";
   ctx.textAlign = "right";
-  ctx.fillText("MAREONA.COM", pitchX + pitchW - 40, pitchY + pitchH - 45);
-
+  ctx.fillText("MAREONA", width - pad - 12, height - pad - 16);
   ctx.restore();
 
   return new Promise((resolve, reject) => {
@@ -224,23 +221,32 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
   });
 }
 
-function drawFallbackInitials(
+/**
+ * Draws athletic silhouette bust fallback on canvas.
+ */
+function drawFallbackSilhouette(
   ctx: CanvasRenderingContext2D,
   px: number,
   py: number,
-  radius: number,
-  name: string
+  radius: number
 ): void {
   ctx.save();
-  ctx.fillStyle = "#2e2e2e";
   ctx.beginPath();
   ctx.arc(px, py, radius - 2, 0, Math.PI * 2);
+  ctx.clip();
+
+  ctx.fillStyle = "#e5e7eb";
+  ctx.fillRect(px - radius, py - radius, radius * 2, radius * 2);
+
+  // Silueta cabeza y torso
+  ctx.fillStyle = "#9ca3af";
+  ctx.beginPath();
+  ctx.arc(px, py - radius * 0.15, radius * 0.35, 0, Math.PI * 2);
   ctx.fill();
 
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 22px sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(name.slice(0, 2).toUpperCase(), px, py);
+  ctx.beginPath();
+  ctx.arc(px, py + radius * 0.9, radius * 0.65, Math.PI, Math.PI * 2);
+  ctx.fill();
+
   ctx.restore();
 }
