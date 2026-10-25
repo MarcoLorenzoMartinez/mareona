@@ -41,11 +41,16 @@ export function getMetricValue(player: HigherLowerPlayer, mode: HigherLowerMode)
   }
 }
 
+const spanishNumberFormatter = new Intl.NumberFormat('es-ES', {
+  useGrouping: true,
+});
+
 /**
  * Formats a metric with its appropriate label.
+ * Always formats with thousand grouping separators (e.g. 4.000 min, 55.906 min).
  */
 export function formatMetricValue(value: number, mode: HigherLowerMode): string {
-  const formattedNumber = value.toLocaleString('es-ES');
+  const formattedNumber = spanishNumberFormatter.format(value);
   switch (mode) {
     case 'goals':
       return `${formattedNumber} ${value === 1 ? 'gol' : 'goles'}`;

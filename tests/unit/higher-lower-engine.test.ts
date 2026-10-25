@@ -64,6 +64,7 @@ describe('Higher or Lower Engine Suite', () => {
     assert.equal(formatMetricValue(272, 'goals'), '272 goles');
     assert.equal(formatMetricValue(1, 'goals'), '1 gol');
     assert.equal(formatMetricValue(646, 'matches'), '646 partidos');
+    assert.equal(formatMetricValue(4000, 'minutes'), '4.000 min');
     assert.equal(formatMetricValue(55906, 'minutes'), '55.906 min');
   });
 
