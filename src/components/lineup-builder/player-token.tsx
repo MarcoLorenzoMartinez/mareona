@@ -61,7 +61,7 @@ export function PlayerToken({
       <div className="flex flex-col items-center">
         {/* Token Circular Avatar Container — Mayor tamaño (14/16) y borde fino blanco con sombra */}
         <div
-          className={`relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 bg-[#f3f4f3] shadow-md transition-shadow ${
+          className={`relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 bg-[#f3f4f3] shadow-md transition-shadow ${
             isSelected
               ? "border-[#e2001a] ring-3 ring-white/90 shadow-xl"
               : player
@@ -74,7 +74,7 @@ export function PlayerToken({
               <SafePlayerAvatar
                 photoUrl={player.photoUrl}
                 displayName={player.displayName}
-                sizes="(max-width: 640px) 56px, 64px"
+                sizes="(max-width: 640px) 64px, 80px"
                 isToken
               />
             </div>
@@ -84,8 +84,8 @@ export function PlayerToken({
         </div>
 
         {/* Minimalist Player Name Label */}
-        <div className="mt-1 flex flex-col items-center max-w-[90px] sm:max-w-[105px]">
-          <span className="rounded-full bg-black/80 px-2.5 py-0.5 text-center text-[10px] sm:text-[11px] font-bold text-white shadow-xs truncate w-full border border-white/10 backdrop-blur-xs">
+        <div className="mt-1 flex flex-col items-center max-w-[105px] sm:max-w-[125px]">
+          <span className="rounded-full bg-black/80 px-2.5 py-0.5 text-center text-[11px] sm:text-xs font-bold text-white shadow-xs truncate w-full border border-white/10 backdrop-blur-xs">
             {shortName}
           </span>
         </div>

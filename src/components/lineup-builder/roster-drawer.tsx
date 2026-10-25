@@ -1,7 +1,7 @@
 // Client: Panel lateral y cajón accesible para filtrar y seleccionar jugadores
 "use client";
 
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { PlayerRowItem } from "./player-row-item";
 import { CustomPlayerModal } from "./custom-player-modal";
 import type { LineupPlayer, PlayerCategory } from "@/lib/lineup-builder/types";
@@ -25,6 +25,13 @@ function getTargetPositionFromRole(role: string | null): "POR" | "DEF" | "MED" |
   if (["EI", "ED", "DC"].includes(role)) return "DEL";
   return null;
 }
+
+const POSITION_ORDER: Record<string, number> = {
+  POR: 0,
+  DEF: 1,
+  MED: 2,
+  DEL: 3,
+};
 
 export function RosterDrawer({
   players,
@@ -59,7 +66,7 @@ export function RosterDrawer({
       return true;
     });
 
-    // 2. Ordenar priorizando la demarcación de la posición activa y los no asignados
+    // 2. Ordenar priorizando la demarcación de la posición activa y luego por posición reglamentaria (POR -> DEF -> MED -> DEL)
     return filtered.slice().sort((a, b) => {
       // Prioridad 1: Coincidencia con la demarcación de la posición que se está asignando
       if (targetPosition) {
@@ -75,7 +82,12 @@ export function RosterDrawer({
       if (!aAssigned && bAssigned) return -1;
       if (aAssigned && !bAssigned) return 1;
 
-      // Prioridad 3: Primer equipo antes que filial y juvenil
+      // Prioridad 3: Orden natural por posición reglamentaria
+      const posA = POSITION_ORDER[a.defaultPosition] ?? 99;
+      const posB = POSITION_ORDER[b.defaultPosition] ?? 99;
+      if (posA !== posB) return posA - posB;
+
+      // Prioridad 4: Primer equipo antes que filial y juvenil
       const categoryOrder: Record<string, number> = {
         first_team: 0,
         custom: 1,
@@ -86,12 +98,25 @@ export function RosterDrawer({
       const catB = categoryOrder[b.category] ?? 99;
       if (catA !== catB) return catA - catB;
 
-      // Prioridad 4: Dorsal más bajo
+      // Prioridad 5: Dorsal más bajo
       const numA = a.shirtNumber ?? 999;
       const numB = b.shirtNumber ?? 999;
       return numA - numB;
     });
   }, [players, selectedCategory, selectedPosition, searchQuery, targetPosition, assignedPlayerIds]);
+
+  // Encuentra el índice del primer futbolista que ya no pertenece a la demarcación sugerida
+  const dividerIndex = useMemo(() => {
+    if (!targetPosition || selectedPosition !== "all") return -1;
+    const firstOther = sortedAndFilteredPlayers.findIndex(
+      (p) => p.defaultPosition !== targetPosition
+    );
+    // Solo mostramos la línea si hay al menos un jugador de la posición y al menos otro del resto
+    if (firstOther > 0 && firstOther < sortedAndFilteredPlayers.length) {
+      return firstOther;
+    }
+    return -1;
+  }, [sortedAndFilteredPlayers, targetPosition, selectedPosition]);
 
   return (
     <aside
@@ -156,16 +181,30 @@ export function RosterDrawer({
         ))}
       </div>
 
-      {/* Lista de futbolistas ordenados con prioridad inteligente */}
+      {/* Lista de futbolistas ordenados con prioridad inteligente y divisor sutil */}
       <ul className="mt-3 flex flex-col gap-2 max-h-[460px] overflow-y-auto pr-1">
         {sortedAndFilteredPlayers.length > 0 ? (
-          sortedAndFilteredPlayers.map((player) => (
-            <PlayerRowItem
-              key={player.id}
-              player={player}
-              isAssigned={assignedPlayerIds.has(player.id)}
-              onAssign={onAssignPlayer}
-            />
+          sortedAndFilteredPlayers.map((player, index) => (
+            <React.Fragment key={player.id}>
+              {index === dividerIndex && (
+                <li
+                  role="separator"
+                  className="my-1.5 flex items-center gap-2"
+                  aria-label="Resto de la plantilla"
+                >
+                  <div className="h-[1px] flex-1 bg-linear-to-r from-transparent via-[#e2001a]/40 to-transparent" />
+                  <span className="text-[10px] font-semibold text-[#e2001a]/80 uppercase tracking-wider">
+                    Otras posiciones
+                  </span>
+                  <div className="h-[1px] flex-1 bg-linear-to-r from-transparent via-[#e2001a]/40 to-transparent" />
+                </li>
+              )}
+              <PlayerRowItem
+                player={player}
+                isAssigned={assignedPlayerIds.has(player.id)}
+                onAssign={onAssignPlayer}
+              />
+            </React.Fragment>
           ))
         ) : (
           <li className="py-8 text-center text-xs text-neutral-400">

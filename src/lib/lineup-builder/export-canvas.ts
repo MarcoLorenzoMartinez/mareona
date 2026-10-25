@@ -142,7 +142,7 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
   for (const starter of starters) {
     const px = pad + (starter.coord.x / 100) * pW;
     const py = pad + (starter.coord.y / 100) * pH;
-    const radius = 54; // Mayor tamaño de foto para máxima visibilidad
+    const radius = 76; // Mayor tamaño de foto para máxima visibilidad
 
     // Sombra del token
     ctx.save();
@@ -181,9 +181,9 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
     const rawName = starter.player ? starter.player.displayName : "Vacante";
     const displayName = starter.player ? getConcisePlayerName(rawName) : "Vacante";
 
-    ctx.font = "bold 22px sans-serif";
+    ctx.font = "bold 26px sans-serif";
     const nameWidth = ctx.measureText(displayName).width + 30;
-    const pillH = 34;
+    const pillH = 40;
 
     ctx.save();
     ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
@@ -201,7 +201,7 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = "bold 20px sans-serif";
+    ctx.font = "bold 24px sans-serif";
     ctx.fillText(displayName, px, py + radius + 10 + pillH / 2);
   }
 
