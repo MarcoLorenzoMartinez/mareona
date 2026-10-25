@@ -17,7 +17,7 @@ function BrandLogo() {
 
   return (
     <Link
-      href="/temporada"
+      href="/"
       aria-label="Mareona — Inicio"
       className="flex items-center gap-2.5 rounded-md p-1 text-white transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
     >

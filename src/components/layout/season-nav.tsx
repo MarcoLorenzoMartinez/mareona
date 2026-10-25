@@ -10,7 +10,6 @@ function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
   const dict = getDictionary();
 
   const seasonTabs = [
-    { label: dict.season.tabs.overview, href: "/temporada", isAvailable: true },
     { label: dict.season.tabs.matches, href: "/temporada/partidos", isAvailable: true },
     { label: dict.season.tabs.standings, href: "/temporada/clasificacion", isAvailable: true },
     { label: dict.season.tabs.squad, href: "/temporada/plantilla", isAvailable: true },
@@ -25,10 +24,7 @@ function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
       <div className="flex items-center gap-1 overflow-x-auto scrollbar-none px-1">
         {seasonTabs.map((tab) => {
           const isActive =
-            pathname !== null &&
-            (tab.href === "/temporada"
-              ? pathname === "/temporada"
-              : pathname.startsWith(tab.href));
+            pathname !== null && pathname.startsWith(tab.href);
 
           if (!tab.isAvailable) {
             return (
