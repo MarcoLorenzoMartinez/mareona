@@ -20,6 +20,7 @@ export const es = {
       matches: "Partidos",
       standings: "Clasificación",
       squad: "Plantilla",
+      lineup: "Mi Once",
     },
     match: {
       nextFixture: "Próximo Encuentro",

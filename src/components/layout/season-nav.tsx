@@ -14,6 +14,7 @@ function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
     { label: dict.season.tabs.matches, href: "/temporada/partidos", isAvailable: true },
     { label: dict.season.tabs.standings, href: "/temporada/clasificacion", isAvailable: true },
     { label: dict.season.tabs.squad, href: "/temporada/plantilla", isAvailable: true },
+    { label: dict.season.tabs.lineup, href: "/temporada/pizarra", isAvailable: true },
   ];
 
   return (
