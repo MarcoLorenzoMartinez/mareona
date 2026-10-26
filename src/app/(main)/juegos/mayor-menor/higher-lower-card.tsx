@@ -8,6 +8,7 @@ interface HigherLowerCardProps {
   mode: HigherLowerMode;
   isRevealed: boolean;
   isMystery?: boolean;
+  outcome?: 'correct' | 'wrong' | null;
 }
 
 export function HigherLowerCard({
@@ -15,16 +16,25 @@ export function HigherLowerCard({
   mode,
   isRevealed,
   isMystery = false,
+  outcome = null,
 }: HigherLowerCardProps) {
   const metricValue = getMetricValue(player, mode);
   const formattedValue = formatMetricValue(metricValue, mode);
 
+  // Border styling based on reveal result
+  const outcomeCardBorder =
+    outcome === 'correct'
+      ? 'border-emerald-400 ring-2 ring-emerald-400/20 shadow-md'
+      : outcome === 'wrong'
+      ? 'border-rose-400 ring-2 ring-rose-400/20 shadow-md'
+      : 'border-[var(--border)] shadow-2xs';
+
   return (
     <article
-      className="relative flex flex-col items-center justify-between overflow-hidden rounded-2xl border border-[var(--border)] bg-white p-5 shadow-2xs transition-all w-full max-w-sm"
+      className={`relative flex flex-col items-center justify-between overflow-hidden rounded-2xl bg-white p-6 transition-all duration-300 w-full max-w-sm min-h-[380px] border ${outcomeCardBorder}`}
     >
-      <div className="flex flex-col items-center text-center">
-        <div className="relative mb-3 h-24 w-24 overflow-hidden rounded-full border-2 border-[var(--border)] bg-[var(--surface)] shadow-inner flex items-center justify-center">
+      <div className="flex flex-col items-center text-center w-full">
+        <div className="relative mb-3 h-28 w-28 overflow-hidden rounded-full border-2 border-[var(--border)] bg-[var(--surface)] shadow-inner flex items-center justify-center transition-transform hover:scale-105">
           <PlayerPhoto
             photoUrl={player.photoUrl}
             playerName={player.name}
@@ -33,31 +43,39 @@ export function HigherLowerCard({
           />
         </div>
 
-        <span className="rounded-full bg-[var(--surface)] px-2.5 py-0.5 text-[11px] font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
+        <span className="rounded-full bg-[var(--surface)] border border-[var(--border)] px-3 py-0.5 text-[11px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
           {player.position}
         </span>
 
-        <h2 className="mt-2 text-lg font-bold text-[var(--foreground)]">
+        <h2 className="mt-2.5 text-base sm:text-lg font-bold text-[var(--foreground)] min-h-[48px] flex items-center justify-center line-clamp-2 px-1">
           {player.fullName || player.name}
         </h2>
       </div>
 
-      <div className="mt-5 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-center">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--foreground-muted)]">
+      <div className="mt-4 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3.5 text-center">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
           {mode === 'goals' ? 'Goles Oficiales' : mode === 'minutes' ? 'Minutos Disputados' : 'Partidos Oficiales'}
         </span>
 
-        <div className="mt-1">
+        <div className="mt-1 flex items-center justify-center min-h-[36px]">
           {isRevealed ? (
-            <div className="text-2xl font-extrabold text-[#e2001a] tabular-nums animate-in fade-in zoom-in-95">
+            <div
+              className={`text-2xl sm:text-3xl font-extrabold tabular-nums tracking-tight animate-in fade-in zoom-in-95 duration-200 ${
+                outcome === 'correct'
+                  ? 'text-emerald-600'
+                  : outcome === 'wrong'
+                  ? 'text-rose-600'
+                  : 'text-[#e2001a]'
+              }`}
+            >
               {formattedValue}
             </div>
           ) : isMystery ? (
-            <div className="text-2xl font-extrabold text-[var(--foreground-muted)] tabular-nums">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[var(--foreground-muted)] tabular-nums animate-pulse">
               ¿ ?
             </div>
           ) : (
-            <div className="text-2xl font-extrabold text-[var(--foreground)] tabular-nums">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[var(--foreground)] tabular-nums">
               {formattedValue}
             </div>
           )}

@@ -13,34 +13,23 @@ import {
   pickRandomPlayer,
   evaluateHigherLower,
 } from '@/lib/higher-lower/engine';
-import { HigherLowerModeSelector } from './higher-lower-mode-selector';
+import {
+  getStoredHigherLowerStats,
+  saveHigherLowerStats,
+  recordScoreInStats,
+  incrementGamesPlayed,
+} from '@/lib/higher-lower/storage';
+import { HigherLowerHeader } from './higher-lower-header';
 import { HigherLowerCard } from './higher-lower-card';
 import { HigherLowerControls } from './higher-lower-controls';
 import { HigherLowerGameOverModal } from './higher-lower-game-over-modal';
 
-const STATS_STORAGE_KEY = 'mareona_higher_lower_stats_v1';
-
-const INITIAL_STATS: HigherLowerStats = {
-  bestScoreByMode: { matches: 0, goals: 0, minutes: 0 },
-  totalGamesPlayed: 0,
-};
-
-function getStoredStats(): HigherLowerStats {
-  if (typeof window === 'undefined') return INITIAL_STATS;
-  try {
-    const saved = localStorage.getItem(STATS_STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
-  } catch {
-    // LocalStorage inaccessible
-  }
-  return INITIAL_STATS;
-}
-
 export function HigherLowerClient() {
   const [mode, setMode] = useState<HigherLowerMode>('matches');
-  const [stats, setStats] = useState<HigherLowerStats>(() => getStoredStats());
+  const [stats, setStats] = useState<HigherLowerStats>(() => getStoredHigherLowerStats());
   const [currentScore, setCurrentScore] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
+  const [guessOutcome, setGuessOutcome] = useState<'correct' | 'wrong' | null>(null);
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
   const [, startTransition] = useTransition();
 
@@ -64,6 +53,7 @@ export function HigherLowerClient() {
     setRightPlayer(second);
     setCurrentScore(0);
     setIsRevealed(false);
+    setGuessOutcome(null);
     setIsGameOverModalOpen(false);
   }, []);
 
@@ -73,8 +63,9 @@ export function HigherLowerClient() {
   };
 
   const handleGuess = (guess: HigherLowerGuess) => {
-    setIsRevealed(true);
     const evaluation = evaluateHigherLower(leftPlayer, rightPlayer, mode, guess);
+    setIsRevealed(true);
+    setGuessOutcome(evaluation.isCorrect ? 'correct' : 'wrong');
 
     setTimeout(() => {
       startTransition(() => {
@@ -82,101 +73,79 @@ export function HigherLowerClient() {
           const nextScore = currentScore + 1;
           setCurrentScore(nextScore);
 
-          // Update best score if beaten
           setStats((prev) => {
-            const nextBest = Math.max(prev.bestScoreByMode[mode] || 0, nextScore);
-            const nextStats: HigherLowerStats = {
-              ...prev,
-              bestScoreByMode: {
-                ...prev.bestScoreByMode,
-                [mode]: nextBest,
-              },
-            };
-            try {
-              localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(nextStats));
-            } catch {
-              // LocalStorage fallback
-            }
+            const nextStats = recordScoreInStats(prev, mode, nextScore);
+            saveHigherLowerStats(nextStats);
             return nextStats;
           });
 
-          // Move right player to left and pick new right opponent
           setLeftPlayer(rightPlayer);
           setRightPlayer(pickRandomPlayer(pool, [leftPlayer.bdfId, rightPlayer.bdfId]));
           setIsRevealed(false);
+          setGuessOutcome(null);
         } else {
-          // Game Over
           setStats((prev) => {
-            const nextStats = {
-              ...prev,
-              totalGamesPlayed: prev.totalGamesPlayed + 1,
-            };
-            try {
-              localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(nextStats));
-            } catch {
-              // LocalStorage fallback
-            }
+            const nextStats = incrementGamesPlayed(prev);
+            saveHigherLowerStats(nextStats);
             return nextStats;
           });
           setIsGameOverModalOpen(true);
         }
       });
-    }, 1200);
+    }, 1100);
   };
 
   const bestScoreForMode = stats.bestScoreByMode[mode] || 0;
 
   return (
     <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
-      <header className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
-        <div>
-          <span className="rounded-full bg-[#e2001a] px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
-            Pasatiempo
-          </span>
-          <h1 className="mt-1.5 text-xl font-bold text-[var(--foreground)]">
-            ¿Mayor o Menor?
-          </h1>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <HigherLowerModeSelector
-            currentMode={mode}
-            onSelectMode={handleModeChange}
-            disabled={isRevealed}
-          />
-
-          <div className="flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3.5 py-1 text-xs font-semibold text-[var(--foreground)]">
-            <span>Racha: <strong className="text-[#e2001a] font-bold tabular-nums">{currentScore}</strong></span>
-            <span className="text-[var(--border)]">|</span>
-            <span className="text-[var(--foreground-muted)] text-[11px]">Récord: <strong className="tabular-nums">{bestScoreForMode}</strong></span>
-          </div>
-        </div>
-      </header>
+      <HigherLowerHeader
+        mode={mode}
+        onSelectMode={handleModeChange}
+        isRevealed={isRevealed}
+        currentScore={currentScore}
+        bestScore={bestScoreForMode}
+      />
 
       <section
         aria-label="Área de comparación"
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-items-center"
+        className="relative flex flex-col items-center gap-6"
       >
-        <HigherLowerCard
-          player={leftPlayer}
-          mode={mode}
-          isRevealed={true}
-        />
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch justify-items-center w-full">
+          <div className="flex justify-center w-full">
+            <HigherLowerCard
+              player={leftPlayer}
+              mode={mode}
+              isRevealed={true}
+            />
+          </div>
 
-        <div className="flex flex-col items-center gap-4 w-full max-w-sm">
-          <HigherLowerCard
-            player={rightPlayer}
-            mode={mode}
-            isRevealed={isRevealed}
-            isMystery={!isRevealed}
-          />
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 hidden md:flex h-11 w-11 items-center justify-center rounded-full border-2 border-[var(--border)] bg-white font-extrabold text-xs tracking-wider text-[#e2001a] shadow-md pointer-events-none">
+            VS
+          </div>
 
-          {!isRevealed && (
+          <div className="flex justify-center w-full">
+            <HigherLowerCard
+              player={rightPlayer}
+              mode={mode}
+              isRevealed={isRevealed}
+              isMystery={!isRevealed}
+              outcome={guessOutcome}
+            />
+          </div>
+        </div>
+
+        <div className="w-full flex justify-center pt-1 min-h-[88px]">
+          {!isRevealed ? (
             <HigherLowerControls
               onGuess={handleGuess}
               disabled={isRevealed}
               comparedPlayerName={leftPlayer.name}
             />
+          ) : (
+            <div className="flex items-center justify-center text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider animate-pulse">
+              Comprobando...
+            </div>
           )}
         </div>
       </section>
