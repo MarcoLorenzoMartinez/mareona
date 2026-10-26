@@ -21,20 +21,22 @@ export function HigherLowerCard({
   const metricValue = getMetricValue(player, mode);
   const formattedValue = formatMetricValue(metricValue, mode);
 
-  // Border styling based on reveal result
+  // Border and accent styling based on outcome
   const outcomeCardBorder =
     outcome === 'correct'
-      ? 'border-emerald-400 ring-2 ring-emerald-400/20 shadow-md'
+      ? 'border-emerald-500 ring-2 ring-emerald-500/20 shadow-lg'
       : outcome === 'wrong'
-      ? 'border-rose-400 ring-2 ring-rose-400/20 shadow-md'
-      : 'border-[var(--border)] shadow-2xs';
+      ? 'border-rose-500 ring-2 ring-rose-500/20 shadow-lg'
+      : 'border-neutral-200/90 hover:border-neutral-300 shadow-xs';
 
   return (
     <article
-      className={`relative flex flex-col items-center justify-between overflow-hidden rounded-2xl bg-white p-6 transition-all duration-300 w-full max-w-sm h-full min-h-[360px] border ${outcomeCardBorder}`}
+      className={`group relative flex flex-col items-center justify-between overflow-hidden rounded-2xl bg-white p-6 transition-all duration-300 w-full max-w-sm h-full min-h-[360px] border ${outcomeCardBorder}`}
     >
+      {/* Header del jugador */}
       <div className="flex flex-col items-center text-center w-full">
-        <div className="relative mb-3 h-28 w-28 overflow-hidden rounded-full border-2 border-[var(--border)] bg-[var(--surface)] shadow-inner flex items-center justify-center transition-transform hover:scale-105">
+        {/* Retrato del jugador limpio y sobrio sin anillos ni relieves artificiales */}
+        <div className="relative mb-3.5 h-28 w-28 overflow-hidden rounded-full border border-neutral-200 bg-neutral-50 flex items-center justify-center transition-transform duration-200 group-hover:scale-102">
           <PlayerPhoto
             photoUrl={player.photoUrl}
             playerName={player.name}
@@ -43,24 +45,27 @@ export function HigherLowerCard({
           />
         </div>
 
-        <span className="rounded-full bg-[var(--surface)] border border-[var(--border)] px-3 py-0.5 text-[11px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
+        {/* Posición integrada: tipografía deportiva limpia */}
+        <span className="text-[11px] font-black tracking-widest text-[#e2001a] uppercase">
           {player.position}
         </span>
 
-        <h2 className="mt-2.5 text-base sm:text-lg font-bold text-[var(--foreground)] min-h-[48px] flex items-center justify-center line-clamp-2 px-1">
+        {/* Nombre del jugador */}
+        <h2 className="mt-1 text-base sm:text-lg font-bold text-neutral-900 min-h-[46px] flex items-center justify-center line-clamp-2 px-2">
           {player.fullName || player.name}
         </h2>
       </div>
 
-      <div className="mt-4 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3.5 text-center">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
+      {/* Sección del dato estadístico: marcador de estadio limpio */}
+      <div className="mt-5 w-full border-t border-neutral-100 pt-3.5 text-center">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
           {mode === 'goals' ? 'Goles Oficiales' : mode === 'minutes' ? 'Minutos Disputados' : 'Partidos Oficiales'}
         </span>
 
-        <div className="mt-1 flex items-center justify-center min-h-[36px]">
+        <div className="mt-1 flex items-center justify-center min-h-[44px]">
           {isRevealed ? (
             <div
-              className={`text-2xl sm:text-3xl font-extrabold tabular-nums tracking-tight animate-in fade-in zoom-in-95 duration-200 ${
+              className={`text-3xl sm:text-4xl font-black tabular-nums tracking-tight animate-in fade-in zoom-in-95 duration-200 ${
                 outcome === 'correct'
                   ? 'text-emerald-600'
                   : outcome === 'wrong'
@@ -71,11 +76,11 @@ export function HigherLowerCard({
               {formattedValue}
             </div>
           ) : isMystery ? (
-            <div className="text-2xl sm:text-3xl font-extrabold text-[var(--foreground-muted)] tabular-nums animate-pulse">
+            <div className="text-3xl sm:text-4xl font-black text-neutral-400 tabular-nums animate-pulse">
               ¿ ?
             </div>
           ) : (
-            <div className="text-2xl sm:text-3xl font-extrabold text-[var(--foreground)] tabular-nums">
+            <div className="text-3xl sm:text-4xl font-black text-neutral-900 tabular-nums">
               {formattedValue}
             </div>
           )}

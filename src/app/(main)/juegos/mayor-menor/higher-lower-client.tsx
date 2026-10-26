@@ -23,6 +23,7 @@ import { HigherLowerHeader } from './higher-lower-header';
 import { HigherLowerCard } from './higher-lower-card';
 import { HigherLowerControls } from './higher-lower-controls';
 import { HigherLowerGameOverModal } from './higher-lower-game-over-modal';
+import { HigherLowerArenaBackground } from './higher-lower-arena-background';
 
 export function HigherLowerClient() {
   const [mode, setMode] = useState<HigherLowerMode>('matches');
@@ -109,9 +110,11 @@ export function HigherLowerClient() {
 
       <section
         aria-label="Área de comparación"
-        className="relative flex flex-col items-center"
+        className="relative flex flex-col items-center p-4 sm:p-7 rounded-3xl"
       >
-        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start justify-items-center w-full">
+        <HigherLowerArenaBackground />
+
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start justify-items-center w-full z-10">
           {/* Tarjeta 1 (Izquierda: Jugador de referencia) */}
           <div className="flex flex-col items-center w-full">
             <HigherLowerCard
@@ -121,8 +124,8 @@ export function HigherLowerClient() {
             />
           </div>
 
-          {/* Insignia Central VS */}
-          <div className="absolute left-1/2 top-[180px] -translate-x-1/2 -translate-y-1/2 z-10 hidden md:flex h-11 w-11 items-center justify-center rounded-full border-2 border-[var(--border)] bg-white font-extrabold text-xs tracking-wider text-[#e2001a] shadow-md pointer-events-none">
+          {/* Insignia Central VS sutil */}
+          <div className="absolute left-1/2 top-[180px] -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white/95 font-bold text-[11px] tracking-wider text-neutral-400 shadow-xs backdrop-blur-xs pointer-events-none">
             VS
           </div>
 
@@ -136,14 +139,14 @@ export function HigherLowerClient() {
               outcome={guessOutcome}
             />
 
-            <div className="w-full max-w-sm flex justify-center min-h-[48px]">
+            <div className="w-full max-w-sm flex justify-center min-h-[52px]">
               {!isRevealed ? (
                 <HigherLowerControls
                   onGuess={handleGuess}
                   disabled={isRevealed}
                 />
               ) : (
-                <div className="flex h-12 items-center justify-center text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider animate-pulse">
+                <div className="flex h-13 items-center justify-center text-xs font-black text-neutral-500 uppercase tracking-widest animate-pulse">
                   Comprobando...
                 </div>
               )}
