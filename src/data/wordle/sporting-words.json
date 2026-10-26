@@ -2,997 +2,997 @@
   {
     "slug": "sporting",
     "word": "SPORTING",
-    "trivia": "Real Sporting de Gijón, fundado en 1905, decano y orgullo del fútbol profesional asturiano.",
+    "trivia": "Fundado en 1905, decano del fútbol profesional asturiano.",
     "orderAdded": 1
   },
   {
     "slug": "gijon",
     "word": "GIJON",
-    "trivia": "Gijón, la ciudad y cuna del sportinguismo, cuyos colores rojiblancos ondean en El Molinón.",
+    "trivia": "Ciudad del Real Sporting, vinculada a los colores rojiblancos y a El Molinón.",
     "orderAdded": 2
   },
   {
     "slug": "molinon",
     "word": "MOLINON",
-    "trivia": "El Molinón - Enrique Castro Quini, el estadio más longevo del fútbol profesional español (1908).",
+    "trivia": "El Molinón - Enrique Castro Quini, el estadio más antiguo del fútbol profesional español (1908).",
     "orderAdded": 3
   },
   {
     "slug": "mareona",
     "word": "MAREONA",
-    "trivia": "La Mareona, la fiel afición rojiblanca que acompaña y empuja al equipo en cualquier rincón de España.",
+    "trivia": "Masa social y afición que acompaña al Real Sporting en sus desplazamientos.",
     "orderAdded": 4
   },
   {
     "slug": "mareo",
     "word": "MAREO",
-    "trivia": "Escuela de Fútbol de Mareo, símbolo innegociable de identidad y formación deportiva desde 1978.",
+    "trivia": "Escuela de Fútbol de Mareo, centro de entrenamiento y cantera del club desde 1978.",
     "orderAdded": 5
   },
   {
     "slug": "cantera",
     "word": "CANTERA",
-    "trivia": "La cantera de Mareo, orgullo y motor del club de donde han salido generaciones de internacionales.",
+    "trivia": "Cantera de Mareo, de donde proceden gran parte de los futbolistas de la historia del club.",
     "orderAdded": 6
   },
   {
     "slug": "rojiblanco",
     "word": "ROJIBLANCO",
-    "trivia": "Rojiblanco, los colores de la bandera de Gijón y de la centenaria camiseta sportinguista.",
+    "trivia": "Colores oficiales de la camiseta del Real Sporting y de la bandera de Gijón.",
     "orderAdded": 7
   },
   {
     "slug": "piles",
     "word": "PILES",
-    "trivia": "El río Piles, que bordea el estadio de El Molinón antes de desembocar en la playa de San Lorenzo.",
+    "trivia": "Río de Gijón que transcurre junto a El Molinón antes de desembocar en San Lorenzo.",
     "orderAdded": 8
   },
   {
     "slug": "guajes",
     "word": "GUAJES",
-    "trivia": "Los Guajes, apelativo cariñoso a la cantera de Mareo y símbolo del inolvidable ascenso de 2015.",
+    "trivia": "Sobrenombre de la plantilla del Sporting que logró el ascenso a Primera División en 2015.",
     "orderAdded": 9
   },
   {
     "slug": "guaje",
     "word": "GUAJE",
-    "trivia": "El Guaje, término asturiano identitario ligado a los canteranos y leyendas nacidas en Mareo.",
+    "trivia": "Término asturiano con el que se conoce a los futbolistas jóvenes formados en Mareo.",
     "orderAdded": 10
   },
   {
     "slug": "brujo",
     "word": "BRUJO",
-    "trivia": "El Brujo, apodo eterno de Enrique Castro Quini por su insuperable instinto de gol en El Molinón.",
+    "trivia": "Apodo de Enrique Castro Quini por su capacidad goleadora en El Molinón.",
     "orderAdded": 11
   },
   {
     "slug": "gatu",
     "word": "GATU",
-    "trivia": "El Gatu, legendario sobrenombre de Juan Carlos Ablanedo por sus reflejos felinos bajo palos.",
+    "trivia": "Sobrenombre de Juan Carlos Ablanedo por sus reflejos como portero.",
     "orderAdded": 12
   },
   {
     "slug": "pitu",
     "word": "PITU",
-    "trivia": "El Pitu Abelardo, central internacional formado en Mareo y artífice desde el banquillo del ascenso de los Guajes.",
+    "trivia": "Abelardo Fernández, central formado en Mareo y entrenador del ascenso en 2015.",
     "orderAdded": 13
   },
   {
     "slug": "pichichi",
     "word": "PICHICHI",
-    "trivia": "El Trofeo Pichichi, conquistado en 7 ocasiones históricas por el inolvidable Quini.",
+    "trivia": "Trofeo al máximo goleador de Liga, obtenido en siete ocasiones por Quini.",
     "orderAdded": 14
   },
   {
     "slug": "zamora",
     "word": "ZAMORA",
-    "trivia": "El Trofeo Zamora, galardón que coronó a Juan Carlos Ablanedo en tres ocasiones y a Urruti en Primera.",
+    "trivia": "Trofeo al portero menos goleado, obtenido por Juan Carlos Ablanedo en tres ocasiones.",
     "orderAdded": 15
   },
   {
     "slug": "pelayo",
     "word": "PELAYO",
-    "trivia": "Don Pelayo, estatua señera frente al puerto de Gijón y punto neurálgico de las grandes celebraciones del Sporting.",
+    "trivia": "Plaza del Marqués en Gijón, punto habitual de celebración de ascensos del Real Sporting.",
     "orderAdded": 16
   },
   {
     "slug": "preciado",
     "word": "PRECIADO",
-    "trivia": "Manolo Preciado, técnico del histórico ascenso a Primera de 2008 y símbolo eterno de bonhomía y coraje.",
+    "trivia": "Entrenador del Real Sporting entre 2006 y 2012, artífice del ascenso a Primera en 2008.",
     "orderAdded": 17
   },
   {
     "slug": "quini",
     "word": "QUINI",
-    "trivia": "Enrique Castro Quini, máximo goleador histórico del Sporting con 272 goles oficiales y leyenda eterna del fútbol español.",
+    "trivia": "Máximo goleador de la historia del Real Sporting con 272 goles oficiales.",
     "orderAdded": 18
   },
   {
     "slug": "ablanedo",
     "word": "ABLANEDO",
-    "trivia": "Juan Carlos Ablanedo, portero de época formado en Mareo con 450 partidos oficiales y triple Trofeo Zamora.",
+    "trivia": "Portero formado en Mareo con 450 partidos oficiales en el primer equipo.",
     "orderAdded": 19
   },
   {
     "slug": "subcampeon",
     "word": "SUBCAMPEON",
-    "trivia": "El histórico subcampeonato de Primera División de la temporada 1978-79, cota dorada de la historia del club.",
+    "trivia": "Subcampeonato de Primera División alcanzado por el Real Sporting en la temporada 1978-79.",
     "orderAdded": 20
   },
   {
     "slug": "miera",
     "word": "MIERA",
-    "trivia": "Vicente Miera, técnico que guió al Sporting al histórico subcampeonato de Primera División en 1979.",
+    "trivia": "Entrenador del Real Sporting en el subcampeonato de Primera División de 1979.",
     "orderAdded": 21
   },
   {
     "slug": "novoa",
     "word": "NOVOA",
-    "trivia": "José Manuel Díaz Novoa, técnico con mayor número de partidos oficiales dirigidos en El Molinón.",
+    "trivia": "Entrenador con más partidos oficiales dirigidos en el banquillo del Real Sporting.",
     "orderAdded": 22
   },
   {
     "slug": "boskov",
     "word": "BOSKOV",
-    "trivia": "Vujadin Boskov, prestigioso estratega internacional que dirigió al Sporting en la época dorada de Primera.",
+    "trivia": "Entrenador del Real Sporting en la temporada 1982-83 y técnico internacional.",
     "orderAdded": 23
   },
   {
     "slug": "pasiego",
     "word": "PASIEGO",
-    "trivia": "Pasieguito, entrenador que condujo al Real Sporting a su primera final de Copa del Rey en 1981.",
+    "trivia": "Entrenador que dirigió al Real Sporting a su primera final de Copa del Rey en 1981.",
     "orderAdded": 24
   },
   {
     "slug": "joaquin",
     "word": "JOAQUIN",
-    "trivia": "Joaquín Alonso González, centrocampista referente del Real Sporting con 646 partidos oficiales (1976/77 - 1991/92).",
+    "trivia": "Joaquín Alonso González, centrocampista del Real Sporting con 646 partidos oficiales (1976/77 - 1991/92).",
     "orderAdded": 25
   },
   {
     "slug": "jimenez",
     "word": "JIMENEZ",
-    "trivia": "Manuel Enrique Jiménez Abalo, defensa referente del Real Sporting con 534 partidos oficiales (1979/80 - 1990/91).",
+    "trivia": "Manuel Enrique Jiménez Abalo, defensa del Real Sporting con 534 partidos oficiales (1979/80 - 1990/91).",
     "orderAdded": 26
   },
   {
     "slug": "castro",
     "word": "CASTRO",
-    "trivia": "Jesús Antonio de Castro González, portero referente del Real Sporting con 471 partidos oficiales (1967/68 - 1984/85).",
+    "trivia": "Jesús Antonio de Castro González, portero del Real Sporting con 471 partidos oficiales (1967/68 - 1984/85).",
     "orderAdded": 27
   },
   {
     "slug": "mesa",
     "word": "MESA",
-    "trivia": "Manuel Mesa Quirós, centrocampista referente del Real Sporting con 443 partidos oficiales (1975/76 - 1986/87).",
+    "trivia": "Manuel Mesa Quirós, centrocampista del Real Sporting con 443 partidos oficiales (1975/76 - 1986/87).",
     "orderAdded": 28
   },
   {
     "slug": "cundi",
     "word": "CUNDI",
-    "trivia": "Secundino Suárez Vázquez, defensa referente del Real Sporting con 406 partidos oficiales (1973/74 - 1989/90).",
+    "trivia": "Secundino Suárez Vázquez, defensa del Real Sporting con 406 partidos oficiales (1973/74 - 1989/90).",
     "orderAdded": 29
   },
   {
     "slug": "ciriaco",
     "word": "CIRIACO",
-    "trivia": "Ciriaco Cano González, centrocampista referente del Real Sporting con 362 partidos oficiales (1971/72 - 1982/83).",
+    "trivia": "Ciriaco Cano González, centrocampista del Real Sporting con 362 partidos oficiales (1971/72 - 1982/83).",
     "orderAdded": 30
   },
   {
     "slug": "valdes",
     "word": "VALDES",
-    "trivia": "Crisanto García Valdés, centrocampista referente del Real Sporting con 360 partidos oficiales (1965/66 - 1978/79).",
+    "trivia": "Crisanto García Valdés, centrocampista del Real Sporting con 360 partidos oficiales (1965/66 - 1978/79).",
     "orderAdded": 31
   },
   {
     "slug": "redondo",
     "word": "REDONDO",
-    "trivia": "José Antonio Redondo García, defensa referente del Real Sporting con 358 partidos oficiales (1972/73 - 1984/85).",
+    "trivia": "José Antonio Redondo García, defensa del Real Sporting con 358 partidos oficiales (1972/73 - 1984/85).",
     "orderAdded": 32
   },
   {
     "slug": "medina",
     "word": "MEDINA",
-    "trivia": "Armando Menéndez Medina, centrocampista referente del Real Sporting con 356 partidos oficiales (1951/52 - 1965/66).",
+    "trivia": "Armando Menéndez Medina, centrocampista del Real Sporting con 356 partidos oficiales (1951/52 - 1965/66).",
     "orderAdded": 33
   },
   {
     "slug": "ortiz",
     "word": "ORTIZ",
-    "trivia": "José Luis Ortiz Peláez, delantero referente del Real Sporting con 341 partidos oficiales (1949/50 - 1962/63).",
+    "trivia": "José Luis Ortiz Peláez, delantero del Real Sporting con 341 partidos oficiales (1949/50 - 1962/63).",
     "orderAdded": 34
   },
   {
     "slug": "ferrero",
     "word": "FERRERO",
-    "trivia": "Enzo Ferrero Águila, delantero referente del Real Sporting con 340 partidos oficiales (1975/76 - 1984/85).",
+    "trivia": "Enzo Ferrero Águila, delantero del Real Sporting con 340 partidos oficiales (1975/76 - 1984/85).",
     "orderAdded": 35
   },
   {
     "slug": "tamayo",
     "word": "TAMAYO",
-    "trivia": "Mauro Álvarez Álvarez, defensa referente del Real Sporting con 334 partidos oficiales (1940/41 - 1954/55).",
+    "trivia": "Mauro Álvarez Álvarez, defensa del Real Sporting con 334 partidos oficiales (1940/41 - 1954/55).",
     "orderAdded": 36
   },
   {
     "slug": "sastre",
     "word": "SASTRE",
-    "trivia": "Rafel Sastre Reus, defensa referente del Real Sporting con 324 partidos oficiales (2001/02 - 2010/11).",
+    "trivia": "Rafel Sastre Reus, defensa del Real Sporting con 324 partidos oficiales (2001/02 - 2010/11).",
     "orderAdded": 37
   },
   {
     "slug": "canella",
     "word": "CANELLA",
-    "trivia": "Roberto Canella Suárez, defensa referente del Real Sporting con 313 partidos oficiales (2006/07 - 2018/19).",
+    "trivia": "Roberto Canella Suárez, defensa del Real Sporting con 313 partidos oficiales (2006/07 - 2018/19).",
     "orderAdded": 38
   },
   {
     "slug": "molinucu",
     "word": "MOLINUCU",
-    "trivia": "Manuel Rodríguez Torre, centrocampista referente del Real Sporting con 310 partidos oficiales (1944/45 - 1956/57).",
+    "trivia": "Manuel Rodríguez Torre, centrocampista del Real Sporting con 310 partidos oficiales (1944/45 - 1956/57).",
     "orderAdded": 39
   },
   {
     "slug": "churruca",
     "word": "CHURRUCA",
-    "trivia": "José Ignacio Churruca Sistiaga, delantero referente del Real Sporting con 302 partidos oficiales (1967/68 - 1975/76).",
+    "trivia": "José Ignacio Churruca Sistiaga, delantero del Real Sporting con 302 partidos oficiales (1967/68 - 1975/76).",
     "orderAdded": 40
   },
   {
     "slug": "sanchez",
     "word": "SANCHEZ",
-    "trivia": "Francisco Sánchez Puente, delantero referente del Real Sporting con 299 partidos oficiales (1945/46 - 1958/59).",
+    "trivia": "Francisco Sánchez Puente, delantero del Real Sporting con 299 partidos oficiales (1945/46 - 1958/59).",
     "orderAdded": 41
   },
   {
     "slug": "carmona",
     "word": "CARMONA",
-    "trivia": "Carlos Carmona Bonet, delantero referente del Real Sporting con 293 partidos oficiales (2012/13 - 2020/21).",
+    "trivia": "Carlos Carmona Bonet, delantero del Real Sporting con 293 partidos oficiales (2012/13 - 2020/21).",
     "orderAdded": 42
   },
   {
     "slug": "maceda",
     "word": "MACEDA",
-    "trivia": "Antonio Maceda Francés, defensa referente del Real Sporting con 292 partidos oficiales (1975/76 - 1984/85).",
+    "trivia": "Antonio Maceda Francés, defensa del Real Sporting con 292 partidos oficiales (1975/76 - 1984/85).",
     "orderAdded": 43
   },
   {
     "slug": "eloy",
     "word": "ELOY",
-    "trivia": "Eloy José Olaya Prendes, delantero referente del Real Sporting con 278 partidos oficiales (1979/80 - 1996/97).",
+    "trivia": "Eloy José Olaya Prendes, delantero del Real Sporting con 278 partidos oficiales (1979/80 - 1996/97).",
     "orderAdded": 44
   },
   {
     "slug": "abel",
     "word": "ABEL",
-    "trivia": "Abel Díez Tejerina, centrocampista referente del Real Sporting con 276 partidos oficiales (1976/77 - 1983/84).",
+    "trivia": "Abel Díez Tejerina, centrocampista del Real Sporting con 276 partidos oficiales (1976/77 - 1983/84).",
     "orderAdded": 45
   },
   {
     "slug": "lora",
     "word": "LORA",
-    "trivia": "Alberto Lora Ramos, defensa referente del Real Sporting con 267 partidos oficiales (2006/07 - 2017/18).",
+    "trivia": "Alberto Lora Ramos, defensa del Real Sporting con 267 partidos oficiales (2006/07 - 2017/18).",
     "orderAdded": 46
   },
   {
     "slug": "pablo",
     "word": "PABLO",
-    "trivia": "Pablo Javier Díaz Stalla, defensa referente del Real Sporting con 258 partidos oficiales (1990/91 - 1997/98).",
+    "trivia": "Pablo Javier Díaz Stalla, defensa del Real Sporting con 258 partidos oficiales (1990/91 - 1997/98).",
     "orderAdded": 47
   },
   {
     "slug": "montes",
     "word": "MONTES",
-    "trivia": "Miguel Ángel Montes Busto, delantero referente del Real Sporting con 257 partidos oficiales (1959/60 - 1968/69).",
+    "trivia": "Miguel Ángel Montes Busto, delantero del Real Sporting con 257 partidos oficiales (1959/60 - 1968/69).",
     "orderAdded": 48
   },
   {
     "slug": "altisent",
     "word": "ALTISENT",
-    "trivia": "Rogelio Altisent Prats, defensa referente del Real Sporting con 250 partidos oficiales (1952/53 - 1962/63).",
+    "trivia": "Rogelio Altisent Prats, defensa del Real Sporting con 250 partidos oficiales (1952/53 - 1962/63).",
     "orderAdded": 49
   },
   {
     "slug": "puente",
     "word": "PUENTE",
-    "trivia": "Antonio García Puente, defensa referente del Real Sporting con 249 partidos oficiales (1962/63 - 1972/73).",
+    "trivia": "Antonio García Puente, defensa del Real Sporting con 249 partidos oficiales (1962/63 - 1972/73).",
     "orderAdded": 50
   },
   {
     "slug": "sion",
     "word": "SION",
-    "trivia": "Manuel Álvarez Sión, portero referente del Real Sporting con 247 partidos oficiales (1949/50 - 1960/61).",
+    "trivia": "Manuel Álvarez Sión, portero del Real Sporting con 247 partidos oficiales (1949/50 - 1960/61).",
     "orderAdded": 51
   },
   {
     "slug": "cuellar",
     "word": "CUELLAR",
-    "trivia": "Iván Cuéllar Sacristán, portero referente del Real Sporting con 247 partidos oficiales (2008/09 - 2022/23).",
+    "trivia": "Iván Cuéllar Sacristán, portero del Real Sporting con 247 partidos oficiales (2008/09 - 2022/23).",
     "orderAdded": 52
   },
   {
     "slug": "alonso",
     "word": "ALONSO",
-    "trivia": "Miguel Ángel Alonso Muñiz, defensa referente del Real Sporting con 237 partidos oficiales (1961/62 - 1973/74).",
+    "trivia": "Miguel Ángel Alonso Muñiz, defensa del Real Sporting con 237 partidos oficiales (1961/62 - 1973/74).",
     "orderAdded": 53
   },
   {
     "slug": "biempica",
     "word": "BIEMPICA",
-    "trivia": "Rafael Biempica Álvarez, delantero referente del Real Sporting con 229 partidos oficiales (1955/56 - 1963/64).",
+    "trivia": "Rafael Biempica Álvarez, delantero del Real Sporting con 229 partidos oficiales (1955/56 - 1963/64).",
     "orderAdded": 54
   },
   {
     "slug": "pocholo",
     "word": "POCHOLO",
-    "trivia": "José Antonio Fernández Álvarez, delantero referente del Real Sporting con 226 partidos oficiales (1960/61 - 1967/68).",
+    "trivia": "José Antonio Fernández Álvarez, delantero del Real Sporting con 226 partidos oficiales (1960/61 - 1967/68).",
     "orderAdded": 55
   },
   {
     "slug": "mariño",
     "word": "MARIÑO",
-    "trivia": "Diego Mariño Villar, portero referente del Real Sporting con 222 partidos oficiales (2016/17 - 2022/23).",
+    "trivia": "Diego Mariño Villar, portero del Real Sporting con 222 partidos oficiales (2016/17 - 2022/23).",
     "orderAdded": 56
   },
   {
     "slug": "esteban",
     "word": "ESTEBAN",
-    "trivia": "Esteban Gutiérrez Fernández, defensa referente del Real Sporting con 219 partidos oficiales (1982/83 - 1987/88).",
+    "trivia": "Esteban Gutiérrez Fernández, defensa del Real Sporting con 219 partidos oficiales (1982/83 - 1987/88).",
     "orderAdded": 57
   },
   {
     "slug": "uria",
     "word": "URIA",
-    "trivia": "Francisco Javier Álvarez Uría, defensa referente del Real Sporting con 217 partidos oficiales (1977/78 - 1982/83).",
+    "trivia": "Francisco Javier Álvarez Uría, defensa del Real Sporting con 217 partidos oficiales (1977/78 - 1982/83).",
     "orderAdded": 58
   },
   {
     "slug": "doria",
     "word": "DORIA",
-    "trivia": "Víctor Hugo Doria Torrente, defensa referente del Real Sporting con 216 partidos oficiales (1973/74 - 1982/83).",
+    "trivia": "Víctor Hugo Doria Torrente, defensa del Real Sporting con 216 partidos oficiales (1973/74 - 1982/83).",
     "orderAdded": 59
   },
   {
     "slug": "barral",
     "word": "BARRAL",
-    "trivia": "David Barral Torres, delantero referente del Real Sporting con 213 partidos oficiales (2006/07 - 2011/12).",
+    "trivia": "David Barral Torres, delantero del Real Sporting con 213 partidos oficiales (2006/07 - 2011/12).",
     "orderAdded": 60
   },
   {
     "slug": "abelardo",
     "word": "ABELARDO",
-    "trivia": "Abelardo Fernández Antuña, defensa referente del Real Sporting con 212 partidos oficiales (1989/90 - 1993/94).",
+    "trivia": "Abelardo Fernández Antuña, defensa del Real Sporting con 212 partidos oficiales (1989/90 - 1993/94).",
     "orderAdded": 61
   },
   {
     "slug": "eraña",
     "word": "ERAÑA",
-    "trivia": "Juan Eraña Virumbrales, centrocampista referente del Real Sporting con 207 partidos oficiales (1962/63 - 1969/70).",
+    "trivia": "Juan Eraña Virumbrales, centrocampista del Real Sporting con 207 partidos oficiales (1962/63 - 1969/70).",
     "orderAdded": 62
   },
   {
     "slug": "juan",
     "word": "JUAN",
-    "trivia": "Juan Díaz Prendes, centrocampista referente del Real Sporting con 207 partidos oficiales (2000/01 - 2005/06).",
+    "trivia": "Juan Díaz Prendes, centrocampista del Real Sporting con 207 partidos oficiales (2000/01 - 2005/06).",
     "orderAdded": 63
   },
   {
     "slug": "espinosa",
     "word": "ESPINOSA",
-    "trivia": "José Manuel Espinosa Gómez, defensa referente del Real Sporting con 206 partidos oficiales (1982/83 - 1987/88).",
+    "trivia": "José Manuel Espinosa Gómez, defensa del Real Sporting con 206 partidos oficiales (1982/83 - 1987/88).",
     "orderAdded": 64
   },
   {
     "slug": "cervigon",
     "word": "CERVIGON",
-    "trivia": "Manuel Cervigón Cartagena, centrocampista referente del Real Sporting con 206 partidos oficiales (1940/41 - 1950/51).",
+    "trivia": "Manuel Cervigón Cartagena, centrocampista del Real Sporting con 206 partidos oficiales (1940/41 - 1950/51).",
     "orderAdded": 65
   },
   {
     "slug": "rosas",
     "word": "ROSAS",
-    "trivia": "Guillermo Rosas Alonso, defensa referente del Real Sporting con 202 partidos oficiales (2019/20 - 2026/27).",
+    "trivia": "Guillermo Rosas Alonso, defensa del Real Sporting con 202 partidos oficiales (2019/20 - 2026/27).",
     "orderAdded": 66
   },
   {
     "slug": "roberto",
     "word": "ROBERTO",
-    "trivia": "Roberto Fernández Alvarellos, portero referente del Real Sporting con 199 partidos oficiales (2002/03 - 2007/08).",
+    "trivia": "Roberto Fernández Alvarellos, portero del Real Sporting con 199 partidos oficiales (2002/03 - 2007/08).",
     "orderAdded": 67
   },
   {
     "slug": "tati",
     "word": "TATI",
-    "trivia": "Donato Alcalde Tieles, defensa referente del Real Sporting con 191 partidos oficiales (1985/86 - 1992/93).",
+    "trivia": "Donato Alcalde Tieles, defensa del Real Sporting con 191 partidos oficiales (1985/86 - 1992/93).",
     "orderAdded": 68
   },
   {
     "slug": "gaspar",
     "word": "GASPAR",
-    "trivia": "Gaspar Campos-Ansó Fernández, delantero referente del Real Sporting con 190 partidos oficiales (2019/20 - 2026/27).",
+    "trivia": "Gaspar Campos-Ansó Fernández, delantero del Real Sporting con 190 partidos oficiales (2019/20 - 2026/27).",
     "orderAdded": 69
   },
   {
     "slug": "luisin",
     "word": "LUISIN",
-    "trivia": "Luis Menéndez Álvarez, centrocampista referente del Real Sporting con 188 partidos oficiales (1928/29 - 1943/44).",
+    "trivia": "Luis Menéndez Álvarez, centrocampista del Real Sporting con 188 partidos oficiales (1928/29 - 1943/44).",
     "orderAdded": 70
   },
   {
     "slug": "muñiz",
     "word": "MUÑIZ",
-    "trivia": "Juan Ramón López Muñiz, defensa referente del Real Sporting con 187 partidos oficiales (1990/91 - 1995/96).",
+    "trivia": "Juan Ramón López Muñiz, defensa del Real Sporting con 187 partidos oficiales (1990/91 - 1995/96).",
     "orderAdded": 71
   },
   {
     "slug": "uribe",
     "word": "URIBE",
-    "trivia": "Jesús Uribesalgo Uribechevarría, defensa referente del Real Sporting con 186 partidos oficiales (1963/64 - 1968/69).",
+    "trivia": "Jesús Uribesalgo Uribechevarría, defensa del Real Sporting con 186 partidos oficiales (1963/64 - 1968/69).",
     "orderAdded": 72
   },
   {
     "slug": "tomas",
     "word": "TOMAS",
-    "trivia": "Tomás Alberto Hervás Girón, centrocampista referente del Real Sporting con 179 partidos oficiales (1990/91 - 1997/98).",
+    "trivia": "Tomás Alberto Hervás Girón, centrocampista del Real Sporting con 179 partidos oficiales (1990/91 - 1997/98).",
     "orderAdded": 73
   },
   {
     "slug": "prendes",
     "word": "PRENDES",
-    "trivia": "José Prendes Vega, delantero referente del Real Sporting con 178 partidos oficiales (1948/49 - 1956/57).",
+    "trivia": "José Prendes Vega, delantero del Real Sporting con 178 partidos oficiales (1948/49 - 1956/57).",
     "orderAdded": 74
   },
   {
     "slug": "calleja",
     "word": "CALLEJA",
-    "trivia": "Anastasio Calleja Padrino, centrocampista referente del Real Sporting con 177 partidos oficiales (1933/34 - 1945/46).",
+    "trivia": "Anastasio Calleja Padrino, centrocampista del Real Sporting con 177 partidos oficiales (1933/34 - 1945/46).",
     "orderAdded": 75
   },
   {
     "slug": "fanjul",
     "word": "FANJUL",
-    "trivia": "Alfonso Fanjul Fernández, centrocampista referente del Real Sporting con 175 partidos oficiales (1970/71 - 1977/78).",
+    "trivia": "Alfonso Fanjul Fernández, centrocampista del Real Sporting con 175 partidos oficiales (1970/71 - 1977/78).",
     "orderAdded": 76
   },
   {
     "slug": "babin",
     "word": "BABIN",
-    "trivia": "Jean-Sylvain Claude Emmanuel Babin, defensa referente del Real Sporting con 170 partidos oficiales (2016/17 - 2021/22).",
+    "trivia": "Jean-Sylvain Claude Emmanuel Babin, defensa del Real Sporting con 170 partidos oficiales (2016/17 - 2021/22).",
     "orderAdded": 77
   },
   {
     "slug": "otero",
     "word": "OTERO",
-    "trivia": "Juan Ferney Otero Tovar, delantero referente del Real Sporting con 164 partidos oficiales (2022/23 - 2026/27).",
+    "trivia": "Juan Ferney Otero Tovar, delantero del Real Sporting con 164 partidos oficiales (2022/23 - 2026/27).",
     "orderAdded": 78
   },
   {
     "slug": "cote",
     "word": "COTE",
-    "trivia": "José Ángel Valdés Díaz, defensa referente del Real Sporting con 160 partidos oficiales (2008/09 - 2024/25).",
+    "trivia": "José Ángel Valdés Díaz, defensa del Real Sporting con 160 partidos oficiales (2008/09 - 2024/25).",
     "orderAdded": 79
   },
   {
     "slug": "oscar",
     "word": "OSCAR",
-    "trivia": "Óscar Luis Celada, centrocampista referente del Real Sporting con 159 partidos oficiales (1988/89 - 1993/94).",
+    "trivia": "Óscar Luis Celada, centrocampista del Real Sporting con 159 partidos oficiales (1988/89 - 1993/94).",
     "orderAdded": 80
   },
   {
     "slug": "zurdi",
     "word": "ZURDI",
-    "trivia": "Carlos Horacio González González, delantero referente del Real Sporting con 158 partidos oficiales (1980/81 - 1987/88).",
+    "trivia": "Carlos Horacio González González, delantero del Real Sporting con 158 partidos oficiales (1980/81 - 1987/88).",
     "orderAdded": 81
   },
   {
     "slug": "amengual",
     "word": "AMENGUAL",
-    "trivia": "Antonio Amengual Salom, delantero referente del Real Sporting con 157 partidos oficiales (1962/63 - 1967/68).",
+    "trivia": "Antonio Amengual Salom, delantero del Real Sporting con 157 partidos oficiales (1962/63 - 1967/68).",
     "orderAdded": 82
   },
   {
     "slug": "fabian",
     "word": "FABIAN",
-    "trivia": "Fabián Muñoz Fernández, defensa referente del Real Sporting con 155 partidos oficiales (1970/71 - 1975/76).",
+    "trivia": "Fabián Muñoz Fernández, defensa del Real Sporting con 155 partidos oficiales (1970/71 - 1975/76).",
     "orderAdded": 83
   },
   {
     "slug": "german",
     "word": "GERMAN",
-    "trivia": "José Germán Lucas Menéndez Gancedo, defensa referente del Real Sporting con 152 partidos oficiales (1948/49 - 1955/56).",
+    "trivia": "José Germán Lucas Menéndez Gancedo, defensa del Real Sporting con 152 partidos oficiales (1948/49 - 1955/56).",
     "orderAdded": 84
   },
   {
     "slug": "florin",
     "word": "FLORIN",
-    "trivia": "Florentino Muñiz Menéndez, defensa referente del Real Sporting con 152 partidos oficiales (1961/62 - 1969/70).",
+    "trivia": "Florentino Muñiz Menéndez, defensa del Real Sporting con 152 partidos oficiales (1961/62 - 1969/70).",
     "orderAdded": 85
   },
   {
     "slug": "dorado",
     "word": "DORADO",
-    "trivia": "Javier Dorado Bielsa, defensa referente del Real Sporting con 152 partidos oficiales (2001/02 - 2005/06).",
+    "trivia": "Javier Dorado Bielsa, defensa del Real Sporting con 152 partidos oficiales (2001/02 - 2005/06).",
     "orderAdded": 86
   },
   {
     "slug": "cabal",
     "word": "CABAL",
-    "trivia": "Enrique Cabal Solís, defensa referente del Real Sporting con 150 partidos oficiales (1949/50 - 1957/58).",
+    "trivia": "Enrique Cabal Solís, defensa del Real Sporting con 150 partidos oficiales (1949/50 - 1957/58).",
     "orderAdded": 87
   },
   {
     "slug": "emilio",
     "word": "EMILIO",
-    "trivia": "José Emilio Blanco Cabezón, centrocampista referente del Real Sporting con 148 partidos oficiales (1982/83 - 1990/91).",
+    "trivia": "José Emilio Blanco Cabezón, centrocampista del Real Sporting con 148 partidos oficiales (1982/83 - 1990/91).",
     "orderAdded": 88
   },
   {
     "slug": "pascual",
     "word": "PASCUAL",
-    "trivia": "Alfredo Pascual Sanz, defensa referente del Real Sporting con 145 partidos oficiales (1970/71 - 1974/75).",
+    "trivia": "Alfredo Pascual Sanz, defensa del Real Sporting con 145 partidos oficiales (1970/71 - 1974/75).",
     "orderAdded": 89
   },
   {
     "slug": "michel",
     "word": "MICHEL",
-    "trivia": "Miguel Marcos Madera, centrocampista referente del Real Sporting con 145 partidos oficiales (2005/06 - 2009/10).",
+    "trivia": "Miguel Marcos Madera, centrocampista del Real Sporting con 145 partidos oficiales (2005/06 - 2009/10).",
     "orderAdded": 90
   },
   {
     "slug": "arturo",
     "word": "ARTURO",
-    "trivia": "Arturo Martínez Noval, defensa referente del Real Sporting con 142 partidos oficiales (1987/88 - 1993/94).",
+    "trivia": "Arturo Martínez Noval, defensa del Real Sporting con 142 partidos oficiales (1987/88 - 1993/94).",
     "orderAdded": 91
   },
   {
     "slug": "juanma",
     "word": "JUANMA",
-    "trivia": "Juan Manuel Suárez del Valle, centrocampista referente del Real Sporting con 140 partidos oficiales (1986/87 - 1991/92).",
+    "trivia": "Juan Manuel Suárez del Valle, centrocampista del Real Sporting con 140 partidos oficiales (1986/87 - 1991/92).",
     "orderAdded": 92
   },
   {
     "slug": "alcazar",
     "word": "ALCAZAR",
-    "trivia": "Ángel Luis Alcázar Gutiérrez, defensa referente del Real Sporting con 139 partidos oficiales (1989/90 - 1992/93).",
+    "trivia": "Ángel Luis Alcázar Gutiérrez, defensa del Real Sporting con 139 partidos oficiales (1989/90 - 1992/93).",
     "orderAdded": 93
   },
   {
     "slug": "manjarin",
     "word": "MANJARIN",
-    "trivia": "Javier Manjarín Pereda, delantero referente del Real Sporting con 137 partidos oficiales (1988/89 - 1992/93).",
+    "trivia": "Javier Manjarín Pereda, delantero del Real Sporting con 137 partidos oficiales (1988/89 - 1992/93).",
     "orderAdded": 94
   },
   {
     "slug": "pena",
     "word": "PENA",
-    "trivia": "Pedro Pena Ponga, defensa referente del Real Sporting con 133 partidos oficiales (1925/26 - 1939/40).",
+    "trivia": "Pedro Pena Ponga, defensa del Real Sporting con 133 partidos oficiales (1925/26 - 1939/40).",
     "orderAdded": 95
   },
   {
     "slug": "jony",
     "word": "JONY",
-    "trivia": "Jonathan Rodríguez Menéndez, delantero referente del Real Sporting con 132 partidos oficiales (2013/14 - 2022/23).",
+    "trivia": "Jonathan Rodríguez Menéndez, delantero del Real Sporting con 132 partidos oficiales (2013/14 - 2022/23).",
     "orderAdded": 96
   },
   {
     "slug": "yañez",
     "word": "YAÑEZ",
-    "trivia": "Orlando Rubén Yáñez Alabart, portero referente del Real Sporting con 128 partidos oficiales (2023/24 - 2026/27).",
+    "trivia": "Orlando Rubén Yáñez Alabart, portero del Real Sporting con 128 partidos oficiales (2023/24 - 2026/27).",
     "orderAdded": 97
   },
   {
     "slug": "david",
     "word": "DAVID",
-    "trivia": "Jorge David López Fernández, centrocampista referente del Real Sporting con 127 partidos oficiales (1978/79 - 1984/85).",
+    "trivia": "Jorge David López Fernández, centrocampista del Real Sporting con 127 partidos oficiales (1978/79 - 1984/85).",
     "orderAdded": 98
   },
   {
     "slug": "jaime",
     "word": "JAIME",
-    "trivia": "Jaime Francisco Álvarez González, centrocampista referente del Real Sporting con 125 partidos oficiales (1984/85 - 1990/91).",
+    "trivia": "Jaime Francisco Álvarez González, centrocampista del Real Sporting con 125 partidos oficiales (1984/85 - 1990/91).",
     "orderAdded": 99
   },
   {
     "slug": "jorge",
     "word": "JORGE",
-    "trivia": "Jorge García Torre, defensa referente del Real Sporting con 125 partidos oficiales (2005/06 - 2010/11).",
+    "trivia": "Jorge García Torre, defensa del Real Sporting con 125 partidos oficiales (2005/06 - 2010/11).",
     "orderAdded": 100
   },
   {
     "slug": "castulo",
     "word": "CASTULO",
-    "trivia": "Cástulo García González, defensa referente del Real Sporting con 123 partidos oficiales (1947/48 - 1952/53).",
+    "trivia": "Cástulo García González, defensa del Real Sporting con 123 partidos oficiales (1947/48 - 1952/53).",
     "orderAdded": 101
   },
   {
     "slug": "megido",
     "word": "MEGIDO",
-    "trivia": "Alfredo Megido Sánchez, delantero referente del Real Sporting con 123 partidos oficiales (1971/72 - 1975/76).",
+    "trivia": "Alfredo Megido Sánchez, delantero del Real Sporting con 123 partidos oficiales (1971/72 - 1975/76).",
     "orderAdded": 102
   },
   {
     "slug": "alberto",
     "word": "ALBERTO",
-    "trivia": "Alberto Fernández Fernández, centrocampista referente del Real Sporting con 122 partidos oficiales (1962/63 - 1967/68).",
+    "trivia": "Alberto Fernández Fernández, centrocampista del Real Sporting con 122 partidos oficiales (1962/63 - 1967/68).",
     "orderAdded": 103
   },
   {
     "slug": "ladreda",
     "word": "LADREDA",
-    "trivia": "Alfredo Martínez Ladreda, defensa referente del Real Sporting con 121 partidos oficiales (1946/47 - 1954/55).",
+    "trivia": "Alfredo Martínez Ladreda, defensa del Real Sporting con 121 partidos oficiales (1946/47 - 1954/55).",
     "orderAdded": 104
   },
   {
     "slug": "valencia",
     "word": "VALENCIA",
-    "trivia": "Juan José Valencia de la Serna, portero referente del Real Sporting con 120 partidos oficiales (1999/00 - 2003/04).",
+    "trivia": "Juan José Valencia de la Serna, portero del Real Sporting con 120 partidos oficiales (1999/00 - 2003/04).",
     "orderAdded": 105
   },
   {
     "slug": "bernardo",
     "word": "BERNARDO",
-    "trivia": "Bernardo José Espinosa Zúñiga, defensa referente del Real Sporting con 120 partidos oficiales (2012/13 - 2015/16).",
+    "trivia": "Bernardo José Espinosa Zúñiga, defensa del Real Sporting con 120 partidos oficiales (2012/13 - 2015/16).",
     "orderAdded": 106
   },
   {
     "slug": "castañer",
     "word": "CASTAÑER",
-    "trivia": "Luis Castañer Viñas, defensa referente del Real Sporting con 118 partidos oficiales (1957/58 - 1961/62).",
+    "trivia": "Luis Castañer Viñas, defensa del Real Sporting con 118 partidos oficiales (1957/58 - 1961/62).",
     "orderAdded": 107
   },
   {
     "slug": "queipo",
     "word": "QUEIPO",
-    "trivia": "Daniel Queipo Menéndez, centrocampista referente del Real Sporting con 117 partidos oficiales (2021/22 - 2025/26).",
+    "trivia": "Daniel Queipo Menéndez, centrocampista del Real Sporting con 117 partidos oficiales (2021/22 - 2025/26).",
     "orderAdded": 108
   },
   {
     "slug": "rivero",
     "word": "RIVERO",
-    "trivia": "José Aurelio Rivero Rodríguez, portero referente del Real Sporting con 116 partidos oficiales (1973/74 - 1984/85).",
+    "trivia": "José Aurelio Rivero Rodríguez, portero del Real Sporting con 116 partidos oficiales (1973/74 - 1984/85).",
     "orderAdded": 109
   },
   {
     "slug": "velasco",
     "word": "VELASCO",
-    "trivia": "Jesús Enrique Velasco Muñoz, defensa referente del Real Sporting con 116 partidos oficiales (1994/95 - 1997/98).",
+    "trivia": "Jesús Enrique Velasco Muñoz, defensa del Real Sporting con 116 partidos oficiales (1994/95 - 1997/98).",
     "orderAdded": 110
   },
   {
     "slug": "juanele",
     "word": "JUANELE",
-    "trivia": "Juan Castaño Quirós, delantero referente del Real Sporting con 115 partidos oficiales (1990/91 - 1993/94).",
+    "trivia": "Juan Castaño Quirós, delantero del Real Sporting con 115 partidos oficiales (1990/91 - 1993/94).",
     "orderAdded": 111
   },
   {
     "slug": "lozano",
     "word": "LOZANO",
-    "trivia": "Raúl Lozano Marcos, centrocampista referente del Real Sporting con 115 partidos oficiales (1999/00 - 2002/03).",
+    "trivia": "Raúl Lozano Marcos, centrocampista del Real Sporting con 115 partidos oficiales (1999/00 - 2002/03).",
     "orderAdded": 112
   },
   {
     "slug": "isma",
     "word": "ISMA",
-    "trivia": "Ismael Piñera Zapatero, defensa referente del Real Sporting con 110 partidos oficiales (1997/98 - 2004/05).",
+    "trivia": "Ismael Piñera Zapatero, defensa del Real Sporting con 110 partidos oficiales (1997/98 - 2004/05).",
     "orderAdded": 113
   },
   {
     "slug": "avelino",
     "word": "AVELINO",
-    "trivia": "Avelino Riopedre Muiña, centrocampista referente del Real Sporting con 109 partidos oficiales (1991/92 - 1997/98).",
+    "trivia": "Avelino Riopedre Muiña, centrocampista del Real Sporting con 109 partidos oficiales (1991/92 - 1997/98).",
     "orderAdded": 114
   },
   {
     "slug": "nani",
     "word": "NANI",
-    "trivia": "Bernardo Menéndez Noval, delantero referente del Real Sporting con 109 partidos oficiales (1928/29 - 1933/34).",
+    "trivia": "Bernardo Menéndez Noval, delantero del Real Sporting con 109 partidos oficiales (1928/29 - 1933/34).",
     "orderAdded": 115
   },
   {
     "slug": "gerardo",
     "word": "GERARDO",
-    "trivia": "Gerardo Noriega Santoveña, centrocampista referente del Real Sporting con 109 partidos oficiales (2001/02 - 2006/07).",
+    "trivia": "Gerardo Noriega Santoveña, centrocampista del Real Sporting con 109 partidos oficiales (2001/02 - 2006/07).",
     "orderAdded": 116
   },
   {
     "slug": "quiros",
     "word": "QUIROS",
-    "trivia": "Armando Quirós Álvarez, defensa referente del Real Sporting con 108 partidos oficiales (1928/29 - 1934/35).",
+    "trivia": "Armando Quirós Álvarez, defensa del Real Sporting con 108 partidos oficiales (1928/29 - 1934/35).",
     "orderAdded": 117
   },
   {
     "slug": "tronchin",
     "word": "TRONCHIN",
-    "trivia": "Manuel Menéndez Ovín, centrocampista referente del Real Sporting con 107 partidos oficiales (1928/29 - 1935/36).",
+    "trivia": "Manuel Menéndez Ovín, centrocampista del Real Sporting con 107 partidos oficiales (1928/29 - 1935/36).",
     "orderAdded": 118
   },
   {
     "slug": "pellicer",
     "word": "PELLICER",
-    "trivia": "Luis Pellicer Coma, defensa referente del Real Sporting con 107 partidos oficiales (1956/57 - 1959/60).",
+    "trivia": "Luis Pellicer Coma, defensa del Real Sporting con 107 partidos oficiales (1956/57 - 1959/60).",
     "orderAdded": 119
   },
   {
     "slug": "mingo",
     "word": "MINGO",
-    "trivia": "Carles Domingo Pladevall, defensa referente del Real Sporting con 107 partidos oficiales (1997/98 - 1999/00).",
+    "trivia": "Carles Domingo Pladevall, defensa del Real Sporting con 107 partidos oficiales (1997/98 - 1999/00).",
     "orderAdded": 120
   },
   {
     "slug": "carmelo",
     "word": "CARMELO",
-    "trivia": "Carmelo José González Jiménez, centrocampista referente del Real Sporting con 101 partidos oficiales (2008/09 - 2012/13).",
+    "trivia": "Carmelo José González Jiménez, centrocampista del Real Sporting con 101 partidos oficiales (2008/09 - 2012/13).",
     "orderAdded": 121
   },
   {
     "slug": "monchu",
     "word": "MONCHU",
-    "trivia": "Ramón Suárez del Valle, delantero referente del Real Sporting con 100 partidos oficiales (1988/89 - 2000/01).",
+    "trivia": "Ramón Suárez del Valle, delantero del Real Sporting con 100 partidos oficiales (1988/89 - 2000/01).",
     "orderAdded": 122
   },
   {
     "slug": "moran",
     "word": "MORAN",
-    "trivia": "Enrique Morán Blanco, delantero referente del Real Sporting con 98 partidos oficiales (1973/74 - 1978/79).",
+    "trivia": "Enrique Morán Blanco, delantero del Real Sporting con 98 partidos oficiales (1973/74 - 1978/79).",
     "orderAdded": 123
   },
   {
     "slug": "irurzun",
     "word": "IRURZUN",
-    "trivia": "Ismael Marchal Razquín, delantero referente del Real Sporting con 98 partidos oficiales (2002/03 - 2004/05).",
+    "trivia": "Ismael Marchal Razquín, delantero del Real Sporting con 98 partidos oficiales (2002/03 - 2004/05).",
     "orderAdded": 124
   },
   {
     "slug": "gregory",
     "word": "GREGORY",
-    "trivia": "Grégory Arnolin, defensa referente del Real Sporting con 98 partidos oficiales (2009/10 - 2012/13).",
+    "trivia": "Grégory Arnolin, defensa del Real Sporting con 98 partidos oficiales (2009/10 - 2012/13).",
     "orderAdded": 125
   },
   {
     "slug": "soto",
     "word": "SOTO",
-    "trivia": "José Luis Soto María, delantero referente del Real Sporting con 97 partidos oficiales (2000/01 - 2002/03).",
+    "trivia": "José Luis Soto María, delantero del Real Sporting con 97 partidos oficiales (2000/01 - 2002/03).",
     "orderAdded": 126
   },
   {
     "slug": "gragera",
     "word": "GRAGERA",
-    "trivia": "José Gragera Amado, centrocampista referente del Real Sporting con 97 partidos oficiales (2018/19 - 2022/23).",
+    "trivia": "José Gragera Amado, centrocampista del Real Sporting con 97 partidos oficiales (2018/19 - 2022/23).",
     "orderAdded": 127
   },
   {
     "slug": "yordanov",
     "word": "YORDANOV",
-    "trivia": "Georgi Yordanov, centrocampista referente del Real Sporting con 96 partidos oficiales (1990/91 - 1992/93).",
+    "trivia": "Georgi Yordanov, centrocampista del Real Sporting con 96 partidos oficiales (1990/91 - 1992/93).",
     "orderAdded": 128
   },
   {
     "slug": "cerrillo",
     "word": "CERRILLO",
-    "trivia": "Agustín García Cerrillo, centrocampista referente del Real Sporting con 95 partidos oficiales (1958/59 - 1960/61).",
+    "trivia": "Agustín García Cerrillo, centrocampista del Real Sporting con 95 partidos oficiales (1958/59 - 1960/61).",
     "orderAdded": 129
   },
   {
     "slug": "samuel",
     "word": "SAMUEL",
-    "trivia": "Samuel Baños Cardín, centrocampista referente del Real Sporting con 95 partidos oficiales (1999/00 - 2004/05).",
+    "trivia": "Samuel Baños Cardín, centrocampista del Real Sporting con 95 partidos oficiales (1999/00 - 2004/05).",
     "orderAdded": 130
   },
   {
     "slug": "rivera",
     "word": "RIVERA",
-    "trivia": "Alberto Rivera Pizarro, centrocampista referente del Real Sporting con 95 partidos oficiales (2009/10 - 2011/12).",
+    "trivia": "Alberto Rivera Pizarro, centrocampista del Real Sporting con 95 partidos oficiales (2009/10 - 2011/12).",
     "orderAdded": 131
   },
   {
     "slug": "guerrero",
     "word": "GUERRERO",
-    "trivia": "Miguel Ángel Guerrero Martín, delantero referente del Real Sporting con 95 partidos oficiales (2012/13 - 2015/16).",
+    "trivia": "Miguel Ángel Guerrero Martín, delantero del Real Sporting con 95 partidos oficiales (2012/13 - 2015/16).",
     "orderAdded": 132
   },
   {
     "slug": "tino",
     "word": "TINO",
-    "trivia": "Faustino Balbino García Méndez, centrocampista referente del Real Sporting con 94 partidos oficiales (1982/83 - 1986/87).",
+    "trivia": "Faustino Balbino García Méndez, centrocampista del Real Sporting con 94 partidos oficiales (1982/83 - 1986/87).",
     "orderAdded": 133
   },
   {
     "slug": "bango",
     "word": "BANGO",
-    "trivia": "Ricardo González Bango, centrocampista referente del Real Sporting con 94 partidos oficiales (1995/96 - 1997/98).",
+    "trivia": "Ricardo González Bango, centrocampista del Real Sporting con 94 partidos oficiales (1995/96 - 1997/98).",
     "orderAdded": 134
   },
   {
     "slug": "paquito",
     "word": "PAQUITO",
-    "trivia": "Francisco Moreno Gómez, delantero referente del Real Sporting con 93 partidos oficiales (1968/69 - 1972/73).",
+    "trivia": "Francisco Moreno Gómez, delantero del Real Sporting con 93 partidos oficiales (1968/69 - 1972/73).",
     "orderAdded": 135
   },
   {
     "slug": "botia",
     "word": "BOTIA",
-    "trivia": "Alberto Tomás Botía Rabasco, defensa referente del Real Sporting con 92 partidos oficiales (2009/10 - 2011/12).",
+    "trivia": "Alberto Tomás Botía Rabasco, defensa del Real Sporting con 92 partidos oficiales (2009/10 - 2011/12).",
     "orderAdded": 136
   },
   {
     "slug": "pedro",
     "word": "PEDRO",
-    "trivia": "Pedro Santa Cecilia García, centrocampista referente del Real Sporting con 91 partidos oficiales (2005/06 - 2009/10).",
+    "trivia": "Pedro Santa Cecilia García, centrocampista del Real Sporting con 91 partidos oficiales (2005/06 - 2009/10).",
     "orderAdded": 137
   },
   {
     "slug": "narciso",
     "word": "NARCISO",
-    "trivia": "Narciso Manuel Rodríguez de Armas, delantero referente del Real Sporting con 90 partidos oficiales (1988/89 - 1990/91).",
+    "trivia": "Narciso Manuel Rodríguez de Armas, delantero del Real Sporting con 90 partidos oficiales (1988/89 - 1990/91).",
     "orderAdded": 138
   },
   {
     "slug": "gelabert",
     "word": "GELABERT",
-    "trivia": "César Gelabert Piña, centrocampista referente del Real Sporting con 89 partidos oficiales (2024/25 - 2026/27).",
+    "trivia": "César Gelabert Piña, centrocampista del Real Sporting con 89 partidos oficiales (2024/25 - 2026/27).",
     "orderAdded": 139
   },
   {
     "slug": "mino",
     "word": "MINO",
-    "trivia": "Bernardino Serrano Mori, defensa referente del Real Sporting con 87 partidos oficiales (1980/81 - 1985/86).",
+    "trivia": "Bernardino Serrano Mori, defensa del Real Sporting con 87 partidos oficiales (1980/81 - 1985/86).",
     "orderAdded": 140
   },
   {
     "slug": "campos",
     "word": "CAMPOS",
-    "trivia": "Francisco Campos Salamanca, delantero referente del Real Sporting con 87 partidos oficiales (1948/49 - 1951/52).",
+    "trivia": "Francisco Campos Salamanca, delantero del Real Sporting con 87 partidos oficiales (1948/49 - 1951/52).",
     "orderAdded": 141
   },
   {
     "slug": "omar",
     "word": "OMAR",
-    "trivia": "Omar Sampedro Bernardo, delantero referente del Real Sporting con 86 partidos oficiales (2004/05 - 2008/09).",
+    "trivia": "Omar Sampedro Bernardo, delantero del Real Sporting con 86 partidos oficiales (2004/05 - 2008/09).",
     "orderAdded": 142
   },
   {
     "slug": "sabou",
     "word": "SABOU",
-    "trivia": "Marcel Sabou, centrocampista referente del Real Sporting con 85 partidos oficiales (1993/94 - 1995/96).",
+    "trivia": "Marcel Sabou, centrocampista del Real Sporting con 85 partidos oficiales (1993/94 - 1995/96).",
     "orderAdded": 143
   },
   {
     "slug": "villa",
     "word": "VILLA",
-    "trivia": "David Villa Sánchez, delantero referente del Real Sporting con 85 partidos oficiales (2000/01 - 2002/03).",
+    "trivia": "David Villa Sánchez, delantero del Real Sporting con 85 partidos oficiales (2000/01 - 2002/03).",
     "orderAdded": 144
   },
   {
     "slug": "killer",
     "word": "KILLER",
-    "trivia": "Mario Estanislao Killer Díez, defensa referente del Real Sporting con 80 partidos oficiales (1975/76 - 1977/78).",
+    "trivia": "Mario Estanislao Killer Díez, defensa del Real Sporting con 80 partidos oficiales (1975/76 - 1977/78).",
     "orderAdded": 145
   },
   {
     "slug": "dubasin",
     "word": "DUBASIN",
-    "trivia": "Jonathan Dubasin, delantero referente del Real Sporting con 77 partidos oficiales (2024/25 - 2025/26).",
+    "trivia": "Jonathan Dubasin, delantero del Real Sporting con 77 partidos oficiales (2024/25 - 2025/26).",
     "orderAdded": 146
   },
   {
     "slug": "sangoy",
     "word": "SANGOY",
-    "trivia": "Gastón Maximiliano Sangoy, delantero referente del Real Sporting con 75 partidos oficiales (2010/11 - 2012/13).",
+    "trivia": "Gastón Maximiliano Sangoy, delantero del Real Sporting con 75 partidos oficiales (2010/11 - 2012/13).",
     "orderAdded": 147
   },
   {
     "slug": "trejo",
     "word": "TREJO",
-    "trivia": "Óscar Guido Trejo, delantero referente del Real Sporting con 75 partidos oficiales (2011/12 - 2012/13).",
+    "trivia": "Óscar Guido Trejo, delantero del Real Sporting con 75 partidos oficiales (2011/12 - 2012/13).",
     "orderAdded": 148
   },
   {
     "slug": "bauza",
     "word": "BAUZA",
-    "trivia": "David Bauzá Francés, centrocampista referente del Real Sporting con 74 partidos oficiales (2002/03 - 2004/05).",
+    "trivia": "David Bauzá Francés, centrocampista del Real Sporting con 74 partidos oficiales (2002/03 - 2004/05).",
     "orderAdded": 149
   },
   {
     "slug": "insua",
     "word": "INSUA",
-    "trivia": "Pablo Insua Blanco, defensa referente del Real Sporting con 73 partidos oficiales (2022/23 - 2023/24).",
+    "trivia": "Pablo Insua Blanco, defensa del Real Sporting con 73 partidos oficiales (2022/23 - 2023/24).",
     "orderAdded": 150
   },
   {
     "slug": "mandi",
     "word": "MANDI",
-    "trivia": "Armando Sosa Peña, centrocampista referente del Real Sporting con 69 partidos oficiales (2012/13 - 2015/16).",
+    "trivia": "Armando Sosa Peña, centrocampista del Real Sporting con 69 partidos oficiales (2012/13 - 2015/16).",
     "orderAdded": 151
   },
   {
     "slug": "neru",
     "word": "NERU",
-    "trivia": "Francisco Borja Enrique Ayesa, defensa referente del Real Sporting con 64 partidos oficiales (2004/05 - 2008/09).",
+    "trivia": "Francisco Borja Enrique Ayesa, defensa del Real Sporting con 64 partidos oficiales (2004/05 - 2008/09).",
     "orderAdded": 152
   },
   {
     "slug": "mere",
     "word": "MERE",
-    "trivia": "Jorge Meré Pérez, defensa referente del Real Sporting con 63 partidos oficiales (2014/15 - 2016/17).",
+    "trivia": "Jorge Meré Pérez, defensa del Real Sporting con 63 partidos oficiales (2014/15 - 2016/17).",
     "orderAdded": 153
   },
   {
     "slug": "molinero",
     "word": "MOLINERO",
-    "trivia": "Francisco José Molinero Calderón, defensa referente del Real Sporting con 63 partidos oficiales (2018/19 - 2019/20).",
+    "trivia": "Francisco José Molinero Calderón, defensa del Real Sporting con 63 partidos oficiales (2018/19 - 2019/20).",
     "orderAdded": 154
   },
   {
     "slug": "juanmi",
     "word": "JUANMI",
-    "trivia": "Juan Miguel Gelabert Margüello, defensa referente del Real Sporting con 62 partidos oficiales (2005/06 - 2006/07).",
+    "trivia": "Juan Miguel Gelabert Margüello, defensa del Real Sporting con 62 partidos oficiales (2005/06 - 2006/07).",
     "orderAdded": 155
   },
   {
     "slug": "alegre",
     "word": "ALEGRE",
-    "trivia": "Diego Alegre Gil, defensa referente del Real Sporting con 60 partidos oficiales (2002/03 - 2004/05).",
+    "trivia": "Diego Alegre Gil, defensa del Real Sporting con 60 partidos oficiales (2002/03 - 2004/05).",
     "orderAdded": 156
   },
   {
     "slug": "manel",
     "word": "MANEL",
-    "trivia": "Manel Martínez Fernández, delantero referente del Real Sporting con 53 partidos oficiales (2000/01 - 2002/03).",
+    "trivia": "Manel Martínez Fernández, delantero del Real Sporting con 53 partidos oficiales (2000/01 - 2002/03).",
     "orderAdded": 157
   },
   {
     "slug": "eguren",
     "word": "EGUREN",
-    "trivia": "Sebastián Eguren Ledesma, centrocampista referente del Real Sporting con 53 partidos oficiales (2010/11 - 2011/12).",
+    "trivia": "Sebastián Eguren Ledesma, centrocampista del Real Sporting con 53 partidos oficiales (2010/11 - 2011/12).",
     "orderAdded": 158
   },
   {
     "slug": "rachid",
     "word": "RACHID",
-    "trivia": "Rachid Aït-Atmane, centrocampista referente del Real Sporting con 49 partidos oficiales (2014/15 - 2018/19).",
+    "trivia": "Rachid Aït-Atmane, centrocampista del Real Sporting con 49 partidos oficiales (2014/15 - 2018/19).",
     "orderAdded": 159
   },
   {
     "slug": "biagini",
     "word": "BIAGINI",
-    "trivia": "Leonardo Ángel Biagini Bruzzese, delantero referente del Real Sporting con 47 partidos oficiales (2004/05 - 2005/06).",
+    "trivia": "Leonardo Ángel Biagini Bruzzese, delantero del Real Sporting con 47 partidos oficiales (2004/05 - 2005/06).",
     "orderAdded": 160
   },
   {
     "slug": "andreu",
     "word": "ANDREU",
-    "trivia": "Andreu Guerao Mayoral, centrocampista referente del Real Sporting con 44 partidos oficiales (2006/07 - 2009/10).",
+    "trivia": "Andreu Guerao Mayoral, centrocampista del Real Sporting con 44 partidos oficiales (2006/07 - 2009/10).",
     "orderAdded": 161
   },
   {
     "slug": "varane",
     "word": "VARANE",
-    "trivia": "Jonathan Raymond François Varane, centrocampista referente del Real Sporting con 43 partidos oficiales (2022/23 - 2023/24).",
+    "trivia": "Jonathan Raymond François Varane, centrocampista del Real Sporting con 43 partidos oficiales (2022/23 - 2023/24).",
     "orderAdded": 162
   },
   {
     "slug": "calavera",
     "word": "CALAVERA",
-    "trivia": "Jordi Calavera Espinach, defensa referente del Real Sporting con 42 partidos oficiales (2017/18 - 2021/22).",
+    "trivia": "Jordi Calavera Espinach, defensa del Real Sporting con 42 partidos oficiales (2017/18 - 2021/22).",
     "orderAdded": 163
   },
   {
     "slug": "traver",
     "word": "TRAVER",
-    "trivia": "Álvaro Traver Navarrete, delantero referente del Real Sporting con 42 partidos oficiales (2018/19 - 2019/20).",
+    "trivia": "Álvaro Traver Navarrete, delantero del Real Sporting con 42 partidos oficiales (2018/19 - 2019/20).",
     "orderAdded": 164
   },
   {
     "slug": "hassan",
     "word": "HASSAN",
-    "trivia": "Haissem Yousry Fouad A Hassan, delantero referente del Real Sporting con 42 partidos oficiales (2023/24 - 2023/24).",
+    "trivia": "Haissem Yousry Fouad A Hassan, delantero del Real Sporting con 42 partidos oficiales (2023/24 - 2023/24).",
     "orderAdded": 165
   },
   {
     "slug": "barba",
     "word": "BARBA",
-    "trivia": "Federico Barba, defensa referente del Real Sporting con 41 partidos oficiales (2017/18 - 2017/18).",
+    "trivia": "Federico Barba, defensa del Real Sporting con 41 partidos oficiales (2017/18 - 2017/18).",
     "orderAdded": 166
   }
 ]

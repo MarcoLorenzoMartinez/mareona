@@ -2,7 +2,6 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   evaluatePlayerGuess,
-  evaluateKitGuess,
   getBlurAmount,
   getPixelationFactor,
 } from '../../src/lib/who-are-ya/engine.ts';
@@ -11,9 +10,9 @@ import {
   getDaysSinceEpoch,
   WHO_ARE_YA_EPOCH_DATE,
 } from '../../src/lib/who-are-ya/daily.ts';
-import type { WhoAreYaPlayer, WhoAreYaKit } from '../../src/lib/who-are-ya/types.ts';
+import type { WhoAreYaPlayer } from '../../src/lib/who-are-ya/types.ts';
 
-describe('Who Are Ya Engine Suite', () => {
+describe('Who Are Ya (¿Quién es?) Engine Suite', () => {
   const dummyPlayerTarget: WhoAreYaPlayer = {
     bdfId: 3268,
     name: 'Quini',
@@ -40,26 +39,6 @@ describe('Who Are Ya Engine Suite', () => {
     photoUrl: 'https://www.bdfutbol.com/i/j/1284i.jpg',
   };
 
-  const dummyKitTarget: WhoAreYaKit = {
-    id: '1978-79-1',
-    label: '1978/79 — 1ª Camiseta',
-    season: '1978/79',
-    type: '1ª',
-    year: 1978,
-    details: 'Mítica camiseta roja y blanca',
-    image: '/images/kits/1978-79-1.svg',
-  };
-
-  const dummyKitGuess: WhoAreYaKit = {
-    id: '2014-15-1',
-    label: '2014/15 — 1ª Camiseta',
-    season: '2014/15',
-    type: '1ª',
-    year: 2014,
-    details: 'Kappa de los guajes',
-    image: '/images/kits/2014-15-1.svg',
-  };
-
   it('evaluates player guess correctly with arrows and matches', () => {
     const res = evaluatePlayerGuess(dummyPlayerGuess, dummyPlayerTarget);
     assert.equal(res.isCorrect, false);
@@ -76,14 +55,6 @@ describe('Who Are Ya Engine Suite', () => {
     assert.equal(res.nationalityMatch, true);
     assert.equal(res.positionMatch, true);
     assert.equal(res.matchesPlayed.comparison, 'equal');
-  });
-
-  it('evaluates kit guess comparisons', () => {
-    const res = evaluateKitGuess(dummyKitGuess, dummyKitTarget);
-    assert.equal(res.isCorrect, false);
-    assert.equal(res.typeMatch, true);
-    assert.equal(res.seasonMatch, false);
-    assert.equal(res.yearComparison, 'lower');
   });
 
   it('computes blur and pixelation scales', () => {

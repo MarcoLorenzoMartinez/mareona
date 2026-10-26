@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
 import { WhoAreYaClient } from './who-are-ya-client';
+import { getTodayDateStr } from '@/lib/who-are-ya/daily';
 import playersData from '@/data/who-are-ya/players.json' with { type: 'json' };
-import kitsData from '@/data/who-are-ya/kits.json' with { type: 'json' };
-import type { WhoAreYaPlayer, WhoAreYaKit } from '@/lib/who-are-ya/types';
+import type { WhoAreYaPlayer } from '@/lib/who-are-ya/types';
 
 export const metadata: Metadata = {
-  title: 'Who Are Ya? — Mareona',
-  description: 'Adivina el jugador o la camiseta histórica del Real Sporting en 6 intentos.',
+  title: '¿Quién es? — Mareona',
+  description: 'Adivina el futbolista histórico o actual del Real Sporting en 6 intentos.',
 };
 
 export default function WhoAreYaPage() {
   const players = playersData as WhoAreYaPlayer[];
-  const kits = kitsData as WhoAreYaKit[];
+  const initialDate = getTodayDateStr();
 
-  return <WhoAreYaClient players={players} kits={kits} />;
+  return <WhoAreYaClient players={players} initialDate={initialDate} />;
 }

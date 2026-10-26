@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import type { WordleDailyWord, WordleStats } from '@/lib/wordle/types';
 
 interface WordleStatsModalProps {
@@ -7,7 +8,7 @@ interface WordleStatsModalProps {
   stats: WordleStats;
   challenge: WordleDailyWord;
   isGameOver: boolean;
-  hasWon: boolean;
+  onOpenArchive?: () => void;
   onResetStats?: () => void;
 }
 
@@ -17,7 +18,7 @@ export function WordleStatsModal({
   stats,
   challenge,
   isGameOver,
-  hasWon,
+  onOpenArchive,
   onResetStats,
 }: WordleStatsModalProps) {
   if (!isOpen) return null;
@@ -31,77 +32,93 @@ export function WordleStatsModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="stats-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-2xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-2xs"
     >
-      <div className="flex max-h-[90vh] w-full max-w-sm flex-col rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xl animate-in fade-in zoom-in-95">
-        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
-          <h2 id="stats-title" className="text-base font-bold text-[var(--foreground)]">
-            Estadísticas del Jugador
+      <div className="flex max-h-[92vh] w-full max-w-sm flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl animate-in fade-in zoom-in-95 duration-150">
+        {/* Cabecera limpia y sutil */}
+        <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
+          <h2 id="stats-title" className="text-sm font-bold uppercase tracking-wider text-neutral-500">
+            Estadísticas
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-100"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors"
             aria-label="Cerrar estadísticas"
           >
             ✕
           </button>
         </div>
 
+        {/* Revelación de palabra y trivia */}
         {isGameOver && (
-          <div className="mt-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-center">
-            <span className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
-              {hasWon ? '¡Acertaste la palabra!' : 'Palabra secreta'}
-            </span>
-            <div className="mt-1 text-xl font-extrabold tracking-wider text-[#e2001a]">
+          <div className="mt-4 text-center">
+            <h3 className="text-3xl font-black tracking-tight text-[#e2001a]">
               {challenge.word}
-            </div>
-            <p className="mt-2 text-xs text-[var(--foreground)] leading-relaxed italic text-left">
-              «{challenge.trivia}»
+            </h3>
+            <p className="mt-2 text-xs font-medium leading-relaxed text-neutral-600 text-center">
+              {challenge.trivia}
             </p>
           </div>
         )}
 
-        {/* Resumen numérico */}
-        <div className="mt-4 grid grid-cols-4 gap-2 text-center">
-          <div className="rounded-lg bg-zinc-50 border border-zinc-100 p-2">
-            <div className="text-lg font-bold text-[var(--foreground)] tabular-nums">{stats.played}</div>
-            <div className="text-[10px] text-[var(--foreground-muted)]">Partidas</div>
+        {/* Resumen de métricas idéntico a Mayor o Menor */}
+        <div className="mt-5 grid grid-cols-4 items-center border-y border-neutral-100 py-3.5 text-center">
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+              Partidas
+            </span>
+            <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">
+              {stats.played}
+            </span>
           </div>
-          <div className="rounded-lg bg-zinc-50 border border-zinc-100 p-2">
-            <div className="text-lg font-bold text-[var(--foreground)] tabular-nums">{winRate}%</div>
-            <div className="text-[10px] text-[var(--foreground-muted)]">Aciertos</div>
+
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+              Aciertos
+            </span>
+            <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">
+              {winRate}%
+            </span>
           </div>
-          <div className="rounded-lg bg-zinc-50 border border-zinc-100 p-2">
-            <div className="text-lg font-bold text-[#e2001a] tabular-nums">{stats.currentStreak}</div>
-            <div className="text-[10px] text-[var(--foreground-muted)]">Racha actual</div>
+
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+              Racha
+            </span>
+            <span className="mt-1 text-2xl font-black tabular-nums text-[#e2001a]">
+              {stats.currentStreak}
+            </span>
           </div>
-          <div className="rounded-lg bg-zinc-50 border border-zinc-100 p-2">
-            <div className="text-lg font-bold text-[var(--foreground)] tabular-nums">{stats.maxStreak}</div>
-            <div className="text-[10px] text-[var(--foreground-muted)]">Mejor racha</div>
+
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+              Mejor racha
+            </span>
+            <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">
+              {stats.maxStreak}
+            </span>
           </div>
         </div>
 
         {/* Distribución de intentos */}
-        <div className="mt-4 border-t border-[var(--border)] pt-3">
-          <h3 className="text-xs font-bold text-[var(--foreground)] uppercase tracking-wider mb-2">
-            Distribución de Intentos
-          </h3>
-          <div className="space-y-1.5">
+        <div className="mt-4 pt-1">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
+            Distribución de intentos
+          </span>
+          <div className="mt-2.5 space-y-1.5">
             {attemptsArray.map((attempt) => {
               const count = stats.guessDistribution?.[attempt] || 0;
               const percentage = Math.round((count / maxGuessCount) * 100);
 
               return (
                 <div key={attempt} className="flex items-center gap-2 text-xs">
-                  <span className="w-3 font-bold text-[var(--foreground-muted)] tabular-nums">
+                  <span className="w-3 font-bold text-neutral-400 tabular-nums">
                     {attempt}
                   </span>
-                  <div className="flex-1 rounded-sm bg-zinc-100 overflow-hidden h-5 flex items-center">
+                  <div className="flex-1 rounded-sm bg-neutral-100 overflow-hidden h-5 flex items-center">
                     <div
-                      className={`h-full flex items-center justify-end px-1.5 text-[11px] font-bold text-white transition-all duration-300 ${
-                        count > 0 ? 'bg-[#e2001a]' : 'bg-transparent text-zinc-400'
-                      }`}
+                      className={`h-full flex items-center justify-end px-1.5 text-[11px] font-bold text-white transition-all duration-300 ${count > 0 ? "bg-[#e2001a]" : "bg-transparent text-neutral-400"}`}
                       style={{ width: `${Math.max(count > 0 ? 12 : 0, percentage)}%` }}
                     >
                       {count > 0 ? count : ''}
@@ -113,25 +130,46 @@ export function WordleStatsModal({
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col gap-2">
-          {onResetStats && (
+        {/* Acciones principales: Volver a juegos + CTA primario para seguir jugando (Archivo o Cerrar) */}
+        <div className="mt-6 grid grid-cols-2 gap-3 w-full">
+          <Link
+            href="/juegos"
+            className="flex h-11 items-center justify-center rounded-xl border border-neutral-300 bg-white px-3 text-xs sm:text-sm font-bold text-neutral-600 shadow-2xs hover:bg-neutral-50 hover:text-neutral-900 active:scale-[0.97] transition-all select-none text-center"
+          >
+            Volver a juegos
+          </Link>
+
+          {isGameOver && onOpenArchive ? (
             <button
               type="button"
-              onClick={onResetStats}
-              className="w-full rounded-full border border-rose-200 bg-rose-50/50 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-100/70 transition-colors"
+              onClick={() => {
+                onClose();
+                onOpenArchive();
+              }}
+              className="flex h-11 items-center justify-center rounded-xl bg-gradient-to-b from-[#e2001a] to-[#c70017] px-3 text-xs sm:text-sm font-extrabold text-white shadow-md hover:from-[#c70017] hover:to-[#a80013] active:scale-[0.97] transition-all select-none text-center"
             >
-              Reiniciar mis partidas y estadísticas
+              Jugar anteriores
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex h-11 items-center justify-center rounded-xl bg-gradient-to-b from-[#e2001a] to-[#c70017] px-3 text-xs sm:text-sm font-extrabold text-white shadow-md hover:from-[#c70017] hover:to-[#a80013] active:scale-[0.97] transition-all select-none text-center"
+            >
+              Cerrar
             </button>
           )}
+        </div>
 
+        {onResetStats && (
           <button
             type="button"
-            onClick={onClose}
-            className="w-full rounded-full bg-[#e2001a] py-2.5 text-xs font-bold text-white hover:bg-[#b30015] transition-colors"
+            onClick={onResetStats}
+            className="mt-3 text-center text-[11px] font-medium text-neutral-400 hover:text-rose-600 transition-colors"
           >
-            Cerrar
+            Reiniciar mis partidas y estadísticas
           </button>
-        </div>
+        )}
       </div>
     </div>
   );

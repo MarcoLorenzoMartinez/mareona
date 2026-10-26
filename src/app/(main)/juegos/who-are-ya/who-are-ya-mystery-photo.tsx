@@ -1,4 +1,4 @@
-// Client: CSS SVG Pixelated photo for Who Are Ya
+// Client: CSS SVG Pixelated photo for ¿Quién es?
 'use client';
 
 import React from 'react';
@@ -18,7 +18,6 @@ export function WhoAreYaMysteryPhoto({
   name,
   attemptsCount,
   isGameOver,
-  isKit = false,
 }: WhoAreYaMysteryPhotoProps) {
   const factor = getPixelationFactor(attemptsCount, isGameOver);
   const filterId = `pixelate-filter-${factor}`;
@@ -45,28 +44,16 @@ export function WhoAreYaMysteryPhoto({
             filter: !isGameOver && factor > 1 ? `url(#${filterId})` : 'none',
           }}
         >
-          {isKit ? (
-            <Image
-              src={imageUrl}
-              alt={isGameOver ? name : 'Camiseta misteriosa'}
-              fill
-              draggable={false}
-              className="object-contain p-4 select-none pointer-events-none"
-              sizes="(max-width: 640px) 192px, 224px"
-              priority
-            />
-          ) : (
-            <Image
-              src={imageUrl}
-              alt={isGameOver ? name : 'Jugador misterioso'}
-              fill
-              unoptimized
-              draggable={false}
-              className="object-cover select-none pointer-events-none"
-              sizes="(max-width: 640px) 192px, 224px"
-              priority
-            />
-          )}
+          <Image
+            src={imageUrl}
+            alt={isGameOver ? name : 'Jugador misterioso'}
+            fill
+            unoptimized
+            draggable={false}
+            className="object-cover select-none pointer-events-none"
+            sizes="(max-width: 640px) 192px, 224px"
+            priority
+          />
         </div>
 
         {/* Capa de protección transparente para evitar arrastre y clic derecho */}

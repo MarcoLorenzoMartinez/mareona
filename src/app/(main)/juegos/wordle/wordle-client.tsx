@@ -17,30 +17,12 @@ interface WordleClientProps {
   initialChallenge?: WordleDailyWord;
 }
 
-const DEFAULT_CHALLENGE: WordleDailyWord = {
-  id: '2026-10-01',
-  word: 'MAJO',
-  trivia: 'Majo, emblemático jugador sportinguista de las primeras décadas del club en El Molinón.',
-};
-
 export function WordleClient({ initialChallenge }: WordleClientProps) {
   const { user } = useAuth();
   const isDemo = isDemoEmail(user?.email);
 
   const [challenge, setChallenge] = useState<WordleDailyWord>(() => {
-    if (initialChallenge) return initialChallenge;
-    // Client-side initialization fallback
-    if (typeof window !== 'undefined') {
-      return getTodayChallenge();
-    }
-    return DEFAULT_CHALLENGE;
-  });
-  const [todayId] = useState<string>(() => {
-    if (initialChallenge) return initialChallenge.id;
-    if (typeof window !== 'undefined') {
-      return getTodayChallenge().id;
-    }
-    return '2026-10-01';
+    return initialChallenge || getTodayChallenge();
   });
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
@@ -64,7 +46,6 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
   } = useWordleGame(challenge);
 
   const isGameOver = gameState.status !== 'IN_PROGRESS';
-  const hasWon = gameState.status === 'WON';
 
   // Open stats modal automatically ONLY when the user finishes a game in the current session
   useEffect(() => {
@@ -82,7 +63,6 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
     <div className="flex flex-col gap-4 max-w-xl mx-auto w-full">
       <WordleHeader
         challenge={challenge}
-        isArchive={challenge.id !== todayId}
         onOpenArchive={() => setIsArchiveOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
       />
@@ -120,7 +100,7 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
         stats={stats}
         challenge={challenge}
         isGameOver={isGameOver}
-        hasWon={hasWon}
+        onOpenArchive={() => setIsArchiveOpen(true)}
         onResetStats={isDemo ? resetAllProgress : undefined}
       />
     </div>

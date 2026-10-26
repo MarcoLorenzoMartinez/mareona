@@ -1,4 +1,4 @@
-import type { WhoAreYaPlayer, WhoAreYaKit } from './types';
+import type { WhoAreYaPlayer } from './types';
 
 export const WHO_ARE_YA_EPOCH_DATE = '2026-10-01';
 
@@ -35,18 +35,6 @@ export function getPlayerForDate(dateStr: string, catalog: WhoAreYaPlayer[]): Wh
   const round = Math.floor(days / total);
   const step = days % total;
   const idx = getPermutedIndex(step, total, round, 151);
-  return catalog[idx] || catalog[0];
-}
-
-/**
- * Resolves deterministic daily kit for an ISO date string (YYYY-MM-DD).
- */
-export function getKitForDate(dateStr: string, catalog: WhoAreYaKit[]): WhoAreYaKit {
-  const days = getDaysSinceEpoch(dateStr);
-  const total = catalog.length;
-  const round = Math.floor(days / total);
-  const step = days % total;
-  const idx = getPermutedIndex(step, total, round, 199);
   return catalog[idx] || catalog[0];
 }
 

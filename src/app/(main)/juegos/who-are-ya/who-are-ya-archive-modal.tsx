@@ -72,79 +72,93 @@ export function WhoAreYaArchiveModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-labelledby="archive-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-2xs animate-in fade-in duration-150"
+      aria-labelledby="calendar-archive-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-2xs animate-in fade-in duration-150"
     >
-      <div className="flex w-full max-w-sm flex-col rounded-2xl border border-[var(--border)] bg-white p-6 shadow-xl animate-in zoom-in-95 duration-150">
-        <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-          <h2 id="archive-modal-title" className="text-sm font-bold uppercase tracking-wider text-[var(--foreground)]">
-            Archivo de retos
+      <div className="flex w-full max-w-sm flex-col rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xl animate-in zoom-in-95 duration-150">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
+          <h2 id="calendar-archive-title" className="text-base font-bold text-[var(--foreground)]">
+            Calendario de Retos
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--foreground-muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
-            aria-label="Cerrar archivo"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-100"
+            aria-label="Cerrar calendario"
           >
             ✕
           </button>
         </div>
 
-        {/* Selector de Mes */}
-        <div className="mt-4 flex items-center justify-between">
-          <button
-            type="button"
-            onClick={handlePrevMonth}
-            className="rounded-lg p-1.5 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface)]"
-            aria-label="Mes anterior"
-          >
-            ◀
-          </button>
-          <span className="text-xs font-bold text-[var(--foreground)]">
+        {/* Month Selector Controls */}
+        <div className="mt-3 flex items-center justify-between px-1">
+          <span className="text-sm font-bold text-[var(--foreground)]">
             {MONTH_NAMES[viewMonth]} {viewYear}
           </span>
-          <button
-            type="button"
-            onClick={handleNextMonth}
-            className="rounded-lg p-1.5 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface)]"
-            aria-label="Mes siguiente"
-          >
-            ▶
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={handlePrevMonth}
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] text-xs font-bold hover:bg-[var(--surface)] text-[var(--foreground)] transition-colors"
+              aria-label="Mes anterior"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={handleNextMonth}
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] text-xs font-bold hover:bg-[var(--surface)] text-[var(--foreground)] transition-colors"
+              aria-label="Mes siguiente"
+            >
+              ›
+            </button>
+          </div>
         </div>
 
-        {/* Cabecera días */}
-        <div className="mt-3 grid grid-cols-7 gap-1 text-center">
-          {WEEKDAY_HEADERS.map((h) => (
-            <span key={h} className="text-[10px] font-bold text-[var(--foreground-muted)]">
+        {/* Calendar Day Header */}
+        <div className="mt-3 grid grid-cols-7 text-center text-[11px] font-semibold text-[var(--foreground-muted)]">
+          {WEEKDAY_HEADERS.map((h, i) => (
+            <div key={i} className="py-1">
               {h}
-            </span>
+            </div>
           ))}
         </div>
 
-        {/* Matriz de días */}
-        <div className="mt-2 grid grid-cols-7 gap-1">
+        {/* Calendar Day Cells */}
+        <div className="grid grid-cols-7 gap-1.5 pt-1">
           {cells.map((cell, idx) => {
-            if (!cell) return <div key={`empty-${idx}`} className="h-8" />;
-            const isDisabled = cell.isFuture || cell.isPastEpoch;
+            if (!cell) {
+              return <div key={`empty-${idx}`} className="aspect-square" />;
+            }
+
+            const { day, dateStr, isFuture, isPastEpoch, isSelected } = cell;
+            const isToday = dateStr === todayIso;
+            const isDisabled = isFuture || isPastEpoch;
+
+            let cellBg = 'bg-[var(--surface)] text-[var(--foreground)] hover:border-[#e2001a]';
+            if (isDisabled) {
+              cellBg = 'bg-zinc-50 text-zinc-300 border-zinc-100 cursor-not-allowed';
+            } else if (isSelected) {
+              cellBg = 'bg-[#e2001a] text-white font-bold border-[#e2001a]';
+            }
+
             return (
               <button
-                key={cell.dateStr}
+                key={dateStr}
                 type="button"
                 disabled={isDisabled}
                 onClick={() => {
-                  onSelectDate(cell.dateStr);
+                  onSelectDate(dateStr);
                   onClose();
                 }}
-                className={`flex h-8 items-center justify-center rounded-lg text-xs font-bold transition-all ${
-                  cell.isSelected
-                    ? 'bg-[#e2001a] text-white shadow-2xs'
-                    : isDisabled
-                    ? 'text-neutral-300 cursor-not-allowed'
-                    : 'text-[var(--foreground)] hover:bg-[var(--surface)] active:scale-95'
+                className={`relative flex aspect-square flex-col items-center justify-center rounded-lg border text-xs font-semibold tabular-nums transition-all ${cellBg} ${
+                  isToday && !isSelected ? 'ring-2 ring-[#e2001a]/40 font-bold' : ''
                 }`}
+                title={isDisabled ? 'No disponible' : `Jugar reto del ${dateStr}`}
+                aria-label={`Día ${day}`}
               >
-                {cell.day}
+                <span>{day}</span>
               </button>
             );
           })}

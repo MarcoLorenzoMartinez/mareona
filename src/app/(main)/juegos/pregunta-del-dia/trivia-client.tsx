@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import type { TriviaDailyChallenge, TriviaPlayerAttempt, TriviaStats } from '@/lib/trivia/types';
 import { evaluateTriviaAnswer } from '@/lib/trivia/engine';
 import {
@@ -13,6 +14,7 @@ import {
 import { TriviaInputHandler } from './trivia-input-handler';
 import { TriviaResultModal } from './trivia-result-modal';
 import { TriviaArenaBackground } from './trivia-arena-background';
+import { TriviaSolvedCard } from './trivia-solved-card';
 
 interface TriviaClientProps {
   challenge: TriviaDailyChallenge;
@@ -55,20 +57,28 @@ export function TriviaClient({ challenge }: TriviaClientProps) {
 
   return (
     <div className="flex flex-col gap-6 max-w-xl mx-auto w-full">
-      {/* Top Header Bar similar to Wordle */}
+      {/* Top Header Bar */}
       <header className="flex items-center justify-between border-b border-[var(--border)] pb-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="rounded-full bg-[#e2001a] px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
-              Trivia Sportinguista
-            </span>
-            <span className="text-xs text-[var(--foreground-muted)] tabular-nums">
-              Día #{challenge.dayIndex}
-            </span>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/juegos"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a] hover:text-[#e2001a] transition-colors"
+            aria-label="Volver a juegos"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+            </svg>
+          </Link>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
+                La Pregunta del Día
+              </h1>
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                #{challenge.dayIndex}
+              </span>
+            </div>
           </div>
-          <h1 className="mt-1 text-lg font-bold text-[var(--foreground)]">
-            La Pregunta del Día
-          </h1>
         </div>
 
         <button
@@ -86,17 +96,7 @@ export function TriviaClient({ challenge }: TriviaClientProps) {
         <TriviaArenaBackground />
 
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#e2001a]">
-              Reto #{challenge.dayIndex}
-            </span>
-            <span className="text-[11px] text-neutral-400">•</span>
-            <span className="text-[11px] font-medium text-neutral-500 tabular-nums">
-              {challenge.dateStr}
-            </span>
-          </div>
-
-          <h2 className="mt-3 text-lg sm:text-xl font-bold leading-relaxed text-neutral-900">
+          <h2 className="text-lg sm:text-xl font-bold leading-relaxed text-neutral-900">
             {challenge.question.question}
           </h2>
         </div>
@@ -124,48 +124,14 @@ export function TriviaClient({ challenge }: TriviaClientProps) {
             </button>
           </div>
         ) : (
-          <div className="mt-8 flex flex-col gap-4">
-            <div
-              className={`rounded-2xl p-5 border ${
-                attempt.isCorrect
-                  ? 'border-emerald-200 bg-emerald-50/70 text-emerald-950'
-                  : 'border-red-200 bg-red-50/70 text-red-950'
-              }`}
-            >
-              <div className="flex items-center justify-between font-bold text-sm">
-                <span>{attempt.isCorrect ? '¡Has acertado!' : 'Has fallado'}</span>
-                <span className="text-xs font-semibold opacity-75">
-                  {challenge.dateStr}
-                </span>
-              </div>
-              <p className="mt-2 text-xs">
-                Tu respuesta: <span className="font-bold">{attempt.userAnswer}</span>
-              </p>
-              {!attempt.isCorrect && (
-                <p className="mt-1 text-xs">
-                  Respuesta correcta:{' '}
-                  <span className="font-black text-[#e2001a]">
-                    {challenge.question.canonicalAnswer}
-                  </span>
-                </p>
-              )}
-            </div>
-
-            <div className="rounded-2xl border border-neutral-200/80 bg-white/80 p-5 text-xs leading-relaxed text-neutral-600 shadow-2xs">
-              <span className="font-bold text-neutral-900 block mb-1">
-                Contexto Histórico:
-              </span>
-              {challenge.question.explanation}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              className="mt-2 flex h-11 w-full items-center justify-center rounded-xl border border-neutral-300 bg-white px-4 text-xs font-bold text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 active:scale-[0.98] transition-all"
-            >
-              Ver mis Estadísticas
-            </button>
-          </div>
+          <TriviaSolvedCard
+            isCorrect={attempt.isCorrect}
+            userAnswer={attempt.userAnswer}
+            canonicalAnswer={challenge.question.canonicalAnswer}
+            explanation={challenge.question.explanation}
+            photoUrl={challenge.question.photoUrl}
+            onOpenStats={() => setIsModalOpen(true)}
+          />
         )}
       </main>
 

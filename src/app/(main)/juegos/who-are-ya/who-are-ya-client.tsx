@@ -1,4 +1,4 @@
-// Client: Estado interactivo del juego diario Who Are Ya con archivo por fecha
+// Client: Estado interactivo del juego diario ¿Quién es? con archivo por fecha
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
@@ -6,47 +6,25 @@ import { WhoAreYaHeader } from './who-are-ya-header';
 import { WhoAreYaMysteryPhoto } from './who-are-ya-mystery-photo';
 import { WhoAreYaSelector, type SelectorOption } from './who-are-ya-selector';
 import { WhoAreYaPlayerGrid } from './who-are-ya-player-grid';
-import { WhoAreYaKitGrid } from './who-are-ya-kit-grid';
 import { WhoAreYaResultModal } from './who-are-ya-game-over';
 import { WhoAreYaArchiveModal } from './who-are-ya-archive-modal';
-import {
-  evaluatePlayerGuess,
-  evaluateKitGuess,
-  MAX_ATTEMPTS,
-} from '@/lib/who-are-ya/engine';
-import {
-  getPlayerForDate,
-  getKitForDate,
-  getTodayDateStr,
-} from '@/lib/who-are-ya/daily';
-import type {
-  WhoAreYaGameMode,
-  WhoAreYaPlayer,
-  WhoAreYaKit,
-  PlayerGuessResult,
-  KitGuessResult,
-} from '@/lib/who-are-ya/types';
+import { evaluatePlayerGuess, MAX_ATTEMPTS } from '@/lib/who-are-ya/engine';
+import { getPlayerForDate } from '@/lib/who-are-ya/daily';
+import type { WhoAreYaPlayer, PlayerGuessResult } from '@/lib/who-are-ya/types';
 
 interface WhoAreYaClientProps {
   players: WhoAreYaPlayer[];
-  kits: WhoAreYaKit[];
+  initialDate: string;
 }
 
-export function WhoAreYaClient({ players, kits }: WhoAreYaClientProps) {
-  const [mode, setMode] = useState<WhoAreYaGameMode>('players');
-  const todayStr = useMemo(() => getTodayDateStr(), []);
-  const [selectedDate, setSelectedDate] = useState<string>(todayStr);
+export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
+  const todayStr = initialDate;
+  const [selectedDate, setSelectedDate] = useState<string>(initialDate);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isResultModalDismissed, setIsResultModalDismissed] = useState(false);
 
-  // Guesses state mapped per date and mode
+  // Guesses state mapped per date
   const [playerGuessesByDate, setPlayerGuessesByDate] = useState<Record<string, PlayerGuessResult[]>>({});
-  const [kitGuessesByDate, setKitGuessesByDate] = useState<Record<string, KitGuessResult[]>>({});
-
-  const handleModeChange = (newMode: WhoAreYaGameMode) => {
-    setMode(newMode);
-    setIsResultModalDismissed(false);
-  };
 
   const handleDateChange = (newDate: string) => {
     setSelectedDate(newDate);
@@ -58,23 +36,11 @@ export function WhoAreYaClient({ players, kits }: WhoAreYaClientProps) {
     [selectedDate, players]
   );
 
-  const currentTargetKit = useMemo(
-    () => getKitForDate(selectedDate, kits),
-    [selectedDate, kits]
-  );
-
   const playerGuesses = useMemo(() => playerGuessesByDate[selectedDate] || [], [playerGuessesByDate, selectedDate]);
-  const kitGuesses = useMemo(() => kitGuessesByDate[selectedDate] || [], [kitGuessesByDate, selectedDate]);
 
-  const isPlayerWon = playerGuesses.some((g) => g.isCorrect);
-  const isPlayerGameOver = isPlayerWon || playerGuesses.length >= MAX_ATTEMPTS;
-
-  const isKitWon = kitGuesses.some((g) => g.isCorrect);
-  const isKitGameOver = isKitWon || kitGuesses.length >= MAX_ATTEMPTS;
-
-  const activeIsGameOver = mode === 'players' ? isPlayerGameOver : isKitGameOver;
-  const activeIsWon = mode === 'players' ? isPlayerWon : isKitWon;
-  const activeGuessesCount = mode === 'players' ? playerGuesses.length : kitGuesses.length;
+  const isWon = playerGuesses.some((g) => g.isCorrect);
+  const isGameOver = isWon || playerGuesses.length >= MAX_ATTEMPTS;
+  const guessesCount = playerGuesses.length;
 
   const playerOptions: SelectorOption[] = useMemo(() => {
     const guessedIds = new Set(playerGuesses.map((g) => g.player.bdfId));
@@ -87,45 +53,22 @@ export function WhoAreYaClient({ players, kits }: WhoAreYaClientProps) {
       }));
   }, [players, playerGuesses]);
 
-  const kitOptions: SelectorOption[] = useMemo(() => {
-    const guessedIds = new Set(kitGuesses.map((g) => g.kit.id));
-    return kits
-      .filter((k) => !guessedIds.has(k.id))
-      .map((k) => ({
-        id: k.id,
-        label: k.label,
-        sublabel: k.details,
-      }));
-  }, [kits, kitGuesses]);
-
   const handleSelectOption = useCallback(
     (option: SelectorOption) => {
-      if (mode === 'players') {
-        const found = players.find((p) => p.bdfId === option.id);
-        if (!found || isPlayerGameOver) return;
-        const result = evaluatePlayerGuess(found, currentTargetPlayer);
-        setPlayerGuessesByDate((prev) => ({
-          ...prev,
-          [selectedDate]: [result, ...(prev[selectedDate] || [])],
-        }));
-      } else {
-        const found = kits.find((k) => k.id === option.id);
-        if (!found || isKitGameOver) return;
-        const result = evaluateKitGuess(found, currentTargetKit);
-        setKitGuessesByDate((prev) => ({
-          ...prev,
-          [selectedDate]: [result, ...(prev[selectedDate] || [])],
-        }));
-      }
+      const found = players.find((p) => p.bdfId === option.id);
+      if (!found || isGameOver) return;
+      const result = evaluatePlayerGuess(found, currentTargetPlayer);
+      setPlayerGuessesByDate((prev) => ({
+        ...prev,
+        [selectedDate]: [result, ...(prev[selectedDate] || [])],
+      }));
     },
-    [mode, players, kits, isPlayerGameOver, isKitGameOver, currentTargetPlayer, currentTargetKit, selectedDate]
+    [players, isGameOver, currentTargetPlayer, selectedDate]
   );
 
   return (
     <div className="flex flex-col gap-6">
       <WhoAreYaHeader
-        currentMode={mode}
-        onSelectMode={handleModeChange}
         selectedDate={selectedDate}
         isToday={selectedDate === todayStr}
         onOpenArchive={() => setIsArchiveOpen(true)}
@@ -136,48 +79,39 @@ export function WhoAreYaClient({ players, kits }: WhoAreYaClientProps) {
         className="flex flex-col items-center gap-6 rounded-3xl border border-[var(--border)] bg-gradient-to-b from-white to-[var(--surface)] p-4 sm:p-8 shadow-xs"
       >
         <WhoAreYaMysteryPhoto
-          imageUrl={mode === 'players' ? currentTargetPlayer.photoUrl : currentTargetKit.image}
-          name={mode === 'players' ? currentTargetPlayer.name : currentTargetKit.label}
-          attemptsCount={activeGuessesCount}
-          isGameOver={activeIsGameOver}
-          isKit={mode === 'kits'}
+          imageUrl={currentTargetPlayer.photoUrl}
+          name={currentTargetPlayer.name}
+          attemptsCount={guessesCount}
+          isGameOver={isGameOver}
+          isKit={false}
         />
 
-        {!activeIsGameOver && (
+        {!isGameOver && (
           <div className="flex flex-col items-center gap-2 w-full max-w-md mx-auto">
             <WhoAreYaSelector
-              options={mode === 'players' ? playerOptions : kitOptions}
+              options={playerOptions}
               onSelect={handleSelectOption}
-              placeholder={
-                mode === 'players'
-                  ? 'Busca un jugador del Real Sporting...'
-                  : 'Selecciona una camiseta del Sporting...'
-              }
+              placeholder="Busca un jugador del Real Sporting..."
             />
             {/* Indicador sutil y discreto de intentos restantes */}
             <span className="text-[11px] font-semibold text-[var(--foreground-muted)] tracking-wide">
-              Intento {activeGuessesCount + 1} de {MAX_ATTEMPTS}
+              Intento {guessesCount + 1} de {MAX_ATTEMPTS}
             </span>
           </div>
         )}
 
-        {mode === 'players' ? (
-          <WhoAreYaPlayerGrid guesses={playerGuesses} />
-        ) : (
-          <WhoAreYaKitGrid guesses={kitGuesses} />
-        )}
+        <WhoAreYaPlayerGrid guesses={playerGuesses} />
       </section>
 
       {/* Popup modal al finalizar la partida */}
       <WhoAreYaResultModal
-        isOpen={activeIsGameOver && !isResultModalDismissed}
+        isOpen={isGameOver && !isResultModalDismissed}
         onClose={() => setIsResultModalDismissed(true)}
-        isWon={activeIsWon}
-        attemptsCount={activeGuessesCount}
+        isWon={isWon}
+        attemptsCount={guessesCount}
         maxAttempts={MAX_ATTEMPTS}
-        mode={mode}
-        targetName={mode === 'players' ? currentTargetPlayer.name : currentTargetKit.label}
-        targetSublabel={mode === 'players' ? currentTargetPlayer.fullName : currentTargetKit.details}
+        targetName={currentTargetPlayer.name}
+        targetSublabel={currentTargetPlayer.fullName}
         onOpenArchive={() => setIsArchiveOpen(true)}
       />
 

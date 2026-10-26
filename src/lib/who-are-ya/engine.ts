@@ -1,8 +1,6 @@
 import type {
   WhoAreYaPlayer,
-  WhoAreYaKit,
   PlayerGuessResult,
-  KitGuessResult,
   StatComparison,
 } from './types';
 
@@ -19,7 +17,6 @@ export const MAX_ATTEMPTS = 6;
  */
 export function getPixelationFactor(attemptCount: number, isGameOver: boolean): number {
   if (isGameOver) return 1;
-  // Pixelation scale: from massive blocks (24x downscale) progressively refining to 3x
   const pixelFactors = [24, 18, 12, 8, 5, 3];
   const level = Math.min(attemptCount, pixelFactors.length - 1);
   return pixelFactors[level];
@@ -27,7 +24,6 @@ export function getPixelationFactor(attemptCount: number, isGameOver: boolean): 
 
 /**
  * Calculates current blur in pixels based on failed attempts and game outcome.
- * Maintained for backwards-compatibility and legacy styling.
  *
  * @param attemptCount Number of guesses already made
  * @param isGameOver Whether the game has completed
@@ -35,7 +31,6 @@ export function getPixelationFactor(attemptCount: number, isGameOver: boolean): 
  */
 export function getBlurAmount(attemptCount: number, isGameOver: boolean): string {
   if (isGameOver) return '0px';
-  // Blur scale from initial 22px down to 3px on last attempt
   const blurLevels = [22, 17, 13, 9, 6, 3];
   const level = Math.min(attemptCount, blurLevels.length - 1);
   return `${blurLevels[level]}px`;
@@ -77,32 +72,4 @@ export function evaluatePlayerGuess(
       comparison: compareNumbers(guessed.endYear, target.endYear),
     },
   };
-}
-
-/**
- * Compares guessed kit with target mystery kit.
- */
-export function evaluateKitGuess(
-  guessed: WhoAreYaKit,
-  target: WhoAreYaKit
-): KitGuessResult {
-  const isCorrect = guessed.id === target.id;
-
-  return {
-    kit: guessed,
-    isCorrect,
-    seasonMatch: guessed.season === target.season,
-    typeMatch: guessed.type === target.type,
-    yearComparison: compareNumbers(guessed.year, target.year),
-  };
-}
-
-/**
- * Deterministically picks the daily index from today's date.
- */
-export function getDailyIndex(totalItems: number, offset = 0): number {
-  if (totalItems <= 0) return 0;
-  const now = new Date();
-  const dateNum = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate() + offset;
-  return Math.abs(dateNum % totalItems);
 }

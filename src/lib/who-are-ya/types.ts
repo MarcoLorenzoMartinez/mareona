@@ -1,5 +1,3 @@
-export type WhoAreYaGameMode = 'players' | 'kits';
-
 export interface WhoAreYaPlayer {
   bdfId: number;
   name: string;
@@ -11,17 +9,6 @@ export interface WhoAreYaPlayer {
   totalPlayed: number;
   totalGoals: number;
   photoUrl: string;
-}
-
-export interface WhoAreYaKit {
-  id: string;
-  label: string;
-  season: string;
-  type: string;
-  year: number;
-  sponsor?: string;
-  details: string;
-  image: string;
 }
 
 export type StatComparison = 'equal' | 'higher' | 'lower';
@@ -47,12 +34,4 @@ export interface PlayerGuessResult {
     value: number;
     comparison: StatComparison;
   };
-}
-
-export interface KitGuessResult {
-  kit: WhoAreYaKit;
-  isCorrect: boolean;
-  seasonMatch: boolean;
-  typeMatch: boolean;
-  yearComparison: StatComparison;
 }

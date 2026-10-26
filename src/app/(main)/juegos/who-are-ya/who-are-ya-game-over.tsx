@@ -1,9 +1,8 @@
-// Client: Modal de resultado final de Who Are Ya alineado con el diseño de los otros juegos
+// Client: Modal de resultado final de ¿Quién es? alineado con el diseño de los otros juegos
 'use client';
 
 import React from 'react';
 import Link from 'next/link';
-import type { WhoAreYaGameMode } from '@/lib/who-are-ya/types';
 
 interface WhoAreYaResultModalProps {
   isOpen: boolean;
@@ -11,7 +10,6 @@ interface WhoAreYaResultModalProps {
   isWon: boolean;
   attemptsCount: number;
   maxAttempts: number;
-  mode: WhoAreYaGameMode;
   targetName: string;
   targetSublabel?: string;
   onOpenArchive: () => void;
@@ -23,14 +21,11 @@ export function WhoAreYaResultModal({
   isWon,
   attemptsCount,
   maxAttempts,
-  mode,
   targetName,
   targetSublabel,
   onOpenArchive,
 }: WhoAreYaResultModalProps) {
   if (!isOpen) return null;
-
-  const modeLabel = mode === 'players' ? 'Futbolista' : 'Camiseta';
 
   return (
     <div
@@ -58,7 +53,7 @@ export function WhoAreYaResultModal({
         {/* Revelación destacada */}
         <div className="mt-4 text-center">
           <span className="text-[11px] font-bold tracking-widest text-[#e2001a] uppercase">
-            {mode === 'players' ? 'Futbolista misterioso' : 'Camiseta histórica'}
+            Futbolista misterioso
           </span>
           <h3
             id="who-are-ya-modal-title"
@@ -93,10 +88,14 @@ export function WhoAreYaResultModal({
 
           <div className="flex flex-col items-center justify-center">
             <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-              Modo
+              Resultado
             </span>
-            <span className="mt-1 text-sm font-bold text-neutral-900">
-              {modeLabel}
+            <span
+              className={`mt-1 text-sm font-bold ${
+                isWon ? 'text-emerald-600' : 'text-[#e2001a]'
+              }`}
+            >
+              {isWon ? 'Completado' : 'No superado'}
             </span>
           </div>
         </div>

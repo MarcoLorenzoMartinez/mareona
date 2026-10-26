@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import type { HigherLowerMode } from '@/lib/higher-lower/types';
 import { HigherLowerModeSelector } from './higher-lower-mode-selector';
 
@@ -19,13 +20,21 @@ export function HigherLowerHeader({
 }: HigherLowerHeaderProps) {
   return (
     <header className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-neutral-200 pb-4">
-      <div>
-        <span className="rounded-full bg-[#e2001a] px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
-          Pasatiempo
-        </span>
-        <h1 className="mt-1.5 text-xl font-bold text-neutral-900">
-          ¿Mayor o Menor?
-        </h1>
+      <div className="flex items-center gap-3">
+        <Link
+          href="/juegos"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a] hover:text-[#e2001a] transition-colors"
+          aria-label="Volver a juegos"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+          </svg>
+        </Link>
+        <div>
+          <h1 className="text-xl font-bold tracking-tight text-neutral-900">
+            ¿Mayor o Menor?
+          </h1>
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center justify-center gap-3">
@@ -35,7 +44,7 @@ export function HigherLowerHeader({
           disabled={isRevealed}
         />
 
-        {/* Indicador de Racha sobrio y deportivo: sin emojis ni fondos amarillos chillones */}
+        {/* Indicador de Racha sobrio y deportivo */}
         <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3.5 py-1.5 text-xs font-semibold shadow-2xs">
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">

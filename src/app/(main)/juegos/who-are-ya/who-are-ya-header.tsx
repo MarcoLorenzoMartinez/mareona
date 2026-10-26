@@ -1,25 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
-import { WhoAreYaModeSelector } from './who-are-ya-mode-selector';
-import type { WhoAreYaGameMode } from '@/lib/who-are-ya/types';
 
 interface WhoAreYaHeaderProps {
-  currentMode: WhoAreYaGameMode;
-  onSelectMode: (mode: WhoAreYaGameMode) => void;
   selectedDate: string;
   isToday: boolean;
   onOpenArchive: () => void;
 }
 
 export function WhoAreYaHeader({
-  currentMode,
-  onSelectMode,
   selectedDate,
   isToday,
   onOpenArchive,
 }: WhoAreYaHeaderProps) {
   return (
-    <header className="flex flex-col gap-4 border-b border-[var(--border)] pb-4 sm:flex-row sm:items-center sm:justify-between">
+    <header className="flex items-center justify-between border-b border-[var(--border)] pb-4">
       <div className="flex items-center gap-3">
         <Link
           href="/juegos"
@@ -33,7 +27,7 @@ export function WhoAreYaHeader({
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-              Who Are Ya?
+              ¿Quién es?
             </h1>
             {!isToday && (
               <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
@@ -41,15 +35,10 @@ export function WhoAreYaHeader({
               </span>
             )}
           </div>
-          <p className="text-xs text-[var(--foreground-muted)]">
-            {currentMode === 'players' ? 'Adivina el futbolista del Sporting de hoy' : 'Identifica la camiseta histórica de hoy'}
-          </p>
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-3 sm:justify-end">
-        <WhoAreYaModeSelector currentMode={currentMode} onSelectMode={onSelectMode} />
-
+      <div className="flex items-center gap-3">
         <button
           type="button"
           onClick={onOpenArchive}
