@@ -1,7 +1,7 @@
 // Client: Autocomplete input for Who Are Ya with accessible keyboard navigation
 'use client';
 
-import { useState, useRef, useEffect, useId } from 'react';
+import { useState, useRef, useEffect, useId, useCallback } from 'react';
 
 export interface SelectorOption {
   id: string | number;
@@ -24,6 +24,7 @@ export function WhoAreYaSelector({
 }: WhoAreYaSelectorProps) {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
   const listboxId = useId();
 
@@ -48,10 +49,43 @@ export function WhoAreYaSelector({
         .slice(0, 6)
     : [];
 
-  const handleSelectOption = (opt: SelectorOption) => {
-    onSelect(opt);
-    setQuery('');
-    setOpen(false);
+  const handleSelectOption = useCallback(
+    (opt: SelectorOption) => {
+      onSelect(opt);
+      setQuery('');
+      setOpen(false);
+      setHighlightedIndex(-1);
+    },
+    [onSelect]
+  );
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!open || filtered.length === 0) {
+      if (e.key === 'ArrowDown' && cleanQuery.length > 0) {
+        setOpen(true);
+        setHighlightedIndex(0);
+        e.preventDefault();
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlightedIndex((prev) => (prev < filtered.length - 1 ? prev + 1 : 0));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : filtered.length - 1));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (highlightedIndex >= 0 && highlightedIndex < filtered.length) {
+        handleSelectOption(filtered[highlightedIndex]);
+      } else if (filtered.length > 0) {
+        handleSelectOption(filtered[0]);
+      }
+    } else if (e.key === 'Escape') {
+      setOpen(false);
+      setHighlightedIndex(-1);
+    }
   };
 
   return (
@@ -62,13 +96,18 @@ export function WhoAreYaSelector({
           role="combobox"
           aria-expanded={open && filtered.length > 0}
           aria-controls={listboxId}
+          aria-activedescendant={
+            highlightedIndex >= 0 ? `${listboxId}-opt-${highlightedIndex}` : undefined
+          }
           aria-autocomplete="list"
           disabled={disabled}
           placeholder={placeholder}
           value={query}
+          onKeyDown={handleKeyDown}
           onChange={(e) => {
             setQuery(e.target.value);
             setOpen(true);
+            setHighlightedIndex(-1);
           }}
           onFocus={() => {
             if (cleanQuery.length > 0) setOpen(true);
@@ -81,6 +120,7 @@ export function WhoAreYaSelector({
             onClick={() => {
               setQuery('');
               setOpen(false);
+              setHighlightedIndex(-1);
             }}
             aria-label="Limpiar búsqueda"
             className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
@@ -96,20 +136,39 @@ export function WhoAreYaSelector({
           role="listbox"
           className="absolute z-30 mt-2 max-h-60 w-full overflow-auto rounded-2xl border border-[var(--border)] bg-white py-1.5 shadow-lg animate-in fade-in-50 duration-150"
         >
-          {filtered.map((item) => (
-            <li
-              key={item.id}
-              role="option"
-              aria-selected={false}
-              onClick={() => handleSelectOption(item)}
-              className="flex cursor-pointer flex-col px-4 py-2 hover:bg-[var(--surface)] transition-colors"
-            >
-              <span className="text-sm font-semibold text-[var(--foreground)]">{item.label}</span>
-              {item.sublabel && (
-                <span className="text-xs text-[var(--foreground-muted)]">{item.sublabel}</span>
-              )}
-            </li>
-          ))}
+          {filtered.map((item, idx) => {
+            const isHighlighted = idx === highlightedIndex;
+            return (
+              <li
+                key={item.id}
+                id={`${listboxId}-opt-${idx}`}
+                role="option"
+                aria-selected={isHighlighted}
+                onClick={() => handleSelectOption(item)}
+                onMouseEnter={() => setHighlightedIndex(idx)}
+                className={`flex cursor-pointer flex-col px-4 py-2 transition-colors ${
+                  isHighlighted ? 'bg-red-50 text-[#e2001a]' : 'hover:bg-[var(--surface)]'
+                }`}
+              >
+                <span
+                  className={`text-sm font-semibold ${
+                    isHighlighted ? 'text-[#e2001a]' : 'text-[var(--foreground)]'
+                  }`}
+                >
+                  {item.label}
+                </span>
+                {item.sublabel && (
+                  <span
+                    className={`text-xs ${
+                      isHighlighted ? 'text-[#e2001a]/80' : 'text-[var(--foreground-muted)]'
+                    }`}
+                  >
+                    {item.sublabel}
+                  </span>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
