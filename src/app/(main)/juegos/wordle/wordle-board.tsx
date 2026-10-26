@@ -9,6 +9,8 @@ interface WordleBoardProps {
   guesses: string[];
   currentGuess: string;
   shakeRow: boolean;
+  cursorIndex?: number;
+  onSelectCell?: (index: number) => void;
 }
 
 export function WordleBoard({
@@ -18,6 +20,8 @@ export function WordleBoard({
   guesses,
   currentGuess,
   shakeRow,
+  cursorIndex = 0,
+  onSelectCell,
 }: WordleBoardProps) {
   const rows = Array.from({ length: maxAttempts });
 
@@ -58,6 +62,9 @@ export function WordleBoard({
                 letter={cell.char}
                 status={cell.status}
                 isRevealing={Boolean(submittedGuess)}
+                isCurrentRow={isCurrentRow}
+                isActiveCursor={isCurrentRow && colIndex === cursorIndex}
+                onClick={isCurrentRow && onSelectCell ? () => onSelectCell(colIndex) : undefined}
               />
             ))}
           </div>

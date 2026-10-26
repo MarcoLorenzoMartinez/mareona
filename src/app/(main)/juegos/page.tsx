@@ -81,6 +81,32 @@ export default function JuegosPage() {
             Jugar al Wordle
           </Link>
         </article>
+
+        {/* La Pregunta del Día */}
+        <article className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs hover:border-[#e2001a]/50 transition-colors">
+          <div>
+            <div className="flex items-center justify-between">
+              <span className="rounded-full bg-[#e2001a] px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
+                Diario
+              </span>
+              <span className="text-[11px] font-medium text-[var(--foreground-muted)]">
+                Trivia
+              </span>
+            </div>
+            <h2 className="mt-3 text-base font-bold text-[var(--foreground)]">
+              La Pregunta del Día
+            </h2>
+            <p className="mt-1.5 text-xs text-[var(--foreground-muted)]">
+              Un reto diario sobre la historia rojiblanca. Demuestra cuánto sabes sobre jugadores, hitos y datos del Sporting.
+            </p>
+          </div>
+          <Link
+            href="/juegos/pregunta-del-dia"
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-[#e2001a] px-4 py-2 text-xs font-bold text-white hover:bg-[#b30015] transition-colors"
+          >
+            Responder Reto de Hoy
+          </Link>
+        </article>
         {/* ¿Mayor o Menor? */}
         <article className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs hover:border-[#e2001a]/50 transition-colors">
           <div>

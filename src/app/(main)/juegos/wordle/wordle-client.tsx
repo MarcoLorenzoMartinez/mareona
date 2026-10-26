@@ -48,6 +48,8 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
   const {
     gameState,
     currentGuess,
+    cursorIndex,
+    setCursor,
     maxAttempts,
     targetLength,
     targetWord,
@@ -92,6 +94,8 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
         guesses={gameState.guesses}
         currentGuess={currentGuess}
         shakeRow={shakeRow}
+        cursorIndex={cursorIndex}
+        onSelectCell={setCursor}
       />
 
       <div className="mt-2">

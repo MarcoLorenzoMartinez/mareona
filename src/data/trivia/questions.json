@@ -1,0 +1,1365 @@
+[
+  {
+    "id": "q-quini-1st-pichichi-1a",
+    "question": "¿En qué temporada ganó Quini su primer Trofeo Pichichi de Primera División con el Real Sporting?",
+    "type": "season",
+    "canonicalAnswer": "1973/74",
+    "acceptedAnswers": [
+      "1973/74",
+      "1973-74",
+      "73/74",
+      "73-74",
+      "1973-1974"
+    ],
+    "explanation": "Quini se proclamó máximo goleador de Primera División en la temporada 1973/74 con 20 goles en 30 partidos.",
+    "formatHint": "Temporada (ej. 1973/74)"
+  },
+  {
+    "id": "q-quini-1st-pichichi-2a",
+    "question": "¿En qué temporada ganó Quini su primer Trofeo Pichichi en Segunda División con el Real Sporting?",
+    "type": "season",
+    "canonicalAnswer": "1969/70",
+    "acceptedAnswers": [
+      "1969/70",
+      "1969-70",
+      "69/70",
+      "69-70",
+      "1969-1970"
+    ],
+    "explanation": "En la temporada 1969/70, Quini anotó 24 goles en Segunda División proclamándose pichichi y logrando el ascenso.",
+    "formatHint": "Temporada (ej. 1969/70)"
+  },
+  {
+    "id": "q-quini-2nd-pichichi-1a",
+    "question": "¿En qué temporada logró Quini su segundo Trofeo Pichichi de Primera División vistiendo la camiseta del Sporting?",
+    "type": "season",
+    "canonicalAnswer": "1975/76",
+    "acceptedAnswers": [
+      "1975/76",
+      "1975-76",
+      "75/76",
+      "75-76"
+    ],
+    "explanation": "En la temporada 1975/76, Quini anotó 21 goles en la máxima categoría.",
+    "formatHint": "Temporada (ej. 1975/76)"
+  },
+  {
+    "id": "q-quini-3rd-pichichi-1a",
+    "question": "¿En qué temporada logró Quini su tercer y último Trofeo Pichichi de Primera División con el Real Sporting?",
+    "type": "season",
+    "canonicalAnswer": "1979/80",
+    "acceptedAnswers": [
+      "1979/80",
+      "1979-80",
+      "79/80",
+      "79-80"
+    ],
+    "explanation": "En la temporada 1979/80, Quini marcó 24 goles para el Sporting antes de fichar por el FC Barcelona.",
+    "formatHint": "Temporada (ej. 1979/80)"
+  },
+  {
+    "id": "q-quini-total-pichichis-sporting",
+    "question": "¿Cuántos Trofeos Pichichi en total (sumando Primera y Segunda División) ganó Quini con la camiseta del Real Sporting?",
+    "type": "number",
+    "canonicalAnswer": "5",
+    "acceptedAnswers": [
+      "5",
+      "cinco"
+    ],
+    "explanation": "Quini ganó 5 Trofeos Pichichi como sportinguista: 3 en Primera División (73/74, 75/76, 79/80) y 2 en Segunda (69/70, 76/77).",
+    "unit": "trofeos"
+  },
+  {
+    "id": "q-most-matches-history",
+    "question": "¿Quién es el futbolista con más partidos oficiales disputados en toda la historia del Real Sporting?",
+    "type": "player",
+    "canonicalAnswer": "Joaquín Alonso",
+    "acceptedAnswers": [
+      "joaquin alonso",
+      "joaquin alonso gonzalez",
+      "joaquin"
+    ],
+    "explanation": "Joaquín Alonso disputó 646 partidos oficiales con el Real Sporting entre 1976 y 1992.",
+    "formatHint": "Escribe el nombre o apellido del futbolista"
+  },
+  {
+    "id": "q-second-most-matches",
+    "question": "¿Qué defensa central es el segundo jugador con más partidos oficiales disputados en la historia del Sporting (534 partidos)?",
+    "type": "player",
+    "canonicalAnswer": "Manuel Jiménez",
+    "acceptedAnswers": [
+      "manuel jimenez",
+      "manuel enrique jimenez abalo",
+      "jimenez"
+    ],
+    "explanation": "Manuel Jiménez disputó 534 partidos oficiales con la camiseta rojiblanca entre 1979 y 1991.",
+    "formatHint": "Escribe el nombre o apellido del futbolista"
+  },
+  {
+    "id": "q-top-scorer-history",
+    "question": "¿Quién es el máximo goleador histórico del Real Sporting de Gijón con 272 goles oficiales?",
+    "type": "player",
+    "canonicalAnswer": "Quini",
+    "acceptedAnswers": [
+      "quini",
+      "enrique castro quini",
+      "enrique de castro gonzalez",
+      "enrique castro gonzalez"
+    ],
+    "explanation": "El Brujo Quini encabeza la tabla histórica de goleadores con 272 tantos en 521 partidos oficiales.",
+    "formatHint": "Escribe el nombre o alias del jugador"
+  },
+  {
+    "id": "q-second-top-scorer-history",
+    "question": "¿Quién es el segundo máximo goleador histórico del Sporting con 131 goles oficiales?",
+    "type": "player",
+    "canonicalAnswer": "José Luis Ortiz",
+    "acceptedAnswers": [
+      "jose luis ortiz",
+      "ortiz",
+      "jose luis ortiz pelaez"
+    ],
+    "explanation": "Ortiz marcó 131 goles con la elástica rojiblanca entre 1949 y 1957.",
+    "formatHint": "Escribe el nombre o apellido del futbolista"
+  },
+  {
+    "id": "q-top-foreign-scorer",
+    "question": "¿Qué delantero argentino es el máximo goleador extranjero en la historia del Sporting con 89 goles oficiales?",
+    "type": "player",
+    "canonicalAnswer": "Enzo Ferrero",
+    "acceptedAnswers": [
+      "enzo ferrero",
+      "ferrero",
+      "enzo ferrero aguila"
+    ],
+    "explanation": "Enzo Ferrero anotó 89 goles en 340 partidos oficiales defendiendo la banda izquierda de El Molinón entre 1975 y 1985.",
+    "formatHint": "Escribe el nombre o apellido del futbolista"
+  },
+  {
+    "id": "q-goalkeeper-most-matches",
+    "question": "¿Quién es el portero con más partidos oficiales en la historia del Real Sporting (471 encuentros)?",
+    "type": "player",
+    "canonicalAnswer": "Jesús Castro",
+    "acceptedAnswers": [
+      "jesus castro",
+      "castro",
+      "jesus antonio de castro gonzalez"
+    ],
+    "explanation": "Jesús Castro defendió la portería sportinguista durante 18 temporadas (1967-1985), sumando 471 partidos.",
+    "formatHint": "Escribe el nombre del portero"
+  },
+  {
+    "id": "q-zamora-trophies-record",
+    "question": "¿Qué mítico guardameta conquistó 3 Trofeos Zamora de Primera División con el Sporting (1985, 1986 y 1990)?",
+    "type": "player",
+    "canonicalAnswer": "Juan Carlos Ablanedo",
+    "acceptedAnswers": [
+      "juan carlos ablanedo",
+      "ablanedo",
+      "ablanedo ii",
+      "el gatu"
+    ],
+    "explanation": "Juan Carlos Ablanedo \"El Gatu\" logró tres Trofeos Zamora en Primera División en las temporadas 1984/85, 1985/86 y 1989/90.",
+    "formatHint": "Escribe el nombre o apellido del portero"
+  },
+  {
+    "id": "q-derbi-biggest-win-1a",
+    "question": "¿Cuál es la mayor goleada conseguida por el Sporting frente al Real Oviedo en la historia de Primera División?",
+    "type": "score",
+    "canonicalAnswer": "6 - 0",
+    "acceptedAnswers": [
+      "6-0",
+      "6 - 0",
+      "6:0",
+      "6 a 0"
+    ],
+    "explanation": "El 1 de octubre de 1944 (temporada 1944/45), el Sporting se impuso por 6-0 al Real Oviedo en El Molinón en Primera División.",
+    "formatHint": "Marcador (ej. 6 - 0)"
+  },
+  {
+    "id": "q-subcampeon-liga-season",
+    "question": "¿En qué temporada logró el Real Sporting el subcampeonato de Primera División, la mejor clasificación liguera de su historia?",
+    "type": "season",
+    "canonicalAnswer": "1978/79",
+    "acceptedAnswers": [
+      "1978/79",
+      "1978-79",
+      "78/79",
+      "78-79"
+    ],
+    "explanation": "El Sporting de Vicente Miera finalizó 2.º en Primera División en la temporada 1978/79 con 43 puntos, a sólo 4 del campeón.",
+    "formatHint": "Temporada (ej. 1978/79)"
+  },
+  {
+    "id": "q-subcampeon-points",
+    "question": "¿Cuántos puntos sumó el Sporting en la histórica temporada del subcampeonato de Liga 1978/79 (cuando la victoria valía 2 puntos)?",
+    "type": "number",
+    "canonicalAnswer": "43",
+    "acceptedAnswers": [
+      "43",
+      "43 puntos",
+      "cuarenta y tres"
+    ],
+    "explanation": "El Real Sporting sumó 43 puntos en 34 jornadas gracias a 17 victorias, 9 empates y 8 derrotas.",
+    "unit": "puntos"
+  },
+  {
+    "id": "q-coach-subcampeon",
+    "question": "¿Quién era el entrenador del Real Sporting en la temporada del subcampeonato de Primera División (1978/79)?",
+    "type": "player",
+    "canonicalAnswer": "Vicente Miera",
+    "acceptedAnswers": [
+      "vicente miera",
+      "miera",
+      "vicente miera campos"
+    ],
+    "explanation": "Vicente Miera dirigió magistralmente al equipo subcampeón de Liga y a la primera participación en Copa de la UEFA.",
+    "formatHint": "Nombre del entrenador"
+  },
+  {
+    "id": "q-coach-most-matches",
+    "question": "¿Quién es el entrenador con más partidos oficiales dirigidos en la historia del Real Sporting de Gijón?",
+    "type": "player",
+    "canonicalAnswer": "José Manuel Díaz Novoa",
+    "acceptedAnswers": [
+      "jose manuel diaz novoa",
+      "diaz novoa",
+      "novoa"
+    ],
+    "explanation": "José Manuel Díaz Novoa dirigió al Real Sporting en 282 partidos oficiales a lo largo de varias etapas.",
+    "formatHint": "Nombre del entrenador"
+  },
+  {
+    "id": "q-points-ascenso-guajes",
+    "question": "¿Cuántos puntos logró el Real Sporting de Abelardo en la temporada del ascenso de los \"Guajes\" (2014/15)?",
+    "type": "number",
+    "canonicalAnswer": "82",
+    "acceptedAnswers": [
+      "82",
+      "82 puntos",
+      "ochenta y dos"
+    ],
+    "explanation": "El Sporting sumó 82 puntos (21 victorias, 19 empates y solo 2 derrotas) en una temporada irrepetible.",
+    "unit": "puntos"
+  },
+  {
+    "id": "q-losses-ascenso-guajes",
+    "question": "¿Cuántos partidos únicamente perdió el Sporting en las 42 jornadas de la Liga 2014/15 en Segunda División?",
+    "type": "number",
+    "canonicalAnswer": "2",
+    "acceptedAnswers": [
+      "2",
+      "dos"
+    ],
+    "explanation": "El equipo de Abelardo batió el récord de imbatibilidad cayendo únicamente en 2 encuentros en todo el campeonato.",
+    "unit": "derrotas"
+  },
+  {
+    "id": "q-stadium-ascenso-2015",
+    "question": "¿En qué estadio logró el Real Sporting el ascenso directo a Primera División el 7 de junio de 2015?",
+    "type": "text",
+    "canonicalAnswer": "Benito Villamarín",
+    "acceptedAnswers": [
+      "benito villamarin",
+      "villamarin",
+      "estadio benito villamarin"
+    ],
+    "explanation": "El Sporting venció 0-3 al Real Betis en el Benito Villamarín en la jornada 42, sellando el ascenso con el gol de Caballero para el Lugo en Girona.",
+    "formatHint": "Nombre del estadio"
+  },
+  {
+    "id": "q-score-ascenso-betis-2015",
+    "question": "¿Cuál fue el resultado con el que el Sporting ganó al Real Betis en el Benito Villamarín el día del ascenso en 2015?",
+    "type": "score",
+    "canonicalAnswer": "0 - 3",
+    "acceptedAnswers": [
+      "0-3",
+      "0 - 3",
+      "0:3",
+      "0 a 3"
+    ],
+    "explanation": "Guerrero, Jony y Bernardo marcaron los tres goles en la inolvidable victoria sportinguista por 0-3.",
+    "formatHint": "Marcador (ej. 0 - 3)"
+  },
+  {
+    "id": "q-points-ascenso-preciado",
+    "question": "¿Cuántos puntos consiguió el Sporting de Manolo Preciado en la temporada del ascenso a Primera División (2007/08)?",
+    "type": "number",
+    "canonicalAnswer": "72",
+    "acceptedAnswers": [
+      "72",
+      "72 puntos",
+      "setenta y dos"
+    ],
+    "explanation": "El Sporting de Manolo Preciado cerró la temporada con 72 puntos, acabando en 3.ª posición tras diez años de travesía en Segunda.",
+    "unit": "puntos"
+  },
+  {
+    "id": "q-rival-ascenso-2008",
+    "question": "¿A qué equipo venció el Sporting 2-0 en El Molinón en la última jornada de la 2007/08 para certificar el regreso a Primera?",
+    "type": "text",
+    "canonicalAnswer": "SD Eibar",
+    "acceptedAnswers": [
+      "sd eibar",
+      "eibar",
+      "sociedad deportiva eibar"
+    ],
+    "explanation": "Goles de Bilic y Luis Morán frente a la SD Eibar el 15 de junio de 2008 desataron el éxtasis en Gijón.",
+    "formatHint": "Nombre del club rival"
+  },
+  {
+    "id": "q-goalscorer-bernabeu-2011",
+    "question": "¿Qué futbolista anotó el gol de la victoria 0-1 del Sporting en el Santiago Bernabéu en abril de 2011 rompiendo la racha invicta de Mourinho?",
+    "type": "player",
+    "canonicalAnswer": "Miguel de las Cuevas",
+    "acceptedAnswers": [
+      "miguel de las cuevas",
+      "de las cuevas"
+    ],
+    "explanation": "El 2 de abril de 2011, Miguel de las Cuevas marcó en el minuto 79 para dar la histórica victoria por 0-1 ante el Real Madrid.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-first-european-rival",
+    "question": "¿A qué club italiano se enfrentó el Real Sporting en su debut absoluto en competición europea en 1978?",
+    "type": "text",
+    "canonicalAnswer": "Torino FC",
+    "acceptedAnswers": [
+      "torino fc",
+      "torino",
+      "turin"
+    ],
+    "explanation": "El 13 de septiembre de 1978 el Sporting debutó en la Copa de la UEFA venciendo 3-0 al Torino FC en El Molinón.",
+    "formatHint": "Nombre del club"
+  },
+  {
+    "id": "q-score-torino-1978",
+    "question": "¿Cuál fue el marcador del debut europeo del Sporting ante el Torino en El Molinón el 13 de septiembre de 1978?",
+    "type": "score",
+    "canonicalAnswer": "3 - 0",
+    "acceptedAnswers": [
+      "3-0",
+      "3 - 0",
+      "3:0",
+      "3 a 0"
+    ],
+    "explanation": "El Sporting firmó un partido glorioso venciendo 3-0 con dos goles de Ferrero y uno de E. Morán.",
+    "formatHint": "Marcador (ej. 3 - 0)"
+  },
+  {
+    "id": "q-rival-san-siro-1987",
+    "question": "¿A qué gigante europeo venció el Real Sporting por 1-0 en El Molinón en la Copa de la UEFA de 1987 con gol de Zurdi?",
+    "type": "text",
+    "canonicalAnswer": "AC Milan",
+    "acceptedAnswers": [
+      "ac milan",
+      "milan",
+      "a.c. milan"
+    ],
+    "explanation": "El Sporting de Novoa venció 1-0 en Gijón al poderoso AC Milan de Sacchi, Gullit y van Basten el 16 de septiembre de 1987.",
+    "formatHint": "Nombre del club italiano"
+  },
+  {
+    "id": "q-scorer-milan-1987",
+    "question": "¿Qué jugador sportinguista marcó el gol de la histórica victoria 1-0 ante el AC Milan en El Molinón en 1987?",
+    "type": "player",
+    "canonicalAnswer": "Jorge Zurdi",
+    "acceptedAnswers": [
+      "jorge zurdi",
+      "zurdi",
+      "jorge alberto lopez fernandez"
+    ],
+    "explanation": "Zurdi anotó el legendario tanto en el minuto 73 batiendo al guardameta Giovanni Galli.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-last-european-rival-1991",
+    "question": "¿Qué club rumano fue el rival del Sporting en su última eliminatoria de Copa de la UEFA disputada en otoño de 1991?",
+    "type": "text",
+    "canonicalAnswer": "Steaua de Bucarest",
+    "acceptedAnswers": [
+      "steaua de bucarest",
+      "steaua",
+      "steaua bucarest"
+    ],
+    "explanation": "El 6 de noviembre de 1991 el Sporting disputó su último encuentro en competición europea ante el Steaua de Bucarest en Rumanía.",
+    "formatHint": "Nombre del club"
+  },
+  {
+    "id": "q-mareo-inauguration-year",
+    "question": "¿En qué año se inauguró oficialmente la Escuela de Fútbol de Mareo, símbolo de la cantera rojiblanca?",
+    "type": "number",
+    "canonicalAnswer": "1978",
+    "acceptedAnswers": [
+      "1978",
+      "mil novecientos setenta y ocho"
+    ],
+    "explanation": "La Escuela de Fútbol de Mareo fue inaugurada el 28 de marzo de 1978 bajo la presidencia de Manuel Vega-Arango.",
+    "unit": "año"
+  },
+  {
+    "id": "q-president-golden-era",
+    "question": "¿Quién era el presidente del Real Sporting durante la época dorada de los subcampeonatos, finales de Copa y construcción de Mareo?",
+    "type": "player",
+    "canonicalAnswer": "Manuel Vega-Arango",
+    "acceptedAnswers": [
+      "manuel vega-arango",
+      "manuel vega arango",
+      "vega-arango",
+      "vega arango"
+    ],
+    "explanation": "Manuel Vega-Arango Alvaré presidió el club de 1977 a 1986 y posteriormente de 2002 a 2013.",
+    "formatHint": "Nombre del presidente"
+  },
+  {
+    "id": "q-copa-finals-count",
+    "question": "¿Cuántas finales de Copa del Rey consecutivas disputó el Real Sporting en la década de los 80 (1981 y 1982)?",
+    "type": "number",
+    "canonicalAnswer": "2",
+    "acceptedAnswers": [
+      "2",
+      "dos"
+    ],
+    "explanation": "El Sporting disputó las finales de 1981 (contra el FC Barcelona en el Vicente Calderón) y 1982 (contra el Real Madrid en Valladolid).",
+    "unit": "finales"
+  },
+  {
+    "id": "q-copa-final-1981-rival",
+    "question": "¿A qué equipo se enfrentó el Sporting en la final de la Copa del Rey de 1981 disputada en el Vicente Calderón?",
+    "type": "text",
+    "canonicalAnswer": "FC Barcelona",
+    "acceptedAnswers": [
+      "fc barcelona",
+      "barcelona",
+      "barça"
+    ],
+    "explanation": "El Barcelona se impuso 3-1 al Sporting el 18 de junio de 1981 en Madrid.",
+    "formatHint": "Nombre del club"
+  },
+  {
+    "id": "q-copa-final-1982-rival",
+    "question": "¿A qué equipo se enfrentó el Sporting en la final de la Copa del Rey de 1982 disputada en el Nuevo Zorrilla de Valladolid?",
+    "type": "text",
+    "canonicalAnswer": "Real Madrid",
+    "acceptedAnswers": [
+      "real madrid",
+      "real madrid cf",
+      "madrid"
+    ],
+    "explanation": "El Real Madrid venció 2-1 al Sporting el 13 de abril de 1982.",
+    "formatHint": "Nombre del club"
+  },
+  {
+    "id": "q-top-scorer-2020-21",
+    "question": "¿Qué delantero montenegrino anotó 22 goles en Segunda División con el Sporting en la temporada 2020/21?",
+    "type": "player",
+    "canonicalAnswer": "Uros Djurdjevic",
+    "acceptedAnswers": [
+      "uros djurdjevic",
+      "djuka",
+      "djurdjevic",
+      "uros djuka"
+    ],
+    "explanation": "Djuka completó una temporada excepcional con 22 goles en 39 partidos ligueros en la campaña 2020/21.",
+    "formatHint": "Nombre o apodo del delantero"
+  },
+  {
+    "id": "q-top-scorer-2017-18",
+    "question": "¿Qué delantero uruguayo marcó 17 goles de rojiblanco en la temporada 2017/18 en Segunda División?",
+    "type": "player",
+    "canonicalAnswer": "Michael Santos",
+    "acceptedAnswers": [
+      "michael santos",
+      "santos"
+    ],
+    "explanation": "Michael Santos formó una destacada dupla ofensiva marcando 17 dianas en la temporada 2017/18.",
+    "formatHint": "Nombre del delantero"
+  },
+  {
+    "id": "q-first-goal-primera-division",
+    "question": "¿Qué jugador marcó el primer gol oficial del Real Sporting en Primera División en septiembre de 1944 ante el RCD Espanyol?",
+    "type": "player",
+    "canonicalAnswer": "José Prendes",
+    "acceptedAnswers": [
+      "jose prendes",
+      "prendes",
+      "jose prendes vega"
+    ],
+    "explanation": "José Prendes anotó el primer gol rojiblanco en la máxima categoría el 24 de septiembre de 1944 en Sarriá (3-3).",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-youngest-debutant",
+    "question": "¿Qué canterano debutó con el primer equipo del Sporting en Copa con solo 15 años y 314 días en 1984?",
+    "type": "player",
+    "canonicalAnswer": "Emilio Gutiérrez",
+    "acceptedAnswers": [
+      "emilio gutierrez",
+      "emilio",
+      "emilio gutierrez lopez"
+    ],
+    "explanation": "Emilio Gutiérrez debutó el 19 de septiembre de 1984 ante el Caudal de Mieres con apenas 15 años durante la huelga de futbolistas.",
+    "formatHint": "Nombre del canterano"
+  },
+  {
+    "id": "q-record-transfer-villa",
+    "question": "¿A qué club de Primera División fue traspasado David Villa en el verano de 2003 tras abonar su cláusula de 3 millones de euros?",
+    "type": "text",
+    "canonicalAnswer": "Real Zaragoza",
+    "acceptedAnswers": [
+      "real zaragoza",
+      "zaragoza"
+    ],
+    "explanation": "El Guaje Villa recaló en La Romareda en el verano de 2003 para salvar la crítica situación financiera del Sporting.",
+    "formatHint": "Nombre del club"
+  },
+  {
+    "id": "q-villa-total-goals",
+    "question": "¿Cuántos goles oficiales marcó David Villa en el primer equipo del Real Sporting antes de su traspaso (en dos temporadas completas)?",
+    "type": "number",
+    "canonicalAnswer": "41",
+    "acceptedAnswers": [
+      "41",
+      "cuarenta y uno"
+    ],
+    "explanation": "David Villa anotó 41 goles en 85 partidos oficiales de rojiblanco (18 en la 2001/02 y 20 en la 2002/03 en liga más copa).",
+    "unit": "goles"
+  },
+  {
+    "id": "q-villa-debut-season",
+    "question": "¿En qué temporada debutó David Villa con el primer equipo del Real Sporting en Segunda División?",
+    "type": "season",
+    "canonicalAnswer": "2000/01",
+    "acceptedAnswers": [
+      "2000/01",
+      "2000-01",
+      "00/01",
+      "00-01"
+    ],
+    "explanation": "David Villa debutó el 17 de junio de 2001 ante el Córdoba en El Molinón en la jornada 42.",
+    "formatHint": "Temporada (ej. 2000/01)"
+  },
+  {
+    "id": "q-top-scorer-2008-09",
+    "question": "¿Qué delantero croata fue el máximo realizador del Sporting con 12 goles en el regreso a Primera División en la 2008/09?",
+    "type": "player",
+    "canonicalAnswer": "Mate Bilic",
+    "acceptedAnswers": [
+      "mate bilic",
+      "bilic"
+    ],
+    "explanation": "Mate Bilic anotó 12 dianas, incluyendo un célebre hat-trick en el Ramón Sánchez-Pizjuán ante el Sevilla.",
+    "formatHint": "Nombre del delantero"
+  },
+  {
+    "id": "q-bilic-hattrick-stadium",
+    "question": "¿En qué estadio de Primera División anotó Mate Bilic un hat-trick para el Sporting en septiembre de 2008?",
+    "type": "text",
+    "canonicalAnswer": "Ramón Sánchez-Pizjuán",
+    "acceptedAnswers": [
+      "ramon sanchez-pizjuan",
+      "ramon sanchez pizjuan",
+      "sanchez pizjuan",
+      "sanchez-pizjuan"
+    ],
+    "explanation": "Bilic anotó los tres goles del Sporting en un vibrante 4-3 ante el Sevilla FC el 21 de septiembre de 2008.",
+    "formatHint": "Nombre del estadio"
+  },
+  {
+    "id": "q-puerta-1-el-molinon",
+    "question": "¿Qué mítico guardameta y héroe rojiblanco da nombre a la Puerta 1 del estadio El Molinón?",
+    "type": "player",
+    "canonicalAnswer": "Jesús Castro",
+    "acceptedAnswers": [
+      "jesus castro",
+      "castro",
+      "jesus antonio de castro gonzalez"
+    ],
+    "explanation": "La Puerta 1 de El Molinón homenajea para siempre a Jesús Castro, fallecido heroicamente en 1993 salvando a dos niños en la playa de Pechón.",
+    "formatHint": "Nombre del portero"
+  },
+  {
+    "id": "q-stadium-official-name",
+    "question": "¿A qué leyenda sportinguista se añadió el nombre al estadio en 2018 pasándose a llamar \"El Molinón - ...\"?",
+    "type": "player",
+    "canonicalAnswer": "Enrique Castro Quini",
+    "acceptedAnswers": [
+      "enrique castro quini",
+      "quini",
+      "enrique castro"
+    ],
+    "explanation": "Tras el fallecimiento de Quini el 27 de febrero de 2018, el Ayuntamiento aprobó la denominación Estadio El Molinón - Enrique Castro \"Quini\".",
+    "formatHint": "Nombre de la leyenda"
+  },
+  {
+    "id": "q-mundial-82-sporting-players",
+    "question": "¿Cuántos futbolistas del Real Sporting formaron parte de la selección española en el Mundial de España 1982?",
+    "type": "number",
+    "canonicalAnswer": "2",
+    "acceptedAnswers": [
+      "2",
+      "dos"
+    ],
+    "explanation": "Joaquín y Jiménez integraron la lista de la Selección Española en el Mundial 82 militando en el Sporting (Quini ya estaba en el Barça).",
+    "unit": "futbolistas"
+  },
+  {
+    "id": "q-euro-1980-scorer",
+    "question": "¿Qué legendario lateral izquierdo del Sporting fue titular y subcampeón con España en la Eurocopa de 1980 en Italia?",
+    "type": "player",
+    "canonicalAnswer": "Cundi",
+    "acceptedAnswers": [
+      "cundi",
+      "secundino suarez vazquez",
+      "secundino suarez"
+    ],
+    "explanation": "Secundino Suárez \"Cundi\" fue un puntal de la selección en la Euro 1980 disputando la final contra Alemania Federal.",
+    "formatHint": "Nombre o apodo del defensa"
+  },
+  {
+    "id": "q-cundi-son-player",
+    "question": "¿Qué defensa canterano del Sporting e internacional español en el Mundial 2002 es hijo del mítico Cundi?",
+    "type": "player",
+    "canonicalAnswer": "Rubén Suárez",
+    "acceptedAnswers": [
+      "ruben suarez",
+      "ruben",
+      "ruben suarez estrada"
+    ],
+    "explanation": "Rubén Suárez se formó en Mareo y debutó en el primer equipo continuando la saga familiar iniciada por su padre Cundi.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-last-relegation-season",
+    "question": "¿En qué temporada sufrió el Sporting su último descenso desde Primera a Segunda División?",
+    "type": "season",
+    "canonicalAnswer": "2016/17",
+    "acceptedAnswers": [
+      "2016/17",
+      "2016-17",
+      "16/17",
+      "16-17"
+    ],
+    "explanation": "En la temporada 2016/17, el Sporting acabó 18.º con 31 puntos descendiendo a la categoría de plata.",
+    "formatHint": "Temporada (ej. 2016/17)"
+  },
+  {
+    "id": "q-camp-nou-0-4-season",
+    "question": "¿En qué temporada asaltó el Sporting el Camp Nou con una histórica goleada por 0-4 al FC Barcelona?",
+    "type": "season",
+    "canonicalAnswer": "1986/87",
+    "acceptedAnswers": [
+      "1986/87",
+      "1986-87",
+      "86/87",
+      "86-87"
+    ],
+    "explanation": "El 14 de diciembre de 1986, el Sporting de Novoa goleó 0-4 al Barça de Terry Venables en el Camp Nou con exhibición de Eloy Olaya.",
+    "formatHint": "Temporada (ej. 1986/87)"
+  },
+  {
+    "id": "q-eloy-camp-nou-goals",
+    "question": "¿Cuántos goles marcó el canterano Eloy Olaya en el memorable 0-4 al FC Barcelona en el Camp Nou en 1986?",
+    "type": "number",
+    "canonicalAnswer": "2",
+    "acceptedAnswers": [
+      "2",
+      "dos"
+    ],
+    "explanation": "Eloy Olaya marcó dos de los cuatro goles en la mayor victoria liguera a domicilio del Sporting frente al Barça.",
+    "unit": "goles"
+  },
+  {
+    "id": "q-quini-return-season",
+    "question": "¿En qué temporada regresó Quini al Real Sporting tras su paso por el FC Barcelona para jugar tres campañas más antes de su retirada?",
+    "type": "season",
+    "canonicalAnswer": "1984/85",
+    "acceptedAnswers": [
+      "1984/85",
+      "1984-85",
+      "84/85",
+      "84-85"
+    ],
+    "explanation": "El Brujo volvió a casa en el verano de 1984 y vistió la camiseta rojiblanca hasta colgar las botas en 1987.",
+    "formatHint": "Temporada (ej. 1984/85)"
+  },
+  {
+    "id": "q-worst-points-season",
+    "question": "¿En qué trágica temporada sumó el Real Sporting tan sólo 13 puntos en Primera División?",
+    "type": "season",
+    "canonicalAnswer": "1997/98",
+    "acceptedAnswers": [
+      "1997/98",
+      "1997-98",
+      "97/98",
+      "97-98"
+    ],
+    "explanation": "La temporada 1997/98 fue la más negra de la historia rojiblanca en la élite con solo 2 victorias y 13 puntos.",
+    "formatHint": "Temporada (ej. 1997/98)"
+  },
+  {
+    "id": "q-wins-in-1997-98",
+    "question": "¿Cuántos partidos consiguió ganar el Real Sporting en toda la liga de Primera División de la temporada 1997/98?",
+    "type": "number",
+    "canonicalAnswer": "2",
+    "acceptedAnswers": [
+      "2",
+      "dos"
+    ],
+    "explanation": "El Sporting solo venció al Racing de Santander (2-1) y al RCD Espanyol (1-0) en las 38 jornadas.",
+    "unit": "victorias"
+  },
+  {
+    "id": "q-coach-ascenso-1970",
+    "question": "¿Qué legendario técnico de Barakaldo llevó al Sporting a Primera División en la temporada 1969/70 con el récord goleador de la delantera eléctrica?",
+    "type": "player",
+    "canonicalAnswer": "Carriega",
+    "acceptedAnswers": [
+      "carriega",
+      "luis cid carriega",
+      "luis cid"
+    ],
+    "explanation": "Luis Cid \"Carriega\" dirigió al equipo que arrasó en Segunda marcando 77 goles en 38 partidos.",
+    "formatHint": "Nombre del entrenador"
+  },
+  {
+    "id": "q-first-president-1905",
+    "question": "¿Quién fue el primer presidente de la historia del Real Sporting de Gijón tras su fundación en 1905?",
+    "type": "player",
+    "canonicalAnswer": "Anselmo López",
+    "acceptedAnswers": [
+      "anselmo lopez",
+      "anselmo lopez sánchez",
+      "anselmo lopez sanchez"
+    ],
+    "explanation": "Anselmo López Sánchez fue fundador y primer presidente del Sporting Gijonés en agosto de 1905.",
+    "formatHint": "Nombre del primer presidente"
+  },
+  {
+    "id": "q-royal-title-year",
+    "question": "¿En qué año concedió el rey Alfonso XIII al club el título de \"Real\", pasando a denominarse Real Sporting Club Gijonés?",
+    "type": "number",
+    "canonicalAnswer": "1912",
+    "acceptedAnswers": [
+      "1912",
+      "mil novecientos doce"
+    ],
+    "explanation": "En 1912 el rey Alfonso XIII aceptó la presidencia de honor y otorgó el título honorífico de Real.",
+    "unit": "año"
+  },
+  {
+    "id": "q-consecutive-years-in-primera",
+    "question": "¿Cuántas temporadas consecutivas militó el Real Sporting en Primera División entre su ascenso de 1977 y el descenso de 1998?",
+    "type": "number",
+    "canonicalAnswer": "21",
+    "acceptedAnswers": [
+      "21",
+      "veintiuna",
+      "veintiuno"
+    ],
+    "explanation": "Fueron 21 temporadas ininterrumpidas en la élite del fútbol español compitiendo al máximo nivel nacional y europeo.",
+    "unit": "temporadas"
+  },
+  {
+    "id": "q-most-red-cards-player",
+    "question": "¿Qué central gijonés de fuerte carácter y gran zaguero vio más tarjetas rojas en la historia del Sporting?",
+    "type": "player",
+    "canonicalAnswer": "Sergio Sánchez",
+    "acceptedAnswers": [
+      "sergio sanchez",
+      "sergio sanchez fernandez",
+      "sergio"
+    ],
+    "explanation": "Sergio Sánchez acumuló el récord de expulsiones oficiales de rojiblanco a lo largo de su carrera.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-scorer-permanencia-2016",
+    "question": "¿Qué canterano e hijo de exjugador anotó el gol de la victoria 2-0 ante el Villarreal que certificó la milagrosa permanencia en Primera en 2016?",
+    "type": "player",
+    "canonicalAnswer": "Sergio Álvarez",
+    "acceptedAnswers": [
+      "sergio alvarez",
+      "sergio alvarez conde",
+      "sergio"
+    ],
+    "explanation": "Jony y Sergio Álvarez anotaron en el vibrante triunfo ante el Villarreal en la jornada 38 de la 2015/16 desatando la locura en El Molinón.",
+    "formatHint": "Nombre del centrocampista"
+  },
+  {
+    "id": "q-barral-goal-barca-2011",
+    "question": "¿Qué delantero gaditano adelantó al Sporting con una portentosa carrera en el recordado empate 1-1 frente al FC Barcelona de Guardiola en 2011?",
+    "type": "player",
+    "canonicalAnswer": "David Barral",
+    "acceptedAnswers": [
+      "david barral",
+      "barral"
+    ],
+    "explanation": "David Barral anotó en el minuto 16 tras dejar atrás a Piqué y Milito en una de las estampas más icónicas de la era Preciado.",
+    "formatHint": "Nombre del delantero"
+  },
+  {
+    "id": "q-coach-ascenso-1977",
+    "question": "¿Qué técnico cántabro devolvió al Sporting a Primera en su primera temporada (1976/77) tras el descenso del año anterior?",
+    "type": "player",
+    "canonicalAnswer": "Vicente Miera",
+    "acceptedAnswers": [
+      "vicente miera",
+      "miera"
+    ],
+    "explanation": "Vicente Miera devolvió al Sporting a la élite como campeón de Segunda División con 54 puntos y Quini pichichi con 27 goles.",
+    "formatHint": "Nombre del entrenador"
+  },
+  {
+    "id": "q-ablanedo-first-zamora-season",
+    "question": "¿En qué temporada conquistó Juan Carlos Ablanedo su primer Trofeo Zamora de Primera División?",
+    "type": "season",
+    "canonicalAnswer": "1984/85",
+    "acceptedAnswers": [
+      "1984/85",
+      "1984-85",
+      "84/85",
+      "84-85"
+    ],
+    "explanation": "Ablanedo encajó solo 22 goles en 33 partidos (coeficiente de 0.66) en la temporada 1984/85.",
+    "formatHint": "Temporada (ej. 1984/85)"
+  },
+  {
+    "id": "q-ablanedo-second-zamora-season",
+    "question": "¿En qué temporada revalidó Juan Carlos Ablanedo de forma consecutiva el Trofeo Zamora de Primera División?",
+    "type": "season",
+    "canonicalAnswer": "1985/86",
+    "acceptedAnswers": [
+      "1985/86",
+      "1985-86",
+      "85/86",
+      "85-86"
+    ],
+    "explanation": "En la temporada 1985/86, Ablanedo encajó 27 goles en 34 partidos (0.79 de coeficiente) ganando su segundo galardón.",
+    "formatHint": "Temporada (ej. 1985/86)"
+  },
+  {
+    "id": "q-ablanedo-third-zamora-season",
+    "question": "¿En qué temporada conquistó Juan Carlos Ablanedo su tercer y definitivo Trofeo Zamora de Primera División?",
+    "type": "season",
+    "canonicalAnswer": "1989/90",
+    "acceptedAnswers": [
+      "1989/90",
+      "1989-90",
+      "89/90",
+      "89-90"
+    ],
+    "explanation": "En la campaña 1989/90, el portero rojiblanco encajó 25 goles en 31 partidos (0.80) llevándose su tercer Zamora.",
+    "formatHint": "Temporada (ej. 1989/90)"
+  },
+  {
+    "id": "q-ablanedo-i-player",
+    "question": "¿Qué central del Sporting era el hermano mayor del portero Ablanedo II y conocido como Ablanedo I?",
+    "type": "player",
+    "canonicalAnswer": "José Luis Ablanedo",
+    "acceptedAnswers": [
+      "jose luis ablanedo",
+      "ablanedo i",
+      "ablanedo 1"
+    ],
+    "explanation": "José Luis Ablanedo Iglesias jugó como defensa central en el Sporting acumulando cerca de 200 partidos.",
+    "formatHint": "Nombre del defensa"
+  },
+  {
+    "id": "q-foreign-player-most-matches",
+    "question": "¿Qué futbolista extranjero tiene el récord de más partidos oficiales disputados en la historia del Sporting (340 partidos)?",
+    "type": "player",
+    "canonicalAnswer": "Enzo Ferrero",
+    "acceptedAnswers": [
+      "enzo ferrero",
+      "ferrero"
+    ],
+    "explanation": "El legendario extremo argentino Enzo Ferrero ostenta la marca histórica con 340 apariciones oficiales entre 1975 y 1985.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-quini-goals-1979-80",
+    "question": "¿Cuántos goles anotó Quini en liga para proclamarse Pichichi de Primera División en la temporada 1979/80?",
+    "type": "number",
+    "canonicalAnswer": "24",
+    "acceptedAnswers": [
+      "24",
+      "veinticuatro"
+    ],
+    "explanation": "Anotó 24 dianas en 34 partidos en su última temporada antes de su marcha al Barcelona.",
+    "unit": "goles"
+  },
+  {
+    "id": "q-quini-historic-number",
+    "question": "¿Qué dorsal clásico lució Quini a la espalda como nueve de referencia del Real Sporting?",
+    "type": "number",
+    "canonicalAnswer": "9",
+    "acceptedAnswers": [
+      "9",
+      "nueve"
+    ],
+    "explanation": "Quini fue el legendario número 9 indiscutible del club durante más de una década.",
+    "unit": "dorsal"
+  },
+  {
+    "id": "q-ferrero-historic-number",
+    "question": "¿Qué dorsal clásico de extremo zurdo lució Enzo Ferrero durante su década de oro en El Molinón?",
+    "type": "number",
+    "canonicalAnswer": "11",
+    "acceptedAnswers": [
+      "11",
+      "once"
+    ],
+    "explanation": "Enzo Ferrero fue el 11 puro por excelencia de la historia sportinguista.",
+    "unit": "dorsal"
+  },
+  {
+    "id": "q-joaquin-historic-number",
+    "question": "¿Qué dorsal clásico en la media llevaba el eterno capitán Joaquín Alonso?",
+    "type": "number",
+    "canonicalAnswer": "8",
+    "acceptedAnswers": [
+      "8",
+      "ocho"
+    ],
+    "explanation": "Joaquín Alonso lideró la medular sportinguista con el 8 a la espalda durante 16 temporadas.",
+    "unit": "dorsal"
+  },
+  {
+    "id": "q-unbeaten-streak-guajes",
+    "question": "¿Cuántas jornadas consecutivas permaneció invicto el Sporting de Abelardo al inicio de la temporada 2014/15?",
+    "type": "number",
+    "canonicalAnswer": "20",
+    "acceptedAnswers": [
+      "20",
+      "veinte"
+    ],
+    "explanation": "El equipo no conoció la derrota en las primeras 20 jornadas de liga hasta caer ante el Betis en la jornada 21.",
+    "unit": "jornadas"
+  },
+  {
+    "id": "q-return-after-10-years-season",
+    "question": "¿En qué temporada regresó el Sporting a Primera División tras una travesía de 10 años consecutivos en Segunda (1998-2008)?",
+    "type": "season",
+    "canonicalAnswer": "2007/08",
+    "acceptedAnswers": [
+      "2007/08",
+      "2007-08",
+      "07/08",
+      "07-08"
+    ],
+    "explanation": "El 15 de junio de 2008 el Sporting culminó la temporada 2007/08 regresando a Primera División de la mano de Manolo Preciado.",
+    "formatHint": "Temporada (ej. 2007/08)"
+  },
+  {
+    "id": "q-ascenso-helmantico-year",
+    "question": "¿En qué año certificó el Sporting el ascenso a Primera en Salamanca ganando 0-1 a la UD Salamanca?",
+    "type": "number",
+    "canonicalAnswer": "1970",
+    "acceptedAnswers": [
+      "1970",
+      "mil novecientos setenta"
+    ],
+    "explanation": "En 1970 el equipo de Carriega sentenció el retorno a la máxima categoría.",
+    "unit": "año"
+  },
+  {
+    "id": "q-top-scorer-2011-12",
+    "question": "¿Qué delantero fue el máximo realizador del Sporting en Primera con 9 goles en la temporada 2011/12?",
+    "type": "player",
+    "canonicalAnswer": "David Barral",
+    "acceptedAnswers": [
+      "david barral",
+      "barral"
+    ],
+    "explanation": "David Barral marcó 9 dianas en la temporada que concluyó con el descenso tras cuatro años en la máxima categoría.",
+    "formatHint": "Nombre del delantero"
+  },
+  {
+    "id": "q-quini-record-goals-2a",
+    "question": "¿Cuántos goles marcó Quini en la temporada 1976/77 en Segunda División para fijar el récord histórico del club?",
+    "type": "number",
+    "canonicalAnswer": "27",
+    "acceptedAnswers": [
+      "27",
+      "veintisiete"
+    ],
+    "explanation": "El Brujo perforó las redes rivales en 27 ocasiones en 38 jornadas para ascender arrollando a Primera.",
+    "unit": "goles"
+  },
+  {
+    "id": "q-midfielder-most-goals",
+    "question": "¿Qué centrocampista es el medio más goleador de la historia del Sporting con 80 dianas oficiales?",
+    "type": "player",
+    "canonicalAnswer": "Joaquín Alonso",
+    "acceptedAnswers": [
+      "joaquin alonso",
+      "joaquin"
+    ],
+    "explanation": "El capitán Joaquín anotó 80 goles a lo largo de sus 646 partidos oficiales como rojiblanco.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-guerrero-top-scorer-2015",
+    "question": "¿Quién fue el máximo goleador del Sporting en la temporada del ascenso 2014/15 con 11 goles?",
+    "type": "player",
+    "canonicalAnswer": "Miguel Ángel Guerrero",
+    "acceptedAnswers": [
+      "miguel angel guerrero",
+      "guerrero",
+      "miguel angel guerrero martin"
+    ],
+    "explanation": "Guerrero fue el referente ofensivo de aquel Sporting anotando 11 goles decisivos en Segunda.",
+    "formatHint": "Nombre del delantero"
+  },
+  {
+    "id": "q-bernardo-goals-2015",
+    "question": "¿Qué central colombiano formó con Luis Hernández la célebre zaga del ascenso de 2015 marcando 3 goles?",
+    "type": "player",
+    "canonicalAnswer": "Bernardo Espinosa",
+    "acceptedAnswers": [
+      "bernardo espinosa",
+      "bernardo"
+    ],
+    "explanation": "Bernardo Espinosa fue el líder de la zaga sportinguista y autor del definitivo 0-3 en el Villamarín.",
+    "formatHint": "Nombre del central"
+  },
+  {
+    "id": "q-copa-semi-1978-stadium",
+    "question": "¿En qué campo madrileño se disputó la vuelta de semifinales de Copa de 1978 en la que el Sporting apeó al Rayo Vallecano?",
+    "type": "text",
+    "canonicalAnswer": "Vallecas",
+    "acceptedAnswers": [
+      "vallecas",
+      "estadio de vallecas",
+      "campo de vallecas"
+    ],
+    "explanation": "El Sporting certificó su pase a semifinales en Vallecas.",
+    "formatHint": "Nombre del estadio madrileño"
+  },
+  {
+    "id": "q-villa-world-cup-2010",
+    "question": "¿Qué delantero formado en Mareo fue el máximo goleador de España en el Mundial de Sudáfrica 2010 con 5 goles?",
+    "type": "player",
+    "canonicalAnswer": "David Villa",
+    "acceptedAnswers": [
+      "david villa",
+      "villa",
+      "el guaje villa"
+    ],
+    "explanation": "David Villa fue la bota de plata y pieza clave para la conquista de la Copa del Mundo en 2010.",
+    "formatHint": "Nombre del delantero"
+  },
+  {
+    "id": "q-maceda-legend",
+    "question": "¿Qué mítico central de Mareo marcó el gol de cabeza ante Alemania Federal que clasificó a España para semifinales de la Eurocopa 1984?",
+    "type": "player",
+    "canonicalAnswer": "Antonio Maceda",
+    "acceptedAnswers": [
+      "antonio maceda",
+      "maceda"
+    ],
+    "explanation": "Antonio Maceda Francés brilló en la zaga del Sporting antes de su traspaso al Real Madrid.",
+    "formatHint": "Nombre del central"
+  },
+  {
+    "id": "q-molowny-or-sporting-1950",
+    "question": "¿Qué extremo gijonés del Sporting conocido como \"El Pitufo\" acudió con España al Mundial de Brasil 1950?",
+    "type": "player",
+    "canonicalAnswer": "Paco Campos",
+    "acceptedAnswers": [
+      "paco campos",
+      "campos",
+      "francisco campos salamanca",
+      "francisco campos"
+    ],
+    "explanation": "Paco Campos fue una de las grandes figuras de los años 40 y 50.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-top-scorer-2021-22",
+    "question": "¿Quién fue el máximo goleador del Sporting en la temporada 2021/22 con 14 tantos en Segunda División?",
+    "type": "player",
+    "canonicalAnswer": "Uros Djurdjevic",
+    "acceptedAnswers": [
+      "uros djurdjevic",
+      "djuka",
+      "djurdjevic"
+    ],
+    "explanation": "Djuka volvió a liderar la tabla de goleadores rojiblancos sumando 14 goles en liga.",
+    "formatHint": "Nombre del jugador"
+  },
+  {
+    "id": "q-quini-first-team-debut-season",
+    "question": "¿En qué temporada debutó Quini con el primer equipo del Real Sporting tras destacar en el Ensidesa?",
+    "type": "season",
+    "canonicalAnswer": "1968/69",
+    "acceptedAnswers": [
+      "1968/69",
+      "1968-69",
+      "68/69",
+      "68-69"
+    ],
+    "explanation": "El Brujo debutó el 22 de diciembre de 1968 frente al Real Betis en el Benito Villamarín.",
+    "formatHint": "Temporada (ej. 1968/69)"
+  },
+  {
+    "id": "q-castro-goalkeeper-final-1981",
+    "question": "¿Qué portero defendió los tres palos del Sporting en la final de la Copa del Rey de 1981 ante el FC Barcelona?",
+    "type": "player",
+    "canonicalAnswer": "Jesús Castro",
+    "acceptedAnswers": [
+      "jesus castro",
+      "castro"
+    ],
+    "explanation": "Jesús Castro fue el guardameta titular de aquella histórica final.",
+    "formatHint": "Nombre del portero"
+  },
+  {
+    "id": "q-rivero-final-1982",
+    "question": "¿Quién defendió la portería del Sporting en la final de Copa del Rey de 1982 ante el Real Madrid en el Nuevo Zorrilla?",
+    "type": "player",
+    "canonicalAnswer": "José Aurelio Rivero",
+    "acceptedAnswers": [
+      "jose aurelio rivero",
+      "rivero"
+    ],
+    "explanation": "José Aurelio Rivero fue el guardameta titular ante el Real Madrid por lesión de Castro.",
+    "formatHint": "Nombre del portero"
+  },
+  {
+    "id": "q-coach-final-copa-1981",
+    "question": "¿Quién era el entrenador del Real Sporting en la primera final de Copa de su historia en junio de 1981?",
+    "type": "player",
+    "canonicalAnswer": "Vicente Miera",
+    "acceptedAnswers": [
+      "vicente miera",
+      "miera"
+    ],
+    "explanation": "Vicente Miera comandó al conjunto gijonés en la gran final del Calderón.",
+    "formatHint": "Nombre del entrenador"
+  },
+  {
+    "id": "q-coach-final-copa-1982",
+    "question": "¿Quién dirigía al Sporting en la final de Copa del Rey de 1982 en Valladolid tras sustituir a Novoa en la recta final?",
+    "type": "player",
+    "canonicalAnswer": "José Manuel Díaz Novoa",
+    "acceptedAnswers": [
+      "jose manuel diaz novoa",
+      "diaz novoa",
+      "novoa"
+    ],
+    "explanation": "Novoa tomó las riendas y clasificó brillantemente al equipo para su segunda final consecutiva.",
+    "formatHint": "Nombre del entrenador"
+  },
+  {
+    "id": "q-abelardo-first-coach-season",
+    "question": "¿En qué temporada asumió Abelardo Fernández por primera vez las riendas del primer equipo en las últimas jornadas antes de obrar el milagro de 2015?",
+    "type": "season",
+    "canonicalAnswer": "2013/14",
+    "acceptedAnswers": [
+      "2013/14",
+      "2013-14",
+      "13/14",
+      "13-14"
+    ],
+    "explanation": "El Pitu Abelardo tomó el mando en mayo de 2014 en sustitución de José Ramón Sandoval metiendo al equipo en playoff.",
+    "formatHint": "Temporada (ej. 2013/14)"
+  },
+  {
+    "id": "q-most-international-mareo-player",
+    "question": "¿Qué futbolista salido de Mareo ostenta el récord de internacionalidades absolutas con España (98 partidos)?",
+    "type": "player",
+    "canonicalAnswer": "David Villa",
+    "acceptedAnswers": [
+      "david villa",
+      "villa"
+    ],
+    "explanation": "David Villa jugó 98 partidos oficiales con la Selección absoluta anotando 59 goles (máximo goleador de la historia de España).",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-luis-enrique-internationals",
+    "question": "¿Qué mítico jugador salido de Mareo disputó 62 partidos con la Selección y 3 Mundiales (1994, 1998, 2002) antes de ser seleccionador?",
+    "type": "player",
+    "canonicalAnswer": "Luis Enrique",
+    "acceptedAnswers": [
+      "luis enrique",
+      "luis enrique martinez",
+      "luis enrique martinez garcia",
+      "lucho"
+    ],
+    "explanation": "Luis Enrique Martínez debutó en el Sporting en 1989 y triunfó al máximo nivel internacional.",
+    "formatHint": "Nombre del jugador"
+  },
+  {
+    "id": "q-luis-enrique-transfer-year",
+    "question": "¿En qué año fue traspasado el joven talento Luis Enrique Martínez al Real Madrid tras marcar 14 goles en liga con el Sporting?",
+    "type": "number",
+    "canonicalAnswer": "1991",
+    "acceptedAnswers": [
+      "1991",
+      "mil novecientos noventa y uno"
+    ],
+    "explanation": "En el verano de 1991, Ramón Mendoza abonó los 250 millones de pesetas de su cláusula para llevarlo al Bernabéu.",
+    "unit": "año"
+  },
+  {
+    "id": "q-luis-enrique-goals-90-91",
+    "question": "¿Cuántos goles anotó Luis Enrique en Primera División en la temporada 1990/91 clasificando al Sporting para la UEFA?",
+    "type": "number",
+    "canonicalAnswer": "14",
+    "acceptedAnswers": [
+      "14",
+      "catorce"
+    ],
+    "explanation": "Lucho firmó una campaña sensacional con 14 tantos siendo el líder del equipo de Ciriaco Cano.",
+    "unit": "goles"
+  },
+  {
+    "id": "q-ciriaco-uefa-1991",
+    "question": "¿Qué exjugador y técnico de Plasencia llevó al Sporting al 5.º puesto y a la clasificación para la Copa de la UEFA en la 1990/91?",
+    "type": "player",
+    "canonicalAnswer": "Ciriaco Cano",
+    "acceptedAnswers": [
+      "ciriaco cano",
+      "ciriaco",
+      "ciriaco cano gonzalez"
+    ],
+    "explanation": "Ciriaco Cano completó una temporada memorable acabando 5.º en Primera con 44 puntos.",
+    "formatHint": "Nombre del entrenador"
+  },
+  {
+    "id": "q-top-scorer-2023-24",
+    "question": "¿Qué canterano gijonés fue máximo realizador del Sporting en la 2023/24 con 10 goles (empatado con Juan Otero)?",
+    "type": "player",
+    "canonicalAnswer": "Gaspar Campos",
+    "acceptedAnswers": [
+      "gaspar campos",
+      "gaspar",
+      "gaspar campos-ansó",
+      "gaspar campos anso"
+    ],
+    "explanation": "Gaspar Campos cuajó una fantástica campaña con 10 goles llegando a disputar el playoff de ascenso.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-copa-liga-semis-season",
+    "question": "¿En qué temporada alcanzó el Sporting las semifinales de la extinta Copa de la Liga de Primera División cayendo ante el Real Madrid?",
+    "type": "season",
+    "canonicalAnswer": "1984/85",
+    "acceptedAnswers": [
+      "1984/85",
+      "1984-85",
+      "84/85",
+      "84-85"
+    ],
+    "explanation": "En la primavera de 1985 el Sporting venció 3-1 en El Molinón en la ida de semifinales de la Copa de la Liga.",
+    "formatHint": "Temporada (ej. 1984/85)"
+  },
+  {
+    "id": "q-first-primera-match-el-molinon",
+    "question": "¿Frente a qué equipo disputó el Real Sporting su primer partido oficial de Primera División en El Molinón el 1 de octubre de 1944?",
+    "type": "text",
+    "canonicalAnswer": "Real Oviedo",
+    "acceptedAnswers": [
+      "real oviedo",
+      "oviedo"
+    ],
+    "explanation": "El estreno de Primera en El Molinón no pudo ser más grandioso: derbi asturiano y victoria por 6-0 sobre el Real Oviedo.",
+    "formatHint": "Nombre del rival"
+  },
+  {
+    "id": "q-preciado-arrival-season",
+    "question": "¿En qué temporada llegó Manolo Preciado al banquillo de El Molinón para cambiar el rumbo del club?",
+    "type": "season",
+    "canonicalAnswer": "2006/07",
+    "acceptedAnswers": [
+      "2006/07",
+      "2006-07",
+      "06/07",
+      "06-07"
+    ],
+    "explanation": "Manolo Preciado aterrizó en Gijón en el verano de 2006 forjando una unión indestructible con la afición rojiblanca.",
+    "formatHint": "Temporada (ej. 2006/07)"
+  },
+  {
+    "id": "q-preciado-primera-seasons-count",
+    "question": "¿Cuántas temporadas consecutivas logró mantener Manolo Preciado al Sporting en Primera División tras el ascenso de 2008?",
+    "type": "number",
+    "canonicalAnswer": "3",
+    "acceptedAnswers": [
+      "3",
+      "tres"
+    ],
+    "explanation": "Preciado mantuvo al Sporting en Primera en las campañas 2008/09, 2009/10 y 2010/11 con permanencias inolvidables.",
+    "unit": "temporadas"
+  },
+  {
+    "id": "q-jp-cuellar-penalti-cr7",
+    "question": "¿Qué portero extremeño defendió la meta del Sporting durante 9 temporadas siendo el zamora del ascenso de 2015?",
+    "type": "player",
+    "canonicalAnswer": "Iván Cuéllar",
+    "acceptedAnswers": [
+      "ivan cuellar",
+      "cuellar",
+      "pichu cuellar",
+      "pichu"
+    ],
+    "explanation": "El \"Pichu\" Cuéllar fue el cerrojo de los Guajes encajando solo 21 goles en 40 partidos en la 2014/15.",
+    "formatHint": "Nombre o apodo del portero"
+  },
+  {
+    "id": "q-cuellar-zamora-season",
+    "question": "¿En qué temporada conquistó Iván \"Pichu\" Cuéllar el Trofeo Zamora de Segunda División con el Sporting?",
+    "type": "season",
+    "canonicalAnswer": "2014/15",
+    "acceptedAnswers": [
+      "2014/15",
+      "2014-15",
+      "14/15",
+      "14-15"
+    ],
+    "explanation": "Cuéllar ganó el Zamora con un promedio asombroso de 0.52 goles por partido en la temporada 2014/15.",
+    "formatHint": "Temporada (ej. 2014/15)"
+  },
+  {
+    "id": "q-scepovic-goals-2013-14",
+    "question": "¿Qué delantero serbio asombró a la categoría anotando 23 goles en la temporada 2013/14 con el Sporting?",
+    "type": "player",
+    "canonicalAnswer": "Stefan Scepovic",
+    "acceptedAnswers": [
+      "stefan scepovic",
+      "scepovic"
+    ],
+    "explanation": "Stefan Scepovic marcó 23 dianas en 39 partidos convirtiéndose en uno de los grandes goleadores de la década.",
+    "formatHint": "Nombre del delantero"
+  },
+  {
+    "id": "q-mate-bilic-or-ruben-2004",
+    "question": "¿Qué canterano asturiano marcó 14 goles en Segunda en la temporada 2003/04 con Marcelino García Toral rozando el ascenso?",
+    "type": "player",
+    "canonicalAnswer": "Mateo",
+    "acceptedAnswers": [
+      "mateo",
+      "mateo garcia",
+      "mateo areces",
+      "mateo lopez"
+    ],
+    "explanation": "Mateo fue un baluarte ofensivo en la recordada campaña 2003/04.",
+    "formatHint": "Nombre del futbolista"
+  },
+  {
+    "id": "q-goal-1000-primera",
+    "question": "¿Quién marcó el gol 1.000 del Real Sporting en Primera División en El Molinón?",
+    "type": "player",
+    "canonicalAnswer": "Quini",
+    "acceptedAnswers": [
+      "quini",
+      "enrique castro quini",
+      "enrique de castro gonzalez"
+    ],
+    "explanation": "El Brujo Quini fue el autor de esta histórica cifra redonda en la élite.",
+    "formatHint": "Nombre de la leyenda"
+  }
+]
