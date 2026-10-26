@@ -9,7 +9,25 @@ import type {
 export const MAX_ATTEMPTS = 6;
 
 /**
+ * Calculates current pixelation downscale factor based on attempts and game outcome.
+ * High factor (e.g. 24) = giant pixel blocks.
+ * Factor 1 = crisp natural original resolution.
+ *
+ * @param attemptCount Number of guesses already made
+ * @param isGameOver Whether the game has completed
+ * @returns Downscale integer factor
+ */
+export function getPixelationFactor(attemptCount: number, isGameOver: boolean): number {
+  if (isGameOver) return 1;
+  // Pixelation scale: from massive blocks (24x downscale) progressively refining to 3x
+  const pixelFactors = [24, 18, 12, 8, 5, 3];
+  const level = Math.min(attemptCount, pixelFactors.length - 1);
+  return pixelFactors[level];
+}
+
+/**
  * Calculates current blur in pixels based on failed attempts and game outcome.
+ * Maintained for backwards-compatibility and legacy styling.
  *
  * @param attemptCount Number of guesses already made
  * @param isGameOver Whether the game has completed

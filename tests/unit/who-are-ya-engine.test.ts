@@ -4,6 +4,7 @@ import {
   evaluatePlayerGuess,
   evaluateKitGuess,
   getBlurAmount,
+  getPixelationFactor,
   getDailyIndex,
 } from '../../src/lib/who-are-ya/engine.ts';
 import type { WhoAreYaPlayer, WhoAreYaKit } from '../../src/lib/who-are-ya/types.ts';
@@ -87,11 +88,16 @@ describe('Who Are Ya Engine Suite', () => {
     assert.equal(res.yearComparison, 'lower');
   });
 
-  it('computes blur scale from blurry down to 0px', () => {
+  it('computes blur and pixelation scales', () => {
     assert.equal(getBlurAmount(0, false), '22px');
     assert.equal(getBlurAmount(1, false), '17px');
     assert.equal(getBlurAmount(5, false), '3px');
     assert.equal(getBlurAmount(2, true), '0px');
+
+    assert.equal(getPixelationFactor(0, false), 24);
+    assert.equal(getPixelationFactor(1, false), 18);
+    assert.equal(getPixelationFactor(5, false), 3);
+    assert.equal(getPixelationFactor(3, true), 1);
   });
 
   it('computes daily index bounded by length', () => {
