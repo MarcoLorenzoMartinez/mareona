@@ -132,6 +132,31 @@ export default function JuegosPage() {
             Jugar a Mayor o Menor
           </Link>
         </article>
+        {/* Who Are Ya? */}
+        <article className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs hover:border-[#e2001a]/50 transition-colors">
+          <div>
+            <div className="flex items-center justify-between">
+              <span className="rounded-full bg-[#e2001a] px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
+                Diario
+              </span>
+              <span className="text-[11px] font-medium text-[var(--foreground-muted)]">
+                Pasatiempos
+              </span>
+            </div>
+            <h2 className="mt-3 text-base font-bold text-[var(--foreground)]">
+              Who Are Ya?
+            </h2>
+            <p className="mt-1.5 text-xs text-[var(--foreground-muted)]">
+              Adivina el jugador o la camiseta histórica con pistas de estadísticas y foto difuminada que se aclara con cada intento.
+            </p>
+          </div>
+          <Link
+            href="/juegos/who-are-ya"
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-[#e2001a] px-4 py-2 text-xs font-bold text-white hover:bg-[#b30015] transition-colors"
+          >
+            Jugar a Who Are Ya
+          </Link>
+        </article>
       </section>
     </div>
   );
