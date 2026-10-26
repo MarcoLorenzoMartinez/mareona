@@ -40,10 +40,6 @@ export function HigherLowerCard({
         <h2 className="mt-2 text-lg font-bold text-[var(--foreground)]">
           {player.fullName || player.name}
         </h2>
-
-        <p className="mt-0.5 text-xs text-[var(--foreground-muted)]">
-          {player.startSeason} – {player.endSeason}
-        </p>
       </div>
 
       <div className="mt-5 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-center">
