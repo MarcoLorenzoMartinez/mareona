@@ -12,7 +12,8 @@
       "1973-1974"
     ],
     "explanation": "Quini se proclamó máximo goleador de Primera División en la temporada 1973/74 con 20 goles en 30 partidos.",
-    "formatHint": "Temporada (ej. 1973/74)"
+    "formatHint": "Temporada (ej. 1973/74)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-quini-1st-pichichi-2a",
@@ -27,7 +28,8 @@
       "1969-1970"
     ],
     "explanation": "En la temporada 1969/70, Quini anotó 24 goles en Segunda División proclamándose pichichi y logrando el ascenso.",
-    "formatHint": "Temporada (ej. 1969/70)"
+    "formatHint": "Temporada (ej. 1969/70)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-quini-2nd-pichichi-1a",
@@ -41,7 +43,8 @@
       "75-76"
     ],
     "explanation": "En la temporada 1975/76, Quini anotó 21 goles en la máxima categoría.",
-    "formatHint": "Temporada (ej. 1975/76)"
+    "formatHint": "Temporada (ej. 1975/76)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-quini-3rd-pichichi-1a",
@@ -55,7 +58,8 @@
       "79-80"
     ],
     "explanation": "En la temporada 1979/80, Quini marcó 24 goles para el Sporting antes de fichar por el FC Barcelona.",
-    "formatHint": "Temporada (ej. 1979/80)"
+    "formatHint": "Temporada (ej. 1979/80)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-quini-total-pichichis-sporting",
@@ -67,7 +71,8 @@
       "cinco"
     ],
     "explanation": "Quini ganó 5 Trofeos Pichichi como sportinguista: 3 en Primera División (73/74, 75/76, 79/80) y 2 en Segunda (69/70, 76/77).",
-    "unit": "trofeos"
+    "unit": "trofeos",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-most-matches-history",
@@ -80,7 +85,8 @@
       "joaquin"
     ],
     "explanation": "Joaquín Alonso disputó 646 partidos oficiales con el Real Sporting entre 1976 y 1992.",
-    "formatHint": "Escribe el nombre o apellido del futbolista"
+    "formatHint": "Escribe el nombre o apellido del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1284i.jpg"
   },
   {
     "id": "q-second-most-matches",
@@ -93,7 +99,8 @@
       "jimenez"
     ],
     "explanation": "Manuel Jiménez disputó 534 partidos oficiales con la camiseta rojiblanca entre 1979 y 1991.",
-    "formatHint": "Escribe el nombre o apellido del futbolista"
+    "formatHint": "Escribe el nombre o apellido del futbolista",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-top-scorer-history",
@@ -107,7 +114,8 @@
       "enrique castro gonzalez"
     ],
     "explanation": "El Brujo Quini encabeza la tabla histórica de goleadores con 272 tantos en 521 partidos oficiales.",
-    "formatHint": "Escribe el nombre o alias del jugador"
+    "formatHint": "Escribe el nombre o alias del jugador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-second-top-scorer-history",
@@ -120,7 +128,8 @@
       "jose luis ortiz pelaez"
     ],
     "explanation": "Ortiz marcó 131 goles con la elástica rojiblanca entre 1949 y 1957.",
-    "formatHint": "Escribe el nombre o apellido del futbolista"
+    "formatHint": "Escribe el nombre o apellido del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg"
   },
   {
     "id": "q-top-foreign-scorer",
@@ -133,7 +142,8 @@
       "enzo ferrero aguila"
     ],
     "explanation": "Enzo Ferrero anotó 89 goles en 340 partidos oficiales defendiendo la banda izquierda de El Molinón entre 1975 y 1985.",
-    "formatHint": "Escribe el nombre o apellido del futbolista"
+    "formatHint": "Escribe el nombre o apellido del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3572c.jpg"
   },
   {
     "id": "q-goalkeeper-most-matches",
@@ -146,7 +156,8 @@
       "jesus antonio de castro gonzalez"
     ],
     "explanation": "Jesús Castro defendió la portería sportinguista durante 18 temporadas (1967-1985), sumando 471 partidos.",
-    "formatHint": "Escribe el nombre del portero"
+    "formatHint": "Escribe el nombre del portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3665f.jpg"
   },
   {
     "id": "q-zamora-trophies-record",
@@ -160,7 +171,8 @@
       "el gatu"
     ],
     "explanation": "Juan Carlos Ablanedo \"El Gatu\" logró tres Trofeos Zamora en Primera División en las temporadas 1984/85, 1985/86 y 1989/90.",
-    "formatHint": "Escribe el nombre o apellido del portero"
+    "formatHint": "Escribe el nombre o apellido del portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1612e.jpg"
   },
   {
     "id": "q-derbi-biggest-win-1a",
@@ -174,7 +186,8 @@
       "6 a 0"
     ],
     "explanation": "El 1 de octubre de 1944 (temporada 1944/45), el Sporting se impuso por 6-0 al Real Oviedo en El Molinón en Primera División.",
-    "formatHint": "Marcador (ej. 6 - 0)"
+    "formatHint": "Marcador (ej. 6 - 0)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-subcampeon-liga-season",
@@ -188,7 +201,8 @@
       "78-79"
     ],
     "explanation": "El Sporting de Vicente Miera finalizó 2.º en Primera División en la temporada 1978/79 con 43 puntos, a sólo 4 del campeón.",
-    "formatHint": "Temporada (ej. 1978/79)"
+    "formatHint": "Temporada (ej. 1978/79)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-subcampeon-points",
@@ -201,7 +215,8 @@
       "cuarenta y tres"
     ],
     "explanation": "El Real Sporting sumó 43 puntos en 34 jornadas gracias a 17 victorias, 9 empates y 8 derrotas.",
-    "unit": "puntos"
+    "unit": "puntos",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-coach-subcampeon",
@@ -214,7 +229,8 @@
       "vicente miera campos"
     ],
     "explanation": "Vicente Miera dirigió magistralmente al equipo subcampeón de Liga y a la primera participación en Copa de la UEFA.",
-    "formatHint": "Nombre del entrenador"
+    "formatHint": "Nombre del entrenador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/6064b.jpg"
   },
   {
     "id": "q-coach-most-matches",
@@ -227,7 +243,8 @@
       "novoa"
     ],
     "explanation": "José Manuel Díaz Novoa dirigió al Real Sporting en 282 partidos oficiales a lo largo de varias etapas.",
-    "formatHint": "Nombre del entrenador"
+    "formatHint": "Nombre del entrenador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/2157.jpg"
   },
   {
     "id": "q-points-ascenso-guajes",
@@ -240,7 +257,8 @@
       "ochenta y dos"
     ],
     "explanation": "El Sporting sumó 82 puntos (21 victorias, 19 empates y solo 2 derrotas) en una temporada irrepetible.",
-    "unit": "puntos"
+    "unit": "puntos",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-losses-ascenso-guajes",
@@ -252,7 +270,8 @@
       "dos"
     ],
     "explanation": "El equipo de Abelardo batió el récord de imbatibilidad cayendo únicamente en 2 encuentros en todo el campeonato.",
-    "unit": "derrotas"
+    "unit": "derrotas",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-stadium-ascenso-2015",
@@ -265,7 +284,8 @@
       "estadio benito villamarin"
     ],
     "explanation": "El Sporting venció 0-3 al Real Betis en el Benito Villamarín en la jornada 42, sellando el ascenso con el gol de Caballero para el Lugo en Girona.",
-    "formatHint": "Nombre del estadio"
+    "formatHint": "Nombre del estadio",
+    "photoUrl": "https://www.bdfutbol.com/i/j/575e.jpg"
   },
   {
     "id": "q-score-ascenso-betis-2015",
@@ -279,7 +299,8 @@
       "0 a 3"
     ],
     "explanation": "Guerrero, Jony y Bernardo marcaron los tres goles en la inolvidable victoria sportinguista por 0-3.",
-    "formatHint": "Marcador (ej. 0 - 3)"
+    "formatHint": "Marcador (ej. 0 - 3)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/575e.jpg"
   },
   {
     "id": "q-points-ascenso-preciado",
@@ -292,7 +313,8 @@
       "setenta y dos"
     ],
     "explanation": "El Sporting de Manolo Preciado cerró la temporada con 72 puntos, acabando en 3.ª posición tras diez años de travesía en Segunda.",
-    "unit": "puntos"
+    "unit": "puntos",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-rival-ascenso-2008",
@@ -305,7 +327,8 @@
       "sociedad deportiva eibar"
     ],
     "explanation": "Goles de Bilic y Luis Morán frente a la SD Eibar el 15 de junio de 2008 desataron el éxtasis en Gijón.",
-    "formatHint": "Nombre del club rival"
+    "formatHint": "Nombre del club rival",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-goalscorer-bernabeu-2011",
@@ -317,7 +340,8 @@
       "de las cuevas"
     ],
     "explanation": "El 2 de abril de 2011, Miguel de las Cuevas marcó en el minuto 79 para dar la histórica victoria por 0-1 ante el Real Madrid.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/4122c.jpg"
   },
   {
     "id": "q-first-european-rival",
@@ -330,7 +354,8 @@
       "turin"
     ],
     "explanation": "El 13 de septiembre de 1978 el Sporting debutó en la Copa de la UEFA venciendo 3-0 al Torino FC en El Molinón.",
-    "formatHint": "Nombre del club"
+    "formatHint": "Nombre del club",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-score-torino-1978",
@@ -344,7 +369,8 @@
       "3 a 0"
     ],
     "explanation": "El Sporting firmó un partido glorioso venciendo 3-0 con dos goles de Ferrero y uno de E. Morán.",
-    "formatHint": "Marcador (ej. 3 - 0)"
+    "formatHint": "Marcador (ej. 3 - 0)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-rival-san-siro-1987",
@@ -357,7 +383,8 @@
       "a.c. milan"
     ],
     "explanation": "El Sporting de Novoa venció 1-0 en Gijón al poderoso AC Milan de Sacchi, Gullit y van Basten el 16 de septiembre de 1987.",
-    "formatHint": "Nombre del club italiano"
+    "formatHint": "Nombre del club italiano",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-scorer-milan-1987",
@@ -370,7 +397,8 @@
       "jorge alberto lopez fernandez"
     ],
     "explanation": "Zurdi anotó el legendario tanto en el minuto 73 batiendo al guardameta Giovanni Galli.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/392c.jpg"
   },
   {
     "id": "q-last-european-rival-1991",
@@ -383,7 +411,8 @@
       "steaua bucarest"
     ],
     "explanation": "El 6 de noviembre de 1991 el Sporting disputó su último encuentro en competición europea ante el Steaua de Bucarest en Rumanía.",
-    "formatHint": "Nombre del club"
+    "formatHint": "Nombre del club",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-mareo-inauguration-year",
@@ -395,7 +424,8 @@
       "mil novecientos setenta y ocho"
     ],
     "explanation": "La Escuela de Fútbol de Mareo fue inaugurada el 28 de marzo de 1978 bajo la presidencia de Manuel Vega-Arango.",
-    "unit": "año"
+    "unit": "año",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-president-golden-era",
@@ -409,7 +439,8 @@
       "vega arango"
     ],
     "explanation": "Manuel Vega-Arango Alvaré presidió el club de 1977 a 1986 y posteriormente de 2002 a 2013.",
-    "formatHint": "Nombre del presidente"
+    "formatHint": "Nombre del presidente",
+    "photoUrl": "/images/historical/escuela-de-mareo.jpg"
   },
   {
     "id": "q-copa-finals-count",
@@ -421,7 +452,8 @@
       "dos"
     ],
     "explanation": "El Sporting disputó las finales de 1981 (contra el FC Barcelona en el Vicente Calderón) y 1982 (contra el Real Madrid en Valladolid).",
-    "unit": "finales"
+    "unit": "finales",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-copa-final-1981-rival",
@@ -434,7 +466,8 @@
       "barça"
     ],
     "explanation": "El Barcelona se impuso 3-1 al Sporting el 18 de junio de 1981 en Madrid.",
-    "formatHint": "Nombre del club"
+    "formatHint": "Nombre del club",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-copa-final-1982-rival",
@@ -447,7 +480,8 @@
       "madrid"
     ],
     "explanation": "El Real Madrid venció 2-1 al Sporting el 13 de abril de 1982.",
-    "formatHint": "Nombre del club"
+    "formatHint": "Nombre del club",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-top-scorer-2020-21",
@@ -461,7 +495,8 @@
       "uros djuka"
     ],
     "explanation": "Djuka completó una temporada excepcional con 22 goles en 39 partidos ligueros en la campaña 2020/21.",
-    "formatHint": "Nombre o apodo del delantero"
+    "formatHint": "Nombre o apodo del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/27072c.jpg"
   },
   {
     "id": "q-top-scorer-2017-18",
@@ -473,7 +508,8 @@
       "santos"
     ],
     "explanation": "Michael Santos formó una destacada dupla ofensiva marcando 17 dianas en la temporada 2017/18.",
-    "formatHint": "Nombre del delantero"
+    "formatHint": "Nombre del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/20211b.jpg"
   },
   {
     "id": "q-first-goal-primera-division",
@@ -486,7 +522,8 @@
       "jose prendes vega"
     ],
     "explanation": "José Prendes anotó el primer gol rojiblanco en la máxima categoría el 24 de septiembre de 1944 en Sarriá (3-3).",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/9887b.jpg"
   },
   {
     "id": "q-youngest-debutant",
@@ -499,7 +536,8 @@
       "emilio gutierrez lopez"
     ],
     "explanation": "Emilio Gutiérrez debutó el 19 de septiembre de 1984 ante el Caudal de Mieres con apenas 15 años durante la huelga de futbolistas.",
-    "formatHint": "Nombre del canterano"
+    "formatHint": "Nombre del canterano",
+    "photoUrl": "https://www.bdfutbol.com/i/j/666g.jpg"
   },
   {
     "id": "q-record-transfer-villa",
@@ -511,7 +549,8 @@
       "zaragoza"
     ],
     "explanation": "El Guaje Villa recaló en La Romareda en el verano de 2003 para salvar la crítica situación financiera del Sporting.",
-    "formatHint": "Nombre del club"
+    "formatHint": "Nombre del club",
+    "photoUrl": "https://www.bdfutbol.com/i/j/575e.jpg"
   },
   {
     "id": "q-villa-total-goals",
@@ -523,7 +562,8 @@
       "cuarenta y uno"
     ],
     "explanation": "David Villa anotó 41 goles en 85 partidos oficiales de rojiblanco (18 en la 2001/02 y 20 en la 2002/03 en liga más copa).",
-    "unit": "goles"
+    "unit": "goles",
+    "photoUrl": "https://www.bdfutbol.com/i/j/575e.jpg"
   },
   {
     "id": "q-villa-debut-season",
@@ -537,7 +577,8 @@
       "00-01"
     ],
     "explanation": "David Villa debutó el 17 de junio de 2001 ante el Córdoba en El Molinón en la jornada 42.",
-    "formatHint": "Temporada (ej. 2000/01)"
+    "formatHint": "Temporada (ej. 2000/01)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/575e.jpg"
   },
   {
     "id": "q-top-scorer-2008-09",
@@ -549,7 +590,8 @@
       "bilic"
     ],
     "explanation": "Mate Bilic anotó 12 dianas, incluyendo un célebre hat-trick en el Ramón Sánchez-Pizjuán ante el Sevilla.",
-    "formatHint": "Nombre del delantero"
+    "formatHint": "Nombre del delantero",
+    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
   },
   {
     "id": "q-bilic-hattrick-stadium",
@@ -563,7 +605,8 @@
       "sanchez-pizjuan"
     ],
     "explanation": "Bilic anotó los tres goles del Sporting en un vibrante 4-3 ante el Sevilla FC el 21 de septiembre de 2008.",
-    "formatHint": "Nombre del estadio"
+    "formatHint": "Nombre del estadio",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-puerta-1-el-molinon",
@@ -576,7 +619,8 @@
       "jesus antonio de castro gonzalez"
     ],
     "explanation": "La Puerta 1 de El Molinón homenajea para siempre a Jesús Castro, fallecido heroicamente en 1993 salvando a dos niños en la playa de Pechón.",
-    "formatHint": "Nombre del portero"
+    "formatHint": "Nombre del portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3665f.jpg"
   },
   {
     "id": "q-stadium-official-name",
@@ -589,7 +633,8 @@
       "enrique castro"
     ],
     "explanation": "Tras el fallecimiento de Quini el 27 de febrero de 2018, el Ayuntamiento aprobó la denominación Estadio El Molinón - Enrique Castro \"Quini\".",
-    "formatHint": "Nombre de la leyenda"
+    "formatHint": "Nombre de la leyenda",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-mundial-82-sporting-players",
@@ -601,7 +646,8 @@
       "dos"
     ],
     "explanation": "Joaquín y Jiménez integraron la lista de la Selección Española en el Mundial 82 militando en el Sporting (Quini ya estaba en el Barça).",
-    "unit": "futbolistas"
+    "unit": "futbolistas",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-euro-1980-scorer",
@@ -614,7 +660,8 @@
       "secundino suarez"
     ],
     "explanation": "Secundino Suárez \"Cundi\" fue un puntal de la selección en la Euro 1980 disputando la final contra Alemania Federal.",
-    "formatHint": "Nombre o apodo del defensa"
+    "formatHint": "Nombre o apodo del defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/2973d.jpg"
   },
   {
     "id": "q-cundi-son-player",
@@ -627,7 +674,8 @@
       "ruben suarez estrada"
     ],
     "explanation": "Rubén Suárez se formó en Mareo y debutó en el primer equipo continuando la saga familiar iniciada por su padre Cundi.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/4377b.jpg"
   },
   {
     "id": "q-last-relegation-season",
@@ -641,7 +689,8 @@
       "16-17"
     ],
     "explanation": "En la temporada 2016/17, el Sporting acabó 18.º con 31 puntos descendiendo a la categoría de plata.",
-    "formatHint": "Temporada (ej. 2016/17)"
+    "formatHint": "Temporada (ej. 2016/17)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-camp-nou-0-4-season",
@@ -655,7 +704,8 @@
       "86-87"
     ],
     "explanation": "El 14 de diciembre de 1986, el Sporting de Novoa goleó 0-4 al Barça de Terry Venables en el Camp Nou con exhibición de Eloy Olaya.",
-    "formatHint": "Temporada (ej. 1986/87)"
+    "formatHint": "Temporada (ej. 1986/87)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-eloy-camp-nou-goals",
@@ -667,7 +717,8 @@
       "dos"
     ],
     "explanation": "Eloy Olaya marcó dos de los cuatro goles en la mayor victoria liguera a domicilio del Sporting frente al Barça.",
-    "unit": "goles"
+    "unit": "goles",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-quini-return-season",
@@ -681,7 +732,8 @@
       "84-85"
     ],
     "explanation": "El Brujo volvió a casa en el verano de 1984 y vistió la camiseta rojiblanca hasta colgar las botas en 1987.",
-    "formatHint": "Temporada (ej. 1984/85)"
+    "formatHint": "Temporada (ej. 1984/85)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-worst-points-season",
@@ -695,7 +747,8 @@
       "97-98"
     ],
     "explanation": "La temporada 1997/98 fue la más negra de la historia rojiblanca en la élite con solo 2 victorias y 13 puntos.",
-    "formatHint": "Temporada (ej. 1997/98)"
+    "formatHint": "Temporada (ej. 1997/98)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-wins-in-1997-98",
@@ -707,7 +760,8 @@
       "dos"
     ],
     "explanation": "El Sporting solo venció al Racing de Santander (2-1) y al RCD Espanyol (1-0) en las 38 jornadas.",
-    "unit": "victorias"
+    "unit": "victorias",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-coach-ascenso-1970",
@@ -720,7 +774,8 @@
       "luis cid"
     ],
     "explanation": "Luis Cid \"Carriega\" dirigió al equipo que arrasó en Segunda marcando 77 goles en 38 partidos.",
-    "formatHint": "Nombre del entrenador"
+    "formatHint": "Nombre del entrenador",
+    "photoUrl": "https://www.bdfutbol.com/i/lm/7450.png"
   },
   {
     "id": "q-first-president-1905",
@@ -733,7 +788,8 @@
       "anselmo lopez sanchez"
     ],
     "explanation": "Anselmo López Sánchez fue fundador y primer presidente del Sporting Gijonés en agosto de 1905.",
-    "formatHint": "Nombre del primer presidente"
+    "formatHint": "Nombre del primer presidente",
+    "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
   },
   {
     "id": "q-royal-title-year",
@@ -745,7 +801,8 @@
       "mil novecientos doce"
     ],
     "explanation": "En 1912 el rey Alfonso XIII aceptó la presidencia de honor y otorgó el título honorífico de Real.",
-    "unit": "año"
+    "unit": "año",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-consecutive-years-in-primera",
@@ -758,7 +815,8 @@
       "veintiuno"
     ],
     "explanation": "Fueron 21 temporadas ininterrumpidas en la élite del fútbol español compitiendo al máximo nivel nacional y europeo.",
-    "unit": "temporadas"
+    "unit": "temporadas",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-most-red-cards-player",
@@ -771,7 +829,8 @@
       "sergio"
     ],
     "explanation": "Sergio Sánchez acumuló el récord de expulsiones oficiales de rojiblanco a lo largo de su carrera.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/2498b.jpg"
   },
   {
     "id": "q-scorer-permanencia-2016",
@@ -784,7 +843,8 @@
       "sergio"
     ],
     "explanation": "Jony y Sergio Álvarez anotaron en el vibrante triunfo ante el Villarreal en la jornada 38 de la 2015/16 desatando la locura en El Molinón.",
-    "formatHint": "Nombre del centrocampista"
+    "formatHint": "Nombre del centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/12496c.jpg"
   },
   {
     "id": "q-barral-goal-barca-2011",
@@ -796,7 +856,8 @@
       "barral"
     ],
     "explanation": "David Barral anotó en el minuto 16 tras dejar atrás a Piqué y Milito en una de las estampas más icónicas de la era Preciado.",
-    "formatHint": "Nombre del delantero"
+    "formatHint": "Nombre del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/5643b.jpg"
   },
   {
     "id": "q-coach-ascenso-1977",
@@ -808,7 +869,8 @@
       "miera"
     ],
     "explanation": "Vicente Miera devolvió al Sporting a la élite como campeón de Segunda División con 54 puntos y Quini pichichi con 27 goles.",
-    "formatHint": "Nombre del entrenador"
+    "formatHint": "Nombre del entrenador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/6064b.jpg"
   },
   {
     "id": "q-ablanedo-first-zamora-season",
@@ -822,7 +884,8 @@
       "84-85"
     ],
     "explanation": "Ablanedo encajó solo 22 goles en 33 partidos (coeficiente de 0.66) en la temporada 1984/85.",
-    "formatHint": "Temporada (ej. 1984/85)"
+    "formatHint": "Temporada (ej. 1984/85)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1612e.jpg"
   },
   {
     "id": "q-ablanedo-second-zamora-season",
@@ -836,7 +899,8 @@
       "85-86"
     ],
     "explanation": "En la temporada 1985/86, Ablanedo encajó 27 goles en 34 partidos (0.79 de coeficiente) ganando su segundo galardón.",
-    "formatHint": "Temporada (ej. 1985/86)"
+    "formatHint": "Temporada (ej. 1985/86)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1612e.jpg"
   },
   {
     "id": "q-ablanedo-third-zamora-season",
@@ -850,7 +914,8 @@
       "89-90"
     ],
     "explanation": "En la campaña 1989/90, el portero rojiblanco encajó 25 goles en 31 partidos (0.80) llevándose su tercer Zamora.",
-    "formatHint": "Temporada (ej. 1989/90)"
+    "formatHint": "Temporada (ej. 1989/90)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1612e.jpg"
   },
   {
     "id": "q-ablanedo-i-player",
@@ -863,7 +928,8 @@
       "ablanedo 1"
     ],
     "explanation": "José Luis Ablanedo Iglesias jugó como defensa central en el Sporting acumulando cerca de 200 partidos.",
-    "formatHint": "Nombre del defensa"
+    "formatHint": "Nombre del defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1456b.jpg"
   },
   {
     "id": "q-foreign-player-most-matches",
@@ -875,7 +941,8 @@
       "ferrero"
     ],
     "explanation": "El legendario extremo argentino Enzo Ferrero ostenta la marca histórica con 340 apariciones oficiales entre 1975 y 1985.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3572c.jpg"
   },
   {
     "id": "q-quini-goals-1979-80",
@@ -887,7 +954,8 @@
       "veinticuatro"
     ],
     "explanation": "Anotó 24 dianas en 34 partidos en su última temporada antes de su marcha al Barcelona.",
-    "unit": "goles"
+    "unit": "goles",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-quini-historic-number",
@@ -899,7 +967,8 @@
       "nueve"
     ],
     "explanation": "Quini fue el legendario número 9 indiscutible del club durante más de una década.",
-    "unit": "dorsal"
+    "unit": "dorsal",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-ferrero-historic-number",
@@ -911,7 +980,8 @@
       "once"
     ],
     "explanation": "Enzo Ferrero fue el 11 puro por excelencia de la historia sportinguista.",
-    "unit": "dorsal"
+    "unit": "dorsal",
+    "photoUrl": "https://www.bdfutbol.com/i/j/2689f.jpg"
   },
   {
     "id": "q-joaquin-historic-number",
@@ -923,7 +993,8 @@
       "ocho"
     ],
     "explanation": "Joaquín Alonso lideró la medular sportinguista con el 8 a la espalda durante 16 temporadas.",
-    "unit": "dorsal"
+    "unit": "dorsal",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-unbeaten-streak-guajes",
@@ -935,7 +1006,8 @@
       "veinte"
     ],
     "explanation": "El equipo no conoció la derrota en las primeras 20 jornadas de liga hasta caer ante el Betis en la jornada 21.",
-    "unit": "jornadas"
+    "unit": "jornadas",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-return-after-10-years-season",
@@ -949,7 +1021,8 @@
       "07-08"
     ],
     "explanation": "El 15 de junio de 2008 el Sporting culminó la temporada 2007/08 regresando a Primera División de la mano de Manolo Preciado.",
-    "formatHint": "Temporada (ej. 2007/08)"
+    "formatHint": "Temporada (ej. 2007/08)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-ascenso-helmantico-year",
@@ -961,7 +1034,8 @@
       "mil novecientos setenta"
     ],
     "explanation": "En 1970 el equipo de Carriega sentenció el retorno a la máxima categoría.",
-    "unit": "año"
+    "unit": "año",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-top-scorer-2011-12",
@@ -973,7 +1047,8 @@
       "barral"
     ],
     "explanation": "David Barral marcó 9 dianas en la temporada que concluyó con el descenso tras cuatro años en la máxima categoría.",
-    "formatHint": "Nombre del delantero"
+    "formatHint": "Nombre del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/5643b.jpg"
   },
   {
     "id": "q-quini-record-goals-2a",
@@ -985,7 +1060,8 @@
       "veintisiete"
     ],
     "explanation": "El Brujo perforó las redes rivales en 27 ocasiones en 38 jornadas para ascender arrollando a Primera.",
-    "unit": "goles"
+    "unit": "goles",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-midfielder-most-goals",
@@ -997,7 +1073,8 @@
       "joaquin"
     ],
     "explanation": "El capitán Joaquín anotó 80 goles a lo largo de sus 646 partidos oficiales como rojiblanco.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1284i.jpg"
   },
   {
     "id": "q-guerrero-top-scorer-2015",
@@ -1010,7 +1087,8 @@
       "miguel angel guerrero martin"
     ],
     "explanation": "Guerrero fue el referente ofensivo de aquel Sporting anotando 11 goles decisivos en Segunda.",
-    "formatHint": "Nombre del delantero"
+    "formatHint": "Nombre del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/12658b.jpg"
   },
   {
     "id": "q-bernardo-goals-2015",
@@ -1022,7 +1100,8 @@
       "bernardo"
     ],
     "explanation": "Bernardo Espinosa fue el líder de la zaga sportinguista y autor del definitivo 0-3 en el Villamarín.",
-    "formatHint": "Nombre del central"
+    "formatHint": "Nombre del central",
+    "photoUrl": "https://www.bdfutbol.com/i/j/6287c.jpg"
   },
   {
     "id": "q-copa-semi-1978-stadium",
@@ -1035,7 +1114,8 @@
       "campo de vallecas"
     ],
     "explanation": "El Sporting certificó su pase a semifinales en Vallecas.",
-    "formatHint": "Nombre del estadio madrileño"
+    "formatHint": "Nombre del estadio madrileño",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-villa-world-cup-2010",
@@ -1048,7 +1128,8 @@
       "el guaje villa"
     ],
     "explanation": "David Villa fue la bota de plata y pieza clave para la conquista de la Copa del Mundo en 2010.",
-    "formatHint": "Nombre del delantero"
+    "formatHint": "Nombre del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/554d.jpg"
   },
   {
     "id": "q-maceda-legend",
@@ -1060,7 +1141,8 @@
       "maceda"
     ],
     "explanation": "Antonio Maceda Francés brilló en la zaga del Sporting antes de su traspaso al Real Madrid.",
-    "formatHint": "Nombre del central"
+    "formatHint": "Nombre del central",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3136d.jpg"
   },
   {
     "id": "q-molowny-or-sporting-1950",
@@ -1074,7 +1156,8 @@
       "francisco campos"
     ],
     "explanation": "Paco Campos fue una de las grandes figuras de los años 40 y 50.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/10140c.jpg"
   },
   {
     "id": "q-top-scorer-2021-22",
@@ -1087,7 +1170,8 @@
       "djurdjevic"
     ],
     "explanation": "Djuka volvió a liderar la tabla de goleadores rojiblancos sumando 14 goles en liga.",
-    "formatHint": "Nombre del jugador"
+    "formatHint": "Nombre del jugador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/27072c.jpg"
   },
   {
     "id": "q-quini-first-team-debut-season",
@@ -1101,7 +1185,8 @@
       "68-69"
     ],
     "explanation": "El Brujo debutó el 22 de diciembre de 1968 frente al Real Betis en el Benito Villamarín.",
-    "formatHint": "Temporada (ej. 1968/69)"
+    "formatHint": "Temporada (ej. 1968/69)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-castro-goalkeeper-final-1981",
@@ -1113,7 +1198,8 @@
       "castro"
     ],
     "explanation": "Jesús Castro fue el guardameta titular de aquella histórica final.",
-    "formatHint": "Nombre del portero"
+    "formatHint": "Nombre del portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3665f.jpg"
   },
   {
     "id": "q-rivero-final-1982",
@@ -1125,7 +1211,8 @@
       "rivero"
     ],
     "explanation": "José Aurelio Rivero fue el guardameta titular ante el Real Madrid por lesión de Castro.",
-    "formatHint": "Nombre del portero"
+    "formatHint": "Nombre del portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3578.jpg"
   },
   {
     "id": "q-coach-final-copa-1981",
@@ -1137,7 +1224,8 @@
       "miera"
     ],
     "explanation": "Vicente Miera comandó al conjunto gijonés en la gran final del Calderón.",
-    "formatHint": "Nombre del entrenador"
+    "formatHint": "Nombre del entrenador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/6064b.jpg"
   },
   {
     "id": "q-coach-final-copa-1982",
@@ -1150,7 +1238,8 @@
       "novoa"
     ],
     "explanation": "Novoa tomó las riendas y clasificó brillantemente al equipo para su segunda final consecutiva.",
-    "formatHint": "Nombre del entrenador"
+    "formatHint": "Nombre del entrenador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/2157.jpg"
   },
   {
     "id": "q-abelardo-first-coach-season",
@@ -1164,7 +1253,8 @@
       "13-14"
     ],
     "explanation": "El Pitu Abelardo tomó el mando en mayo de 2014 en sustitución de José Ramón Sandoval metiendo al equipo en playoff.",
-    "formatHint": "Temporada (ej. 2013/14)"
+    "formatHint": "Temporada (ej. 2013/14)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-most-international-mareo-player",
@@ -1176,7 +1266,8 @@
       "villa"
     ],
     "explanation": "David Villa jugó 98 partidos oficiales con la Selección absoluta anotando 59 goles (máximo goleador de la historia de España).",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/554d.jpg"
   },
   {
     "id": "q-luis-enrique-internationals",
@@ -1190,7 +1281,8 @@
       "lucho"
     ],
     "explanation": "Luis Enrique Martínez debutó en el Sporting en 1989 y triunfó al máximo nivel internacional.",
-    "formatHint": "Nombre del jugador"
+    "formatHint": "Nombre del jugador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1799e.jpg"
   },
   {
     "id": "q-luis-enrique-transfer-year",
@@ -1202,7 +1294,8 @@
       "mil novecientos noventa y uno"
     ],
     "explanation": "En el verano de 1991, Ramón Mendoza abonó los 250 millones de pesetas de su cláusula para llevarlo al Bernabéu.",
-    "unit": "año"
+    "unit": "año",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-luis-enrique-goals-90-91",
@@ -1214,7 +1307,8 @@
       "catorce"
     ],
     "explanation": "Lucho firmó una campaña sensacional con 14 tantos siendo el líder del equipo de Ciriaco Cano.",
-    "unit": "goles"
+    "unit": "goles",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-ciriaco-uefa-1991",
@@ -1227,7 +1321,8 @@
       "ciriaco cano gonzalez"
     ],
     "explanation": "Ciriaco Cano completó una temporada memorable acabando 5.º en Primera con 44 puntos.",
-    "formatHint": "Nombre del entrenador"
+    "formatHint": "Nombre del entrenador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3746b.jpg"
   },
   {
     "id": "q-top-scorer-2023-24",
@@ -1241,7 +1336,8 @@
       "gaspar campos anso"
     ],
     "explanation": "Gaspar Campos cuajó una fantástica campaña con 10 goles llegando a disputar el playoff de ascenso.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/22661b.jpg"
   },
   {
     "id": "q-copa-liga-semis-season",
@@ -1255,7 +1351,8 @@
       "84-85"
     ],
     "explanation": "En la primavera de 1985 el Sporting venció 3-1 en El Molinón en la ida de semifinales de la Copa de la Liga.",
-    "formatHint": "Temporada (ej. 1984/85)"
+    "formatHint": "Temporada (ej. 1984/85)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-first-primera-match-el-molinon",
@@ -1267,7 +1364,8 @@
       "oviedo"
     ],
     "explanation": "El estreno de Primera en El Molinón no pudo ser más grandioso: derbi asturiano y victoria por 6-0 sobre el Real Oviedo.",
-    "formatHint": "Nombre del rival"
+    "formatHint": "Nombre del rival",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-preciado-arrival-season",
@@ -1281,7 +1379,8 @@
       "06-07"
     ],
     "explanation": "Manolo Preciado aterrizó en Gijón en el verano de 2006 forjando una unión indestructible con la afición rojiblanca.",
-    "formatHint": "Temporada (ej. 2006/07)"
+    "formatHint": "Temporada (ej. 2006/07)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-preciado-primera-seasons-count",
@@ -1293,7 +1392,8 @@
       "tres"
     ],
     "explanation": "Preciado mantuvo al Sporting en Primera en las campañas 2008/09, 2009/10 y 2010/11 con permanencias inolvidables.",
-    "unit": "temporadas"
+    "unit": "temporadas",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-jp-cuellar-penalti-cr7",
@@ -1307,7 +1407,8 @@
       "pichu"
     ],
     "explanation": "El \"Pichu\" Cuéllar fue el cerrojo de los Guajes encajando solo 21 goles en 40 partidos en la 2014/15.",
-    "formatHint": "Nombre o apodo del portero"
+    "formatHint": "Nombre o apodo del portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1140d.jpg"
   },
   {
     "id": "q-cuellar-zamora-season",
@@ -1321,7 +1422,8 @@
       "14-15"
     ],
     "explanation": "Cuéllar ganó el Zamora con un promedio asombroso de 0.52 goles por partido en la temporada 2014/15.",
-    "formatHint": "Temporada (ej. 2014/15)"
+    "formatHint": "Temporada (ej. 2014/15)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
   },
   {
     "id": "q-scepovic-goals-2013-14",
@@ -1333,7 +1435,8 @@
       "scepovic"
     ],
     "explanation": "Stefan Scepovic marcó 23 dianas en 39 partidos convirtiéndose en uno de los grandes goleadores de la década.",
-    "formatHint": "Nombre del delantero"
+    "formatHint": "Nombre del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/97538b.jpg"
   },
   {
     "id": "q-mate-bilic-or-ruben-2004",
@@ -1347,7 +1450,8 @@
       "mateo lopez"
     ],
     "explanation": "Mateo fue un baluarte ofensivo en la recordada campaña 2003/04.",
-    "formatHint": "Nombre del futbolista"
+    "formatHint": "Nombre del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/5034b.jpg"
   },
   {
     "id": "q-goal-1000-primera",
@@ -1360,6 +1464,7 @@
       "enrique de castro gonzalez"
     ],
     "explanation": "El Brujo Quini fue el autor de esta histórica cifra redonda en la élite.",
-    "formatHint": "Nombre de la leyenda"
+    "formatHint": "Nombre de la leyenda",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   }
 ]

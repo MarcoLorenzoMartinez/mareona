@@ -14,6 +14,8 @@ export interface TriviaQuestion {
   acceptedAnswers: string[];
   /** Detailed historical context shown after answering */
   explanation: string;
+  /** Optional historical photograph or portrait */
+  photoUrl?: string;
   /** Optional hint or helper format (e.g. "Temporada (ej. 1978/79)") */
   formatHint?: string;
   /** Numeric units when type is 'number' (e.g. 'goles', 'puntos', 'partidos') */
