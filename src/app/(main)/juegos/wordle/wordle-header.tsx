@@ -1,15 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import type { WordleDailyWord } from '@/lib/wordle/types';
 
 interface WordleHeaderProps {
-  challenge: WordleDailyWord;
   onOpenArchive: () => void;
   onOpenStats: () => void;
 }
 
 export function WordleHeader({
-  challenge,
   onOpenArchive,
   onOpenStats,
 }: WordleHeaderProps) {
@@ -26,14 +23,9 @@ export function WordleHeader({
           </svg>
         </Link>
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-              Wordle
-            </h1>
-            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
-              {challenge.id}
-            </span>
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
+            Wordle
+          </h1>
         </div>
       </div>
 

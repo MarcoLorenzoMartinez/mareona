@@ -62,7 +62,6 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
   return (
     <div className="flex flex-col gap-4 max-w-xl mx-auto w-full">
       <WordleHeader
-        challenge={challenge}
         onOpenArchive={() => setIsArchiveOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
       />

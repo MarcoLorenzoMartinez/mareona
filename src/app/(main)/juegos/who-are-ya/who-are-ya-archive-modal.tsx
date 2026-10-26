@@ -1,8 +1,11 @@
-// Client: Archive modal for Who Are Ya daily challenges with calendar picker
+// Client: Archive modal for ¿Quién es? with calendar picker and status indicators
 'use client';
 
 import React, { useState, useMemo } from 'react';
 import { WHO_ARE_YA_EPOCH_DATE, getTodayDateStr } from '@/lib/who-are-ya/daily';
+import { WHO_ARE_YA_STORAGE_PREFIX } from '@/lib/who-are-ya/storage';
+import { MAX_ATTEMPTS } from '@/lib/who-are-ya/engine';
+import type { PlayerGuessResult } from '@/lib/who-are-ya/types';
 
 interface WhoAreYaArchiveModalProps {
   isOpen: boolean;
@@ -52,18 +55,39 @@ export function WhoAreYaArchiveModal({
   const dayOfWeek = (firstDayOfMonth.getUTCDay() + 6) % 7;
   const totalDays = new Date(Date.UTC(viewYear, viewMonth + 1, 0)).getUTCDate();
 
-  const cells: ({ day: number; dateStr: string; isFuture: boolean; isPastEpoch: boolean; isSelected: boolean } | null)[] = [];
+  const cells = [];
   for (let i = 0; i < dayOfWeek; i++) cells.push(null);
 
   for (let day = 1; day <= totalDays; day++) {
     const monthPadded = String(viewMonth + 1).padStart(2, '0');
     const dayPadded = String(day).padStart(2, '0');
     const dateStr = `${viewYear}-${monthPadded}-${dayPadded}`;
+    const isFuture = dateStr > todayIso;
+    const isPastEpoch = dateStr < WHO_ARE_YA_EPOCH_DATE;
+
+    let status: 'WON' | 'LOST' | 'UNPLAYED' = 'UNPLAYED';
+    if (!isFuture && !isPastEpoch) {
+      try {
+        const raw = localStorage.getItem(`${WHO_ARE_YA_STORAGE_PREFIX}${dateStr}`);
+        if (raw) {
+          const guesses = JSON.parse(raw) as PlayerGuessResult[];
+          if (guesses.some((g) => g.isCorrect)) {
+            status = 'WON';
+          } else if (guesses.length >= MAX_ATTEMPTS) {
+            status = 'LOST';
+          }
+        }
+      } catch {
+        // quota fallback
+      }
+    }
+
     cells.push({
       day,
       dateStr,
-      isFuture: dateStr > todayIso,
-      isPastEpoch: dateStr < WHO_ARE_YA_EPOCH_DATE,
+      status,
+      isFuture,
+      isPastEpoch,
       isSelected: dateStr === selectedDate,
     });
   }
@@ -132,13 +156,17 @@ export function WhoAreYaArchiveModal({
               return <div key={`empty-${idx}`} className="aspect-square" />;
             }
 
-            const { day, dateStr, isFuture, isPastEpoch, isSelected } = cell;
+            const { day, dateStr, status, isFuture, isPastEpoch, isSelected } = cell;
             const isToday = dateStr === todayIso;
             const isDisabled = isFuture || isPastEpoch;
 
             let cellBg = 'bg-[var(--surface)] text-[var(--foreground)] hover:border-[#e2001a]';
             if (isDisabled) {
               cellBg = 'bg-zinc-50 text-zinc-300 border-zinc-100 cursor-not-allowed';
+            } else if (status === 'WON') {
+              cellBg = 'bg-emerald-500 text-white font-bold border-emerald-500';
+            } else if (status === 'LOST') {
+              cellBg = 'bg-rose-500 text-white font-bold border-rose-500';
             } else if (isSelected) {
               cellBg = 'bg-[#e2001a] text-white font-bold border-[#e2001a]';
             }
@@ -156,12 +184,28 @@ export function WhoAreYaArchiveModal({
                   isToday && !isSelected ? 'ring-2 ring-[#e2001a]/40 font-bold' : ''
                 }`}
                 title={isDisabled ? 'No disponible' : `Jugar reto del ${dateStr}`}
-                aria-label={`Día ${day}`}
+                aria-label={`Día ${day}, ${status}`}
               >
                 <span>{day}</span>
               </button>
             );
           })}
+        </div>
+
+        {/* Legend idéntica a Wordle */}
+        <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
+          <div className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+            <span>Superado</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
+            <span>Fallado</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface)] border border-[var(--border)]" />
+            <span>Pendiente</span>
+          </div>
         </div>
       </div>
     </div>

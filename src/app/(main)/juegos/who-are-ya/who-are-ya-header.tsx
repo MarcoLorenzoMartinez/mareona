@@ -2,18 +2,16 @@ import React from 'react';
 import Link from 'next/link';
 
 interface WhoAreYaHeaderProps {
-  selectedDate: string;
-  isToday: boolean;
   onOpenArchive: () => void;
+  onOpenStats: () => void;
 }
 
 export function WhoAreYaHeader({
-  selectedDate,
-  isToday,
   onOpenArchive,
+  onOpenStats,
 }: WhoAreYaHeaderProps) {
   return (
-    <header className="flex items-center justify-between border-b border-[var(--border)] pb-4">
+    <header className="flex items-center justify-between border-b border-[var(--border)] pb-3">
       <div className="flex items-center gap-3">
         <Link
           href="/juegos"
@@ -25,30 +23,29 @@ export function WhoAreYaHeader({
           </svg>
         </Link>
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-              ¿Quién es?
-            </h1>
-            {!isToday && (
-              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
-                {selectedDate}
-              </span>
-            )}
-          </div>
+          <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
+            ¿Quién es?
+          </h1>
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={onOpenArchive}
-          title="Ver calendario y archivo de retos anteriores"
-          aria-label="Archivo de retos"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a] hover:text-[#e2001a] transition-all active:scale-95 shadow-2xs"
+          className="flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
+          aria-label="Abrir archivo de retos"
         >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
+          <span>Archivo</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={onOpenStats}
+          className="flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
+          aria-label="Ver estadísticas del usuario"
+        >
+          <span>Estadísticas</span>
         </button>
       </div>
     </header>

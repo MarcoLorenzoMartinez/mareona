@@ -1,4 +1,4 @@
-// Client: Estado interactivo del juego diario ¿Quién es? con archivo por fecha
+// Client: Estado interactivo del juego diario ¿Quién es? con archivo por fecha y persistencia
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
@@ -7,9 +7,17 @@ import { WhoAreYaMysteryPhoto } from './who-are-ya-mystery-photo';
 import { WhoAreYaSelector, type SelectorOption } from './who-are-ya-selector';
 import { WhoAreYaPlayerGrid } from './who-are-ya-player-grid';
 import { WhoAreYaResultModal } from './who-are-ya-game-over';
+import { WhoAreYaStatsModal } from './who-are-ya-stats-modal';
 import { WhoAreYaArchiveModal } from './who-are-ya-archive-modal';
 import { evaluatePlayerGuess, MAX_ATTEMPTS } from '@/lib/who-are-ya/engine';
 import { getPlayerForDate } from '@/lib/who-are-ya/daily';
+import {
+  getStoredPlayerGuesses,
+  savePlayerGuesses,
+  getStoredWhoAreYaStats,
+  updateWhoAreYaStatsOnFinish,
+  type WhoAreYaStats,
+} from '@/lib/who-are-ya/storage';
 import type { WhoAreYaPlayer, PlayerGuessResult } from '@/lib/who-are-ya/types';
 
 interface WhoAreYaClientProps {
@@ -18,17 +26,27 @@ interface WhoAreYaClientProps {
 }
 
 export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
-  const todayStr = initialDate;
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isResultModalDismissed, setIsResultModalDismissed] = useState(false);
+  const [stats, setStats] = useState<WhoAreYaStats>(() => getStoredWhoAreYaStats());
 
-  // Guesses state mapped per date
-  const [playerGuessesByDate, setPlayerGuessesByDate] = useState<Record<string, PlayerGuessResult[]>>({});
+  // Guesses state mapped per date initialized from storage
+  const [playerGuessesByDate, setPlayerGuessesByDate] = useState<Record<string, PlayerGuessResult[]>>(() => {
+    const initialGuesses = getStoredPlayerGuesses(initialDate);
+    return initialGuesses.length > 0 ? { [initialDate]: initialGuesses } : {};
+  });
 
   const handleDateChange = (newDate: string) => {
     setSelectedDate(newDate);
     setIsResultModalDismissed(false);
+    if (!playerGuessesByDate[newDate]) {
+      const stored = getStoredPlayerGuesses(newDate);
+      if (stored.length > 0) {
+        setPlayerGuessesByDate((prev) => ({ ...prev, [newDate]: stored }));
+      }
+    }
   };
 
   const currentTargetPlayer = useMemo(
@@ -58,20 +76,30 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
       const found = players.find((p) => p.bdfId === option.id);
       if (!found || isGameOver) return;
       const result = evaluatePlayerGuess(found, currentTargetPlayer);
+      const nextGuesses = [result, ...(playerGuessesByDate[selectedDate] || [])];
+
       setPlayerGuessesByDate((prev) => ({
         ...prev,
-        [selectedDate]: [result, ...(prev[selectedDate] || [])],
+        [selectedDate]: nextGuesses,
       }));
+
+      savePlayerGuesses(selectedDate, nextGuesses);
+
+      const nextIsWon = result.isCorrect;
+      const nextIsGameOver = nextIsWon || nextGuesses.length >= MAX_ATTEMPTS;
+      if (nextIsGameOver) {
+        const updated = updateWhoAreYaStatsOnFinish(nextIsWon, nextGuesses.length, selectedDate);
+        setStats(updated);
+      }
     },
-    [players, isGameOver, currentTargetPlayer, selectedDate]
+    [players, isGameOver, currentTargetPlayer, selectedDate, playerGuessesByDate]
   );
 
   return (
     <div className="flex flex-col gap-6">
       <WhoAreYaHeader
-        selectedDate={selectedDate}
-        isToday={selectedDate === todayStr}
         onOpenArchive={() => setIsArchiveOpen(true)}
+        onOpenStats={() => setIsStatsOpen(true)}
       />
 
       <section
@@ -113,6 +141,12 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
         targetName={currentTargetPlayer.name}
         targetSublabel={currentTargetPlayer.fullName}
         onOpenArchive={() => setIsArchiveOpen(true)}
+      />
+
+      <WhoAreYaStatsModal
+        isOpen={isStatsOpen}
+        onClose={() => setIsStatsOpen(false)}
+        stats={stats}
       />
 
       <WhoAreYaArchiveModal
