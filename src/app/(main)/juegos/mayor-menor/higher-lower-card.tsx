@@ -21,17 +21,19 @@ export function HigherLowerCard({
   const metricValue = getMetricValue(player, mode);
   const formattedValue = formatMetricValue(metricValue, mode);
 
-  // Border and accent styling based on outcome
-  const outcomeCardBorder =
+  // Halo y micro-animación según el resultado:
+  // - Acierto: Iluminación de confirmación en verde esmeralda (border-emerald-500 ring-2 ring-emerald-500/25).
+  // - Fallo: Micro-vibración física elástica de la tarjeta.
+  const outcomeCardStyles =
     outcome === 'correct'
-      ? 'border-emerald-500 ring-2 ring-emerald-500/20 shadow-lg'
+      ? 'border-emerald-500 ring-2 ring-emerald-500/25 shadow-md'
       : outcome === 'wrong'
-      ? 'border-rose-500 ring-2 ring-rose-500/20 shadow-lg'
-      : 'border-neutral-200/90 hover:border-neutral-300 shadow-xs';
+      ? 'animate-card-shake border-neutral-300 ring-2 ring-neutral-400/30'
+      : 'border-neutral-200/90 shadow-xs';
 
   return (
     <article
-      className={`group relative flex flex-col items-center justify-between overflow-hidden rounded-2xl bg-white p-6 transition-all duration-300 w-full max-w-sm h-full min-h-[360px] border ${outcomeCardBorder}`}
+      className={`group relative flex flex-col items-center justify-between overflow-hidden rounded-2xl bg-white p-6 transition-all duration-200 w-full max-w-sm h-full min-h-[360px] border ${outcomeCardStyles}`}
     >
       {/* Header del jugador */}
       <div className="flex flex-col items-center text-center w-full">
@@ -56,7 +58,7 @@ export function HigherLowerCard({
         </h2>
       </div>
 
-      {/* Sección del dato estadístico: marcador de estadio limpio */}
+      {/* Sección del dato estadístico: siempre en rojo sportinguista */}
       <div className="mt-5 w-full border-t border-neutral-100 pt-3.5 text-center">
         <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
           {mode === 'goals' ? 'Goles Oficiales' : mode === 'minutes' ? 'Minutos Disputados' : 'Partidos Oficiales'}
@@ -64,15 +66,7 @@ export function HigherLowerCard({
 
         <div className="mt-1 flex items-center justify-center min-h-[44px]">
           {isRevealed ? (
-            <div
-              className={`text-3xl sm:text-4xl font-black tabular-nums tracking-tight animate-in fade-in zoom-in-95 duration-200 ${
-                outcome === 'correct'
-                  ? 'text-emerald-600'
-                  : outcome === 'wrong'
-                  ? 'text-rose-600'
-                  : 'text-[#e2001a]'
-              }`}
-            >
+            <div className="text-3xl sm:text-4xl font-black text-[#e2001a] tabular-nums tracking-tight animate-in fade-in zoom-in-95 duration-200">
               {formattedValue}
             </div>
           ) : isMystery ? (

@@ -17,15 +17,13 @@ export function HigherLowerHeader({
   currentScore,
   bestScore,
 }: HigherLowerHeaderProps) {
-  const isHotStreak = currentScore >= 3;
-
   return (
-    <header className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
+    <header className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-neutral-200 pb-4">
       <div>
         <span className="rounded-full bg-[#e2001a] px-2.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
           Pasatiempo
         </span>
-        <h1 className="mt-1.5 text-xl font-bold text-[var(--foreground)]">
+        <h1 className="mt-1.5 text-xl font-bold text-neutral-900">
           ¿Mayor o Menor?
         </h1>
       </div>
@@ -37,21 +35,27 @@ export function HigherLowerHeader({
           disabled={isRevealed}
         />
 
-        <div
-          className={`flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-semibold transition-all duration-300 ${
-            isHotStreak
-              ? 'border-amber-400 bg-amber-50 text-amber-900 shadow-xs'
-              : 'border-[var(--border)] bg-white text-[var(--foreground)]'
-          }`}
-        >
-          <span className="flex items-center gap-1">
-            {isHotStreak && <span className="animate-bounce">🔥</span>}
-            Racha: <strong className="text-[#e2001a] font-bold tabular-nums">{currentScore}</strong>
-          </span>
-          <span className="text-[var(--border)]">|</span>
-          <span className="text-[var(--foreground-muted)] text-[11px]">
-            Récord: <strong className="tabular-nums text-[var(--foreground)]">{bestScore}</strong>
-          </span>
+        {/* Indicador de Racha sobrio y deportivo: sin emojis ni fondos amarillos chillones */}
+        <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3.5 py-1.5 text-xs font-semibold shadow-2xs">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
+              Racha
+            </span>
+            <span className="text-sm font-black tabular-nums text-[#e2001a]">
+              {currentScore}
+            </span>
+          </div>
+
+          <div className="h-3.5 w-[1px] bg-neutral-200" aria-hidden="true" />
+
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
+              Récord
+            </span>
+            <span className="text-sm font-black tabular-nums text-neutral-800">
+              {bestScore}
+            </span>
+          </div>
         </div>
       </div>
     </header>
