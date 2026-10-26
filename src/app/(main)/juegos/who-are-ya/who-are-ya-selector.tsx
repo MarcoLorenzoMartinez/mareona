@@ -26,6 +26,7 @@ export function WhoAreYaSelector({
   const [open, setOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const listboxId = useId();
 
   useEffect(() => {
@@ -37,6 +38,16 @@ export function WhoAreYaSelector({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Sincroniza el scroll automático para que el elemento activo sea siempre visible
+  useEffect(() => {
+    if (highlightedIndex >= 0 && listRef.current) {
+      const activeEl = listRef.current.querySelector<HTMLElement>(`#${listboxId}-opt-${highlightedIndex}`);
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+  }, [highlightedIndex, listboxId]);
 
   const cleanQuery = query.trim().toLowerCase();
   const filtered = cleanQuery.length > 0
@@ -132,6 +143,7 @@ export function WhoAreYaSelector({
 
       {open && filtered.length > 0 && (
         <ul
+          ref={listRef}
           id={listboxId}
           role="listbox"
           className="absolute z-30 mt-2 max-h-60 w-full overflow-auto rounded-2xl border border-[var(--border)] bg-white py-1.5 shadow-lg animate-in fade-in-50 duration-150"
