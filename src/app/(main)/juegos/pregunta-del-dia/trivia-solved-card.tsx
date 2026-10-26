@@ -19,7 +19,7 @@ export function TriviaSolvedCard({
   photoUrl,
   onOpenStats,
 }: TriviaSolvedCardProps) {
-  const isStadium = photoUrl?.startsWith('/stadiums');
+  const isLocalImage = photoUrl?.startsWith('/') || photoUrl?.startsWith('/images') || photoUrl?.startsWith('/stadiums');
 
   return (
     <div className="mt-8 flex flex-col gap-4">
@@ -34,7 +34,7 @@ export function TriviaSolvedCard({
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
           {/* Foto más grande con marco ultra fino */}
           <div className="relative shrink-0 overflow-hidden rounded-xl border border-black/10 bg-white/90 shadow-2xs">
-            {isStadium && photoUrl ? (
+            {isLocalImage && photoUrl ? (
               <div className="relative h-28 w-28 sm:h-32 sm:w-32">
                 <Image
                   src={photoUrl}

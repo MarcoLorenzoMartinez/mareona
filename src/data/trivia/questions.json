@@ -202,7 +202,7 @@
     ],
     "explanation": "El Sporting de Vicente Miera finalizó 2.º en Primera División en la temporada 1978/79 con 43 puntos, a sólo 4 del campeón.",
     "formatHint": "Temporada (ej. 1978/79)",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/sporting-subcampeon-1979.jpg"
   },
   {
     "id": "q-subcampeon-points",
@@ -216,7 +216,7 @@
     ],
     "explanation": "El Real Sporting sumó 43 puntos en 34 jornadas gracias a 17 victorias, 9 empates y 8 derrotas.",
     "unit": "puntos",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/sporting-subcampeon-1979.jpg"
   },
   {
     "id": "q-coach-subcampeon",
@@ -258,7 +258,7 @@
     ],
     "explanation": "El Sporting sumó 82 puntos (21 victorias, 19 empates y solo 2 derrotas) en una temporada irrepetible.",
     "unit": "puntos",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/villamarin-2015.jpg"
   },
   {
     "id": "q-losses-ascenso-guajes",
@@ -271,7 +271,7 @@
     ],
     "explanation": "El equipo de Abelardo batió el récord de imbatibilidad cayendo únicamente en 2 encuentros en todo el campeonato.",
     "unit": "derrotas",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/villamarin-2015.jpg"
   },
   {
     "id": "q-stadium-ascenso-2015",
@@ -285,7 +285,7 @@
     ],
     "explanation": "El Sporting venció 0-3 al Real Betis en el Benito Villamarín en la jornada 42, sellando el ascenso con el gol de Caballero para el Lugo en Girona.",
     "formatHint": "Nombre del estadio",
-    "photoUrl": "https://www.bdfutbol.com/i/j/575e.jpg"
+    "photoUrl": "/images/historical/villamarin-2015.jpg"
   },
   {
     "id": "q-score-ascenso-betis-2015",
@@ -300,7 +300,7 @@
     ],
     "explanation": "Guerrero, Jony y Bernardo marcaron los tres goles en la inolvidable victoria sportinguista por 0-3.",
     "formatHint": "Marcador (ej. 0 - 3)",
-    "photoUrl": "https://www.bdfutbol.com/i/j/575e.jpg"
+    "photoUrl": "/images/historical/villamarin-2015.jpg"
   },
   {
     "id": "q-points-ascenso-preciado",
@@ -314,7 +314,7 @@
     ],
     "explanation": "El Sporting de Manolo Preciado cerró la temporada con 72 puntos, acabando en 3.ª posición tras diez años de travesía en Segunda.",
     "unit": "puntos",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
   },
   {
     "id": "q-rival-ascenso-2008",
@@ -328,7 +328,7 @@
     ],
     "explanation": "Goles de Bilic y Luis Morán frente a la SD Eibar el 15 de junio de 2008 desataron el éxtasis en Gijón.",
     "formatHint": "Nombre del club rival",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
   },
   {
     "id": "q-goalscorer-bernabeu-2011",
@@ -341,7 +341,7 @@
     ],
     "explanation": "El 2 de abril de 2011, Miguel de las Cuevas marcó en el minuto 79 para dar la histórica victoria por 0-1 ante el Real Madrid.",
     "formatHint": "Nombre del futbolista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/4122c.jpg"
+    "photoUrl": "/images/historical/bernabeu-2011.jpg"
   },
   {
     "id": "q-first-european-rival",
@@ -355,7 +355,7 @@
     ],
     "explanation": "El 13 de septiembre de 1978 el Sporting debutó en la Copa de la UEFA venciendo 3-0 al Torino FC en El Molinón.",
     "formatHint": "Nombre del club",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/el-molinon-uefa.jpg"
   },
   {
     "id": "q-score-torino-1978",
@@ -370,7 +370,7 @@
     ],
     "explanation": "El Sporting firmó un partido glorioso venciendo 3-0 con dos goles de Ferrero y uno de E. Morán.",
     "formatHint": "Marcador (ej. 3 - 0)",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/el-molinon-uefa.jpg"
   },
   {
     "id": "q-rival-san-siro-1987",
@@ -384,7 +384,7 @@
     ],
     "explanation": "El Sporting de Novoa venció 1-0 en Gijón al poderoso AC Milan de Sacchi, Gullit y van Basten el 16 de septiembre de 1987.",
     "formatHint": "Nombre del club italiano",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/sporting-milan-1987.jpg"
   },
   {
     "id": "q-scorer-milan-1987",
@@ -398,7 +398,7 @@
     ],
     "explanation": "Zurdi anotó el legendario tanto en el minuto 73 batiendo al guardameta Giovanni Galli.",
     "formatHint": "Nombre del futbolista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/392c.jpg"
+    "photoUrl": "/images/historical/sporting-milan-1987.jpg"
   },
   {
     "id": "q-last-european-rival-1991",
@@ -412,7 +412,7 @@
     ],
     "explanation": "El 6 de noviembre de 1991 el Sporting disputó su último encuentro en competición europea ante el Steaua de Bucarest en Rumanía.",
     "formatHint": "Nombre del club",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/isierte-belgrado-1991.jpg"
   },
   {
     "id": "q-mareo-inauguration-year",
@@ -425,7 +425,7 @@
     ],
     "explanation": "La Escuela de Fútbol de Mareo fue inaugurada el 28 de marzo de 1978 bajo la presidencia de Manuel Vega-Arango.",
     "unit": "año",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/escuela-de-mareo.jpg"
   },
   {
     "id": "q-president-golden-era",
@@ -453,7 +453,7 @@
     ],
     "explanation": "El Sporting disputó las finales de 1981 (contra el FC Barcelona en el Vicente Calderón) y 1982 (contra el Real Madrid en Valladolid).",
     "unit": "finales",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/copa-final-1981.jpg"
   },
   {
     "id": "q-copa-final-1981-rival",
@@ -467,7 +467,7 @@
     ],
     "explanation": "El Barcelona se impuso 3-1 al Sporting el 18 de junio de 1981 en Madrid.",
     "formatHint": "Nombre del club",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/copa-final-1981.jpg"
   },
   {
     "id": "q-copa-final-1982-rival",
@@ -481,7 +481,7 @@
     ],
     "explanation": "El Real Madrid venció 2-1 al Sporting el 13 de abril de 1982.",
     "formatHint": "Nombre del club",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/copa-final-1982.jpg"
   },
   {
     "id": "q-top-scorer-2020-21",
@@ -620,7 +620,7 @@
     ],
     "explanation": "La Puerta 1 de El Molinón homenajea para siempre a Jesús Castro, fallecido heroicamente en 1993 salvando a dos niños en la playa de Pechón.",
     "formatHint": "Nombre del portero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/3665f.jpg"
+    "photoUrl": "/images/historical/quini-molinon.jpg"
   },
   {
     "id": "q-stadium-official-name",
@@ -634,7 +634,7 @@
     ],
     "explanation": "Tras el fallecimiento de Quini el 27 de febrero de 2018, el Ayuntamiento aprobó la denominación Estadio El Molinón - Enrique Castro \"Quini\".",
     "formatHint": "Nombre de la leyenda",
-    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
+    "photoUrl": "/images/historical/quini-molinon.jpg"
   },
   {
     "id": "q-mundial-82-sporting-players",
@@ -705,7 +705,7 @@
     ],
     "explanation": "El 14 de diciembre de 1986, el Sporting de Novoa goleó 0-4 al Barça de Terry Venables en el Camp Nou con exhibición de Eloy Olaya.",
     "formatHint": "Temporada (ej. 1986/87)",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/camp-nou-1987-0-4.jpg"
   },
   {
     "id": "q-eloy-camp-nou-goals",
@@ -718,7 +718,7 @@
     ],
     "explanation": "Eloy Olaya marcó dos de los cuatro goles en la mayor victoria liguera a domicilio del Sporting frente al Barça.",
     "unit": "goles",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/camp-nou-1987-0-4.jpg"
   },
   {
     "id": "q-quini-return-season",
@@ -844,7 +844,7 @@
     ],
     "explanation": "Jony y Sergio Álvarez anotaron en el vibrante triunfo ante el Villarreal en la jornada 38 de la 2015/16 desatando la locura en El Molinón.",
     "formatHint": "Nombre del centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/12496c.jpg"
+    "photoUrl": "/images/historical/permanencia-2016.jpg"
   },
   {
     "id": "q-barral-goal-barca-2011",
@@ -857,7 +857,7 @@
     ],
     "explanation": "David Barral anotó en el minuto 16 tras dejar atrás a Piqué y Milito en una de las estampas más icónicas de la era Preciado.",
     "formatHint": "Nombre del delantero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/5643b.jpg"
+    "photoUrl": "/images/historical/sporting-barcelona-molinon.jpg"
   },
   {
     "id": "q-coach-ascenso-1977",
@@ -1022,7 +1022,7 @@
     ],
     "explanation": "El 15 de junio de 2008 el Sporting culminó la temporada 2007/08 regresando a Primera División de la mano de Manolo Preciado.",
     "formatHint": "Temporada (ej. 2007/08)",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
   },
   {
     "id": "q-ascenso-helmantico-year",
@@ -1225,7 +1225,7 @@
     ],
     "explanation": "Vicente Miera comandó al conjunto gijonés en la gran final del Calderón.",
     "formatHint": "Nombre del entrenador",
-    "photoUrl": "https://www.bdfutbol.com/i/j/6064b.jpg"
+    "photoUrl": "/images/historical/copa-final-1981.jpg"
   },
   {
     "id": "q-coach-final-copa-1982",
@@ -1239,7 +1239,7 @@
     ],
     "explanation": "Novoa tomó las riendas y clasificó brillantemente al equipo para su segunda final consecutiva.",
     "formatHint": "Nombre del entrenador",
-    "photoUrl": "https://www.bdfutbol.com/i/j/2157.jpg"
+    "photoUrl": "/images/historical/copa-final-1982.jpg"
   },
   {
     "id": "q-abelardo-first-coach-season",
