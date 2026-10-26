@@ -140,16 +140,10 @@ export function HigherLowerClient() {
             />
 
             <div className="w-full max-w-sm flex justify-center min-h-[52px]">
-              {!isRevealed ? (
-                <HigherLowerControls
-                  onGuess={handleGuess}
-                  disabled={isRevealed}
-                />
-              ) : (
-                <div className="flex h-13 items-center justify-center text-xs font-black text-neutral-500 uppercase tracking-widest animate-pulse">
-                  Comprobando...
-                </div>
-              )}
+              <HigherLowerControls
+                onGuess={handleGuess}
+                disabled={isRevealed}
+              />
             </div>
           </div>
         </div>
