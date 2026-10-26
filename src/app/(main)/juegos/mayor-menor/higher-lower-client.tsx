@@ -109,7 +109,7 @@ export function HigherLowerClient() {
 
       <section
         aria-label="Área de comparación"
-        className="relative flex flex-col items-center gap-6"
+        className="relative flex flex-col items-center"
       >
         <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch justify-items-center w-full">
           <div className="flex justify-center w-full">
@@ -131,22 +131,21 @@ export function HigherLowerClient() {
               isRevealed={isRevealed}
               isMystery={!isRevealed}
               outcome={guessOutcome}
+              controlsSlot={
+                !isRevealed ? (
+                  <HigherLowerControls
+                    onGuess={handleGuess}
+                    disabled={isRevealed}
+                    comparedPlayerName={leftPlayer.name}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider animate-pulse">
+                    Comprobando...
+                  </div>
+                )
+              }
             />
           </div>
-        </div>
-
-        <div className="w-full flex justify-center pt-1 min-h-[88px]">
-          {!isRevealed ? (
-            <HigherLowerControls
-              onGuess={handleGuess}
-              disabled={isRevealed}
-              comparedPlayerName={leftPlayer.name}
-            />
-          ) : (
-            <div className="flex items-center justify-center text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider animate-pulse">
-              Comprobando...
-            </div>
-          )}
         </div>
       </section>
 

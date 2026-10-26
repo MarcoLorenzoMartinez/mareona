@@ -18,11 +18,7 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
   const dict = getDictionary();
   const matchKickoff = match
     ? {
-        date: formatMatchDate(
-          match.kickoffAt,
-          match.isTimeConfirmed ?? true,
-          false
-        ),
+        date: formatMatchDate(match.kickoffAt, match.isTimeConfirmed ?? true, false),
         time: formatMatchTime(match.kickoffAt),
       }
     : null;
@@ -34,6 +30,13 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
         venueName: match.venue,
       })
     : null;
+
+  const isFinished =
+    match?.status === "finished" &&
+    match.homeScore !== null &&
+    match.awayScore !== null;
+  const isLive = match?.status === "live";
+  const hasScore = isFinished || isLive;
 
   return (
     <section aria-label="Partido del Real Sporting" className="w-full">
@@ -55,11 +58,18 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
         )}
 
         <div className="relative z-10 flex items-center justify-between border-b border-[var(--border)] pb-3">
-          <span className="text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
-            {match
-              ? `${dict.season.match.matchday} ${match.matchday ?? "—"} · ${dict.season.competitionName}`
-              : dict.season.match.nextFixture}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
+              {match
+                ? `${dict.season.match.matchday} ${match.matchday ?? "—"} · ${dict.season.competitionName}`
+                : dict.season.match.nextFixture}
+            </span>
+            {isLive && (
+              <span className="rounded-xs bg-[var(--primary)] px-1.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider animate-pulse">
+                {dict.season.matchDetail.status.live}
+              </span>
+            )}
+          </div>
           {match && (
             <Link
               href={`/temporada/partidos/${match.externalId}`}
@@ -101,12 +111,20 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
                 <span className="text-[10px] sm:text-[11px] font-bold tracking-wider text-[var(--foreground-muted)] uppercase whitespace-nowrap mb-1 md:mb-0 md:absolute md:-top-5 md:left-1/2 md:-translate-x-1/2">
                   {matchKickoff.date}
                 </span>
-                <div className="flex h-10 md:h-12 min-w-[64px] md:min-w-[76px] items-center justify-center rounded-md bg-[var(--surface)]/90 backdrop-blur-xs px-2.5 md:px-3.5 text-center shadow-2xs border border-[var(--border)]/40">
-                  <span className="text-xl md:text-2xl font-black tracking-tight text-[var(--foreground)] tabular-nums leading-none">
-                    {match.status === "finished" &&
-                    match.homeScore !== null &&
-                    match.awayScore !== null
-                      ? `${match.homeScore} - ${match.awayScore}`
+                <div
+                  className={`flex h-10 md:h-12 min-w-[64px] md:min-w-[76px] items-center justify-center rounded-md backdrop-blur-xs px-2.5 md:px-3.5 text-center shadow-2xs border ${
+                    isLive
+                      ? "bg-red-50/80 border-[var(--primary)]/30"
+                      : "bg-[var(--surface)]/90 border-[var(--border)]/40"
+                  }`}
+                >
+                  <span
+                    className={`text-xl md:text-2xl font-black tracking-tight tabular-nums leading-none ${
+                      isLive ? "text-[var(--primary)]" : "text-[var(--foreground)]"
+                    }`}
+                  >
+                    {hasScore
+                      ? `${match.homeScore ?? 0} - ${match.awayScore ?? 0}`
                       : match.isTimeConfirmed === false
                       ? dict.season.match.vs
                       : matchKickoff.time}

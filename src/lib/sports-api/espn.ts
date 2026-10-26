@@ -5,6 +5,7 @@ import type {
   DomainMatchSummary,
   DomainMatchDetail,
   DomainPlayer,
+  MatchStatus,
 } from "./types.ts";
 import {
   normalizeTeamName,
@@ -169,8 +170,10 @@ export function transformEspnEvent(event: EspnEvent, matchday: number = 10): Dom
   const awayLogo = awayComp.team.logo ?? awayComp.team.logos?.[0]?.href ?? null;
 
   const isFinished = comp.status.type.state === "post";
-  const homeScore = isFinished ? parseScore(homeComp.score) : null;
-  const awayScore = isFinished ? parseScore(awayComp.score) : null;
+  const isLive = comp.status.type.state === "in";
+  const status: MatchStatus = isFinished ? "finished" : isLive ? "live" : "scheduled";
+  const homeScore = isFinished || isLive ? parseScore(homeComp.score) : null;
+  const awayScore = isFinished || isLive ? parseScore(awayComp.score) : null;
 
   return {
     externalId: event.id,
@@ -178,7 +181,7 @@ export function transformEspnEvent(event: EspnEvent, matchday: number = 10): Dom
     season: getSeasonLabel(),
     matchday,
     kickoffAt: event.date,
-    status: isFinished ? "finished" : "scheduled",
+    status,
     venue: comp.venue?.fullName ?? "El Molinón",
     isTimeConfirmed:
       event.timeValid !== false &&

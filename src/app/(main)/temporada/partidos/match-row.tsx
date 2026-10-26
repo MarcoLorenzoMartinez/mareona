@@ -22,6 +22,8 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
     match.status === "finished" &&
     match.homeScore !== null &&
     match.awayScore !== null;
+  const isLive = match.status === "live";
+  const hasScore = isFinished || isLive;
   const isConfirmedTime = match.isTimeConfirmed === true;
   const dateLabel = formatMatchDate(match.kickoffAt, isConfirmedTime);
   const timeLabel = formatMatchTime(match.kickoffAt);
@@ -54,11 +56,15 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
           )}
           <span>·</span>
           <span className="capitalize">{dateLabel}</span>
-          {isNext && (
+          {isLive ? (
+            <span className="rounded-xs bg-[var(--primary)] px-1.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider animate-pulse">
+              {dict.season.matchDetail.status.live}
+            </span>
+          ) : isNext ? (
             <span className="rounded-xs bg-[var(--primary)] px-1.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider">
               {t.nextBadge}
             </span>
-          )}
+          ) : null}
         </div>
         {match.venue && (
           <span className="hidden sm:inline-block truncate max-w-[220px] text-[11px]">
@@ -91,9 +97,15 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
 
         {/* Marcador / Horario */}
         <div className="col-span-1 flex items-center justify-center shrink-0">
-          {isFinished ? (
-            <span className="inline-flex items-center justify-center rounded-sm bg-neutral-100 px-2 py-0.5 text-xs font-bold tabular-nums text-[var(--foreground)] sm:px-2.5 sm:py-1 sm:text-sm">
-              {match.homeScore} - {match.awayScore}
+          {hasScore ? (
+            <span
+              className={`inline-flex items-center justify-center rounded-sm px-2 py-0.5 text-xs font-bold tabular-nums sm:px-2.5 sm:py-1 sm:text-sm ${
+                isLive
+                  ? "bg-red-50 text-[var(--primary)] border border-red-200"
+                  : "bg-neutral-100 text-[var(--foreground)]"
+              }`}
+            >
+              {match.homeScore ?? 0} - {match.awayScore ?? 0}
             </span>
           ) : isConfirmedTime ? (
             <span className="inline-flex items-center justify-center rounded-sm bg-[var(--surface)] px-2 py-0.5 text-xs font-bold tabular-nums text-[var(--foreground)] border border-[var(--border)] sm:px-2.5 sm:py-1">
