@@ -111,8 +111,9 @@ export function HigherLowerClient() {
         aria-label="Área de comparación"
         className="relative flex flex-col items-center"
       >
-        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-stretch justify-items-center w-full">
-          <div className="flex justify-center w-full">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start justify-items-center w-full">
+          {/* Tarjeta 1 (Izquierda: Jugador de referencia) */}
+          <div className="flex flex-col items-center w-full">
             <HigherLowerCard
               player={leftPlayer}
               mode={mode}
@@ -120,31 +121,33 @@ export function HigherLowerClient() {
             />
           </div>
 
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 hidden md:flex h-11 w-11 items-center justify-center rounded-full border-2 border-[var(--border)] bg-white font-extrabold text-xs tracking-wider text-[#e2001a] shadow-md pointer-events-none">
+          {/* Insignia Central VS */}
+          <div className="absolute left-1/2 top-[180px] -translate-x-1/2 -translate-y-1/2 z-10 hidden md:flex h-11 w-11 items-center justify-center rounded-full border-2 border-[var(--border)] bg-white font-extrabold text-xs tracking-wider text-[#e2001a] shadow-md pointer-events-none">
             VS
           </div>
 
-          <div className="flex justify-center w-full">
+          {/* Tarjeta 2 (Derecha: Jugador misterioso + controles justo debajo) */}
+          <div className="flex flex-col items-center w-full gap-4">
             <HigherLowerCard
               player={rightPlayer}
               mode={mode}
               isRevealed={isRevealed}
               isMystery={!isRevealed}
               outcome={guessOutcome}
-              controlsSlot={
-                !isRevealed ? (
-                  <HigherLowerControls
-                    onGuess={handleGuess}
-                    disabled={isRevealed}
-                    comparedPlayerName={leftPlayer.name}
-                  />
-                ) : (
-                  <div className="flex items-center justify-center text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider animate-pulse">
-                    Comprobando...
-                  </div>
-                )
-              }
             />
+
+            <div className="w-full max-w-sm flex justify-center min-h-[48px]">
+              {!isRevealed ? (
+                <HigherLowerControls
+                  onGuess={handleGuess}
+                  disabled={isRevealed}
+                />
+              ) : (
+                <div className="flex h-12 items-center justify-center text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider animate-pulse">
+                  Comprobando...
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
