@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { MessageSquare } from "lucide-react";
 import { HeartLikeIcon } from "@/components/social/heart-like-icon";
 import type { SocialPost } from "@/lib/social/types";
 
@@ -113,21 +114,9 @@ export function PostCard({ post, onOpenThread, onOpenProfile }: PostCardProps) {
 
             {/* Contador de Respuestas */}
             <div className="flex items-center gap-1.5 text-neutral-500 group-hover:text-[var(--primary)] transition-colors">
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
+              <MessageSquare className="h-4 w-4" />
               <span className="tabular-nums font-sans">
-                {repliesCount} {repliesCount === 1 ? "respuesta" : "respuestas"}
+                {repliesCount}
               </span>
             </div>
           </div>

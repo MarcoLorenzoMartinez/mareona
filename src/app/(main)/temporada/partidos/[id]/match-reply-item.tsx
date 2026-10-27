@@ -1,6 +1,7 @@
 // Client: Elemento de respuesta en hilo de partido
 "use client";
 
+import { MessageSquare } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { formatRelativeTime } from "@/app/(main)/social/post-card";
 import type { MatchComment } from "@/lib/match-community/types";
@@ -43,16 +44,27 @@ export function MatchReplyItem({
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-1.5 flex-wrap">
-            <span className="text-xs font-bold text-neutral-900 truncate">{reply.authorName}</span>
-            <span className="text-[11px] text-neutral-400">@{reply.authorUsername}</span>
+            <button
+              type="button"
+              onClick={handleProfileClick}
+              className="text-xs font-bold text-neutral-900 truncate hover:underline hover:text-[var(--primary)] text-left cursor-pointer"
+            >
+              {reply.authorName}
+            </button>
+            <button
+              type="button"
+              onClick={handleProfileClick}
+              className="text-[11px] text-neutral-400 hover:text-neutral-600 cursor-pointer"
+            >
+              @{reply.authorUsername}
+            </button>
             <span className="text-[11px] text-neutral-300">·</span>
             <span className="text-[11px] text-neutral-400">{formatRelativeTime(reply.createdAt)}</span>
           </div>
           <p className="mt-1 text-xs text-neutral-800 leading-relaxed whitespace-pre-line">{reply.body}</p>
-          <div className="mt-2 flex items-center gap-4 text-[11px] text-neutral-400">
-            <span className="group-hover:text-[var(--primary)] font-medium transition-colors font-sans tabular-nums">
-              {count} {count === 1 ? "respuesta" : "respuestas"} →
-            </span>
+          <div className="mt-2.5 flex items-center gap-1.5 text-xs text-neutral-400 group-hover:text-[var(--primary)] transition-colors">
+            <MessageSquare className="h-3.5 w-3.5" />
+            <span className="font-sans tabular-nums font-semibold">{count}</span>
           </div>
         </div>
       </div>

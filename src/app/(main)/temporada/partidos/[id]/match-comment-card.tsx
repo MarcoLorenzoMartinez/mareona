@@ -105,9 +105,7 @@ export function MatchCommentCard({
             {/* Contador de Respuestas */}
             <div className="flex items-center gap-1.5 text-neutral-500 group-hover:text-[var(--primary)] transition-colors">
               <MessageSquare className="h-3.5 w-3.5" />
-              <span className="tabular-nums font-sans">
-                {repliesCount} {repliesCount === 1 ? "respuesta" : "respuestas"}
-              </span>
+              <span className="tabular-nums font-sans">{repliesCount}</span>
             </div>
           </div>
         </div>

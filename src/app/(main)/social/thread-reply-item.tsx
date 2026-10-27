@@ -1,6 +1,7 @@
 // Client: Tarjeta de respuesta interactiva dentro del hilo (permite profundizar en la muñeca rusa)
 "use client";
 
+import { MessageSquare } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { formatRelativeTime } from "./post-card";
 import type { SocialPost } from "@/lib/social/types";
@@ -68,10 +69,9 @@ export function ThreadReplyItem({
             {reply.body}
           </p>
 
-          <div className="mt-2 flex items-center gap-4 text-[11px] text-neutral-400">
-            <span className="group-hover:text-[var(--primary)] font-medium transition-colors font-sans tabular-nums">
-              {count} {count === 1 ? "respuesta" : "respuestas"} →
-            </span>
+          <div className="mt-2.5 flex items-center gap-1.5 text-xs text-neutral-400 group-hover:text-[var(--primary)] transition-colors">
+            <MessageSquare className="h-3.5 w-3.5" />
+            <span className="font-sans tabular-nums font-semibold">{count}</span>
           </div>
         </div>
       </div>
