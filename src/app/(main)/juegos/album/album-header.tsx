@@ -35,7 +35,7 @@ export function AlbumHeader({
           </svg>
         </Link>
         <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-          Cromos Históricos
+          Memoria Rojiblanca
         </h1>
       </div>
 

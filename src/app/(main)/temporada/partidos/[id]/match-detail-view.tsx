@@ -3,6 +3,7 @@
 
 import { MatchHeader } from "./match-header";
 import { MatchTabs } from "./match-tabs";
+import { MatchPorraWidget } from "./match-porra-widget";
 import { useLiveMatchPoll } from "./use-live-match-poll";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 
@@ -16,6 +17,10 @@ export function MatchDetailView({ initialMatch }: MatchDetailViewProps) {
   return (
     <div className="flex flex-col gap-6">
       <MatchHeader match={match} />
+      <MatchPorraWidget
+        matchId={match.externalId}
+        isFinished={match.status === "finished"}
+      />
       <MatchTabs match={match} />
     </div>
   );

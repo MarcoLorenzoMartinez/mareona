@@ -195,8 +195,30 @@ export async function fetchNextFixture(
     }
   }
 
-  // 2. Try live match schedule from ESPN for 2026/27
+  // 2. Try live upcoming fixture from full schedule (unifies League and Copa del Rey)
   try {
+    const seasonMatches = await fetchSportingSeasonMatches(supabase);
+    const upcoming = seasonMatches.filter((m) => m.status !== "finished");
+    const nextChronological = upcoming.length > 0 ? upcoming[0] : null;
+
+    if (nextChronological) {
+      memoryCachedNextFixture = {
+        teamId,
+        data: nextChronological,
+        expiresAt: now + TTL_FIXTURES_MS,
+      };
+
+      if (supabase) {
+        await setCachedPayload(
+          supabase,
+          cacheKey,
+          nextChronological as unknown as Record<string, unknown>,
+          TTL_FIXTURES_MS
+        );
+      }
+      return nextChronological;
+    }
+
     const liveMatch = await fetchEspnSportingMatch();
     if (liveMatch) {
       memoryCachedNextFixture = {
