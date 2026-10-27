@@ -8,13 +8,21 @@ import type { SocialPost } from "@/lib/social/types";
 interface ThreadReplyItemProps {
   readonly reply: SocialPost;
   readonly onDrillDown: (postId: string) => void;
+  readonly onOpenProfile?: (userId: string) => void;
 }
 
 export function ThreadReplyItem({
   reply,
   onDrillDown,
+  onOpenProfile,
 }: ThreadReplyItemProps) {
   const count = reply.repliesCount ?? reply.replies?.length ?? 0;
+
+  const handleProfileClick = (e: React.MouseEvent) => {
+    if (!reply.userId || !onOpenProfile) return;
+    e.stopPropagation();
+    onOpenProfile(reply.userId);
+  };
 
   return (
     <div
@@ -31,15 +39,25 @@ export function ThreadReplyItem({
       className="group cursor-pointer rounded-xl border border-[var(--border)] bg-white p-3.5 transition-all hover:border-neutral-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
     >
       <div className="flex items-start gap-2.5">
-        <AuthAvatar src={reply.authorAvatar} alt={reply.authorName} size="sm" />
+        <div onClick={handleProfileClick} className="cursor-pointer hover:opacity-85 transition-opacity">
+          <AuthAvatar src={reply.authorAvatar} alt={reply.authorName} size="sm" />
+        </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-1.5 flex-wrap">
-            <span className="text-xs font-bold text-neutral-900 truncate">
+            <button
+              type="button"
+              onClick={handleProfileClick}
+              className="text-xs font-bold text-neutral-900 truncate hover:underline hover:text-[var(--primary)] text-left cursor-pointer"
+            >
               {reply.authorName}
-            </span>
-            <span className="text-[11px] text-neutral-400">
+            </button>
+            <button
+              type="button"
+              onClick={handleProfileClick}
+              className="text-[11px] text-neutral-400 hover:text-neutral-600 cursor-pointer"
+            >
               @{reply.authorUsername}
-            </span>
+            </button>
             <span className="text-[11px] text-neutral-300">·</span>
             <span className="text-[11px] text-neutral-400">
               {formatRelativeTime(reply.createdAt)}

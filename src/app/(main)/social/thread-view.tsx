@@ -2,8 +2,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, MessageSquare, Heart } from "lucide-react";
+import { ArrowLeft, MessageSquare } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { HeartLikeIcon } from "@/components/social/heart-like-icon";
 import { useAuth } from "@/context/auth-context";
 import { createSocialPost } from "@/lib/social/actions";
 import { formatRelativeTime } from "./post-card";
@@ -16,6 +17,7 @@ interface ThreadViewProps {
   readonly onBack: () => void;
   readonly onDrillDown: (postId: string) => void;
   readonly onAddReply: (parentId: string, newReply: SocialPost) => void;
+  readonly onOpenProfile?: (userId: string) => void;
 }
 
 export function ThreadView({
@@ -24,6 +26,7 @@ export function ThreadView({
   onBack,
   onDrillDown,
   onAddReply,
+  onOpenProfile,
 }: ThreadViewProps) {
   const { user, profile, openAuthModal } = useAuth();
   const [likes, setLikes] = useState(post.likesCount);
@@ -89,10 +92,24 @@ export function ThreadView({
 
       <article className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs">
         <div className="flex items-center gap-3">
-          <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />
+          <div onClick={() => post.userId && onOpenProfile?.(post.userId)} className="cursor-pointer hover:opacity-85">
+            <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />
+          </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-sm font-bold text-neutral-900 truncate">{post.authorName}</h3>
-            <p className="text-xs text-neutral-400">@{post.authorUsername}</p>
+            <button
+              type="button"
+              onClick={() => post.userId && onOpenProfile?.(post.userId)}
+              className="text-sm font-bold text-neutral-900 truncate hover:underline hover:text-[var(--primary)] text-left cursor-pointer"
+            >
+              {post.authorName}
+            </button>
+            <button
+              type="button"
+              onClick={() => post.userId && onOpenProfile?.(post.userId)}
+              className="text-xs text-neutral-400 hover:text-neutral-600 block cursor-pointer"
+            >
+              @{post.authorUsername}
+            </button>
           </div>
           <span className="text-xs text-neutral-400">{formatRelativeTime(post.createdAt)}</span>
         </div>
@@ -103,11 +120,11 @@ export function ThreadView({
           <button
             type="button"
             onClick={toggleLike}
-            className={`flex items-center gap-1.5 transition-colors ${
-              hasLiked ? "text-[var(--primary)] font-bold" : "hover:text-neutral-900"
+            className={`group flex items-center gap-1.5 transition-colors cursor-pointer ${
+              hasLiked ? "text-[var(--primary)] font-bold" : "text-neutral-500 hover:text-[var(--primary)]"
             }`}
           >
-            <Heart className={`h-4 w-4 ${hasLiked ? "fill-current" : ""}`} />
+            <HeartLikeIcon filled={hasLiked} />
             <span className="tabular-nums font-sans">{likes}</span>
           </button>
           <div className="flex items-center gap-1.5 text-neutral-500">
@@ -149,7 +166,12 @@ export function ThreadView({
           </div>
         ) : (
           replies.map((reply) => (
-            <ThreadReplyItem key={reply.id} reply={reply} onDrillDown={onDrillDown} />
+            <ThreadReplyItem
+              key={reply.id}
+              reply={reply}
+              onDrillDown={onDrillDown}
+              onOpenProfile={onOpenProfile}
+            />
           ))
         )}
       </section>

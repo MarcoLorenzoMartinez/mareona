@@ -32,7 +32,7 @@ export const DEMO_CREDENTIALS = {
       id: "00000000-0000-4000-8000-000000000001",
       username: "quini_1905",
       display_name: "Pelayo Sportinguista",
-      avatar_url: null,
+      avatar_url: "/images/players/10.png",
       points: 125,
       created_at: "2026-10-01T12:00:00Z",
       updated_at: "2026-10-01T12:00:00Z",

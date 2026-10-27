@@ -103,12 +103,36 @@ export async function createSocialPost(
 }
 
 /**
- * Retrieves the general discussion posts for /social.
+ * Retrieves the general discussion posts for /social, optionally filtered by friends.
  */
-export async function getSocialPosts(): Promise<readonly SocialPost[]> {
+export async function getSocialPosts(
+  filter: "all" | "friends" = "all"
+): Promise<readonly SocialPost[]> {
   try {
     const supabase = await createClient();
-    const { data: posts, error } = await supabase
+
+    let friendUserIds: readonly string[] = [];
+    if (filter === "friends") {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return [];
+
+      const { data: friendships } = await supabase
+        .from("friendships")
+        .select("requester_id, addressee_id")
+        .eq("status", "accepted")
+        .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`);
+
+      if (!friendships || friendships.length === 0) return [];
+
+      friendUserIds = friendships.map((f) =>
+        f.requester_id === user.id ? f.addressee_id : f.requester_id
+      );
+    }
+
+    let query = supabase
       .from("posts")
       .select(
         `id, body, created_at, parent_id, user_id,
@@ -119,8 +143,14 @@ export async function getSocialPosts(): Promise<readonly SocialPost[]> {
       .order("created_at", { ascending: false })
       .limit(30);
 
+    if (filter === "friends") {
+      query = query.in("user_id", friendUserIds as string[]);
+    }
+
+    const { data: posts, error } = await query;
+
     if (error || !posts || posts.length === 0) {
-      return INITIAL_TERTULIA_POSTS;
+      return filter === "friends" ? [] : INITIAL_TERTULIA_POSTS;
     }
 
     // Map database posts into typed SocialPost structures

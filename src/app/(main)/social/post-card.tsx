@@ -3,11 +3,13 @@
 
 import { useState } from "react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { HeartLikeIcon } from "@/components/social/heart-like-icon";
 import type { SocialPost } from "@/lib/social/types";
 
 interface PostCardProps {
   readonly post: SocialPost;
   readonly onOpenThread: (postId: string) => void;
+  readonly onOpenProfile?: (userId: string) => void;
 }
 
 export function formatRelativeTime(dateStr: string): string {
@@ -26,7 +28,7 @@ export function formatRelativeTime(dateStr: string): string {
   }
 }
 
-export function PostCard({ post, onOpenThread }: PostCardProps) {
+export function PostCard({ post, onOpenThread, onOpenProfile }: PostCardProps) {
   const [likes, setLikes] = useState(post.likesCount);
   const [hasLiked, setHasLiked] = useState(false);
 
@@ -39,6 +41,12 @@ export function PostCard({ post, onOpenThread }: PostCardProps) {
       setLikes((prev) => prev + 1);
       setHasLiked(true);
     }
+  };
+
+  const handleProfileClick = (e: React.MouseEvent) => {
+    if (!post.userId || !onOpenProfile) return;
+    e.stopPropagation();
+    onOpenProfile(post.userId);
   };
 
   const repliesCount = post.repliesCount ?? post.replies?.length ?? 0;
@@ -58,20 +66,26 @@ export function PostCard({ post, onOpenThread }: PostCardProps) {
       className="group relative cursor-pointer rounded-2xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-xs transition-all hover:border-neutral-300 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
     >
       <div className="flex gap-3">
-        <AuthAvatar
-          src={post.authorAvatar}
-          alt={post.authorName}
-          size="md"
-        />
+        <div onClick={handleProfileClick} className="cursor-pointer hover:opacity-85 transition-opacity">
+          <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />
+        </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-2 flex-wrap">
-            <span className="text-sm font-bold text-neutral-900 truncate">
+            <button
+              type="button"
+              onClick={handleProfileClick}
+              className="text-sm font-bold text-neutral-900 truncate hover:underline hover:text-[var(--primary)] text-left cursor-pointer"
+            >
               {post.authorName}
-            </span>
-            <span className="text-xs font-medium text-neutral-400">
+            </button>
+            <button
+              type="button"
+              onClick={handleProfileClick}
+              className="text-xs font-medium text-neutral-400 hover:text-neutral-600 cursor-pointer"
+            >
               @{post.authorUsername}
-            </span>
+            </button>
             <span className="text-xs text-neutral-300">·</span>
             <span className="text-xs text-neutral-400">
               {formatRelativeTime(post.createdAt)}
@@ -87,24 +101,13 @@ export function PostCard({ post, onOpenThread }: PostCardProps) {
             <button
               type="button"
               onClick={toggleLike}
-              className={`flex items-center gap-1.5 transition-colors ${
+              className={`group flex items-center gap-1.5 transition-colors cursor-pointer ${
                 hasLiked
                   ? "text-[var(--primary)] font-bold"
-                  : "hover:text-neutral-900"
+                  : "text-neutral-500 hover:text-[var(--primary)]"
               }`}
             >
-              <svg
-                className={`h-4 w-4 ${hasLiked ? "fill-current" : "fill-none"}`}
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
+              <HeartLikeIcon filled={hasLiked} />
               <span className="tabular-nums font-sans">{likes}</span>
             </button>
 

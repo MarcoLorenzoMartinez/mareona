@@ -1,0 +1,61 @@
+// Client: Elemento de respuesta en hilo de partido
+"use client";
+
+import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { formatRelativeTime } from "@/app/(main)/social/post-card";
+import type { MatchComment } from "@/lib/match-community/types";
+
+interface MatchReplyItemProps {
+  readonly reply: MatchComment;
+  readonly onDrillDown: (commentId: string) => void;
+  readonly onOpenProfile?: (userId: string) => void;
+}
+
+export function MatchReplyItem({
+  reply,
+  onDrillDown,
+  onOpenProfile,
+}: MatchReplyItemProps) {
+  const count = reply.replies?.length ?? 0;
+
+  const handleProfileClick = (e: React.MouseEvent) => {
+    if (!reply.authorId || !onOpenProfile) return;
+    e.stopPropagation();
+    onOpenProfile(reply.authorId);
+  };
+
+  return (
+    <div
+      onClick={() => onDrillDown(reply.id)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onDrillDown(reply.id);
+        }
+      }}
+      className="group cursor-pointer rounded-xl border border-[var(--border)] bg-white p-3.5 transition-all hover:border-neutral-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+    >
+      <div className="flex items-start gap-2.5">
+        <div onClick={handleProfileClick} className="cursor-pointer hover:opacity-85">
+          <AuthAvatar src={reply.authorAvatar} alt={reply.authorName} size="sm" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline gap-1.5 flex-wrap">
+            <span className="text-xs font-bold text-neutral-900 truncate">{reply.authorName}</span>
+            <span className="text-[11px] text-neutral-400">@{reply.authorUsername}</span>
+            <span className="text-[11px] text-neutral-300">·</span>
+            <span className="text-[11px] text-neutral-400">{formatRelativeTime(reply.createdAt)}</span>
+          </div>
+          <p className="mt-1 text-xs text-neutral-800 leading-relaxed whitespace-pre-line">{reply.body}</p>
+          <div className="mt-2 flex items-center gap-4 text-[11px] text-neutral-400">
+            <span className="group-hover:text-[var(--primary)] font-medium transition-colors font-sans tabular-nums">
+              {count} {count === 1 ? "respuesta" : "respuestas"} →
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
