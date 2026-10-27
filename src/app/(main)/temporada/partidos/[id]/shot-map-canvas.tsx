@@ -71,7 +71,7 @@ export function ShotMapCanvas({ shots, homeTeamName = "Rival", awayTeamName = "R
           </div>
 
           <svg
-            viewBox="-2 0 109 68"
+            viewBox="-2 -2 109 72"
             className="w-full rounded-lg bg-emerald-800/90 shadow-inner"
             aria-label="Campo de tiros completo"
             onMouseLeave={() => setHoveredShot(null)}
