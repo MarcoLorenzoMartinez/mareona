@@ -201,6 +201,6 @@ export async function getSocialPosts(
       };
     });
   } catch {
-    return INITIAL_TERTULIA_POSTS;
+    return filter === "friends" ? [] : INITIAL_TERTULIA_POSTS;
   }
 }

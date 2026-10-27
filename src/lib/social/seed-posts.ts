@@ -3,7 +3,7 @@ import type { FriendSummary } from "./friendship-schemas";
 
 /**
  * Initial community discussion seeds for offline / development / demo preview.
- * Includes official presets and real sporting club imagery for realism.
+ * Uses historical photos and official presets to avoid confusing with current players.
  */
 export const INITIAL_TERTULIA_POSTS: readonly SocialPost[] = [
   {
@@ -11,7 +11,7 @@ export const INITIAL_TERTULIA_POSTS: readonly SocialPost[] = [
     userId: "demo-user-1",
     authorName: "Pelayo Álvarez",
     authorUsername: "pelayo_gijon",
-    authorAvatar: "/images/players/10.png",
+    authorAvatar: "/images/historical/quini-molinon.jpg",
     body: "¿Qué os pareció el planteamiento táctico del último partido? Creo que la presión tras pérdida en El Molinón fue la clave para dominar el centro del campo.",
     createdAt: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
     likesCount: 14,
@@ -22,7 +22,7 @@ export const INITIAL_TERTULIA_POSTS: readonly SocialPost[] = [
         userId: "demo-user-2",
         authorName: "Nacho RSG",
         authorUsername: "nacho_sporting",
-        authorAvatar: "/images/players/7.png",
+        authorAvatar: "/images/historical/el-molinon-uefa.jpg",
         body: "Totalmente de acuerdo, Pelayo. Hacía tiempo que no veía tanta intensidad física en los primeros 45 minutos.",
         createdAt: new Date(Date.now() - 1000 * 60 * 20).toISOString(),
         likesCount: 5,
@@ -46,7 +46,7 @@ export const INITIAL_TERTULIA_POSTS: readonly SocialPost[] = [
     userId: "demo-user-4",
     authorName: "Marcos Gijonés",
     authorUsername: "marcos_rsg",
-    authorAvatar: "/images/players/21.png",
+    authorAvatar: "/images/historical/villamarin-2015.jpg",
     body: "¿Quién viaja este fin de semana con la Mareona? Estamos organizando autobuses desde la peña para animar al equipo fuera de casa.",
     createdAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
     likesCount: 22,
@@ -56,7 +56,7 @@ export const INITIAL_TERTULIA_POSTS: readonly SocialPost[] = [
 ];
 
 /**
- * Fallback demo search profiles with realistic avatars for interactive test demos.
+ * Fallback demo search profiles with historical photos and presets.
  */
 export const DEMO_SEARCH_AFICIONADOS: readonly FriendSummary[] = [
   {
@@ -64,14 +64,14 @@ export const DEMO_SEARCH_AFICIONADOS: readonly FriendSummary[] = [
     friendshipId: "",
     username: "pelayo_gijon",
     displayName: "Pelayo Álvarez",
-    avatarUrl: "/images/players/10.png",
+    avatarUrl: "/images/historical/quini-molinon.jpg",
   },
   {
     id: "demo-user-2",
     friendshipId: "",
     username: "nacho_sporting",
     displayName: "Nacho RSG",
-    avatarUrl: "/images/players/7.png",
+    avatarUrl: "/images/historical/el-molinon-uefa.jpg",
   },
   {
     id: "demo-user-3",
@@ -85,13 +85,13 @@ export const DEMO_SEARCH_AFICIONADOS: readonly FriendSummary[] = [
     friendshipId: "",
     username: "marcos_rsg",
     displayName: "Marcos Gijonés",
-    avatarUrl: "/images/players/21.png",
+    avatarUrl: "/images/historical/villamarin-2015.jpg",
   },
   {
     id: "demo-user-5",
     friendshipId: "",
     username: "rodrigo_mareo",
     displayName: "Rodrigo Mareo",
-    avatarUrl: "/images/players/23.png",
+    avatarUrl: "/images/historical/escuela-de-mareo.jpg",
   },
 ];
