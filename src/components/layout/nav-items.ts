@@ -1,4 +1,5 @@
 import {
+  Home,
   CalendarDays,
   Gamepad2,
   History,
@@ -14,6 +15,12 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: readonly NavItem[] = [
+  {
+    label: "Inicio",
+    href: "/",
+    icon: Home,
+    description: "Portada y resumen de actualidad sportinguista",
+  },
   {
     label: "Temporada",
     href: "/temporada",
@@ -39,3 +46,4 @@ export const NAV_ITEMS: readonly NavItem[] = [
     description: "La Porra de El Molinón y pasatiempos",
   },
 ];
+

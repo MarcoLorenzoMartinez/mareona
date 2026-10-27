@@ -12,11 +12,13 @@ function MobileNavList({ pathname }: { readonly pathname: string | null }) {
       aria-label="Navegación móvil"
       className="fixed bottom-0 inset-x-0 z-50 border-t border-[var(--border)] bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
     >
-      <ul className="grid grid-cols-4 items-center">
+      <ul className="grid grid-cols-5 items-center">
         {NAV_ITEMS.map((item) => {
           const isActive =
             pathname !== null &&
-            (pathname === item.href || pathname.startsWith(`${item.href}/`));
+            (item.href === "/"
+              ? pathname === "/"
+              : pathname === item.href || pathname.startsWith(`${item.href}/`));
           const Icon = item.icon;
 
           return (
