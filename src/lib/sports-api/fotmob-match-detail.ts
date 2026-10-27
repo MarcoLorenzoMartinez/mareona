@@ -4,6 +4,7 @@ import {
   type DomainMatchDetail,
   type MatchStatus,
 } from "./types.ts";
+import { formatCopaRound } from "./copa.ts";
 
 const FOTMOB_SPORTING_ID = 9869;
 
@@ -18,6 +19,8 @@ interface FotMobMatchPayload {
   readonly general?: {
     readonly matchId?: string;
     readonly leagueName?: string;
+    readonly matchRound?: string;
+    readonly leagueRoundName?: string;
     readonly matchTimeUTCDate?: string;
     readonly started?: boolean;
     readonly finished?: boolean;
@@ -74,6 +77,7 @@ export async function fetchFotMobMatchDetail(matchId: string): Promise<DomainMat
     return {
       externalId: matchId,
       competition: general.leagueName || "Copa del Rey",
+      roundName: formatCopaRound(general.matchRound || general.leagueRoundName),
       season: getSeasonLabel(),
       matchday: null,
       kickoffAt: general.matchTimeUTCDate || new Date().toISOString(),

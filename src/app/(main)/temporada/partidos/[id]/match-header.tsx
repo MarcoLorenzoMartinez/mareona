@@ -67,7 +67,11 @@ export function MatchHeader({ match }: MatchHeaderProps) {
       {/* Cabecera superior con competición y estado */}
       <div className="relative z-10 flex items-center justify-between border-b border-[var(--border)] pb-3">
         <span className="text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
-          {match.matchday ? `${matchT.matchday} ${match.matchday} · ` : ""}
+          {match.roundName
+            ? `${match.roundName} · `
+            : match.matchday
+            ? `${matchT.matchday} ${match.matchday} · `
+            : ""}
           {match.competition}
         </span>
         {match.status === "live" && (

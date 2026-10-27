@@ -29,12 +29,36 @@ interface FotMobTeamResponse {
 }
 
 /**
+ * Formats a raw round identifier into canonical Spanish Copa del Rey nomenclature.
+ *
+ * @param round Raw round string or number from external API.
+ * @returns Canonical Spanish round description (e.g. "1ª Ronda", "1/16 de final").
+ */
+export function formatCopaRound(round?: string | number | null): string | null {
+  if (round === undefined || round === null) return null;
+  const str = String(round).trim().toLowerCase();
+  if (!str) return null;
+  if (str === "1" || str.includes("1st") || str.includes("primera") || str.includes("1/64")) return "1ª Ronda";
+  if (str === "2" || str.includes("2nd") || str.includes("segunda") || str.includes("1/32")) return "2ª Ronda";
+  if (str === "3" || str.includes("1/16") || str.includes("round of 32") || str.includes("dieciseis")) return "1/16 de final";
+  if (str.includes("round of 16") || str.includes("octavos") || str === "1/8" || str === "8") return "Octavos de final";
+  if (str.includes("quarter") || str.includes("cuartos") || str === "1/4" || str === "4") return "Cuartos de final";
+  if (str.includes("semi") || str === "1/2") return "Semifinales";
+  if (str.includes("final")) return "Final";
+  return `Ronda ${str}`;
+}
+
+/**
  * Maps a single FotMob fixture entry to DomainMatchSummary for Copa del Rey.
  *
  * @param f FotMob team fixture item.
+ * @param roundName Optional resolved Spanish round name.
  * @returns Standardized DomainMatchSummary entity.
  */
-export function mapFotMobCopaFixtureToDomain(f: FotMobTeamFixtureItem): DomainMatchSummary {
+export function mapFotMobCopaFixtureToDomain(
+  f: FotMobTeamFixtureItem,
+  roundName: string | null = null
+): DomainMatchSummary {
   const isHomeSporting =
     f.home.id === FOTMOB_SPORTING_ID ||
     f.home.name.toLowerCase().includes("sporting");
@@ -56,6 +80,7 @@ export function mapFotMobCopaFixtureToDomain(f: FotMobTeamFixtureItem): DomainMa
   return {
     externalId: String(f.id),
     competition: "Copa del Rey",
+    roundName,
     season: getSeasonLabel(),
     matchday: null,
     kickoffAt: f.status.utcTime,
@@ -107,7 +132,34 @@ export async function fetchSportingCopaMatches(): Promise<readonly DomainMatchSu
       f.tournament?.name?.toLowerCase().includes("copa")
     );
 
-    return copaFixtures.map(mapFotMobCopaFixtureToDomain);
+    const matches = await Promise.all(
+      copaFixtures.map(async (f) => {
+        let roundName: string | null = null;
+        try {
+          const detailUrl = `https://www.fotmob.com/api/data/matchDetails?matchId=${f.id}`;
+          const detailRes = await fetch(detailUrl, {
+            headers: {
+              "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36",
+            },
+            next: { revalidate: 3600 },
+          });
+          if (detailRes.ok) {
+            const detailData = (await detailRes.json()) as {
+              general?: { matchRound?: string; leagueRoundName?: string };
+            };
+            roundName = formatCopaRound(
+              detailData.general?.matchRound || detailData.general?.leagueRoundName
+            );
+          }
+        } catch {
+          // Graceful fallback to null roundName
+        }
+        return mapFotMobCopaFixtureToDomain(f, roundName);
+      })
+    );
+
+    return matches;
   } catch {
     return [];
   }

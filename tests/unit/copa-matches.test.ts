@@ -2,11 +2,25 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
   mapFotMobCopaFixtureToDomain,
+  formatCopaRound,
   type FotMobTeamFixtureItem,
 } from "../../src/lib/sports-api/copa.ts";
 
 describe("Copa del Rey Match Mapping", () => {
-  it("maps scheduled away Copa match to canonical DomainMatchSummary", () => {
+  it("formats canonical Spanish Copa del Rey round names accurately", () => {
+    assert.equal(formatCopaRound("1"), "1ª Ronda");
+    assert.equal(formatCopaRound("1st Round"), "1ª Ronda");
+    assert.equal(formatCopaRound("2"), "2ª Ronda");
+    assert.equal(formatCopaRound("1/16"), "1/16 de final");
+    assert.equal(formatCopaRound("Round of 16"), "Octavos de final");
+    assert.equal(formatCopaRound("Quarter-finals"), "Cuartos de final");
+    assert.equal(formatCopaRound("Semi-finals"), "Semifinales");
+    assert.equal(formatCopaRound("Final"), "Final");
+    assert.equal(formatCopaRound(null), null);
+    assert.equal(formatCopaRound(undefined), null);
+  });
+
+  it("maps scheduled away Copa match to canonical DomainMatchSummary with roundName", () => {
     const rawFixture: FotMobTeamFixtureItem = {
       id: 4567890,
       home: { id: 2840, name: "CD Guijuelo" },
@@ -19,10 +33,11 @@ describe("Copa del Rey Match Mapping", () => {
       },
     };
 
-    const domain = mapFotMobCopaFixtureToDomain(rawFixture);
+    const domain = mapFotMobCopaFixtureToDomain(rawFixture, "1ª Ronda");
 
     assert.equal(domain.externalId, "4567890");
     assert.equal(domain.competition, "Copa del Rey");
+    assert.equal(domain.roundName, "1ª Ronda");
     assert.equal(domain.matchday, null);
     assert.equal(domain.status, "scheduled");
     assert.equal(domain.homeScore, null);

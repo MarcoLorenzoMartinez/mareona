@@ -217,6 +217,7 @@ export interface DomainStandingRow {
 export interface DomainMatchSummary {
   readonly externalId: string;
   readonly competition: string;
+  readonly roundName?: string | null;
   readonly season: string;
   readonly matchday: number | null;
   readonly kickoffAt: string;
@@ -443,6 +444,7 @@ export interface DomainTacticalLineup {
 export interface DomainMatchDetail {
   readonly externalId: string;
   readonly competition: string;
+  readonly roundName?: string | null;
   readonly season: string;
   readonly matchday: number | null;
   readonly kickoffAt: string;
