@@ -25,7 +25,9 @@ export async function generateMetadata({
 
   return {
     title: `${match.homeTeam.name} vs ${match.awayTeam.name} — Mareona`,
-    description: `${match.competition} · ${dict.season.match.matchday} ${match.matchday ?? "—"}`,
+    description: match.matchday
+      ? `${match.competition} · ${dict.season.match.matchday} ${match.matchday}`
+      : match.competition,
   };
 }
 

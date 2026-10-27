@@ -61,7 +61,7 @@ export function NextFixtureHero({ match }: NextFixtureHeroProps) {
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
               {match
-                ? `${dict.season.match.matchday} ${match.matchday ?? "—"} · ${dict.season.competitionName}`
+                ? `${match.matchday ? `${dict.season.match.matchday} ${match.matchday} · ` : ""}${match.competition}`
                 : dict.season.match.nextFixture}
             </span>
             {isLive && (
