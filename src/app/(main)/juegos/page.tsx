@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Juegos — Mareona',
+  title: 'Juegos',
   description: 'Pasatiempos y retos diarios del Real Sporting de Gijón.',
 };
 

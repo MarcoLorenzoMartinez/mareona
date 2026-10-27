@@ -4,7 +4,7 @@ import { getSocialPosts } from "@/lib/social/actions";
 import { SocialFeed } from "./social-feed";
 
 export const metadata: Metadata = {
-  title: "Tertulia Sportinguista — Mareona",
+  title: "Social",
   description: "Debate, actualidad y punto de encuentro de los aficionados del Real Sporting.",
 };
 

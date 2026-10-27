@@ -6,7 +6,7 @@ import {
 import { HistoricalTrayectoriaHub } from "./trayectoria-hub";
 
 export const metadata: Metadata = {
-  title: "Trayectoria y Temporadas — Histórico — Mareona",
+  title: "Histórico",
   description: "Evolución histórica del Real Sporting en la Liga y archivo completo de temporadas con clasificaciones y escudos.",
 };
 

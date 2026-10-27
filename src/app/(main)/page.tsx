@@ -9,7 +9,7 @@ import { NextFixtureHero } from "./temporada/next-fixture-hero";
 import { SeasonSummaryTable } from "./temporada/season-summary-table";
 
 export const metadata: Metadata = {
-  title: "Mareona — Real Sporting de Gijón",
+  title: "Mareona",
   description: "Actualidad, partidos, clasificación y actualidad del Real Sporting de Gijón.",
 };
 

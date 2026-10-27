@@ -12,7 +12,7 @@ import { StandingsView } from "./standings-view";
 export function generateMetadata(): Metadata {
   const dict = getDictionary();
   return {
-    title: `${dict.season.standings.title} — Mareona`,
+    title: dict.season.standings.title,
     description: dict.season.description,
   };
 }

@@ -7,7 +7,7 @@ import { MatchesList } from "./matches-list";
 export function generateMetadata(): Metadata {
   const dict = getDictionary();
   return {
-    title: `${dict.season.matchesList.title} — Mareona`,
+    title: dict.season.matchesList.title,
     description: dict.season.description,
   };
 }

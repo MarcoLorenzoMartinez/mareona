@@ -16,13 +16,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mareona — Real Sporting de Gijón",
+  title: {
+    default: "Mareona",
+    template: "%s — Mareona",
+  },
   description:
     "Hub comunitario, red social y plataforma de datos para los aficionados del Real Sporting de Gijón.",
   icons: {
     icon: [
       { url: "/logo.png", type: "image/png" },
-      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico" },
     ],
     apple: "/logo.png",
   },
