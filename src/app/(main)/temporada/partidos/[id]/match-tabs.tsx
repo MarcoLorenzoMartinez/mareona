@@ -7,20 +7,19 @@ import { getDictionary } from "@/i18n";
 import { MatchEventsTimeline } from "./match-events-timeline";
 import { MatchStatsPanel } from "./match-stats-panel";
 import { MatchLineupsView } from "./match-lineups-view";
-import { MatchInfo } from "./match-info";
 import { MatchCommunityTab } from "./match-community-tab";
 
 interface MatchTabsProps {
   readonly match: DomainMatchDetail;
 }
 
-type TabKey = "events" | "stats" | "lineups" | "info" | "grada";
+type TabKey = "events" | "stats" | "lineups" | "grada";
 
 export function MatchTabs({ match }: MatchTabsProps) {
   const dict = getDictionary();
   const t = dict.season.matchDetail.tabs;
 
-  // For finished/live matches, start on events (or stats). For scheduled, start on lineups (or info).
+  // For finished/live matches, start on events (or stats). For scheduled, start on lineups.
   const initialTab: TabKey =
     match.status === "scheduled" ? "lineups" : "events";
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
@@ -29,7 +28,6 @@ export function MatchTabs({ match }: MatchTabsProps) {
     { key: "events", label: t.events },
     { key: "stats", label: t.stats },
     { key: "lineups", label: t.lineups },
-    { key: "info", label: t.info },
     { key: "grada", label: t.grada },
   ];
 
@@ -75,7 +73,6 @@ export function MatchTabs({ match }: MatchTabsProps) {
         {activeTab === "events" && <MatchEventsTimeline match={match} />}
         {activeTab === "stats" && <MatchStatsPanel match={match} />}
         {activeTab === "lineups" && <MatchLineupsView match={match} />}
-        {activeTab === "info" && <MatchInfo match={match} />}
         {activeTab === "grada" && <MatchCommunityTab match={match} />}
       </div>
     </div>

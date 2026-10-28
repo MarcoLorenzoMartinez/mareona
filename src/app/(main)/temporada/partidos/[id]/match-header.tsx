@@ -4,6 +4,7 @@ import { formatMatchDate, formatMatchTime } from "@/lib/sports-api/dates";
 import { getStadiumAsset } from "@/lib/sports-api/stadiums";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
+import { MatchHeaderMeta } from "./match-header-meta";
 
 interface MatchHeaderProps {
   readonly match: DomainMatchDetail;
@@ -163,6 +164,8 @@ export function MatchHeader({ match }: MatchHeaderProps) {
           </span>
         </div>
       </div>
+
+      <MatchHeaderMeta match={match} stadiumAsset={stadiumAsset} />
     </section>
   );
 }
