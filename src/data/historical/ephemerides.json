@@ -120,18 +120,6 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/12496.jpg"
   },
   {
-    "id": "eph-jan-28-first-promotion",
-    "month": 1,
-    "day": 28,
-    "year": 1944,
-    "category": "milestone",
-    "categoryLabel": "Ascenso Histórico",
-    "title": "Primer ascenso a 1.ª División (1944)",
-    "description": "El club sella matemáticamente su histórico primer salto a la máxima categoría del fútbol español tras liderar la fase de ascenso.",
-    "figure": "Amadeo Sánchez",
-    "photoUrl": "https://www.bdfutbol.com/i/lm/7831.png"
-  },
-  {
     "id": "eph-jan-28-churruca-birth",
     "month": 1,
     "day": 28,
@@ -516,6 +504,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/22496b.jpg"
   },
   {
+    "id": "eph-apr-02-first-promotion-1944",
+    "month": 4,
+    "day": 2,
+    "year": 1944,
+    "category": "milestone",
+    "categoryLabel": "Ascenso Histórico",
+    "title": "Primer ascenso a 1.ª División (1944)",
+    "description": "El club certifica matemáticamente su primer ascenso a la máxima categoría y se proclama campeón de Segunda tras empatar 1-1 frente al Xerez Club con gol de Adolfo.",
+    "figure": "Amadeo Sánchez y Adolfo",
+    "photoUrl": "https://www.bdfutbol.com/i/lm/7831.png"
+  },
+  {
     "id": "eph-apr-02-bernabeu-mourinho",
     "month": 4,
     "day": 2,
@@ -672,16 +672,16 @@
     "photoUrl": "https://www.bdfutbol.com/i/lm/5.png"
   },
   {
-    "id": "eph-apr-21-mareo",
+    "id": "eph-apr-19-promotion-1970",
     "month": 4,
-    "day": 21,
-    "year": 1978,
+    "day": 19,
+    "year": 1970,
     "category": "milestone",
-    "categoryLabel": "Patrimonio Rojiblanco",
-    "title": "Inauguración de la Escuela de Mareo",
-    "description": "Instalaciones deportivas de la Escuela de Fútbol de Mareo, inauguradas oficialmente en marzo de 1978.",
-    "figure": "Manuel Vega-Arango",
-    "photoUrl": "/images/historical/escuela-de-mareo.jpg"
+    "categoryLabel": "Ascenso Campeón",
+    "title": "Campeones de Segunda y ascenso a Primera (1970)",
+    "description": "El Real Gijón vence 3-1 a la UD Salamanca en El Molinón en la jornada 33 y certifica matemáticamente su regreso a Primera División, comandado por Quini con 24 dianas.",
+    "figure": "Enrique Castro 'Quini'",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "eph-apr-23-jorge-david-birth",
@@ -849,18 +849,6 @@
     "title": "Primer partido documentado en El Molinón",
     "description": "Constancia de la primera contienda en el templo rojiblanco, el campo de fútbol profesional más antiguo de España.",
     "figure": "El Molinón",
-    "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
-  },
-  {
-    "id": "eph-may-20-titulo-real-sporting",
-    "month": 5,
-    "day": 20,
-    "year": 1912,
-    "category": "milestone",
-    "categoryLabel": "Hito Institucional",
-    "title": "Concesión del título de 'Real' (1912)",
-    "description": "El Rey Alfonso XIII otorga al club gijonés el título de 'Real', adoptando la corona borbónica en el escudo y pasando a llamarse Real Sporting Club Gijonés.",
-    "figure": "Casa Real Española",
     "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
   },
   {
@@ -1102,18 +1090,6 @@
     "description": "Nace en Oviedo el polivalente internacional formado en la cantera de Mareo antes de su consolidación en la élite.",
     "figure": "Miguel Ángel Angulo",
     "photoUrl": "https://www.bdfutbol.com/i/j/1993.jpg"
-  },
-  {
-    "id": "eph-jun-28-promotion-1970",
-    "month": 6,
-    "day": 28,
-    "year": 1970,
-    "category": "milestone",
-    "categoryLabel": "Ascenso Campeón",
-    "title": "Campeones de Segunda División (1970)",
-    "description": "El Sporting conquista el título de Segunda División y asciende a Primera comandado por Quini, máximo delantero con 24 dianas.",
-    "figure": "Enrique Castro 'Quini'",
-    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "eph-jul-01-foundation",
@@ -1368,18 +1344,6 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/9584.jpg"
   },
   {
-    "id": "eph-aug-21-primer-partido-molinon",
-    "month": 8,
-    "day": 21,
-    "year": 1908,
-    "category": "milestone",
-    "categoryLabel": "Hito Histórico",
-    "title": "Primera referencia oficial de El Molinón (1908)",
-    "description": "La prensa local reseña por primera vez un encuentro de fútbol disputado en el campo de El Molinón, el estadio decano del fútbol profesional español.",
-    "figure": "El Molinón",
-    "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
-  },
-  {
     "id": "eph-aug-21-villa-de-gijon",
     "month": 8,
     "day": 21,
@@ -1413,6 +1377,18 @@
     "title": "Primer partido formal en San Lorenzo",
     "description": "El Sporting Gijonés disputa su primer encuentro documentado en el arenal de la playa de San Lorenzo frente a la Sportiva Gijonesa.",
     "figure": "Pioneros del Sporting",
+    "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
+  },
+  {
+    "id": "eph-aug-26-titulo-real-sporting",
+    "month": 8,
+    "day": 26,
+    "year": 1912,
+    "category": "milestone",
+    "categoryLabel": "Hito Institucional",
+    "title": "Concesión del título de 'Real' (1912)",
+    "description": "El Rey Alfonso XIII otorga al club gijonés el título de 'Real', incorporando la corona real al escudo y adoptando la denominación oficial de Real Sporting Club Gijonés.",
+    "figure": "Casa Real Española",
     "photoUrl": "https://www.bdfutbol.com/i/j/10178d.jpg"
   },
   {
@@ -1534,6 +1510,18 @@
     "description": "Golazo histórico de Jaime Álvarez en El Molinón para doblegar al todopoderoso Milan de Baresi, Maldini, Gullit y Van Basten en la Copa de la UEFA.",
     "figure": "Jaime Álvarez",
     "photoUrl": "/images/historical/sporting-milan-1987.jpg"
+  },
+  {
+    "id": "eph-sep-20-primer-gol-quini-primera",
+    "month": 9,
+    "day": 20,
+    "year": 1970,
+    "category": "milestone",
+    "categoryLabel": "Hito Histórico",
+    "title": "Primer gol de Quini en 1.ª División (1970)",
+    "description": "Enrique Castro 'Quini' anota su primera diana en la máxima categoría ante el CE Sabadell en El Molinón (3-2). 'El Brujo' firmó un doblete estelar para sellar la victoria rojiblanca.",
+    "figure": "Enrique Castro 'Quini'",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "eph-sep-23-quini-birth",
@@ -1692,15 +1680,15 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/1860c.jpg"
   },
   {
-    "id": "eph-oct-28-primer-gol-quini-primera",
+    "id": "eph-oct-28-goleada-barcelona-1979",
     "month": 10,
     "day": 28,
-    "year": 1970,
-    "category": "milestone",
-    "categoryLabel": "Hito Histórico",
-    "title": "Primer gol de Quini en 1.ª División (1970)",
-    "description": "Enrique Castro 'Quini' anota su primera diana en la máxima categoría del fútbol español en la victoria del Sporting por 3-0 frente al RCD Espanyol en El Molinón.",
-    "figure": "Enrique Castro Quini",
+    "year": 1979,
+    "category": "triumph",
+    "categoryLabel": "Goleada Histórica",
+    "title": "Goleada al FC Barcelona: Real Sporting 4-1 (1979)",
+    "description": "Tarde memorable en El Molinón en la jornada 7 de Primera División, con un doblete de Quini y otros dos tantos de Enzo Ferrero para golear 4-1 al FC Barcelona.",
+    "figure": "Enrique Castro 'Quini' y Enzo Ferrero",
     "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
