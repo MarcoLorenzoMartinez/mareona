@@ -19,12 +19,12 @@ export async function generateMetadata({
 
   if (!match) {
     return {
-      title: `${dict.season.matchDetail.title} — Mareona`,
+      title: dict.season.matchDetail.title,
     };
   }
 
   return {
-    title: `${match.homeTeam.name} vs ${match.awayTeam.name} — Mareona`,
+    title: `${match.homeTeam.name} vs ${match.awayTeam.name}`,
     description: match.roundName
       ? `${match.competition} · ${match.roundName}`
       : match.matchday

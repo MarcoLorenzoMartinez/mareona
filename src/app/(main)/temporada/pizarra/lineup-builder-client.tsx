@@ -56,46 +56,15 @@ export function LineupBuilderClient({ initialRoster }: LineupBuilderClientProps)
     });
   };
 
-  const handleResetPositions = () => {
+  const handleResetLineup = () => {
     const formation = TACTICAL_FORMATIONS[formationKey];
-    setAssignedSlots((prev) =>
-      prev.map((slot) => {
-        const defaultDef = formation.slots.find((s) => s.id === slot.slotId);
-        return {
-          ...slot,
-          coord: defaultDef ? defaultDef.defaultCoord : slot.coord,
-        };
-      })
-    );
-  };
-
-  const handleClearAssignments = () => {
-    setAssignedSlots((prev) => prev.map((slot) => ({ ...slot, player: null })));
-  };
-
-  const handleAutocomplete = () => {
-    const usedIds = new Set<string>();
-    setAssignedSlots((prev) =>
-      prev.map((slot) => {
-        if (slot.player) {
-          usedIds.add(slot.player.id);
-          return slot;
-        }
-        let matchingPos: "POR" | "DEF" | "MED" | "DEL" = "MED";
-        if (slot.role === "POR") matchingPos = "POR";
-        else if (["LI", "LD", "DFC", "CAD", "CAI"].includes(slot.role)) matchingPos = "DEF";
-        else if (["EI", "ED", "DC"].includes(slot.role)) matchingPos = "DEL";
-
-        const candidate = allPlayers.find(
-          (p) => !usedIds.has(p.id) && p.defaultPosition === matchingPos
-        ) || allPlayers.find((p) => !usedIds.has(p.id));
-
-        if (candidate) {
-          usedIds.add(candidate.id);
-          return { ...slot, player: candidate };
-        }
-        return slot;
-      })
+    setAssignedSlots(
+      formation.slots.map((slot) => ({
+        slotId: slot.id,
+        role: slot.defaultRole,
+        coord: slot.defaultCoord,
+        player: null,
+      }))
     );
   };
 
@@ -196,24 +165,10 @@ export function LineupBuilderClient({ initialRoster }: LineupBuilderClientProps)
         <div className="flex items-center gap-2 self-end sm:self-auto">
           <button
             type="button"
-            onClick={handleResetPositions}
-            className="rounded-full border border-neutral-300 px-3 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors"
+            onClick={handleResetLineup}
+            className="rounded-full border border-neutral-300 px-3.5 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors"
           >
             Reiniciar
-          </button>
-          <button
-            type="button"
-            onClick={handleClearAssignments}
-            className="rounded-full border border-neutral-300 px-3 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors"
-          >
-            Vaciar
-          </button>
-          <button
-            type="button"
-            onClick={handleAutocomplete}
-            className="rounded-full border border-[#e2001a]/30 bg-red-50/50 px-3 py-1.5 text-xs font-bold text-[#e2001a] hover:bg-red-100 transition-colors"
-          >
-            Autocompletar
           </button>
           <button
             type="button"

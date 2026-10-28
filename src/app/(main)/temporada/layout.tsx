@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { SeasonNav } from "@/components/layout/season-nav";
 
 export const metadata: Metadata = {
-  title: "Temporada — Mareona",
   description: "Partidos, clasificación y actualidad del Real Sporting de Gijón.",
 };
 

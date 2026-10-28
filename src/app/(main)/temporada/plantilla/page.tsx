@@ -7,7 +7,7 @@ import { SquadGroup } from "./squad-group";
 export function generateMetadata(): Metadata {
   const dict = getDictionary();
   return {
-    title: `${dict.season.squad.title} — Mareona`,
+    title: dict.season.squad.title,
     description: dict.season.description,
   };
 }

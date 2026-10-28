@@ -27,12 +27,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   );
 
   if (!player) {
-    return { title: "Jugador no encontrado — Mareona" };
+    return { title: "Jugador no encontrado" };
   }
 
   const dorsalLabel = player.shirtNumber !== null ? `#${player.shirtNumber} ` : "";
   return {
-    title: `${dorsalLabel}${player.displayName} — Real Sporting — Mareona`,
+    title: `${dorsalLabel}${player.displayName} · Real Sporting`,
     description: `Perfil, estadísticas de la temporada, posiciones tácticas y mapa de calor de ${player.displayName} en el Real Sporting.`,
   };
 }

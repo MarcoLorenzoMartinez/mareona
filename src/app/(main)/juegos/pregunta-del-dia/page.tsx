@@ -3,7 +3,7 @@ import { getTriviaForDate } from '../../../../lib/trivia/engine';
 import { TriviaClient } from './trivia-client';
 
 export const metadata: Metadata = {
-  title: 'La Pregunta del Día — Mareona',
+  title: 'La Pregunta del Día',
   description: 'Desafío diario de historia y curiosidades del Real Sporting de Gijón.',
 };
 

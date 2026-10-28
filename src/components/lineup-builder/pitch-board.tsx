@@ -1,7 +1,7 @@
 // Client: Gestión táctica del terreno de juego y reposicionamiento interactivo
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { TacticalGrassMarkings } from "./tactical-grass-markings";
 import { PlayerToken } from "./player-token";
 import { clampPitchCoordinate } from "@/lib/lineup-builder/formations";
@@ -29,38 +29,81 @@ export function PitchBoard({
   formationLabel = "4-2-3-1",
 }: PitchBoardProps) {
   const pitchRef = useRef<HTMLDivElement>(null);
-  const activeDragSlot = useRef<string | null>(null);
+  const startersRef = useRef(starters);
+  useEffect(() => {
+    startersRef.current = starters;
+  }, [starters]);
 
-  const calculateCoordFromPointer = useCallback((clientX: number, clientY: number): PitchCoordinate | null => {
-    if (!pitchRef.current) return null;
-    const rect = pitchRef.current.getBoundingClientRect();
-    if (rect.width <= 0 || rect.height <= 0) return null;
+  const dragRef = useRef<{
+    slotId: string;
+    startX: number;
+    startY: number;
+    initialCoord: PitchCoordinate;
+    isDragging: boolean;
+    pointerId: number;
+    target: HTMLElement;
+  } | null>(null);
 
-    const rawX = ((clientX - rect.left) / rect.width) * 100;
-    const rawY = ((clientY - rect.top) / rect.height) * 100;
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>, slotId: string) => {
+      // Solo capturar puntero principal (clic izquierdo o touch)
+      if (e.button !== 0 && e.pointerType === "mouse") return;
+      const starter = startersRef.current.find((s) => s.slotId === slotId);
+      if (!starter) return;
 
-    return clampPitchCoordinate({ x: rawX, y: rawY });
-  }, []);
+      dragRef.current = {
+        slotId,
+        startX: e.clientX,
+        startY: e.clientY,
+        initialCoord: starter.coord,
+        isDragging: false,
+        pointerId: e.pointerId,
+        target: e.currentTarget as HTMLElement,
+      };
+    },
+    []
+  );
 
-  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>, slotId: string) => {
-    // Only capture primary pointer (mouse or touch)
-    if (e.button !== 0 && e.pointerType === "mouse") return;
-    activeDragSlot.current = slotId;
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
-  }, []);
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      const drag = dragRef.current;
+      if (!drag || !pitchRef.current) return;
 
-  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!activeDragSlot.current) return;
-    const newCoord = calculateCoordFromPointer(e.clientX, e.clientY);
-    if (newCoord) {
-      onMoveSlot(activeDragSlot.current, newCoord);
-    }
-  }, [calculateCoordFromPointer, onMoveSlot]);
+      const dx = e.clientX - drag.startX;
+      const dy = e.clientY - drag.startY;
 
-  const handlePointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (activeDragSlot.current) {
-      (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
-      activeDragSlot.current = null;
+      // Umbral de arrastre: requiere al menos 7px de desplazamiento voluntario para iniciar el movimiento
+      if (!drag.isDragging) {
+        if (Math.hypot(dx, dy) < 7) {
+          return;
+        }
+        drag.isDragging = true;
+        drag.target.setPointerCapture?.(drag.pointerId);
+      }
+
+      const rect = pitchRef.current.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const deltaXPercent = (dx / rect.width) * 100;
+      const deltaYPercent = (dy / rect.height) * 100;
+
+      const newCoord = clampPitchCoordinate({
+        x: drag.initialCoord.x + deltaXPercent,
+        y: drag.initialCoord.y + deltaYPercent,
+      });
+
+      onMoveSlot(drag.slotId, newCoord);
+    },
+    [onMoveSlot]
+  );
+
+  const handlePointerUp = useCallback(() => {
+    const drag = dragRef.current;
+    if (drag) {
+      if (drag.isDragging) {
+        drag.target.releasePointerCapture?.(drag.pointerId);
+      }
+      dragRef.current = null;
     }
   }, []);
 

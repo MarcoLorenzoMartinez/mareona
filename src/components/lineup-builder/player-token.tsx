@@ -55,18 +55,22 @@ export function PlayerToken({
         top: `${coord.y}%`,
       }}
       className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer touch-none select-none transition-transform duration-150 focus:outline-none ${
-        isSelected ? "scale-110 z-30" : "hover:scale-105 z-20"
+        isSelected ? "scale-105 z-30" : "hover:scale-105 z-20"
       }`}
     >
       <div className="flex flex-col items-center">
-        {/* Token Circular Avatar Container — Borde fino blanco con sombra */}
+        {/* Token Circular Avatar Container */}
         <div
-          className={`relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 bg-[#f3f4f3] shadow-md transition-shadow ${
-            isSelected
-              ? "border-[#e2001a] ring-3 ring-white/90 shadow-xl"
-              : player
-              ? "border-white shadow-md hover:shadow-lg"
-              : "border-dashed border-white/60 bg-black/30 hover:border-white"
+          className={`relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full transition-all duration-150 ${
+            player
+              ? `border-2 bg-[#f3f4f3] ${
+                  isSelected
+                    ? "border-white ring-2 ring-[#e2001a] shadow-[0_0_12px_rgba(226,0,26,0.45)]"
+                    : "border-white shadow-md hover:shadow-lg"
+                }`
+              : isSelected
+              ? "border-2 border-white ring-2 ring-[#e2001a]/85 bg-black/45 shadow-[0_0_14px_rgba(226,0,26,0.35)] backdrop-blur-xs"
+              : "border-2 border-dashed border-white/50 bg-black/30 hover:border-white/80 hover:bg-black/40"
           }`}
         >
           {player ? (
@@ -79,13 +83,25 @@ export function PlayerToken({
               />
             </div>
           ) : (
-            <span className="text-white/80 text-xl font-light leading-none">+</span>
+            <span
+              className={`text-xl leading-none transition-colors ${
+                isSelected ? "text-white font-medium" : "text-white/60 font-light"
+              }`}
+            >
+              +
+            </span>
           )}
         </div>
 
         {/* Minimalist Player Name Label */}
         <div className="mt-1 flex flex-col items-center max-w-[90px] sm:max-w-[105px]">
-          <span className="rounded-full bg-black/80 px-2.5 py-0.5 text-center text-[10px] sm:text-[11px] font-bold text-white shadow-xs truncate w-full border border-white/10 backdrop-blur-xs">
+          <span
+            className={`rounded-full px-2.5 py-0.5 text-center text-[10px] sm:text-[11px] font-bold shadow-xs truncate w-full border backdrop-blur-xs transition-colors ${
+              isSelected
+                ? "bg-[#e2001a] text-white border-white/30 shadow-[0_0_8px_rgba(226,0,26,0.4)]"
+                : "bg-black/80 text-white border-white/10"
+            }`}
+          >
             {shortName}
           </span>
         </div>

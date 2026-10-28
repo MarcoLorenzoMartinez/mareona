@@ -3,7 +3,7 @@ import { getEphemeridesForDay } from "@/lib/historical/ephemerides-service";
 import { EphemeridesHub } from "./ephemerides-hub";
 
 export const metadata: Metadata = {
-  title: "Efemérides Sportinguistas — Histórico — Mareona",
+  title: "Efemérides Sportinguistas",
   description:
     "Partidos oficiales, hitos, aniversarios y momentos icónicos vividos un día como hoy en la historia del Real Sporting.",
 };

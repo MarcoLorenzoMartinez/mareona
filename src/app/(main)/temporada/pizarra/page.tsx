@@ -4,7 +4,7 @@ import { buildUnifiedRoster } from "@/lib/lineup-builder/roster-builder";
 import { LineupBuilderClient } from "./lineup-builder-client";
 
 export const metadata: Metadata = {
-  title: "Mi Once — Pizarra Táctica del Real Sporting | Mareona",
+  title: "Mi Once",
   description:
     "Diseña tu alineación ideal del Real Sporting con jugadores del primer equipo, filial y cantera. Mueve posiciones y descárgala para compartir en redes.",
 };

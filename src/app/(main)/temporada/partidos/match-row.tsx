@@ -46,8 +46,8 @@ export function MatchRow({ match, isNext }: MatchRowProps) {
       <div className="mb-2.5 flex items-center justify-between text-xs text-[var(--foreground-muted)]">
         <div className="flex items-center gap-2">
           {match.competition === "Copa del Rey" ? (
-            <span className="rounded-full bg-amber-50 border border-amber-200/80 px-2 py-0.5 text-[10px] font-bold text-amber-800 uppercase tracking-wide">
-              {match.roundName ? `${match.roundName} · ` : ""}Copa del Rey
+            <span className="font-bold text-[var(--foreground)]">
+              {match.roundName || "Copa del Rey"}
             </span>
           ) : (
             <span className="font-bold text-[var(--foreground)]">

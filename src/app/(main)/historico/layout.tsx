@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { HistoricoNav } from "@/components/layout/historico-nav";
 
 export const metadata: Metadata = {
-  title: "Histórico — Mareona",
   description: "Archivo histórico, efemérides y leyendas del Real Sporting de Gijón.",
 };
 

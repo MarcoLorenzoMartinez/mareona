@@ -8,7 +8,7 @@ import {
 import { LegacyRankingsView } from "./legacy-rankings-view";
 
 export const metadata: Metadata = {
-  title: "Récords y Palmarés — Histórico — Mareona",
+  title: "Récords y Palmarés",
   description: "Récords históricos y entrenadores del Real Sporting.",
 };
 

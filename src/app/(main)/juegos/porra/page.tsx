@@ -5,7 +5,7 @@ import type { DomainPlayer } from '@/lib/sports-api/types';
 import type { PorraMatch } from '@/lib/porra/types';
 
 export const metadata: Metadata = {
-  title: 'La Porra de la Mareona — Mareona',
+  title: 'La Porra',
   description: 'Pronostica el marcador y los goleadores del Real Sporting en cada jornada.',
 };
 

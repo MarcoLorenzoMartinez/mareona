@@ -7,7 +7,7 @@ import {
 import { RivalsHub } from "./rivals-hub";
 
 export const metadata: Metadata = {
-  title: "Historial Cara a Cara (H2H) — Histórico — Mareona",
+  title: "Historial Cara a Cara",
   description: "Buscador y balance histórico del Real Sporting frente a todos sus rivales oficiales por comunidad y país.",
 };
 

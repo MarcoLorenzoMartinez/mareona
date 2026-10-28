@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Comparador y Termómetro del Ascenso — Histórico — Mareona",
+  title: "Comparador del Ascenso",
   description: "Compara el ritmo del Real Sporting con la media histórica de ascenso y campañas pasadas.",
 };
 

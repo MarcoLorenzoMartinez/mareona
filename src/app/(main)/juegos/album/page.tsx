@@ -3,7 +3,7 @@ import { HISTORICAL_CARDS_SEED } from "@/lib/cards/seed-data";
 import { AlbumClientView } from "./album-client-view";
 
 export const metadata: Metadata = {
-  title: "Memoria Rojiblanca — Mareona",
+  title: "Memoria Rojiblanca",
   description: "Colección de cartas y leyendas del Real Sporting de Gijón desde 1905 hasta hoy.",
 };
 
