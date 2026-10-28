@@ -15,8 +15,8 @@ function formatAttendance(attendance: number | null): string | null {
 }
 
 /**
- * Scoreboard footer presenting match venue on the left and official attendance on the right,
- * integrated cleanly into the hero card layout.
+ * Scoreboard footer presenting match venue, city, and official attendance
+ * centered cleanly at the bottom of the hero card.
  */
 export function MatchHeaderMeta({ match, stadiumAsset }: MatchHeaderMetaProps) {
   const dict = getDictionary();
@@ -25,9 +25,6 @@ export function MatchHeaderMeta({ match, stadiumAsset }: MatchHeaderMetaProps) {
   const venueDisplayName =
     stadiumAsset?.canonicalName ?? match.venue?.name ?? null;
   const venueCity = match.venue?.city ?? null;
-  const showCity =
-    venueCity &&
-    !venueDisplayName?.toLowerCase().includes(venueCity.toLowerCase());
   const formattedAttendance = formatAttendance(match.attendance);
 
   if (!venueDisplayName && !formattedAttendance) {
@@ -35,31 +32,29 @@ export function MatchHeaderMeta({ match, stadiumAsset }: MatchHeaderMetaProps) {
   }
 
   return (
-    <footer className="relative z-10 mt-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 border-t border-[var(--border)] pt-3 text-xs text-[var(--foreground-muted)]">
-      {/* Lado izquierdo: Estadio y ciudad */}
-      <div className="flex items-center gap-1.5 min-w-0">
-        {venueDisplayName && (
-          <>
-            <span className="font-semibold text-[var(--foreground)] truncate">
-              {venueDisplayName}
-            </span>
-            {showCity && (
-              <span className="text-[var(--foreground-muted)] shrink-0">
-                · {venueCity}
-              </span>
-            )}
-          </>
-        )}
-      </div>
+    <footer className="relative z-10 mt-3 pt-3 border-t border-[var(--border)] flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-[var(--foreground-muted)]">
+      {venueDisplayName && (
+        <span className="inline-flex items-center gap-1.5 font-medium">
+          <span className="font-semibold text-[var(--foreground)]">
+            {venueDisplayName}
+          </span>
+          {venueCity && <span>({venueCity})</span>}
+        </span>
+      )}
 
-      {/* Lado derecho: Asistencia oficial */}
+      {venueDisplayName && formattedAttendance && (
+        <span aria-hidden="true" className="text-neutral-300">
+          ·
+        </span>
+      )}
+
       {formattedAttendance && (
-        <div className="flex items-center gap-1 shrink-0 sm:text-right">
+        <span className="inline-flex items-center gap-1">
           <span className="font-semibold text-[var(--foreground)] tabular-nums">
             {formattedAttendance}
           </span>
           <span>{t.spectators}</span>
-        </div>
+        </span>
       )}
     </footer>
   );
