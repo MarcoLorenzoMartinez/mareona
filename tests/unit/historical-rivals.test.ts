@@ -241,18 +241,18 @@ describe("Historical Rivals Service", () => {
       );
     });
 
-    it("formats pluriprovincial Spanish communities with clean dot separator", () => {
+    it("formats Spanish clubs concisely with their province", () => {
       assert.equal(
         formatRivalLocation({ province: "Bizkaia", community: "País Vasco" }),
-        "Bizkaia · País Vasco"
+        "Bizkaia"
       );
       assert.equal(
         formatRivalLocation({ province: "Burgos", community: "Castilla y León" }),
-        "Burgos · Castilla y León"
+        "Burgos"
       );
       assert.equal(
         formatRivalLocation({ province: "Sevilla", community: "Andalucía" }),
-        "Sevilla · Andalucía"
+        "Sevilla"
       );
     });
 

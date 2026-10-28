@@ -35,7 +35,7 @@ export async function generateMetadata({
 
 function MatchDetailSkeleton() {
   return (
-    <div className="flex flex-col gap-6 animate-pulse" aria-busy="true">
+    <div className="flex flex-col gap-3 animate-pulse" aria-busy="true">
       <div className="h-5 w-32 rounded-md bg-neutral-200" />
       <div className="h-52 rounded-xl border border-[var(--border)] bg-white p-6 shadow-2xs" />
       <div className="mx-auto h-10 w-80 rounded-full bg-neutral-200" />
@@ -53,10 +53,10 @@ async function MatchDetailContent({ params }: MatchDetailPageProps) {
 
   if (!match) {
     return (
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-3">
         <Link
           href="/temporada/partidos"
-          className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-bold text-[var(--foreground-muted)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-md"
+          className="inline-flex items-center gap-1.5 py-1 text-xs font-bold text-[var(--foreground-muted)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-md"
         >
           ← {dict.season.matchDetail.backToMatches}
         </Link>
@@ -70,11 +70,11 @@ async function MatchDetailContent({ params }: MatchDetailPageProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <nav aria-label="Navegación de retorno">
+    <div className="flex flex-col gap-3">
+      <nav aria-label="Navegación de retorno" className="-mt-1">
         <Link
           href="/temporada/partidos"
-          className="inline-flex min-h-[44px] items-center gap-1.5 text-xs font-bold text-[var(--foreground-muted)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-md"
+          className="inline-flex items-center gap-1.5 py-1 text-xs font-bold text-[var(--foreground-muted)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-md"
         >
           ← {dict.season.matchDetail.backToMatches}
         </Link>

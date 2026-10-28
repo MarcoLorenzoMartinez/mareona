@@ -101,12 +101,23 @@ export function RivalDetailView({
 
   return (
     <div className="flex flex-col gap-6">
-      <RivalDetailHeader
-        rival={rival}
-        selectedComp={selectedComp}
-        currentStats={currentStats}
-        onBack={onBack}
-      />
+      <div className="flex flex-col gap-2.5">
+        <nav aria-label="Navegación de retorno" className="-mt-1">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 py-1 text-xs font-bold text-[var(--foreground-muted)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-md cursor-pointer"
+          >
+            ← Volver a rivales
+          </button>
+        </nav>
+
+        <RivalDetailHeader
+          rival={rival}
+          selectedComp={selectedComp}
+          currentStats={currentStats}
+        />
+      </div>
 
       <section aria-label="Desglose por competición" className="flex flex-col gap-3">
         <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--foreground)]">
