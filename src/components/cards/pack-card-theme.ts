@@ -36,14 +36,21 @@ export const PACK_CARD_THEMES: Record<PackTier, PackCardTheme> = {
     shadow: "shadow-xl shadow-red-950/30 hover:shadow-2xl hover:shadow-red-900/50",
   },
   leyenda: {
-    foilBg: "from-[#f9e282] via-[#e5be49] to-[#a37916]",
-    ribbonBg: "bg-gradient-to-b from-[#fdf0b0] to-[#cca030] border-r border-amber-900/30",
-    bevelHighlight: "border-t-[#fff5c7] border-l-[#fae58f] border-r-[#855f0b] border-b-[#664906]",
-    monogram: "#8f670f",
-    triangleGrid: "rgba(90, 65, 10, 0.25)",
-    topFold: "fill-[#fff5c7] stroke-amber-200/50",
-    bottomFold: "fill-[#855f0b] stroke-amber-950/60",
-    nameColor: "text-[#3d2b03]",
-    shadow: "shadow-xl shadow-amber-950/30 hover:shadow-2xl hover:shadow-amber-500/30",
+    // Fondo de foil en Rojo Granate Profundo / Rubí Real (identidad pura sportinguista de gala)
+    foilBg: "from-[#4a0008] via-[#2c0005] to-[#1a0003]",
+    // Cinta vertical en Oro Cepillado con doble filete reflectante
+    ribbonBg: "bg-gradient-to-b from-[#f9df7b] via-[#d4af37] to-[#997519] border-r-2 border-[#fff7cc]/80",
+    // Bisel reflectante en oro auténtico
+    bevelHighlight: "border-t-[#fff4bd] border-l-[#f0ce62] border-r-[#7d5e11] border-b-[#473406]",
+    // Monograma RSG grabado en oro noble sobre el fondo granate
+    monogram: "#d4af37",
+    // Micro-triángulos superiores en oro pulido
+    triangleGrid: "rgba(249, 223, 123, 0.45)",
+    // Pliegues angulados superior e inferior en oro facetado
+    topFold: "fill-[#f9df7b] stroke-[#fff4bd]/70",
+    bottomFold: "fill-[#997519] stroke-[#473406]/90",
+    // Tipografía nítida en oro brillante
+    nameColor: "text-[#fff1b8]",
+    shadow: "shadow-2xl shadow-red-950/60 ring-1 ring-[#d4af37]/60 hover:shadow-red-950/90 hover:ring-[#f9df7b] hover:scale-[1.03]",
   },
 };
