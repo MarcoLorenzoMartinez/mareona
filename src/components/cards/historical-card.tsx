@@ -67,10 +67,10 @@ export function HistoricalCard({
   // Calibración visual de exclusividad por valoración (Opción 1: Marcos Metalizados)
   const ovr = card.ovr ?? 70;
   const frameBorderClass =
-    ovr >= 85
-      ? "bg-[#990011] border-2 border-amber-300 ring-2 ring-amber-400 shadow-xl shadow-amber-500/30"
+    ovr >= 86
+      ? "bg-[#990011] border-2 border-amber-300 ring-2 ring-amber-400 shadow-xl shadow-amber-500/35"
       : ovr >= 80
-        ? "bg-[#c00016] border-2 border-neutral-300 ring-2 ring-white/70 shadow-lg shadow-neutral-400/25"
+        ? "bg-[#bf0016] border-2 border-slate-200 ring-2 ring-slate-100 shadow-xl shadow-slate-300/60"
         : "bg-[#d80018] border-2 border-red-900/40 shadow-md";
 
   return (

@@ -45,7 +45,7 @@ export function PackOpeningModal({
       // Si la carta tiene halo, activamos anticipación breve antes de voltear
       if (isHighOvr) {
         setAnticipatingIndex(step);
-        const pauseMs = ovr >= 85 ? 1400 : 1100;
+        const pauseMs = ovr >= 86 ? 1400 : 1100;
         timerRef.current = setTimeout(() => {
           step += 1;
           setRevealedCount(step);

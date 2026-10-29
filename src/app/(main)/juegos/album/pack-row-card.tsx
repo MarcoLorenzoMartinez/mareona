@@ -30,14 +30,14 @@ export function PackRowCard({
   onReveal,
 }: PackRowCardProps) {
   const ovr = card.ovr ?? 70;
-  const isGoldHype = ovr >= 85;
-  const isRedHype = ovr >= 80 && ovr < 85;
+  const isGoldHype = ovr >= 86;
+  const isSilverHype = ovr >= 80 && ovr < 86;
 
   const glowStyle = !isRevealed
     ? isGoldHype
-      ? "ring-2 ring-amber-400 shadow-[0_0_24px_rgba(251,191,36,0.6)]"
-      : isRedHype
-        ? "ring-2 ring-[#e2001a] shadow-[0_0_20px_rgba(226,0,26,0.5)]"
+      ? "ring-2 ring-amber-400 shadow-[0_0_28px_rgba(251,191,36,0.7)]"
+      : isSilverHype
+        ? "ring-2 ring-slate-100 shadow-[0_0_24px_rgba(255,255,255,0.9),0_0_12px_rgba(203,213,225,0.8)]"
         : ""
     : "";
 
