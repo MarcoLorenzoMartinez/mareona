@@ -61,12 +61,12 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
 
   const totalPacks = packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda;
 
-  const handleOpenPackCards = (tier: PackTier): Card[] => {
+  const handleOpenPackCards = useCallback((tier: PackTier): Card[] => {
     consumeUserPack(tier);
     setPackInventory(loadUserPackInventory());
     const owned = new Set(Object.entries(userInventory).filter(([, q]) => q > 0).map(([s]) => s));
     return generatePackCards(tier, allCards, owned);
-  };
+  }, [allCards, userInventory]);
 
   const handlePasteInAlbum = (acquiredCards: readonly Card[]) => {
     setUserInventory(addCardsToInventory(acquiredCards));

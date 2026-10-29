@@ -1,12 +1,10 @@
-"use client"; // Client: Modal de apertura progresiva de sobre estilo FUT (rasgado, teaser y reveal)
+"use client"; // Client: Modal de apertura de sobre integrado en el diseño claro y sobrio de Mareona
 
-import { useState, useTransition } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import type { Card, PackTier } from "@/lib/cards/types";
 import { PACK_TIERS } from "@/lib/cards/packs";
-import { PackSealedView } from "./pack-sealed-view";
-import { PackTeaserView } from "./pack-teaser-view";
-import { PackRevealCard } from "./pack-reveal-card";
-import { PackSummaryGrid } from "./pack-summary-grid";
+import { PackRowCard } from "./pack-row-card";
+import { PackModalActionsBar } from "./pack-modal-actions-bar";
 
 interface PackOpeningModalProps {
   readonly isOpen: boolean;
@@ -18,8 +16,12 @@ interface PackOpeningModalProps {
   readonly ownedCardSlugs: ReadonlySet<string>;
 }
 
-type ModalStage = "sealed" | "tearing" | "teaser" | "revealing" | "summary";
-
+/**
+ * Clean, modern pack opening modal adhering to AGENTS.md:
+ * - Pure white background (#ffffff) with subtle border, zero AI dark-template styling.
+ * - Cards displayed side-by-side using the canonical CardBack before reveal.
+ * - Smooth progressive reveal from left to right.
+ */
 export function PackOpeningModal({
   isOpen,
   tier,
@@ -29,47 +31,60 @@ export function PackOpeningModal({
   onPasteInAlbum,
   ownedCardSlugs,
 }: PackOpeningModalProps) {
-  const [, startTransition] = useTransition();
-  const [stage, setStage] = useState<ModalStage>("sealed");
   const [cards, setCards] = useState<Card[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [flippedIndices, setFlippedIndices] = useState<Set<number>>(new Set());
+  const [revealedCount, setRevealedCount] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startRevealSequence = useCallback((cardsCount: number) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    let step = 0;
+    const tick = () => {
+      step += 1;
+      setRevealedCount(step);
+      if (step < cardsCount) {
+        timerRef.current = setTimeout(tick, 900);
+      }
+    };
+    timerRef.current = setTimeout(tick, 500);
+  }, []);
+
+  // Genera las cartas y arranca la secuencia exactamente una vez al abrir el modal
+  useEffect(() => {
+    if (!isOpen) {
+      setCards([]);
+      setRevealedCount(0);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      return;
+    }
+
+    // Se consume e invoca exactamente un sobre al abrir
+    const generated = onOpenPackCards(tier);
+    setCards(generated);
+    setRevealedCount(0);
+    startRevealSequence(generated.length);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   const config = PACK_TIERS[tier];
-  const currentCard = cards[currentIndex];
-  const starCard = cards.find((c) => (c.ovr ?? 0) >= 82);
+  const allRevealed = cards.length > 0 && revealedCount >= cards.length;
+  const newCardsCount = cards.filter((c) => !ownedCardSlugs.has(c.slug)).length;
 
-  const handleTearAndOpen = () => {
-    setStage("tearing");
+  const handleRevealAllNow = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setRevealedCount(cards.length);
+  };
+
+  const handleOpenAnother = () => {
     const generated = onOpenPackCards(tier);
     setCards(generated);
-    setCurrentIndex(0);
-    setFlippedIndices(new Set());
-
-    setTimeout(() => {
-      startTransition(() => {
-        const hasLegend = generated.some((c) => (c.ovr ?? 0) >= 82);
-        setStage(hasLegend ? "teaser" : "revealing");
-      });
-    }, 450);
-  };
-
-  const handleNextCard = () => {
-    if (currentIndex + 1 < cards.length) {
-      setCurrentIndex((prev) => prev + 1);
-    } else {
-      setStage("summary");
-    }
-  };
-
-  const handleModalClose = () => {
-    setStage("sealed");
-    setCards([]);
-    setCurrentIndex(0);
-    setFlippedIndices(new Set());
-    onClose();
+    setRevealedCount(0);
+    startRevealSequence(generated.length);
   };
 
   return (
@@ -77,102 +92,65 @@ export function PackOpeningModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="pack-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 sm:p-6 backdrop-blur-xs select-none animate-in fade-in duration-200"
     >
-      <div className="relative flex w-full max-w-2xl flex-col items-center rounded-3xl border border-[var(--border)] bg-white p-6 shadow-2xl overflow-hidden">
-        {/* Cabecera del modal */}
+      <div className="relative flex w-full max-w-5xl flex-col items-center rounded-2xl border border-[var(--border)] bg-white p-5 sm:p-7 shadow-xl">
+        {/* Cabecera limpia y deportiva */}
         <div className="flex w-full items-center justify-between border-b border-[var(--border)] pb-3">
-          <span className="font-sans text-xs font-bold uppercase tracking-wider text-[#e2001a]">
-            {config.name}
-          </span>
+          <div className="flex items-center gap-2.5">
+            <span className="h-2 w-2 rounded-full bg-[#e2001a]" />
+            <h2 id="pack-modal-title" className="font-sans text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-wide">
+              {config.name}
+            </h2>
+            <span className="font-sans text-xs font-semibold tabular-nums text-neutral-400">
+              ({cards.length} cromos)
+            </span>
+          </div>
+
           <button
             type="button"
-            onClick={handleModalClose}
+            onClick={onClose}
             aria-label="Cerrar modal"
-            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 cursor-pointer"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors cursor-pointer"
           >
             ✕
           </button>
         </div>
 
-        {/* 1. Estado Sellado & Rasgado */}
-        {(stage === "sealed" || stage === "tearing") && (
-          <PackSealedView
-            config={config}
-            isTearing={stage === "tearing"}
-            onTear={handleTearAndOpen}
-          />
-        )}
-
-        {/* 2. Teaser de Carta Estrella */}
-        {stage === "teaser" && starCard && (
-          <PackTeaserView
-            starCard={starCard}
-            onDiscover={() => setStage("revealing")}
-          />
-        )}
-
-        {/* 3. Revelación Progresiva Carta a Carta */}
-        {stage === "revealing" && currentCard && (
-          <div className="my-4 flex flex-col items-center">
-            <div className="mb-3 flex items-center gap-3">
-              <span className="rounded-full bg-neutral-100 px-3 py-0.5 font-sans text-xs font-bold tabular-nums text-neutral-600">
-                Carta {currentIndex + 1} de {cards.length}
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setFlippedIndices(new Set(cards.map((_, idx) => idx)));
-                  setStage("summary");
+        {/* Fila horizontal centrada de cromos */}
+        <div className="my-6 flex w-full items-center justify-center overflow-x-auto py-2 px-1 scrollbar-none">
+          <div className="flex items-center justify-center gap-3 sm:gap-4 min-w-max">
+            {cards.map((card, idx) => (
+              <PackRowCard
+                key={`${card.id}-${idx}`}
+                card={card}
+                index={idx}
+                isNew={!ownedCardSlugs.has(card.slug)}
+                isRevealed={idx < revealedCount}
+                onReveal={() => {
+                  if (idx >= revealedCount) {
+                    setRevealedCount(idx + 1);
+                  }
                 }}
-                className="text-xs font-bold text-neutral-400 hover:text-neutral-700 underline"
-              >
-                Saltar al resumen
-              </button>
-            </div>
-
-            <PackRevealCard
-              card={currentCard}
-              isNew={!ownedCardSlugs.has(currentCard.slug)}
-              isFlipped={flippedIndices.has(currentIndex)}
-              onFlip={() => setFlippedIndices((prev) => new Set([...prev, currentIndex]))}
-            />
-
-            <div className="mt-4 flex gap-3">
-              {!flippedIndices.has(currentIndex) ? (
-                <button
-                  type="button"
-                  onClick={() => setFlippedIndices((prev) => new Set([...prev, currentIndex]))}
-                  className="rounded-full bg-[#e2001a] px-6 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-95 cursor-pointer"
-                >
-                  Voltear cromo
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleNextCard}
-                  className="rounded-full bg-neutral-900 px-6 py-2 text-xs font-bold text-white shadow-xs hover:bg-neutral-800 active:scale-95 cursor-pointer"
-                >
-                  {currentIndex + 1 < cards.length ? "Siguiente carta →" : "Ver resumen"}
-                </button>
-              )}
-            </div>
+              />
+            ))}
           </div>
-        )}
+        </div>
 
-        {/* 4. Resumen Final */}
-        {stage === "summary" && (
-          <PackSummaryGrid
-            cards={cards}
-            newCardSlugs={new Set(cards.filter((c) => !ownedCardSlugs.has(c.slug)).map((c) => c.slug))}
-            onPasteInAlbum={() => {
-              onPasteInAlbum(cards);
-              handleModalClose();
-            }}
-            onOpenAnother={handleTearAndOpen}
-            canOpenAnother={canOpenAnother}
-          />
-        )}
+        {/* Barra inferior de estado y acciones */}
+        <PackModalActionsBar
+          allRevealed={allRevealed}
+          revealedCount={revealedCount}
+          totalCards={cards.length}
+          newCardsCount={newCardsCount}
+          canOpenAnother={canOpenAnother}
+          onRevealAll={handleRevealAllNow}
+          onOpenAnother={handleOpenAnother}
+          onPaste={() => {
+            onPasteInAlbum(cards);
+            onClose();
+          }}
+        />
       </div>
     </div>
   );
