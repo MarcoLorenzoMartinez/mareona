@@ -1,32 +1,74 @@
-"use client"; // Client: Animación interactiva de apertura de sobre y estados locales
+"use client"; // Client: Modal de apertura progresiva de sobre estilo FUT (rasgado, teaser y reveal)
 
-import { useState } from "react";
-import type { Card } from "@/lib/cards/types";
-import { HistoricalCard } from "@/components/cards/historical-card";
+import { useState, useTransition } from "react";
+import type { Card, PackTier } from "@/lib/cards/types";
+import { PACK_TIERS } from "@/lib/cards/packs";
+import { PackSealedView } from "./pack-sealed-view";
+import { PackTeaserView } from "./pack-teaser-view";
+import { PackRevealCard } from "./pack-reveal-card";
+import { PackSummaryGrid } from "./pack-summary-grid";
 
 interface PackOpeningModalProps {
   readonly isOpen: boolean;
+  readonly tier: PackTier;
+  readonly canOpenAnother?: boolean;
   readonly onClose: () => void;
-  readonly onOpenPack: () => Card[];
+  readonly onOpenPackCards: (tier: PackTier) => Card[];
+  readonly onPasteInAlbum: (acquiredCards: readonly Card[]) => void;
+  readonly ownedCardSlugs: ReadonlySet<string>;
 }
 
-export function PackOpeningModal({ isOpen, onClose, onOpenPack }: PackOpeningModalProps) {
-  const [openedCards, setOpenedCards] = useState<Card[] | null>(null);
-  const [isRevealing, setIsRevealing] = useState(false);
+type ModalStage = "sealed" | "tearing" | "teaser" | "revealing" | "summary";
+
+export function PackOpeningModal({
+  isOpen,
+  tier,
+  canOpenAnother = false,
+  onClose,
+  onOpenPackCards,
+  onPasteInAlbum,
+  ownedCardSlugs,
+}: PackOpeningModalProps) {
+  const [, startTransition] = useTransition();
+  const [stage, setStage] = useState<ModalStage>("sealed");
+  const [cards, setCards] = useState<Card[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [flippedIndices, setFlippedIndices] = useState<Set<number>>(new Set());
 
   if (!isOpen) return null;
 
-  const handleOpen = () => {
-    setIsRevealing(true);
-    const newCards = onOpenPack();
+  const config = PACK_TIERS[tier];
+  const currentCard = cards[currentIndex];
+  const starCard = cards.find((c) => (c.ovr ?? 0) >= 82);
+
+  const handleTearAndOpen = () => {
+    setStage("tearing");
+    const generated = onOpenPackCards(tier);
+    setCards(generated);
+    setCurrentIndex(0);
+    setFlippedIndices(new Set());
+
     setTimeout(() => {
-      setOpenedCards(newCards);
-      setIsRevealing(false);
-    }, 400);
+      startTransition(() => {
+        const hasLegend = generated.some((c) => (c.ovr ?? 0) >= 82);
+        setStage(hasLegend ? "teaser" : "revealing");
+      });
+    }, 450);
   };
 
-  const handleClose = () => {
-    setOpenedCards(null);
+  const handleNextCard = () => {
+    if (currentIndex + 1 < cards.length) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      setStage("summary");
+    }
+  };
+
+  const handleModalClose = () => {
+    setStage("sealed");
+    setCards([]);
+    setCurrentIndex(0);
+    setFlippedIndices(new Set());
     onClose();
   };
 
@@ -35,54 +77,101 @@ export function PackOpeningModal({ isOpen, onClose, onOpenPack }: PackOpeningMod
       role="dialog"
       aria-modal="true"
       aria-labelledby="pack-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm select-none"
     >
-      <div className="flex w-full max-w-4xl flex-col items-center rounded-2xl border border-[var(--border)] bg-white p-6 shadow-xl">
-        <h2 id="pack-modal-title" className="text-xl font-bold text-[var(--foreground)]">
-          {openedCards ? "¡Cromos Obtenidos!" : "Sobre de Cromos Históricos"}
-        </h2>
-        <p className="mt-1 text-xs text-[var(--foreground-muted)]">
-          {openedCards ? "5 cartas agregadas a tu colección del Real Sporting" : "Contiene 5 cartas de todas las épocas del club"}
-        </p>
+      <div className="relative flex w-full max-w-2xl flex-col items-center rounded-3xl border border-[var(--border)] bg-white p-6 shadow-2xl overflow-hidden">
+        {/* Cabecera del modal */}
+        <div className="flex w-full items-center justify-between border-b border-[var(--border)] pb-3">
+          <span className="font-sans text-xs font-bold uppercase tracking-wider text-[#e2001a]">
+            {config.name}
+          </span>
+          <button
+            type="button"
+            onClick={handleModalClose}
+            aria-label="Cerrar modal"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
 
-        {!openedCards ? (
-          <div className="my-8 flex flex-col items-center">
-            {/* Gráfico representativo del sobre rojo del Sporting */}
-            <div className="flex h-56 w-40 flex-col items-center justify-between rounded-xl border-2 border-[#e2001a] bg-gradient-to-b from-[#e2001a] to-[#b30015] p-4 text-white shadow-lg transition-transform hover:scale-105">
-              <span className="text-[10px] font-bold tracking-widest uppercase">Real Sporting</span>
-              <div className="rounded-full bg-white/20 p-3">
-                <span className="text-2xl font-black">5</span>
-              </div>
-              <span className="text-xs font-semibold">Cromos Oficiales</span>
+        {/* 1. Estado Sellado & Rasgado */}
+        {(stage === "sealed" || stage === "tearing") && (
+          <PackSealedView
+            config={config}
+            isTearing={stage === "tearing"}
+            onTear={handleTearAndOpen}
+          />
+        )}
+
+        {/* 2. Teaser de Carta Estrella */}
+        {stage === "teaser" && starCard && (
+          <PackTeaserView
+            starCard={starCard}
+            onDiscover={() => setStage("revealing")}
+          />
+        )}
+
+        {/* 3. Revelación Progresiva Carta a Carta */}
+        {stage === "revealing" && currentCard && (
+          <div className="my-4 flex flex-col items-center">
+            <div className="mb-3 flex items-center gap-3">
+              <span className="rounded-full bg-neutral-100 px-3 py-0.5 font-sans text-xs font-bold tabular-nums text-neutral-600">
+                Carta {currentIndex + 1} de {cards.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setFlippedIndices(new Set(cards.map((_, idx) => idx)));
+                  setStage("summary");
+                }}
+                className="text-xs font-bold text-neutral-400 hover:text-neutral-700 underline"
+              >
+                Saltar al resumen
+              </button>
             </div>
 
-            <button
-              type="button"
-              disabled={isRevealing}
-              onClick={handleOpen}
-              className="mt-6 rounded-full bg-[#e2001a] px-6 py-2.5 font-bold text-white shadow-md transition-opacity hover:opacity-95 disabled:opacity-50"
-            >
-              {isRevealing ? "Abriendo sobre..." : "Abrir Sobre Ahora"}
-            </button>
-          </div>
-        ) : (
-          <div className="my-6 flex flex-col items-center">
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              {openedCards.map((card) => (
-                <div key={card.id} className="animate-in fade-in zoom-in-95 duration-200">
-                  <HistoricalCard card={card} size="sm" isOwned />
-                </div>
-              ))}
-            </div>
+            <PackRevealCard
+              card={currentCard}
+              isNew={!ownedCardSlugs.has(currentCard.slug)}
+              isFlipped={flippedIndices.has(currentIndex)}
+              onFlip={() => setFlippedIndices((prev) => new Set([...prev, currentIndex]))}
+            />
 
-            <button
-              type="button"
-              onClick={handleClose}
-              className="mt-6 rounded-full bg-[var(--foreground)] px-6 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90"
-            >
-              Guardar en mi Álbum
-            </button>
+            <div className="mt-4 flex gap-3">
+              {!flippedIndices.has(currentIndex) ? (
+                <button
+                  type="button"
+                  onClick={() => setFlippedIndices((prev) => new Set([...prev, currentIndex]))}
+                  className="rounded-full bg-[#e2001a] px-6 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-95 cursor-pointer"
+                >
+                  Voltear cromo
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleNextCard}
+                  className="rounded-full bg-neutral-900 px-6 py-2 text-xs font-bold text-white shadow-xs hover:bg-neutral-800 active:scale-95 cursor-pointer"
+                >
+                  {currentIndex + 1 < cards.length ? "Siguiente carta →" : "Ver resumen"}
+                </button>
+              )}
+            </div>
           </div>
+        )}
+
+        {/* 4. Resumen Final */}
+        {stage === "summary" && (
+          <PackSummaryGrid
+            cards={cards}
+            newCardSlugs={new Set(cards.filter((c) => !ownedCardSlugs.has(c.slug)).map((c) => c.slug))}
+            onPasteInAlbum={() => {
+              onPasteInAlbum(cards);
+              handleModalClose();
+            }}
+            onOpenAnother={handleTearAndOpen}
+            canOpenAnother={canOpenAnother}
+          />
         )}
       </div>
     </div>

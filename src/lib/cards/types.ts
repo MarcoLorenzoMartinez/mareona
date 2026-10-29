@@ -99,3 +99,28 @@ export interface DuelRoundResolution {
   readonly guestValue: number;
   readonly winner: "host" | "guest" | "tie";
 }
+
+export type PackTier = "aficionado" | "rojiblanco" | "leyenda";
+
+export interface PackTierConfig {
+  readonly tier: PackTier;
+  readonly name: string;
+  readonly cardCount: number;
+  readonly subtitle: string;
+  readonly description: string;
+  readonly minOvrGuaranteed?: number;
+  readonly legendGuaranteed?: boolean;
+}
+
+export interface UserPackInventory {
+  readonly aficionado: number;
+  readonly rojiblanco: number;
+  readonly leyenda: number;
+}
+
+export interface DailyMissionState {
+  readonly todayDate: string;
+  readonly hasClaimedDailyLogin: boolean;
+  readonly hasClaimedDailyGame: boolean;
+  readonly isMatchday: boolean;
+}

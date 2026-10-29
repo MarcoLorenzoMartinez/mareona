@@ -1,20 +1,22 @@
-"use client"; // Client: Cabecera con selector de vista (Álbum / Cuadrícula) y progreso de colección
+"use client"; // Client: Cabecera con selector de vista (Álbum / Cuadrícula / Mis Sobres) y progreso de colección
 
 import Link from "next/link";
 
-type ViewMode = "album" | "grid";
+export type AlbumViewMode = "album" | "grid" | "packs";
 
 interface AlbumHeaderProps {
   readonly ownedCount: number;
   readonly totalCount: number;
+  readonly availablePacksCount: number;
   readonly onOpenPackClick: () => void;
-  readonly viewMode: ViewMode;
-  readonly onViewModeChange: (mode: ViewMode) => void;
+  readonly viewMode: AlbumViewMode;
+  readonly onViewModeChange: (mode: AlbumViewMode) => void;
 }
 
 export function AlbumHeader({
   ownedCount,
   totalCount,
+  availablePacksCount,
   onOpenPackClick,
   viewMode,
   onViewModeChange,
@@ -22,7 +24,7 @@ export function AlbumHeader({
   const progressPct = totalCount > 0 ? Math.round((ownedCount / totalCount) * 100) : 0;
 
   return (
-    <header className="flex flex-col gap-4 border-b border-[var(--border)] pb-3">
+    <header className="flex flex-col gap-4 border-b border-[var(--border)] pb-3 select-none">
       {/* Fila superior con botón de retorno y título unificado */}
       <div className="flex items-center gap-3">
         <Link
@@ -39,7 +41,7 @@ export function AlbumHeader({
         </h1>
       </div>
 
-      {/* Barra de Progreso con acción de apertura de sobre y alternador de vista */}
+      {/* Barra de Progreso con alternador de vista y acceso a sobres */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-[var(--border)] bg-white p-3">
         <div className="flex flex-col gap-1.5 flex-1">
           <div className="flex items-center justify-between text-xs sm:pr-4">
@@ -57,25 +59,19 @@ export function AlbumHeader({
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          {/* Alternador de vista: Álbum o Cuadrícula */}
+          {/* Alternador de vista: Álbum, Cuadrícula o Mis Sobres */}
           <div className="flex rounded-full border border-[var(--border)] bg-[var(--surface)] p-0.5 text-xs font-bold">
             <button
               type="button"
               onClick={() => onViewModeChange("album")}
               title="Vista Álbum"
               aria-pressed={viewMode === "album"}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all ${
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all cursor-pointer ${
                 viewMode === "album"
                   ? "bg-[#e2001a] text-white shadow-2xs"
                   : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
               }`}
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
-                <rect x="0" y="0" width="5" height="7" rx="0.5" />
-                <rect x="7" y="0" width="5" height="7" rx="0.5" />
-                <rect x="0" y="9" width="5" height="3" rx="0.5" />
-                <rect x="7" y="9" width="5" height="3" rx="0.5" />
-              </svg>
               <span>Álbum</span>
             </button>
 
@@ -84,32 +80,47 @@ export function AlbumHeader({
               onClick={() => onViewModeChange("grid")}
               title="Vista Cuadrícula"
               aria-pressed={viewMode === "grid"}
-              className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all ${
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all cursor-pointer ${
                 viewMode === "grid"
                   ? "bg-[#e2001a] text-white shadow-2xs"
                   : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
               }`}
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
-                <rect x="0" y="0" width="3.5" height="5" rx="0.5" />
-                <rect x="4.5" y="0" width="3.5" height="5" rx="0.5" />
-                <rect x="9" y="0" width="3" height="5" rx="0.5" />
-                <rect x="0" y="6.5" width="3.5" height="5.5" rx="0.5" />
-                <rect x="4.5" y="6.5" width="3.5" height="5.5" rx="0.5" />
-                <rect x="9" y="6.5" width="3" height="5.5" rx="0.5" />
-              </svg>
               <span>Cuadrícula</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onViewModeChange("packs")}
+              title="Mis Sobres"
+              aria-pressed={viewMode === "packs"}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1 transition-all cursor-pointer ${
+                viewMode === "packs"
+                  ? "bg-[#e2001a] text-white shadow-2xs"
+                  : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              <span>Mis Sobres</span>
+              {availablePacksCount > 0 && (
+                <span
+                  className={`rounded-full px-1.5 py-0.2 font-sans text-[10px] font-black tabular-nums ${
+                    viewMode === "packs" ? "bg-white text-[#e2001a]" : "bg-[#e2001a] text-white"
+                  }`}
+                >
+                  {availablePacksCount}
+                </span>
+              )}
             </button>
           </div>
 
-          {/* Botón de apertura de sobre */}
+          {/* Botón de apertura rápida o acceso a vitrina */}
           <button
             type="button"
             onClick={onOpenPackClick}
-            className="flex items-center gap-1.5 rounded-full bg-[#e2001a] px-3.5 py-1.5 text-xs font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-95 transition-all"
+            className="flex items-center gap-1.5 rounded-full bg-[#e2001a] px-3.5 py-1.5 text-xs font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-95 transition-all cursor-pointer"
           >
             <span aria-hidden="true">✨</span>
-            <span>Abrir Sobre</span>
+            <span>{availablePacksCount > 0 ? "Abrir Sobre" : "Mis Sobres"}</span>
           </button>
         </div>
       </div>

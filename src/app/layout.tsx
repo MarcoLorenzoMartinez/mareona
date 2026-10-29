@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { TopProgressBar } from "@/components/layout/top-progress-bar";
 import { AuthProvider } from "@/context/auth-context";
 import { AuthModal } from "@/components/auth/auth-modal";
+import { ToastContainer } from "@/components/ui/toast-container";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -57,6 +58,7 @@ export default function RootLayout({
           <TopProgressBar />
           <AuthModal />
           {children}
+          <ToastContainer />
         </AuthProvider>
       </body>
     </html>
