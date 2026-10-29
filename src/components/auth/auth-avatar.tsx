@@ -19,10 +19,10 @@ const SIZE_MAP = {
 } as const;
 
 const PIXEL_MAP = {
-  sm: 28,
-  md: 36,
-  lg: 48,
-  xl: 80,
+  sm: 64,
+  md: 96,
+  lg: 128,
+  xl: 200,
 } as const;
 
 /**
@@ -52,12 +52,14 @@ export function AuthAvatar({
           alt={alt}
           width={pixelDimension}
           height={pixelDimension}
+          quality={95}
           className="h-full w-full object-cover"
           onError={() => setHasError(true)}
           unoptimized={
             src.startsWith("data:") ||
             src.startsWith("blob:") ||
-            src.endsWith(".svg")
+            src.endsWith(".svg") ||
+            src.startsWith("/")
           }
         />
       </div>

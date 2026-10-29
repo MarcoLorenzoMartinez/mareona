@@ -33,7 +33,7 @@ export function ProfileModalHeader({
 
   return (
     <div className="space-y-4 pb-4 border-b border-neutral-100">
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-start justify-between gap-3 pr-8">
         <AuthAvatar src={profile.avatarUrl} alt={profile.displayName || profile.username} size="lg" />
 
         {!isCurrentUser && (

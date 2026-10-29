@@ -158,7 +158,7 @@ export function ThreadView({
 
       <section aria-label="Respuestas al mensaje" className="space-y-2.5 pt-1">
         <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400 px-1">
-          Respuestas ({replies.length})
+          Respuestas
         </h3>
         {replies.length === 0 ? (
           <div className="rounded-xl border border-dashed border-neutral-200 p-6 text-center text-xs text-neutral-400">
