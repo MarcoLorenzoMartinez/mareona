@@ -27,7 +27,7 @@ export function PackRevealCard({ card, isNew, isFlipped, onFlip }: PackRevealCar
             onFlip();
           }
         }}
-        aria-label={isFlipped ? `${card.knownAs}, ${card.eraLabel}` : "Toca para revelar el cromo"}
+        aria-label={isFlipped ? `${card.knownAs}, ${card.eraLabel}` : "Voltear cromo"}
         className="relative h-[250px] w-[175px] sm:h-[300px] sm:w-[210px] cursor-pointer perspective-1000 select-none group"
       >
         <div
@@ -36,19 +36,21 @@ export function PackRevealCard({ card, isNew, isFlipped, onFlip }: PackRevealCar
           }`}
         >
           {/* Front face (Card Back pattern before flip) */}
-          <div className="absolute inset-0 flex flex-col items-center justify-between rounded-xl border-2 border-white/20 bg-gradient-to-b from-[#e2001a] via-[#b30015] to-[#80000e] p-4 text-white shadow-2xl backface-hidden">
+          <div className="absolute inset-0 flex flex-col items-center justify-between rounded-xl border border-white/20 bg-gradient-to-b from-[#e2001a] via-[#b30015] to-[#80000e] p-5 text-white shadow-2xl backface-hidden">
             <span className="text-[10px] font-bold tracking-widest uppercase opacity-80">
               Real Sporting
             </span>
             <div className="flex flex-col items-center gap-2">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/10 text-2xl shadow-inner">
-                👑
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white shadow-inner">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" />
+                </svg>
               </div>
-              <span className="text-xs font-bold tracking-wider uppercase">Toca para voltear</span>
+              <span className="text-[11px] font-bold tracking-wider uppercase opacity-90">
+                Memoria Rojiblanca
+              </span>
             </div>
-            <span className="text-[9px] font-bold tracking-widest uppercase opacity-75">
-              Memoria Rojiblanca
-            </span>
+            <div className="h-1 w-6 rounded-full bg-white/40" />
           </div>
 
           {/* Back face (Revealed Historical Card) */}
