@@ -1,4 +1,4 @@
-"use client"; // Client: Cromo individual de la fila de apertura con reverso oficial negro y flip 3D
+"use client"; // Client: Cromo individual de la fila de apertura con reverso oficial negro, halos de expectación y flip 3D
 
 import type { Card } from "@/lib/cards/types";
 import { HistoricalCard } from "@/components/cards/historical-card";
@@ -8,27 +8,45 @@ interface PackRowCardProps {
   readonly card: Card;
   readonly isNew: boolean;
   readonly isRevealed: boolean;
+  readonly isAnticipating?: boolean;
   readonly index: number;
   readonly onReveal: () => void;
 }
 
 /**
  * Individual card slot displayed side-by-side in the pack reveal modal.
- * Uses the authentic official Mareona card back before reveal and the official HistoricalCard upon flip.
+ * Features hype glows before reveal:
+ * - OVR >= 85: Golden pulsing halo
+ * - OVR 80-84: Red sporting pulsing halo
+ * - OVR < 80: Clean neutral appearance
+ * Subtle "NUEVO" tag anchored at top-right corner replacing AI capsule badges.
  */
 export function PackRowCard({
   card,
   isNew,
   isRevealed,
+  isAnticipating = false,
   index,
   onReveal,
 }: PackRowCardProps) {
+  const ovr = card.ovr ?? 70;
+  const isGoldHype = ovr >= 85;
+  const isRedHype = ovr >= 80 && ovr < 85;
+
+  const glowStyle = !isRevealed && (isAnticipating || true)
+    ? isGoldHype
+      ? "ring-2 ring-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.55)] animate-pulse"
+      : isRedHype
+        ? "ring-2 ring-[#e2001a] shadow-[0_0_20px_rgba(226,0,26,0.45)] animate-pulse"
+        : ""
+    : "";
+
   return (
     <div
-      className="flex flex-col items-center gap-2.5 shrink-0 select-none"
+      className="relative flex flex-col items-center shrink-0 select-none"
       style={{
         animation: "packCardSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards",
-        animationDelay: `${index * 100}ms`,
+        animationDelay: `${index * 80}ms`,
       }}
     >
       {/* 3D Flip Card Container */}
@@ -43,7 +61,7 @@ export function PackRowCard({
           }
         }}
         aria-label={isRevealed ? `${card.knownAs}, ${card.eraLabel}` : `Cromo ${index + 1} por descubrir`}
-        className={`relative w-40 sm:w-44 aspect-[63/90] perspective-1000 transition-transform duration-200 ${
+        className={`relative w-40 sm:w-44 aspect-[63/90] perspective-1000 transition-all duration-300 rounded-none ${glowStyle} ${
           !isRevealed ? "cursor-pointer hover:scale-[1.03]" : ""
         }`}
       >
@@ -52,7 +70,7 @@ export function PackRowCard({
             isRevealed ? "rotate-y-180" : ""
           }`}
         >
-          {/* Cara frontal: Reverso oficial auténtico de Mareona (negro con la ola blanca) */}
+          {/* Cara frontal: Reverso oficial de Mareona */}
           <div className="absolute inset-0 backface-hidden flex items-center justify-center">
             <CardBack
               size="fill"
@@ -61,34 +79,22 @@ export function PackRowCard({
             />
           </div>
 
-          {/* Cara trasera: Cromo histórico oficial de Mareona */}
+          {/* Cara trasera: Cromo histórico oficial */}
           <div className="absolute inset-0 rotate-y-180 backface-hidden flex items-center justify-center">
             <HistoricalCard
               card={card}
               size="fill"
               isOwned
             />
+
+            {/* Micro-etiqueta sutil en la esquina superior derecha */}
+            {isNew && (
+              <span className="absolute top-1.5 right-1.5 z-20 rounded-full bg-[#e2001a] px-1.5 py-0.2 text-[8px] font-black uppercase tracking-wider text-white shadow-xs">
+                Nuevo
+              </span>
+            )}
           </div>
         </div>
-      </div>
-
-      {/* Badge de estado debajo del cromo */}
-      <div className="h-6 flex items-center justify-center">
-        {isRevealed ? (
-          <span
-            className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider animate-in zoom-in-95 duration-200 ${
-              isNew
-                ? "bg-emerald-600 text-white shadow-2xs"
-                : "bg-neutral-100 text-neutral-600 border border-neutral-200"
-            }`}
-          >
-            {isNew ? "¡Nuevo!" : "Repetido"}
-          </span>
-        ) : (
-          <span className="text-[10px] font-bold text-neutral-400">
-            #{index + 1}
-          </span>
-        )}
       </div>
     </div>
   );

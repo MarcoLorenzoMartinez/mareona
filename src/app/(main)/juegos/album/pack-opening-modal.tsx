@@ -1,4 +1,4 @@
-"use client"; // Client: Modal de apertura de sobre integrado en el diseño claro y sobrio de Mareona
+"use client"; // Client: Modal de apertura con ritmo dinámico de hype y halo por OVR
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { Card, PackTier } from "@/lib/cards/types";
@@ -16,12 +16,6 @@ interface PackOpeningModalProps {
   readonly ownedCardSlugs: ReadonlySet<string>;
 }
 
-/**
- * Clean, modern pack opening modal adhering to AGENTS.md:
- * - Pure white background (#ffffff) with subtle border, zero AI dark-template styling.
- * - Cards displayed side-by-side using the canonical CardBack before reveal.
- * - Smooth progressive reveal from left to right.
- */
 export function PackOpeningModal({
   isOpen,
   tier,
@@ -33,35 +27,58 @@ export function PackOpeningModal({
 }: PackOpeningModalProps) {
   const [cards, setCards] = useState<Card[]>([]);
   const [revealedCount, setRevealedCount] = useState(0);
+  const [anticipatingIndex, setAnticipatingIndex] = useState<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const startRevealSequence = useCallback((cardsCount: number) => {
+  // Secuencia con pausas de suspense según la valoración de la carta
+  const startRevealSequence = useCallback((cardsToReveal: readonly Card[]) => {
     if (timerRef.current) clearTimeout(timerRef.current);
     let step = 0;
+
     const tick = () => {
-      step += 1;
-      setRevealedCount(step);
-      if (step < cardsCount) {
-        timerRef.current = setTimeout(tick, 900);
+      if (step >= cardsToReveal.length) return;
+      const nextCard = cardsToReveal[step];
+      const ovr = nextCard?.ovr ?? 70;
+      const isHighOvr = ovr >= 80;
+
+      // Si la carta tiene halo, activamos anticipación breve antes de voltear
+      if (isHighOvr) {
+        setAnticipatingIndex(step);
+        const pauseMs = ovr >= 85 ? 1400 : 1100;
+        timerRef.current = setTimeout(() => {
+          step += 1;
+          setRevealedCount(step);
+          setAnticipatingIndex(null);
+          if (step < cardsToReveal.length) {
+            timerRef.current = setTimeout(tick, 750);
+          }
+        }, pauseMs);
+      } else {
+        step += 1;
+        setRevealedCount(step);
+        setAnticipatingIndex(null);
+        if (step < cardsToReveal.length) {
+          timerRef.current = setTimeout(tick, 800);
+        }
       }
     };
+
     timerRef.current = setTimeout(tick, 500);
   }, []);
 
-  // Genera las cartas y arranca la secuencia exactamente una vez al abrir el modal
   useEffect(() => {
     if (!isOpen) {
       setCards([]);
       setRevealedCount(0);
+      setAnticipatingIndex(null);
       if (timerRef.current) clearTimeout(timerRef.current);
       return;
     }
 
-    // Se consume e invoca exactamente un sobre al abrir
     const generated = onOpenPackCards(tier);
     setCards(generated);
     setRevealedCount(0);
-    startRevealSequence(generated.length);
+    startRevealSequence(generated);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -73,18 +90,18 @@ export function PackOpeningModal({
 
   const config = PACK_TIERS[tier];
   const allRevealed = cards.length > 0 && revealedCount >= cards.length;
-  const newCardsCount = cards.filter((c) => !ownedCardSlugs.has(c.slug)).length;
 
   const handleRevealAllNow = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     setRevealedCount(cards.length);
+    setAnticipatingIndex(null);
   };
 
   const handleOpenAnother = () => {
     const generated = onOpenPackCards(tier);
     setCards(generated);
     setRevealedCount(0);
-    startRevealSequence(generated.length);
+    startRevealSequence(generated);
   };
 
   return (
@@ -118,7 +135,7 @@ export function PackOpeningModal({
         </div>
 
         {/* Fila horizontal centrada de cromos */}
-        <div className="my-6 flex w-full items-center justify-center overflow-x-auto py-2 px-1 scrollbar-none">
+        <div className="my-6 flex w-full items-center justify-center overflow-x-auto py-3 px-2 scrollbar-none">
           <div className="flex items-center justify-center gap-3 sm:gap-4 min-w-max">
             {cards.map((card, idx) => (
               <PackRowCard
@@ -127,6 +144,7 @@ export function PackOpeningModal({
                 index={idx}
                 isNew={!ownedCardSlugs.has(card.slug)}
                 isRevealed={idx < revealedCount}
+                isAnticipating={idx === anticipatingIndex}
                 onReveal={() => {
                   if (idx >= revealedCount) {
                     setRevealedCount(idx + 1);
@@ -137,12 +155,11 @@ export function PackOpeningModal({
           </div>
         </div>
 
-        {/* Barra inferior de estado y acciones */}
+        {/* Barra inferior sin textos explicativos */}
         <PackModalActionsBar
           allRevealed={allRevealed}
           revealedCount={revealedCount}
           totalCards={cards.length}
-          newCardsCount={newCardsCount}
           canOpenAnother={canOpenAnother}
           onRevealAll={handleRevealAllNow}
           onOpenAnother={handleOpenAnother}

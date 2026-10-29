@@ -1,10 +1,9 @@
-"use client"; // Client: Barra de acciones e información del resultado del sobre
+"use client"; // Client: Barra de acciones y control de apertura de sobres sin prosa explicativa
 
 interface PackModalActionsBarProps {
   readonly allRevealed: boolean;
   readonly revealedCount: number;
   readonly totalCards: number;
-  readonly newCardsCount: number;
   readonly canOpenAnother: boolean;
   readonly onRevealAll: () => void;
   readonly onOpenAnother: () => void;
@@ -13,56 +12,37 @@ interface PackModalActionsBarProps {
 
 /**
  * Bottom action and progress controls for the pack reveal modal.
- * Complies with AGENTS.md: clean light theme, red brand accents, zero mono font.
+ * Pure minimalist layout complying with AGENTS.md rule 9A (zero explanatory prose).
  */
 export function PackModalActionsBar({
   allRevealed,
   revealedCount,
   totalCards,
-  newCardsCount,
   canOpenAnother,
   onRevealAll,
   onOpenAnother,
   onPaste,
 }: PackModalActionsBarProps) {
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 w-full border-t border-[var(--border)] pt-4 mt-2">
-      <div className="text-xs font-medium text-neutral-600">
-        {!allRevealed ? (
-          <div className="flex items-center gap-3">
-            <span>
-              Descubriendo cromos (
-              <strong className="font-bold tabular-nums text-neutral-900">
-                {revealedCount}/{totalCards}
-              </strong>
-              )...
+    <div className="flex items-center justify-between gap-3 w-full border-t border-[var(--border)] pt-4 mt-2">
+      <div>
+        {!allRevealed && (
+          <div className="flex items-center gap-2.5">
+            <span className="font-sans text-xs font-semibold tabular-nums text-neutral-400">
+              {revealedCount}/{totalCards}
             </span>
             <button
               type="button"
               onClick={onRevealAll}
-              className="text-xs font-bold text-[#e2001a] hover:underline cursor-pointer"
+              className="text-xs font-bold text-neutral-500 hover:text-neutral-800 underline cursor-pointer"
             >
               Revelar todos
             </button>
           </div>
-        ) : (
-          <span className="text-xs font-medium text-neutral-700">
-            {newCardsCount > 0 ? (
-              <>
-                ¡Has conseguido{" "}
-                <strong className="font-bold text-neutral-900">
-                  {newCardsCount} {newCardsCount === 1 ? "cromo nuevo" : "cromos nuevos"}
-                </strong>{" "}
-                para tu álbum!
-              </>
-            ) : (
-              "Todos los cromos ya estaban en tu álbum (sumados a repetidos)."
-            )}
-          </span>
         )}
       </div>
 
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-2.5 ml-auto">
         {allRevealed && (
           <>
             {canOpenAnother && (
