@@ -1,4 +1,4 @@
-"use client"; // Client: Vista de inventario de sobres (Mis Sobres) y expositor estilo FUT
+"use client"; // Client: Vista de inventario de sobres (Mis Sobres) minimalista y adaptada al diseño de Mareona
 
 import type { DailyMissionState, PackTier, UserPackInventory } from "@/lib/cards/types";
 import { PackCard } from "@/components/cards/pack-card";
@@ -15,8 +15,8 @@ interface MyPacksViewProps {
 }
 
 /**
- * "Mis Sobres" inventory view for Mareona's official card collection.
- * Displays user's available pack stock in a clean minimal grid alongside live missions.
+ * Modern, minimalist "Mis Sobres" view.
+ * Removes visual clutter, AI-template card nesting and prose, letting the physical packs take center stage.
  */
 export function MyPacksView({
   packInventory,
@@ -30,7 +30,7 @@ export function MyPacksView({
   const totalPacks =
     packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda;
 
-  // Lista concreta de cada uno de los sobres reales que posee el aficionado
+  // Lista concreta de sobres reales que posee el aficionado
   const ownedPacks: Array<{ id: string; tier: PackTier }> = [];
   for (let i = 0; i < packInventory.aficionado; i++) {
     ownedPacks.push({ id: `aficionado-${i}`, tier: "aficionado" });
@@ -43,36 +43,48 @@ export function MyPacksView({
   }
 
   return (
-    <div className="flex flex-col gap-6 select-none">
-      {/* Vitrina de Sobres disponibles */}
-      <section
-        aria-label="Tus Sobres Disponibles"
-        className="flex flex-col gap-4 rounded-2xl border border-[var(--border)] bg-gradient-to-b from-neutral-50 to-white p-5 shadow-2xs"
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-[var(--border)] pb-3">
-          <div>
-            <h2 className="text-lg font-bold tracking-tight text-[var(--foreground)]">
-              Vitrina de Sobres
-            </h2>
-            <p className="text-xs text-[var(--foreground-muted)]">
-              Toca directamente sobre cualquier sobre para rasgarlo y descubrir tus cartas.
-            </p>
+    <div className="flex flex-col gap-8 select-none">
+      {/* Banner de reclamo diario destacado (solo si está disponible) */}
+      {!missionState.hasClaimedDailyLogin && (
+        <div className="flex items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-white shadow-xs">
+          <div className="flex items-center gap-3">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#e2001a] font-sans text-xs font-black text-white">
+              ★
+            </span>
+            <span className="text-xs sm:text-sm font-bold">
+              {missionState.isMatchday
+                ? "¡Día de partido! Tienes 1 Sobre Rojiblanco disponible"
+                : "Tienes 1 Sobre Aficionado listo para reclamar"}
+            </span>
           </div>
-          <span className="self-start sm:self-auto rounded-full bg-neutral-100 px-3 py-1 font-sans text-xs font-bold tabular-nums text-neutral-700">
-            {totalPacks} {totalPacks === 1 ? "sobre disponible" : "sobres disponibles"}
+          <button
+            type="button"
+            onClick={onClaimLogin}
+            className="rounded-full bg-[#e2001a] px-4 py-1 text-xs font-bold text-white hover:bg-[#b30015] active:scale-95 transition-all cursor-pointer shadow-xs"
+          >
+            Reclamar
+          </button>
+        </div>
+      )}
+
+      {/* Área principal: Sobres en posesión */}
+      <section aria-label="Tus sobres" className="flex flex-col gap-4">
+        <div className="flex items-center justify-between border-b border-[var(--border)] pb-2">
+          <h2 className="font-sans text-xs font-black uppercase tracking-wider text-[var(--foreground-muted)]">
+            Tus sobres
+          </h2>
+          <span className="font-sans text-xs font-bold tabular-nums text-neutral-600">
+            {totalPacks} {totalPacks === 1 ? "sobre" : "sobres"}
           </span>
         </div>
 
         {totalPacks === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-white py-12 px-4 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 text-xl">
-              📦
-            </div>
-            <h3 className="mt-3 text-sm font-bold text-neutral-800">
-              No tienes sobres en tu inventario
-            </h3>
-            <p className="mt-1 max-w-md text-xs text-neutral-500">
-              Cumple las misiones de abajo, supera el reto diario de juegos o pronostica en La Porra para conseguir más sobres.
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-neutral-50/50 py-12 px-4 text-center">
+            <p className="text-sm font-bold text-neutral-800">
+              No tienes sobres pendientes de abrir
+            </p>
+            <p className="mt-1 text-xs text-neutral-400">
+              Reclama tu visita diaria o juega los retos del día para conseguir más.
             </p>
           </div>
         ) : (
@@ -89,7 +101,7 @@ export function MyPacksView({
         )}
       </section>
 
-      {/* Panel de Misiones & Reciclaje */}
+      {/* Lista sobria de formas de conseguir sobres */}
       <PackMissionsPanel
         missionState={missionState}
         duplicateCount={duplicateCount}
