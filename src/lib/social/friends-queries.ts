@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { DEMO_SEARCH_AFICIONADOS } from "./seed-posts";
+import { filterFriendsList, normalizeSearchQuery } from "./friends-search-utils";
 import type { FriendSummary, FriendshipStatus } from "./friendship-schemas";
 
 /**
@@ -102,8 +103,14 @@ export async function getMyFriendsList(): Promise<readonly FriendSummary[]> {
  * Searches users by username or display name for friend addition.
  */
 export async function searchAficionados(query: string): Promise<readonly FriendSummary[]> {
-  const cleanQuery = query.trim().toLowerCase();
+  const cleanQuery = normalizeSearchQuery(query);
   if (cleanQuery.length < 2) return [];
+
+  // When Supabase environment variables are missing (local demo mode / sandbox),
+  // immediately resolve using the fallback demo dataset.
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return filterFriendsList(DEMO_SEARCH_AFICIONADOS, cleanQuery);
+  }
 
   try {
     const supabase = await createClient();
@@ -111,18 +118,14 @@ export async function searchAficionados(query: string): Promise<readonly FriendS
       data: { user },
     } = await supabase.auth.getUser();
 
-    const { data: profiles } = await supabase
+    const { data: profiles, error } = await supabase
       .from("profiles")
       .select("id, username, display_name, avatar_url")
       .or(`username.ilike.%${cleanQuery}%,display_name.ilike.%${cleanQuery}%`)
       .limit(10);
 
-    if (!profiles || profiles.length === 0) {
-      return DEMO_SEARCH_AFICIONADOS.filter(
-        (p) =>
-          p.username.toLowerCase().includes(cleanQuery) ||
-          p.displayName?.toLowerCase().includes(cleanQuery)
-      );
+    if (error || !profiles || profiles.length === 0) {
+      return filterFriendsList(DEMO_SEARCH_AFICIONADOS, cleanQuery, user?.id);
     }
 
     const filtered = user ? profiles.filter((p) => p.id !== user.id) : profiles;
@@ -135,6 +138,6 @@ export async function searchAficionados(query: string): Promise<readonly FriendS
       avatarUrl: p.avatar_url,
     }));
   } catch {
-    return [];
+    return filterFriendsList(DEMO_SEARCH_AFICIONADOS, cleanQuery);
   }
 }
