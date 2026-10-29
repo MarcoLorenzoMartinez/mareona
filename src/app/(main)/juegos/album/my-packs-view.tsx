@@ -16,7 +16,7 @@ interface MyPacksViewProps {
 
 /**
  * "Mis Sobres" inventory view for Mareona's official card collection.
- * Displays user's available pack stock in a clean FUT-style showcase alongside live missions.
+ * Displays user's available pack stock in a clean minimal grid alongside live missions.
  */
 export function MyPacksView({
   packInventory,
@@ -29,6 +29,18 @@ export function MyPacksView({
 }: MyPacksViewProps) {
   const totalPacks =
     packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda;
+
+  // Lista concreta de cada uno de los sobres reales que posee el aficionado
+  const ownedPacks: Array<{ id: string; tier: PackTier }> = [];
+  for (let i = 0; i < packInventory.aficionado; i++) {
+    ownedPacks.push({ id: `aficionado-${i}`, tier: "aficionado" });
+  }
+  for (let i = 0; i < packInventory.rojiblanco; i++) {
+    ownedPacks.push({ id: `rojiblanco-${i}`, tier: "rojiblanco" });
+  }
+  for (let i = 0; i < packInventory.leyenda; i++) {
+    ownedPacks.push({ id: `leyenda-${i}`, tier: "leyenda" });
+  }
 
   return (
     <div className="flex flex-col gap-6 select-none">
@@ -43,7 +55,7 @@ export function MyPacksView({
               Vitrina de Sobres
             </h2>
             <p className="text-xs text-[var(--foreground-muted)]">
-              Abre tus sobres para descubrir cromos nuevos o alimentar tu taco de repes.
+              Toca directamente sobre cualquier sobre para rasgarlo y descubrir tus cartas.
             </p>
           </div>
           <span className="self-start sm:self-auto rounded-full bg-neutral-100 px-3 py-1 font-sans text-xs font-bold tabular-nums text-neutral-700">
@@ -52,7 +64,7 @@ export function MyPacksView({
         </div>
 
         {totalPacks === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-white py-10 px-4 text-center">
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--border)] bg-white py-12 px-4 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 text-xl">
               📦
             </div>
@@ -60,29 +72,19 @@ export function MyPacksView({
               No tienes sobres en tu inventario
             </h3>
             <p className="mt-1 max-w-md text-xs text-neutral-500">
-              Cumple las misiones de abajo, gana retos diarios en los juegos o pronostica en La Porra para conseguir más sobres.
+              Cumple las misiones de abajo, supera el reto diario de juegos o pronostica en La Porra para conseguir más sobres.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center py-2">
-            <PackCard
-              tier="aficionado"
-              count={packInventory.aficionado}
-              onOpen={onOpenPack}
-              isOpening={isOpening}
-            />
-            <PackCard
-              tier="rojiblanco"
-              count={packInventory.rojiblanco}
-              onOpen={onOpenPack}
-              isOpening={isOpening}
-            />
-            <PackCard
-              tier="leyenda"
-              count={packInventory.leyenda}
-              onOpen={onOpenPack}
-              isOpening={isOpening}
-            />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center py-2">
+            {ownedPacks.map((pack) => (
+              <PackCard
+                key={pack.id}
+                tier={pack.tier}
+                onOpen={onOpenPack}
+                isOpening={isOpening}
+              />
+            ))}
           </div>
         )}
       </section>
