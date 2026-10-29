@@ -64,6 +64,15 @@ export function HistoricalCard({
             ? POSITION_LABELS[card.position]
             : "JUG";
 
+  // Calibración visual de exclusividad por valoración (Opción 1: Marcos Metalizados)
+  const ovr = card.ovr ?? 70;
+  const frameBorderClass =
+    ovr >= 85
+      ? "bg-[#990011] border-2 border-amber-300 ring-2 ring-amber-400 shadow-xl shadow-amber-500/30"
+      : ovr >= 80
+        ? "bg-[#c00016] border-2 border-neutral-300 ring-2 ring-white/70 shadow-lg shadow-neutral-400/25"
+        : "bg-[#d80018] border-2 border-red-900/40 shadow-md";
+
   return (
     <CardScaleFrame size={size} className={isSelected ? "z-20" : ""}>
       <article
@@ -80,13 +89,13 @@ export function HistoricalCard({
           width: CARD_CANONICAL_WIDTH,
           height: CARD_CANONICAL_HEIGHT,
         }}
-        className={`group relative flex flex-col justify-between rounded-none p-1.5 shadow-md transition-all duration-150 select-none ${
+        className={`group relative flex flex-col justify-between rounded-none p-1.5 transition-all duration-150 select-none ${
           isSelected
             ? "ring-4 ring-amber-400 shadow-2xl -translate-y-1.5"
             : onCardClick
               ? "hover:shadow-xl hover:-translate-y-0.5 cursor-pointer"
               : "hover:shadow-xl hover:-translate-y-0.5"
-        } bg-[#e2001a] border-2 border-amber-300/80`}
+        } ${frameBorderClass}`}
       >
         {/* 1. Cabecera Heritage: Escudo Histórico y Demarcación / Tipo */}
         <div className="relative z-10 flex shrink-0 items-center justify-between pb-1">
