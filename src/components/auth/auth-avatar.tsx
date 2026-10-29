@@ -45,7 +45,7 @@ export function AuthAvatar({
   if (isCustomPhoto && !hasError && src) {
     return (
       <div
-        className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full ring-1.5 ring-[var(--primary)] bg-neutral-100 shadow-2xs ${sizeClass} ${className}`}
+        className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-[var(--primary)] bg-neutral-100 shadow-2xs ${sizeClass} ${className}`}
       >
         <Image
           src={src}
@@ -68,7 +68,7 @@ export function AuthAvatar({
     <div
       aria-label={alt}
       role="img"
-      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--primary)] font-bold text-white ring-1.5 ring-[var(--primary)] shadow-2xs select-none ${sizeClass} ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--primary)] font-bold text-white ring-1 ring-[var(--primary)] shadow-2xs select-none ${sizeClass} ${className}`}
     >
       <span className="font-sans font-bold tracking-wider">{initials}</span>
     </div>
