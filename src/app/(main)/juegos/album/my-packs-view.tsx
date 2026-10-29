@@ -44,29 +44,6 @@ export function MyPacksView({
 
   return (
     <div className="flex flex-col gap-8 select-none">
-      {/* Banner de reclamo diario destacado (solo si está disponible) */}
-      {!missionState.hasClaimedDailyLogin && (
-        <div className="flex items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 text-white shadow-xs">
-          <div className="flex items-center gap-3">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#e2001a] font-sans text-xs font-black text-white">
-              ★
-            </span>
-            <span className="text-xs sm:text-sm font-bold">
-              {missionState.isMatchday
-                ? "¡Día de partido! Tienes 1 Sobre Rojiblanco disponible"
-                : "Tienes 1 Sobre Aficionado listo para reclamar"}
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={onClaimLogin}
-            className="rounded-full bg-[#e2001a] px-4 py-1 text-xs font-bold text-white hover:bg-[#b30015] active:scale-95 transition-all cursor-pointer shadow-xs"
-          >
-            Reclamar
-          </button>
-        </div>
-      )}
-
       {/* Área principal: Sobres en posesión */}
       <section aria-label="Tus sobres" className="flex flex-col gap-4">
         <div className="flex items-center justify-between border-b border-[var(--border)] pb-2">

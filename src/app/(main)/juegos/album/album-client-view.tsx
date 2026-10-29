@@ -17,6 +17,8 @@ import {
   consumeUserPack,
   loadUserCardInventory,
   addCardsToInventory,
+  addPacksToInventory,
+  clearUserPacks,
   getDailyMissionState,
   claimDailyLoginPack,
   recycleDuplicates,
@@ -115,21 +117,29 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   return (
     <div className="flex flex-col gap-6">
       {isDemo && user?.email && (
-        <AlbumDemoToolbar userEmail={user.email} viewMode={demoViewMode} totalCards={allCards.length} onRevealAll={() => setDemoViewMode("all-revealed")} onHideAll={() => setDemoViewMode("all-hidden")} onResetStarter={() => setDemoViewMode("starter")} />
+        <AlbumDemoToolbar
+          userEmail={user.email}
+          viewMode={demoViewMode}
+          totalCards={allCards.length}
+          onRevealAll={() => setDemoViewMode("all-revealed")}
+          onHideAll={() => setDemoViewMode("all-hidden")}
+          onResetStarter={() => setDemoViewMode("starter")}
+          onAddPack={(tier) => {
+            const next = addPacksToInventory(tier, 1);
+            setPackInventory(next);
+            toast.success(`+1 Sobre ${tier} añadido a tu inventario.`);
+          }}
+          onClearPacks={() => {
+            const next = clearUserPacks();
+            setPackInventory(next);
+            toast.info("Inventario de sobres vaciado.");
+          }}
+        />
       )}
       <AlbumHeader
         ownedCount={ownedCount}
         totalCount={allCards.length}
         availablePacksCount={totalPacks}
-        onOpenPackClick={() => {
-          if (totalPacks > 0) {
-            const firstTier = packInventory.aficionado > 0 ? "aficionado" : packInventory.rojiblanco > 0 ? "rojiblanco" : "leyenda";
-            setSelectedPackTier(firstTier);
-            setIsPackModalOpen(true);
-          } else {
-            setViewMode("packs");
-          }
-        }}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
       />

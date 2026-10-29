@@ -8,7 +8,6 @@ interface AlbumHeaderProps {
   readonly ownedCount: number;
   readonly totalCount: number;
   readonly availablePacksCount: number;
-  readonly onOpenPackClick: () => void;
   readonly viewMode: AlbumViewMode;
   readonly onViewModeChange: (mode: AlbumViewMode) => void;
 }
@@ -17,7 +16,6 @@ export function AlbumHeader({
   ownedCount,
   totalCount,
   availablePacksCount,
-  onOpenPackClick,
   viewMode,
   onViewModeChange,
 }: AlbumHeaderProps) {
@@ -41,7 +39,7 @@ export function AlbumHeader({
         </h1>
       </div>
 
-      {/* Barra de Progreso con alternador de vista y acceso a sobres */}
+      {/* Barra de Progreso y selector de vista */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-lg border border-[var(--border)] bg-white p-3">
         <div className="flex flex-col gap-1.5 flex-1">
           <div className="flex items-center justify-between text-xs sm:pr-4">
@@ -58,8 +56,8 @@ export function AlbumHeader({
           </div>
         </div>
 
-        <div className="flex shrink-0 items-center gap-2">
-          {/* Alternador de vista: Álbum, Cuadrícula o Mis Sobres */}
+        {/* Alternador de vista: Álbum, Cuadrícula o Mis Sobres */}
+        <div className="flex shrink-0 items-center">
           <div className="flex rounded-full border border-[var(--border)] bg-[var(--surface)] p-0.5 text-xs font-bold">
             <button
               type="button"
@@ -112,16 +110,6 @@ export function AlbumHeader({
               )}
             </button>
           </div>
-
-          {/* Botón de apertura rápida o acceso a vitrina */}
-          <button
-            type="button"
-            onClick={onOpenPackClick}
-            className="flex items-center gap-1.5 rounded-full bg-[#e2001a] px-3.5 py-1.5 text-xs font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-95 transition-all cursor-pointer"
-          >
-            <span aria-hidden="true">✨</span>
-            <span>{availablePacksCount > 0 ? "Abrir Sobre" : "Mis Sobres"}</span>
-          </button>
         </div>
       </div>
     </header>

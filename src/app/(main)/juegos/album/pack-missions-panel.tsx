@@ -1,8 +1,9 @@
 "use client"; // Client: Lista sobria y editorial de obtención de sobres y reciclaje de repetidos
 
 import Link from "next/link";
-import type { DailyMissionState } from "@/lib/cards/types";
+import type { DailyMissionState, PackTier } from "@/lib/cards/types";
 import { DUPLICATES_RECIPE_COST } from "@/lib/cards/pack-storage";
+import { MiniPack } from "@/components/cards/mini-pack";
 
 interface PackMissionsPanelProps {
   readonly missionState: DailyMissionState;
@@ -14,8 +15,8 @@ interface PackMissionsPanelProps {
 }
 
 /**
- * Editorial list of daily pack rewards conforming strictly to AGENTS.md.
- * Zero explanatory prose, no nested boxes inside boxes, clean lines and tabular numbers.
+ * Editorial list of daily pack rewards.
+ * Replaces generic AI text badges with genuine mini FUT foil pack previews next to action buttons.
  */
 export function PackMissionsPanel({
   missionState,
@@ -31,6 +32,8 @@ export function PackMissionsPanel({
     Math.round((duplicateCount / DUPLICATES_RECIPE_COST) * 100)
   );
 
+  const loginTier: PackTier = missionState.isMatchday ? "rojiblanco" : "aficionado";
+
   return (
     <section aria-label="Cómo conseguir sobres" className="flex flex-col gap-3">
       <h2 className="font-sans text-xs font-black uppercase tracking-wider text-[var(--foreground-muted)]">
@@ -39,76 +42,70 @@ export function PackMissionsPanel({
 
       <div className="flex flex-col divide-y divide-[var(--border)] rounded-xl border border-[var(--border)] bg-white overflow-hidden shadow-2xs">
         {/* Fila 1: Visita Diaria */}
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
-              Visita diaria
-            </span>
-            <span className="rounded-full bg-neutral-100 px-2 py-0.5 font-sans text-[10px] font-bold text-neutral-600">
-              {missionState.isMatchday ? "Sobre Rojiblanco" : "Sobre Aficionado"}
-            </span>
-          </div>
+        <div className="flex items-center justify-between px-4 py-2.5">
+          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
+            Visita diaria
+          </span>
 
-          <button
-            type="button"
-            disabled={missionState.hasClaimedDailyLogin || isClaimingLogin}
-            onClick={onClaimLogin}
-            className={`rounded-full px-3.5 py-1 text-xs font-bold transition-all cursor-pointer ${
-              missionState.hasClaimedDailyLogin
-                ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
-                : "bg-[#e2001a] text-white hover:bg-[#b30015] active:scale-95 shadow-2xs"
-            }`}
-          >
-            {missionState.hasClaimedDailyLogin ? "Reclamado" : "Reclamar"}
-          </button>
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              disabled={missionState.hasClaimedDailyLogin || isClaimingLogin}
+              onClick={onClaimLogin}
+              className={`rounded-full px-3.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+                missionState.hasClaimedDailyLogin
+                  ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                  : "bg-[#e2001a] text-white hover:bg-[#b30015] active:scale-95 shadow-2xs"
+              }`}
+            >
+              {missionState.hasClaimedDailyLogin ? "Reclamado" : "Reclamar"}
+            </button>
+            <MiniPack tier={loginTier} />
+          </div>
         </div>
 
         {/* Fila 2: Reto Diario de Juegos */}
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
-              Reto diario de juegos
-            </span>
-            <span className="rounded-full bg-red-50 px-2 py-0.5 font-sans text-[10px] font-bold text-[#e2001a]">
-              Sobre Rojiblanco
-            </span>
-          </div>
+        <div className="flex items-center justify-between px-4 py-2.5">
+          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
+            Reto diario de juegos
+          </span>
 
-          {missionState.hasClaimedDailyGame ? (
-            <span className="rounded-full bg-neutral-100 px-3.5 py-1 font-sans text-xs font-bold text-neutral-400">
-              Conseguido
-            </span>
-          ) : (
-            <Link
-              href="/juegos"
-              className="rounded-full border border-[var(--border)] px-3.5 py-1 text-xs font-bold text-[var(--foreground)] hover:border-[#e2001a] hover:text-[#e2001a] transition-colors"
-            >
-              Jugar hoy →
-            </Link>
-          )}
+          <div className="flex items-center gap-2.5">
+            {missionState.hasClaimedDailyGame ? (
+              <span className="rounded-full bg-neutral-100 px-3.5 py-1 font-sans text-xs font-bold text-neutral-400">
+                Conseguido
+              </span>
+            ) : (
+              <Link
+                href="/juegos"
+                className="rounded-full border border-[var(--border)] px-3.5 py-1 text-xs font-bold text-[var(--foreground)] hover:border-[#e2001a] hover:text-[#e2001a] transition-colors"
+              >
+                Jugar hoy →
+              </Link>
+            )}
+            <MiniPack tier="rojiblanco" />
+          </div>
         </div>
 
         {/* Fila 3: La Porra */}
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
-              La Porra de la jornada
-            </span>
-            <span className="rounded-full bg-amber-50 px-2 py-0.5 font-sans text-[10px] font-bold text-amber-700">
-              Sobre Leyenda
-            </span>
-          </div>
+        <div className="flex items-center justify-between px-4 py-2.5">
+          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
+            La Porra de la jornada
+          </span>
 
-          <Link
-            href="/juegos/porra"
-            className="rounded-full border border-[var(--border)] px-3.5 py-1 text-xs font-bold text-[var(--foreground)] hover:border-amber-600 hover:text-amber-700 transition-colors"
-          >
-            Pronosticar →
-          </Link>
+          <div className="flex items-center gap-2.5">
+            <Link
+              href="/juegos/porra"
+              className="rounded-full border border-[var(--border)] px-3.5 py-1 text-xs font-bold text-[var(--foreground)] hover:border-amber-600 hover:text-amber-700 transition-colors"
+            >
+              Pronosticar →
+            </Link>
+            <MiniPack tier="leyenda" />
+          </div>
         </div>
 
         {/* Fila 4: Taco de Repetidos */}
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between px-4 py-2.5">
           <div className="flex items-center gap-3">
             <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
               Taco de repetidos
@@ -126,18 +123,21 @@ export function PackMissionsPanel({
             </div>
           </div>
 
-          <button
-            type="button"
-            disabled={!canRecycle || isRecycling}
-            onClick={onRecycleDuplicates}
-            className={`rounded-full px-3.5 py-1 text-xs font-bold transition-all cursor-pointer ${
-              canRecycle
-                ? "bg-[#e2001a] text-white hover:bg-[#b30015] active:scale-95 shadow-2xs"
-                : "bg-neutral-100 text-neutral-400 cursor-not-allowed"
-            }`}
-          >
-            Canjear sobre
-          </button>
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              disabled={!canRecycle || isRecycling}
+              onClick={onRecycleDuplicates}
+              className={`rounded-full px-3.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+                canRecycle
+                  ? "bg-[#e2001a] text-white hover:bg-[#b30015] active:scale-95 shadow-2xs"
+                  : "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+              }`}
+            >
+              Canjear
+            </button>
+            <MiniPack tier="rojiblanco" />
+          </div>
         </div>
       </div>
     </section>

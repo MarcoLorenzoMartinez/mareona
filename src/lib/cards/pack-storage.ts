@@ -78,6 +78,19 @@ export function addPacksToInventory(tier: PackTier, count = 1): UserPackInventor
 }
 
 /**
+ * Resets user pack stock to zero.
+ */
+export function clearUserPacks(): UserPackInventory {
+  const next: UserPackInventory = {
+    aficionado: 0,
+    rojiblanco: 0,
+    leyenda: 0,
+  };
+  saveUserPackInventory(next);
+  return next;
+}
+
+/**
  * Consumes one pack from user inventory if available.
  */
 export function consumeUserPack(tier: PackTier): boolean {
