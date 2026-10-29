@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { Card, PackTier } from "@/lib/cards/types";
 import { PACK_TIERS } from "@/lib/cards/packs";
+import { MiniPack } from "@/components/cards/mini-pack";
 import { PackRowCard } from "./pack-row-card";
 import { PackModalActionsBar } from "./pack-modal-actions-bar";
 
@@ -12,7 +13,7 @@ interface PackOpeningModalProps {
   readonly canOpenAnother?: boolean;
   readonly onClose: () => void;
   readonly onOpenPackCards: (tier: PackTier) => Card[];
-  readonly onPasteInAlbum: (acquiredCards: readonly Card[]) => void;
+  readonly onSaveCards: () => void;
   readonly ownedCardSlugs: ReadonlySet<string>;
 }
 
@@ -22,7 +23,7 @@ export function PackOpeningModal({
   canOpenAnother = false,
   onClose,
   onOpenPackCards,
-  onPasteInAlbum,
+  onSaveCards,
   ownedCardSlugs,
 }: PackOpeningModalProps) {
   const [cards, setCards] = useState<Card[]>([]);
@@ -114,14 +115,21 @@ export function PackOpeningModal({
       <div className="relative flex w-full max-w-5xl flex-col items-center rounded-2xl border border-[var(--border)] bg-white p-5 sm:p-7 shadow-xl">
         {/* Cabecera limpia y deportiva */}
         <div className="flex w-full items-center justify-between border-b border-[var(--border)] pb-3">
-          <div className="flex items-center gap-2.5">
-            <span className="h-2 w-2 rounded-full bg-[#e2001a]" />
+          <div className="flex items-center gap-3">
+            <MiniPack tier={tier} />
             <h2 id="pack-modal-title" className="font-sans text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-wide">
               {config.name}
             </h2>
-            <span className="font-sans text-xs font-semibold tabular-nums text-neutral-400">
-              ({cards.length} cromos)
-            </span>
+            {!allRevealed && (
+              <button
+                type="button"
+                onClick={handleRevealAllNow}
+                className="ml-2 rounded-full border border-[var(--border)] bg-neutral-50 px-2.5 py-0.5 text-[11px] font-bold text-neutral-600 hover:border-[#e2001a] hover:text-[#e2001a] hover:bg-red-50/50 active:scale-95 transition-all cursor-pointer"
+                title="Mostrar todos los cromos al instante sin esperar la animación"
+              >
+                Saltar animación
+              </button>
+            )}
           </div>
 
           <button
@@ -145,11 +153,7 @@ export function PackOpeningModal({
                 isNew={!ownedCardSlugs.has(card.slug)}
                 isRevealed={idx < revealedCount}
                 isAnticipating={idx === anticipatingIndex}
-                onReveal={() => {
-                  if (idx >= revealedCount) {
-                    setRevealedCount(idx + 1);
-                  }
-                }}
+                onReveal={() => idx >= revealedCount && setRevealedCount(idx + 1)}
               />
             ))}
           </div>
@@ -158,13 +162,10 @@ export function PackOpeningModal({
         {/* Barra inferior sin textos explicativos */}
         <PackModalActionsBar
           allRevealed={allRevealed}
-          revealedCount={revealedCount}
-          totalCards={cards.length}
           canOpenAnother={canOpenAnother}
-          onRevealAll={handleRevealAllNow}
           onOpenAnother={handleOpenAnother}
-          onPaste={() => {
-            onPasteInAlbum(cards);
+          onSaveCards={() => {
+            onSaveCards();
             onClose();
           }}
         />

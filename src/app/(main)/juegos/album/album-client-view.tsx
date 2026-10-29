@@ -65,16 +65,16 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     consumeUserPack(tier);
     setPackInventory(loadUserPackInventory());
     const owned = new Set(Object.entries(userInventory).filter(([, q]) => q > 0).map(([s]) => s));
-    return generatePackCards(tier, allCards, owned);
+    const generated = generatePackCards(tier, allCards, owned);
+    // Los cromos se guardan y pegan automáticamente en el álbum al instante
+    const nextInventory = addCardsToInventory(generated);
+    setUserInventory(nextInventory);
+    setNewlyAcquiredSlugs(new Set(generated.map((c) => c.slug)));
+    return generated;
   }, [allCards, userInventory]);
 
-  const handlePasteInAlbum = (acquiredCards: readonly Card[]) => {
-    setUserInventory(addCardsToInventory(acquiredCards));
-    setNewlyAcquiredSlugs(new Set(acquiredCards.map((c) => c.slug)));
-    setViewMode("album");
-    toast.success(`¡${acquiredCards.length} cromos pegados en tu álbum!`, {
-      description: "Revisa las páginas correspondientes para ver tus nuevas joyas.",
-    });
+  const handleSaveAndStayInPacks = () => {
+    toast.success("Cromos guardados en tu álbum");
   };
 
   const handleClaimLogin = () => {
@@ -156,7 +156,7 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
         canOpenAnother={packInventory[selectedPackTier] > 0}
         onClose={() => setIsPackModalOpen(false)}
         onOpenPackCards={handleOpenPackCards}
-        onPasteInAlbum={handlePasteInAlbum}
+        onSaveCards={handleSaveAndStayInPacks}
         ownedCardSlugs={new Set(Object.keys(userInventory))}
       />
     </div>

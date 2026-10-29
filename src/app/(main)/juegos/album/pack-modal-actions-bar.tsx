@@ -2,12 +2,9 @@
 
 interface PackModalActionsBarProps {
   readonly allRevealed: boolean;
-  readonly revealedCount: number;
-  readonly totalCards: number;
   readonly canOpenAnother: boolean;
-  readonly onRevealAll: () => void;
   readonly onOpenAnother: () => void;
-  readonly onPaste: () => void;
+  readonly onSaveCards: () => void;
 }
 
 /**
@@ -16,54 +13,30 @@ interface PackModalActionsBarProps {
  */
 export function PackModalActionsBar({
   allRevealed,
-  revealedCount,
-  totalCards,
   canOpenAnother,
-  onRevealAll,
   onOpenAnother,
-  onPaste,
+  onSaveCards,
 }: PackModalActionsBarProps) {
-  return (
-    <div className="flex items-center justify-between gap-3 w-full border-t border-[var(--border)] pt-4 mt-2">
-      <div>
-        {!allRevealed && (
-          <div className="flex items-center gap-2.5">
-            <span className="font-sans text-xs font-semibold tabular-nums text-neutral-400">
-              {revealedCount}/{totalCards}
-            </span>
-            <button
-              type="button"
-              onClick={onRevealAll}
-              className="text-xs font-bold text-neutral-500 hover:text-neutral-800 underline cursor-pointer"
-            >
-              Revelar todos
-            </button>
-          </div>
-        )}
-      </div>
+  if (!allRevealed) return null;
 
-      <div className="flex items-center gap-2.5 ml-auto">
-        {allRevealed && (
-          <>
-            {canOpenAnother && (
-              <button
-                type="button"
-                onClick={onOpenAnother}
-                className="rounded-full border border-[var(--border)] bg-white px-4 py-2 text-xs font-bold text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50 active:scale-95 transition-all cursor-pointer"
-              >
-                Abrir otro sobre
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={onPaste}
-              className="rounded-full bg-[#e2001a] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-95 transition-all cursor-pointer"
-            >
-              Pegar en mi Álbum
-            </button>
-          </>
-        )}
-      </div>
+  return (
+    <div className="flex items-center justify-end gap-2.5 w-full border-t border-[var(--border)] pt-4 mt-2">
+      {canOpenAnother && (
+        <button
+          type="button"
+          onClick={onOpenAnother}
+          className="rounded-full border border-[var(--border)] bg-white px-4 py-2 text-xs font-bold text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50 active:scale-95 transition-all cursor-pointer"
+        >
+          Abrir otro sobre
+        </button>
+      )}
+      <button
+        type="button"
+        onClick={onSaveCards}
+        className="rounded-full bg-[#e2001a] px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-95 transition-all cursor-pointer"
+      >
+        Guardar cromos
+      </button>
     </div>
   );
 }

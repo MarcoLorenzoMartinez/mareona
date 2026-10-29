@@ -33,11 +33,11 @@ export function PackRowCard({
   const isGoldHype = ovr >= 85;
   const isRedHype = ovr >= 80 && ovr < 85;
 
-  const glowStyle = !isRevealed && (isAnticipating || true)
+  const glowStyle = !isRevealed
     ? isGoldHype
-      ? "ring-2 ring-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.55)] animate-pulse"
+      ? "ring-2 ring-amber-400 shadow-[0_0_24px_rgba(251,191,36,0.6)]"
       : isRedHype
-        ? "ring-2 ring-[#e2001a] shadow-[0_0_20px_rgba(226,0,26,0.45)] animate-pulse"
+        ? "ring-2 ring-[#e2001a] shadow-[0_0_20px_rgba(226,0,26,0.5)]"
         : ""
     : "";
 
