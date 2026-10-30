@@ -101,24 +101,6 @@ export async function fetchFotMobMatchDetail(matchId: string): Promise<DomainMat
       away.id
     );
 
-    const advancedStats: DomainAdvancedStats | null = tacticalLineups
-      ? {
-          homeXg: 0,
-          awayXg: 0,
-          homeBigChances: 0,
-          awayBigChances: 0,
-          homeBigChancesMissed: 0,
-          awayBigChancesMissed: 0,
-          homeBoxTouches: 0,
-          awayBoxTouches: 0,
-          homeDuelsWon: 0,
-          awayDuelsWon: 0,
-          shots: [],
-          playerStats: {},
-          tacticalLineups,
-        }
-      : null;
-
     const events = parseFotMobMatchEvents(
       data.content?.matchFacts?.events?.events ?? [],
       isHomeSporting,
@@ -158,7 +140,8 @@ export async function fetchFotMobMatchDetail(matchId: string): Promise<DomainMat
       statGroups: [],
       homeLineup,
       awayLineup,
-      advancedStats,
+      tacticalLineups,
+      advancedStats: null,
     };
   } catch {
     return null;

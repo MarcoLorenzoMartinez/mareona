@@ -52,6 +52,7 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
 
   const playerStats = match.advancedStats?.playerStats ?? null;
   const homeTactical =
+    match.tacticalLineups?.home ??
     match.advancedStats?.tacticalLineups?.home ??
     (match.homeLineup
       ? generateFallbackTacticalLineup(
@@ -62,6 +63,7 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
       : null);
 
   const awayTactical =
+    match.tacticalLineups?.away ??
     match.advancedStats?.tacticalLineups?.away ??
     (match.awayLineup
       ? generateFallbackTacticalLineup(

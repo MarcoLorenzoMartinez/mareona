@@ -473,6 +473,10 @@ export interface DomainMatchDetail {
   readonly statGroups: readonly DomainMatchStatGroup[];
   readonly homeLineup: DomainMatchLineup | null;
   readonly awayLineup: DomainMatchLineup | null;
+  readonly tacticalLineups?: {
+    readonly home: DomainTacticalLineup;
+    readonly away: DomainTacticalLineup;
+  } | null;
   readonly advancedStats?: DomainAdvancedStats | null;
 }
 
