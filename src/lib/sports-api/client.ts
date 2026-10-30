@@ -441,13 +441,27 @@ function sanitizeMatchDetail(detail: DomainMatchDetail): DomainMatchDetail {
   };
 }
 
+/** In-memory cache for match details to eliminate latency and duplicate calls. */
+const memoryCachedMatchDetails = new Map<
+  string,
+  { data: DomainMatchDetail; expiresAt: number }
+>();
+
 export async function fetchMatchDetail(
   matchId: string,
   supabase?: SupabaseServerClient | null
 ): Promise<DomainMatchDetail | null> {
+  const now = Date.now();
+
+  // 1. Instant in-memory cache check (0ms response)
+  const memoryHit = memoryCachedMatchDetails.get(matchId);
+  if (memoryHit && memoryHit.expiresAt > now) {
+    return memoryHit.data;
+  }
+
   const cacheKey = `match_detail_${matchId}`;
 
-  // 1. Try reading valid cache from Supabase if client is supplied
+  // 2. Try reading valid cache from Supabase if client is supplied
   if (supabase) {
     const cached = await getCachedPayload<DomainMatchDetail>(supabase, cacheKey);
     if (cached) {
@@ -466,13 +480,23 @@ export async function fetchMatchDetail(
               enriched as unknown as Record<string, unknown>,
               TTL_FIXTURES_MS
             );
-            return sanitizeMatchDetail(enriched);
+            const sanitized = sanitizeMatchDetail(enriched);
+            memoryCachedMatchDetails.set(matchId, {
+              data: sanitized,
+              expiresAt: now + resolveMatchDetailTtlMs(sanitized.status),
+            });
+            return sanitized;
           }
         } catch {
           // Fall through to returning cached
         }
       }
-      return sanitizeMatchDetail(cached);
+      const sanitized = sanitizeMatchDetail(cached);
+      memoryCachedMatchDetails.set(matchId, {
+        data: sanitized,
+        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status),
+      });
+      return sanitized;
     }
   }
 
@@ -521,6 +545,10 @@ export async function fetchMatchDetail(
           resolveMatchDetailTtlMs(sanitized.status)
         );
       }
+      memoryCachedMatchDetails.set(matchId, {
+        data: sanitized,
+        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status),
+      });
       return sanitized;
     }
 
@@ -536,6 +564,10 @@ export async function fetchMatchDetail(
           resolveMatchDetailTtlMs(sanitized.status)
         );
       }
+      memoryCachedMatchDetails.set(matchId, {
+        data: sanitized,
+        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status),
+      });
       return sanitized;
     }
   } catch {
