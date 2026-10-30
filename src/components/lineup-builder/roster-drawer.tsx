@@ -40,7 +40,7 @@ export function RosterDrawer({
   onAssignPlayer,
   onAddCustomPlayer,
 }: RosterDrawerProps) {
-  const [selectedCategory, setSelectedCategory] = useState<PlayerCategory | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<PlayerCategory | "all">("first_team");
   const [selectedPosition, setSelectedPosition] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
