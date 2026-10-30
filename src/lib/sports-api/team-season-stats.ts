@@ -1,4 +1,8 @@
-import type { TeamSeasonStats, TeamSeasonStatsSplit } from "./team-season-types.ts";
+import type {
+  TeamSeasonStats,
+  TeamSeasonStatsSplit,
+  TeamSeasonGoalItem,
+} from "./team-season-types.ts";
 import { getCurrentSeasonYear } from "./types.ts";
 
 const FOTMOB_SPORTING_ID = 9869;
@@ -34,6 +38,22 @@ interface RawSplitRow {
   readonly idx?: number;
 }
 
+interface RawXgRow {
+  readonly id?: number;
+  readonly pts?: number;
+  readonly xPoints?: number;
+  readonly xPointsDiff?: number;
+  readonly xPosition?: number;
+}
+
+interface RawFixtureItem {
+  readonly id?: number;
+  readonly status?: { readonly finished?: boolean };
+  readonly tournament?: { readonly name?: string };
+  readonly home?: { readonly id?: number; readonly name?: string; readonly score?: number };
+  readonly away?: { readonly id?: number; readonly name?: string; readonly score?: number };
+}
+
 interface RawFotMobTeamPayload {
   readonly stats?: {
     readonly teams?: readonly RawStatItem[];
@@ -44,9 +64,15 @@ interface RawFotMobTeamPayload {
         readonly all?: readonly RawSplitRow[];
         readonly home?: readonly RawSplitRow[];
         readonly away?: readonly RawSplitRow[];
+        readonly xg?: readonly RawXgRow[];
       };
     };
   }>;
+  readonly fixtures?: {
+    readonly allFixtures?: {
+      readonly fixtures?: readonly RawFixtureItem[];
+    };
+  };
 }
 
 function parseSplit(row?: RawSplitRow): TeamSeasonStatsSplit {
@@ -72,7 +98,10 @@ function parseSplit(row?: RawSplitRow): TeamSeasonStatsSplit {
  * @param payload Raw FotMob team details payload
  * @returns Clean TeamSeasonStats or null if unparseable
  */
-export function transformFotMobTeamStats(payload: RawFotMobTeamPayload): TeamSeasonStats | null {
+export function transformFotMobTeamStats(
+  payload: RawFotMobTeamPayload,
+  seasonGoals: readonly TeamSeasonGoalItem[] = []
+): TeamSeasonStats | null {
   const teamsStats = payload.stats?.teams ?? [];
   if (teamsStats.length === 0) return null;
 
@@ -92,6 +121,31 @@ export function transformFotMobTeamStats(payload: RawFotMobTeamPayload): TeamSea
   const sportingHome = tableData?.home?.find((r) => r.id === FOTMOB_SPORTING_ID);
   const sportingAway = tableData?.away?.find((r) => r.id === FOTMOB_SPORTING_ID);
   const sportingAll = tableData?.all?.find((r) => r.id === FOTMOB_SPORTING_ID);
+  const sportingXg = tableData?.xg?.find((r) => r.id === FOTMOB_SPORTING_ID);
+
+  // Calculate league match patterns
+  const leagueFixtures = (payload.fixtures?.allFixtures?.fixtures ?? []).filter(
+    (f) => f.status?.finished && (f.tournament?.name?.includes("LaLiga") ?? true)
+  );
+
+  let cleanSheetsCount = 0;
+  let withoutScoringCount = 0;
+  let bothTeamsScoredCount = 0;
+  let highScoringMatchesCount = 0;
+  let tightMatchesCount = 0;
+
+  for (const f of leagueFixtures) {
+    const isHome = f.home?.id === FOTMOB_SPORTING_ID;
+    const gf = isHome ? f.home?.score : f.away?.score;
+    const ga = isHome ? f.away?.score : f.home?.score;
+    if (gf === undefined || ga === undefined) continue;
+
+    if (ga === 0) cleanSheetsCount++;
+    if (gf === 0) withoutScoringCount++;
+    if (gf > 0 && ga > 0) bothTeamsScoredCount++;
+    if (gf + ga >= 3) highScoringMatchesCount++;
+    else tightMatchesCount++;
+  }
 
   return {
     seasonYear: getCurrentSeasonYear(),
@@ -99,6 +153,19 @@ export function transformFotMobTeamStats(payload: RawFotMobTeamPayload): TeamSea
     matchesPlayed: sportingAll?.played ?? 0,
     rating: getMetric("rating_team").val || 6.8,
     ratingRank: getMetric("rating_team").rank,
+    seasonGoals,
+    // Efficiency & Expected Points
+    actualPoints: sportingXg?.pts ?? sportingAll?.pts ?? 0,
+    expectedPoints: sportingXg?.xPoints ?? 0,
+    expectedPointsDiff: sportingXg?.xPointsDiff ?? 0,
+    expectedStandingsRank: sportingXg?.xPosition ?? null,
+    patterns: {
+      cleanSheetsCount,
+      withoutScoringCount,
+      bothTeamsScoredCount,
+      highScoringMatchesCount,
+      tightMatchesCount,
+    },
     // Attack
     goalsPerMatch: getMetric("goals_team_match").val,
     goalsPerMatchRank: getMetric("goals_team_match").rank,
@@ -166,7 +233,80 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
     if (!res.ok) return null;
 
     const json = (await res.json()) as RawFotMobTeamPayload;
-    const stats = transformFotMobTeamStats(json);
+
+    // Automatically aggregate all goals from finished matches
+    const finishedMatches = (json.fixtures?.allFixtures?.fixtures ?? []).filter(
+      (f) => f.id && f.status?.finished
+    );
+
+    const goalsPromises = finishedMatches.map(async (fixture) => {
+      const matchId = fixture.id;
+      if (!matchId) return [];
+      const isHome = fixture.home?.id === FOTMOB_SPORTING_ID;
+      const rivalName = (isHome ? fixture.away?.name : fixture.home?.name) || "Rival";
+      const teamScore = isHome ? fixture.home?.score : fixture.away?.score;
+      if (!teamScore || teamScore <= 0) return [];
+
+      try {
+        const matchRes = await fetch(
+          `https://www.fotmob.com/api/data/matchDetails?matchId=${matchId}`,
+          { headers: FOTMOB_HEADERS, next: { revalidate: 3600 } }
+        );
+        if (!matchRes.ok) return [];
+        interface RawShotItem {
+          readonly id?: number;
+          readonly eventType?: string;
+          readonly teamId?: number;
+          readonly playerName?: string;
+          readonly player?: { readonly name?: string };
+          readonly min?: number;
+          readonly x?: number;
+          readonly y?: number;
+          readonly expectedGoals?: number;
+          readonly expectedGoalsOnTarget?: number;
+          readonly shotType?: string;
+          readonly situation?: string;
+          readonly onGoalShot?: { readonly x?: number; readonly y?: number };
+        }
+        const mData = (await matchRes.json()) as { content?: { shotmap?: { shots?: readonly RawShotItem[] } } };
+        const shots = mData.content?.shotmap?.shots ?? [];
+        const matchGoals: TeamSeasonGoalItem[] = [];
+
+        for (const s of shots) {
+          if (s.eventType === "Goal" && s.teamId === FOTMOB_SPORTING_ID && s.x !== undefined && s.y !== undefined) {
+            matchGoals.push({
+              id: s.id ?? Math.floor(Math.random() * 100000),
+              matchId,
+              playerName: s.playerName || s.player?.name || "Real Sporting",
+              rivalName,
+              isHome,
+              minute: s.min ?? 0,
+              expectedGoals: s.expectedGoals ?? 0,
+              expectedGoalsOnTarget: s.expectedGoalsOnTarget,
+              shotType: s.shotType,
+              situation: s.situation,
+              x: s.x,
+              y: s.y,
+              onGoalX: s.onGoalShot?.x,
+              onGoalY: s.onGoalShot?.y,
+            });
+          }
+        }
+        return matchGoals;
+      } catch {
+        return [];
+      }
+    });
+
+    const settledGoals = await Promise.allSettled(goalsPromises);
+    const collectedGoals: TeamSeasonGoalItem[] = [];
+    for (const r of settledGoals) {
+      if (r.status === "fulfilled") {
+        collectedGoals.push(...r.value);
+      }
+    }
+
+    const stats = transformFotMobTeamStats(json, collectedGoals);
 
     if (stats) {
       memoryCachedTeamStats = {

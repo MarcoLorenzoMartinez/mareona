@@ -23,12 +23,45 @@ export interface TeamSeasonStatsSplit {
   readonly rank: number;
 }
 
+export interface TeamSeasonPatterns {
+  readonly cleanSheetsCount: number;
+  readonly withoutScoringCount: number;
+  readonly bothTeamsScoredCount: number;
+  readonly highScoringMatchesCount: number; // 3 o más goles
+  readonly tightMatchesCount: number; // Marcadores cortos (0-2 goles)
+}
+
+export interface TeamSeasonGoalItem {
+  readonly id: number;
+  readonly matchId: number;
+  readonly playerName: string;
+  readonly rivalName: string;
+  readonly isHome: boolean;
+  readonly minute: number;
+  readonly expectedGoals: number;
+  readonly expectedGoalsOnTarget?: number;
+  readonly shotType?: string;
+  readonly situation?: string;
+  readonly x: number;
+  readonly y: number;
+  readonly onGoalX?: number;
+  readonly onGoalY?: number;
+}
+
 export interface TeamSeasonStats {
   readonly seasonYear: number;
   readonly competition: string;
   readonly matchesPlayed: number;
   readonly rating: number;
   readonly ratingRank: number | null;
+  // Season Goals Collection
+  readonly seasonGoals: readonly TeamSeasonGoalItem[];
+  // Efficiency & Expected Points
+  readonly actualPoints: number;
+  readonly expectedPoints: number;
+  readonly expectedPointsDiff: number;
+  readonly expectedStandingsRank: number | null;
+  readonly patterns: TeamSeasonPatterns;
   // Attack
   readonly goalsPerMatch: number;
   readonly goalsPerMatchRank: number | null;

@@ -7,28 +7,28 @@ interface StatsOverviewCardsProps {
 export function StatsOverviewCards({ stats }: StatsOverviewCardsProps) {
   const cards = [
     {
+      title: "Puntos obtenidos",
+      value: `${stats.actualPoints}`,
+      subtitle: `${stats.expectedPoints.toFixed(1)} puntos esperados (xP)`,
+      rank: stats.expectedPointsDiff > 0 ? `+${stats.expectedPointsDiff.toFixed(1)} vs xP` : null,
+    },
+    {
       title: "Goles por partido",
       value: stats.goalsPerMatch.toFixed(1),
-      subtitle: `Total: ${(stats.goalsPerMatch * stats.matchesPlayed).toFixed(0)} goles`,
-      rank: stats.goalsPerMatchRank ? `#${stats.goalsPerMatchRank} en liga` : null,
+      subtitle: `Total: ${(stats.goalsPerMatch * stats.matchesPlayed).toFixed(0)} goles marcados`,
+      rank: stats.goalsPerMatchRank ? `${stats.goalsPerMatchRank}º en liga` : null,
     },
     {
-      title: "xG (Goles esperados)",
+      title: "Goles esperados (xG)",
       value: stats.expectedGoals.toFixed(1),
-      subtitle: `${stats.goalsPerMatch * stats.matchesPlayed >= stats.expectedGoals ? "Eficiencia positiva" : "Generación alta"}`,
-      rank: stats.expectedGoalsRank ? `#${stats.expectedGoalsRank} en liga` : null,
-    },
-    {
-      title: "Posesión media",
-      value: `${stats.averagePossession.toFixed(1)}%`,
-      subtitle: `${stats.accuratePassesPerMatch.toFixed(0)} pases/partido`,
-      rank: stats.possessionRank ? `#${stats.possessionRank} en liga` : null,
+      subtitle: `${stats.expectedGoalsConceded.toFixed(1)} xG concedido`,
+      rank: stats.expectedGoalsRank ? `${stats.expectedGoalsRank}º en liga` : null,
     },
     {
       title: "Porterías a cero",
       value: `${stats.cleanSheets}`,
-      subtitle: `${stats.goalsConcededPerMatch.toFixed(1)} encajados/p.`,
-      rank: stats.cleanSheetsRank ? `#${stats.cleanSheetsRank} en liga` : null,
+      subtitle: `${stats.goalsConcededPerMatch.toFixed(1)} encajados por partido`,
+      rank: stats.cleanSheetsRank ? `${stats.cleanSheetsRank}º en liga` : null,
     },
   ];
 
@@ -37,23 +37,22 @@ export function StatsOverviewCards({ stats }: StatsOverviewCardsProps) {
       {cards.map((c) => (
         <div
           key={c.title}
-          className="flex flex-col justify-between rounded-2xl border border-[var(--border)] bg-white p-4 shadow-2xs transition-all hover:border-neutral-300"
+          className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs"
         >
-          <div className="flex items-start justify-between gap-1">
+          <div>
             <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
               {c.title}
             </span>
-            {c.rank && (
-              <span className="shrink-0 rounded-full bg-[var(--surface)] px-2 py-0.5 text-[10px] font-bold text-[var(--foreground)] border border-[var(--border)]">
-                {c.rank}
+            <div className="my-1.5 flex items-baseline gap-2">
+              <span className="text-2xl sm:text-3xl font-black text-[var(--foreground)] font-sans tabular-nums">
+                {c.value}
               </span>
-            )}
-          </div>
-
-          <div className="my-2">
-            <span className="text-2xl sm:text-3xl font-black tracking-tight text-[var(--foreground)] font-sans tabular-nums">
-              {c.value}
-            </span>
+              {c.rank && (
+                <span className="text-xs font-semibold text-[var(--foreground-muted)] font-sans tabular-nums">
+                  · {c.rank}
+                </span>
+              )}
+            </div>
           </div>
 
           <span className="text-[11px] font-medium text-[var(--foreground-muted)]">

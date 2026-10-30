@@ -4,7 +4,9 @@ import { getSeasonLabel } from "@/lib/sports-api/types";
 import { StatsOverviewCards } from "./stats-overview-cards";
 import { StatsSplitsChart } from "./stats-splits-chart";
 import { StatsPitchZones } from "./stats-pitch-zones";
+import { StatsPatternsCards } from "./stats-patterns-cards";
 import { StatsCategoryCard } from "./stats-category-card";
+import { SeasonGoalsPitch } from "./season-goals-pitch";
 
 export function generateMetadata(): Metadata {
   const seasonLabel = getSeasonLabel();
@@ -45,11 +47,25 @@ export default async function EstadisticasPage() {
         <StatsPitchZones stats={stats} />
       </div>
 
+      {/* Mapa de Goles y xG de toda la temporada */}
+      {stats.seasonGoals && stats.seasonGoals.length > 0 && (
+        <SeasonGoalsPitch goals={stats.seasonGoals} />
+      )}
+
+      {/* Perfil y Guion de los partidos (datos de desarrollo de juego, sin jerga de apuestas) */}
+      <StatsPatternsCards
+        matchesPlayed={stats.matchesPlayed}
+        cleanSheetsCount={stats.patterns.cleanSheetsCount}
+        withoutScoringCount={stats.patterns.withoutScoringCount}
+        bothTeamsScoredCount={stats.patterns.bothTeamsScoredCount}
+        tightMatchesCount={stats.patterns.tightMatchesCount}
+        highScoringMatchesCount={stats.patterns.highScoringMatchesCount}
+      />
+
       {/* Bloques de Rendimiento Colectivo */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatsCategoryCard
           title="Ataque y Generación"
-          iconLabel="Ofensivo"
           rows={[
             { label: "Goles esperados (xG)", value: stats.expectedGoals.toFixed(1), rank: stats.expectedGoalsRank },
             { label: "Tiros a puerta por partido", value: stats.shotsOnTargetPerMatch.toFixed(1), rank: stats.shotsOnTargetRank },
@@ -60,14 +76,37 @@ export default async function EstadisticasPage() {
         />
 
         <StatsCategoryCard
+          title="Construcción y Balón"
+          rows={[
+            { label: "Posesión media", value: `${stats.averagePossession.toFixed(1)}%`, rank: stats.possessionRank },
+            { label: "Pases precisos por partido", value: stats.accuratePassesPerMatch.toFixed(1), rank: stats.accuratePassesRank },
+            { label: "Balones largos con éxito por partido", value: stats.accurateLongBallsPerMatch.toFixed(1) },
+            { label: "Centros completados por partido", value: stats.accurateCrossesPerMatch.toFixed(1), rank: stats.accurateCrossesRank },
+            { label: "Toques en área contraria", value: stats.touchesInOppBox, rank: stats.touchesInOppBoxRank },
+          ]}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <StatsCategoryCard
           title="Muro Defensivo y Presión"
-          iconLabel="Defensivo"
           rows={[
             { label: "xG en contra concedido", value: stats.expectedGoalsConceded.toFixed(1), rank: stats.xGConcededRank },
             { label: "Intercepciones por partido", value: stats.interceptionsPerMatch.toFixed(1), rank: stats.interceptionsRank },
             { label: "Entradas con éxito por partido", value: stats.tacklesPerMatch.toFixed(1) },
-            { label: "Paradas por partido", value: stats.savesPerMatch.toFixed(1) },
+            { label: "Despejes por partido", value: stats.clearancesPerMatch.toFixed(1) },
             { label: "Goles concedidos a balón parado", value: "0", benchmark: "Mejor registro de LaLiga" },
+          ]}
+        />
+
+        <StatsCategoryCard
+          title="Disciplina y Juego Limpio"
+          rows={[
+            { label: "Faltas cometidas por partido", value: stats.foulsPerMatch.toFixed(1), benchmark: "Entre los más limpios de la liga" },
+            { label: "Tarjetas amarillas totales", value: stats.yellowCards },
+            { label: "Tarjetas rojas totales", value: stats.redCards },
+            { label: "Penaltis cometidos", value: "1", benchmark: "Gran rigor en área propia" },
+            { label: "Paradas del guardameta por partido", value: stats.savesPerMatch.toFixed(1) },
           ]}
         />
       </div>
