@@ -19,6 +19,7 @@ export const es = {
       overview: "Resumen",
       matches: "Partidos",
       standings: "Clasificación",
+      stats: "Estadísticas",
       squad: "Plantilla",
       lineup: "Mi Once",
     },
