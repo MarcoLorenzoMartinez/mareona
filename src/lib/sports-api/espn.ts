@@ -603,7 +603,9 @@ const ATHLETE_CANONICAL_OVERRIDES: Record<string, Partial<DomainPlayer>> = {
     positionLabel: "Delantero",
     positionShort: "DEL",
   },
-  // Dorsal 34: Diego Matabuena 'Mata' (Canterano / Sporting Atlético)
+  // Dorsal 34: Alex Diego (Canterano / Sporting Atlético) — dorsal 34 en ficha oficial
+  // Nota: ESPN contiene tanto a Alex Diego (id 77179) como a Mata (id 422029) con dorsal 34.
+  // El override canónico por dorsal no debe sobreescribir a Alex Diego.
   "34": {
     displayName: "Mata",
     fullName: "Diego Matabuena",
@@ -700,6 +702,20 @@ export function transformEspnAthlete(athlete: EspnAthlete): DomainPlayer {
       goalsConceded,
     },
   };
+
+  // Special case: In ESPN's Sporting roster, both Alex Diego (id 77179) and Mata (id 422029)
+  // are delivered with jersey '34'. Alex Diego is a defender from Sporting Atlético who debuted in Copa del Rey.
+  if (athlete.id === "77179") {
+    return {
+      ...rawPlayer,
+      displayName: "Alex Diego",
+      fullName: "Alex Diego García",
+      shortName: "Alex Diego",
+      position: "defender",
+      positionLabel: "Defensa",
+      positionShort: "DEF",
+    };
+  }
 
   const jerseyKey = shirtNumber !== null ? String(shirtNumber) : null;
   const override = jerseyKey ? ATHLETE_CANONICAL_OVERRIDES[jerseyKey] : undefined;

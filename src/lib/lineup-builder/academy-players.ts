@@ -25,6 +25,15 @@ export const ACADEMY_SPORTING_PLAYERS: readonly LineupPlayer[] = [
     photoUrl: null,
   },
   {
+    id: "filial-alex-diego",
+    displayName: "Alex Diego",
+    fullName: "Alex Diego García",
+    shirtNumber: 16,
+    defaultPosition: "DEF",
+    category: "filial",
+    photoUrl: "https://images.fotmob.com/image_resources/playerimages/1847867.png",
+  },
+  {
     id: "filial-christian-ferreres",
     displayName: "Ferreres",
     fullName: "Christian Ferreres Borja",

@@ -37,6 +37,8 @@ interface SearchSuggestGroup {
 export const CANONICAL_FOTMOB_SPORTING_PLAYERS: Readonly<Record<string, number>> = {
   "mata": 1971125,
   "diego matabuena": 1971125,
+  "alex diego": 1847867,
+  "alex diego garcia": 1847867,
   "enol prendes": 1748414,
   "christian ferreres": 2144593,
   "ferreres": 2144593,
