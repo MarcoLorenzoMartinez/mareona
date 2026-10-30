@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { TeamCrest } from '@/components/media/team-crest';
 import { PorraScorersPicker } from './porra-scorers-picker';
+import { isPorraSubmissionOpen } from '@/lib/porra/engine';
 import type { PorraMatch, PorraPrediction } from '@/lib/porra/types';
 
 interface PorraMatchCardProps {
@@ -24,10 +25,16 @@ export function PorraMatchCard({
   const [scorers, setScorers] = useState<string[]>(() => existingPrediction?.sportingScorers ?? []);
   const [isSavedRecently, setIsSavedRecently] = useState(false);
 
+  const isOpen = isPorraSubmissionOpen(
+    match.kickoffAt,
+    match.isFinished ? 'finished' : undefined
+  );
+
   const sportingIsHome = match.homeTeam.isSporting;
   const sportingGoals = sportingIsHome ? homeScore : awayScore;
 
   const handleScoreChange = (isHome: boolean, delta: number) => {
+    if (!isOpen) return;
     if (isHome) {
       const next = Math.max(0, Math.min(9, homeScore + delta));
       setHomeScore(next);
@@ -45,6 +52,7 @@ export function PorraMatchCard({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isOpen) return;
     const prediction: PorraPrediction = {
       matchId: match.id,
       homeScore,
@@ -152,9 +160,20 @@ export function PorraMatchCard({
       {/* Acción de Guardado */}
       <button
         type="submit"
-        className="flex h-12 w-full items-center justify-center rounded-xl bg-[#e2001a] px-4 text-xs sm:text-sm font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-[0.99] transition-all select-none"
+        disabled={!isOpen}
+        className={`flex h-12 w-full items-center justify-center rounded-xl px-4 text-xs sm:text-sm font-bold shadow-2xs transition-all select-none ${
+          !isOpen
+            ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+            : 'bg-[#e2001a] text-white hover:bg-[#b30015] active:scale-[0.99]'
+        }`}
       >
-        {isSavedRecently ? '✓ Pronóstico guardado' : existingPrediction ? 'Actualizar pronóstico' : 'Confirmar pronóstico'}
+        {!isOpen
+          ? 'Plazo de pronóstico cerrado'
+          : isSavedRecently
+          ? '✓ Pronóstico guardado'
+          : existingPrediction
+          ? 'Actualizar pronóstico'
+          : 'Confirmar pronóstico'}
       </button>
     </form>
   );

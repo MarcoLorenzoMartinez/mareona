@@ -19,7 +19,8 @@ export function MatchDetailView({ initialMatch }: MatchDetailViewProps) {
       <MatchHeader match={match} />
       <MatchPorraWidget
         matchId={match.externalId}
-        isFinished={match.status === "finished"}
+        kickoffAt={match.kickoffAt}
+        status={match.status}
       />
       <MatchTabs match={match} />
     </div>

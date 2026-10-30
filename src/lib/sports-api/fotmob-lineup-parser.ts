@@ -40,11 +40,12 @@ export function parseFotMobTacticalLineups(
     return starters.map((s) => {
       const rawName = typeof s.name === "string" ? s.name : s.name?.fullName || "";
       const shirt = String(s.shirtNumber ?? "");
-      const photoUrl = s.id
-        ? `https://images.fotmob.com/image_resources/playerimages/${s.id}.png`
-        : isSporting && shirt
-        ? `/images/players/${shirt}.png`
-        : "";
+      const photoUrl =
+        isSporting && shirt
+          ? `/images/players/${shirt}.png`
+          : s.id
+          ? `https://images.fotmob.com/image_resources/playerimages/${s.id}.png`
+          : "";
 
       return {
         id: s.id,

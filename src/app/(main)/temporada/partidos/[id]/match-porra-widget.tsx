@@ -3,16 +3,20 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { isPorraSubmissionOpen } from '@/lib/porra/engine';
 
 interface MatchPorraWidgetProps {
   matchId: string;
-  isFinished: boolean;
+  kickoffAt: string;
+  status: string;
 }
 
 export function MatchPorraWidget({
-  isFinished,
+  kickoffAt,
+  status,
 }: MatchPorraWidgetProps) {
-  if (isFinished) return null;
+  const isOpen = isPorraSubmissionOpen(kickoffAt, status);
+  if (!isOpen) return null;
 
   return (
     <div className="flex items-center justify-between gap-4 rounded-xl border border-[var(--border)] bg-white px-4 py-3 shadow-2xs">

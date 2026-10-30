@@ -15,6 +15,7 @@ import { LineupsDesktopHeader } from "./lineups-desktop-header";
 import { LineupBenchCard } from "./lineup-bench-card";
 import { LineupTeamColumn } from "./lineup-team-column";
 import { PlayerMatchStatsModal } from "./player-match-stats-modal";
+import { generateFallbackTacticalLineup } from "@/lib/sports-api/tactical-lineup-fallback";
 
 interface MatchLineupsViewProps {
   readonly match: DomainMatchDetail;
@@ -50,8 +51,25 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
   }
 
   const playerStats = match.advancedStats?.playerStats ?? null;
-  const homeTactical = match.advancedStats?.tacticalLineups?.home;
-  const awayTactical = match.advancedStats?.tacticalLineups?.away;
+  const homeTactical =
+    match.advancedStats?.tacticalLineups?.home ??
+    (match.homeLineup
+      ? generateFallbackTacticalLineup(
+          match.homeLineup.starters,
+          match.homeLineup.formation,
+          match.homeTeam.isSporting
+        )
+      : null);
+
+  const awayTactical =
+    match.advancedStats?.tacticalLineups?.away ??
+    (match.awayLineup
+      ? generateFallbackTacticalLineup(
+          match.awayLineup.starters,
+          match.awayLineup.formation,
+          match.awayTeam.isSporting
+        )
+      : null);
 
   const hasUnifiedTactical = Boolean(
     homeTactical?.starters?.length &&

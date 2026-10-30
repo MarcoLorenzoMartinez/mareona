@@ -3,8 +3,16 @@ import {
   getSeasonLabel,
   type DomainMatchDetail,
   type MatchStatus,
+  type DomainAdvancedStats,
 } from "./types.ts";
 import { formatCopaRound } from "./copa.ts";
+import { parseFotMobTacticalLineups } from "./fotmob-lineup-parser.ts";
+import {
+  parseFotMobMatchLineup,
+  parseFotMobMatchEvents,
+  type FotMobLineupRawTeam,
+  type FotMobRawEvent,
+} from "./fotmob-match-detail-parser.ts";
 
 const FOTMOB_SPORTING_ID = 9869;
 
@@ -30,6 +38,17 @@ interface FotMobMatchPayload {
     readonly teams?: readonly FotMobTeamHeader[];
     readonly status?: { readonly started?: boolean; readonly finished?: boolean; readonly cancelled?: boolean };
   };
+  readonly content?: {
+    readonly lineup?: {
+      readonly homeTeam?: FotMobLineupRawTeam;
+      readonly awayTeam?: FotMobLineupRawTeam;
+    };
+    readonly matchFacts?: {
+      readonly events?: {
+        readonly events?: readonly FotMobRawEvent[];
+      };
+    };
+  };
 }
 
 /**
@@ -47,7 +66,7 @@ export async function fetchFotMobMatchDetail(matchId: string): Promise<DomainMat
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36",
       },
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
@@ -73,6 +92,40 @@ export async function fetchFotMobMatchDetail(matchId: string): Promise<DomainMat
     const isFinished = Boolean(general.finished || data.header?.status?.finished);
     const isLive = Boolean(general.started && !isFinished);
     const status: MatchStatus = isFinished ? "finished" : isLive ? "live" : "scheduled";
+
+    const homeLineup = parseFotMobMatchLineup(data.content?.lineup?.homeTeam, isHomeSporting);
+    const awayLineup = parseFotMobMatchLineup(data.content?.lineup?.awayTeam, isAwaySporting);
+    const tacticalLineups = parseFotMobTacticalLineups(
+      data.content?.lineup,
+      home.id,
+      away.id
+    );
+
+    const advancedStats: DomainAdvancedStats | null = tacticalLineups
+      ? {
+          homeXg: 0,
+          awayXg: 0,
+          homeBigChances: 0,
+          awayBigChances: 0,
+          homeBigChancesMissed: 0,
+          awayBigChancesMissed: 0,
+          homeBoxTouches: 0,
+          awayBoxTouches: 0,
+          homeDuelsWon: 0,
+          awayDuelsWon: 0,
+          shots: [],
+          playerStats: {},
+          tacticalLineups,
+        }
+      : null;
+
+    const events = parseFotMobMatchEvents(
+      data.content?.matchFacts?.events?.events ?? [],
+      isHomeSporting,
+      isAwaySporting,
+      String(home.id),
+      String(away.id)
+    );
 
     return {
       externalId: matchId,
@@ -101,11 +154,11 @@ export async function fetchFotMobMatchDetail(matchId: string): Promise<DomainMat
       },
       homeScore: isFinished || isLive ? (home.score ?? 0) : null,
       awayScore: isFinished || isLive ? (away.score ?? 0) : null,
-      events: [],
+      events,
       statGroups: [],
-      homeLineup: null,
-      awayLineup: null,
-      advancedStats: null,
+      homeLineup,
+      awayLineup,
+      advancedStats,
     };
   } catch {
     return null;

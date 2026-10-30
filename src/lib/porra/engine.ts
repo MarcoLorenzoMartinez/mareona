@@ -5,6 +5,39 @@ export const OUTCOME_POINTS = 2;
 export const SCORER_POINTS = 1;
 
 /**
+ * Window before kickoff after which prediction submissions are strictly forbidden.
+ * 60,000 milliseconds = 1 minute.
+ */
+export const PORRA_CUTOFF_MS = 60 * 1000;
+
+/**
+ * Validates whether a user can still submit or modify their prediction for a match.
+ * Submissions strictly close 1 minute before kickoff, or immediately if the match
+ * has started ('live') or already concluded ('finished').
+ *
+ * @param kickoffAt ISO string or date representation of the match kickoff.
+ * @param status Optional match status ('scheduled' | 'live' | 'finished' | 'postponed' | 'cancelled').
+ * @param now Current timestamp in ms (defaults to Date.now()).
+ * @returns True if predictions are open, false if closed.
+ */
+export function isPorraSubmissionOpen(
+  kickoffAt: string,
+  status?: string | null,
+  now: number = Date.now()
+): boolean {
+  if (status === 'live' || status === 'finished' || status === 'cancelled' || status === 'postponed') {
+    return false;
+  }
+
+  const kickoffTime = new Date(kickoffAt).getTime();
+  if (Number.isNaN(kickoffTime)) {
+    return false;
+  }
+
+  return now < kickoffTime - PORRA_CUTOFF_MS;
+}
+
+/**
  * Evaluates points earned by a user prediction against real match results.
  * - Exact score match: 5 points
  * - 1X2 outcome match: 2 points
