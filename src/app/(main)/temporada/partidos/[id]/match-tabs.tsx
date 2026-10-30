@@ -19,9 +19,9 @@ export function MatchTabs({ match }: MatchTabsProps) {
   const dict = getDictionary();
   const t = dict.season.matchDetail.tabs;
 
-  // For finished/live matches, start on events (or stats). For scheduled, start on lineups.
+  // For finished/live matches, start on events. For future/scheduled matches, start on grada.
   const initialTab: TabKey =
-    match.status === "scheduled" ? "lineups" : "events";
+    match.status === "scheduled" ? "grada" : "events";
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
 
   const tabs: Array<{ key: TabKey; label: string }> = [

@@ -28,12 +28,15 @@ export function MatchStatsPanel({ match }: { readonly match: DomainMatchDetail }
   const dict = getDictionary();
   const t = dict.season.matchDetail.stats;
   const adv = match.advancedStats;
-  const hasStats = match.statGroups.length > 0 || Boolean(adv);
+  const isScheduled = match.status === "scheduled";
+  const hasStats = !isScheduled && (match.statGroups.length > 0 || Boolean(adv));
 
   if (!hasStats) {
     return (
       <div className="rounded-xl border border-[var(--border)] bg-white p-8 text-center shadow-2xs">
-        <p className="text-sm font-medium text-[var(--foreground-muted)]">{match.status === "scheduled" ? t.pendingStats : t.noStats}</p>
+        <p className="text-sm font-medium text-[var(--foreground-muted)]">
+          {isScheduled ? t.pendingStats : t.noStats}
+        </p>
       </div>
     );
   }

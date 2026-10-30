@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { fetchMatchDetail } from "@/lib/sports-api/client";
+import { fetchMatchDetail, fetchNextFixture } from "@/lib/sports-api/client";
 import { getDictionary } from "@/i18n";
 import { MatchDetailView } from "./match-detail-view";
 
@@ -49,7 +49,10 @@ async function MatchDetailContent({ params }: MatchDetailPageProps) {
   await connection();
 
   const dict = getDictionary();
-  const match = await fetchMatchDetail(id);
+  const [match, nextFixture] = await Promise.all([
+    fetchMatchDetail(id),
+    fetchNextFixture(),
+  ]);
 
   if (!match) {
     return (
@@ -80,7 +83,10 @@ async function MatchDetailContent({ params }: MatchDetailPageProps) {
         </Link>
       </nav>
 
-      <MatchDetailView initialMatch={match} />
+      <MatchDetailView
+        initialMatch={match}
+        isNextFixture={nextFixture?.externalId === match.externalId}
+      />
     </div>
   );
 }

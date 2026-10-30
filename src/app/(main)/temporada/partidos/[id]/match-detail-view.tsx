@@ -9,19 +9,25 @@ import type { DomainMatchDetail } from "@/lib/sports-api/types";
 
 interface MatchDetailViewProps {
   readonly initialMatch: DomainMatchDetail;
+  readonly isNextFixture?: boolean;
 }
 
-export function MatchDetailView({ initialMatch }: MatchDetailViewProps) {
+export function MatchDetailView({
+  initialMatch,
+  isNextFixture = false,
+}: MatchDetailViewProps) {
   const { match } = useLiveMatchPoll(initialMatch);
 
   return (
     <div className="flex flex-col gap-6">
       <MatchHeader match={match} />
-      <MatchPorraWidget
-        matchId={match.externalId}
-        kickoffAt={match.kickoffAt}
-        status={match.status}
-      />
+      {isNextFixture && (
+        <MatchPorraWidget
+          matchId={match.externalId}
+          kickoffAt={match.kickoffAt}
+          status={match.status}
+        />
+      )}
       <MatchTabs match={match} />
     </div>
   );
