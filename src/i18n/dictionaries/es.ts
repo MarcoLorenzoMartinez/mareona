@@ -191,6 +191,7 @@ export const es = {
     squad: {
       title: "Plantilla",
       subtitle: "Primer Equipo",
+      backToSquad: "Volver a la plantilla",
       noSquad: "No se dispone de la plantilla del Real Sporting en este momento.",
       noNumber: "-",
       viewCardAria: "Ver detalles de",

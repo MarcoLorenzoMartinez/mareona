@@ -4,6 +4,7 @@ import type { DomainPlayerProfile } from "@/lib/sports-api/fotmob-player-profile
 import { PlayerPhoto } from "@/components/media/player-photo";
 import { PlayerAvatarFallback } from "@/components/media/player-avatar-fallback";
 import { translateCountryName } from "@/lib/sports-api/fotmob-player-stats-translations";
+import { getDictionary } from "@/i18n";
 
 interface PlayerProfileHeroProps {
   readonly player: DomainPlayer;
@@ -11,6 +12,7 @@ interface PlayerProfileHeroProps {
 }
 
 export function PlayerProfileHero({ player, profile }: PlayerProfileHeroProps) {
+  const dict = getDictionary();
   const bio = profile?.biometrics;
   const dorsal = player.shirtNumber ?? profile?.shirtNumber;
   const countryName = bio?.country ?? (player.nationality ? translateCountryName(player.nationality) : null);
@@ -18,14 +20,14 @@ export function PlayerProfileHero({ player, profile }: PlayerProfileHeroProps) {
   return (
     <header className="flex flex-col gap-6">
       {/* Enlace de retorno sobrio a la plantilla */}
-      <div>
+      <nav aria-label="Navegación de retorno" className="-mt-1">
         <Link
           href="/temporada/plantilla"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-600 hover:text-[var(--primary)] transition-colors uppercase tracking-wider focus-visible:outline-2 focus-visible:outline-[var(--primary)] rounded-md"
+          className="inline-flex items-center gap-1.5 py-1 text-xs font-bold text-[var(--foreground-muted)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-md"
         >
-          <span aria-hidden="true">&larr;</span> Volver a la plantilla
+          ← {dict.season.squad.backToSquad}
         </Link>
-      </div>
+      </nav>
 
       {/* Tarjeta Hero Principal del Jugador */}
       <div className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-white p-5 sm:p-7 shadow-xs">
