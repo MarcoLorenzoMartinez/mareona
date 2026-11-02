@@ -158,19 +158,19 @@ export function StatsPitchZones({ stats }: StatsPitchZonesProps) {
         </div>
       </div>
 
-      {/* Pie explicativo según el modo activo */}
-      <div className="mt-4 flex items-center justify-between rounded-lg border border-[var(--border)] bg-neutral-50 px-3.5 py-2 text-xs">
-        <span className="font-semibold text-[var(--foreground)]">
-          {activeMode === "heatmap" && "Concentración de toques"}
-          {activeMode === "passes" && "Volumen total de pases"}
-          {activeMode === "attack" && "Preferencia de progresión"}
-        </span>
-        <span className="text-[11px] font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
-          {activeMode === "heatmap" && "Densidad colectiva de juego del Sporting"}
-          {activeMode === "passes" && `${stats.accuratePassesPerMatch.toFixed(0)} pases con éxito por partido`}
-          {activeMode === "attack" && "Distribución ofensiva de llegadas"}
-        </span>
-      </div>
+      {/* Pie métrico contextual para pases y ataque */}
+      {activeMode !== "heatmap" && (
+        <div className="mt-4 flex items-center justify-between rounded-lg border border-[var(--border)] bg-neutral-50 px-3.5 py-2 text-xs">
+          <span className="font-semibold text-[var(--foreground)]">
+            {activeMode === "passes" && "Volumen total de pases"}
+            {activeMode === "attack" && "Preferencia de progresión"}
+          </span>
+          <span className="text-[11px] font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
+            {activeMode === "passes" && `${stats.accuratePassesPerMatch.toFixed(0)} pases con éxito por partido`}
+            {activeMode === "attack" && "Distribución ofensiva de llegadas"}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
