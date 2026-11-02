@@ -7,94 +7,101 @@ interface StatsSplitsChartProps {
   readonly attendanceRank: number | null;
 }
 
+interface SplitItemProps {
+  readonly title: string;
+  readonly split: TeamSeasonStatsSplit;
+  readonly barColor: string;
+}
+
+function SplitRow({ title, split, barColor }: SplitItemProps) {
+  const maxPoints = (split.played || 1) * 3;
+  const points = split.points;
+  const pct = Math.min(100, Math.round((points / maxPoints) * 100));
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold text-[var(--foreground)]">
+            {title}
+          </span>
+          <span className="text-[11px] font-semibold text-neutral-400">·</span>
+          <span className="text-[11px] font-semibold text-[var(--foreground)] font-sans tabular-nums">
+            {split.wins}V - {split.draws}E - {split.losses}D
+          </span>
+          <span className="text-[11px] font-semibold text-neutral-400">·</span>
+          <span className="text-[11px] font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
+            {split.goalsFor}:{split.goalsAgainst} goles
+          </span>
+        </div>
+
+        <div className="flex items-baseline gap-1.5 font-sans tabular-nums">
+          <span className="text-sm font-black text-[var(--foreground)]">
+            {points}{" "}
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
+              de {maxPoints} pts
+            </span>
+          </span>
+          <span className="text-xs font-bold text-[var(--foreground-muted)]">
+            ({pct}%)
+          </span>
+        </div>
+      </div>
+
+      <div
+        className="h-2 w-full overflow-hidden rounded-full bg-neutral-100"
+        role="progressbar"
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`Aprovechamiento de puntos: ${title}`}
+      >
+        <div
+          style={{ width: `${pct}%` }}
+          className={`h-full rounded-full transition-all duration-500 ${barColor}`}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function StatsSplitsChart({
   homeSplit,
   awaySplit,
   homeAttendance,
   attendanceRank,
 }: StatsSplitsChartProps) {
-  const totalHomePoints = homeSplit.points;
-  const totalAwayPoints = awaySplit.points;
-  const allPoints = totalHomePoints + totalAwayPoints || 1;
-  const homePct = Math.round((totalHomePoints / allPoints) * 100);
-  const awayPct = 100 - homePct;
-
   return (
     <div className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
       <div>
-        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 mb-4">
+        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 mb-5">
           <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
-            El Molinón vs Fuera
+            Rendimiento: El Molinón vs Fuera
           </h2>
           {attendanceRank && (
-            <span className="text-xs font-semibold text-[var(--foreground-muted)] font-sans tabular-nums">
-              {attendanceRank}ª mayor asistencia de LaLiga
+            <span className="text-xs font-bold text-[#b80015] font-sans tabular-nums">
+              {attendanceRank}.ª mayor asistencia de LaLiga
             </span>
           )}
         </div>
 
-        {/* Visual Points Distribution Bar */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs font-semibold">
-            <span className="text-[var(--primary)] font-sans tabular-nums">En Casa: {homeSplit.points} pts</span>
-            <span className="text-neutral-500 font-sans tabular-nums">Fuera: {awaySplit.points} pts</span>
-          </div>
-
-          <div
-            className="flex h-2.5 w-full overflow-hidden rounded-full bg-neutral-100"
-            role="progressbar"
-            aria-valuenow={homePct}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label="Distribución de puntos en casa y fuera"
-          >
-            <div
-              style={{ width: `${homePct}%` }}
-              className="bg-[#e2001a] transition-all duration-500"
-            />
-            <div
-              style={{ width: `${awayPct}%` }}
-              className="bg-neutral-300 transition-all duration-500"
-            />
-          </div>
-        </div>
-
-        {/* Comparative table */}
-        <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs">
-          <div className="rounded-lg bg-[var(--surface)] p-2.5">
-            <span className="block text-[10px] font-bold uppercase text-[var(--foreground-muted)]">
-              Balance
-            </span>
-            <span className="text-sm font-bold text-[var(--foreground)] font-sans tabular-nums">
-              {homeSplit.wins}V - {homeSplit.draws}E - {homeSplit.losses}D
-            </span>
-            <span className="text-[10px] text-[var(--foreground-muted)]">En El Molinón</span>
-          </div>
-
-          <div className="rounded-lg bg-[var(--surface)] p-2.5">
-            <span className="block text-[10px] font-bold uppercase text-[var(--foreground-muted)]">
-              Goles C / F
-            </span>
-            <span className="text-sm font-bold text-[var(--foreground)] font-sans tabular-nums">
-              {homeSplit.goalsFor}:{homeSplit.goalsAgainst} vs {awaySplit.goalsFor}:{awaySplit.goalsAgainst}
-            </span>
-            <span className="text-[10px] text-[var(--foreground-muted)]">Casa vs Fuera</span>
-          </div>
-
-          <div className="rounded-lg bg-[var(--surface)] p-2.5">
-            <span className="block text-[10px] font-bold uppercase text-[var(--foreground-muted)]">
-              Balance
-            </span>
-            <span className="text-sm font-bold text-[var(--foreground)] font-sans tabular-nums">
-              {awaySplit.wins}V - {awaySplit.draws}E - {awaySplit.losses}D
-            </span>
-            <span className="text-[10px] text-[var(--foreground-muted)]">A domicilio</span>
-          </div>
+        {/* Independent Home and Away Progress Bars */}
+        <div className="flex flex-col gap-6">
+          <SplitRow
+            title="En El Molinón"
+            split={homeSplit}
+            barColor="bg-[#e2001a]"
+          />
+          <SplitRow
+            title="A domicilio"
+            split={awaySplit}
+            barColor="bg-neutral-800"
+          />
         </div>
       </div>
 
       {/* Stadium Attendance Highlight */}
-      <div className="mt-4 flex items-center justify-between rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2 text-xs">
+      <div className="mt-6 flex items-center justify-between border-t border-neutral-100 pt-3 text-xs">
         <span className="font-medium text-[var(--foreground-muted)]">
           Asistencia media en El Molinón
         </span>
