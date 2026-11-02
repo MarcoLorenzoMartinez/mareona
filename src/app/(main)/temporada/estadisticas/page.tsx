@@ -92,10 +92,10 @@ export default async function EstadisticasPage() {
         <StatsCategoryCard
           title="Disciplina y Juego Limpio"
           rows={[
-            { label: "Faltas cometidas por partido", value: stats.foulsPerMatch.toFixed(1), rank: stats.foulsRank },
-            { label: "Tarjetas amarillas totales", value: stats.yellowCards, rank: stats.yellowCardsRank },
-            { label: "Tarjetas rojas totales", value: stats.redCards, rank: stats.redCardsRank },
-            { label: "Penaltis cometidos", value: stats.penaltiesConceded, rank: stats.penaltiesConcededRank },
+            { label: "Faltas cometidas por partido", value: stats.foulsPerMatch.toFixed(1), rank: stats.foulsRank, invertPolarity: true },
+            { label: "Tarjetas amarillas totales", value: stats.yellowCards, rank: stats.yellowCardsRank, invertPolarity: true },
+            { label: "Tarjetas rojas totales", value: stats.redCards, rank: stats.redCardsRank, invertPolarity: true },
+            { label: "Penaltis cometidos", value: stats.penaltiesConceded, rank: stats.penaltiesConcededRank, invertPolarity: true },
             { label: "Paradas del guardameta por partido", value: stats.savesPerMatch.toFixed(1), rank: stats.savesRank },
           ]}
         />
