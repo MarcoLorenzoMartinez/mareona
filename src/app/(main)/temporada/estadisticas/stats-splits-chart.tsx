@@ -19,17 +19,17 @@ function SplitRow({ title, split, barColor }: SplitItemProps) {
   const pct = Math.min(100, Math.round((points / maxPoints) * 100));
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1.5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold text-[var(--foreground)]">
             {title}
           </span>
-          <span className="text-[11px] font-semibold text-neutral-400">·</span>
+          <span className="text-[11px] font-semibold text-neutral-300">·</span>
           <span className="text-[11px] font-semibold text-[var(--foreground)] font-sans tabular-nums">
             {split.wins}V - {split.draws}E - {split.losses}D
           </span>
-          <span className="text-[11px] font-semibold text-neutral-400">·</span>
+          <span className="text-[11px] font-semibold text-neutral-300">·</span>
           <span className="text-[11px] font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
             {split.goalsFor}:{split.goalsAgainst} goles
           </span>
@@ -71,12 +71,30 @@ export function StatsSplitsChart({
   homeAttendance,
   attendanceRank,
 }: StatsSplitsChartProps) {
+  // Cálculo del split Total
+  const totalPlayed = homeSplit.played + awaySplit.played;
+  const totalPoints = homeSplit.points + awaySplit.points;
+  const totalSplit: TeamSeasonStatsSplit = {
+    played: totalPlayed,
+    wins: homeSplit.wins + awaySplit.wins,
+    draws: homeSplit.draws + awaySplit.draws,
+    losses: homeSplit.losses + awaySplit.losses,
+    goalsFor: homeSplit.goalsFor + awaySplit.goalsFor,
+    goalsAgainst: homeSplit.goalsAgainst + awaySplit.goalsAgainst,
+    points: totalPoints,
+    rank: 0,
+  };
+
+  const homePpm = (homeSplit.points / (homeSplit.played || 1)).toFixed(2);
+  const awayPpm = (awaySplit.points / (awaySplit.played || 1)).toFixed(2);
+  const totalPpm = (totalPoints / (totalPlayed || 1)).toFixed(2);
+
   return (
     <div className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
       <div>
-        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 mb-5">
+        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 mb-4">
           <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
-            Rendimiento: El Molinón vs Fuera
+            Rendimiento: En casa, a domicilio y total
           </h2>
           {attendanceRank && (
             <span className="text-xs font-bold text-[#b80015] font-sans tabular-nums">
@@ -85,8 +103,8 @@ export function StatsSplitsChart({
           )}
         </div>
 
-        {/* Independent Home and Away Progress Bars */}
-        <div className="flex flex-col gap-6">
+        {/* 3 Barras Independientes: En casa, A domicilio y Total */}
+        <div className="flex flex-col gap-4">
           <SplitRow
             title="En casa"
             split={homeSplit}
@@ -97,11 +115,55 @@ export function StatsSplitsChart({
             split={awaySplit}
             barColor="bg-neutral-800"
           />
+          <SplitRow
+            title="Total"
+            split={totalSplit}
+            barColor="bg-gradient-to-r from-[#e2001a] to-neutral-800"
+          />
+        </div>
+
+        {/* Tarjetas comparativas de rendimiento para llenar armónicamente el espacio */}
+        <div className="mt-5 grid grid-cols-3 gap-2 border-t border-neutral-100 pt-4">
+          <div className="flex flex-col rounded-lg border border-[var(--border)]/70 bg-neutral-50/70 p-2.5 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
+              En Casa
+            </span>
+            <span className="text-base font-black text-[var(--foreground)] font-sans tabular-nums my-0.5">
+              {homeSplit.rank > 0 ? `${homeSplit.rank}.º` : "-"}
+            </span>
+            <span className="text-[11px] font-semibold text-neutral-600 font-sans tabular-nums">
+              {homePpm} pts/p
+            </span>
+          </div>
+
+          <div className="flex flex-col rounded-lg border border-[var(--border)]/70 bg-neutral-50/70 p-2.5 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
+              A Domicilio
+            </span>
+            <span className="text-base font-black text-emerald-700 font-sans tabular-nums my-0.5">
+              {awaySplit.rank > 0 ? `${awaySplit.rank}.º` : "-"}
+            </span>
+            <span className="text-[11px] font-semibold text-emerald-700 font-sans tabular-nums">
+              {awayPpm} pts/p
+            </span>
+          </div>
+
+          <div className="flex flex-col rounded-lg border border-[var(--border)]/70 bg-neutral-50/70 p-2.5 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
+              Global
+            </span>
+            <span className="text-base font-black text-[var(--primary)] font-sans tabular-nums my-0.5">
+              {totalPoints} pts
+            </span>
+            <span className="text-[11px] font-semibold text-neutral-600 font-sans tabular-nums">
+              {totalPpm} pts/p
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Stadium Attendance Highlight */}
-      <div className="mt-6 flex items-center justify-between border-t border-neutral-100 pt-3 text-xs">
+      {/* Asistencia Media en El Molinón */}
+      <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-3 text-xs">
         <span className="font-medium text-[var(--foreground-muted)]">
           Asistencia media en El Molinón
         </span>
