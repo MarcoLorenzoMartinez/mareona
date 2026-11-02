@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect, useId } from 'react';
 import historicalPlayers from '@/data/historical/club-all-time-players.json' with { type: 'json' };
+import { matchesSearchQuery } from '@/lib/utils/search-utils';
 
 interface PlayerRecord {
   bdfId: number;
@@ -50,12 +51,12 @@ export function TriviaPlayerInput({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const cleanQ = query.trim().toLowerCase();
+  const cleanQ = query.trim();
   const suggestions = cleanQ.length >= 2
     ? PLAYERS_LIST.filter(
         (p) =>
-          p.name.toLowerCase().includes(cleanQ) ||
-          p.fullName.toLowerCase().includes(cleanQ)
+          matchesSearchQuery(p.name, cleanQ) ||
+          matchesSearchQuery(p.fullName, cleanQ)
       ).slice(0, 5)
     : [];
 

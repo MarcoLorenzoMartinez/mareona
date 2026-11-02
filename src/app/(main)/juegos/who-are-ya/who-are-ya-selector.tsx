@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useId, useCallback } from 'react';
+import { matchesSearchQuery } from '@/lib/utils/search-utils';
 
 export interface SelectorOption {
   id: string | number;
@@ -49,13 +50,13 @@ export function WhoAreYaSelector({
     }
   }, [highlightedIndex, listboxId]);
 
-  const cleanQuery = query.trim().toLowerCase();
+  const cleanQuery = query.trim();
   const filtered = cleanQuery.length > 0
     ? options
         .filter(
           (opt) =>
-            opt.label.toLowerCase().includes(cleanQuery) ||
-            (opt.sublabel && opt.sublabel.toLowerCase().includes(cleanQuery))
+            matchesSearchQuery(opt.label, cleanQuery) ||
+            (opt.sublabel && matchesSearchQuery(opt.sublabel, cleanQuery))
         )
         .slice(0, 6)
     : [];

@@ -7,7 +7,8 @@ interface WordleBoardProps {
   targetLength: number;
   maxAttempts: number;
   guesses: string[];
-  currentGuess: string;
+  currentGuess?: string;
+  currentLetters?: readonly string[];
   shakeRow: boolean;
   cursorIndex?: number;
   onSelectCell?: (index: number) => void;
@@ -18,7 +19,8 @@ export function WordleBoard({
   targetLength,
   maxAttempts,
   guesses,
-  currentGuess,
+  currentGuess = '',
+  currentLetters,
   shakeRow,
   cursorIndex = 0,
   onSelectCell,
@@ -42,7 +44,7 @@ export function WordleBoard({
           letters = evaluated;
         } else if (isCurrentRow) {
           letters = Array.from({ length: targetLength }).map((_, colIndex) => ({
-            char: currentGuess[colIndex] || '',
+            char: currentLetters ? (currentLetters[colIndex] || '') : (currentGuess[colIndex] || ''),
           }));
         } else {
           letters = Array.from({ length: targetLength }).map(() => ({ char: '' }));
@@ -54,7 +56,7 @@ export function WordleBoard({
           <div
             key={rowIndex}
             role="row"
-            className={`flex justify-center gap-1.5 transition-transform ${isShaking ? 'animate-bounce' : ''}`}
+            className={`flex justify-center gap-1.5 transition-transform ${isShaking ? 'animate-card-shake' : ''}`}
           >
             {letters.map((cell, colIndex) => (
               <WordleTile

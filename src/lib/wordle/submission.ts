@@ -1,6 +1,7 @@
 import { isValidWordGuess } from './words';
 import type { WordleChallengeState, WordleStats } from './types';
 import { computeUpdatedWordleStats, saveWordleState } from './storage';
+import { toast } from '@/lib/ui/toast';
 
 export interface SubmitAttemptParams {
   gameState: WordleChallengeState;
@@ -32,12 +33,14 @@ export function handleGuessSubmission({
 
   if (!letters.every((char) => char !== '')) {
     onShake();
+    toast.error('Faltan letras');
     return;
   }
 
   const guessWord = letters.join('');
   if (!isValidWordGuess(guessWord, targetLength)) {
     onShake();
+    toast.error('Palabra no válida');
     return;
   }
 

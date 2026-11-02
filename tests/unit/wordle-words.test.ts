@@ -6,6 +6,7 @@ import {
   getDaysSinceEpoch,
   getHistoricalChallenges,
   getWordAppearanceCounts,
+  isValidWordGuess,
 } from '../../src/lib/wordle/words.ts';
 
 describe('Sporting Words & Non-repeating Bag Suite', () => {
@@ -54,5 +55,34 @@ describe('Sporting Words & Non-repeating Bag Suite', () => {
     assert.equal(history.length, 5);
     assert.equal(history[0].id, '2026-10-05'); // newest first
     assert.equal(history[4].id, '2026-10-01');
+  });
+
+  describe('isValidWordGuess validation', () => {
+    it('accepts common words, verb conjugations, and plurals', () => {
+      assert.equal(isValidWordGuess('GATOS', 5), true);
+      assert.equal(isValidWordGuess('CASAS', 5), true);
+      assert.equal(isValidWordGuess('COMER', 5), true);
+      assert.equal(isValidWordGuess('COMES', 5), true);
+      assert.equal(isValidWordGuess('CANTABA', 7), true);
+    });
+
+    it('accepts Sporting de Gijón catalog words and player names', () => {
+      assert.equal(isValidWordGuess('QUINI', 5), true);
+      assert.equal(isValidWordGuess('MAREO', 5), true);
+      assert.equal(isValidWordGuess('MOLINON', 7), true);
+      assert.equal(isValidWordGuess('ROJIBLANCO', 10), true);
+    });
+
+    it('rejects invalid, random strings and gibberish', () => {
+      assert.equal(isValidWordGuess('ZZZZZ', 5), false);
+      assert.equal(isValidWordGuess('AEIOU', 5), false);
+      assert.equal(isValidWordGuess('ASDFG', 5), false);
+      assert.equal(isValidWordGuess('QWERT', 5), false);
+    });
+
+    it('rejects words with incorrect length', () => {
+      assert.equal(isValidWordGuess('GATO', 5), false);
+      assert.equal(isValidWordGuess('GATOS', 4), false);
+    });
   });
 });

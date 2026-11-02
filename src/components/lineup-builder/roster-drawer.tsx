@@ -4,6 +4,7 @@
 import React, { useState, useMemo } from "react";
 import { PlayerRowItem } from "./player-row-item";
 import { CustomPlayerModal } from "./custom-player-modal";
+import { matchesSearchQuery } from "@/lib/utils/search-utils";
 import type { LineupPlayer, PlayerCategory } from "@/lib/lineup-builder/types";
 
 interface RosterDrawerProps {
@@ -56,10 +57,10 @@ export function RosterDrawer({
       if (selectedCategory !== "all" && player.category !== selectedCategory) return false;
       if (selectedPosition !== "all" && player.defaultPosition !== selectedPosition) return false;
       if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase().trim();
+        const query = searchQuery.trim();
         const matchesName =
-          player.displayName.toLowerCase().includes(query) ||
-          player.fullName.toLowerCase().includes(query);
+          matchesSearchQuery(player.displayName, query) ||
+          matchesSearchQuery(player.fullName, query);
         const matchesNumber = player.shirtNumber?.toString() === query;
         if (!matchesName && !matchesNumber) return false;
       }

@@ -41,10 +41,16 @@ describe("Friends Search Utils", () => {
     assert.equal(results[0].username, "pelayo_gijon");
   });
 
-  it("filters profiles by display name regardless of casing", () => {
-    const results = filterFriendsList(MOCK_PROFILES, "álvarez", "current-user-id");
-    assert.equal(results.length, 1);
-    assert.equal(results[0].username, "pelayo_gijon");
+  it("filters profiles by display name regardless of casing and accents", () => {
+    // Search with accent for name with accent
+    const results1 = filterFriendsList(MOCK_PROFILES, "álvarez", "current-user-id");
+    assert.equal(results1.length, 1);
+    assert.equal(results1[0].username, "pelayo_gijon");
+
+    // Search without accent for name with accent (Álvarez)
+    const results2 = filterFriendsList(MOCK_PROFILES, "alvarez", "current-user-id");
+    assert.equal(results2.length, 1);
+    assert.equal(results2[0].username, "pelayo_gijon");
   });
 
   it("excludes the current logged-in user from the results", () => {

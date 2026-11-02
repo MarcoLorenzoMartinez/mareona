@@ -39,9 +39,9 @@ export function WordleTile({
       type="button"
       disabled={!isInteractive}
       onClick={isInteractive ? onClick : undefined}
-      className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg border-2 font-bold text-base sm:text-lg md:text-xl uppercase transition-all duration-150 tabular-nums select-none ${bgClasses} ${
+      className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg border-2 font-bold text-base sm:text-lg md:text-xl uppercase transition-all duration-150 tabular-nums select-none outline-none focus:outline-none ${bgClasses} ${
         isRevealing ? 'animate-in fade-in zoom-in-95' : ''
-      } ${isInteractive ? 'cursor-pointer hover:border-neutral-400' : 'cursor-default'}`}
+      } ${isInteractive ? 'cursor-pointer' : 'cursor-default'}`}
       aria-label={letter ? `${letter} ${status || ''}` : 'casilla vacía'}
     >
       {letter}

@@ -69,16 +69,19 @@ export function useWordleGame(challenge: WordleDailyWord) {
 
     setLetters((prev) => {
       const next = [...prev];
+      // Si la casilla actual tiene una letra, la borramos
       if (next[cursorIndex] !== '') {
         next[cursorIndex] = '';
-        return next;
+      } else if (cursorIndex > 0) {
+        // Si la casilla actual ya está vacía, borramos la casilla anterior
+        next[cursorIndex - 1] = '';
       }
-      if (cursorIndex > 0) next[cursorIndex - 1] = '';
       return next;
     });
 
-    setCursorIndex((prev) => (letters[prev] === '' && prev > 0 ? prev - 1 : prev));
-  }, [gameState.status, cursorIndex, letters]);
+    // En Wordle, al borrar siempre retrocedes una posición hacia atrás
+    setCursorIndex((prev) => Math.max(0, prev - 1));
+  }, [gameState.status, cursorIndex]);
 
   const currentGuess = letters.join('');
 
@@ -145,6 +148,7 @@ export function useWordleGame(challenge: WordleDailyWord) {
 
   return {
     gameState,
+    letters,
     currentGuess,
     cursorIndex,
     maxAttempts,

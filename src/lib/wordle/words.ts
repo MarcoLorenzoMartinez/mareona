@@ -1,6 +1,9 @@
 import rawWords from '../../data/wordle/sporting-words.json' with { type: 'json' };
+import rawValidDict from '../../data/wordle/valid-dictionary.json' with { type: 'json' };
 import type { WordleDailyWord } from './types';
 import { normalizeWord } from './engine.ts';
+
+const VALID_DICTIONARY: Record<string, string> = rawValidDict;
 
 export interface CatalogSportingWord {
   slug: string;
@@ -112,10 +115,37 @@ export function getWordAppearanceCounts(upToDateStr?: string): Record<string, nu
 }
 
 /**
- * Validates whether a guess is valid.
+ * Validates whether a guess is a real valid Spanish word or valid Sporting de Gijón term.
+ * Uses binary search over the sorted lexicon string for O(log N) lookup time.
  */
 export function isValidWordGuess(guess: string, targetLength: number): boolean {
   const norm = normalizeWord(guess);
   if (norm.length !== targetLength) return false;
-  return /^[A-ZÑ]+$/.test(norm);
+  if (!/^[A-ZÑ]+$/.test(norm)) return false;
+
+  const dictStr = VALID_DICTIONARY[String(targetLength)];
+  if (!dictStr) {
+    // Fallback: If no dictionary exists for this custom length, allow valid alphabetical
+    return true;
+  }
+
+  const totalWords = dictStr.length / targetLength;
+  let low = 0;
+  let high = totalWords - 1;
+
+  while (low <= high) {
+    const mid = (low + high) >> 1;
+    const midWord = dictStr.substring(mid * targetLength, (mid + 1) * targetLength);
+
+    if (midWord === norm) {
+      return true;
+    }
+    if (midWord < norm) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+
+  return false;
 }

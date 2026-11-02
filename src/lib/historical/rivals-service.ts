@@ -2,6 +2,7 @@ import matchesData from "../../data/historical/matches.json" with { type: "json"
 import rivalsGeoData from "../../data/historical/rivals-geo.json" with { type: "json" };
 import seasonsData from "../../data/historical/seasons.json" with { type: "json" };
 import { canonicalizeOpponentName } from "./canonical-opponents.ts";
+import { matchesSearchQuery } from "../utils/search-utils.ts";
 import type {
   CompetitionStats,
   RegionRivalSummary,
@@ -270,16 +271,16 @@ export function filterRivals(
   query: string,
   scope: RivalScopeFilter
 ): RivalH2HSummary[] {
-  const normalizedQuery = query.trim().toLowerCase();
+  const trimmedQuery = query.trim();
   const result: RivalH2HSummary[] = [];
 
   for (const r of rivals) {
-    // Search query matching by team name, province, community, or country
-    if (normalizedQuery) {
-      const matchName = r.name.toLowerCase().includes(normalizedQuery);
-      const matchProvince = r.province.toLowerCase().includes(normalizedQuery);
-      const matchCommunity = r.community.toLowerCase().includes(normalizedQuery);
-      const matchCountry = r.country.toLowerCase().includes(normalizedQuery);
+    // Search query matching by team name, province, community, or country (accent & case insensitive)
+    if (trimmedQuery) {
+      const matchName = matchesSearchQuery(r.name, trimmedQuery);
+      const matchProvince = matchesSearchQuery(r.province, trimmedQuery);
+      const matchCommunity = matchesSearchQuery(r.community, trimmedQuery);
+      const matchCountry = matchesSearchQuery(r.country, trimmedQuery);
       if (!matchName && !matchProvince && !matchCommunity && !matchCountry) {
         continue;
       }

@@ -121,6 +121,13 @@ describe("Historical Rivals Service", () => {
     const madridRivals = filterRivals(allRivals, "Madrid", "all");
     assert.ok(madridRivals.length >= 6, "Should match Real Madrid, Atlético, Rayo, Leganés, etc.");
 
+    // Accent-insensitive search
+    const atleticoNoAccent = filterRivals(allRivals, "atletico", "all");
+    assert.ok(atleticoNoAccent.some((r) => r.name.includes("Atlético")));
+
+    const cadizNoAccent = filterRivals(allRivals, "cadiz", "all");
+    assert.ok(cadizNoAccent.some((r) => r.province === "Cádiz" || r.name.includes("Cádiz")));
+
     const uefaRivals = filterRivals(allRivals, "", "uefa");
     assert.equal(uefaRivals.length, 8, "Should find exactly 8 European rivals across 16 UEFA matches");
   });

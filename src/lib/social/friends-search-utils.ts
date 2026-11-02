@@ -1,14 +1,15 @@
 import type { FriendSummary } from "./friendship-schemas";
+import { normalizeSearchText, matchesSearchQuery } from "../utils/search-utils.ts";
 
 /**
  * Normalizes user search input by trimming whitespace, stripping leading @ signs,
- * and converting to lower case.
+ * and stripping accents/diacritics.
  *
  * @param query - Raw search query entered by the user
  * @returns Cleaned query string ready for lookup
  */
 export function normalizeSearchQuery(query: string): string {
-  return query.trim().replace(/^@+/, "").toLowerCase();
+  return normalizeSearchText(query.trim().replace(/^@+/, ""));
 }
 
 /**
@@ -32,8 +33,8 @@ export function filterFriendsList(
     if (currentUserId && p.id === currentUserId) {
       return false;
     }
-    const matchUsername = p.username.toLowerCase().includes(clean);
-    const matchDisplayName = p.displayName ? p.displayName.toLowerCase().includes(clean) : false;
+    const matchUsername = matchesSearchQuery(p.username, clean);
+    const matchDisplayName = p.displayName ? matchesSearchQuery(p.displayName, clean) : false;
     return matchUsername || matchDisplayName;
   });
 }
