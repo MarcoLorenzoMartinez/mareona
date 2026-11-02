@@ -15,3 +15,10 @@ export interface HeatmapPoint {
   readonly x: number;
   readonly y: number;
 }
+
+export interface TacticalSpatialData {
+  readonly attackingZones?: TacticalAttackingZones;
+  readonly passTerritory?: TacticalPassTerritory;
+  readonly heatmapCirclesSvg?: string;
+}
+

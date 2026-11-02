@@ -104,6 +104,7 @@ export function transformFotMobTeamStats(
   tacticalSpatial?: {
     attackingZones?: { left: number; center: number; right: number };
     passTerritory?: { ownHalfPasses: number; oppHalfPasses: number; ownHalfPct: number; oppHalfPct: number };
+    heatmapCirclesSvg?: string;
   }
 ): TeamSeasonStats | null {
   const teamsStats = payload.stats?.teams ?? [];
@@ -229,6 +230,7 @@ export function transformFotMobTeamStats(
     // Tactical Spatial
     attackingZones: tacticalSpatial?.attackingZones,
     passTerritory: tacticalSpatial?.passTerritory,
+    heatmapCirclesSvg: tacticalSpatial?.heatmapCirclesSvg,
   };
 }
 
@@ -296,8 +298,14 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
           readonly key?: string;
           readonly stats?: readonly RawStatPeriodItem[];
         }
+        interface RawPlayerStatEntry {
+          readonly teamId?: number;
+          readonly optaId?: string | number;
+        }
         const mData = (await matchRes.json()) as {
           content?: {
+            heatmapUrl?: string;
+            playerStats?: Record<string, RawPlayerStatEntry>;
             shotmap?: { shots?: readonly RawShotItem[] };
             attackingZones?: {
               home?: { total?: { left: number; center: number; right: number } };
@@ -358,13 +366,44 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
           if (oppHalfStat && oppHalfStat[teamIdx] !== undefined) oppHalf = Number(oppHalfStat[teamIdx]);
         }
 
+        // Tactical heatmap circles from Opta/FotMob for Sporting
+        let heatmapCircles = "";
+        const heatmapPath = mData.content?.heatmapUrl;
+        if (heatmapPath) {
+          try {
+            const hRes = await fetch(`https://www.fotmob.com${heatmapPath}`, {
+              headers: FOTMOB_HEADERS,
+              next: { revalidate: 86400 },
+            });
+            if (hRes.ok) {
+              const hData = (await hRes.json()) as {
+                readonly players?: Record<string, string>;
+              };
+              const ps = mData.content?.playerStats;
+              const sportingOptaKeys = new Set(
+                Object.values(ps || {})
+                  .filter((p) => p.teamId === FOTMOB_SPORTING_ID && p.optaId)
+                  .map((p) => `p${p.optaId}`)
+              );
+              for (const [key, val] of Object.entries(hData.players || {})) {
+                if (sportingOptaKeys.has(key)) {
+                  heatmapCircles += val;
+                }
+              }
+            }
+          } catch {
+            // Silently skip heatmap if unavailable for match
+          }
+        }
+
         return {
           goals: matchGoals,
           attackingZones: matchZones || null,
           passTerritory: ownHalf !== null && oppHalf !== null ? { ownHalf, oppHalf } : null,
+          heatmapCircles,
         };
       } catch {
-        return { goals: [], attackingZones: null, passTerritory: null };
+        return { goals: [], attackingZones: null, passTerritory: null, heatmapCircles: "" };
       }
     });
 
@@ -372,6 +411,7 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
     const collectedGoals: TeamSeasonGoalItem[] = [];
     let azLeftSum = 0, azCenterSum = 0, azRightSum = 0, azCount = 0;
     let ownPassSum = 0, oppPassSum = 0, passCount = 0;
+    let aggregatedHeatmapCircles = "";
 
     for (const r of settledGoals) {
       if (r.status === "fulfilled") {
@@ -386,6 +426,9 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
           ownPassSum += r.value.passTerritory.ownHalf;
           oppPassSum += r.value.passTerritory.oppHalf;
           passCount++;
+        }
+        if (r.value.heatmapCircles) {
+          aggregatedHeatmapCircles += r.value.heatmapCircles;
         }
       }
     }
@@ -405,7 +448,13 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
       oppHalfPct: Math.round((oppPassSum / totalPasses) * 100),
     } : undefined;
 
-    const stats = transformFotMobTeamStats(json, collectedGoals, { attackingZones, passTerritory });
+    const heatmapCirclesSvg = aggregatedHeatmapCircles || undefined;
+
+    const stats = transformFotMobTeamStats(json, collectedGoals, {
+      attackingZones,
+      passTerritory,
+      heatmapCirclesSvg,
+    });
 
     if (stats) {
       memoryCachedTeamStats = {

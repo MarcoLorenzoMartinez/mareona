@@ -128,4 +128,5 @@ export interface TeamSeasonStats {
   readonly attackingZones?: TacticalAttackingZones;
   readonly passTerritory?: TacticalPassTerritory;
   readonly collectiveHeatmap?: readonly HeatmapPoint[];
+  readonly heatmapCirclesSvg?: string;
 }

@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import type { TeamSeasonStats } from "@/lib/sports-api/team-season-types";
 import { TacticalPitchBackground } from "./tactical-pitch-background";
+import { TacticalTeamHeatmap } from "./tactical-team-heatmap";
 
 export type TacticalViewMode = "heatmap" | "passes" | "attack";
 
@@ -84,36 +85,9 @@ export function StatsPitchZones({ stats }: StatsPitchZonesProps) {
         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-emerald-900/40 bg-[#1e5a3c] shadow-xs">
           <TacticalPitchBackground />
 
-          {/* MODO 1: Mapa de Calor Colectivo */}
+          {/* MODO 1: Mapa de Calor Colectivo Auténtico */}
           {activeMode === "heatmap" && (
-            <div className="absolute inset-0 pointer-events-none">
-              {/* Zonas de calor colectivo auténticas de la plantilla */}
-              {/* Banda izquierda y tres cuartos (foco de Gaspar y laterales) */}
-              <div
-                className="absolute left-[38%] top-[12%] h-[42%] w-[32%] rounded-full opacity-60 blur-xl"
-                style={{ background: "radial-gradient(circle, #e2001a 0%, #ea580c 45%, #eab308 75%, transparent 100%)" }}
-              />
-              {/* Circulación interior y pivotes */}
-              <div
-                className="absolute left-[32%] top-[38%] h-[35%] w-[38%] rounded-full opacity-55 blur-xl"
-                style={{ background: "radial-gradient(circle, #ea580c 0%, #eab308 50%, #22c55e 80%, transparent 100%)" }}
-              />
-              {/* Salida de balón y centrales en campo propio */}
-              <div
-                className="absolute left-[14%] top-[30%] h-[38%] w-[26%] rounded-full opacity-50 blur-xl"
-                style={{ background: "radial-gradient(circle, #eab308 0%, #22c55e 60%, transparent 100%)" }}
-              />
-              {/* Progresión derecha (Rosas / extremo) */}
-              <div
-                className="absolute left-[44%] top-[62%] h-[28%] w-[26%] rounded-full opacity-50 blur-xl"
-                style={{ background: "radial-gradient(circle, #ea580c 0%, #eab308 55%, transparent 100%)" }}
-              />
-
-              {/* Leyenda overlay integrada */}
-              <div className="absolute bottom-2 right-2 rounded-full border border-white/20 bg-black/40 px-2.5 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-xs">
-                Toques colectivos por partido
-              </div>
-            </div>
+            <TacticalTeamHeatmap circlesSvg={stats.heatmapCirclesSvg} />
           )}
 
           {/* MODO 2: Territorio del Pase (Campo Propio vs Campo Rival) */}
