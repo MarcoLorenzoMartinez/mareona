@@ -88,7 +88,7 @@ export function StatsSplitsChart({
         {/* Independent Home and Away Progress Bars */}
         <div className="flex flex-col gap-6">
           <SplitRow
-            title="En El Molinón"
+            title="En Casa"
             split={homeSplit}
             barColor="bg-[#e2001a]"
           />
