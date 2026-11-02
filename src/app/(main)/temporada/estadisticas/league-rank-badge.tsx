@@ -19,10 +19,10 @@ export function LeagueRankBadge({ rank, className = "" }: LeagueRankBadgeProps) 
 
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-sans font-bold tabular-nums tracking-tight transition-colors ${
+      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-sans font-semibold tabular-nums tracking-tight transition-colors ${
         isPodium
-          ? "border border-red-200 bg-red-50 text-[#e2001a]"
-          : "border border-neutral-200 bg-neutral-100 text-neutral-700"
+          ? "border border-[#e2001a]/30 bg-red-100/80 text-[#b80015] font-bold"
+          : "border border-[#e2001a]/15 bg-red-50/60 text-[#900010]"
       } ${className}`}
     >
       {rank}º en liga
