@@ -41,40 +41,40 @@ export function StatsSplitsChart({
           <TotalStackedRow homeSplit={homeSplit} awaySplit={awaySplit} />
         </div>
 
-        {/* Tarjetas comparativas con escala cromática deportiva oficial */}
-        <div className="mt-5 grid grid-cols-3 gap-2 border-t border-neutral-100 pt-4">
-          <div className="flex flex-col items-center rounded-lg border border-[var(--border)]/70 bg-neutral-50/70 p-2.5 text-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
-              En Casa
+        {/* Comparativa por escenario limpia, sin recuadros ni cápsulas anidadas */}
+        <div className="mt-6 grid grid-cols-3 divide-x divide-neutral-200 border-t border-neutral-100 pt-5 text-center">
+          <div className="flex flex-col items-center px-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
+              En casa
             </span>
-            <div className="my-1">
-              <LeagueRankBadge rank={homeSplit.rank} />
-            </div>
-            <span className="text-[11px] font-semibold text-neutral-600 font-sans tabular-nums">
+            <span className="text-xl font-black text-[var(--foreground)] font-sans tabular-nums my-0.5">
+              {homeSplit.rank > 0 ? `${homeSplit.rank}.º` : "-"}
+            </span>
+            <span className="text-xs font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
               {homePpm} pts/p
             </span>
           </div>
 
-          <div className="flex flex-col items-center rounded-lg border border-[var(--border)]/70 bg-neutral-50/70 p-2.5 text-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
-              A Domicilio
+          <div className="flex flex-col items-center px-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
+              A domicilio
             </span>
-            <div className="my-1">
-              <LeagueRankBadge rank={awaySplit.rank} />
-            </div>
-            <span className="text-[11px] font-semibold text-neutral-600 font-sans tabular-nums">
+            <span className="text-xl font-black text-emerald-800 font-sans tabular-nums my-0.5">
+              {awaySplit.rank > 0 ? `${awaySplit.rank}.º` : "-"}
+            </span>
+            <span className="text-xs font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
               {awayPpm} pts/p
             </span>
           </div>
 
-          <div className="flex flex-col items-center rounded-lg border border-[var(--border)]/70 bg-neutral-50/70 p-2.5 text-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
+          <div className="flex flex-col items-center px-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
               Global
             </span>
-            <div className="my-1">
-              <LeagueRankBadge rank={overallRank ?? 6} />
-            </div>
-            <span className="text-[11px] font-semibold text-neutral-600 font-sans tabular-nums">
+            <span className="text-xl font-black text-emerald-800 font-sans tabular-nums my-0.5">
+              {overallRank ? `${overallRank}.º` : "6.º"}
+            </span>
+            <span className="text-xs font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
               {totalPpm} pts/p
             </span>
           </div>
