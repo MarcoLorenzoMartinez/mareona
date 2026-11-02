@@ -30,7 +30,7 @@ export function StatsSplitsChart({
       <div>
         <div className="border-b border-[var(--border)] pb-3 mb-4">
           <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
-            Rendimiento: En casa, a domicilio y total
+            Rendimiento por Escenario
           </h2>
         </div>
 

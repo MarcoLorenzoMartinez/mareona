@@ -43,7 +43,7 @@ export function SeasonGoalsPitch({ goals }: SeasonGoalsPitchProps) {
       {/* Cabecera */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border)] pb-3">
         <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
-          Mapa de Goles de la Temporada
+          Mapa de Goles
         </h2>
         <span className="text-xs font-bold text-[var(--primary)] font-sans tabular-nums">
           {goals.length} goles marcados

@@ -56,7 +56,7 @@ export default async function EstadisticasPage() {
       {/* Bloques de Rendimiento Colectivo */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatsCategoryCard
-          title="Ataque y Generación"
+          title="Ataque"
           rows={[
             { label: "Goles esperados (xG)", value: stats.expectedGoals.toFixed(1), rank: stats.expectedGoalsRank },
             { label: "Tiros a puerta por partido", value: stats.shotsOnTargetPerMatch.toFixed(1), rank: stats.shotsOnTargetRank },
@@ -67,7 +67,7 @@ export default async function EstadisticasPage() {
         />
 
         <StatsCategoryCard
-          title="Construcción y Balón"
+          title="Posesión y Pases"
           rows={[
             { label: "Posesión media", value: `${stats.averagePossession.toFixed(1)}%`, rank: stats.possessionRank },
             { label: "Pases precisos por partido", value: stats.accuratePassesPerMatch.toFixed(1), rank: stats.accuratePassesRank },
@@ -80,7 +80,7 @@ export default async function EstadisticasPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatsCategoryCard
-          title="Muro Defensivo y Presión"
+          title="Defensa"
           rows={[
             { label: "xG en contra concedido", value: stats.expectedGoalsConceded.toFixed(1), rank: stats.xGConcededRank },
             { label: "Intercepciones por partido", value: stats.interceptionsPerMatch.toFixed(1), rank: stats.interceptionsRank },
@@ -91,7 +91,7 @@ export default async function EstadisticasPage() {
         />
 
         <StatsCategoryCard
-          title="Disciplina y Juego Limpio"
+          title="Disciplina"
           rows={[
             { label: "Faltas cometidas por partido", value: stats.foulsPerMatch.toFixed(1), rank: stats.foulsRank, invertPolarity: true },
             { label: "Tarjetas amarillas totales", value: stats.yellowCards, rank: stats.yellowCardsRank, invertPolarity: true },

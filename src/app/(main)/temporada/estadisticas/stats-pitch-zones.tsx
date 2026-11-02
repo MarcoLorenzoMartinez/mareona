@@ -28,7 +28,7 @@ export function StatsPitchZones({ stats }: StatsPitchZonesProps) {
       <div>
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-3 mb-4">
           <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
-            Distribución Táctica en el Campo
+            Ocupación del Campo
           </h2>
 
           {/* Selector estilo píldora idéntico al de RivalsFilterBar */}
