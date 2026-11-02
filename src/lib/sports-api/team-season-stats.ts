@@ -178,13 +178,16 @@ export function transformFotMobTeamStats(
     touchesInOppBox: getMetric("touches_in_opp_box_team").val,
     touchesInOppBoxRank: getMetric("touches_in_opp_box_team").rank,
     setPieceGoals: getMetric("_set_piece_goals_team").val,
+    setPieceGoalsRank: getMetric("_set_piece_goals_team").rank,
     cornersTaken: getMetric("corner_taken_team").val,
+    cornersTakenRank: getMetric("corner_taken_team").rank,
     // Possession & Play
     averagePossession: getMetric("possession_percentage_team").val,
     possessionRank: getMetric("possession_percentage_team").rank,
     accuratePassesPerMatch: getMetric("accurate_pass_team").val,
     accuratePassesRank: getMetric("accurate_pass_team").rank,
     accurateLongBallsPerMatch: getMetric("accurate_long_balls_team").val,
+    accurateLongBallsRank: getMetric("accurate_long_balls_team").rank,
     accurateCrossesPerMatch: getMetric("accurate_cross_team").val,
     accurateCrossesRank: getMetric("accurate_cross_team").rank,
     // Defense

@@ -74,13 +74,16 @@ export interface TeamSeasonStats {
   readonly touchesInOppBox: number;
   readonly touchesInOppBoxRank: number | null;
   readonly setPieceGoals: number;
+  readonly setPieceGoalsRank: number | null;
   readonly cornersTaken: number;
+  readonly cornersTakenRank: number | null;
   // Possession & Play
   readonly averagePossession: number;
   readonly possessionRank: number | null;
   readonly accuratePassesPerMatch: number;
   readonly accuratePassesRank: number | null;
   readonly accurateLongBallsPerMatch: number;
+  readonly accurateLongBallsRank: number | null;
   readonly accurateCrossesPerMatch: number;
   readonly accurateCrossesRank: number | null;
   // Defense & Goalkeeping

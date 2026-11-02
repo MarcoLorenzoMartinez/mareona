@@ -60,8 +60,8 @@ export default async function EstadisticasPage() {
             { label: "Goles esperados (xG)", value: stats.expectedGoals.toFixed(1), rank: stats.expectedGoalsRank },
             { label: "Tiros a puerta por partido", value: stats.shotsOnTargetPerMatch.toFixed(1), rank: stats.shotsOnTargetRank },
             { label: "Grandes ocasiones creadas", value: stats.bigChances, rank: stats.bigChancesRank },
-            { label: "Goles a balón parado", value: stats.setPieceGoals },
-            { label: "Córners lanzados", value: stats.cornersTaken },
+            { label: "Goles a balón parado", value: stats.setPieceGoals, rank: stats.setPieceGoalsRank },
+            { label: "Córners lanzados", value: stats.cornersTaken, rank: stats.cornersTakenRank },
           ]}
         />
 
@@ -70,7 +70,7 @@ export default async function EstadisticasPage() {
           rows={[
             { label: "Posesión media", value: `${stats.averagePossession.toFixed(1)}%`, rank: stats.possessionRank },
             { label: "Pases precisos por partido", value: stats.accuratePassesPerMatch.toFixed(1), rank: stats.accuratePassesRank },
-            { label: "Balones largos con éxito por partido", value: stats.accurateLongBallsPerMatch.toFixed(1) },
+            { label: "Balones largos con éxito por partido", value: stats.accurateLongBallsPerMatch.toFixed(1), rank: stats.accurateLongBallsRank },
             { label: "Centros completados por partido", value: stats.accurateCrossesPerMatch.toFixed(1), rank: stats.accurateCrossesRank },
             { label: "Toques en área contraria", value: stats.touchesInOppBox, rank: stats.touchesInOppBoxRank },
           ]}
