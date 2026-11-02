@@ -67,7 +67,7 @@ export default async function EstadisticasPage() {
         />
 
         <StatsCategoryCard
-          title="Posesión y Pases"
+          title="Posesión"
           rows={[
             { label: "Posesión media", value: `${stats.averagePossession.toFixed(1)}%`, rank: stats.possessionRank },
             { label: "Pases precisos por partido", value: stats.accuratePassesPerMatch.toFixed(1), rank: stats.accuratePassesRank },
