@@ -82,12 +82,14 @@ export function StatsPitchZones({ stats }: StatsPitchZonesProps) {
         </div>
 
         {/* Pitch Graphic Frame */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-emerald-900/40 bg-[#1e5a3c] shadow-xs">
-          <TacticalPitchBackground />
-
-          {/* MODO 1: Mapa de Calor Colectivo Auténtico */}
-          {activeMode === "heatmap" && (
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg border border-[var(--border)] bg-[#edf3ed] shadow-xs">
+          {activeMode === "heatmap" ? (
             <TacticalTeamHeatmap circlesSvg={stats.heatmapCirclesSvg} />
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-[#1e5a3c]" />
+              <TacticalPitchBackground />
+            </>
           )}
 
           {/* MODO 2: Territorio del Pase (Campo Propio vs Campo Rival) */}
