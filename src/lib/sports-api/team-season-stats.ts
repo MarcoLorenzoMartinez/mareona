@@ -100,7 +100,11 @@ function parseSplit(row?: RawSplitRow): TeamSeasonStatsSplit {
  */
 export function transformFotMobTeamStats(
   payload: RawFotMobTeamPayload,
-  seasonGoals: readonly TeamSeasonGoalItem[] = []
+  seasonGoals: readonly TeamSeasonGoalItem[] = [],
+  tacticalSpatial?: {
+    attackingZones?: { left: number; center: number; right: number };
+    passTerritory?: { ownHalfPasses: number; oppHalfPasses: number; ownHalfPct: number; oppHalfPct: number };
+  }
 ): TeamSeasonStats | null {
   const teamsStats = payload.stats?.teams ?? [];
   if (teamsStats.length === 0) return null;
@@ -222,6 +226,9 @@ export function transformFotMobTeamStats(
     // Splits
     homeSplit: parseSplit(sportingHome),
     awaySplit: parseSplit(sportingAway),
+    // Tactical Spatial
+    attackingZones: tacticalSpatial?.attackingZones,
+    passTerritory: tacticalSpatial?.passTerritory,
   };
 }
 
@@ -254,18 +261,17 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
 
     const goalsPromises = finishedMatches.map(async (fixture) => {
       const matchId = fixture.id;
-      if (!matchId) return [];
+      if (!matchId) return { goals: [], attackingZones: null, passTerritory: null };
       const isHome = fixture.home?.id === FOTMOB_SPORTING_ID;
       const rivalName = (isHome ? fixture.away?.name : fixture.home?.name) || "Rival";
       const teamScore = isHome ? fixture.home?.score : fixture.away?.score;
-      if (!teamScore || teamScore <= 0) return [];
 
       try {
         const matchRes = await fetch(
           `https://www.fotmob.com/api/data/matchDetails?matchId=${matchId}`,
           { headers: FOTMOB_HEADERS, next: { revalidate: 3600 } }
         );
-        if (!matchRes.ok) return [];
+        if (!matchRes.ok) return { goals: [], attackingZones: null, passTerritory: null };
         interface RawShotItem {
           readonly id?: number;
           readonly eventType?: string;
@@ -281,45 +287,125 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
           readonly situation?: string;
           readonly onGoalShot?: { readonly x?: number; readonly y?: number };
         }
-        const mData = (await matchRes.json()) as { content?: { shotmap?: { shots?: readonly RawShotItem[] } } };
+        interface RawStatPeriodItem {
+          readonly key?: string;
+          readonly stats?: readonly (string | number | null)[];
+        }
+        interface RawStatGroupItem {
+          readonly title?: string;
+          readonly key?: string;
+          readonly stats?: readonly RawStatPeriodItem[];
+        }
+        const mData = (await matchRes.json()) as {
+          content?: {
+            shotmap?: { shots?: readonly RawShotItem[] };
+            attackingZones?: {
+              home?: { total?: { left: number; center: number; right: number } };
+              away?: { total?: { left: number; center: number; right: number } };
+            };
+            stats?: {
+              Periods?: {
+                All?: {
+                  stats?: readonly RawStatGroupItem[];
+                };
+              };
+            };
+          };
+        };
+
         const shots = mData.content?.shotmap?.shots ?? [];
         const matchGoals: TeamSeasonGoalItem[] = [];
 
-        for (const s of shots) {
-          if (s.eventType === "Goal" && s.teamId === FOTMOB_SPORTING_ID && s.x !== undefined && s.y !== undefined) {
-            matchGoals.push({
-              id: s.id ?? Math.floor(Math.random() * 100000),
-              matchId,
-              playerName: s.playerName || s.player?.name || "Real Sporting",
-              rivalName,
-              isHome,
-              minute: s.min ?? 0,
-              expectedGoals: s.expectedGoals ?? 0,
-              expectedGoalsOnTarget: s.expectedGoalsOnTarget,
-              shotType: s.shotType,
-              situation: s.situation,
-              x: s.x,
-              y: s.y,
-              onGoalX: s.onGoalShot?.x,
-              onGoalY: s.onGoalShot?.y,
-            });
+        if (teamScore && teamScore > 0) {
+          for (const s of shots) {
+            if (s.eventType === "Goal" && s.teamId === FOTMOB_SPORTING_ID && s.x !== undefined && s.y !== undefined) {
+              matchGoals.push({
+                id: s.id ?? Math.floor(Math.random() * 100000),
+                matchId,
+                playerName: s.playerName || s.player?.name || "Real Sporting",
+                rivalName,
+                isHome,
+                minute: s.min ?? 0,
+                expectedGoals: s.expectedGoals ?? 0,
+                expectedGoalsOnTarget: s.expectedGoalsOnTarget,
+                shotType: s.shotType,
+                situation: s.situation,
+                x: s.x,
+                y: s.y,
+                onGoalX: s.onGoalShot?.x,
+                onGoalY: s.onGoalShot?.y,
+              });
+            }
           }
         }
-        return matchGoals;
+
+        // Tactical attacking zones for Sporting
+        const az = mData.content?.attackingZones;
+        const matchZones = isHome ? az?.home?.total : az?.away?.total;
+
+        // Tactical pass territory for Sporting
+        let ownHalf: number | null = null;
+        let oppHalf: number | null = null;
+        const statsList = mData.content?.stats?.Periods?.All?.stats ?? [];
+        const passCat = statsList.find(
+          (c) => (c.title || "").toLowerCase().includes("pass") || (c.key || "").toLowerCase().includes("pass")
+        );
+        if (passCat) {
+          const ownHalfStat = passCat.stats?.find((s) => s.key === "own_half_passes")?.stats;
+          const oppHalfStat = passCat.stats?.find((s) => s.key === "opposition_half_passes")?.stats;
+          const teamIdx = isHome ? 0 : 1;
+          if (ownHalfStat && ownHalfStat[teamIdx] !== undefined) ownHalf = Number(ownHalfStat[teamIdx]);
+          if (oppHalfStat && oppHalfStat[teamIdx] !== undefined) oppHalf = Number(oppHalfStat[teamIdx]);
+        }
+
+        return {
+          goals: matchGoals,
+          attackingZones: matchZones || null,
+          passTerritory: ownHalf !== null && oppHalf !== null ? { ownHalf, oppHalf } : null,
+        };
       } catch {
-        return [];
+        return { goals: [], attackingZones: null, passTerritory: null };
       }
     });
 
     const settledGoals = await Promise.allSettled(goalsPromises);
     const collectedGoals: TeamSeasonGoalItem[] = [];
+    let azLeftSum = 0, azCenterSum = 0, azRightSum = 0, azCount = 0;
+    let ownPassSum = 0, oppPassSum = 0, passCount = 0;
+
     for (const r of settledGoals) {
       if (r.status === "fulfilled") {
-        collectedGoals.push(...r.value);
+        collectedGoals.push(...r.value.goals);
+        if (r.value.attackingZones) {
+          azLeftSum += r.value.attackingZones.left;
+          azCenterSum += r.value.attackingZones.center;
+          azRightSum += r.value.attackingZones.right;
+          azCount++;
+        }
+        if (r.value.passTerritory) {
+          ownPassSum += r.value.passTerritory.ownHalf;
+          oppPassSum += r.value.passTerritory.oppHalf;
+          passCount++;
+        }
       }
     }
 
-    const stats = transformFotMobTeamStats(json, collectedGoals);
+    const totalAz = azLeftSum + azCenterSum + azRightSum;
+    const attackingZones = azCount > 0 && totalAz > 0 ? {
+      left: Math.round((azLeftSum / totalAz) * 100),
+      center: Math.round((azCenterSum / totalAz) * 100),
+      right: Math.round((azRightSum / totalAz) * 100),
+    } : undefined;
+
+    const totalPasses = ownPassSum + oppPassSum;
+    const passTerritory = passCount > 0 && totalPasses > 0 ? {
+      ownHalfPasses: Math.round(ownPassSum / passCount),
+      oppHalfPasses: Math.round(oppPassSum / passCount),
+      ownHalfPct: Math.round((ownPassSum / totalPasses) * 100),
+      oppHalfPct: Math.round((oppPassSum / totalPasses) * 100),
+    } : undefined;
+
+    const stats = transformFotMobTeamStats(json, collectedGoals, { attackingZones, passTerritory });
 
     if (stats) {
       memoryCachedTeamStats = {

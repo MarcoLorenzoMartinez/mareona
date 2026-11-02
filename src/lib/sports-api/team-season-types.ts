@@ -3,6 +3,12 @@
  * Extracted from official league performance data.
  */
 
+import type {
+  TacticalAttackingZones,
+  TacticalPassTerritory,
+  HeatmapPoint,
+} from "./tactical-field-types";
+
 export interface TeamMetricItem {
   readonly key: string;
   readonly label: string;
@@ -118,4 +124,8 @@ export interface TeamSeasonStats {
   // Splits
   readonly homeSplit: TeamSeasonStatsSplit;
   readonly awaySplit: TeamSeasonStatsSplit;
+  // Spatial & Tactical Field Data
+  readonly attackingZones?: TacticalAttackingZones;
+  readonly passTerritory?: TacticalPassTerritory;
+  readonly collectiveHeatmap?: readonly HeatmapPoint[];
 }
