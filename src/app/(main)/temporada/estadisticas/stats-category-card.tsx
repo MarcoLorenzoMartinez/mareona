@@ -1,3 +1,5 @@
+import { LeagueRankBadge } from "./league-rank-badge";
+
 interface StatRow {
   readonly label: string;
   readonly value: string | number;
@@ -32,15 +34,11 @@ export function StatsCategoryCard({ title, rows }: StatsCategoryCardProps) {
                 )}
               </div>
 
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-center gap-2">
                 <span className="text-sm font-bold text-[var(--foreground)] font-sans tabular-nums">
                   {row.value}
                 </span>
-                {row.rank && (
-                  <span className="text-xs font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
-                    ({row.rank}º en liga)
-                  </span>
-                )}
+                <LeagueRankBadge rank={row.rank} />
               </div>
             </li>
           ))}
