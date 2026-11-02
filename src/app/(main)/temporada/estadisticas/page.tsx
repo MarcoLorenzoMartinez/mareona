@@ -52,16 +52,6 @@ export default async function EstadisticasPage() {
         <SeasonGoalsPitch goals={stats.seasonGoals} />
       )}
 
-      {/* Perfil y Guion de los partidos (datos de desarrollo de juego, sin jerga de apuestas) */}
-      <StatsPatternsCards
-        matchesPlayed={stats.matchesPlayed}
-        cleanSheetsCount={stats.patterns.cleanSheetsCount}
-        withoutScoringCount={stats.patterns.withoutScoringCount}
-        bothTeamsScoredCount={stats.patterns.bothTeamsScoredCount}
-        tightMatchesCount={stats.patterns.tightMatchesCount}
-        highScoringMatchesCount={stats.patterns.highScoringMatchesCount}
-      />
-
       {/* Bloques de Rendimiento Colectivo */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatsCategoryCard
@@ -110,6 +100,16 @@ export default async function EstadisticasPage() {
           ]}
         />
       </div>
+
+      {/* Guion de los partidos de la temporada */}
+      <StatsPatternsCards
+        matchesPlayed={stats.matchesPlayed}
+        cleanSheetsCount={stats.patterns.cleanSheetsCount}
+        withoutScoringCount={stats.patterns.withoutScoringCount}
+        bothTeamsScoredCount={stats.patterns.bothTeamsScoredCount}
+        tightMatchesCount={stats.patterns.tightMatchesCount}
+        highScoringMatchesCount={stats.patterns.highScoringMatchesCount}
+      />
     </div>
   );
 }

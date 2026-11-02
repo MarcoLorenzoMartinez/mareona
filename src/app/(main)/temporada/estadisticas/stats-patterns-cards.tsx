@@ -51,44 +51,37 @@ export function StatsPatternsCards({
   ];
 
   return (
-    <div className="flex flex-col justify-between rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
-      <div>
-        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3 mb-4">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
-            Perfil y Guion de los Partidos
-          </h2>
-          <span className="text-xs font-medium text-[var(--foreground-muted)] font-sans tabular-nums">
-            {matchesPlayed} jornadas de liga
-          </span>
-        </div>
+    <section className="flex flex-col gap-3">
+      <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
+        Guion de los Partidos
+      </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {patterns.map((p) => (
-            <div
-              key={p.label}
-              className="flex flex-col justify-between rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3"
-            >
-              <div>
-                <span className="text-xs font-semibold text-[var(--foreground)]">
-                  {p.label}
-                </span>
-                <span className="block mt-0.5 text-[11px] text-[var(--foreground-muted)]">
-                  {p.desc}
-                </span>
-              </div>
-
-              <div className="mt-3 flex items-baseline justify-between border-t border-[var(--border)]/50 pt-2">
-                <span className="text-base font-bold text-[var(--foreground)] font-sans tabular-nums">
-                  {p.count} de {matchesPlayed}
-                </span>
-                <span className="text-xs font-semibold text-[var(--foreground-muted)] font-sans tabular-nums">
-                  {p.pct}%
-                </span>
-              </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {patterns.map((p) => (
+          <div
+            key={p.label}
+            className="flex flex-col justify-between rounded-xl border border-red-200/80 bg-white p-4 shadow-2xs transition-colors hover:border-[#e2001a]/30"
+          >
+            <div>
+              <span className="text-xs font-bold text-[var(--foreground)]">
+                {p.label}
+              </span>
+              <p className="mt-1 text-[11px] leading-tight text-[var(--foreground-muted)]">
+                {p.desc}
+              </p>
             </div>
-          ))}
-        </div>
+
+            <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-2.5">
+              <span className="text-base sm:text-lg font-black text-[var(--foreground)] font-sans tabular-nums">
+                {p.count} de {matchesPlayed}
+              </span>
+              <span className="inline-flex items-center rounded-full border border-red-200 bg-red-100/70 px-2 py-0.5 text-[11px] font-semibold tabular-nums text-[#9b0012]">
+                {p.pct}%
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
+    </section>
   );
 }
