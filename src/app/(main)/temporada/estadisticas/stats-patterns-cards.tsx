@@ -19,34 +19,29 @@ export function StatsPatternsCards({
 
   const patterns = [
     {
-      label: "Porterías a cero",
+      label: "Portería a cero",
       count: cleanSheetsCount,
       pct: Math.round((cleanSheetsCount / total) * 100),
-      desc: "Partidos sin encajar ningún gol",
+    },
+    {
+      label: "Sin marcar gol",
+      count: withoutScoringCount,
+      pct: Math.round((withoutScoringCount / total) * 100),
     },
     {
       label: "Ambos equipos marcaron",
       count: bothTeamsScoredCount,
       pct: Math.round((bothTeamsScoredCount / total) * 100),
-      desc: "Encuentros con goles en ambas porterías",
     },
     {
-      label: "Partidos de marcador corto",
+      label: "Marcador de 0 a 2 goles",
       count: tightMatchesCount,
       pct: Math.round((tightMatchesCount / total) * 100),
-      desc: "Duelos resueltos con 0, 1 o 2 goles en total",
     },
     {
-      label: "Partidos de marcador alto",
+      label: "3 o más goles",
       count: highScoringMatchesCount,
       pct: Math.round((highScoringMatchesCount / total) * 100),
-      desc: "Duelos abiertos con 3 o más goles",
-    },
-    {
-      label: "Partidos sin ver puerta",
-      count: withoutScoringCount,
-      pct: Math.round((withoutScoringCount / total) * 100),
-      desc: "Jornadas sin anotar goles a favor",
     },
   ];
 
@@ -62,14 +57,9 @@ export function StatsPatternsCards({
             key={p.label}
             className="flex flex-col justify-between rounded-xl border border-red-200/80 bg-white p-4 shadow-2xs transition-colors hover:border-[#e2001a]/30"
           >
-            <div>
-              <span className="text-xs font-bold text-[var(--foreground)]">
-                {p.label}
-              </span>
-              <p className="mt-1 text-[11px] leading-tight text-[var(--foreground-muted)]">
-                {p.desc}
-              </p>
-            </div>
+            <span className="text-xs font-bold text-[var(--foreground)]">
+              {p.label}
+            </span>
 
             <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-2.5">
               <span className="text-base sm:text-lg font-black text-[var(--foreground)] font-sans tabular-nums">
