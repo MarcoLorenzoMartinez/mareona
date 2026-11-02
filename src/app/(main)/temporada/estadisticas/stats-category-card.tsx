@@ -4,7 +4,6 @@ interface StatRow {
   readonly label: string;
   readonly value: string | number;
   readonly rank?: number | null;
-  readonly benchmark?: string;
 }
 
 interface StatsCategoryCardProps {
@@ -23,16 +22,9 @@ export function StatsCategoryCard({ title, rows }: StatsCategoryCardProps) {
         <ul className="divide-y divide-neutral-100">
           {rows.map((row) => (
             <li key={row.label} className="flex items-center justify-between py-2.5">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold text-[var(--foreground)]">
-                  {row.label}
-                </span>
-                {row.benchmark && (
-                  <span className="text-[11px] text-[var(--foreground-muted)]">
-                    {row.benchmark}
-                  </span>
-                )}
-              </div>
+              <span className="text-xs font-semibold text-[var(--foreground)]">
+                {row.label}
+              </span>
 
               <div className="flex items-center gap-2">
                 <span className="text-sm font-bold text-[var(--foreground)] font-sans tabular-nums">

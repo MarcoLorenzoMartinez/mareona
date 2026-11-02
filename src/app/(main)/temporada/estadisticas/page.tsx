@@ -83,20 +83,20 @@ export default async function EstadisticasPage() {
           rows={[
             { label: "xG en contra concedido", value: stats.expectedGoalsConceded.toFixed(1), rank: stats.xGConcededRank },
             { label: "Intercepciones por partido", value: stats.interceptionsPerMatch.toFixed(1), rank: stats.interceptionsRank },
-            { label: "Entradas con éxito por partido", value: stats.tacklesPerMatch.toFixed(1) },
-            { label: "Despejes por partido", value: stats.clearancesPerMatch.toFixed(1) },
-            { label: "Goles concedidos a balón parado", value: "0", benchmark: "Mejor registro de LaLiga" },
+            { label: "Entradas con éxito por partido", value: stats.tacklesPerMatch.toFixed(1), rank: stats.tacklesRank },
+            { label: "Despejes por partido", value: stats.clearancesPerMatch.toFixed(1), rank: stats.clearancesRank },
+            { label: "Goles concedidos a balón parado", value: stats.setPieceGoalsConceded, rank: stats.setPieceGoalsConcededRank },
           ]}
         />
 
         <StatsCategoryCard
           title="Disciplina y Juego Limpio"
           rows={[
-            { label: "Faltas cometidas por partido", value: stats.foulsPerMatch.toFixed(1), benchmark: "Entre los más limpios de la liga" },
-            { label: "Tarjetas amarillas totales", value: stats.yellowCards },
-            { label: "Tarjetas rojas totales", value: stats.redCards },
-            { label: "Penaltis cometidos", value: "1", benchmark: "Gran rigor en área propia" },
-            { label: "Paradas del guardameta por partido", value: stats.savesPerMatch.toFixed(1) },
+            { label: "Faltas cometidas por partido", value: stats.foulsPerMatch.toFixed(1), rank: stats.foulsRank },
+            { label: "Tarjetas amarillas totales", value: stats.yellowCards, rank: stats.yellowCardsRank },
+            { label: "Tarjetas rojas totales", value: stats.redCards, rank: stats.redCardsRank },
+            { label: "Penaltis cometidos", value: stats.penaltiesConceded, rank: stats.penaltiesConcededRank },
+            { label: "Paradas del guardameta por partido", value: stats.savesPerMatch.toFixed(1), rank: stats.savesRank },
           ]}
         />
       </div>

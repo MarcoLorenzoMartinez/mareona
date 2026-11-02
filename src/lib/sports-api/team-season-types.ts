@@ -94,14 +94,24 @@ export interface TeamSeasonStats {
   readonly interceptionsRank: number | null;
   readonly tacklesPerMatch: number;
   readonly clearancesPerMatch: number;
+  readonly clearancesRank: number | null;
+  readonly tacklesRank: number | null;
+  readonly setPieceGoalsConceded: number;
+  readonly setPieceGoalsConcededRank: number | null;
+  readonly penaltiesConceded: number;
+  readonly penaltiesConcededRank: number | null;
   readonly possessionWonAttackingThirdPerMatch: number;
   readonly savesPerMatch: number;
+  readonly savesRank: number | null;
   // Stadium & Discipline
   readonly homeAttendance: number;
   readonly attendanceRank: number | null;
   readonly yellowCards: number;
+  readonly yellowCardsRank: number | null;
   readonly redCards: number;
+  readonly redCardsRank: number | null;
   readonly foulsPerMatch: number;
+  readonly foulsRank: number | null;
   // Splits
   readonly homeSplit: TeamSeasonStatsSplit;
   readonly awaySplit: TeamSeasonStatsSplit;
