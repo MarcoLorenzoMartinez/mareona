@@ -20,14 +20,9 @@ export function SeasonGoalPost({
 }: SeasonGoalPostProps) {
   return (
     <div className="flex flex-col items-center gap-1.5 rounded-lg border border-[var(--border)]/60 bg-[var(--surface)]/30 p-2 text-center w-full max-w-[210px] shrink-0">
-      <div className="flex flex-col">
-        <span className="text-[11px] font-bold text-[var(--foreground)]">
-          Portería Rival
-        </span>
-        <span className="text-[9px] font-medium text-[var(--foreground-muted)]">
-          Ubicación del balón en la red
-        </span>
-      </div>
+      <span className="text-[11px] font-bold text-[var(--foreground)]">
+        Portería Rival
+      </span>
 
       <div className="relative w-full aspect-[2/1] max-w-[190px]">
         <svg
