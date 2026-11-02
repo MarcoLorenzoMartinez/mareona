@@ -9,36 +9,36 @@ interface LeagueRankBadgeProps {
 
 /**
  * Visual chromatic scale for league rankings (22 teams in LaLiga Hypermotion):
- * - 1st (Oro): Warm metallic gold tone
- * - 2nd (Plata): Crisp silver platinum tone
- * - 3rd (Bronce): Warm bronze tone
- * - 4th – 7th (Zona Alta / Playoff): Soft emerald green indicating strong performance
+ * - 1st (Oro): Luminous warm gold with subtle amber ring
+ * - 2nd (Plata): Crisp metallic silver-platinum tone
+ * - 3rd (Bronce): Deep warm metallic bronze tone
+ * - 4th – 7th (Zona Alta / Playoff): Defined emerald green indicating strong performance
  * - 8th – 14th (Zona Media): Clean neutral slate tone
- * - 15th – 22nd (Zona Baja): Soft red tone indicating room for improvement
+ * - 15th – 22nd (Zona Baja): Clear soft red tone indicating room for improvement
  */
 function getRankStyle(effectiveRank: number): string {
   if (effectiveRank === 1) {
-    // 1º Oro
-    return "border border-amber-300 bg-amber-50 text-amber-900 font-bold";
+    // 1º Oro exclusivo
+    return "border border-amber-400 bg-amber-100/90 text-amber-950 font-black shadow-2xs";
   }
   if (effectiveRank === 2) {
-    // 2º Plata
-    return "border border-slate-300 bg-slate-100 text-slate-800 font-bold";
+    // 2º Plata exclusiva
+    return "border border-slate-300 bg-slate-200/90 text-slate-900 font-black shadow-2xs";
   }
   if (effectiveRank === 3) {
-    // 3º Bronce
-    return "border border-orange-300 bg-orange-50 text-orange-950 font-bold";
+    // 3º Bronce exclusivo
+    return "border border-amber-600/50 bg-amber-100 text-amber-950 font-black shadow-2xs";
   }
   if (effectiveRank <= 7) {
-    // 4º - 7º Zona alta / Élite
-    return "border border-emerald-300 bg-emerald-50 text-emerald-800 font-bold";
+    // 4º - 7º Zona alta / Playoff
+    return "border border-emerald-300 bg-emerald-100/80 text-emerald-900 font-bold";
   }
   if (effectiveRank <= 14) {
     // 8º - 14º Zona media
-    return "border border-neutral-200 bg-neutral-100 text-neutral-700 font-semibold";
+    return "border border-neutral-300 bg-neutral-100 text-neutral-800 font-bold";
   }
   // 15º - 22º Zona baja
-  return "border border-red-200 bg-red-50 text-[#9b0012] font-semibold";
+  return "border border-red-300 bg-red-100/80 text-red-900 font-bold";
 }
 
 export function LeagueRankBadge({ rank, invertPolarity = false, className = "" }: LeagueRankBadgeProps) {
