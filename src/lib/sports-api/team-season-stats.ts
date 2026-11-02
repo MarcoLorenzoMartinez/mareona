@@ -161,6 +161,7 @@ export function transformFotMobTeamStats(
     seasonGoals,
     // Efficiency & Expected Points
     actualPoints: sportingXg?.pts ?? sportingAll?.pts ?? 0,
+    actualStandingsRank: sportingAll?.idx ?? null,
     expectedPoints: sportingXg?.xPoints ?? 0,
     expectedPointsDiff: sportingXg?.xPointsDiff ?? 0,
     expectedStandingsRank: sportingXg?.xPosition ?? null,

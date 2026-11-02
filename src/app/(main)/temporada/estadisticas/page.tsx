@@ -41,6 +41,7 @@ export default async function EstadisticasPage() {
         <StatsSplitsChart
           homeSplit={stats.homeSplit}
           awaySplit={stats.awaySplit}
+          overallRank={stats.actualStandingsRank}
           homeAttendance={stats.homeAttendance}
           attendanceRank={stats.attendanceRank}
         />

@@ -64,6 +64,7 @@ export interface TeamSeasonStats {
   readonly seasonGoals: readonly TeamSeasonGoalItem[];
   // Efficiency & Expected Points
   readonly actualPoints: number;
+  readonly actualStandingsRank: number | null;
   readonly expectedPoints: number;
   readonly expectedPointsDiff: number;
   readonly expectedStandingsRank: number | null;
