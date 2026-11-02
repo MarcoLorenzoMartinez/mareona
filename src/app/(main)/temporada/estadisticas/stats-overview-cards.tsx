@@ -54,7 +54,7 @@ export function StatsOverviewCards({ stats }: StatsOverviewCardsProps) {
               </span>
               {c.rank && <LeagueRankBadge rank={c.rank} />}
               {c.metricDiff && (
-                <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-sans font-semibold tabular-nums border border-[#e2001a]/15 bg-red-50/60 text-[#900010]">
+                <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-sans font-semibold tabular-nums border border-red-200 bg-red-100/70 text-[#9b0012]">
                   {c.metricDiff}
                 </span>
               )}
