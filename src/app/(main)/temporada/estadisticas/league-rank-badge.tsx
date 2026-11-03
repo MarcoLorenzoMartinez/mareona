@@ -19,26 +19,26 @@ interface LeagueRankBadgeProps {
 function getRankStyle(effectiveRank: number): string {
   if (effectiveRank === 1) {
     // 1º Oro exclusivo
-    return "border border-amber-400 bg-amber-100/90 text-amber-950 font-black shadow-2xs";
+    return "border border-amber-300 bg-amber-50 text-amber-950 font-bold shadow-2xs";
   }
   if (effectiveRank === 2) {
     // 2º Plata exclusiva
-    return "border border-slate-300 bg-slate-200/90 text-slate-900 font-black shadow-2xs";
+    return "border border-slate-300 bg-slate-100 text-slate-900 font-bold shadow-2xs";
   }
   if (effectiveRank === 3) {
     // 3º Bronce exclusivo
-    return "border border-amber-600/50 bg-amber-100 text-amber-950 font-black shadow-2xs";
+    return "border border-orange-300 bg-orange-50 text-orange-950 font-bold shadow-2xs";
   }
   if (effectiveRank <= 7) {
-    // 4º - 7º Zona alta / Playoff
-    return "border border-emerald-300 bg-emerald-100/80 text-emerald-900 font-bold";
+    // 4º - 7º Zona alta / Playoff (verde equilibrado)
+    return "border border-emerald-200/90 bg-emerald-50/70 text-emerald-800 font-bold";
   }
   if (effectiveRank <= 14) {
-    // 8º - 14º Zona media
-    return "border border-neutral-300 bg-neutral-100 text-neutral-800 font-bold";
+    // 8º - 14º Zona media (gris neutro limpio)
+    return "border border-neutral-200 bg-neutral-50 text-neutral-700 font-semibold";
   }
-  // 15º - 22º Zona baja
-  return "border border-red-300 bg-red-100/80 text-red-900 font-bold";
+  // 15º - 22º Zona baja (rojo suave y desaturado, sin estridencias)
+  return "border border-red-200/60 bg-red-50/60 text-[#8b1522] font-semibold";
 }
 
 export function LeagueRankBadge({ rank, invertPolarity = false, className = "" }: LeagueRankBadgeProps) {
@@ -53,7 +53,7 @@ export function LeagueRankBadge({ rank, invertPolarity = false, className = "" }
 
   return (
     <span
-      className={`inline-flex items-center justify-center min-w-[34px] rounded-full px-1.5 py-0.5 text-[11px] font-sans tabular-nums tracking-tight transition-colors ${rankStyle} ${className}`}
+      className={`inline-flex items-center justify-center min-w-[32px] rounded px-1.5 py-0.5 text-[11px] font-sans tabular-nums tracking-tight transition-colors ${rankStyle} ${className}`}
     >
       {rank}.º
     </span>
