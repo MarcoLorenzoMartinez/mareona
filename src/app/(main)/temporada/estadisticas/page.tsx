@@ -17,6 +17,7 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function EstadisticasPage() {
+  "use cache";
   const stats = await fetchTeamSeasonStats();
 
   if (!stats) {

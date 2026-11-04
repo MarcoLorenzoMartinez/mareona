@@ -26,7 +26,7 @@ export function PackOpeningModal({
   onSaveCards,
   ownedCardSlugs,
 }: PackOpeningModalProps) {
-  const [cards, setCards] = useState<Card[]>([]);
+  const [cards, setCards] = useState<Card[]>(() => (isOpen ? onOpenPackCards(tier) : []));
   const [revealedCount, setRevealedCount] = useState(0);
   const [anticipatingIndex, setAnticipatingIndex] = useState<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -67,25 +67,20 @@ export function PackOpeningModal({
     timerRef.current = setTimeout(tick, 500);
   }, []);
 
+  const handleClose = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    onClose();
+  }, [onClose]);
+
   useEffect(() => {
-    if (!isOpen) {
-      setCards([]);
-      setRevealedCount(0);
-      setAnticipatingIndex(null);
-      if (timerRef.current) clearTimeout(timerRef.current);
-      return;
+    if (!isOpen) return;
+    if (cards.length > 0) {
+      startRevealSequence(cards);
     }
-
-    const generated = onOpenPackCards(tier);
-    setCards(generated);
-    setRevealedCount(0);
-    startRevealSequence(generated);
-
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [isOpen, cards, startRevealSequence]);
 
   if (!isOpen) return null;
 
@@ -134,7 +129,7 @@ export function PackOpeningModal({
 
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Cerrar modal"
             className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors cursor-pointer"
           >
@@ -166,7 +161,7 @@ export function PackOpeningModal({
           onOpenAnother={handleOpenAnother}
           onSaveCards={() => {
             onSaveCards();
-            onClose();
+            handleClose();
           }}
         />
       </div>

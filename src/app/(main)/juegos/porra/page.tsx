@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PorraPage() {
+  "use cache";
   const nextMatchSummary = await fetchNextFixture();
   const squad = await fetchSportingSquad();
 

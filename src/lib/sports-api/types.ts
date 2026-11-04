@@ -49,23 +49,26 @@ export function normalizeCompetitionName(name?: string | null): string {
   return name;
 }
 
+export const DEFAULT_ACTIVE_SEASON_YEAR = 2024;
+
 /**
  * Resolves the starting year of the active football season based on calendar date.
  * European competitions run from July/August to May/June.
  * Months July-December (month index >= 6) belong to season `year`.
  * Months January-June (month index < 6) belong to season `year - 1`.
  *
- * @param date Reference date (defaults to current date).
+ * @param date Reference date. When omitted, uses DEFAULT_ACTIVE_SEASON_YEAR to avoid non-deterministic prerenders.
  * @returns 4-digit starting year of the football season.
  */
-export function getCurrentSeasonYear(date: Date = new Date()): number {
+export function getCurrentSeasonYear(date?: Date): number {
+  if (!date) return DEFAULT_ACTIVE_SEASON_YEAR;
   const year = date.getFullYear();
   const month = date.getMonth();
   return month >= 6 ? year : year - 1;
 }
 
 /**
- * Returns the standard formatted label for a season (e.g. "2026/27").
+ * Returns the standard formatted label for a season (e.g. "2024/25").
  *
  * @param seasonYear 4-digit season start year (defaults to active season).
  * @returns Formatted season string.

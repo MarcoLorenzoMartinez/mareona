@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { toast } from "@/lib/ui/toast";
-import type { Card, PackTier } from "@/lib/cards/types";
+import type { Card, DailyMissionState, PackTier } from "@/lib/cards/types";
 import { useAuth } from "@/context/auth-context";
 import { isDemoEmail } from "@/lib/auth/demo-credentials";
 import { AlbumHeader, type AlbumViewMode } from "./album-header";
@@ -20,6 +20,7 @@ import {
   addPacksToInventory,
   clearUserPacks,
   getDailyMissionState,
+  DEFAULT_MISSION_STATE,
   claimDailyLoginPack,
   recycleDuplicates,
 } from "@/lib/cards/pack-storage";
@@ -46,16 +47,21 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
 
   const [userInventory, setUserInventory] = useState(loadUserCardInventory);
   const [packInventory, setPackInventory] = useState(loadUserPackInventory);
-  const [missionState, setMissionState] = useState(getDailyMissionState);
+  const [missionState, setMissionState] = useState<DailyMissionState>(() =>
+    typeof window === "undefined" ? DEFAULT_MISSION_STATE : getDailyMissionState()
+  );
 
   useEffect(() => {
     const onPackSync = () => setPackInventory(loadUserPackInventory());
     const onCardSync = () => setUserInventory(loadUserCardInventory());
+    const onMissionSync = () => setMissionState(getDailyMissionState());
     window.addEventListener("mareona_pack_inventory_changed", onPackSync);
     window.addEventListener("mareona_card_inventory_changed", onCardSync);
+    window.addEventListener("mareona_missions_state_changed", onMissionSync);
     return () => {
       window.removeEventListener("mareona_pack_inventory_changed", onPackSync);
       window.removeEventListener("mareona_card_inventory_changed", onCardSync);
+      window.removeEventListener("mareona_missions_state_changed", onMissionSync);
     };
   }, []);
 
@@ -150,15 +156,17 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
       ) : (
         <AlbumGridTabView filterState={gridFilterState} onFilterChange={setGridFilterState} duplicateCount={duplicateCount} filteredCards={filteredGridCards} getCardStatus={getCardStatus} />
       )}
-      <PackOpeningModal
-        isOpen={isPackModalOpen}
-        tier={selectedPackTier}
-        canOpenAnother={packInventory[selectedPackTier] > 0}
-        onClose={() => setIsPackModalOpen(false)}
-        onOpenPackCards={handleOpenPackCards}
-        onSaveCards={handleSaveAndStayInPacks}
-        ownedCardSlugs={new Set(Object.keys(userInventory))}
-      />
+      {isPackModalOpen && (
+        <PackOpeningModal
+          isOpen={isPackModalOpen}
+          tier={selectedPackTier}
+          canOpenAnother={packInventory[selectedPackTier] > 0}
+          onClose={() => setIsPackModalOpen(false)}
+          onOpenPackCards={handleOpenPackCards}
+          onSaveCards={handleSaveAndStayInPacks}
+          ownedCardSlugs={new Set(Object.keys(userInventory))}
+        />
+      )}
     </div>
   );
 }

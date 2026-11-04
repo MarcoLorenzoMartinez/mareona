@@ -21,6 +21,13 @@ export const CANONICAL_STARTER_SLUGS: readonly string[] = [
 
 export const DUPLICATES_RECIPE_COST = 10;
 
+export const DEFAULT_MISSION_STATE: DailyMissionState = {
+  todayDate: "",
+  hasClaimedDailyLogin: false,
+  hasClaimedDailyGame: false,
+  isMatchday: false,
+};
+
 /**
  * Returns the current date in YYYY-MM-DD local format.
  */
@@ -183,6 +190,9 @@ function saveStoredMissionState(state: StoredMissionState): void {
  * Computes the live state of daily objectives.
  */
 export function getDailyMissionState(todayOverride?: string): DailyMissionState {
+  if (typeof window === "undefined" && !todayOverride) {
+    return { ...DEFAULT_MISSION_STATE };
+  }
   const today = todayOverride ?? getTodayDateString();
   const state = loadStoredMissionState();
   const now = new Date();

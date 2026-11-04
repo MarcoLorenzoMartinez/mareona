@@ -1,7 +1,7 @@
 // Client: Estado interactivo del juego diario ¿Quién es? con archivo por fecha y persistencia
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { WhoAreYaHeader } from './who-are-ya-header';
 import { WhoAreYaMysteryPhoto } from './who-are-ya-mystery-photo';
 import { WhoAreYaSelector, type SelectorOption } from './who-are-ya-selector';
@@ -10,7 +10,7 @@ import { WhoAreYaResultModal } from './who-are-ya-game-over';
 import { WhoAreYaStatsModal } from './who-are-ya-stats-modal';
 import { WhoAreYaArchiveModal } from './who-are-ya-archive-modal';
 import { evaluatePlayerGuess, MAX_ATTEMPTS } from '@/lib/who-are-ya/engine';
-import { getPlayerForDate } from '@/lib/who-are-ya/daily';
+import { getPlayerForDate, getTodayDateStr } from '@/lib/who-are-ya/daily';
 import {
   getStoredPlayerGuesses,
   savePlayerGuesses,
@@ -26,7 +26,9 @@ interface WhoAreYaClientProps {
 }
 
 export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
-  const [selectedDate, setSelectedDate] = useState<string>(initialDate);
+  const [selectedDate, setSelectedDate] = useState<string>(() =>
+    typeof window === 'undefined' ? initialDate : getTodayDateStr()
+  );
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [isResultModalDismissed, setIsResultModalDismissed] = useState(false);
@@ -34,8 +36,9 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
 
   // Guesses state mapped per date initialized from storage
   const [playerGuessesByDate, setPlayerGuessesByDate] = useState<Record<string, PlayerGuessResult[]>>(() => {
-    const initialGuesses = getStoredPlayerGuesses(initialDate);
-    return initialGuesses.length > 0 ? { [initialDate]: initialGuesses } : {};
+    const activeDate = typeof window === 'undefined' ? initialDate : getTodayDateStr();
+    const initialGuesses = getStoredPlayerGuesses(activeDate);
+    return initialGuesses.length > 0 ? { [activeDate]: initialGuesses } : {};
   });
 
   const handleDateChange = (newDate: string) => {

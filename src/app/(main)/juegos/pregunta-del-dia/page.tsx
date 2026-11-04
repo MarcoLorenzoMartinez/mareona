@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { getTriviaForDate } from '../../../../lib/trivia/engine';
 import { TriviaClient } from './trivia-client';
@@ -11,10 +12,10 @@ interface PageProps {
   searchParams: Promise<{ date?: string }>;
 }
 
-export default async function TriviaPage({ searchParams }: PageProps) {
+async function TriviaContent({ searchParams }: PageProps) {
   const params = await searchParams;
 
-  // Resolve today's challenge in Europe/Madrid timezone
+  // Resolve challenge in Europe/Madrid timezone
   const todayMadrid = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'Europe/Madrid',
     year: 'numeric',
@@ -28,9 +29,15 @@ export default async function TriviaPage({ searchParams }: PageProps) {
 
   const challenge = getTriviaForDate(targetDate);
 
+  return <TriviaClient challenge={challenge} />;
+}
+
+export default function TriviaPage(props: PageProps) {
   return (
     <div className="py-2 sm:py-6">
-      <TriviaClient challenge={challenge} />
+      <Suspense fallback={<div className="min-h-[400px] animate-pulse rounded-2xl bg-neutral-100/60" />}>
+        <TriviaContent {...props} />
+      </Suspense>
     </div>
   );
 }

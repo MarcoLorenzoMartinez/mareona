@@ -22,7 +22,7 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
   const isDemo = isDemoEmail(user?.email);
 
   const [challenge, setChallenge] = useState<WordleDailyWord>(() => {
-    return initialChallenge || getTodayChallenge();
+    return (typeof window === 'undefined' ? initialChallenge : getTodayChallenge()) || getTodayChallenge();
   });
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);

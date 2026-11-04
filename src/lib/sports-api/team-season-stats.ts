@@ -16,8 +16,6 @@ let memoryCachedTeamStats: {
   expiresAt: number;
 } | null = null;
 
-const TTL_TEAM_STATS_MS = 10 * 60 * 1000; // 10 minutes
-
 interface RawStatItem {
   readonly header?: string;
   readonly participant?: {
@@ -242,8 +240,7 @@ export function transformFotMobTeamStats(
  * @returns TeamSeasonStats or null if unavailable
  */
 export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
-  const now = Date.now();
-  if (memoryCachedTeamStats && memoryCachedTeamStats.expiresAt > now) {
+  if (memoryCachedTeamStats) {
     return memoryCachedTeamStats.data;
   }
 
@@ -460,7 +457,7 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
     if (stats) {
       memoryCachedTeamStats = {
         data: stats,
-        expiresAt: now + TTL_TEAM_STATS_MS,
+        expiresAt: 0,
       };
       return stats;
     }

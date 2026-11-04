@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PizarraPage() {
+  "use cache";
   const firstTeamSquad = await fetchSportingSquad();
   const unifiedRoster = buildUnifiedRoster(firstTeamSquad);
 

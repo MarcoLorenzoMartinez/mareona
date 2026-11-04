@@ -70,6 +70,9 @@ export function getChallengeForDate(dateStr: string): WordleDailyWord {
  * Allows passing an optional date string or timestamp to prevent server prerender timing issues.
  */
 export function getTodayChallenge(customDate?: Date): WordleDailyWord {
+  if (typeof window === 'undefined' && !customDate) {
+    return getChallengeForDate(WORDLE_EPOCH_DATE);
+  }
   const d = customDate || new Date();
   const formatter = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'Europe/Madrid',

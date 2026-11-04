@@ -234,7 +234,7 @@ test("parseFotMobTacticalLineups maps formations, coordinates, and photo URLs", 
   assert.equal(result.home.starters[0]?.name, "Rubén Yáñez");
   assert.equal(
     result.home.starters[0]?.photoUrl,
-    "https://images.fotmob.com/image_resources/playerimages/101.png"
+    "/images/players/1.png"
   );
   assert.equal(result.home.starters[0]?.x, 0.5);
   assert.equal(result.home.starters[0]?.y, 0.1);

@@ -1,7 +1,7 @@
 // Client: Tarjeta interactiva del partido y formulario ágil de pronóstico
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TeamCrest } from '@/components/media/team-crest';
 import { PorraScorersPicker } from './porra-scorers-picker';
 import { isPorraSubmissionOpen } from '@/lib/porra/engine';
@@ -24,11 +24,13 @@ export function PorraMatchCard({
   const [awayScore, setAwayScore] = useState<number>(() => existingPrediction?.awayScore ?? 0);
   const [scorers, setScorers] = useState<string[]>(() => existingPrediction?.sportingScorers ?? []);
   const [isSavedRecently, setIsSavedRecently] = useState(false);
-
-  const isOpen = isPorraSubmissionOpen(
-    match.kickoffAt,
-    match.isFinished ? 'finished' : undefined
-  );
+  const [isOpen] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return isPorraSubmissionOpen(
+      match.kickoffAt,
+      match.isFinished ? 'finished' : undefined
+    );
+  });
 
   const sportingIsHome = match.homeTeam.isSporting;
   const sportingGoals = sportingIsHome ? homeScore : awayScore;

@@ -40,8 +40,13 @@ export function getPlayerForDate(dateStr: string, catalog: WhoAreYaPlayer[]): Wh
 
 /**
  * Returns today's ISO date string (YYYY-MM-DD).
+ * During server-side rendering or static generation, returns the deterministic epoch date
+ * to satisfy strict Next.js static prerender checks.
  */
 export function getTodayDateStr(): string {
+  if (typeof window === 'undefined') {
+    return WHO_ARE_YA_EPOCH_DATE;
+  }
   const now = new Date();
   const y = now.getFullYear();
   const m = String(now.getMonth() + 1).padStart(2, '0');

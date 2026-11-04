@@ -1,7 +1,7 @@
 // Client: Orquestador interactivo del juego Mayor o Menor
 'use client';
 
-import React, { useState, useCallback, useTransition } from 'react';
+import React, { useState, useCallback, useEffect, useTransition } from 'react';
 import type {
   HigherLowerMode,
   HigherLowerPlayer,
@@ -37,11 +37,11 @@ export function HigherLowerClient() {
   const [pool, setPool] = useState<HigherLowerPlayer[]>(() => getEligiblePlayers('matches'));
   const [leftPlayer, setLeftPlayer] = useState<HigherLowerPlayer>(() => {
     const initialPool = getEligiblePlayers('matches');
-    return pickRandomPlayer(initialPool);
+    return typeof window === 'undefined' ? initialPool[0] : pickRandomPlayer(initialPool);
   });
   const [rightPlayer, setRightPlayer] = useState<HigherLowerPlayer>(() => {
     const initialPool = getEligiblePlayers('matches');
-    return pickRandomPlayer(initialPool, [initialPool[0].bdfId]);
+    return typeof window === 'undefined' ? (initialPool[1] ?? initialPool[0]) : pickRandomPlayer(initialPool, [initialPool[0].bdfId]);
   });
 
   const startNewGame = useCallback((targetMode: HigherLowerMode) => {
