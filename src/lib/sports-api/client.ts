@@ -247,7 +247,8 @@ export async function fetchNextFixture(
     return null;
   }
 
-  const url = `${baseUrl}/fixtures?team=${teamId}&season=2024`;
+  const currentSeason = getCurrentSeasonYear();
+  const url = `${baseUrl}/fixtures?team=${teamId}&season=${currentSeason}`;
   const response = await fetch(url, {
     method: "GET",
     headers: {

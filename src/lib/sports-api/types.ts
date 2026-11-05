@@ -49,7 +49,7 @@ export function normalizeCompetitionName(name?: string | null): string {
   return name;
 }
 
-export const DEFAULT_ACTIVE_SEASON_YEAR = 2024;
+export const DEFAULT_ACTIVE_SEASON_YEAR = 2026;
 
 /**
  * Resolves the starting year of the active football season based on calendar date.
@@ -57,11 +57,13 @@ export const DEFAULT_ACTIVE_SEASON_YEAR = 2024;
  * Months July-December (month index >= 6) belong to season `year`.
  * Months January-June (month index < 6) belong to season `year - 1`.
  *
- * @param date Reference date. When omitted, uses DEFAULT_ACTIVE_SEASON_YEAR to avoid non-deterministic prerenders.
+ * @param date Reference date. When omitted, uses current date dynamically, falling back to DEFAULT_ACTIVE_SEASON_YEAR.
  * @returns 4-digit starting year of the football season.
  */
-export function getCurrentSeasonYear(date?: Date): number {
-  if (!date) return DEFAULT_ACTIVE_SEASON_YEAR;
+export function getCurrentSeasonYear(date: Date = new Date()): number {
+  if (!date || isNaN(date.getTime())) {
+    return DEFAULT_ACTIVE_SEASON_YEAR;
+  }
   const year = date.getFullYear();
   const month = date.getMonth();
   return month >= 6 ? year : year - 1;

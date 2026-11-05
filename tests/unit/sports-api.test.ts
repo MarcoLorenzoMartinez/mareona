@@ -186,6 +186,13 @@ test("getCurrentSeasonYear and getSeasonLabel calculate active season dynamicall
     "../../src/lib/sports-api/types.ts"
   );
 
+  // Without arguments, resolves dynamically according to current system date
+  const dynamicCurrentYear = getCurrentSeasonYear();
+  const now = new Date();
+  const expectedCurrentYear = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1;
+  assert.equal(dynamicCurrentYear, expectedCurrentYear);
+  assert.equal(getSeasonLabel(), getSeasonLabel(expectedCurrentYear));
+
   // October 2026 -> season 2026, label 2026/27
   const oct2026 = new Date("2026-10-13T12:00:00Z");
   assert.equal(getCurrentSeasonYear(oct2026), 2026);
