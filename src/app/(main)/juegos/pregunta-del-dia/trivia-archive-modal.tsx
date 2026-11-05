@@ -12,6 +12,7 @@ interface TriviaArchiveModalProps {
   onClose: () => void;
   selectedDate: string;
   onSelectDate: (date: string) => void;
+  attemptVersion?: number;
 }
 
 export function TriviaArchiveModal({
@@ -19,6 +20,7 @@ export function TriviaArchiveModal({
   onClose,
   selectedDate,
   onSelectDate,
+  attemptVersion,
 }: TriviaArchiveModalProps) {
   const todayDate = useMemo(() => getTriviaTodayDateStr(), []);
 
@@ -44,6 +46,7 @@ export function TriviaArchiveModal({
       epochDate={TRIVIA_EPOCH_DATE}
       todayDate={todayDate}
       getStatusForDate={getStatusForDate}
+      attemptVersion={attemptVersion}
     />
   );
 }

@@ -3,7 +3,9 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { TriviaDailyChallenge, TriviaPlayerAttempt, TriviaStats } from '@/lib/trivia/types';
+import { PlayerPhoto } from '@/components/media/player-photo';
 
 interface TriviaResultModalProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface TriviaResultModalProps {
   stats: TriviaStats;
   challenge: TriviaDailyChallenge;
   attempt: TriviaPlayerAttempt | null;
+  onOpenArchive?: () => void;
 }
 
 export function TriviaResultModal({
@@ -19,6 +22,7 @@ export function TriviaResultModal({
   stats,
   challenge,
   attempt,
+  onOpenArchive,
 }: TriviaResultModalProps) {
   if (!isOpen) return null;
 
@@ -28,6 +32,8 @@ export function TriviaResultModal({
 
   const isAnswered = attempt !== null;
   const isCorrect = isAnswered && attempt.isCorrect;
+  const photoUrl = challenge.question.photoUrl;
+  const isLocalImage = Boolean(photoUrl && photoUrl.startsWith('/'));
 
   return (
     <div
@@ -37,26 +43,11 @@ export function TriviaResultModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-2xs"
     >
       <div className="flex max-h-[92vh] w-full max-w-sm flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl animate-in fade-in zoom-in-95 duration-150">
-        {/* Cabecera con badge de estado de alto contraste y limpio */}
+        {/* Cabecera limpia y neutral */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
-          {isAnswered ? (
-            <div className="flex items-center gap-2">
-              <span
-                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
-                  isCorrect
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-[#e2001a] text-white'
-                }`}
-              >
-                <span>{isCorrect ? '✓' : '✕'}</span>
-                <span>{isCorrect ? '¡Acertaste!' : 'Has fallado'}</span>
-              </span>
-            </div>
-          ) : (
-            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-              Estadísticas
-            </span>
-          )}
+          <h2 id="trivia-modal-title" className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+            Estadísticas
+          </h2>
 
           <button
             type="button"
@@ -68,32 +59,48 @@ export function TriviaResultModal({
           </button>
         </div>
 
-        {/* Revelación destacada de respuesta y explicación histórica */}
+        {/* Revelación con tarjeta ambiental verde o roja para foto y descripción */}
         {isAnswered && (
-          <div className="mt-4 text-center">
-            <span
-              className={`text-[11px] font-bold tracking-widest uppercase ${
-                isCorrect ? 'text-emerald-700' : 'text-[#e2001a]'
-              }`}
-            >
-              {isCorrect ? 'Respuesta correcta' : 'Solución'}
-            </span>
-            <h3 id="trivia-modal-title" className="mt-1 text-2xl font-black tracking-tight text-neutral-900">
+          <div
+            className={`mt-4 flex flex-col items-center rounded-2xl border p-4 text-center transition-all ${
+              isCorrect
+                ? 'border-emerald-300 bg-emerald-50 text-emerald-950'
+                : 'border-rose-300 bg-rose-50 text-rose-950'
+            }`}
+          >
+            {/* Foto del protagonista o momento */}
+            {photoUrl && (
+              <div className="relative mb-3 flex items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-white shadow-2xs p-1">
+                {isLocalImage ? (
+                  <div className="relative h-28 w-44 overflow-hidden rounded-xl">
+                    <Image
+                      src={photoUrl}
+                      alt={challenge.question.canonicalAnswer}
+                      fill
+                      sizes="180px"
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-xl bg-white">
+                    <PlayerPhoto
+                      photoUrl={photoUrl}
+                      playerName={challenge.question.canonicalAnswer}
+                      size="lg"
+                      className="h-26 w-26 object-contain"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+
+            <h3 className="text-2xl font-black tracking-tight text-neutral-900">
               {challenge.question.canonicalAnswer}
             </h3>
 
-            <div
-              className={`mt-3 rounded-xl border p-3.5 text-left text-xs leading-relaxed ${
-                isCorrect
-                  ? 'border-emerald-200 bg-emerald-50/60 text-emerald-950'
-                  : 'border-neutral-200 bg-[var(--surface)] text-neutral-700'
-              }`}
-            >
-              <span className="block font-bold text-neutral-900 mb-1">
-                Contexto histórico:
-              </span>
+            <p className="mt-2 text-xs font-normal leading-relaxed text-neutral-700 px-1">
               {challenge.question.explanation}
-            </div>
+            </p>
           </div>
         )}
 
@@ -136,21 +143,35 @@ export function TriviaResultModal({
           </div>
         </div>
 
-        {/* Botones de acción */}
-        <div className="mt-6 flex items-center gap-3">
+        {/* Acciones principales: Volver a juegos + Jugar archivo / Aceptar */}
+        <div className="mt-6 flex items-center gap-2.5">
           <Link
             href="/juegos"
-            className="flex-1 rounded-xl border border-neutral-200 bg-white py-3 text-center text-xs font-bold text-neutral-700 hover:bg-neutral-50 active:scale-98 transition-all"
+            className="flex-1 rounded-xl border border-neutral-200 bg-white py-2.5 text-center text-xs font-bold text-neutral-700 hover:bg-neutral-50 active:scale-98 transition-all"
           >
             Volver a Juegos
           </Link>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 rounded-xl bg-[#e2001a] py-3 text-center text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-98 transition-all"
-          >
-            Aceptar
-          </button>
+
+          {onOpenArchive ? (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenArchive();
+              }}
+              className="flex-1 rounded-xl bg-[#e2001a] py-2.5 text-center text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-98 transition-all"
+            >
+              Jugar archivo
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 rounded-xl bg-[#e2001a] py-2.5 text-center text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-98 transition-all"
+            >
+              Aceptar
+            </button>
+          )}
         </div>
       </div>
     </div>

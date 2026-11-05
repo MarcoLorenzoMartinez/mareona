@@ -160,6 +160,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
         onClose={() => setIsArchiveOpen(false)}
         selectedDate={activeDate}
         onSelectDate={handleSelectDate}
+        attemptVersion={stats.played}
       />
 
       {/* Unified Results Modal aligned with Wordle and Mayor o Menor */}
@@ -169,6 +170,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
         stats={stats}
         challenge={challenge}
         attempt={attempt}
+        onOpenArchive={() => setIsArchiveOpen(true)}
       />
     </div>
   );

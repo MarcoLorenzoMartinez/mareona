@@ -13,6 +13,7 @@ export interface GameArchiveModalProps {
   epochDate: string;
   todayDate: string;
   getStatusForDate: (dateStr: string) => ChallengeDayStatus;
+  attemptVersion?: number;
 }
 
 const MONTH_NAMES = [
@@ -30,6 +31,7 @@ export function GameArchiveModal({
   epochDate,
   todayDate,
   getStatusForDate,
+  attemptVersion,
 }: GameArchiveModalProps) {
   const [viewYear, setViewYear] = useState(() => Number(selectedDate.split('-')[0]) || 2026);
   const [viewMonth, setViewMonth] = useState(() => Number(selectedDate.split('-')[1]) - 1 || 9);
@@ -52,7 +54,10 @@ export function GameArchiveModal({
     }
   };
 
+  // Recalculate cells whenever view changes, modal opens or attempt updates
   const cells = useMemo(() => {
+    if (!isOpen) return [];
+
     const firstDayOfMonth = new Date(Date.UTC(viewYear, viewMonth, 1));
     const dayOfWeek = (firstDayOfMonth.getUTCDay() + 6) % 7;
     const totalDays = new Date(Date.UTC(viewYear, viewMonth + 1, 0)).getUTCDate();
@@ -82,7 +87,7 @@ export function GameArchiveModal({
     }
 
     return result;
-  }, [viewYear, viewMonth, todayDate, epochDate, getStatusForDate]);
+  }, [isOpen, viewYear, viewMonth, todayDate, epochDate, getStatusForDate, attemptVersion]);
 
   if (!isOpen) return null;
 
