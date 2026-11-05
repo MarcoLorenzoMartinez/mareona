@@ -27,6 +27,7 @@ export function TriviaResultModal({
     : 0;
 
   const isAnswered = attempt !== null;
+  const isCorrect = isAnswered && attempt.isCorrect;
 
   return (
     <div
@@ -36,11 +37,27 @@ export function TriviaResultModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-2xs"
     >
       <div className="flex max-h-[92vh] w-full max-w-sm flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl animate-in fade-in zoom-in-95 duration-150">
-        {/* Cabecera sutil idéntica a Wordle / Mayor o Menor */}
+        {/* Cabecera con badge de estado de alto contraste y limpio */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-            {isAnswered ? (attempt.isCorrect ? '¡Has acertado!' : 'Has fallado') : 'Estadísticas'}
-          </span>
+          {isAnswered ? (
+            <div className="flex items-center gap-2">
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${
+                  isCorrect
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-[#e2001a] text-white'
+                }`}
+              >
+                <span>{isCorrect ? '✓' : '✕'}</span>
+                <span>{isCorrect ? '¡Acertaste!' : 'Has fallado'}</span>
+              </span>
+            </div>
+          ) : (
+            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">
+              Estadísticas
+            </span>
+          )}
+
           <button
             type="button"
             onClick={onClose}
@@ -54,15 +71,25 @@ export function TriviaResultModal({
         {/* Revelación destacada de respuesta y explicación histórica */}
         {isAnswered && (
           <div className="mt-4 text-center">
-            <span className="text-[11px] font-bold tracking-widest text-[#e2001a] uppercase">
-              Respuesta correcta
+            <span
+              className={`text-[11px] font-bold tracking-widest uppercase ${
+                isCorrect ? 'text-emerald-700' : 'text-[#e2001a]'
+              }`}
+            >
+              {isCorrect ? 'Respuesta correcta' : 'Solución'}
             </span>
             <h3 id="trivia-modal-title" className="mt-1 text-2xl font-black tracking-tight text-neutral-900">
               {challenge.question.canonicalAnswer}
             </h3>
 
-            <div className="mt-3 rounded-xl border border-neutral-100 bg-neutral-50/80 p-3.5 text-left text-xs leading-relaxed text-neutral-600">
-              <span className="block font-bold text-neutral-800 mb-1">
+            <div
+              className={`mt-3 rounded-xl border p-3.5 text-left text-xs leading-relaxed ${
+                isCorrect
+                  ? 'border-emerald-200 bg-emerald-50/60 text-emerald-950'
+                  : 'border-neutral-200 bg-[var(--surface)] text-neutral-700'
+              }`}
+            >
+              <span className="block font-bold text-neutral-900 mb-1">
                 Contexto histórico:
               </span>
               {challenge.question.explanation}
@@ -109,19 +136,18 @@ export function TriviaResultModal({
           </div>
         </div>
 
-        {/* Acciones inferiores de salida */}
-        <div className="mt-6 grid grid-cols-2 gap-3 w-full">
+        {/* Botones de acción */}
+        <div className="mt-6 flex items-center gap-3">
           <Link
             href="/juegos"
-            className="flex h-11 items-center justify-center rounded-xl border border-neutral-300 bg-white px-3 text-xs font-bold text-neutral-600 shadow-2xs hover:bg-neutral-50 hover:text-neutral-900 active:scale-[0.97] transition-all select-none text-center"
+            className="flex-1 rounded-xl border border-neutral-200 bg-white py-3 text-center text-xs font-bold text-neutral-700 hover:bg-neutral-50 active:scale-98 transition-all"
           >
             Volver a Juegos
           </Link>
-
           <button
             type="button"
             onClick={onClose}
-            className="flex h-11 items-center justify-center rounded-xl bg-[#e2001a] px-3 text-xs font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-[0.97] transition-all select-none"
+            className="flex-1 rounded-xl bg-[#e2001a] py-3 text-center text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-98 transition-all"
           >
             Aceptar
           </button>

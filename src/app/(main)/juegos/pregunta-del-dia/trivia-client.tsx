@@ -1,10 +1,10 @@
-// Client: Interactive game client for "La pregunta del día"
+// Client: Interactive game client for "La pregunta del día" with archive modal and history support
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
 import type { TriviaDailyChallenge, TriviaPlayerAttempt, TriviaStats } from '@/lib/trivia/types';
-import { evaluateTriviaAnswer } from '@/lib/trivia/engine';
+import { evaluateTriviaAnswer, getTriviaForDate } from '@/lib/trivia/engine';
 import {
   getStoredTriviaAttempt,
   saveTriviaAttempt,
@@ -13,6 +13,7 @@ import {
 } from '@/lib/trivia/storage';
 import { TriviaInputHandler } from './trivia-input-handler';
 import { TriviaResultModal } from './trivia-result-modal';
+import { TriviaArchiveModal } from './trivia-archive-modal';
 import { TriviaArenaBackground } from './trivia-arena-background';
 import { TriviaSolvedCard } from './trivia-solved-card';
 
@@ -20,16 +21,28 @@ interface TriviaClientProps {
   challenge: TriviaDailyChallenge;
 }
 
-export function TriviaClient({ challenge }: TriviaClientProps) {
+export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps) {
+  const [activeDate, setActiveDate] = useState<string>(initialChallenge.dateStr);
+  const [challenge, setChallenge] = useState<TriviaDailyChallenge>(initialChallenge);
   const [attempt, setAttempt] = useState<TriviaPlayerAttempt | null>(() =>
-    getStoredTriviaAttempt(challenge.dateStr)
+    getStoredTriviaAttempt(initialChallenge.dateStr)
   );
   const [stats, setStats] = useState<TriviaStats>(() => getStoredTriviaStats());
   const [inputVal, setInputVal] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const isAnswered = attempt !== null;
+
+  const handleSelectDate = (date: string) => {
+    setActiveDate(date);
+    const nextChallenge = getTriviaForDate(date);
+    setChallenge(nextChallenge);
+    setAttempt(getStoredTriviaAttempt(date));
+    setInputVal('');
+    setErrorMsg('');
+  };
 
   function handleSubmit() {
     if (isAnswered) return;
@@ -70,25 +83,31 @@ export function TriviaClient({ challenge }: TriviaClientProps) {
             </svg>
           </Link>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-                La Pregunta del Día
-              </h1>
-              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800">
-                #{challenge.dayIndex}
-              </span>
-            </div>
+            <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
+            La Pregunta del Día
+          </h1>
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
-          aria-label="Ver estadísticas del usuario"
-        >
-          <span>Estadísticas</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsArchiveOpen(true)}
+            className="flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
+            aria-label="Abrir archivo de preguntas"
+          >
+            <span>Archivo</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
+            aria-label="Ver estadísticas del usuario"
+          >
+            <span>Estadísticas</span>
+          </button>
+        </div>
       </header>
 
       {/* Main Question Arena Card with El Molinón Backdrop */}
@@ -134,6 +153,14 @@ export function TriviaClient({ challenge }: TriviaClientProps) {
           />
         )}
       </main>
+
+      {/* Archive Calendar Modal */}
+      <TriviaArchiveModal
+        isOpen={isArchiveOpen}
+        onClose={() => setIsArchiveOpen(false)}
+        selectedDate={activeDate}
+        onSelectDate={handleSelectDate}
+      />
 
       {/* Unified Results Modal aligned with Wordle and Mayor o Menor */}
       <TriviaResultModal

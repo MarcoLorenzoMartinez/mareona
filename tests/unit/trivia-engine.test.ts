@@ -31,6 +31,22 @@ describe('Trivia Engine Suite', () => {
     assert.equal(evaluateTriviaAnswer('Ablanedo', question), false);
   });
 
+  it('matches player questions seamlessly between nickname and full legal name', () => {
+    const question: TriviaQuestion = {
+      id: 'test-sergio',
+      question: '¿Quién marcó el gol de la permanencia?',
+      type: 'player',
+      canonicalAnswer: 'Sergio Álvarez',
+      acceptedAnswers: ['sergio alvarez', 'sergio'],
+      explanation: 'Gol ante el Villarreal.',
+    };
+
+    // 'Sergio Álvarez Díaz' is his fullName in club-all-time-players.json
+    assert.equal(evaluateTriviaAnswer('Sergio Álvarez Díaz', question), true);
+    assert.equal(evaluateTriviaAnswer('Sergio Álvarez', question), true);
+    assert.equal(evaluateTriviaAnswer('Sergio', question), true);
+  });
+
   it('contains at least 100 historical questions in catalog', () => {
     assert.ok(TRIVIA_QUESTIONS.length >= 100);
   });
