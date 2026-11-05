@@ -5,11 +5,10 @@ import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 
 interface ProfileHeaderProps {
-  readonly isEditing: boolean;
-  readonly onToggleEdit: () => void;
+  readonly onEdit: () => void;
 }
 
-export function ProfileHeader({ isEditing, onToggleEdit }: ProfileHeaderProps) {
+export function ProfileHeader({ onEdit }: ProfileHeaderProps) {
   const { profile, user, handleSignOut } = useAuth();
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
@@ -36,15 +35,10 @@ export function ProfileHeader({ isEditing, onToggleEdit }: ProfileHeaderProps) {
         <div className="flex flex-wrap items-center justify-end gap-2">
           <button
             type="button"
-            onClick={onToggleEdit}
-            aria-expanded={isEditing}
-            className={`min-h-9 rounded-full px-4 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
-              isEditing
-                ? "bg-neutral-900 text-white"
-                : "border border-[var(--border)] bg-white text-neutral-900 hover:bg-[var(--surface)]"
-            }`}
+            onClick={onEdit}
+            className="min-h-9 rounded-full border border-[var(--border)] bg-white px-4 text-xs font-bold text-neutral-900 transition-colors hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            {isEditing ? "Cerrar edición" : "Editar perfil"}
+            Editar perfil
           </button>
 
           <button

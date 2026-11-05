@@ -1,4 +1,4 @@
-// Client: Formulario desplegable de edición de identidad y foto de perfil
+// Client: Formulario de edición con avatar interactivo y campos de identidad
 "use client";
 
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { updateProfile } from "@/lib/auth/actions";
 import { ProfileAvatarPicker } from "./profile-avatar-picker";
 
 interface ProfileEditFormProps {
-  readonly onCancel?: () => void;
+  readonly onCancel: () => void;
   readonly onSaved?: () => void;
 }
 
@@ -62,7 +62,7 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-b border-[var(--border)] bg-[var(--surface)]/40 px-4 py-4 sm:px-5 space-y-4"
+      className="border-b border-[var(--border)] bg-white px-4 py-5 sm:px-5 space-y-4"
     >
       <ProfileAvatarPicker
         selectedAvatar={selectedAvatar}
@@ -70,7 +70,7 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
         displayName={displayName || profile?.display_name || "Aficionado"}
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
         <div>
           <label
             htmlFor="edit-display-name"
@@ -126,15 +126,13 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
       )}
 
       <div className="flex items-center justify-end gap-2 pt-1">
-        {onCancel && (
-          <button
-            type="button"
-            onClick={onCancel}
-            className="min-h-9 rounded-full px-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-200/60 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-          >
-            Cancelar
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={onCancel}
+          className="min-h-9 rounded-full px-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+        >
+          Cancelar
+        </button>
         <button
           type="submit"
           disabled={isSubmitting}

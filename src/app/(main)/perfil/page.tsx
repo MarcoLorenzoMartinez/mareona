@@ -1,4 +1,4 @@
-// Client: Página principal de perfil de aficionado con cabecera, edición desplegable y publicaciones
+// Client: Página principal de perfil de aficionado con vista y edición en el mismo bloque
 "use client";
 
 import { useState } from "react";
@@ -37,16 +37,13 @@ export default function PerfilPage() {
   return (
     <div className="mx-auto w-full max-w-2xl py-4 sm:py-6">
       <div className="w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-2xs">
-        <ProfileHeader
-          isEditing={isEditing}
-          onToggleEdit={() => setIsEditing((prev) => !prev)}
-        />
-
-        {isEditing && (
+        {isEditing ? (
           <ProfileEditForm
             onCancel={() => setIsEditing(false)}
             onSaved={() => setIsEditing(false)}
           />
+        ) : (
+          <ProfileHeader onEdit={() => setIsEditing(true)} />
         )}
 
         <ProfilePostsList

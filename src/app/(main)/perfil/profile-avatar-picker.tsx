@@ -1,8 +1,8 @@
-// Client: Gestión de foto de perfil con subida desde galería o cámara y fallback a iniciales rojiblancas
+// Client: Avatar con botón de cámara solapado y subida desde galería o cámara
 "use client";
 
 import { useState, useRef } from "react";
-import { Camera, Trash2, Loader2 } from "lucide-react";
+import { Camera, Loader2, Trash2 } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { validateAvatarFile } from "@/lib/auth/avatar-validation";
 import { uploadAvatarImage } from "@/lib/auth/avatar-upload";
@@ -40,9 +40,7 @@ export function ProfileAvatarPicker({
 
     setIsUploading(true);
 
-    // Support instant local demo/offline preview via DataURL
     const isDemo = !user || user.id.startsWith("00000000-0000-4000-8000");
-
     if (isDemo) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -78,7 +76,7 @@ export function ProfileAvatarPicker({
   };
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col items-start gap-2">
       <input
         ref={fileInputRef}
         type="file"
@@ -88,46 +86,41 @@ export function ProfileAvatarPicker({
         aria-label="Seleccionar foto de perfil desde galería o cámara"
       />
 
-      <div className="flex items-center justify-between gap-4">
-        <div className="relative inline-flex">
-          <AuthAvatar
-            src={hasCustomPhoto ? selectedAvatar : null}
-            alt={displayName}
-            size="lg"
-            className="border-2 border-white shadow-xs"
-          />
-          {isUploading && (
-            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
-              <Loader2 className="h-5 w-5 animate-spin text-white" />
-            </div>
-          )}
-        </div>
+      <div className="relative inline-flex">
+        <AuthAvatar
+          src={hasCustomPhoto ? selectedAvatar : null}
+          alt={displayName}
+          size="xl"
+          className="border-2 border-white shadow-xs ring-1 ring-neutral-100"
+        />
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-            className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3.5 text-xs font-semibold text-neutral-700 transition-colors hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
-          >
-            <Camera className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>{hasCustomPhoto ? "Cambiar foto" : "Subir foto"}</span>
-          </button>
-
-          {hasCustomPhoto && (
-            <button
-              type="button"
-              onClick={handleRemovePhoto}
-              disabled={isUploading}
-              aria-label="Quitar foto y usar iniciales rojiblancas"
-              className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
-            >
-              <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Quitar</span>
-            </button>
+        {/* Botón de cámara solapado sobre el avatar principal */}
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isUploading}
+          aria-label={hasCustomPhoto ? "Cambiar foto de perfil" : "Subir foto de perfil"}
+          className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[var(--primary)] text-white shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+        >
+          {isUploading ? (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          ) : (
+            <Camera className="h-4 w-4" aria-hidden="true" />
           )}
-        </div>
+        </button>
       </div>
+
+      {hasCustomPhoto && (
+        <button
+          type="button"
+          onClick={handleRemovePhoto}
+          disabled={isUploading}
+          className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-500 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-sm"
+        >
+          <Trash2 className="h-3 w-3" aria-hidden="true" />
+          <span>Quitar foto</span>
+        </button>
+      )}
 
       {uploadError && (
         <p role="alert" className="text-xs font-semibold text-[var(--primary)]">

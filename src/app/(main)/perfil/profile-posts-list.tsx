@@ -2,7 +2,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PostActions } from "@/app/(main)/social/post-actions";
 import { formatRelativeTime } from "@/lib/social/format";
@@ -39,7 +38,7 @@ export function ProfilePostsList({
 
   return (
     <section aria-label="Mis publicaciones">
-      <div className="flex items-center justify-between border-b border-[var(--border)] bg-white px-4 py-2.5 sm:px-5">
+      <div className="border-b border-[var(--border)] bg-white px-4 py-2.5 sm:px-5">
         <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
           Publicaciones{" "}
           {!isLoading && (
@@ -48,12 +47,6 @@ export function ProfilePostsList({
             </span>
           )}
         </h2>
-        <Link
-          href="/social"
-          className="text-xs font-semibold text-[var(--primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-sm"
-        >
-          Ir a la tertulia
-        </Link>
       </div>
 
       {isLoading ? (
