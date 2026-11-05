@@ -1,10 +1,12 @@
-// Client: Modal de redacción para dispositivos móviles con diseño accesible y área cómoda
+// Client: Modal de redacción para dispositivos móviles con diseño accesible, encuestas y área cómoda
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, Feather } from "lucide-react";
+import { X, Feather, BarChart2 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { PollCreator } from "@/components/social/poll-creator";
+import { usePollDraft } from "@/components/social/use-poll-draft";
 import { createSocialPost } from "@/lib/social/actions";
 import type { SocialPost } from "@/lib/social/types";
 
@@ -27,6 +29,7 @@ export function MobilePostComposerModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const poll = usePollDraft();
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
   const remaining = MAX_LENGTH - body.length;
@@ -34,9 +37,7 @@ export function MobilePostComposerModal({
 
   useEffect(() => {
     if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
     return () => {
@@ -51,11 +52,15 @@ export function MobilePostComposerModal({
     e.preventDefault();
     if (!canSubmit) return;
 
+    const validPollOptions = poll.getValidOptions();
+    if (poll.isPollActive && (!validPollOptions || validPollOptions.length < 2)) {
+      setError("Añade al menos 2 opciones a la encuesta");
+      return;
+    }
+
     setIsSubmitting(true);
     setError(null);
-    const res = await createSocialPost({
-      body: body.trim(),
-    });
+    const res = await createSocialPost({ body: body.trim(), pollOptions: validPollOptions });
     setIsSubmitting(false);
 
     if (!res.success || !res.data) {
@@ -70,6 +75,7 @@ export function MobilePostComposerModal({
       authorAvatar: profile?.avatar_url || null,
     });
     setBody("");
+    poll.resetPoll();
     onClose();
   };
 
@@ -100,11 +106,11 @@ export function MobilePostComposerModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-3 flex flex-col flex-1 min-h-0">
+        <form onSubmit={handleSubmit} className="mt-3 flex flex-col flex-1 min-h-0 overflow-y-auto">
           <textarea
             ref={textareaRef}
             autoFocus
-            rows={4}
+            rows={3}
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="¿Qué opinas hoy sobre el Sporting?"
@@ -112,14 +118,31 @@ export function MobilePostComposerModal({
             className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />
 
-          {error && (
-            <p role="alert" className="text-xs font-semibold text-[var(--primary)] mt-1">
-              {error}
-            </p>
+          {poll.isPollActive && (
+            <PollCreator
+              options={poll.pollOptions}
+              onChangeOption={poll.setOption}
+              onAddOption={poll.addOption}
+              onRemoveOption={poll.removeOption}
+              onRemovePoll={poll.resetPoll}
+            />
           )}
 
+          {error && <p role="alert" className="text-xs font-semibold text-[var(--primary)] mt-1">{error}</p>}
+
           <div className="mt-4 flex items-center justify-between pt-3 border-t border-[var(--border)]">
-            <div className="flex-1" />
+            <div>
+              {!poll.isPollActive && (
+                <button
+                  type="button"
+                  onClick={poll.activatePoll}
+                  className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-[var(--primary)]"
+                >
+                  <BarChart2 className="h-4 w-4" aria-hidden="true" />
+                  <span>Encuesta</span>
+                </button>
+              )}
+            </div>
 
             <div className="flex items-center gap-3">
               {body.length >= COUNTER_THRESHOLD && (

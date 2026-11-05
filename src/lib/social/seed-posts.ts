@@ -16,6 +16,17 @@ export const INITIAL_TERTULIA_POSTS: readonly SocialPost[] = [
     createdAt: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
     likesCount: 14,
     repliesCount: 2,
+    poll: {
+      id: "demo-poll-1",
+      postId: "tertulia-post-1",
+      options: [
+        { id: "opt-1", label: "Muy bien planteado", votesCount: 28 },
+        { id: "opt-2", label: "Faltó más puntería", votesCount: 14 },
+        { id: "opt-3", label: "Se pudo mejorar atrás", votesCount: 5 },
+      ],
+      totalVotes: 47,
+      userVotedOptionId: null,
+    },
     replies: [
       {
         id: "tertulia-reply-1",

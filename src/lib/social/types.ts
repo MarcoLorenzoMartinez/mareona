@@ -1,3 +1,17 @@
+export interface PollOption {
+  readonly id: string;
+  readonly label: string;
+  readonly votesCount: number;
+}
+
+export interface SocialPoll {
+  readonly id: string;
+  readonly postId: string;
+  readonly options: readonly PollOption[];
+  readonly totalVotes: number;
+  readonly userVotedOptionId?: string | null;
+}
+
 export interface SocialPost {
   readonly id: string;
   readonly userId: string;
@@ -10,4 +24,5 @@ export interface SocialPost {
   readonly likesCount: number;
   readonly repliesCount: number;
   readonly replies?: readonly SocialPost[];
+  readonly poll?: SocialPoll | null;
 }

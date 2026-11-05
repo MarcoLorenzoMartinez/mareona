@@ -62,3 +62,25 @@ export function addReplyToTree(
     return post;
   });
 }
+
+/**
+ * Immutably removes a post or reply by ID from anywhere in the tree.
+ */
+export function removePostFromTree(
+  posts: readonly SocialPost[],
+  targetId: string
+): readonly SocialPost[] {
+  return posts
+    .filter((post) => post.id !== targetId)
+    .map((post) => {
+      if (post.replies && post.replies.length > 0) {
+        const filteredReplies = removePostFromTree(post.replies, targetId);
+        return {
+          ...post,
+          replies: filteredReplies,
+          repliesCount: filteredReplies.length,
+        };
+      }
+      return post;
+    });
+}

@@ -1,7 +1,8 @@
-// Client: Feed reactivo de la tertulia con navegación en hilo estilo Twitter / muñeca rusa y panel de amigos
+// Client: Feed reactivo de la tertulia con navegación en hilo, encuestas, compartir y borrado propio
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { PostComposer } from "./post-composer";
 import { MobilePostComposerModal, MobilePostComposerFab } from "./mobile-post-composer";
@@ -10,11 +11,12 @@ import { ThreadView } from "./thread-view";
 import { FriendsModal } from "./friends-modal";
 import { UserProfileModal } from "./user-profile-modal";
 import { FeedTabSelector, type SocialFeedTab } from "./feed-tab-selector";
-import { getSocialPosts } from "@/lib/social/actions";
+import { getSocialPosts, deleteSocialPost } from "@/lib/social/actions";
 import {
   findPostInTree,
   findParentInTree,
   addReplyToTree,
+  removePostFromTree,
 } from "@/lib/social/post-tree";
 import type { SocialPost } from "@/lib/social/types";
 
@@ -24,9 +26,16 @@ interface SocialFeedProps {
 
 export function SocialFeed({ initialPosts }: SocialFeedProps) {
   const { user, openAuthModal } = useAuth();
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<SocialFeedTab>("all");
   const [posts, setPosts] = useState<readonly SocialPost[]>(initialPosts);
-  const [navigationStack, setNavigationStack] = useState<readonly string[]>([]);
+  const [navigationStack, setNavigationStack] = useState<readonly string[]>(() => {
+    const sharedPostId = searchParams.get("post");
+    if (sharedPostId && findPostInTree(initialPosts, sharedPostId)) {
+      return [sharedPostId];
+    }
+    return [];
+  });
   const [viewingProfileId, setViewingProfileId] = useState<string | null>(null);
   const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(false);
   const [isPendingFilter, startTransition] = useTransition();
@@ -48,6 +57,14 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
     setPosts((prev) => [newPost, ...prev]);
   };
 
+  const handleDeletePost = async (postId: string) => {
+    setPosts((prev) => removePostFromTree(prev, postId));
+    if (navigationStack.includes(postId)) {
+      setNavigationStack((prev) => prev.filter((id) => id !== postId));
+    }
+    await deleteSocialPost({ postId });
+  };
+
   const handlePushThread = (postId: string) => {
     setNavigationStack((prev) => [...prev, postId]);
   };
@@ -60,7 +77,6 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
     setPosts((prev) => addReplyToTree(prev, parentId, newReply));
   };
 
-  // Tecla Escape para volver al nivel anterior en la muñeca rusa
   useEffect(() => {
     if (navigationStack.length === 0) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -84,6 +100,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
           onDrillDown={handlePushThread}
           onAddReply={handleAddReply}
           onOpenProfile={(id) => setViewingProfileId(id)}
+          onDeletePost={handleDeletePost}
         />
       ) : (
         <>
@@ -114,6 +131,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
                   post={post}
                   onOpenThread={handlePushThread}
                   onOpenProfile={(id) => setViewingProfileId(id)}
+                  onDelete={handleDeletePost}
                 />
               ))
             )}
@@ -121,14 +139,12 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
         </>
       )}
 
-      {/* Modal de perfil al hacer click en cualquier aficionado */}
       <UserProfileModal
         userId={viewingProfileId}
         onClose={() => setViewingProfileId(null)}
         onOpenThread={handlePushThread}
       />
 
-      {/* Botón flotante y modal optimizado para móviles */}
       <MobilePostComposerFab
         onClick={() => {
           if (!user) {

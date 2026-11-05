@@ -1,7 +1,9 @@
-// Client: Fila de publicación del timeline; el clic abre el hilo
+// Client: Fila de publicación del timeline con encuesta, acciones y borrado propio
 "use client";
 
+import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { PollDisplay } from "@/components/social/poll-display";
 import { PostActions } from "./post-actions";
 import { PostAuthorLine } from "./post-author-line";
 import type { SocialPost } from "@/lib/social/types";
@@ -10,13 +12,20 @@ interface PostCardProps {
   readonly post: SocialPost;
   readonly onOpenThread: (postId: string) => void;
   readonly onOpenProfile?: (userId: string) => void;
+  readonly onDelete?: (postId: string) => void;
 }
 
-export function PostCard({ post, onOpenThread, onOpenProfile }: PostCardProps) {
+export function PostCard({
+  post,
+  onOpenThread,
+  onOpenProfile,
+  onDelete,
+}: PostCardProps) {
+  const { user } = useAuth();
   const repliesCount = post.repliesCount ?? post.replies?.length ?? 0;
   const openThread = () => onOpenThread(post.id);
+  const isOwner = Boolean(user && user.id === post.userId);
 
-  // The row is a mouse shortcut only; keyboard users reach the thread through the replies button.
   return (
     <article
       onClick={openThread}
@@ -39,10 +48,16 @@ export function PostCard({ post, onOpenThread, onOpenProfile }: PostCardProps) {
         <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
           {post.body}
         </p>
+
+        {post.poll && <PollDisplay poll={post.poll} />}
+
         <PostActions
           likesCount={post.likesCount}
           repliesCount={repliesCount}
           onOpenThread={openThread}
+          postId={post.id}
+          postBody={post.body}
+          onDelete={isOwner && onDelete ? () => onDelete(post.id) : undefined}
         />
       </div>
     </article>

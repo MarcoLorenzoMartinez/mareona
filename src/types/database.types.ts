@@ -563,6 +563,100 @@ export interface Database {
           },
         ];
       };
+      polls: {
+        Row: {
+          id: string;
+          post_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          post_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          post_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "polls_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: true;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      poll_options: {
+        Row: {
+          id: string;
+          poll_id: string;
+          label: string;
+          position: number;
+        };
+        Insert: {
+          id?: string;
+          poll_id: string;
+          label: string;
+          position?: number;
+        };
+        Update: {
+          id?: string;
+          poll_id?: string;
+          label?: string;
+          position?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "poll_options_poll_id_fkey";
+            columns: ["poll_id"];
+            isOneToOne: false;
+            referencedRelation: "polls";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      poll_votes: {
+        Row: {
+          id: string;
+          poll_id: string;
+          option_id: string;
+          user_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          poll_id: string;
+          option_id: string;
+          user_id: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          poll_id?: string;
+          option_id?: string;
+          user_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "poll_votes_poll_id_fkey";
+            columns: ["poll_id"];
+            isOneToOne: false;
+            referencedRelation: "polls";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "poll_votes_option_id_fkey";
+            columns: ["option_id"];
+            isOneToOne: false;
+            referencedRelation: "poll_options";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       card_match_sync: {
         Row: {
           match_id: string;

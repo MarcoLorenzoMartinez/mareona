@@ -2,11 +2,18 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { createPostSchema, type CreatePostInput } from "./schemas";
+import {
+  createPostSchema,
+  deletePostSchema,
+  votePollSchema,
+  type CreatePostInput,
+  type DeletePostInput,
+  type VotePollInput,
+} from "./schemas";
 import { MODERATION_REJECTED_MESSAGE, moderateText } from "./moderation";
 import { logBlockedAttempt } from "./moderation-log";
 import { INITIAL_TERTULIA_POSTS } from "./seed-posts";
-import type { SocialPost } from "./types";
+import type { SocialPost, SocialPoll } from "./types";
 import type { Database } from "@/types/database.types";
 
 interface ActionResult<T = void> {
@@ -78,6 +85,39 @@ export async function createSocialPost(
       return { success: false, error: error.message };
     }
 
+    let createdPoll: SocialPoll | null = null;
+    if (parsed.data.pollOptions && parsed.data.pollOptions.length >= 2) {
+      const { data: pollRow } = await supabase
+        .from("polls")
+        .insert({ post_id: createdPost.id })
+        .select("id")
+        .single();
+
+      if (pollRow) {
+        const optionInserts = parsed.data.pollOptions.map((label, idx) => ({
+          poll_id: pollRow.id,
+          label,
+          position: idx,
+        }));
+        const { data: optionsRows } = await supabase
+          .from("poll_options")
+          .insert(optionInserts)
+          .select("id, label");
+
+        createdPoll = {
+          id: pollRow.id,
+          postId: createdPost.id,
+          options: (optionsRows ?? []).map((o) => ({
+            id: o.id,
+            label: o.label,
+            votesCount: 0,
+          })),
+          totalVotes: 0,
+          userVotedOptionId: null,
+        };
+      }
+    }
+
     revalidatePath("/social");
 
     return {
@@ -94,9 +134,25 @@ export async function createSocialPost(
         likesCount: 0,
         repliesCount: 0,
         replies: [],
+        poll: createdPoll,
       },
     };
   } catch {
+    const demoPoll: SocialPoll | null =
+      parsed.data.pollOptions && parsed.data.pollOptions.length >= 2
+        ? {
+            id: `local-poll-${Date.now()}`,
+            postId: `local-post-${Date.now()}`,
+            options: parsed.data.pollOptions.map((label, idx) => ({
+              id: `local-opt-${idx}`,
+              label,
+              votesCount: 0,
+            })),
+            totalVotes: 0,
+            userVotedOptionId: null,
+          }
+        : null;
+
     // Fallback if offline/demo
     return {
       success: true,
@@ -112,6 +168,7 @@ export async function createSocialPost(
         likesCount: 0,
         repliesCount: 0,
         replies: [],
+        poll: demoPoll,
       },
     };
   }
@@ -151,7 +208,12 @@ export async function getSocialPosts(
       .from("posts")
       .select(
         `id, body, created_at, parent_id, user_id,
-         profiles (username, display_name, avatar_url)`
+         profiles (username, display_name, avatar_url),
+         polls (
+           id,
+           poll_options (id, label, position),
+           poll_votes (id, option_id, user_id)
+         )`
       )
       .is("match_id", null)
       .is("deleted_at", null)
@@ -167,6 +229,10 @@ export async function getSocialPosts(
     if (error || !posts || posts.length === 0) {
       return filter === "friends" ? [] : INITIAL_TERTULIA_POSTS;
     }
+
+    const {
+      data: { user: currentUser },
+    } = await supabase.auth.getUser();
 
     // Map database posts into typed SocialPost structures
     const rootPosts = posts.filter((p) => !p.parent_id);
@@ -201,6 +267,31 @@ export async function getSocialPosts(
           };
         });
 
+      const pollList = p.polls as unknown as Array<{
+        id: string;
+        poll_options: Array<{ id: string; label: string; position: number }>;
+        poll_votes: Array<{ id: string; option_id: string; user_id: string }>;
+      }> | null;
+      const pollRaw = pollList?.[0];
+
+      let postPoll: SocialPoll | null = null;
+      if (pollRaw) {
+        const sortedOptions = (pollRaw.poll_options ?? []).sort((a, b) => a.position - b.position);
+        const votes = pollRaw.poll_votes ?? [];
+        const userVote = currentUser ? votes.find((v) => v.user_id === currentUser.id) : null;
+        postPoll = {
+          id: pollRaw.id,
+          postId: p.id,
+          options: sortedOptions.map((opt) => ({
+            id: opt.id,
+            label: opt.label,
+            votesCount: votes.filter((v) => v.option_id === opt.id).length,
+          })),
+          totalVotes: votes.length,
+          userVotedOptionId: userVote?.option_id ?? null,
+        };
+      }
+
       return {
         id: p.id,
         userId: p.user_id,
@@ -213,9 +304,102 @@ export async function getSocialPosts(
         likesCount: 0,
         repliesCount: postReplies.length,
         replies: postReplies,
+        poll: postPoll,
       };
     });
   } catch {
     return filter === "friends" ? [] : INITIAL_TERTULIA_POSTS;
+  }
+}
+
+/**
+ * Deletes a post created by the authenticated user (soft delete).
+ */
+export async function deleteSocialPost(
+  input: DeletePostInput
+): Promise<ActionResult<{ deletedId: string }>> {
+  const parsed = deletePostSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message ?? "Identificador inválido",
+    };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return {
+        success: false,
+        error: "Debes iniciar sesión para eliminar una publicación",
+      };
+    }
+
+    const { error } = await supabase
+      .from("posts")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", parsed.data.postId)
+      .eq("user_id", user.id);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath("/social");
+    return { success: true, data: { deletedId: parsed.data.postId } };
+  } catch {
+    return { success: true, data: { deletedId: parsed.data.postId } };
+  }
+}
+
+/**
+ * Registers a vote for an option in a poll.
+ */
+export async function votePoll(
+  input: VotePollInput
+): Promise<ActionResult<{ pollId: string; optionId: string }>> {
+  const parsed = votePollSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message ?? "Voto inválido",
+    };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return {
+        success: false,
+        error: "Debes iniciar sesión para votar en la encuesta",
+      };
+    }
+
+    const { error } = await supabase.from("poll_votes").insert({
+      poll_id: parsed.data.pollId,
+      option_id: parsed.data.optionId,
+      user_id: user.id,
+    });
+
+    if (error) {
+      const isDuplicate = error.code === "23505";
+      return {
+        success: false,
+        error: isDuplicate ? "Ya has participado en esta encuesta" : error.message,
+      };
+    }
+
+    revalidatePath("/social");
+    return { success: true, data: { pollId: parsed.data.pollId, optionId: parsed.data.optionId } };
+  } catch {
+    return { success: true, data: { pollId: parsed.data.pollId, optionId: parsed.data.optionId } };
   }
 }

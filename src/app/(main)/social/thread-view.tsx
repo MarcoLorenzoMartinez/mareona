@@ -1,8 +1,10 @@
-// Client: Vista de conversación enfocada (modelo muñeca rusa) con publicación principal ampliada
+// Client: Vista de conversación enfocada (modelo muñeca rusa) con encuesta, acciones y borrado
 "use client";
 
 import { ArrowLeft } from "lucide-react";
+import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { PollDisplay } from "@/components/social/poll-display";
 import { PostActions } from "./post-actions";
 import { PostComposer } from "./post-composer";
 import { ThreadReplyItem } from "./thread-reply-item";
@@ -16,6 +18,7 @@ interface ThreadViewProps {
   readonly onDrillDown: (postId: string) => void;
   readonly onAddReply: (parentId: string, newReply: SocialPost) => void;
   readonly onOpenProfile?: (userId: string) => void;
+  readonly onDeletePost?: (postId: string) => void;
 }
 
 export function ThreadView({
@@ -25,11 +28,14 @@ export function ThreadView({
   onDrillDown,
   onAddReply,
   onOpenProfile,
+  onDeletePost,
 }: ThreadViewProps) {
+  const { user } = useAuth();
   const replies = post.replies ?? [];
   const openProfile = () => {
     if (post.userId) onOpenProfile?.(post.userId);
   };
+  const isOwner = Boolean(user && user.id === post.userId);
 
   return (
     <div>
@@ -77,12 +83,21 @@ export function ThreadView({
         <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
           {post.body}
         </p>
+
+        {post.poll && <PollDisplay poll={post.poll} />}
+
         <time dateTime={post.createdAt} className="mt-3 block text-sm text-neutral-500">
           {formatRelativeTime(post.createdAt)}
         </time>
 
         <div className="mt-2 border-t border-[var(--border)] pt-1">
-          <PostActions likesCount={post.likesCount} repliesCount={replies.length} />
+          <PostActions
+            likesCount={post.likesCount}
+            repliesCount={replies.length}
+            postId={post.id}
+            postBody={post.body}
+            onDelete={isOwner && onDeletePost ? () => onDeletePost(post.id) : undefined}
+          />
         </div>
       </article>
 
@@ -103,6 +118,7 @@ export function ThreadView({
               reply={reply}
               onDrillDown={onDrillDown}
               onOpenProfile={onOpenProfile}
+              onDelete={onDeletePost}
             />
           ))
         )}

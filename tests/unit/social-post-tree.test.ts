@@ -4,6 +4,7 @@ import {
   findPostInTree,
   findParentInTree,
   addReplyToTree,
+  removePostFromTree,
 } from "../../src/lib/social/post-tree.ts";
 import type { SocialPost } from "../../src/lib/social/types.ts";
 
@@ -95,5 +96,19 @@ describe("Social Post Tree Helper Functions", () => {
     assert.equal(target.repliesCount, 1);
     assert.equal(target.replies?.length, 1);
     assert.equal(target.replies[0].id, "p1-r1-sub1-reply1");
+  });
+
+  it("removes nested reply and updates parent replies count", () => {
+    const updated = removePostFromTree(MOCK_TREE, "p1-r1-sub1");
+    assert.equal(findPostInTree(updated, "p1-r1-sub1"), null);
+    const parent = findPostInTree(updated, "p1-r1");
+    assert.ok(parent);
+    assert.equal(parent.repliesCount, 0);
+    assert.equal(parent.replies?.length, 0);
+  });
+
+  it("removes top-level post completely", () => {
+    const updated = removePostFromTree(MOCK_TREE, "p1");
+    assert.equal(updated.length, 0);
   });
 });
