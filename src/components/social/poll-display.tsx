@@ -21,7 +21,6 @@ export function PollDisplay({ poll }: PollDisplayProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const hasVoted = Boolean(selectedOptionId);
-  const maxVotes = Math.max(...votes.map((v) => v.votesCount), 0);
 
   const handleVote = async (optionId: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -56,24 +55,25 @@ export function PollDisplay({ poll }: PollDisplayProps) {
           const percentage =
             totalVotes > 0 ? Math.round((option.votesCount / totalVotes) * 100) : 0;
           const isSelected = selectedOptionId === option.id;
-          const isLeader = totalVotes > 0 && option.votesCount === maxVotes;
 
           if (hasVoted) {
+            const isUserVote = isSelected;
+
             return (
               <div
                 key={option.id}
                 className={`relative overflow-hidden rounded-xl border min-h-11 px-3.5 py-2.5 text-xs transition-colors ${
-                  isSelected
-                    ? "border-[var(--primary)]/40 bg-red-50/20 shadow-2xs"
-                    : "border-neutral-200/90 bg-neutral-100/60"
+                  isUserVote
+                    ? "border-red-200/90 bg-red-50/20"
+                    : "border-neutral-200/80 bg-neutral-100/50"
                 }`}
               >
-                {/* Barra de porcentaje visible con contraste nítido y terminación definida */}
+                {/* Barra de porcentaje: el voto del usuario en rojo sutil y las demás respuestas en gris */}
                 <div
                   className={`absolute inset-y-0 left-0 transition-all duration-500 ease-out ${
-                    isLeader
-                      ? "bg-red-200/90 border-r-2 border-r-[var(--primary)]"
-                      : "bg-neutral-300/75 border-r border-r-neutral-400/50"
+                    isUserVote
+                      ? "bg-red-200/80"
+                      : "bg-neutral-200"
                   }`}
                   style={{ width: `${percentage}%` }}
                   aria-hidden="true"
@@ -81,7 +81,7 @@ export function PollDisplay({ poll }: PollDisplayProps) {
 
                 <div className="relative flex items-center justify-between gap-3">
                   <span className="flex items-center gap-1.5 truncate">
-                    {isSelected && (
+                    {isUserVote && (
                       <Check
                         className="h-4 w-4 shrink-0 text-[var(--primary)] stroke-[2.5]"
                         aria-hidden="true"
@@ -89,7 +89,7 @@ export function PollDisplay({ poll }: PollDisplayProps) {
                     )}
                     <span
                       className={`truncate ${
-                        isLeader ? "font-bold text-neutral-950" : "font-semibold text-neutral-900"
+                        isUserVote ? "font-bold text-neutral-950" : "font-medium text-neutral-800"
                       }`}
                     >
                       {option.label}
@@ -97,7 +97,7 @@ export function PollDisplay({ poll }: PollDisplayProps) {
                   </span>
                   <span
                     className={`font-sans tabular-nums shrink-0 text-xs font-bold ${
-                      isLeader
+                      isUserVote
                         ? "text-[var(--primary)] font-black"
                         : "text-neutral-800"
                     }`}
