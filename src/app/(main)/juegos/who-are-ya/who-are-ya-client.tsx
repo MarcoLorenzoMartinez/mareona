@@ -143,6 +143,8 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
         maxAttempts={MAX_ATTEMPTS}
         targetName={currentTargetPlayer.name}
         targetSublabel={currentTargetPlayer.fullName}
+        targetPhotoUrl={currentTargetPlayer.photoUrl}
+        stats={stats}
         onOpenArchive={() => setIsArchiveOpen(true)}
       />
 

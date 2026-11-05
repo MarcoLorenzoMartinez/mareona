@@ -56,7 +56,7 @@ function NumericTile({
             : 'border-neutral-200 bg-neutral-100/90 text-neutral-900'
         }`}
       >
-        {/* Flecha superior si el valor objetivo es MÁS ALTO (▲) */}
+        {/* Triángulo superior sólido si el valor objetivo es MÁS ALTO (▲) */}
         {isHigher && (
           <span
             className="text-[11px] font-black leading-none mb-0.5 text-neutral-500"
@@ -68,7 +68,7 @@ function NumericTile({
 
         <span className="text-xs sm:text-sm font-extrabold leading-none">{value}</span>
 
-        {/* Flecha inferior si el valor objetivo es MÁS BAJO (▼) */}
+        {/* Triángulo inferior sólido si el valor objetivo es MÁS BAJO (▼) */}
         {isLower && (
           <span
             className="text-[11px] font-black leading-none mt-0.5 text-neutral-500"
