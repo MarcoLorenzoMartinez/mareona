@@ -10,7 +10,7 @@ interface WordleBoardProps {
   currentGuess?: string;
   currentLetters?: readonly string[];
   shakeRow: boolean;
-  cursorIndex?: number;
+  cursorIndex?: number | null;
   onSelectCell?: (index: number) => void;
 }
 
@@ -22,7 +22,7 @@ export function WordleBoard({
   currentGuess = '',
   currentLetters,
   shakeRow,
-  cursorIndex = 0,
+  cursorIndex = null,
   onSelectCell,
 }: WordleBoardProps) {
   const rows = Array.from({ length: maxAttempts });

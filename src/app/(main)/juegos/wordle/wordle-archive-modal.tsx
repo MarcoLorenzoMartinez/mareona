@@ -176,9 +176,10 @@ export function WordleArchiveModal({
               cellBg = 'bg-emerald-500 text-white font-bold border-emerald-500';
             } else if (status === 'LOST') {
               cellBg = 'bg-rose-500 text-white font-bold border-rose-500';
-            } else if (isSelected) {
-              cellBg = 'bg-[#e2001a] text-white font-bold border-[#e2001a]';
             }
+
+            const selectionRing = isSelected ? 'border-[#e2001a] ring-2 ring-[#e2001a] z-10' : '';
+            const todayRing = isToday && !isSelected ? 'ring-2 ring-neutral-400/40 font-bold' : '';
 
             return (
               <button
@@ -189,11 +190,9 @@ export function WordleArchiveModal({
                   onSelectDate(dateStr);
                   onClose();
                 }}
-                className={`relative flex aspect-square flex-col items-center justify-center rounded-lg border text-xs font-semibold tabular-nums transition-all ${cellBg} ${
-                  isToday && !isSelected ? 'ring-2 ring-[#e2001a]/40 font-bold' : ''
-                }`}
+                className={`relative flex aspect-square flex-col items-center justify-center rounded-lg border text-xs font-semibold tabular-nums transition-all ${cellBg} ${selectionRing} ${todayRing}`}
                 title={isDisabled ? 'No disponible' : `Jugar reto del ${dateStr}`}
-                aria-label={`Día ${day}, ${status}`}
+                aria-label={`Día ${day}, ${status}${isSelected ? ', seleccionado' : ''}`}
               >
                 <span>{day}</span>
               </button>

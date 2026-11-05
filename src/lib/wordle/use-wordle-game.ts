@@ -20,7 +20,7 @@ export function useWordleGame(challenge: WordleDailyWord) {
   const maxAttempts = getMaxAttemptsForLength(targetLength);
 
   const [letters, setLetters] = useState<string[]>(() => Array(targetLength).fill(''));
-  const [cursorIndex, setCursorIndex] = useState(0);
+  const [cursorIndex, setCursorIndex] = useState<number | null>(0);
   const [activeDate, setActiveDate] = useState(challenge.id);
   const [gameState, setGameState] = useState<WordleChallengeState>(() =>
     getInitialWordleState(challenge.id, targetWord)
@@ -43,11 +43,17 @@ export function useWordleGame(challenge: WordleDailyWord) {
   }, [targetLength]);
 
   const moveCursorLeft = useCallback(() => {
-    setCursorIndex((prev) => Math.max(0, prev - 1));
-  }, []);
+    setCursorIndex((prev) => {
+      if (prev === null) return targetLength - 1;
+      return Math.max(0, prev - 1);
+    });
+  }, [targetLength]);
 
   const moveCursorRight = useCallback(() => {
-    setCursorIndex((prev) => Math.min(targetLength - 1, prev + 1));
+    setCursorIndex((prev) => {
+      if (prev === null) return 0;
+      return Math.min(targetLength - 1, prev + 1);
+    });
   }, [targetLength]);
 
   const addLetter = useCallback((letter: string) => {
@@ -55,33 +61,52 @@ export function useWordleGame(challenge: WordleDailyWord) {
     const clean = normalizeWord(letter);
     if (!/^[A-ZÑ]$/.test(clean)) return;
 
+    // If no cell is selected (e.g. word was full), ignore or do nothing
+    if (cursorIndex === null) return;
+
     setLetters((prev) => {
       const next = [...prev];
       next[cursorIndex] = clean;
       return next;
     });
 
-    setCursorIndex((prev) => (prev < targetLength - 1 ? prev + 1 : prev));
+    // Advance cursor to next position or clear selection if row is now full at the end
+    setCursorIndex((prev) => {
+      if (prev === null) return null;
+      if (prev >= targetLength - 1) return null;
+      return prev + 1;
+    });
   }, [gameState.status, cursorIndex, targetLength]);
 
   const deleteLetter = useCallback(() => {
     if (gameState.status !== 'IN_PROGRESS') return;
 
+    // When the row is completely filled (cursorIndex === null)
+    if (cursorIndex === null) {
+      setLetters((prev) => {
+        const next = [...prev];
+        next[targetLength - 1] = '';
+        return next;
+      });
+      setCursorIndex(targetLength - 1);
+      return;
+    }
+
     setLetters((prev) => {
       const next = [...prev];
-      // Si la casilla actual tiene una letra, la borramos
       if (next[cursorIndex] !== '') {
         next[cursorIndex] = '';
       } else if (cursorIndex > 0) {
-        // Si la casilla actual ya está vacía, borramos la casilla anterior
         next[cursorIndex - 1] = '';
       }
       return next;
     });
 
-    // En Wordle, al borrar siempre retrocedes una posición hacia atrás
-    setCursorIndex((prev) => Math.max(0, prev - 1));
-  }, [gameState.status, cursorIndex]);
+    setCursorIndex((prev) => {
+      if (prev === null) return targetLength - 1;
+      return Math.max(0, prev - 1);
+    });
+  }, [gameState.status, cursorIndex, targetLength]);
 
   const currentGuess = letters.join('');
 
