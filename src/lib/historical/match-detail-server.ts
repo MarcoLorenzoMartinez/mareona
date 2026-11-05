@@ -24,6 +24,13 @@ const squadsRecord = rawSquads as unknown as Record<
 /** In-memory cache for loaded match sheets to ensure instant subsequent openings */
 const matchDetailCache = new Map<string, HistoricalMatchDetail>();
 
+/**
+ * Clears in-memory match cache (useful for long-running batch ingestion scripts).
+ */
+export async function clearHistoricalMatchDetailCache(): Promise<void> {
+  matchDetailCache.clear();
+}
+
 function parsePlayerTable(
   tableHtml: string | undefined,
   season?: string,

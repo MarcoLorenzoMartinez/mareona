@@ -1,0 +1,5126 @@
+{
+  "5301": {
+    "bdfMatchId": "5301",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Saz Olmedo",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600221.png"
+    },
+    "goals": [
+      {
+        "score": "0-1",
+        "scorer": "Peiró",
+        "minute": 15,
+        "minuteDisplay": "15",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "0-2",
+        "scorer": "Agustín",
+        "minute": 24,
+        "minuteDisplay": "24",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-2",
+        "scorer": "Sánchez",
+        "minute": 66,
+        "minuteDisplay": "66",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-2",
+        "scorer": "Ortiz",
+        "minute": 81,
+        "minuteDisplay": "81",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-3",
+        "scorer": "Agustín",
+        "minute": 87,
+        "minuteDisplay": "87",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-4",
+        "scorer": "Collar",
+        "minute": 89,
+        "minuteDisplay": "89",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Nino",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9694b.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Pazos",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7597.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Callejo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8042.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Cobo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9629.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Heriberto Herrera",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7456.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Peiró",
+        "photoUrl": "https://www.bdfutbol.com/i/m/1487.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Hernández",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9503.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Ares",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9624.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Marañón",
+        "photoUrl": "https://www.bdfutbol.com/i/m/5933.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Collar",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8363.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Agustín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8124.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Miguel",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8025.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5315": {
+    "bdfMatchId": "5315",
+    "venue": "La Romareda (Zaragoza)",
+    "referee": {
+      "name": "Gómez Arribas",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600199.png"
+    },
+    "goals": [],
+    "homeStarters": [
+      {
+        "name": "Lasheras",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8070.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Bernad",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9657.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Alustiza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7968.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Garbayo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9558.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Wilson",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8202.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Manolín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9553.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Estiragués",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9486.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Vila",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8255.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Moreno",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9659.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Domingo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9485.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Murillo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7999.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Nino",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9694b.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5318": {
+    "bdfMatchId": "5318",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Gómez Contreras",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600217.png"
+    },
+    "goals": [
+      {
+        "score": "0-1",
+        "scorer": "Sabino",
+        "minute": 11,
+        "minuteDisplay": "11",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Gago",
+        "minute": 17,
+        "minuteDisplay": "17",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-2",
+        "scorer": "Sabino",
+        "minute": 57,
+        "minuteDisplay": "57",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-2",
+        "scorer": "Gago",
+        "minute": 66,
+        "minuteDisplay": "66",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-3",
+        "scorer": "Glaría I",
+        "minute": 78,
+        "minuteDisplay": "78",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero",
+        "subOut": 8
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Nino",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9694b.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Eizaguirre",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8415.png",
+        "position": "Portero"
+      },
+      {
+        "name": "González",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9450.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Egaña",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8138.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Zubiaurre",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7714.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Alberto",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9443.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Glaría I",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9632.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Recalde",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7983.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Glaría II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8260.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Areta III",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7864.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Esquisabel II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9852.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Sabino",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7798.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [
+      {
+        "name": "Sorarrain",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9786.jpg",
+        "position": "Portero",
+        "subIn": 8
+      }
+    ],
+    "awayBench": [],
+    "homeCoach": {
+      "name": "Barrio",
+      "photoUrl": "https://www.bdfutbol.com/i/lm/7538.png"
+    },
+    "awayCoach": {
+      "name": "Barinaga",
+      "photoUrl": "https://www.bdfutbol.com/i/lm/7531.png"
+    }
+  },
+  "5326": {
+    "bdfMatchId": "5326",
+    "venue": "Los Cármenes (Granada)",
+    "referee": {
+      "name": "García Fernández",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600208.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Navarro",
+        "minute": 61,
+        "minuteDisplay": "61",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Candi",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8232.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Kaiku",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9639.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "González",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9637.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Méndez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8238.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Jaco",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9638.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Rius",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9474.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Oswaldo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9641.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Ben Barek",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7637.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Larrabeiti",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8236.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Manchón",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9640.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Navarro",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8180.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5334": {
+    "bdfMatchId": "5334",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Novella Barco",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600230.png"
+    },
+    "goals": [
+      {
+        "score": "0-1",
+        "scorer": "Pauet",
+        "minute": 28,
+        "minuteDisplay": "28",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Pla",
+        "minute": 30,
+        "minuteDisplay": "30",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Javier de Pablos",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8263.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Maraver",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7944.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Campanal II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7740.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Romero",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9513.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Pepín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9512.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Enrique",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9703.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Ramoní",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9473.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Pauet",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8088.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pepillo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7782.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Antoniet",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7716.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Arza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7469.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5347": {
+    "bdfMatchId": "5347",
+    "venue": "Mestalla (Valencia)",
+    "referee": {
+      "name": "Saz Olmedo",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600221.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Walter",
+        "minute": 36,
+        "minuteDisplay": "36",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Sánchez",
+        "minute": 47,
+        "minuteDisplay": "47",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-2",
+        "scorer": "Sánchez",
+        "minute": 49,
+        "minuteDisplay": "49",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-2",
+        "scorer": "Seguí",
+        "minute": 66,
+        "minuteDisplay": "66",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Goyo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8220.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Mestre",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7631.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Quincoces",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7927.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Piquer",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7785.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Martí",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7696.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Puchades",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9712.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sendra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8221.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Seguí",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9621.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ricardo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9533.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Iborra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/6030.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Walter",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8291.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5351": {
+    "bdfMatchId": "5351",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Marrón Martín",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600226.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Enguídanos",
+        "minute": 70,
+        "minuteDisplay": "70",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Evaristo",
+        "minute": 75,
+        "minuteDisplay": "75",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-2",
+        "scorer": "Tejada",
+        "minute": 78,
+        "minuteDisplay": "78",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-2",
+        "scorer": "Enguídanos",
+        "minute": 80,
+        "minuteDisplay": "80",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-2",
+        "scorer": "Pla",
+        "minute": 88,
+        "minuteDisplay": "88",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Ramallets",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8230.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Flotats",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8259.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Gracia",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7819.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Olivella",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7600.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Segarra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7966.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Bosch",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7914.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Tejada",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7913.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Villaverde",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8096.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Basora",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9633.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Evaristo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8019.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Eulogio Martínez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7874.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5363": {
+    "bdfMatchId": "5363",
+    "venue": "La Victoria (Jaén)",
+    "referee": {
+      "name": "Rey Martínez",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600228.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Arregui",
+        "minute": 13,
+        "minuteDisplay": "13",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Peiró",
+        "minute": 24,
+        "minuteDisplay": "24",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-1",
+        "scorer": "Ortiz",
+        "minute": 44,
+        "minuteDisplay": "44",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Barea",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9578.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Egusquiza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8206.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Oliva",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9681.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Anchía",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9671.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Álvarez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9978.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Amaro",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9670.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bermúdez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9673.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Cerrillo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9587.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Arregui",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9672.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Peiró",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9482.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Atienza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9555.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5368": {
+    "bdfMatchId": "5368",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Azón Roma",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600231.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Biempica",
+        "minute": 23,
+        "minuteDisplay": "23",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Sánchez",
+        "minute": 50,
+        "minuteDisplay": "50",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-0",
+        "scorer": "Sánchez",
+        "minute": 86,
+        "minuteDisplay": "86",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Domínguez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8186.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Santamaría",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7863.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Atienza II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9573.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Kopa",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9575.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Ruiz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7929.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Santisteban",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7858.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Zárraga",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8188.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Gento",
+        "photoUrl": "https://www.bdfutbol.com/i/m/6063.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Marsal",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8024.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Joseíto",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7470.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Di Stéfano",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7349.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5377": {
+    "bdfMatchId": "5377",
+    "venue": "Atocha (San Sebastián)",
+    "referee": {
+      "name": "Gardeazabal Garay",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600190.png"
+    },
+    "goals": [
+      {
+        "score": "0-1",
+        "scorer": "Biempica",
+        "minute": 11,
+        "minuteDisplay": "11",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Paz",
+        "minute": 47,
+        "minuteDisplay": "47",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-1",
+        "scorer": "Laguardia",
+        "minute": 52,
+        "minuteDisplay": "52",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-1",
+        "scorer": "Laguardia",
+        "minute": 56,
+        "minuteDisplay": "56",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-2",
+        "scorer": "Biempica",
+        "minute": 79,
+        "minuteDisplay": "79",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Bagur",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8196.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Gordejuela",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8170.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Irulegui",
+        "photoUrl": "https://www.bdfutbol.com/i/m/4434.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Echarri",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8205.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Peporro",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8162.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Alkiza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8281.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Paz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8285.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Laguardia",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8265.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Lacalle",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9507.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Zubillaga",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8157.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Echeveste",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9696.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5384": {
+    "bdfMatchId": "5384",
+    "venue": "Insular (Las Palmas de Gran Canaria)",
+    "referee": {
+      "name": "Zariquiegui Izco",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600188.png"
+    },
+    "goals": [],
+    "homeStarters": [
+      {
+        "name": "Pepín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7772.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Mújica",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9609.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Marcial",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9525.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Paquillo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8150.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Currucale",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7973.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Torres",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9615.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Ricardo Costa",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7647.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Beneyto",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9516.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Macario",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9524.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ricardo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9527.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Vázquez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7960.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5389": {
+    "bdfMatchId": "5389",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Rey Martínez",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600228.png"
+    },
+    "goals": [
+      {
+        "score": "0-1",
+        "scorer": "Uribe",
+        "minute": 25,
+        "minuteDisplay": "25",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "0-2",
+        "scorer": "Arieta",
+        "minute": 49,
+        "minuteDisplay": "49",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Carmelo Cedrún",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7505.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Orúe",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7636.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Garay",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7781.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Canito",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8049.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Maguregui",
+        "photoUrl": "https://www.bdfutbol.com/i/m/4140.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Mauri",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7794.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Beitia",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7952.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Merodio",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7925.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Uribe",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8050.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Onaindia",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9631.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Arieta",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7778.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5402": {
+    "bdfMatchId": "5402",
+    "venue": "Zorrilla (Valladolid)",
+    "referee": {
+      "name": "Mosquera Maceiras",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600232.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Badenes",
+        "minute": 2,
+        "minuteDisplay": "2",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Rodríguez",
+        "minute": 13,
+        "minuteDisplay": "13",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-0",
+        "scorer": "Rodríguez",
+        "minute": 19,
+        "minuteDisplay": "19",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "4-0",
+        "scorer": "Gallet",
+        "minute": 30,
+        "minuteDisplay": "30",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "5-0",
+        "scorer": "Badenes",
+        "minute": 35,
+        "minuteDisplay": "35",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "6-0",
+        "scorer": "Badenes",
+        "minute": 59,
+        "minuteDisplay": "59",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "7-0",
+        "scorer": "Badenes",
+        "minute": 60,
+        "minuteDisplay": "60",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "7-1",
+        "scorer": "Ortiz",
+        "minute": 62,
+        "minuteDisplay": "62",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "7-2",
+        "scorer": "Ortiz",
+        "minute": 75,
+        "minuteDisplay": "75",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "7-3",
+        "scorer": "Sánchez",
+        "minute": 89,
+        "minuteDisplay": "89",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Saso",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7320.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Arana",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9646.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Matito",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8250.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Lesmes",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8247.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Simonet",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7595.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Gallet",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8209.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Tini",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9656.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Rodríguez II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9596.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Paz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8082.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Rodríguez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9654.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Badenes",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9585.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5406": {
+    "bdfMatchId": "5406",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Asensi Martín",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600227.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Antonín",
+        "minute": 47,
+        "minuteDisplay": "47",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Bolinches",
+        "minute": 59,
+        "minuteDisplay": "59",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Vicente",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7755.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Argilés",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8001.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Gámiz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9522.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Faura",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9570.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Abel",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8000.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Benavídez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9470.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Vílchez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9491.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Casamitjana",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9501.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Camps",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7641.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Carlos Torres",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7906.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Arcas",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9666.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5413": {
+    "bdfMatchId": "5413",
+    "venue": "Balaídos (Vigo)",
+    "referee": {
+      "name": "Ortiz de Mendibil",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600181.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Moll",
+        "minute": 35,
+        "minuteDisplay": "35",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Sánchez",
+        "minute": 49,
+        "minuteDisplay": "49",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-2",
+        "scorer": "Medina",
+        "minute": 69,
+        "minuteDisplay": "69",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Padrón",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8106.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Seoane",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9567.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Villar",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7477.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Quinocho",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9566.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Azpeitia",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8267.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Moll",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8432.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Olmedo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9565.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Toni",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9568.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Gutiérrez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9663.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Mauro",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9488.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gausí",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9487.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5420": {
+    "bdfMatchId": "5420",
+    "venue": "Metropolitano (Madrid)",
+    "referee": {
+      "name": "Azón Roma",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600231.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Agustín",
+        "minute": 2,
+        "minuteDisplay": "2",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Rafa",
+        "minute": 12,
+        "minuteDisplay": "12",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-1",
+        "scorer": "Antonín",
+        "minute": 19,
+        "minuteDisplay": "19",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-2",
+        "scorer": "Medina",
+        "minute": 26,
+        "minuteDisplay": "26",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-2",
+        "scorer": "Agustín",
+        "minute": 36,
+        "minuteDisplay": "36",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Pazos",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7597.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Chuzo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/6015.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Rusiñol",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9528.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Cobo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9629.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Heriberto Herrera",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7456.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Verde",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9543.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Peiró",
+        "photoUrl": "https://www.bdfutbol.com/i/m/1487.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Peter",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9628.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Garabal",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9626.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Agustín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8124.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Rafa",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8240.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5430": {
+    "bdfMatchId": "5430",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Gómez Arribas",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600199.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Ortiz",
+        "minute": 16,
+        "minuteDisplay": "16",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Ortiz",
+        "minute": 18,
+        "minuteDisplay": "18",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-1",
+        "scorer": "Domingo",
+        "minute": 35,
+        "minuteDisplay": "35",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-1",
+        "scorer": "Ortiz",
+        "minute": 60,
+        "minuteDisplay": "60",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "4-1",
+        "scorer": "Sánchez",
+        "minute": 75,
+        "minuteDisplay": "75",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Lasheras",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8070.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Aznar",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7922.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Garbayo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9558.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Alustiza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7968.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Torres",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8254.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Rivas",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8173.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Wilson",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8202.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Manolín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9553.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Serer",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9490.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Domingo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9485.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Murillo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7999.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5440": {
+    "bdfMatchId": "5440",
+    "venue": "San Juan (Pamplona)",
+    "referee": {
+      "name": "García Fernández",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600208.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Marañón",
+        "minute": 60,
+        "minuteDisplay": "60",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Sánchez",
+        "minute": 79,
+        "minuteDisplay": "79",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-1",
+        "scorer": "Sabino",
+        "minute": 89,
+        "minuteDisplay": "89",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Eusebio",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9449.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Ciaurriz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9446.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Egaña",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8138.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Zubiaurre",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7714.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Cerdán",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9445.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Glaría I",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9632.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Recalde",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7983.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Glaría II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8260.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Marañón",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7893.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Areta III",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7864.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Sabino",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7798.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5447": {
+    "bdfMatchId": "5447",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Saz Olmedo",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600221.png"
+    },
+    "goals": [
+      {
+        "score": "0-1",
+        "scorer": "Navarro",
+        "minute": 15,
+        "minuteDisplay": "15",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Biempica",
+        "minute": 43,
+        "minuteDisplay": "43",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-1",
+        "scorer": "Sánchez",
+        "minute": 52,
+        "minuteDisplay": "52",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-1",
+        "scorer": "Ortiz",
+        "minute": 63,
+        "minuteDisplay": "63",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "4-1",
+        "scorer": "Biempica",
+        "minute": 82,
+        "minuteDisplay": "82",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "5-1",
+        "scorer": "Ortiz",
+        "minute": 85,
+        "minuteDisplay": "85",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Candi",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8232.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Vicente",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8243.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Campón",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9635.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Méndez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8238.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Baena",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9548.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Ben Barek",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7637.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Larrabeiti",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8236.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Pellejero",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8089.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Manchón",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9640.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Navarro",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8180.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Mauri",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7495.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5457": {
+    "bdfMatchId": "5457",
+    "venue": "Nervión (Sevilla)",
+    "referee": {
+      "name": "Birigay Nieva",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600200.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Arza",
+        "minute": 3,
+        "minuteDisplay": "3",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Ortiz",
+        "minute": 9,
+        "minuteDisplay": "9",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-2",
+        "scorer": "Biempica",
+        "minute": 60,
+        "minuteDisplay": "60",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Guerrica",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8056.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Arenas",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9700.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Herrera II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9606.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Valero",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8132.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Campanal II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7740.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Romero",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9513.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Payá",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9607.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Pauet",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8088.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Antoniet",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7716.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Loren",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8114.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Arza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7469.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero",
+        "subOut": 75
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero",
+        "subIn": 75
+      }
+    ],
+    "homeCoach": {
+      "name": "Villalonga",
+      "photoUrl": "https://www.bdfutbol.com/i/lm/8406.png"
+    },
+    "awayCoach": {
+      "name": "Barrio",
+      "photoUrl": "https://www.bdfutbol.com/i/lm/7538.png"
+    }
+  },
+  "5463": {
+    "bdfMatchId": "5463",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Azón Roma",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600231.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Sócrates",
+        "minute": 10,
+        "minuteDisplay": "10",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Walter",
+        "minute": 11,
+        "minuteDisplay": "11",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-2",
+        "scorer": "Ricardo",
+        "minute": 23,
+        "minuteDisplay": "23",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-3",
+        "scorer": "Walter",
+        "minute": 24,
+        "minuteDisplay": "24",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Goyo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8220.png",
+        "position": "Portero",
+        "subOut": 38
+      },
+      {
+        "name": "Sócrates",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8091.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Quincoces",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7927.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Mestre",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7631.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Buqué",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8409.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Puchades",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9712.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sendra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8221.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Seguí",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9621.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ricardo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9533.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Walter",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8291.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Fuertes",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8225.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [
+      {
+        "name": "Florentino",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9710.png",
+        "subIn": 38
+      }
+    ],
+    "homeCoach": {
+      "name": "Barrio",
+      "photoUrl": "https://www.bdfutbol.com/i/lm/7538.png"
+    },
+    "awayCoach": {
+      "name": "Miró",
+      "photoUrl": "https://www.bdfutbol.com/i/lm/8438.png"
+    }
+  },
+  "5468": {
+    "bdfMatchId": "5468",
+    "venue": "Camp Nou (Barcelona)",
+    "referee": {
+      "name": "González Echeverría",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600212.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Vergés",
+        "minute": 71,
+        "minuteDisplay": "71",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Tejada",
+        "minute": 80,
+        "minuteDisplay": "80",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-0",
+        "scorer": "Kubala",
+        "minute": 88,
+        "minuteDisplay": "88",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Ramallets",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8230.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Gensana",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7965.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Biosca",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9634.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Gracia",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7819.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Segarra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7966.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Ribelles",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7950.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Hermes González",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8193.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Vergés",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7821.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Tejada",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7913.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Kubala",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7444.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Evaristo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8019.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Nino",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9694b.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5481": {
+    "bdfMatchId": "5481",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Caballero Camacho",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600219.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Ortiz",
+        "minute": 89,
+        "minuteDisplay": "89",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Enguídanos",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9692.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Madriles",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7937.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Egusquiza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8206.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Estenaga",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9676.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Cifuentes",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9675.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Oliva",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9681.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Anchía",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9671.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Adalberto",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9536.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Cerrillo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9587.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Peiró",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9482.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Arregui",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9672.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Mandi",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9679.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5488": {
+    "bdfMatchId": "5488",
+    "venue": "Santiago Bernabéu (Madrid)",
+    "referee": {
+      "name": "Gómez Arribas",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600199.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Di Stéfano",
+        "minute": 12,
+        "minuteDisplay": "12",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Di Stéfano",
+        "minute": 57,
+        "minuteDisplay": "57",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-0",
+        "scorer": "Marsal",
+        "minute": 65,
+        "minuteDisplay": "65",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "4-0",
+        "scorer": "Kopa",
+        "minute": 84,
+        "minuteDisplay": "84",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Juan Alonso",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9500.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Marquitos",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8023.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Santamaría",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7863.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Lesmes II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8248.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Kopa",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9575.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Santisteban",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7858.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Miguel Muñoz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7442.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Gento",
+        "photoUrl": "https://www.bdfutbol.com/i/m/6063.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Rial",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7510.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Marsal",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8024.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Di Stéfano",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7349.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5495": {
+    "bdfMatchId": "5495",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Birigay Nieva",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600200.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Basora II",
+        "minute": 15,
+        "minuteDisplay": "15",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Biempica",
+        "minute": 26,
+        "minuteDisplay": "26",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-0",
+        "scorer": "Antonín",
+        "minute": 62,
+        "minuteDisplay": "62",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Araquistain",
+        "photoUrl": "https://www.bdfutbol.com/i/m/5839.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Gordejuela",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8170.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Echarri",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8205.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Elizondo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8207.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Ansola",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8159.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Irulegui",
+        "photoUrl": "https://www.bdfutbol.com/i/m/4434.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Segurola",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7437.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Peporro",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8162.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Paz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8285.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Laguardia",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8265.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Sarasqueta",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9508.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5502": {
+    "bdfMatchId": "5502",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Gómez Contreras",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600217.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Gago",
+        "minute": 82,
+        "minuteDisplay": "82",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Pepín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7772.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Mújica",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9609.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Campa",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9518.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Felo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7762.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Ricardo Costa",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7647.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Naranjo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9610.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Torres",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9615.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Beneyto",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9516.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Macario",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9524.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Larraz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8103.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Vázquez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7960.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5508": {
+    "bdfMatchId": "5508",
+    "venue": "San Mamés (Bilbao)",
+    "referee": {
+      "name": "Caballero Camacho",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600219.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Uribe",
+        "minute": 38,
+        "minuteDisplay": "38",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Biempica",
+        "minute": 40,
+        "minuteDisplay": "40",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-1",
+        "scorer": "Torre",
+        "minute": 71,
+        "minuteDisplay": "71",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Carmelo Cedrún",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7505.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Orúe",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7636.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Garay",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7781.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Canito",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8049.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Etura",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7779.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Mauri",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7794.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Gainza",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8389.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Merodio",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7925.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Torre",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9442.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Uribe",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8050.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Arieta",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7778.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5517": {
+    "bdfMatchId": "5517",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Saz Olmedo",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600221.png"
+    },
+    "goals": [
+      {
+        "score": "0-1",
+        "scorer": "Rodríguez II",
+        "minute": 10,
+        "minuteDisplay": "10",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "0-2",
+        "scorer": "Badenes",
+        "minute": 54,
+        "minuteDisplay": "54",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Alvaré",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9584.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Bolinches",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9690d.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Saso",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7320.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Matito",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8250.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Lesmes",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8247.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Pontoni",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8252.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Gallet",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8209.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7988.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Tini",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9656.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Rodríguez II",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9596.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Paz",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8082.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Rodríguez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9654.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Badenes",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9585.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5526": {
+    "bdfMatchId": "5526",
+    "venue": "Sarrià (Barcelona)",
+    "referee": {
+      "name": "Asensi Martín",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600227.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Carlos Torres",
+        "minute": 2,
+        "minuteDisplay": "2",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Vílchez",
+        "minute": 21,
+        "minuteDisplay": "21",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-1",
+        "scorer": "Antonín",
+        "minute": 27,
+        "minuteDisplay": "27",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-1",
+        "scorer": "Szolnok",
+        "minute": 50,
+        "minuteDisplay": "50",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "4-1",
+        "scorer": "Szolnok",
+        "minute": 57,
+        "minuteDisplay": "57",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "5-1",
+        "scorer": "Vílchez",
+        "minute": 81,
+        "minuteDisplay": "81",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Vicente",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7755.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Faura",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9570.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Abel",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8000.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Dauder",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8022.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Aguirre",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8051.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Benavídez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9470.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Szolnok",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8266.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Vílchez",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9491.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Casamitjana",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9501.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sastre",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8040.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Carlos Torres",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7906.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Cabal",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9691c.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "5534": {
+    "bdfMatchId": "5534",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "Marrón Martín",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600226.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Antonín",
+        "minute": 47,
+        "minuteDisplay": "47",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-1",
+        "scorer": "Tucho Sampedro",
+        "minute": 69,
+        "minuteDisplay": "69",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "1-2",
+        "scorer": "Vigo",
+        "minute": 77,
+        "minuteDisplay": "77",
+        "isHome": false,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "García",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7504.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Cabal",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9691c.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Barragán",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9688b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Medina",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9590.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Basora II",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9689.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gago",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9693d.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Manolín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7604.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Cortizo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7826.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Villar",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7477.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Seoane",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9567.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Azpeitia",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8267.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Toni",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9568.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Marín",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9562.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Escobar",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9557.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Vigo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9665.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Tucho Sampedro",
+        "photoUrl": "https://www.bdfutbol.com/i/m/3081.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Gausí",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9487.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "503018": {
+    "bdfMatchId": "503018",
+    "venue": "El Molinón (Gijón)",
+    "referee": {
+      "name": "García Fernández",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600208.png"
+    },
+    "goals": [],
+    "homeStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Cabal",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9691c.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Goyo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8220.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Piquer",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7785.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Sócrates",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8091.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Quincoces",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7927.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Fernando",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9619.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Pasieguito",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7425.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sendra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8221.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Seguí",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9621.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ricardo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9533.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Fuertes",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8225.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Mañó",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8039.png",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  },
+  "503026": {
+    "bdfMatchId": "503026",
+    "venue": "Mestalla (Valencia)",
+    "referee": {
+      "name": "Marrón Martín",
+      "photoUrl": "https://www.bdfutbol.com/i/am/600226.png"
+    },
+    "goals": [
+      {
+        "score": "1-0",
+        "scorer": "Seguí",
+        "minute": 4,
+        "minuteDisplay": "4",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "2-0",
+        "scorer": "Pasieguito",
+        "minute": 6,
+        "minuteDisplay": "6",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "3-0",
+        "scorer": "Fuertes",
+        "minute": 60,
+        "minuteDisplay": "60",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "4-0",
+        "scorer": "Fuertes",
+        "minute": 70,
+        "minuteDisplay": "70",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "5-0",
+        "scorer": "Mañó",
+        "minute": 73,
+        "minuteDisplay": "73",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "6-0",
+        "scorer": "Fuertes",
+        "minute": 84,
+        "minuteDisplay": "84",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      },
+      {
+        "score": "7-0",
+        "scorer": "Ricardo",
+        "minute": 85,
+        "minuteDisplay": "85",
+        "isHome": true,
+        "isPenalty": false,
+        "isOwnGoal": false
+      }
+    ],
+    "homeStarters": [
+      {
+        "name": "Goyo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8220.png",
+        "position": "Portero"
+      },
+      {
+        "name": "Piquer",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7785.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Sócrates",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8091.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Quincoces",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7927.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Fernando",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9619.png",
+        "position": "Defensa"
+      },
+      {
+        "name": "Pasieguito",
+        "photoUrl": "https://www.bdfutbol.com/i/m/7425.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sendra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8221.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Seguí",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9621.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ricardo",
+        "photoUrl": "https://www.bdfutbol.com/i/m/9533.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Fuertes",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8225.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Mañó",
+        "photoUrl": "https://www.bdfutbol.com/i/m/8039.png",
+        "position": "Delantero"
+      }
+    ],
+    "awayStarters": [
+      {
+        "name": "Sión",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9600.jpg",
+        "position": "Portero"
+      },
+      {
+        "name": "Pellicer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9592.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Cabal",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9691c.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Castañer",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Altisent",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9583b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Armendáriz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9687b.jpg",
+        "position": "Defensa"
+      },
+      {
+        "name": "Antonín",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9686.jpg",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Sánchez",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9598c.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Biempica",
+        "photoUrl": "https://www.bdfutbol.com/i/j/7932b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Ortiz",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9591b.jpg",
+        "position": "Delantero"
+      },
+      {
+        "name": "Pla",
+        "photoUrl": "https://www.bdfutbol.com/i/j/9593b.jpg",
+        "position": "Delantero"
+      }
+    ],
+    "homeBench": [],
+    "awayBench": [],
+    "homeCoach": null,
+    "awayCoach": null
+  }
+}

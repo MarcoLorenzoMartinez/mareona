@@ -12,7 +12,7 @@ const fs = require("fs");
 const path = require("path");
 
 async function main() {
-  const { getHistoricalMatchDetail } = await import("../src/lib/historical/match-detail-server.ts");
+  const { getHistoricalMatchDetail, clearHistoricalMatchDetailCache } = await import("../src/lib/historical/match-detail-server.ts");
   const matchesData = require("../src/data/historical/matches.json");
 
   const args = process.argv.slice(2);
@@ -76,12 +76,15 @@ async function main() {
         console.log(`ERROR: ${err.message}`);
       }
 
-      // Polite delay between BDFutbol requests to avoid rate limits
-      await new Promise((r) => setTimeout(r, 600));
+    // Respectful delay between BDFutbol requests to protect IP reputation
+    await new Promise((r) => setTimeout(r, 350));
     }
 
     fs.writeFileSync(filePath, JSON.stringify(seasonStore, null, 2), "utf8");
     console.log(`Saved ${Object.keys(seasonStore).length} matches to ${filePath} (${ingestedCount} newly ingested).`);
+    if (clearHistoricalMatchDetailCache) {
+      clearHistoricalMatchDetailCache();
+    }
   }
 }
 
