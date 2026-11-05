@@ -1,5 +1,7 @@
 "use server";
 
+import fs from "node:fs";
+import path from "node:path";
 import https from "node:https";
 import rawSquads from "../../data/historical/squads.json" with { type: "json" };
 import { resolveRivalPositions, inferTacticalPositions } from "./player-positions-resolver.ts";
@@ -278,6 +280,19 @@ function fetchMatchHtml(bdfMatchId: string): Promise<string> {
   });
 }
 
+function readBundledMatchDetail(bdfMatchId: string, season?: string): HistoricalMatchDetail | null {
+  if (!season) return null;
+  try {
+    const detailsPath = path.join(process.cwd(), "src", "data", "historical", "match-details", `${season}.json`);
+    if (!fs.existsSync(detailsPath)) return null;
+    const content = fs.readFileSync(detailsPath, "utf8");
+    const seasonRecord = JSON.parse(content) as Record<string, HistoricalMatchDetail>;
+    return seasonRecord[bdfMatchId] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Server Action: retrieves complete official match report for a historical match.
  */
@@ -292,6 +307,14 @@ export async function getHistoricalMatchDetail(
   const cached = matchDetailCache.get(cacheKey);
   if (cached) return cached;
 
+  // 1. Instant deterministic retrieval from verified bundled offline store
+  const bundled = readBundledMatchDetail(bdfMatchId, season);
+  if (bundled) {
+    matchDetailCache.set(cacheKey, bundled);
+    return bundled;
+  }
+
+  // 2. Fallback to live BDFutbol parser
   try {
     const html = await fetchMatchHtml(bdfMatchId);
     const detail = await parseHistoricalMatchDetail(html, bdfMatchId, season, isHome);
