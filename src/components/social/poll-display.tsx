@@ -13,11 +13,42 @@ interface PollDisplayProps {
 
 export function PollDisplay({ poll }: PollDisplayProps) {
   const { user, openAuthModal } = useAuth();
-  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(
-    poll.userVotedOptionId ?? null
-  );
-  const [votes, setVotes] = useState(poll.options);
-  const [totalVotes, setTotalVotes] = useState(poll.totalVotes);
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(() => {
+    if (poll.userVotedOptionId) return poll.userVotedOptionId;
+    if (typeof window === "undefined") return null;
+    try {
+      return localStorage.getItem(`mareona_poll_${poll.id}`);
+    } catch {
+      return null;
+    }
+  });
+
+  const [votes, setVotes] = useState(() => {
+    if (poll.userVotedOptionId || typeof window === "undefined") return poll.options;
+    try {
+      const localVoted = localStorage.getItem(`mareona_poll_${poll.id}`);
+      if (localVoted) {
+        return poll.options.map((opt) =>
+          opt.id === localVoted ? { ...opt, votesCount: opt.votesCount + 1 } : opt
+        );
+      }
+    } catch {
+      // ignore
+    }
+    return poll.options;
+  });
+
+  const [totalVotes, setTotalVotes] = useState(() => {
+    if (poll.userVotedOptionId || typeof window === "undefined") return poll.totalVotes;
+    try {
+      const localVoted = localStorage.getItem(`mareona_poll_${poll.id}`);
+      if (localVoted) return poll.totalVotes + 1;
+    } catch {
+      // ignore
+    }
+    return poll.totalVotes;
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const hasVoted = Boolean(selectedOptionId);
@@ -37,6 +68,12 @@ export function PollDisplay({ poll }: PollDisplayProps) {
         opt.id === optionId ? { ...opt, votesCount: opt.votesCount + 1 } : opt
       )
     );
+
+    try {
+      localStorage.setItem(`mareona_poll_${poll.id}`, optionId);
+    } catch {
+      // ignore
+    }
 
     setIsSubmitting(true);
     await votePoll({ pollId: poll.id, optionId });
