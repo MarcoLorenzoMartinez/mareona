@@ -1,9 +1,10 @@
-// Client: Modal de perfil de usuario estilo Twitter con publicaciones y acciones
+// Client: Modal de perfil de usuario estilo timeline con publicaciones y acciones
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-import { X, MessageSquare } from "lucide-react";
+import { X } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { ProfileModalHeader } from "./user-profile-modal-header";
 import { getUserSocialProfile } from "@/lib/social/user-profile-actions";
 import { sendFriendRequest, removeFriendship, respondFriendRequest } from "@/lib/social/friends-actions";
@@ -92,76 +93,88 @@ export function UserProfileModal({ userId, onClose, onOpenThread }: UserProfileM
       role="dialog"
       aria-modal="true"
       aria-label="Perfil del aficionado"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg rounded-2xl bg-white p-5 sm:p-6 shadow-2xl border border-neutral-100 flex flex-col max-h-[85vh]"
+        className="flex max-h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 cursor-pointer"
-          aria-label="Cerrar perfil"
-        >
-          <X className="h-5 w-5" />
-        </button>
+        <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-2.5 sm:px-5">
+          <h2 className="text-sm font-bold text-neutral-900">Perfil</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Cerrar perfil"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-[var(--surface)] hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
 
         {isLoading || !profile ? (
           <div className="py-16 text-center text-xs text-neutral-400">Cargando perfil...</div>
         ) : (
-          <>
+          <div className="flex-1 overflow-y-auto">
             <ProfileModalHeader
               profile={profile}
               isCurrentUser={isCurrentUser}
               onSendRequest={handleSendRequest}
               onRemoveFriend={handleRemoveFriend}
+              onClose={onClose}
               isPendingAction={isPendingAction}
             />
 
-            <div className="mt-4 flex-1 overflow-y-auto space-y-3 pr-1">
-              <h4 className="text-xs font-bold text-neutral-800 uppercase tracking-wider">
-                Publicaciones en la tertulia ({posts.length})
+            <div className="border-b border-[var(--border)] bg-[var(--surface)]/50 px-4 py-2 sm:px-5">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                Publicaciones{" "}
+                <span className="font-sans tabular-nums text-neutral-400">({posts.length})</span>
               </h4>
+            </div>
 
-              {posts.length === 0 ? (
-                <p className="py-6 text-center text-xs text-neutral-400">
-                  Este aficionado aún no ha compartido publicaciones en la tertulia.
-                </p>
-              ) : (
-                posts.map((post) => (
-                  <article
-                    key={post.id}
-                    onClick={() => {
+            {posts.length === 0 ? (
+              <p className="px-4 py-10 text-center text-sm font-semibold text-neutral-600">
+                Aún no ha publicado en la tertulia
+              </p>
+            ) : (
+              posts.map((post) => (
+                <article
+                  key={post.id}
+                  onClick={() => {
+                    onClose();
+                    onOpenThread(post.id);
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
                       onClose();
                       onOpenThread(post.id);
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        onClose();
-                        onOpenThread(post.id);
-                      }
-                    }}
-                    className="cursor-pointer rounded-xl border border-neutral-100 p-3 hover:border-neutral-300 hover:bg-neutral-50/50 transition-colors"
-                  >
-                    <div className="flex items-center justify-between text-xs text-neutral-400">
-                      <span className="font-semibold text-neutral-700">{profile.displayName || profile.username}</span>
-                      <span>{formatRelativeTime(post.createdAt)}</span>
+                    }
+                  }}
+                  className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60 sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--primary)]"
+                >
+                  <AuthAvatar src={profile.avatarUrl} alt="" size="md" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
+                      <span className="truncate font-bold text-neutral-900">
+                        {profile.displayName || profile.username}
+                      </span>
+                      <span className="truncate text-neutral-500">@{profile.username}</span>
+                      <span aria-hidden="true" className="text-neutral-400">·</span>
+                      <time dateTime={post.createdAt} className="shrink-0 text-xs text-neutral-500">
+                        {formatRelativeTime(post.createdAt)}
+                      </time>
                     </div>
-                    <p className="mt-1.5 text-xs text-neutral-800 leading-relaxed line-clamp-3">{post.body}</p>
-                    <div className="mt-2 flex items-center gap-1 text-[11px] text-neutral-400">
-                      <MessageSquare className="h-3 w-3" />
-                      <span>Ver tema en la tertulia</span>
-                    </div>
-                  </article>
-                ))
-              )}
-            </div>
-          </>
+                    <p className="mt-0.5 whitespace-pre-line break-words text-sm leading-snug text-neutral-900">
+                      {post.body}
+                    </p>
+                  </div>
+                </article>
+              ))
+            )}
+          </div>
         )}
       </div>
     </div>

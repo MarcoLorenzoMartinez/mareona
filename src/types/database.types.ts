@@ -347,7 +347,6 @@ export interface Database {
           deleted_at: string | null;
           moderation_status: "approved" | "flagged";
           moderation_reason: string | null;
-          attachment: Json | null;
         };
         Insert: {
           id?: string;
@@ -360,7 +359,6 @@ export interface Database {
           deleted_at?: string | null;
           moderation_status?: "approved" | "flagged";
           moderation_reason?: string | null;
-          attachment?: Json | null;
         };
         Update: {
           id?: string;
@@ -373,7 +371,6 @@ export interface Database {
           deleted_at?: string | null;
           moderation_status?: "approved" | "flagged";
           moderation_reason?: string | null;
-          attachment?: Json | null;
         };
         Relationships: [
           {

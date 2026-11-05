@@ -1,25 +1,26 @@
-// Client: Vista detallada de hilo de comentario en partido (muñeca rusa idéntica a social)
+// Client: Vista de conversación de partido enfocada (muñeca rusa idéntica a Social)
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, MessageSquare } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
-import { HeartLikeIcon } from "@/components/social/heart-like-icon";
-import { formatRelativeTime } from "@/lib/social/format";
-import { useAuth } from "@/context/auth-context";
+import { PostActions } from "@/app/(main)/social/post-actions";
+import { MatchCommentComposer } from "./match-comment-composer";
 import { MatchReplyItem } from "./match-reply-item";
+import { formatRelativeTime } from "@/lib/social/format";
 import type { MatchComment } from "@/lib/match-community/types";
 
 interface MatchThreadViewProps {
+  readonly matchId: string;
   readonly comment: MatchComment;
   readonly parentComment?: MatchComment | null;
   readonly onBack: () => void;
   readonly onDrillDown: (commentId: string) => void;
-  readonly onAddReply: (parentId: string, body: string) => Promise<void>;
+  readonly onAddReply: (parentId: string, reply: MatchComment) => void;
   readonly onOpenProfile?: (userId: string) => void;
 }
 
 export function MatchThreadView({
+  matchId,
   comment,
   parentComment,
   onBack,
@@ -27,136 +28,81 @@ export function MatchThreadView({
   onAddReply,
   onOpenProfile,
 }: MatchThreadViewProps) {
-  const { user, openAuthModal } = useAuth();
-  const [likes, setLikes] = useState(comment.likesCount);
-  const [hasLiked, setHasLiked] = useState(comment.hasLiked ?? false);
-  const [replyText, setReplyText] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const toggleLike = () => {
-    if (!user) {
-      openAuthModal("signin");
-      return;
-    }
-    setHasLiked(!hasLiked);
-    setLikes((prev) => (hasLiked ? prev - 1 : prev + 1));
-  };
-
-  const handleReplySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!replyText.trim()) return;
-    if (!user) {
-      openAuthModal("signin");
-      return;
-    }
-
-    setIsSubmitting(true);
-    await onAddReply(comment.id, replyText.trim());
-    setIsSubmitting(false);
-    setReplyText("");
-  };
-
   const replies = comment.replies ?? [];
+  const openProfile = () => {
+    if (comment.authorId) onOpenProfile?.(comment.authorId);
+  };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
+    <div>
+      <div className="flex items-center gap-3 border-b border-[var(--border)] bg-white px-3 py-2">
         <button
           type="button"
           onClick={onBack}
-          aria-label="Volver al hilo anterior"
-          className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 transition-colors cursor-pointer"
+          aria-label="Volver a la conversación anterior"
+          className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 transition-colors duration-150 hover:bg-[var(--surface)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-5 w-5" aria-hidden="true" />
         </button>
-        <div>
-          <h2 className="text-sm font-bold text-neutral-900">Conversación de partido</h2>
+        <div className="min-w-0">
+          <h2 className="text-base font-bold text-neutral-900">Conversación</h2>
           {parentComment && (
-            <p className="text-[11px] text-neutral-400">
+            <p className="truncate text-xs text-neutral-500">
               En respuesta a @{parentComment.authorUsername}
             </p>
           )}
         </div>
       </div>
 
-      <article className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs">
+      <article className="border-b border-[var(--border)] px-4 pt-4 pb-1">
         <div className="flex items-center gap-3">
-          <div
-            onClick={() => comment.authorId && onOpenProfile?.(comment.authorId)}
-            className="cursor-pointer hover:opacity-85"
+          <button
+            type="button"
+            onClick={openProfile}
+            aria-label={`Ver perfil de ${comment.authorName}`}
+            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            <AuthAvatar src={comment.authorAvatar} alt={comment.authorName} size="md" />
-          </div>
-          <div className="min-w-0 flex-1">
+            <AuthAvatar src={comment.authorAvatar} alt="" size="md" />
+          </button>
+          <div className="min-w-0 flex-1 leading-tight">
             <button
               type="button"
-              onClick={() => comment.authorId && onOpenProfile?.(comment.authorId)}
-              className="text-sm font-bold text-neutral-900 truncate hover:underline hover:text-[var(--primary)] text-left cursor-pointer"
+              onClick={openProfile}
+              className="block max-w-full truncate text-left text-sm font-bold text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
               {comment.authorName}
             </button>
-            <button
-              type="button"
-              onClick={() => comment.authorId && onOpenProfile?.(comment.authorId)}
-              className="text-xs text-neutral-400 hover:text-neutral-600 block cursor-pointer"
-            >
+            <span className="block truncate text-sm text-neutral-500">
               @{comment.authorUsername}
-            </button>
+            </span>
           </div>
-          <span className="text-xs text-neutral-400">{formatRelativeTime(comment.createdAt)}</span>
         </div>
 
-        <p className="mt-4 text-sm text-neutral-900 leading-relaxed whitespace-pre-line">
+        <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
           {comment.body}
         </p>
+        <time dateTime={comment.createdAt} className="mt-3 block text-sm text-neutral-500">
+          {formatRelativeTime(comment.createdAt)}
+        </time>
 
-        <div className="mt-4 flex items-center gap-6 border-t border-neutral-100 pt-3 text-xs text-neutral-500">
-          <button
-            type="button"
-            onClick={toggleLike}
-            className={`group flex items-center gap-1.5 transition-colors cursor-pointer ${
-              hasLiked ? "text-[var(--primary)] font-bold" : "text-neutral-500 hover:text-[var(--primary)]"
-            }`}
-          >
-            <HeartLikeIcon filled={hasLiked} />
-            <span className="tabular-nums font-sans">{likes}</span>
-          </button>
-          <div className="flex items-center gap-1.5 text-neutral-500">
-            <MessageSquare className="h-4 w-4" />
-            <span className="tabular-nums font-sans">{replies.length} respuestas</span>
-          </div>
+        <div className="mt-2 border-t border-[var(--border)] pt-1">
+          <PostActions likesCount={comment.likesCount} repliesCount={replies.length} />
         </div>
       </article>
 
-      <form onSubmit={handleReplySubmit} className="rounded-2xl border border-[var(--border)] bg-white p-4 shadow-xs space-y-2.5">
-        <textarea
-          rows={2}
-          value={replyText}
-          onChange={(e) => setReplyText(e.target.value)}
-          placeholder={`Responder a @${comment.authorUsername}...`}
-          maxLength={500}
-          className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 p-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:bg-white focus:outline-none resize-none"
-        />
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] text-neutral-400 font-sans tabular-nums">{500 - replyText.length} car.</span>
-          <button
-            type="submit"
-            disabled={isSubmitting || !replyText.trim()}
-            className="rounded-full bg-[var(--primary)] px-4 py-1.5 text-xs font-bold text-white hover:opacity-95 disabled:opacity-50 cursor-pointer"
-          >
-            {isSubmitting ? "Enviando..." : "Responder"}
-          </button>
-        </div>
-      </form>
+      <MatchCommentComposer
+        matchId={matchId}
+        parentId={comment.id}
+        placeholder={`Responder a @${comment.authorUsername}`}
+        submitLabel="Responder"
+        onCommented={(reply) => onAddReply(comment.id, reply)}
+      />
 
-      <section aria-label="Respuestas al comentario" className="space-y-2.5 pt-1">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400 px-1">
-          Respuestas
-        </h3>
+      <section aria-label="Respuestas al comentario">
         {replies.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-neutral-200 p-6 text-center text-xs text-neutral-400">
-            No hay respuestas aún. Sé el primero en continuar la conversación del partido.
-          </div>
+          <p className="px-4 py-10 text-center text-sm text-neutral-500">
+            Aún no hay respuestas
+          </p>
         ) : (
           replies.map((reply) => (
             <MatchReplyItem

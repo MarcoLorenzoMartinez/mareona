@@ -1,16 +1,21 @@
-// Client: Cabecera visual del perfil con avatar, apodo y botón de desconexión
+// Client: Cabecera de perfil estilo timeline con avatar, métricas y acciones rápidas
 "use client";
 
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 
-export function ProfileHeader() {
+interface ProfileHeaderProps {
+  readonly isEditing: boolean;
+  readonly onToggleEdit: () => void;
+}
+
+export function ProfileHeader({ isEditing, onToggleEdit }: ProfileHeaderProps) {
   const { profile, user, handleSignOut } = useAuth();
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
   const username = profile?.username || "aficionado";
+  const points = profile?.points ?? 0;
 
-  // Format creation timestamp
   const createdAtFormatted = profile?.created_at
     ? new Date(profile.created_at).toLocaleDateString("es-ES", {
         month: "long",
@@ -19,43 +24,61 @@ export function ProfileHeader() {
     : "temporada actual";
 
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-xs">
-      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+    <div className="border-b border-[var(--border)] bg-white px-4 py-5 sm:px-5">
+      <div className="flex items-start justify-between gap-4">
         <AuthAvatar
           src={profile?.avatar_url}
           alt={displayName}
-          size="lg"
-          className="border-2 border-white shadow-md ring-2 ring-neutral-100"
+          size="xl"
+          className="border-2 border-white shadow-xs ring-1 ring-neutral-100"
         />
 
-        <div className="flex-1 text-center sm:text-left min-w-0">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-neutral-900 truncate">
-              {displayName}
-            </h1>
-          </div>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <button
+            type="button"
+            onClick={onToggleEdit}
+            aria-expanded={isEditing}
+            className={`min-h-9 rounded-full px-4 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
+              isEditing
+                ? "bg-neutral-900 text-white"
+                : "border border-[var(--border)] bg-white text-neutral-900 hover:bg-[var(--surface)]"
+            }`}
+          >
+            {isEditing ? "Cerrar edición" : "Editar perfil"}
+          </button>
 
-          <p className="text-sm font-semibold text-neutral-500 mt-0.5">
-            @{username}
-          </p>
-
-          <p className="text-xs text-neutral-400 mt-2">
-            Desde {createdAtFormatted}
-            {user?.email && (
-              <span className="block sm:inline sm:ml-2 sm:border-l sm:border-neutral-200 sm:pl-2 text-neutral-500">
-                {user.email}
-              </span>
-            )}
-          </p>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="min-h-9 rounded-full border border-[var(--border)] bg-white px-3.5 text-xs font-semibold text-[var(--primary)] transition-colors hover:border-red-200 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            Cerrar sesión
+          </button>
         </div>
+      </div>
 
-        <button
-          type="button"
-          onClick={handleSignOut}
-          className="rounded-lg border border-neutral-200 bg-white px-3.5 py-2 text-xs font-semibold text-red-600 transition-colors hover:bg-red-50 hover:border-red-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-        >
-          Cerrar sesión
-        </button>
+      <div className="mt-3.5">
+        <h1 className="text-xl font-bold tracking-tight text-neutral-900 truncate">
+          {displayName}
+        </h1>
+        <p className="text-sm text-neutral-500">@{username}</p>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-neutral-500">
+        <span>
+          <strong className="font-sans font-bold tabular-nums text-neutral-900">
+            {points}
+          </strong>{" "}
+          puntos
+        </span>
+        <span aria-hidden="true" className="text-neutral-300">·</span>
+        <span>Desde {createdAtFormatted}</span>
+        {user?.email && (
+          <>
+            <span aria-hidden="true" className="text-neutral-300">·</span>
+            <span className="truncate">{user.email}</span>
+          </>
+        )}
       </div>
     </div>
   );

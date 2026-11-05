@@ -1,7 +1,8 @@
 // Client: Cabecera con datos y acciones de relación del perfil de aficionado
 "use client";
 
-import { UserPlus, UserCheck, UserX, Award, Calendar } from "lucide-react";
+import Link from "next/link";
+import { UserPlus, UserCheck, UserX } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
 
@@ -10,6 +11,7 @@ interface ProfileModalHeaderProps {
   readonly isCurrentUser: boolean;
   readonly onSendRequest: () => void;
   readonly onRemoveFriend: () => void;
+  readonly onClose: () => void;
   readonly isPendingAction: boolean;
 }
 
@@ -18,6 +20,7 @@ export function ProfileModalHeader({
   isCurrentUser,
   onSendRequest,
   onRemoveFriend,
+  onClose,
   isPendingAction,
 }: ProfileModalHeaderProps) {
   const memberSince = (() => {
@@ -31,28 +34,38 @@ export function ProfileModalHeader({
     }
   })();
 
-  return (
-    <div className="space-y-4 pb-4 border-b border-neutral-100">
-      <div className="flex items-start justify-between gap-3 pr-8">
-        <AuthAvatar src={profile.avatarUrl} alt={profile.displayName || profile.username} size="lg" />
+  const displayName = profile.displayName || profile.username;
 
-        {!isCurrentUser && (
+  return (
+    <div className="border-b border-[var(--border)] bg-white px-4 py-4 sm:px-5">
+      <div className="flex items-start justify-between gap-3">
+        <AuthAvatar src={profile.avatarUrl} alt={displayName} size="lg" />
+
+        {isCurrentUser ? (
+          <Link
+            href="/perfil"
+            onClick={onClose}
+            className="inline-flex min-h-9 items-center rounded-full border border-[var(--border)] bg-white px-4 text-xs font-bold text-neutral-900 transition-colors hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            Editar perfil
+          </Link>
+        ) : (
           <div>
             {profile.friendshipStatus === "accepted" && (
               <button
                 type="button"
                 onClick={onRemoveFriend}
                 disabled={isPendingAction}
-                className="flex items-center gap-1.5 rounded-full border border-neutral-300 px-3.5 py-1.5 text-xs font-semibold text-neutral-700 hover:border-red-200 hover:text-[var(--primary)] transition-colors cursor-pointer disabled:opacity-50"
+                className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3.5 text-xs font-semibold text-neutral-700 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
               >
-                <UserX className="h-3.5 w-3.5" />
+                <UserX className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Dejar de conectar</span>
               </button>
             )}
 
             {profile.friendshipStatus === "pending_sent" && (
-              <span className="flex items-center gap-1.5 rounded-full bg-neutral-100 px-3.5 py-1.5 text-xs font-medium text-neutral-500">
-                <UserCheck className="h-3.5 w-3.5" />
+              <span className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--surface)] px-3.5 text-xs font-semibold text-neutral-500">
+                <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Solicitud enviada</span>
               </span>
             )}
@@ -62,9 +75,9 @@ export function ProfileModalHeader({
                 type="button"
                 onClick={onSendRequest}
                 disabled={isPendingAction}
-                className="flex items-center gap-1.5 rounded-full bg-[var(--primary)] px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:opacity-90 cursor-pointer disabled:opacity-50"
+                className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
               >
-                <UserCheck className="h-3.5 w-3.5" />
+                <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Aceptar solicitud</span>
               </button>
             )}
@@ -74,9 +87,9 @@ export function ProfileModalHeader({
                 type="button"
                 onClick={onSendRequest}
                 disabled={isPendingAction}
-                className="flex items-center gap-1.5 rounded-full bg-[var(--primary)] px-4 py-1.5 text-xs font-bold text-white shadow-xs hover:opacity-90 cursor-pointer disabled:opacity-50"
+                className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
               >
-                <UserPlus className="h-3.5 w-3.5" />
+                <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Conectar</span>
               </button>
             )}
@@ -84,21 +97,20 @@ export function ProfileModalHeader({
         )}
       </div>
 
-      <div>
-        <h3 className="text-base font-bold text-neutral-900">{profile.displayName || profile.username}</h3>
-        <p className="text-xs font-medium text-neutral-400">@{profile.username}</p>
+      <div className="mt-3">
+        <h3 className="text-base font-bold text-neutral-900 truncate">{displayName}</h3>
+        <p className="text-xs text-neutral-500">@{profile.username}</p>
       </div>
 
-      <div className="flex items-center gap-4 text-xs text-neutral-500 flex-wrap">
-        <span className="flex items-center gap-1">
-          <Calendar className="h-3.5 w-3.5 text-neutral-400" />
-          <span>Aficionado desde {memberSince}</span>
+      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-500">
+        <span>
+          <strong className="font-sans font-bold tabular-nums text-neutral-900">
+            {profile.points}
+          </strong>{" "}
+          puntos
         </span>
-        <span className="flex items-center gap-1">
-          <Award className="h-3.5 w-3.5 text-neutral-400" />
-          <span className="tabular-nums font-sans font-bold text-neutral-800">{profile.points}</span>
-          <span>puntos</span>
-        </span>
+        <span aria-hidden="true" className="text-neutral-300">·</span>
+        <span>Desde {memberSince}</span>
       </div>
     </div>
   );

@@ -1,37 +1,61 @@
-// Client: Página principal de perfil de aficionado sportinguista
+// Client: Página principal de perfil de aficionado con cabecera, edición desplegable y publicaciones
 "use client";
 
+import { useState } from "react";
 import { useAuth } from "@/context/auth-context";
 import { ProfileGuestView } from "./profile-guest-view";
 import { ProfileHeader } from "./profile-header";
 import { ProfileEditForm } from "./profile-edit-form";
+import { ProfilePostsList } from "./profile-posts-list";
 
 export default function PerfilPage() {
-  const { user, isLoading } = useAuth();
+  const { user, profile, isLoading } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
 
   if (isLoading) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-8">
-        <div className="space-y-6 animate-pulse" aria-busy="true">
-          <div className="h-40 rounded-2xl bg-neutral-200" />
-          <div className="h-72 rounded-2xl bg-neutral-200" />
-        </div>
-      </main>
+      <div className="mx-auto w-full max-w-2xl py-4 sm:py-6">
+        <div
+          className="h-96 w-full animate-pulse rounded-2xl border border-[var(--border)] bg-neutral-100"
+          aria-busy="true"
+        />
+      </div>
     );
   }
 
   if (!user) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-12">
+      <div className="mx-auto w-full max-w-2xl py-4 sm:py-6">
         <ProfileGuestView />
-      </main>
+      </div>
     );
   }
 
+  const displayName = profile?.display_name || profile?.username || "Aficionado";
+  const username = profile?.username || "aficionado";
+
   return (
-    <main className="mx-auto max-w-2xl px-4 py-8 space-y-6">
-      <ProfileHeader />
-      <ProfileEditForm />
-    </main>
+    <div className="mx-auto w-full max-w-2xl py-4 sm:py-6">
+      <div className="w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-2xs">
+        <ProfileHeader
+          isEditing={isEditing}
+          onToggleEdit={() => setIsEditing((prev) => !prev)}
+        />
+
+        {isEditing && (
+          <ProfileEditForm
+            onCancel={() => setIsEditing(false)}
+            onSaved={() => setIsEditing(false)}
+          />
+        )}
+
+        <ProfilePostsList
+          userId={user.id}
+          displayName={displayName}
+          username={username}
+          avatarUrl={profile?.avatar_url}
+        />
+      </div>
+    </div>
   );
 }

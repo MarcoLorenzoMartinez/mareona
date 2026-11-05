@@ -1,4 +1,4 @@
-// Client: Formulario accesible para editar el perfil público y avatar rojiblanco
+// Client: Formulario desplegable de edición de identidad y foto de perfil
 "use client";
 
 import { useState } from "react";
@@ -6,7 +6,12 @@ import { useAuth } from "@/context/auth-context";
 import { updateProfile } from "@/lib/auth/actions";
 import { ProfileAvatarPicker } from "./profile-avatar-picker";
 
-export function ProfileEditForm() {
+interface ProfileEditFormProps {
+  readonly onCancel?: () => void;
+  readonly onSaved?: () => void;
+}
+
+export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
   const { profile, refreshProfile, updateLocalProfile } = useAuth();
   const [displayName, setDisplayName] = useState(profile?.display_name ?? "");
   const [username, setUsername] = useState(profile?.username ?? "");
@@ -24,7 +29,6 @@ export function ProfileEditForm() {
     setIsSubmitting(true);
     setStatusMessage(null);
 
-    // Support instant local demo profile update
     if (profile?.id.startsWith("00000000-0000-4000-8000")) {
       updateLocalProfile({
         display_name: displayName.trim() || null,
@@ -32,10 +36,7 @@ export function ProfileEditForm() {
         avatar_url: selectedAvatar,
       });
       setIsSubmitting(false);
-      setStatusMessage({
-        type: "success",
-        text: "¡Perfil actualizado con éxito!",
-      });
+      onSaved?.();
       return;
     }
 
@@ -55,92 +56,93 @@ export function ProfileEditForm() {
     }
 
     await refreshProfile();
-    setStatusMessage({
-      type: "success",
-      text: "¡Perfil actualizado con éxito!",
-    });
+    onSaved?.();
   };
 
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-xs">
-      <h2 className="text-base font-bold text-neutral-900">
-        Personalizar Identidad
-      </h2>
+    <form
+      onSubmit={handleSubmit}
+      className="border-b border-[var(--border)] bg-[var(--surface)]/40 px-4 py-4 sm:px-5 space-y-4"
+    >
+      <ProfileAvatarPicker
+        selectedAvatar={selectedAvatar}
+        onSelect={setSelectedAvatar}
+        displayName={displayName || profile?.display_name || "Aficionado"}
+      />
 
-      <form onSubmit={handleSubmit} className="mt-5 space-y-4">
-        <ProfileAvatarPicker
-          selectedAvatar={selectedAvatar}
-          onSelect={setSelectedAvatar}
-          displayName={displayName || profile?.display_name || "Aficionado"}
-        />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div>
+          <label
+            htmlFor="edit-display-name"
+            className="block text-xs font-semibold text-neutral-700 mb-1"
+          >
+            Nombre visible
+          </label>
+          <input
+            id="edit-display-name"
+            type="text"
+            maxLength={40}
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            placeholder="Ej. Pelayo Álvarez"
+            className="w-full rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+          />
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label
-              htmlFor="edit-display-name"
-              className="block text-xs font-semibold text-neutral-700 mb-1"
-            >
-              Nombre visible
-            </label>
+        <div>
+          <label
+            htmlFor="edit-username"
+            className="block text-xs font-semibold text-neutral-700 mb-1"
+          >
+            Apodo de usuario
+          </label>
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-bold text-neutral-400">
+              @
+            </span>
             <input
-              id="edit-display-name"
+              id="edit-username"
               type="text"
-              maxLength={40}
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Ej. Pelayo Álvarez"
-              className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              pattern="^[a-zA-Z0-9_]{3,20}$"
+              title="De 3 a 20 caracteres (letras, números y guión bajo)"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="pelayo_rsg"
+              className="w-full rounded-xl border border-[var(--border)] bg-white py-2 pr-3 pl-7 text-sm font-sans text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
           </div>
-
-          <div>
-            <label
-              htmlFor="edit-username"
-              className="block text-xs font-semibold text-neutral-700 mb-1"
-            >
-              Apodo de usuario (@)
-            </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-bold text-neutral-400">
-                @
-              </span>
-              <input
-                id="edit-username"
-                type="text"
-                pattern="^[a-zA-Z0-9_]{3,20}$"
-                title="De 3 a 20 caracteres (letras, números y guión bajo)"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="pelayo_rsg"
-                className="w-full rounded-lg border border-neutral-200 bg-white py-2 pr-3 pl-7 text-sm font-sans text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
-              />
-            </div>
-          </div>
         </div>
+      </div>
 
-        {statusMessage && (
-          <div
-            role="status"
-            className={`rounded-lg p-3 text-xs font-medium border ${
-              statusMessage.type === "success"
-                ? "bg-green-50 border-green-200 text-green-800"
-                : "bg-red-50 border-red-200 text-[var(--primary)]"
-            }`}
-          >
-            {statusMessage.text}
-          </div>
-        )}
+      {statusMessage && (
+        <p
+          role="alert"
+          className={`text-xs font-semibold ${
+            statusMessage.type === "success" ? "text-green-700" : "text-[var(--primary)]"
+          }`}
+        >
+          {statusMessage.text}
+        </p>
+      )}
 
-        <div className="pt-2">
+      <div className="flex items-center justify-end gap-2 pt-1">
+        {onCancel && (
           <button
-            type="submit"
-            disabled={isSubmitting}
-            className="rounded-lg bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+            type="button"
+            onClick={onCancel}
+            className="min-h-9 rounded-full px-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-200/60 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            {isSubmitting ? "Guardando..." : "Guardar cambios"}
+            Cancelar
           </button>
-        </div>
-      </form>
-    </div>
+        )}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="min-h-9 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+        >
+          {isSubmitting ? "Guardando..." : "Guardar cambios"}
+        </button>
+      </div>
+    </form>
   );
 }

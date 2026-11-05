@@ -1,4 +1,4 @@
-// Client: Pestaña Grada con tertulia de partido y calificaciones unificadas (MVP + Notas)
+// Client: Pestaña Grada con tertulia de partido (diseño unificado con Social) y calificaciones
 "use client";
 
 import { useState, useEffect } from "react";
@@ -37,10 +37,9 @@ export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
   }, [match.externalId]);
 
   return (
-    <div className="space-y-5">
-      {/* Selector de subsecciones en partidos finalizados */}
-      {isFinished ? (
-        <div className="flex justify-center">
+    <div className="space-y-4">
+      {isFinished && (
+        <div className="mx-auto flex w-full max-w-2xl justify-center">
           <div
             role="tablist"
             aria-label="Secciones de la grada"
@@ -51,9 +50,9 @@ export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
               role="tab"
               aria-selected={activeSection === "comments"}
               onClick={() => setActiveSection("comments")}
-              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+              className={`min-h-9 rounded-full px-4 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
                 activeSection === "comments"
-                  ? "bg-[var(--primary)] text-white shadow-xs"
+                  ? "bg-[var(--primary)] text-white shadow-2xs"
                   : "text-[var(--foreground-muted)] hover:text-neutral-900"
               }`}
             >
@@ -64,9 +63,9 @@ export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
               role="tab"
               aria-selected={activeSection === "ratings"}
               onClick={() => setActiveSection("ratings")}
-              className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
+              className={`min-h-9 rounded-full px-4 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
                 activeSection === "ratings"
-                  ? "bg-[var(--primary)] text-white shadow-xs"
+                  ? "bg-[var(--primary)] text-white shadow-2xs"
                   : "text-[var(--foreground-muted)] hover:text-neutral-900"
               }`}
             >
@@ -74,17 +73,12 @@ export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
             </button>
           </div>
         </div>
-      ) : (
-        <div className="rounded-xl border border-neutral-100 bg-neutral-50/70 p-3.5 text-center text-xs text-[var(--foreground-muted)]">
-          Las calificaciones y el MVP del partido se abrirán al finalizar el encuentro. ¡Comenta el partido en directo con la afición!
-        </div>
       )}
 
-      {/* Renderizado de contenido según la sección */}
       {(!isFinished || activeSection === "comments") && (
         <>
           {isLoading ? (
-            <div className="p-8 text-center text-xs text-neutral-400">
+            <div className="mx-auto w-full max-w-2xl rounded-2xl border border-[var(--border)] bg-white p-10 text-center text-xs text-neutral-400 shadow-2xs">
               Cargando comentarios...
             </div>
           ) : (

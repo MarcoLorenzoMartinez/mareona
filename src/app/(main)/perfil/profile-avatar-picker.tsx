@@ -78,12 +78,7 @@ export function ProfileAvatarPicker({
   };
 
   return (
-    <div className="space-y-3">
-      <label className="block text-xs font-semibold text-neutral-700">
-        Foto de perfil
-      </label>
-
-      {/* Input oculto para galería / cámara */}
+    <div className="space-y-2">
       <input
         ref={fileInputRef}
         type="file"
@@ -93,8 +88,7 @@ export function ProfileAvatarPicker({
         aria-label="Seleccionar foto de perfil desde galería o cámara"
       />
 
-      <div className="flex items-center justify-between gap-4 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-3.5">
-        {/* Vista previa del avatar actual (foto o iniciales sobre rojo) */}
+      <div className="flex items-center justify-between gap-4">
         <div className="relative inline-flex">
           <AuthAvatar
             src={hasCustomPhoto ? selectedAvatar : null}
@@ -109,15 +103,14 @@ export function ProfileAvatarPicker({
           )}
         </div>
 
-        {/* Acciones */}
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-700 shadow-2xs hover:bg-neutral-50 hover:border-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3.5 text-xs font-semibold text-neutral-700 transition-colors hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
           >
-            <Camera className="h-4 w-4" />
+            <Camera className="h-3.5 w-3.5" aria-hidden="true" />
             <span>{hasCustomPhoto ? "Cambiar foto" : "Subir foto"}</span>
           </button>
 
@@ -127,9 +120,9 @@ export function ProfileAvatarPicker({
               onClick={handleRemovePhoto}
               disabled={isUploading}
               aria-label="Quitar foto y usar iniciales rojiblancas"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-50"
+              className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
               <span>Quitar</span>
             </button>
           )}
@@ -137,7 +130,7 @@ export function ProfileAvatarPicker({
       </div>
 
       {uploadError && (
-        <p role="alert" className="text-xs text-[var(--primary)] font-medium">
+        <p role="alert" className="text-xs font-semibold text-[var(--primary)]">
           {uploadError}
         </p>
       )}

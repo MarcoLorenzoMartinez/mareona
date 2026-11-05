@@ -1,8 +1,8 @@
-// Client: Elemento de respuesta en hilo de partido
+// Client: Respuesta del hilo de partido con la misma anatomía que el timeline de Social
 "use client";
 
-import { MessageSquare } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { PostActions } from "@/app/(main)/social/post-actions";
 import { formatRelativeTime } from "@/lib/social/format";
 import type { MatchComment } from "@/lib/match-community/types";
 
@@ -18,56 +18,60 @@ export function MatchReplyItem({
   onOpenProfile,
 }: MatchReplyItemProps) {
   const count = reply.replies?.length ?? 0;
+  const drillDown = () => onDrillDown(reply.id);
 
-  const handleProfileClick = (e: React.MouseEvent) => {
+  const openProfile = (e: React.MouseEvent) => {
     if (!reply.authorId || !onOpenProfile) return;
     e.stopPropagation();
     onOpenProfile(reply.authorId);
   };
 
   return (
-    <div
-      onClick={() => onDrillDown(reply.id)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onDrillDown(reply.id);
-        }
-      }}
-      className="group cursor-pointer rounded-xl border border-[var(--border)] bg-white p-3.5 transition-all hover:border-neutral-300 hover:shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+    <article
+      onClick={drillDown}
+      className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60"
     >
-      <div className="flex items-start gap-2.5">
-        <div onClick={handleProfileClick} className="cursor-pointer hover:opacity-85">
-          <AuthAvatar src={reply.authorAvatar} alt={reply.authorName} size="sm" />
+      <button
+        type="button"
+        onClick={openProfile}
+        aria-label={`Ver perfil de ${reply.authorName}`}
+        className="h-fit shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+      >
+        <AuthAvatar src={reply.authorAvatar} alt="" size="md" />
+      </button>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
+          <button
+            type="button"
+            onClick={openProfile}
+            className="truncate text-left font-bold text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            {reply.authorName}
+          </button>
+          <button
+            type="button"
+            onClick={openProfile}
+            className="truncate text-left text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            @{reply.authorUsername}
+          </button>
+          <span aria-hidden="true" className="text-neutral-400">·</span>
+          <time dateTime={reply.createdAt} className="shrink-0 text-xs text-neutral-500">
+            {formatRelativeTime(reply.createdAt)}
+          </time>
         </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-baseline gap-1.5 flex-wrap">
-            <button
-              type="button"
-              onClick={handleProfileClick}
-              className="text-xs font-bold text-neutral-900 truncate hover:underline hover:text-[var(--primary)] text-left cursor-pointer"
-            >
-              {reply.authorName}
-            </button>
-            <button
-              type="button"
-              onClick={handleProfileClick}
-              className="text-[11px] text-neutral-400 hover:text-neutral-600 cursor-pointer"
-            >
-              @{reply.authorUsername}
-            </button>
-            <span className="text-[11px] text-neutral-300">·</span>
-            <span className="text-[11px] text-neutral-400">{formatRelativeTime(reply.createdAt)}</span>
-          </div>
-          <p className="mt-1 text-xs text-neutral-800 leading-relaxed whitespace-pre-line">{reply.body}</p>
-          <div className="mt-2.5 flex items-center gap-1.5 text-xs text-neutral-400 group-hover:text-[var(--primary)] transition-colors">
-            <MessageSquare className="h-3.5 w-3.5" />
-            <span className="font-sans tabular-nums font-semibold">{count}</span>
-          </div>
-        </div>
+
+        <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
+          {reply.body}
+        </p>
+
+        <PostActions
+          likesCount={reply.likesCount}
+          repliesCount={count}
+          onOpenThread={drillDown}
+        />
       </div>
-    </div>
+    </article>
   );
 }

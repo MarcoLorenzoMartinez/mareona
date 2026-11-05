@@ -12,7 +12,6 @@ import {
   type SubmitMvpVoteInput,
   type SubmitPlayerRatingInput,
 } from "./schemas";
-import { SEED_MATCH_COMMENTS } from "./seed";
 import { buildMatchCommentTree } from "./comment-tree";
 import type { MatchComment } from "./types";
 import type { Database } from "@/types/database.types";
@@ -32,19 +31,16 @@ export async function getMatchComments(
       .from("posts")
       .select("id, body, created_at, user_id, parent_id, profiles(display_name, username, avatar_url)")
       .eq("match_id", matchId)
+      .is("deleted_at", null)
       .order("created_at", { ascending: true });
 
     if (error || !posts || posts.length === 0) {
-      return SEED_MATCH_COMMENTS.filter(
-        (c) => c.matchId === matchId || c.matchId === "demo"
-      );
+      return [];
     }
 
     return buildMatchCommentTree(posts, matchId);
   } catch {
-    return SEED_MATCH_COMMENTS.filter(
-      (c) => c.matchId === matchId || c.matchId === "demo"
-    );
+    return [];
   }
 }
 
