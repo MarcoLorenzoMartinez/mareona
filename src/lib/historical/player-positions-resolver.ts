@@ -5,6 +5,15 @@ import type { HistoricalMatchPlayer } from "./types";
 /** Memory cache initialized with bundled seed data for instant (0 ms) lookups */
 const positionsCache = new Map<string, string>(Object.entries(initialCache as Record<string, string>));
 
+const BDFUTBOL_POSITION_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  Accept:
+    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "es-ES,es;q=0.9",
+  Referer: "https://www.bdfutbol.com/",
+};
+
 /**
  * Extracts official player position from BDFutbol profile HTML page.
  *
@@ -15,35 +24,44 @@ function fetchBdfutbolPosition(playerId: string): Promise<string | null> {
   const url = `https://www.bdfutbol.com/es/j/j${encodeURIComponent(playerId)}.html`;
 
   return new Promise((resolve) => {
-    const req = https.get(url, { rejectUnauthorized: false }, (res) => {
-      if (res.statusCode && res.statusCode >= 400) {
-        resolve(null);
-        return;
-      }
-      let data = "";
-      res.on("data", (chunk) => { data += chunk; });
-      res.on("end", () => {
-        const demSection = data.match(
-          /<div>Demarcaci[óo]n<\/div>[\s\S]*?<div class="font-weight-bold">([\s\S]*?)<\/div>/i
-        )?.[1];
-
-        if (demSection) {
-          const directMatch = demSection.match(/(Portero|Defensa|Centrocampista|Delantero)/i)?.[1];
-          if (directMatch) {
-            resolve(directMatch);
-            return;
-          }
-          if (demSection.includes("por")) { resolve("Portero"); return; }
-          if (demSection.includes("def") || demSection.includes("cen") || demSection.includes("lti")) { resolve("Defensa"); return; }
-          if (demSection.includes("mig")) { resolve("Centrocampista"); return; }
-          if (demSection.includes("dav")) { resolve("Delantero"); return; }
+    const req = https.get(
+      url,
+      {
+        rejectUnauthorized: false,
+        headers: BDFUTBOL_POSITION_HEADERS,
+      },
+      (res) => {
+        if (res.statusCode && res.statusCode >= 400) {
+          resolve(null);
+          return;
         }
-        resolve(null);
-      });
-    });
+        let data = "";
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          const demSection = data.match(
+            /<div>Demarcaci[óo]n<\/div>[\s\S]*?<div class="font-weight-bold">([\s\S]*?)<\/div>/i
+          )?.[1];
+
+          if (demSection) {
+            const directMatch = demSection.match(/(Portero|Defensa|Centrocampista|Delantero)/i)?.[1];
+            if (directMatch) {
+              resolve(directMatch);
+              return;
+            }
+            if (demSection.includes("por")) { resolve("Portero"); return; }
+            if (demSection.includes("def") || demSection.includes("cen") || demSection.includes("lti")) { resolve("Defensa"); return; }
+            if (demSection.includes("mig")) { resolve("Centrocampista"); return; }
+            if (demSection.includes("dav")) { resolve("Delantero"); return; }
+          }
+          resolve(null);
+        });
+      }
+    );
 
     req.on("error", () => resolve(null));
-    req.setTimeout(1200, () => {
+    req.setTimeout(1500, () => {
       req.destroy();
       resolve(null);
     });

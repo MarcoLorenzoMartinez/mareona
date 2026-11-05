@@ -231,18 +231,50 @@ export async function parseHistoricalMatchDetail(
   };
 }
 
+const BDFUTBOL_REQUEST_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  Accept:
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+  "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+  "Cache-Control": "no-cache",
+  Pragma: "no-cache",
+  Referer: "https://www.bdfutbol.com/",
+};
+
 function fetchMatchHtml(bdfMatchId: string): Promise<string> {
   const url = `https://www.bdfutbol.com/es/p/p.php?id=${encodeURIComponent(bdfMatchId)}`;
   return new Promise((resolve, reject) => {
-    https.get(url, { rejectUnauthorized: false }, (res) => {
-      if (res.statusCode && res.statusCode >= 400) {
-        reject(new Error(`Failed to fetch match ${bdfMatchId}: HTTP ${res.statusCode}`));
-        return;
+    const req = https.get(
+      url,
+      {
+        rejectUnauthorized: false,
+        headers: BDFUTBOL_REQUEST_HEADERS,
+      },
+      (res) => {
+        if (res.statusCode && res.statusCode >= 400) {
+          reject(new Error(`Failed to fetch match ${bdfMatchId}: HTTP ${res.statusCode}`));
+          return;
+        }
+        let data = "";
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          if (!data || data.includes("Attention Required! | Cloudflare") || data.includes("cf-browser-verification")) {
+            reject(new Error(`Cloudflare challenge encountered for match ${bdfMatchId}`));
+            return;
+          }
+          resolve(data);
+        });
       }
-      let data = "";
-      res.on("data", (chunk) => { data += chunk; });
-      res.on("end", () => resolve(data));
-    }).on("error", reject);
+    );
+
+    req.on("error", reject);
+    req.setTimeout(8000, () => {
+      req.destroy();
+      reject(new Error(`Timeout fetching match ${bdfMatchId}`));
+    });
   });
 }
 
