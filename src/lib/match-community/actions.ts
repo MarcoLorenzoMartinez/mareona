@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { MODERATION_REJECTED_MESSAGE, moderateText } from "@/lib/social/moderation";
+import { logBlockedAttempt } from "@/lib/social/moderation-log";
 import {
   createMatchCommentSchema,
   submitMvpVoteSchema,
@@ -70,6 +72,18 @@ export async function createMatchComment(
       };
     }
 
+    const moderation = await moderateText(parsed.data.body);
+    if (moderation.verdict === "block") {
+      await logBlockedAttempt(supabase, {
+        userId: user.id,
+        body: parsed.data.body,
+        reason: moderation.reason,
+        parentId: parsed.data.parentId,
+        matchId: parsed.data.matchId,
+      });
+      return { success: false, error: MODERATION_REJECTED_MESSAGE };
+    }
+
     const { data: profile } = await supabase
       .from("profiles")
       .select("*")
@@ -81,6 +95,8 @@ export async function createMatchComment(
       body: parsed.data.body,
       parent_id: parsed.data.parentId ?? null,
       match_id: parsed.data.matchId,
+      moderation_status: moderation.verdict === "flag" ? "flagged" : "approved",
+      moderation_reason: moderation.verdict === "flag" ? moderation.reason : null,
     };
 
     const { data: createdPost, error } = await supabase

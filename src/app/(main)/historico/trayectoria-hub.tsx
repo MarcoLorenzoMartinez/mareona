@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import type { HistoricalSeason, HistoricalChartPoint } from "@/lib/historical/types";
 import { getStandings, getSquadForSeason, getAssistsForSeason, getMatchesForSeason } from "@/lib/historical/service";
 import { HistoricalEvolutionChart } from "./evolution-chart";
@@ -36,10 +37,17 @@ export function HistoricalTrayectoriaHub({
   chartPoints,
   initialSeasonId,
 }: TrayectoriaHubProps) {
+  // Deep links from social attachments: /historico?temporada=2014-15&vista=partidos
+  const searchParams = useSearchParams();
+  const requestedSeasonId = searchParams.get("temporada");
   const [selectedSeasonId, setSelectedSeasonId] = useState<string>(
-    initialSeasonId ?? seasons[0]?.id ?? "2024-25"
+    seasons.some((s) => s.id === requestedSeasonId)
+      ? (requestedSeasonId as string)
+      : (initialSeasonId ?? seasons[0]?.id ?? "2024-25")
   );
-  const [activeTab, setActiveTab] = useState<SeasonViewTab>("clasificacion");
+  const [activeTab, setActiveTab] = useState<SeasonViewTab>(
+    searchParams.get("vista") === "partidos" ? "partidos" : "clasificacion"
+  );
 
   const selectedSeason = useMemo(() => {
     return seasons.find((s) => s.id === selectedSeasonId) ?? seasons[0]!;

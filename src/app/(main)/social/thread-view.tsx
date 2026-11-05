@@ -1,14 +1,13 @@
-// Client: Vista de conversación enfocada e interactiva (modelo muñeca rusa)
+// Client: Vista de conversación enfocada (modelo muñeca rusa) con publicación principal ampliada
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, MessageSquare } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
-import { HeartLikeIcon } from "@/components/social/heart-like-icon";
-import { useAuth } from "@/context/auth-context";
-import { createSocialPost } from "@/lib/social/actions";
-import { formatRelativeTime } from "./post-card";
+import { PostAttachment } from "@/components/social/attachments/post-attachment";
+import { PostActions } from "./post-actions";
+import { PostComposer } from "./post-composer";
 import { ThreadReplyItem } from "./thread-reply-item";
+import { formatRelativeTime } from "@/lib/social/format";
 import type { SocialPost } from "@/lib/social/types";
 
 interface ThreadViewProps {
@@ -28,142 +27,77 @@ export function ThreadView({
   onAddReply,
   onOpenProfile,
 }: ThreadViewProps) {
-  const { user, profile, openAuthModal } = useAuth();
-  const [likes, setLikes] = useState(post.likesCount);
-  const [hasLiked, setHasLiked] = useState(false);
-  const [replyText, setReplyText] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const toggleLike = () => {
-    setLikes((prev) => (hasLiked ? Math.max(0, prev - 1) : prev + 1));
-    setHasLiked(!hasLiked);
-  };
-
-  const handleReplySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!replyText.trim()) return;
-    if (!user) {
-      openAuthModal("signin");
-      return;
-    }
-
-    setIsSubmitting(true);
-    setError(null);
-    const res = await createSocialPost({ body: replyText.trim(), parentId: post.id });
-    setIsSubmitting(false);
-
-    if (!res.success || !res.data) {
-      setError(res.error ?? "No se pudo enviar la respuesta");
-      return;
-    }
-
-    onAddReply(post.id, {
-      ...res.data,
-      authorName: profile?.display_name || profile?.username || "Aficionado",
-      authorUsername: profile?.username || "aficionado",
-      authorAvatar: profile?.avatar_url || null,
-    });
-    setReplyText("");
-  };
-
   const replies = post.replies ?? [];
+  const openProfile = () => {
+    if (post.userId) onOpenProfile?.(post.userId);
+  };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-3 pb-2 border-b border-neutral-100">
+    <div>
+      <div className="flex items-center gap-3 border-b border-[var(--border)] bg-white px-3 py-2">
         <button
           type="button"
           onClick={onBack}
           aria-label="Volver a la conversación anterior"
-          className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
+          className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 transition-colors duration-150 hover:bg-[var(--surface)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-5 w-5" aria-hidden="true" />
         </button>
-        <div>
-          <h2 className="text-sm font-bold text-neutral-900">Conversación</h2>
+        <div className="min-w-0">
+          <h2 className="text-base font-bold text-neutral-900">Conversación</h2>
           {parentPost && (
-            <p className="text-[11px] text-neutral-400">
+            <p className="truncate text-xs text-neutral-500">
               En respuesta a @{parentPost.authorUsername}
             </p>
           )}
         </div>
       </div>
 
-      <article className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs">
+      <article className="border-b border-[var(--border)] px-4 pt-4 pb-1">
         <div className="flex items-center gap-3">
-          <div onClick={() => post.userId && onOpenProfile?.(post.userId)} className="cursor-pointer hover:opacity-85">
-            <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />
-          </div>
-          <div className="min-w-0 flex-1">
+          <button
+            type="button"
+            onClick={openProfile}
+            aria-label={`Ver perfil de ${post.authorName}`}
+            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            <AuthAvatar src={post.authorAvatar} alt="" size="md" />
+          </button>
+          <div className="min-w-0 flex-1 leading-tight">
             <button
               type="button"
-              onClick={() => post.userId && onOpenProfile?.(post.userId)}
-              className="text-sm font-bold text-neutral-900 truncate hover:underline hover:text-[var(--primary)] text-left cursor-pointer"
+              onClick={openProfile}
+              className="block max-w-full truncate text-left text-sm font-bold text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
               {post.authorName}
             </button>
-            <button
-              type="button"
-              onClick={() => post.userId && onOpenProfile?.(post.userId)}
-              className="text-xs text-neutral-400 hover:text-neutral-600 block cursor-pointer"
-            >
-              @{post.authorUsername}
-            </button>
+            <span className="block truncate text-sm text-neutral-500">@{post.authorUsername}</span>
           </div>
-          <span className="text-xs text-neutral-400">{formatRelativeTime(post.createdAt)}</span>
         </div>
 
-        <p className="mt-4 text-base text-neutral-900 leading-relaxed whitespace-pre-line">{post.body}</p>
+        <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
+          {post.body}
+        </p>
+        {post.attachment && <PostAttachment attachment={post.attachment} />}
+        <time dateTime={post.createdAt} className="mt-3 block text-sm text-neutral-500">
+          {formatRelativeTime(post.createdAt)}
+        </time>
 
-        <div className="mt-4 flex items-center gap-6 border-t border-neutral-100 pt-3 text-xs text-neutral-500">
-          <button
-            type="button"
-            onClick={toggleLike}
-            className={`group flex items-center gap-1.5 transition-colors cursor-pointer ${
-              hasLiked ? "text-[var(--primary)] font-bold" : "text-neutral-500 hover:text-[var(--primary)]"
-            }`}
-          >
-            <HeartLikeIcon filled={hasLiked} />
-            <span className="tabular-nums font-sans">{likes}</span>
-          </button>
-          <div className="flex items-center gap-1.5 text-neutral-500">
-            <MessageSquare className="h-4 w-4" />
-            <span className="tabular-nums font-sans">{replies.length} respuestas</span>
-          </div>
+        <div className="mt-2 border-t border-[var(--border)] pt-1">
+          <PostActions likesCount={post.likesCount} repliesCount={replies.length} />
         </div>
       </article>
 
-      <form onSubmit={handleReplySubmit} className="rounded-2xl border border-[var(--border)] bg-white p-4 shadow-xs space-y-2.5">
-        <textarea
-          rows={2}
-          value={replyText}
-          onChange={(e) => setReplyText(e.target.value)}
-          placeholder={`Responder a @${post.authorUsername}...`}
-          maxLength={500}
-          className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 p-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:bg-white focus:outline-none resize-none"
-        />
-        {error && <p className="text-xs text-[var(--primary)]">{error}</p>}
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] text-neutral-400 font-sans tabular-nums">{500 - replyText.length} car.</span>
-          <button
-            type="submit"
-            disabled={isSubmitting || !replyText.trim()}
-            className="rounded-full bg-[var(--primary)] px-4 py-1.5 text-xs font-bold text-white hover:opacity-95 disabled:opacity-50"
-          >
-            {isSubmitting ? "Enviando..." : "Responder"}
-          </button>
-        </div>
-      </form>
+      <PostComposer
+        parentId={post.id}
+        placeholder={`Responder a @${post.authorUsername}`}
+        submitLabel="Responder"
+        onPosted={(reply) => onAddReply(post.id, reply)}
+      />
 
-      <section aria-label="Respuestas al mensaje" className="space-y-2.5 pt-1">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400 px-1">
-          Respuestas
-        </h3>
+      <section aria-label="Respuestas al mensaje">
         {replies.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-neutral-200 p-6 text-center text-xs text-neutral-400">
-            No hay respuestas aún. Sé el primero en continuar la conversación.
-          </div>
+          <p className="px-4 py-10 text-center text-sm text-neutral-500">Aún no hay respuestas</p>
         ) : (
           replies.map((reply) => (
             <ThreadReplyItem

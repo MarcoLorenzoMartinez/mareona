@@ -1,3 +1,5 @@
+import type { ResolvedAttachment } from "./attachments/types";
+
 export interface SocialPost {
   readonly id: string;
   readonly userId: string;
@@ -10,4 +12,5 @@ export interface SocialPost {
   readonly likesCount: number;
   readonly repliesCount: number;
   readonly replies?: readonly SocialPost[];
+  readonly attachment?: ResolvedAttachment | null;
 }

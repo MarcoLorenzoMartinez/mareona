@@ -3,7 +3,7 @@
 
 import { MessageSquare } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
-import { formatRelativeTime } from "@/app/(main)/social/post-card";
+import { formatRelativeTime } from "@/lib/social/format";
 import type { MatchComment } from "@/lib/match-community/types";
 
 interface MatchReplyItemProps {

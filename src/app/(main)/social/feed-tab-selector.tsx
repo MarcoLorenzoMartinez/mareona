@@ -1,4 +1,4 @@
-// Client: Barra de selector de pestaña sobria para el feed (Todos vs Amigos)
+// Client: Pestañas del feed en píldora (Todos vs Amigos) con navegación por flechas
 "use client";
 
 export type SocialFeedTab = "all" | "friends";
@@ -8,40 +8,45 @@ interface FeedTabSelectorProps {
   readonly onTabChange: (tab: SocialFeedTab) => void;
 }
 
+const TABS: readonly { readonly id: SocialFeedTab; readonly label: string }[] = [
+  { id: "all", label: "Todos" },
+  { id: "friends", label: "Amigos" },
+];
+
 export function FeedTabSelector({ activeTab, onTabChange }: FeedTabSelectorProps) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault();
+    onTabChange(activeTab === "all" ? "friends" : "all");
+  };
+
   return (
     <div
       role="tablist"
       aria-label="Filtro de la tertulia"
-      className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50/80 p-1"
+      onKeyDown={handleKeyDown}
+      className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-white p-1"
     >
-      <button
-        type="button"
-        role="tab"
-        aria-selected={activeTab === "all"}
-        onClick={() => onTabChange("all")}
-        className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
-          activeTab === "all"
-            ? "bg-[var(--primary)] text-white shadow-xs font-bold"
-            : "text-neutral-600 hover:text-neutral-900"
-        }`}
-      >
-        Todos
-      </button>
-
-      <button
-        type="button"
-        role="tab"
-        aria-selected={activeTab === "friends"}
-        onClick={() => onTabChange("friends")}
-        className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
-          activeTab === "friends"
-            ? "bg-[var(--primary)] text-white shadow-xs font-bold"
-            : "text-neutral-600 hover:text-neutral-900"
-        }`}
-      >
-        Amigos
-      </button>
+      {TABS.map((tab) => {
+        const isActive = activeTab === tab.id;
+        return (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            tabIndex={isActive ? 0 : -1}
+            onClick={() => onTabChange(tab.id)}
+            className={`min-h-9 rounded-full px-4 text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
+              isActive
+                ? "bg-[var(--primary)] font-bold text-white"
+                : "font-semibold text-neutral-700 hover:bg-[var(--surface)]"
+            }`}
+          >
+            {tab.label}
+          </button>
+        );
+      })}
     </div>
   );
 }

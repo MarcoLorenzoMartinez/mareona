@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import {
   getAllSeasons,
   getHistoricalChartPoints,
@@ -19,11 +20,13 @@ export default function HistoricoTrayectoriaPage() {
     <div className="flex flex-col gap-6">
       <h1 className="sr-only">Trayectoria y Temporadas</h1>
 
-      <HistoricalTrayectoriaHub
-        seasons={seasons}
-        chartPoints={chartPoints}
-        initialSeasonId={defaultSeasonId}
-      />
+      <Suspense fallback={null}>
+        <HistoricalTrayectoriaHub
+          seasons={seasons}
+          chartPoints={chartPoints}
+          initialSeasonId={defaultSeasonId}
+        />
+      </Suspense>
     </div>
   );
 }

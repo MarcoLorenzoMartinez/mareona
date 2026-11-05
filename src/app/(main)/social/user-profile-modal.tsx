@@ -7,7 +7,7 @@ import { useAuth } from "@/context/auth-context";
 import { ProfileModalHeader } from "./user-profile-modal-header";
 import { getUserSocialProfile } from "@/lib/social/user-profile-actions";
 import { sendFriendRequest, removeFriendship, respondFriendRequest } from "@/lib/social/friends-actions";
-import { formatRelativeTime } from "./post-card";
+import { formatRelativeTime } from "@/lib/social/format";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
 import type { SocialPost } from "@/lib/social/types";
 

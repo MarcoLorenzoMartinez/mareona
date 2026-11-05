@@ -73,7 +73,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
   const parentPost = activePostId ? findParentInTree(posts, activePostId) : null;
 
   return (
-    <div className="space-y-6">
+    <div className="rounded-2xl border border-[var(--border)] bg-white overflow-hidden shadow-2xs">
       {focusedPost ? (
         <ThreadView
           post={focusedPost}
@@ -85,34 +85,26 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
         />
       ) : (
         <>
-          <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] bg-white px-4 py-2">
             <FeedTabSelector activeTab={activeTab} onTabChange={handleTabChange} />
-
-            <div className="flex items-center gap-2">
-              <FriendsModal onOpenProfile={(id) => setViewingProfileId(id)} />
-              <PostComposer onPostCreated={handlePostCreated} />
-            </div>
+            <FriendsModal onOpenProfile={(id) => setViewingProfileId(id)} />
           </div>
 
+          <PostComposer onPosted={handlePostCreated} />
+
           <section
-            aria-label="Temas de la tertulia"
-            className={`space-y-3.5 transition-opacity duration-150 ${
-              isPendingFilter ? "opacity-50 pointer-events-none" : "opacity-100"
+            aria-label="Publicaciones de la tertulia"
+            aria-busy={isPendingFilter}
+            className={`transition-opacity duration-150 ${
+              isPendingFilter ? "pointer-events-none opacity-50" : "opacity-100"
             }`}
           >
             {posts.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-neutral-300 p-8 text-center bg-white">
-                <p className="text-sm font-semibold text-neutral-600">
-                  {activeTab === "friends"
-                    ? "Tus amigos aún no han publicado temas en la tertulia."
-                    : "Aún no hay temas en la tertulia."}
-                </p>
-                <p className="text-xs text-neutral-400 mt-1">
-                  {activeTab === "friends"
-                    ? "Conecta con otros aficionados del Sporting desde el botón Amigos o en la pestaña Todos."
-                    : "¡Sé el primer aficionado en abrir la conversación!"}
-                </p>
-              </div>
+              <p className="px-4 py-12 text-center text-sm font-semibold text-neutral-600">
+                {activeTab === "friends"
+                  ? "Tus amigos aún no han publicado"
+                  : "Aún no hay publicaciones"}
+              </p>
             ) : (
               posts.map((post) => (
                 <PostCard

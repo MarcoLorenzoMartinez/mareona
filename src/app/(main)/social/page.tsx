@@ -15,8 +15,8 @@ async function SocialFeedLoader() {
 
 export default function SocialPage() {
   return (
-    <div className="mx-auto max-w-2xl pt-2">
-      <Suspense fallback={<div className="p-8 text-center text-sm text-neutral-400">Cargando tertulia...</div>}>
+    <div className="mx-auto max-w-2xl py-4 sm:py-6">
+      <Suspense fallback={<div className="p-8 text-center text-sm text-neutral-500">Cargando…</div>}>
         <SocialFeedLoader />
       </Suspense>
     </div>

@@ -345,6 +345,9 @@ export interface Database {
           created_at: string;
           updated_at: string;
           deleted_at: string | null;
+          moderation_status: "approved" | "flagged";
+          moderation_reason: string | null;
+          attachment: Json | null;
         };
         Insert: {
           id?: string;
@@ -355,6 +358,9 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
           deleted_at?: string | null;
+          moderation_status?: "approved" | "flagged";
+          moderation_reason?: string | null;
+          attachment?: Json | null;
         };
         Update: {
           id?: string;
@@ -365,6 +371,9 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
           deleted_at?: string | null;
+          moderation_status?: "approved" | "flagged";
+          moderation_reason?: string | null;
+          attachment?: Json | null;
         };
         Relationships: [
           {
@@ -513,6 +522,44 @@ export interface Database {
           {
             foreignKeyName: "user_blocks_blocked_id_fkey";
             columns: ["blocked_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      blocked_post_attempts: {
+        Row: {
+          id: string;
+          user_id: string;
+          body: string;
+          parent_id: string | null;
+          match_id: string | null;
+          reason: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          body: string;
+          parent_id?: string | null;
+          match_id?: string | null;
+          reason?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          body?: string;
+          parent_id?: string | null;
+          match_id?: string | null;
+          reason?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "blocked_post_attempts_user_id_fkey";
+            columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];

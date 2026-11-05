@@ -5,7 +5,7 @@ import { useState } from "react";
 import { MessageSquare } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { HeartLikeIcon } from "@/components/social/heart-like-icon";
-import { formatRelativeTime } from "@/app/(main)/social/post-card";
+import { formatRelativeTime } from "@/lib/social/format";
 import { useAuth } from "@/context/auth-context";
 import type { MatchComment } from "@/lib/match-community/types";
 
