@@ -4,6 +4,7 @@
 import { useState, useEffect, useTransition } from "react";
 import { useAuth } from "@/context/auth-context";
 import { PostComposer } from "./post-composer";
+import { MobilePostComposerModal, MobilePostComposerFab } from "./mobile-post-composer";
 import { PostCard } from "./post-card";
 import { ThreadView } from "./thread-view";
 import { FriendsModal } from "./friends-modal";
@@ -27,6 +28,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
   const [posts, setPosts] = useState<readonly SocialPost[]>(initialPosts);
   const [navigationStack, setNavigationStack] = useState<readonly string[]>([]);
   const [viewingProfileId, setViewingProfileId] = useState<string | null>(null);
+  const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(false);
   const [isPendingFilter, startTransition] = useTransition();
 
   const handleTabChange = (tab: SocialFeedTab) => {
@@ -73,7 +75,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
   const parentPost = activePostId ? findParentInTree(posts, activePostId) : null;
 
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-white overflow-hidden shadow-2xs">
+    <div className="w-full rounded-2xl border border-[var(--border)] bg-white overflow-hidden shadow-2xs">
       {focusedPost ? (
         <ThreadView
           post={focusedPost}
@@ -90,7 +92,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
             <FriendsModal onOpenProfile={(id) => setViewingProfileId(id)} />
           </div>
 
-          <PostComposer onPosted={handlePostCreated} />
+          <PostComposer onPosted={handlePostCreated} className="hidden sm:flex" />
 
           <section
             aria-label="Publicaciones de la tertulia"
@@ -124,6 +126,22 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
         userId={viewingProfileId}
         onClose={() => setViewingProfileId(null)}
         onOpenThread={handlePushThread}
+      />
+
+      {/* Botón flotante y modal optimizado para móviles */}
+      <MobilePostComposerFab
+        onClick={() => {
+          if (!user) {
+            openAuthModal("signin");
+            return;
+          }
+          setIsMobileComposerOpen(true);
+        }}
+      />
+      <MobilePostComposerModal
+        isOpen={isMobileComposerOpen}
+        onClose={() => setIsMobileComposerOpen(false)}
+        onPosted={handlePostCreated}
       />
     </div>
   );

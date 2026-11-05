@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createPostSchema, type CreatePostInput } from "./schemas";
 import { MODERATION_REJECTED_MESSAGE, moderateText } from "./moderation";
-import { resolveAttachment, resolveStoredAttachments } from "./attachments/resolve";
 import { logBlockedAttempt } from "./moderation-log";
 import { INITIAL_TERTULIA_POSTS } from "./seed-posts";
 import type { SocialPost } from "./types";
@@ -43,14 +42,6 @@ export async function createSocialPost(
       };
     }
 
-    // Validate the reference before moderating so a stale attachment never costs an AI call.
-    const attachment = parsed.data.attachment
-      ? await resolveAttachment(parsed.data.attachment)
-      : null;
-    if (parsed.data.attachment && !attachment) {
-      return { success: false, error: "El dato adjunto no está disponible en este momento" };
-    }
-
     const moderation = await moderateText(parsed.data.body);
     if (moderation.verdict === "block") {
       await logBlockedAttempt(supabase, {
@@ -73,7 +64,6 @@ export async function createSocialPost(
       body: parsed.data.body,
       parent_id: parsed.data.parentId ?? null,
       match_id: null,
-      attachment: parsed.data.attachment ?? null,
       moderation_status: moderation.verdict === "flag" ? "flagged" : "approved",
       moderation_reason: moderation.verdict === "flag" ? moderation.reason : null,
     };
@@ -104,7 +94,6 @@ export async function createSocialPost(
         likesCount: 0,
         repliesCount: 0,
         replies: [],
-        attachment,
       },
     };
   } catch {
@@ -161,7 +150,7 @@ export async function getSocialPosts(
     let query = supabase
       .from("posts")
       .select(
-        `id, body, created_at, parent_id, user_id, attachment,
+        `id, body, created_at, parent_id, user_id,
          profiles (username, display_name, avatar_url)`
       )
       .is("match_id", null)
@@ -180,8 +169,6 @@ export async function getSocialPosts(
     }
 
     // Map database posts into typed SocialPost structures
-    const resolved = await resolveStoredAttachments(posts.map((p) => p.attachment));
-    const attachmentById = new Map(posts.map((p, i) => [p.id, resolved[i] ?? null]));
     const rootPosts = posts.filter((p) => !p.parent_id);
     const replyPosts = posts.filter((p) => Boolean(p.parent_id));
 
@@ -211,7 +198,6 @@ export async function getSocialPosts(
             parentId: p.id,
             likesCount: 0,
             repliesCount: 0,
-            attachment: attachmentById.get(r.id) ?? null,
           };
         });
 
@@ -227,7 +213,6 @@ export async function getSocialPosts(
         likesCount: 0,
         repliesCount: postReplies.length,
         replies: postReplies,
-        attachment: attachmentById.get(p.id) ?? null,
       };
     });
   } catch {

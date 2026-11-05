@@ -2,7 +2,6 @@
 "use client";
 
 import { AuthAvatar } from "@/components/auth/auth-avatar";
-import { PostAttachment } from "@/components/social/attachments/post-attachment";
 import { PostActions } from "./post-actions";
 import { PostAuthorLine } from "./post-author-line";
 import type { SocialPost } from "@/lib/social/types";
@@ -39,7 +38,6 @@ export function ThreadReplyItem({ reply, onDrillDown, onOpenProfile }: ThreadRep
         <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
           {reply.body}
         </p>
-        {reply.attachment && <PostAttachment attachment={reply.attachment} />}
         <PostActions
           likesCount={reply.likesCount}
           repliesCount={count}

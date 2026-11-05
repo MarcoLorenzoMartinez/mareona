@@ -3,7 +3,6 @@
 
 import { ArrowLeft } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
-import { PostAttachment } from "@/components/social/attachments/post-attachment";
 import { PostActions } from "./post-actions";
 import { PostComposer } from "./post-composer";
 import { ThreadReplyItem } from "./thread-reply-item";
@@ -78,7 +77,6 @@ export function ThreadView({
         <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
           {post.body}
         </p>
-        {post.attachment && <PostAttachment attachment={post.attachment} />}
         <time dateTime={post.createdAt} className="mt-3 block text-sm text-neutral-500">
           {formatRelativeTime(post.createdAt)}
         </time>

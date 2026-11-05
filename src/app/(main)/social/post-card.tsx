@@ -2,7 +2,6 @@
 "use client";
 
 import { AuthAvatar } from "@/components/auth/auth-avatar";
-import { PostAttachment } from "@/components/social/attachments/post-attachment";
 import { PostActions } from "./post-actions";
 import { PostAuthorLine } from "./post-author-line";
 import type { SocialPost } from "@/lib/social/types";
@@ -40,7 +39,6 @@ export function PostCard({ post, onOpenThread, onOpenProfile }: PostCardProps) {
         <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
           {post.body}
         </p>
-        {post.attachment && <PostAttachment attachment={post.attachment} />}
         <PostActions
           likesCount={post.likesCount}
           repliesCount={repliesCount}

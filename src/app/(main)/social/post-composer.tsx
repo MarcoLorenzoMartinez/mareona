@@ -1,13 +1,10 @@
-// Client: Compositor en línea (publicar y responder) con foco para auth y contador progresivo
+// Client: Compositor inline colapsable y sobrio (estilo Twitter/Threads en escritorio)
 "use client";
 
 import { useRef, useState } from "react";
-import { X } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { createSocialPost } from "@/lib/social/actions";
-import type { AttachmentOption } from "@/lib/social/attachment-options";
-import { AttachmentPickerButton } from "./attachment-picker";
 import type { SocialPost } from "@/lib/social/types";
 
 const MAX_LENGTH = 500;
@@ -18,6 +15,7 @@ interface PostComposerProps {
   readonly parentId?: string;
   readonly placeholder?: string;
   readonly submitLabel?: string;
+  readonly className?: string;
 }
 
 export function PostComposer({
@@ -25,12 +23,13 @@ export function PostComposer({
   parentId,
   placeholder = "¿Qué opinas del Sporting?",
   submitLabel = "Publicar",
+  className = "",
 }: PostComposerProps) {
   const { user, profile, openAuthModal } = useAuth();
   const [body, setBody] = useState("");
+  const [isExpanded, setIsExpanded] = useState(Boolean(parentId)); // Si es respuesta, abierto siempre
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [attachment, setAttachment] = useState<AttachmentOption | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
@@ -46,7 +45,9 @@ export function PostComposer({
     if (!user) {
       textareaRef.current?.blur();
       openAuthModal("signin");
+      return;
     }
+    setIsExpanded(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,7 +59,6 @@ export function PostComposer({
     const res = await createSocialPost({
       body: body.trim(),
       parentId,
-      attachment: attachment?.ref ?? null,
     });
     setIsSubmitting(false);
 
@@ -74,14 +74,14 @@ export function PostComposer({
       authorAvatar: profile?.avatar_url || null,
     });
     setBody("");
-    setAttachment(null);
+    if (!parentId) setIsExpanded(false);
     if (textareaRef.current) textareaRef.current.style.height = "auto";
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex gap-3 border-b border-[var(--border)] px-4 py-3"
+      className={`flex gap-3 border-b border-[var(--border)] px-4 py-3 transition-colors duration-150 ${className}`}
     >
       <AuthAvatar src={profile?.avatar_url} alt="" size="md" className="shrink-0" />
 
@@ -92,7 +92,7 @@ export function PostComposer({
         <textarea
           ref={textareaRef}
           id={`composer-${parentId ?? "root"}`}
-          rows={1}
+          rows={isExpanded ? 3 : 1}
           value={body}
           onFocus={handleFocus}
           onChange={(e) => {
@@ -101,35 +101,27 @@ export function PostComposer({
           }}
           placeholder={placeholder}
           maxLength={MAX_LENGTH}
-          className="block w-full resize-none bg-transparent py-1.5 text-[17px] leading-snug text-neutral-900 placeholder:text-neutral-500 focus:outline-none"
+          className="block w-full resize-none bg-transparent py-1.5 text-[15px] sm:text-base leading-snug text-neutral-900 placeholder:text-neutral-400 focus:outline-none transition-all"
         />
 
         {error && (
-          <p role="alert" className="mt-1 text-sm font-medium text-[var(--primary-strong)]">
+          <p role="alert" className="mt-1 text-xs font-semibold text-[var(--primary)]">
             {error}
           </p>
         )}
 
-        {attachment && (
-          <div className="mt-2 flex items-center justify-between gap-2 rounded-xl border border-[var(--border)] py-1 pl-3.5 pr-1">
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-neutral-900">{attachment.title}</p>
-              <p className="truncate text-xs text-neutral-500">{attachment.subtitle}</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setAttachment(null)}
-              aria-label="Quitar dato adjunto"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-neutral-600 hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-            >
-              <X className="h-4 w-4" aria-hidden="true" />
-            </button>
-          </div>
-        )}
+        {isExpanded && (
+          <div className="mt-2.5 flex items-center justify-end gap-3 pt-2 border-t border-neutral-100 animate-in fade-in duration-150">
+            {!parentId && !body && (
+              <button
+                type="button"
+                onClick={() => setIsExpanded(false)}
+                className="rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 transition-colors"
+              >
+                Cancelar
+              </button>
+            )}
 
-        <div className="mt-2 flex items-center gap-3">
-          <AttachmentPickerButton onSelect={setAttachment} disabled={isSubmitting} />
-          <div className="ml-auto flex items-center gap-3">
             {body.length >= COUNTER_THRESHOLD && (
               <span
                 aria-live="polite"
@@ -140,6 +132,7 @@ export function PostComposer({
                 {remaining}
               </span>
             )}
+
             <button
               type="submit"
               disabled={!canSubmit}
@@ -148,7 +141,7 @@ export function PostComposer({
               {isSubmitting ? "Publicando…" : submitLabel}
             </button>
           </div>
-        </div>
+        )}
       </div>
     </form>
   );
