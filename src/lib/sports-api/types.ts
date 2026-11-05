@@ -57,10 +57,10 @@ export const DEFAULT_ACTIVE_SEASON_YEAR = 2026;
  * Months July-December (month index >= 6) belong to season `year`.
  * Months January-June (month index < 6) belong to season `year - 1`.
  *
- * @param date Reference date. When omitted, uses current date dynamically, falling back to DEFAULT_ACTIVE_SEASON_YEAR.
+ * @param date Reference date. When omitted, returns DEFAULT_ACTIVE_SEASON_YEAR to maintain deterministic Next.js static prerendering.
  * @returns 4-digit starting year of the football season.
  */
-export function getCurrentSeasonYear(date: Date = new Date()): number {
+export function getCurrentSeasonYear(date?: Date): number {
   if (!date || isNaN(date.getTime())) {
     return DEFAULT_ACTIVE_SEASON_YEAR;
   }
