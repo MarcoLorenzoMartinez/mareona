@@ -21,6 +21,13 @@ import {
 export const ESPN_SPORTING_GIJON_ID = "3788";
 export const ESPN_SEGUNDA_LEAGUE_SLUG = "esp.2";
 
+const ESPN_REQUEST_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  Accept: "application/json, text/plain, */*",
+  "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
+};
+
 // =====================================================================
 // ZOD SCHEMAS: ESPN Standings
 // =====================================================================
@@ -219,9 +226,7 @@ export async function fetchEspnLiveStandings(
 
   const response = await fetch(url, {
     method: "GET",
-    headers: {
-      "User-Agent": "Mareona/1.0",
-    },
+    headers: ESPN_REQUEST_HEADERS,
     next: { revalidate: 3600 },
   });
 
@@ -271,7 +276,7 @@ async function fetchTeamSplitRecord(
     const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${ESPN_SEGUNDA_LEAGUE_SLUG}/teams/${teamId}`;
     const res = await fetch(url, {
       method: "GET",
-      headers: { "User-Agent": "Mareona/1.0" },
+      headers: ESPN_REQUEST_HEADERS,
       next: { revalidate: 3600 },
     });
 
@@ -344,12 +349,12 @@ export async function fetchEspnSportingMatch(): Promise<DomainMatchSummary | nul
     const [fixtureRes, pastRes] = await Promise.allSettled([
       fetch(`${baseUrl}?fixture=true`, {
         method: "GET",
-        headers: { "User-Agent": "Mareona/1.0" },
+        headers: ESPN_REQUEST_HEADERS,
         next: { revalidate: 3600 },
       }),
       fetch(baseUrl, {
         method: "GET",
-        headers: { "User-Agent": "Mareona/1.0" },
+        headers: ESPN_REQUEST_HEADERS,
         next: { revalidate: 3600 },
       }),
     ]);
@@ -398,12 +403,12 @@ export async function fetchEspnSportingSeasonMatches(): Promise<readonly DomainM
   const [pastRes, upcomingRes] = await Promise.allSettled([
     fetch(baseUrl, {
       method: "GET",
-      headers: { "User-Agent": "Mareona/1.0" },
+      headers: ESPN_REQUEST_HEADERS,
       next: { revalidate: 3600 },
     }),
     fetch(`${baseUrl}?fixture=true`, {
       method: "GET",
-      headers: { "User-Agent": "Mareona/1.0" },
+      headers: ESPN_REQUEST_HEADERS,
       next: { revalidate: 3600 },
     }),
   ]);
@@ -458,7 +463,7 @@ export async function fetchEspnMatchDetail(
   try {
     const res = await fetch(url, {
       method: "GET",
-      headers: { "User-Agent": "Mareona/1.0" },
+      headers: ESPN_REQUEST_HEADERS,
       next: { revalidate: 15 },
     });
 
@@ -742,7 +747,7 @@ export async function fetchEspnSportingRoster(): Promise<readonly DomainPlayer[]
 
   const response = await fetch(url, {
     method: "GET",
-    headers: { "User-Agent": "Mareona/1.0" },
+    headers: ESPN_REQUEST_HEADERS,
     next: { revalidate: 3600 },
   });
 
