@@ -44,19 +44,20 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
     setErrorMsg('');
   };
 
-  function handleSubmit() {
+  function handleSubmit(overrideAnswer?: string) {
     if (isAnswered) return;
-    if (!inputVal.trim()) {
+    const finalAnswer = (overrideAnswer ?? inputVal).trim();
+    if (!finalAnswer) {
       setErrorMsg('Por favor escribe o selecciona una respuesta.');
       return;
     }
     setErrorMsg('');
 
-    const isCorrect = evaluateTriviaAnswer(inputVal, challenge.question);
+    const isCorrect = evaluateTriviaAnswer(finalAnswer, challenge.question);
     const newAttempt: TriviaPlayerAttempt = {
       dateStr: challenge.dateStr,
       questionId: challenge.question.id,
-      userAnswer: inputVal.trim(),
+      userAnswer: finalAnswer,
       isCorrect,
       answeredAt: new Date().toISOString(),
     };
@@ -136,7 +137,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
 
             <button
               type="button"
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
               className="mt-2 flex h-12 w-full items-center justify-center rounded-xl bg-[#e2001a] px-4 text-xs sm:text-sm font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-[0.99] transition-all select-none"
             >
               Confirmar Respuesta

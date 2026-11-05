@@ -10,7 +10,7 @@ interface TriviaInputHandlerProps {
   value: string;
   onChange: (val: string) => void;
   disabled?: boolean;
-  onSubmit: () => void;
+  onSubmit: (resolvedVal?: string) => void;
 }
 
 export function TriviaInputHandler({

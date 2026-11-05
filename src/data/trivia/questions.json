@@ -100,7 +100,7 @@
     ],
     "explanation": "Manuel Jiménez disputó 534 partidos oficiales con la camiseta rojiblanca entre 1979 y 1991.",
     "formatHint": "Escribe el nombre o apellido del futbolista",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1860c.jpg"
   },
   {
     "id": "q-top-scorer-history",
@@ -161,7 +161,7 @@
   },
   {
     "id": "q-zamora-trophies-record",
-    "question": "¿Qué mítico guardameta conquistó 3 Trofeos Zamora de Primera División con el Sporting (1985, 1986 y 1990)?",
+    "question": "¿Qué guardameta conquistó 3 Trofeos Zamora de Primera División con el Real Sporting?",
     "type": "player",
     "canonicalAnswer": "Juan Carlos Ablanedo",
     "acceptedAnswers": [
@@ -606,11 +606,11 @@
     ],
     "explanation": "Bilic anotó los tres goles del Sporting en un vibrante 4-3 ante el Sevilla FC el 21 de septiembre de 2008.",
     "formatHint": "Nombre del estadio",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
   },
   {
     "id": "q-puerta-1-el-molinon",
-    "question": "¿Qué mítico guardameta y héroe rojiblanco da nombre a la Puerta 1 del estadio El Molinón?",
+    "question": "¿Qué guardameta da nombre a la Puerta 1 del estadio El Molinón?",
     "type": "player",
     "canonicalAnswer": "Jesús Castro",
     "acceptedAnswers": [
@@ -651,7 +651,7 @@
   },
   {
     "id": "q-euro-1980-scorer",
-    "question": "¿Qué legendario lateral izquierdo del Sporting fue titular y subcampeón con España en la Eurocopa de 1980 en Italia?",
+    "question": "¿Qué lateral izquierdo del Real Sporting fue subcampeón con España en la Eurocopa de 1980?",
     "type": "player",
     "canonicalAnswer": "Cundi",
     "acceptedAnswers": [
@@ -665,7 +665,7 @@
   },
   {
     "id": "q-cundi-son-player",
-    "question": "¿Qué defensa canterano del Sporting e internacional español en el Mundial 2002 es hijo del mítico Cundi?",
+    "question": "¿Qué futbolista canterano del Sporting e internacional en el Mundial 2002 es hijo de Cundi?",
     "type": "player",
     "canonicalAnswer": "Rubén Suárez",
     "acceptedAnswers": [
@@ -765,7 +765,7 @@
   },
   {
     "id": "q-coach-ascenso-1970",
-    "question": "¿Qué legendario técnico de Barakaldo llevó al Sporting a Primera División en la temporada 1969/70 con el récord goleador de la delantera eléctrica?",
+    "question": "¿Qué entrenador dirigió al Sporting en el ascenso a Primera División de la temporada 1969/70?",
     "type": "player",
     "canonicalAnswer": "Carriega",
     "acceptedAnswers": [
@@ -820,7 +820,7 @@
   },
   {
     "id": "q-most-red-cards-player",
-    "question": "¿Qué central gijonés de fuerte carácter y gran zaguero vio más tarjetas rojas en la historia del Sporting?",
+    "question": "¿Qué futbolista vio más tarjetas rojas en la historia del Real Sporting?",
     "type": "player",
     "canonicalAnswer": "Sergio Sánchez",
     "acceptedAnswers": [
@@ -848,7 +848,7 @@
   },
   {
     "id": "q-barral-goal-barca-2011",
-    "question": "¿Qué delantero gaditano adelantó al Sporting con una portentosa carrera en el recordado empate 1-1 frente al FC Barcelona de Guardiola en 2011?",
+    "question": "¿Qué delantero marcó el gol del Sporting en el empate 1-1 frente al FC Barcelona de Guardiola en febrero de 2011?",
     "type": "player",
     "canonicalAnswer": "David Barral",
     "acceptedAnswers": [
@@ -994,7 +994,7 @@
     ],
     "explanation": "Joaquín Alonso lideró la medular sportinguista con el 8 a la espalda durante 16 temporadas.",
     "unit": "dorsal",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1284i.jpg"
   },
   {
     "id": "q-unbeaten-streak-guajes",
@@ -1007,7 +1007,7 @@
     ],
     "explanation": "El equipo no conoció la derrota en las primeras 20 jornadas de liga hasta caer ante el Betis en la jornada 21.",
     "unit": "jornadas",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/villamarin-2015.jpg"
   },
   {
     "id": "q-return-after-10-years-season",
@@ -1114,8 +1114,7 @@
       "campo de vallecas"
     ],
     "explanation": "El Sporting certificó su pase a semifinales en Vallecas.",
-    "formatHint": "Nombre del estadio madrileño",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "formatHint": "Nombre del estadio madrileño"
   },
   {
     "id": "q-villa-world-cup-2010",
@@ -1133,7 +1132,7 @@
   },
   {
     "id": "q-maceda-legend",
-    "question": "¿Qué mítico central de Mareo marcó el gol de cabeza ante Alemania Federal que clasificó a España para semifinales de la Eurocopa 1984?",
+    "question": "¿Qué central del Sporting marcó el gol de cabeza ante Alemania Federal que clasificó a España para semifinales de la Eurocopa 1984?",
     "type": "player",
     "canonicalAnswer": "Antonio Maceda",
     "acceptedAnswers": [
@@ -1254,7 +1253,7 @@
     ],
     "explanation": "El Pitu Abelardo tomó el mando en mayo de 2014 en sustitución de José Ramón Sandoval metiendo al equipo en playoff.",
     "formatHint": "Temporada (ej. 2013/14)",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/5i.jpg"
   },
   {
     "id": "q-most-international-mareo-player",
@@ -1271,7 +1270,7 @@
   },
   {
     "id": "q-luis-enrique-internationals",
-    "question": "¿Qué mítico jugador salido de Mareo disputó 62 partidos con la Selección y 3 Mundiales (1994, 1998, 2002) antes de ser seleccionador?",
+    "question": "¿Qué jugador formado en Mareo disputó 62 partidos con la Selección y 3 Mundiales antes de ser seleccionador absoluto?",
     "type": "player",
     "canonicalAnswer": "Luis Enrique",
     "acceptedAnswers": [
@@ -1295,7 +1294,7 @@
     ],
     "explanation": "En el verano de 1991, Ramón Mendoza abonó los 250 millones de pesetas de su cláusula para llevarlo al Bernabéu.",
     "unit": "año",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1799e.jpg"
   },
   {
     "id": "q-luis-enrique-goals-90-91",
@@ -1308,7 +1307,7 @@
     ],
     "explanation": "Lucho firmó una campaña sensacional con 14 tantos siendo el líder del equipo de Ciriaco Cano.",
     "unit": "goles",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1799e.jpg"
   },
   {
     "id": "q-ciriaco-uefa-1991",
@@ -1380,7 +1379,7 @@
     ],
     "explanation": "Manolo Preciado aterrizó en Gijón en el verano de 2006 forjando una unión indestructible con la afición rojiblanca.",
     "formatHint": "Temporada (ej. 2006/07)",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
   },
   {
     "id": "q-preciado-primera-seasons-count",
@@ -1393,7 +1392,7 @@
     ],
     "explanation": "Preciado mantuvo al Sporting en Primera en las campañas 2008/09, 2009/10 y 2010/11 con permanencias inolvidables.",
     "unit": "temporadas",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
   },
   {
     "id": "q-jp-cuellar-penalti-cr7",
@@ -1423,7 +1422,7 @@
     ],
     "explanation": "Cuéllar ganó el Zamora con un promedio asombroso de 0.52 goles por partido en la temporada 2014/15.",
     "formatHint": "Temporada (ej. 2014/15)",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/1140d.jpg"
   },
   {
     "id": "q-scepovic-goals-2013-14",

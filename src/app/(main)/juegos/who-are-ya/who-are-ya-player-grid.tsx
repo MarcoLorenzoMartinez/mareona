@@ -1,39 +1,86 @@
+// Client: Grilla de intentos para ¿Quién es? con indicadores visuales de alta legibilidad
+'use client';
+
 import React from 'react';
 import type { PlayerGuessResult, StatComparison } from '@/lib/who-are-ya/types';
+import { getNationalityFlagUrl, getPositionAbbr } from '@/lib/who-are-ya/format';
 
 interface WhoAreYaPlayerGridProps {
   guesses: PlayerGuessResult[];
 }
 
-function StatTile({
+interface TileProps {
+  label: string;
+  isMatch: boolean;
+  children: React.ReactNode;
+}
+
+function StatTile({ label, isMatch, children }: TileProps) {
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <div
+        className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border font-bold transition-all shadow-2xs overflow-hidden ${
+          isMatch
+            ? 'border-emerald-600 bg-emerald-600 text-white'
+            : 'border-neutral-200 bg-neutral-100/90 text-neutral-800'
+        }`}
+      >
+        {children}
+      </div>
+      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 select-none">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function NumericTile({
   label,
   value,
-  isMatch,
   comparison,
 }: {
   label: string;
-  value: string | number;
-  isMatch: boolean;
-  comparison?: StatComparison;
+  value: number;
+  comparison: StatComparison;
 }) {
-  const isCorrect = isMatch || comparison === 'equal';
-  const bgColor = isCorrect
-    ? 'bg-emerald-600 text-white border-emerald-600'
-    : 'bg-[var(--surface)] text-[var(--foreground)] border-[var(--border)]';
+  const isMatch = comparison === 'equal';
+  const isHigher = comparison === 'higher';
+  const isLower = comparison === 'lower';
 
   return (
-    <div
-      className={`flex flex-col items-center justify-center rounded-xl border p-2 text-center transition-all ${bgColor}`}
-    >
-      <span className="text-[10px] font-medium opacity-80 uppercase tracking-wider">{label}</span>
-      <div className="flex items-center gap-1">
-        <span className="text-xs font-bold tabular-nums">{value}</span>
-        {comparison && comparison !== 'equal' && (
-          <span className="text-xs font-bold text-amber-500">
-            {comparison === 'higher' ? '↑' : '↓'}
+    <div className="flex flex-col items-center gap-1">
+      <div
+        className={`relative flex h-12 w-12 sm:h-14 sm:w-14 flex-col items-center justify-center rounded-xl border tabular-nums transition-all shadow-2xs ${
+          isMatch
+            ? 'border-emerald-600 bg-emerald-600 text-white'
+            : 'border-neutral-200 bg-neutral-100/90 text-neutral-900'
+        }`}
+      >
+        {/* Flecha superior si el valor objetivo es MÁS ALTO (▲) */}
+        {isHigher && (
+          <span
+            className="text-[11px] font-black leading-none mb-0.5 text-neutral-500"
+            aria-label="Más alto"
+          >
+            ▲
+          </span>
+        )}
+
+        <span className="text-xs sm:text-sm font-extrabold leading-none">{value}</span>
+
+        {/* Flecha inferior si el valor objetivo es MÁS BAJO (▼) */}
+        {isLower && (
+          <span
+            className="text-[11px] font-black leading-none mt-0.5 text-neutral-500"
+            aria-label="Más bajo"
+          >
+            ▼
           </span>
         )}
       </div>
+      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 select-none">
+        {label}
+      </span>
     </div>
   );
 }
@@ -42,59 +89,76 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
   if (guesses.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-2.5 w-full max-w-2xl mx-auto">
-      {guesses.map((guess, idx) => (
-        <div
-          key={`${guess.player.bdfId}-${idx}`}
-          className="flex flex-col gap-2 rounded-2xl border border-[var(--border)] bg-white p-3 shadow-2xs animate-in fade-in-50 slide-in-from-bottom-2 duration-200"
-        >
-          <div className="flex items-center justify-between border-b border-[var(--border)] pb-2 px-1">
-            <span className="text-sm font-bold text-[var(--foreground)]">
-              {guess.player.name}
-            </span>
-            <span className="text-xs text-[var(--foreground-muted)]">
-              {guess.player.fullName}
-            </span>
-          </div>
+    <div className="flex flex-col gap-3 w-full max-w-xl mx-auto">
+      {guesses.map((guess, idx) => {
+        const flagUrl = getNationalityFlagUrl(guess.player.nationality);
+        const posAbbr = getPositionAbbr(guess.player.position);
 
-          <div className="grid grid-cols-6 gap-1.5 sm:gap-2">
-            <StatTile
-              label="País"
-              value={guess.player.nationality}
-              isMatch={guess.nationalityMatch}
-            />
-            <StatTile
-              label="Posición"
-              value={guess.player.position}
-              isMatch={guess.positionMatch}
-            />
-            <StatTile
-              label="Partidos"
-              value={guess.matchesPlayed.value}
-              isMatch={guess.matchesPlayed.comparison === 'equal'}
-              comparison={guess.matchesPlayed.comparison}
-            />
-            <StatTile
-              label="Goles"
-              value={guess.goals.value}
-              isMatch={guess.goals.comparison === 'equal'}
-              comparison={guess.goals.comparison}
-            />
-            <StatTile
-              label="Debut"
-              value={guess.startYear.value}
-              isMatch={guess.startYear.comparison === 'equal'}
-              comparison={guess.startYear.comparison}
-            />
-            <StatTile
-              label="Último"
-              value={guess.endYear.value}
-              isMatch={guess.endYear.comparison === 'equal'}
-              comparison={guess.endYear.comparison}
-            />
+        return (
+          <div
+            key={`${guess.player.bdfId}-${idx}`}
+            className="flex flex-col gap-2.5 rounded-2xl border border-neutral-200/90 bg-white p-3.5 sm:p-4 shadow-xs animate-in fade-in slide-in-from-bottom-2 duration-200"
+          >
+            {/* Cabecera del intento: Nombre deportivo y nombre legal */}
+            <div className="flex items-baseline justify-between border-b border-neutral-100 pb-2 px-1">
+              <span className="text-sm sm:text-base font-black tracking-tight text-neutral-900">
+                {guess.player.name}
+              </span>
+              <span className="text-xs font-normal text-neutral-400 truncate max-w-[200px]">
+                {guess.player.fullName}
+              </span>
+            </div>
+
+            {/* Fila de 5 indicadores visuales limpios */}
+            <div className="grid grid-cols-5 gap-2 sm:gap-3 justify-items-center pt-1">
+              {/* 1. Nacionalidad: Bandera oficial gráfica */}
+              <StatTile label="País" isMatch={guess.nationalityMatch}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={flagUrl}
+                  alt={guess.player.nationality}
+                  title={guess.player.nationality}
+                  loading="lazy"
+                  className="h-7 w-10 sm:h-8 sm:w-11 rounded-sm object-cover shadow-2xs"
+                />
+              </StatTile>
+
+              {/* 2. Posición: Abreviatura deportiva (POR, DEF, MED, DEL) */}
+              <StatTile label="Posición" isMatch={guess.positionMatch}>
+                <span
+                  className={`text-xs sm:text-sm font-extrabold tracking-wide ${
+                    guess.positionMatch ? 'text-white' : 'text-neutral-800'
+                  }`}
+                  title={guess.player.position}
+                >
+                  {posAbbr}
+                </span>
+              </StatTile>
+
+              {/* 3. Partidos */}
+              <NumericTile
+                label="Partidos"
+                value={guess.matchesPlayed.value}
+                comparison={guess.matchesPlayed.comparison}
+              />
+
+              {/* 4. Goles */}
+              <NumericTile
+                label="Goles"
+                value={guess.goals.value}
+                comparison={guess.goals.comparison}
+              />
+
+              {/* 5. Año de Debut */}
+              <NumericTile
+                label="Debut"
+                value={guess.startYear.value}
+                comparison={guess.startYear.comparison}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

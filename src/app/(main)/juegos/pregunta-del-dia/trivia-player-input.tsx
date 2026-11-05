@@ -21,7 +21,7 @@ interface TriviaPlayerInputProps {
   value: string;
   onChange: (val: string) => void;
   disabled?: boolean;
-  onSubmit: () => void;
+  onSubmit: (resolvedVal?: string) => void;
 }
 
 export function TriviaPlayerInput({
@@ -32,7 +32,7 @@ export function TriviaPlayerInput({
 }: TriviaPlayerInputProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(value);
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const listboxId = useId();
 
@@ -46,7 +46,6 @@ export function TriviaPlayerInput({
     function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
-        setHighlightedIndex(-1);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -66,38 +65,47 @@ export function TriviaPlayerInput({
     onChange(selectedName);
     setQuery(selectedName);
     setOpen(false);
-    setHighlightedIndex(-1);
+    setHighlightedIndex(0);
   }, [onChange]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!open || suggestions.length === 0) {
-      if (e.key === 'ArrowDown' && suggestions.length > 0) {
-        e.preventDefault();
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (!open && suggestions.length > 0) {
         setOpen(true);
         setHighlightedIndex(0);
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        onSubmit();
+      } else if (suggestions.length > 0) {
+        setHighlightedIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : 0));
       }
       return;
     }
 
-    if (e.key === 'ArrowDown') {
+    if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setHighlightedIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : 0));
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : suggestions.length - 1));
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (highlightedIndex >= 0 && highlightedIndex < suggestions.length) {
-        handleSelect(suggestions[highlightedIndex].fullName);
-      } else {
-        onSubmit();
+      if (suggestions.length > 0) {
+        setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : suggestions.length - 1));
       }
-    } else if (e.key === 'Escape') {
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      // Si hay sugerencias desplegadas, SIEMPRE se toma la seleccionada o la primera por defecto
+      if (suggestions.length > 0) {
+        const target = (highlightedIndex >= 0 && highlightedIndex < suggestions.length)
+          ? suggestions[highlightedIndex]
+          : suggestions[0];
+        handleSelect(target.fullName);
+        onSubmit(target.fullName);
+        return;
+      }
+      onSubmit();
+      return;
+    }
+
+    if (e.key === 'Escape') {
       setOpen(false);
-      setHighlightedIndex(-1);
+      setHighlightedIndex(0);
     }
   };
 
@@ -109,16 +117,23 @@ export function TriviaPlayerInput({
         aria-expanded={open && suggestions.length > 0}
         aria-controls={listboxId}
         aria-activedescendant={
-          highlightedIndex >= 0 ? `${listboxId}-opt-${highlightedIndex}` : undefined
+          open && suggestions.length > 0 ? `${listboxId}-opt-${highlightedIndex}` : undefined
         }
         aria-autocomplete="list"
         disabled={disabled}
         value={query}
         onChange={(e) => {
-          setQuery(e.target.value);
-          onChange(e.target.value);
+          const val = e.target.value;
+          setQuery(val);
+          onChange(val);
           setOpen(true);
-          setHighlightedIndex(-1);
+          setHighlightedIndex(0);
+        }}
+        onFocus={() => {
+          if (cleanQ.length >= 2) {
+            setOpen(true);
+            setHighlightedIndex(0);
+          }
         }}
         onKeyDown={handleKeyDown}
         placeholder="Escribe el nombre o alias..."
@@ -139,7 +154,10 @@ export function TriviaPlayerInput({
                 id={`${listboxId}-opt-${idx}`}
                 role="option"
                 aria-selected={isHighlighted || value === p.fullName || value === p.name}
-                onClick={() => handleSelect(p.fullName)}
+                onClick={() => {
+                  handleSelect(p.fullName);
+                  onSubmit(p.fullName);
+                }}
                 onMouseEnter={() => setHighlightedIndex(idx)}
                 className={`flex cursor-pointer items-center justify-between px-4 py-2.5 text-xs transition-colors ${
                   isHighlighted ? 'bg-[var(--surface-raised,var(--surface))] text-[#e2001a]' : 'hover:bg-[var(--surface)]'
