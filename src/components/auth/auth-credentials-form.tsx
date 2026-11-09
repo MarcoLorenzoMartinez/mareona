@@ -27,10 +27,13 @@ export function AuthCredentialsForm({
   const handleOAuthGoogle = async () => {
     try {
       const supabase = createClient();
-      await supabase.auth.signInWithOAuth({
+      const currentPath = window.location.pathname || "/temporada";
+      const callbackUrl = `${window.location.origin}/auth/callback?next=${encodeURIComponent(currentPath)}`;
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/temporada` },
+        options: { redirectTo: callbackUrl },
       });
+      if (error) setErrorMessage(error.message);
     } catch {
       setErrorMessage("No se pudo conectar con Google en este momento.");
     }

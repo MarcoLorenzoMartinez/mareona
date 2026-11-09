@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TopProgressBar } from "@/components/layout/top-progress-bar";
@@ -57,7 +58,9 @@ export default function RootLayout({
       >
         <AuthProvider>
           <TopProgressBar />
-          <GlobalAnnouncementBanner />
+          <Suspense fallback={null}>
+            <GlobalAnnouncementBanner />
+          </Suspense>
           <AuthModal />
           {children}
           <ToastContainer />
