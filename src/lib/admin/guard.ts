@@ -25,6 +25,15 @@ export async function verifyUserIsAdmin(
 ): Promise<boolean> {
   const supabase = client ?? (await createClient());
 
+  // Prioritize security-definer RPC function to bypass any client RLS restrictions
+  const { data: rpcResult, error: rpcError } = await supabase.rpc("is_admin", {
+    user_uuid: userId,
+  });
+
+  if (!rpcError && typeof rpcResult === "boolean") {
+    return rpcResult;
+  }
+
   const { data, error } = await supabase
     .from("user_roles")
     .select("role")
