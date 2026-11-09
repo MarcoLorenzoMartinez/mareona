@@ -23,6 +23,9 @@ export interface Database {
           display_name: string | null;
           avatar_url: string | null;
           points: number;
+          is_banned: boolean;
+          banned_until: string | null;
+          banned_reason: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -32,6 +35,9 @@ export interface Database {
           display_name?: string | null;
           avatar_url?: string | null;
           points?: number;
+          is_banned?: boolean;
+          banned_until?: string | null;
+          banned_reason?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -41,6 +47,9 @@ export interface Database {
           display_name?: string | null;
           avatar_url?: string | null;
           points?: number;
+          is_banned?: boolean;
+          banned_until?: string | null;
+          banned_reason?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -681,6 +690,90 @@ export interface Database {
         };
         Relationships: [];
       };
+      user_roles: {
+        Row: {
+          id: string;
+          user_id: string;
+          role: 'admin' | 'moderator';
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          role: 'admin' | 'moderator';
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          role?: 'admin' | 'moderator';
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      admin_audit_logs: {
+        Row: {
+          id: string;
+          admin_id: string;
+          action: string;
+          target_type: 'user' | 'post' | 'cache' | 'banner' | 'system' | 'poll';
+          target_id: string;
+          metadata: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          admin_id: string;
+          action: string;
+          target_type: 'user' | 'post' | 'cache' | 'banner' | 'system' | 'poll';
+          target_id: string;
+          metadata?: Json;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          admin_id?: string;
+          action?: string;
+          target_type?: 'user' | 'post' | 'cache' | 'banner' | 'system' | 'poll';
+          target_id?: string;
+          metadata?: Json;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      system_announcements: {
+        Row: {
+          id: string;
+          message: string;
+          type: 'info' | 'warning' | 'alert';
+          is_active: boolean;
+          read_only_wall: boolean;
+          created_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          message: string;
+          type?: 'info' | 'warning' | 'alert';
+          is_active?: boolean;
+          read_only_wall?: boolean;
+          created_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          message?: string;
+          type?: 'info' | 'warning' | 'alert';
+          is_active?: boolean;
+          read_only_wall?: boolean;
+          created_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       friendships: {
         Row: {
           id: string;
@@ -722,6 +815,10 @@ export interface Database {
       get_or_create_direct_conversation: {
         Args: { p_other_user: string };
         Returns: string;
+      };
+      is_admin: {
+        Args: { user_uuid?: string };
+        Returns: boolean;
       };
       apply_prediction_points: {
         Args: { p_prediction_id: string; p_points: number };

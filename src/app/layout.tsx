@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TopProgressBar } from "@/components/layout/top-progress-bar";
+import { GlobalAnnouncementBanner } from "@/components/layout/global-announcement-banner";
 import { AuthProvider } from "@/context/auth-context";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { ToastContainer } from "@/components/ui/toast-container";
@@ -56,6 +57,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <TopProgressBar />
+          <GlobalAnnouncementBanner />
           <AuthModal />
           {children}
           <ToastContainer />
