@@ -1,8 +1,8 @@
-"use client"; // Client: Gestión interactiva de colección, filtros de cuadrícula, inventario de sobres y pegado
+"use client"; // Client: Gestión interactiva de colección, filtros, inventario de sobres y pegado
 
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { toast } from "@/lib/ui/toast";
-import type { Card, DailyMissionState, PackTier } from "@/lib/cards/types";
+import type { Card, PackTier } from "@/lib/cards/types";
 import { useAuth } from "@/context/auth-context";
 import { isDemoEmail } from "@/lib/auth/demo-credentials";
 import { AlbumHeader, type AlbumViewMode } from "./album-header";
@@ -11,6 +11,7 @@ import { PackOpeningModal } from "./pack-opening-modal";
 import { AlbumSpreadView } from "./album-spread-view";
 import { AlbumGridTabView } from "./album-grid-tab-view";
 import { MyPacksView } from "./my-packs-view";
+import { useAlbumInventory } from "./use-album-inventory";
 import { generatePackCards } from "@/lib/cards/packs";
 import {
   loadUserPackInventory,
@@ -20,7 +21,6 @@ import {
   addPacksToInventory,
   clearUserPacks,
   getDailyMissionState,
-  DEFAULT_MISSION_STATE,
   claimDailyLoginPack,
   recycleDuplicates,
 } from "@/lib/cards/pack-storage";
@@ -36,7 +36,7 @@ interface AlbumClientViewProps {
 }
 
 export function AlbumClientView({ allCards }: AlbumClientViewProps) {
-  const { user } = useAuth();
+  const { user, openAuthModal } = useAuth();
   const isDemo = isDemoEmail(user?.email);
   const [demoViewMode, setDemoViewMode] = useState<AlbumDemoViewMode>("starter");
   const [gridFilterState, setGridFilterState] = useState<GridFilterState>(DEFAULT_GRID_FILTER_STATE);
@@ -45,49 +45,37 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   const [viewMode, setViewMode] = useState<AlbumViewMode>("album");
   const [newlyAcquiredSlugs, setNewlyAcquiredSlugs] = useState<Set<string>>(new Set());
 
-  const [userInventory, setUserInventory] = useState(loadUserCardInventory);
-  const [packInventory, setPackInventory] = useState(loadUserPackInventory);
-  const [missionState, setMissionState] = useState<DailyMissionState>(() =>
-    typeof window === "undefined" ? DEFAULT_MISSION_STATE : getDailyMissionState()
-  );
+  const {
+    userInventory,
+    setUserInventory,
+    packInventory,
+    setPackInventory,
+    missionState,
+    setMissionState,
+  } = useAlbumInventory(user?.id);
 
-  useEffect(() => {
-    const onPackSync = () => setPackInventory(loadUserPackInventory());
-    const onCardSync = () => setUserInventory(loadUserCardInventory());
-    const onMissionSync = () => setMissionState(getDailyMissionState());
-    window.addEventListener("mareona_pack_inventory_changed", onPackSync);
-    window.addEventListener("mareona_card_inventory_changed", onCardSync);
-    window.addEventListener("mareona_missions_state_changed", onMissionSync);
-    return () => {
-      window.removeEventListener("mareona_pack_inventory_changed", onPackSync);
-      window.removeEventListener("mareona_card_inventory_changed", onCardSync);
-      window.removeEventListener("mareona_missions_state_changed", onMissionSync);
-    };
-  }, []);
-
-  const totalPacks = packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda;
+  const totalPacks = user
+    ? packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda
+    : 2;
 
   const handleOpenPackCards = useCallback((tier: PackTier): Card[] => {
-    consumeUserPack(tier);
-    setPackInventory(loadUserPackInventory());
+    if (!user?.id) return [];
+    consumeUserPack(tier, user.id);
+    setPackInventory(loadUserPackInventory(user.id));
     const owned = new Set(Object.entries(userInventory).filter(([, q]) => q > 0).map(([s]) => s));
     const generated = generatePackCards(tier, allCards, owned);
-    // Los cromos se guardan y pegan automáticamente en el álbum al instante
-    const nextInventory = addCardsToInventory(generated);
+    const nextInventory = addCardsToInventory(generated, user.id);
     setUserInventory(nextInventory);
     setNewlyAcquiredSlugs(new Set(generated.map((c) => c.slug)));
     return generated;
-  }, [allCards, userInventory]);
-
-  const handleSaveAndStayInPacks = () => {
-    toast.success("Cromos guardados en tu álbum");
-  };
+  }, [allCards, user, userInventory, setPackInventory, setUserInventory]);
 
   const handleClaimLogin = () => {
-    const res = claimDailyLoginPack();
+    if (!user) return openAuthModal("signin");
+    const res = claimDailyLoginPack(user.id);
     if (res.success && res.tier) {
-      setPackInventory(loadUserPackInventory());
-      setMissionState(getDailyMissionState());
+      setPackInventory(loadUserPackInventory(user.id));
+      setMissionState(getDailyMissionState(undefined, user.id));
       toast.success("¡Recompensa diaria reclamada!", {
         description: `Has recibido 1 ${res.tier === "rojiblanco" ? "Sobre Rojiblanco" : "Sobre Aficionado"}.`,
       });
@@ -95,10 +83,11 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   };
 
   const handleRecycle = () => {
-    const res = recycleDuplicates();
+    if (!user) return openAuthModal("signin");
+    const res = recycleDuplicates(user.id);
     if (res.success) {
-      setUserInventory(loadUserCardInventory());
-      setPackInventory(loadUserPackInventory());
+      setUserInventory(loadUserCardInventory(user.id));
+      setPackInventory(loadUserPackInventory(user.id));
       toast.success("¡10 repetidos canjeados con éxito por 1 Sobre Rojiblanco!");
     } else {
       toast.error("No tienes suficientes repetidos (se requieren 10).");
@@ -130,16 +119,8 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
           onRevealAll={() => setDemoViewMode("all-revealed")}
           onHideAll={() => setDemoViewMode("all-hidden")}
           onResetStarter={() => setDemoViewMode("starter")}
-          onAddPack={(tier) => {
-            const next = addPacksToInventory(tier, 1);
-            setPackInventory(next);
-            toast.success(`+1 Sobre ${tier} añadido a tu inventario.`);
-          }}
-          onClearPacks={() => {
-            const next = clearUserPacks();
-            setPackInventory(next);
-            toast.info("Inventario de sobres vaciado.");
-          }}
+          onAddPack={(t) => { setPackInventory(addPacksToInventory(t, 1, user.id)); toast.success(`+1 Sobre ${t} añadido.`); }}
+          onClearPacks={() => { setPackInventory(clearUserPacks(user.id)); toast.info("Inventario vaciado."); }}
         />
       )}
       <AlbumHeader
@@ -150,7 +131,16 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
         onViewModeChange={setViewMode}
       />
       {viewMode === "packs" ? (
-        <MyPacksView packInventory={packInventory} missionState={missionState} duplicateCount={duplicateCount} onOpenPack={(tier) => { setSelectedPackTier(tier); setIsPackModalOpen(true); }} onClaimLogin={handleClaimLogin} onRecycleDuplicates={handleRecycle} />
+        <MyPacksView
+          isAuthenticated={Boolean(user)}
+          onOpenAuth={() => openAuthModal("signin")}
+          packInventory={packInventory}
+          missionState={missionState}
+          duplicateCount={duplicateCount}
+          onOpenPack={(t) => { if (!user) return openAuthModal("signin"); setSelectedPackTier(t); setIsPackModalOpen(true); }}
+          onClaimLogin={handleClaimLogin}
+          onRecycleDuplicates={handleRecycle}
+        />
       ) : viewMode === "album" ? (
         <AlbumSpreadView cards={allCards} getCardStatus={getCardStatus} newlyAcquiredSlugs={newlyAcquiredSlugs} />
       ) : (
@@ -160,10 +150,10 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
         <PackOpeningModal
           isOpen={isPackModalOpen}
           tier={selectedPackTier}
-          canOpenAnother={packInventory[selectedPackTier] > 0}
+          canOpenAnother={Boolean(user && packInventory[selectedPackTier] > 0)}
           onClose={() => setIsPackModalOpen(false)}
           onOpenPackCards={handleOpenPackCards}
-          onSaveCards={handleSaveAndStayInPacks}
+          onSaveCards={() => toast.success("Cromos guardados en tu álbum")}
           ownedCardSlugs={new Set(Object.keys(userInventory))}
         />
       )}

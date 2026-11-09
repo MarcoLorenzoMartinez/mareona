@@ -40,13 +40,58 @@ export function getTodayDateString(overrideDate?: Date): string {
 }
 
 /**
- * Reads user pack stock from storage or returns default starter packs.
+ * Resolves the localStorage key for packs, partitioning by userId when available.
  */
-export function loadUserPackInventory(): UserPackInventory {
+function getPackStorageKey(userId?: string): string {
+  return userId ? `${PACK_INVENTORY_STORAGE_KEY}_${userId}` : PACK_INVENTORY_STORAGE_KEY;
+}
+
+/**
+ * Resolves the localStorage key for cards, partitioning by userId when available.
+ */
+function getCardStorageKey(userId?: string): string {
+  return userId ? `${CARD_INVENTORY_STORAGE_KEY}_${userId}` : CARD_INVENTORY_STORAGE_KEY;
+}
+
+/**
+ * Resolves the localStorage key for missions, partitioning by userId when available.
+ */
+function getMissionsStorageKey(userId?: string): string {
+  return userId ? `${MISSIONS_STORAGE_KEY}_${userId}` : MISSIONS_STORAGE_KEY;
+}
+
+/**
+ * Reads user pack stock from storage or provisions welcome packs upon sign-in.
+ * Unauthenticated guests have 0 packs in inventory until they register or log in.
+ *
+ * @param userId - Optional unique Supabase user identifier.
+ * @returns Current pack count per tier.
+ */
+export function loadUserPackInventory(userId?: string): UserPackInventory {
+  if (!userId) {
+    return { aficionado: 0, rojiblanco: 0, leyenda: 0 };
+  }
   if (typeof window === "undefined") return { ...DEFAULT_PACK_INVENTORY };
   try {
-    const raw = window.localStorage.getItem(PACK_INVENTORY_STORAGE_KEY);
-    if (!raw) return { ...DEFAULT_PACK_INVENTORY };
+    const key = getPackStorageKey(userId);
+    const raw = window.localStorage.getItem(key);
+    if (!raw) {
+      // Check legacy unkeyed storage to migrate seamless without data loss
+      const legacyRaw = window.localStorage.getItem(PACK_INVENTORY_STORAGE_KEY);
+      if (legacyRaw) {
+        window.localStorage.setItem(key, legacyRaw);
+        window.localStorage.removeItem(PACK_INVENTORY_STORAGE_KEY);
+        const parsedLegacy = JSON.parse(legacyRaw) as Partial<UserPackInventory>;
+        return {
+          aficionado: Math.max(0, Number(parsedLegacy.aficionado ?? DEFAULT_PACK_INVENTORY.aficionado)),
+          rojiblanco: Math.max(0, Number(parsedLegacy.rojiblanco ?? DEFAULT_PACK_INVENTORY.rojiblanco)),
+          leyenda: Math.max(0, Number(parsedLegacy.leyenda ?? DEFAULT_PACK_INVENTORY.leyenda)),
+        };
+      }
+      // New registered user receives the 2 welcome packs directly into account
+      window.localStorage.setItem(key, JSON.stringify(DEFAULT_PACK_INVENTORY));
+      return { ...DEFAULT_PACK_INVENTORY };
+    }
     const parsed = JSON.parse(raw) as Partial<UserPackInventory>;
     return {
       aficionado: Math.max(0, Number(parsed.aficionado ?? DEFAULT_PACK_INVENTORY.aficionado)),
@@ -60,11 +105,14 @@ export function loadUserPackInventory(): UserPackInventory {
 
 /**
  * Saves user pack stock to storage and dispatches a change event.
+ *
+ * @param inventory - New inventory count.
+ * @param userId - Optional unique Supabase user identifier.
  */
-export function saveUserPackInventory(inventory: UserPackInventory): void {
-  if (typeof window === "undefined") return;
+export function saveUserPackInventory(inventory: UserPackInventory, userId?: string): void {
+  if (typeof window === "undefined" || !userId) return;
   try {
-    window.localStorage.setItem(PACK_INVENTORY_STORAGE_KEY, JSON.stringify(inventory));
+    window.localStorage.setItem(getPackStorageKey(userId), JSON.stringify(inventory));
     window.dispatchEvent(new CustomEvent("mareona_pack_inventory_changed", { detail: inventory }));
   } catch {
     // LocalStorage quota or privacy mode fallback
@@ -73,75 +121,107 @@ export function saveUserPackInventory(inventory: UserPackInventory): void {
 
 /**
  * Adds packs to the user inventory.
+ *
+ * @param tier - Booster tier category.
+ * @param count - Number of packs to add.
+ * @param userId - Optional unique user identifier.
+ * @returns Updated inventory.
  */
-export function addPacksToInventory(tier: PackTier, count = 1): UserPackInventory {
-  const current = loadUserPackInventory();
+export function addPacksToInventory(
+  tier: PackTier,
+  count = 1,
+  userId?: string
+): UserPackInventory {
+  if (!userId) return { aficionado: 0, rojiblanco: 0, leyenda: 0 };
+  const current = loadUserPackInventory(userId);
   const next: UserPackInventory = {
     ...current,
     [tier]: (current[tier] ?? 0) + count,
   };
-  saveUserPackInventory(next);
+  saveUserPackInventory(next, userId);
   return next;
 }
 
 /**
  * Resets user pack stock to zero.
+ *
+ * @param userId - Optional unique user identifier.
+ * @returns Empty inventory.
  */
-export function clearUserPacks(): UserPackInventory {
+export function clearUserPacks(userId?: string): UserPackInventory {
   const next: UserPackInventory = {
     aficionado: 0,
     rojiblanco: 0,
     leyenda: 0,
   };
-  saveUserPackInventory(next);
+  if (userId) {
+    saveUserPackInventory(next, userId);
+  }
   return next;
 }
 
 /**
  * Consumes one pack from user inventory if available.
+ *
+ * @param tier - Booster pack tier to consume.
+ * @param userId - Optional unique user identifier.
+ * @returns True if successfully consumed, false otherwise.
  */
-export function consumeUserPack(tier: PackTier): boolean {
-  const current = loadUserPackInventory();
+export function consumeUserPack(tier: PackTier, userId?: string): boolean {
+  if (!userId) return false;
+  const current = loadUserPackInventory(userId);
   if ((current[tier] ?? 0) <= 0) return false;
   const next: UserPackInventory = {
     ...current,
     [tier]: current[tier] - 1,
   };
-  saveUserPackInventory(next);
+  saveUserPackInventory(next, userId);
   return true;
 }
 
 /**
  * Reads user card inventory (slug -> quantity).
+ * Unauthenticated guests start with 0 cards in their collection until signing in and opening packs.
+ *
+ * @param userId - Optional unique user identifier.
+ * @returns Record mapping card slug to owned quantity.
  */
-export function loadUserCardInventory(): Record<string, number> {
+export function loadUserCardInventory(userId?: string): Record<string, number> {
+  if (!userId) {
+    return {};
+  }
   if (typeof window === "undefined") {
-    const initial: Record<string, number> = {};
-    for (const slug of CANONICAL_STARTER_SLUGS) initial[slug] = 1;
-    return initial;
+    return {};
   }
   try {
-    const raw = window.localStorage.getItem(CARD_INVENTORY_STORAGE_KEY);
+    const key = getCardStorageKey(userId);
+    const raw = window.localStorage.getItem(key);
     if (!raw) {
-      const initial: Record<string, number> = {};
-      for (const slug of CANONICAL_STARTER_SLUGS) initial[slug] = 1;
-      return initial;
+      // Check legacy unkeyed card inventory to migrate
+      const legacyRaw = window.localStorage.getItem(CARD_INVENTORY_STORAGE_KEY);
+      if (legacyRaw) {
+        window.localStorage.setItem(key, legacyRaw);
+        window.localStorage.removeItem(CARD_INVENTORY_STORAGE_KEY);
+        return JSON.parse(legacyRaw) as Record<string, number>;
+      }
+      return {};
     }
     return JSON.parse(raw) as Record<string, number>;
   } catch {
-    const fallback: Record<string, number> = {};
-    for (const slug of CANONICAL_STARTER_SLUGS) fallback[slug] = 1;
-    return fallback;
+    return {};
   }
 }
 
 /**
  * Saves user card inventory to storage.
+ *
+ * @param inventory - Collection card map.
+ * @param userId - Optional unique user identifier.
  */
-export function saveUserCardInventory(inventory: Record<string, number>): void {
-  if (typeof window === "undefined") return;
+export function saveUserCardInventory(inventory: Record<string, number>, userId?: string): void {
+  if (typeof window === "undefined" || !userId) return;
   try {
-    window.localStorage.setItem(CARD_INVENTORY_STORAGE_KEY, JSON.stringify(inventory));
+    window.localStorage.setItem(getCardStorageKey(userId), JSON.stringify(inventory));
     window.dispatchEvent(new CustomEvent("mareona_card_inventory_changed", { detail: inventory }));
   } catch {
     // LocalStorage quota fallback
@@ -150,14 +230,22 @@ export function saveUserCardInventory(inventory: Record<string, number>): void {
 
 /**
  * Adds an array of cards to the user's collection and saves to storage.
+ *
+ * @param newCards - Cards to incorporate into collection.
+ * @param userId - Optional unique user identifier.
+ * @returns Updated card inventory.
  */
-export function addCardsToInventory(newCards: readonly Card[]): Record<string, number> {
-  const current = loadUserCardInventory();
+export function addCardsToInventory(
+  newCards: readonly Card[],
+  userId?: string
+): Record<string, number> {
+  if (!userId) return {};
+  const current = loadUserCardInventory(userId);
   const next = { ...current };
   for (const card of newCards) {
     next[card.slug] = (next[card.slug] ?? 0) + 1;
   }
-  saveUserCardInventory(next);
+  saveUserCardInventory(next, userId);
   return next;
 }
 
@@ -166,20 +254,29 @@ interface StoredMissionState {
   lastGameClaimDate?: string;
 }
 
-function loadStoredMissionState(): StoredMissionState {
-  if (typeof window === "undefined") return {};
+function loadStoredMissionState(userId?: string): StoredMissionState {
+  if (typeof window === "undefined" || !userId) return {};
   try {
-    const raw = window.localStorage.getItem(MISSIONS_STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as StoredMissionState) : {};
+    const raw = window.localStorage.getItem(getMissionsStorageKey(userId));
+    if (!raw) {
+      const legacyRaw = window.localStorage.getItem(MISSIONS_STORAGE_KEY);
+      if (legacyRaw) {
+        window.localStorage.setItem(getMissionsStorageKey(userId), legacyRaw);
+        window.localStorage.removeItem(MISSIONS_STORAGE_KEY);
+        return JSON.parse(legacyRaw) as StoredMissionState;
+      }
+      return {};
+    }
+    return JSON.parse(raw) as StoredMissionState;
   } catch {
     return {};
   }
 }
 
-function saveStoredMissionState(state: StoredMissionState): void {
-  if (typeof window === "undefined") return;
+function saveStoredMissionState(state: StoredMissionState, userId?: string): void {
+  if (typeof window === "undefined" || !userId) return;
   try {
-    window.localStorage.setItem(MISSIONS_STORAGE_KEY, JSON.stringify(state));
+    window.localStorage.setItem(getMissionsStorageKey(userId), JSON.stringify(state));
     window.dispatchEvent(new CustomEvent("mareona_missions_state_changed", { detail: state }));
   } catch {
     // LocalStorage fallback
@@ -188,13 +285,16 @@ function saveStoredMissionState(state: StoredMissionState): void {
 
 /**
  * Computes the live state of daily objectives.
+ *
+ * @param todayOverride - Optional ISO date string for test mocking.
+ * @param userId - Optional unique user identifier.
  */
-export function getDailyMissionState(todayOverride?: string): DailyMissionState {
+export function getDailyMissionState(todayOverride?: string, userId?: string): DailyMissionState {
   if (typeof window === "undefined" && !todayOverride) {
     return { ...DEFAULT_MISSION_STATE };
   }
   const today = todayOverride ?? getTodayDateString();
-  const state = loadStoredMissionState();
+  const state = loadStoredMissionState(userId);
   const now = new Date();
   // Saturday (6) and Sunday (0) are designated matchdays / weekend bonus
   const dayOfWeek = now.getDay();
@@ -210,10 +310,19 @@ export function getDailyMissionState(todayOverride?: string): DailyMissionState 
 
 /**
  * Claims the daily login reward.
+ *
+ * @param userId - Optional unique user identifier.
  */
-export function claimDailyLoginPack(): { success: boolean; tier?: PackTier; reason?: string } {
+export function claimDailyLoginPack(userId?: string): {
+  success: boolean;
+  tier?: PackTier;
+  reason?: string;
+} {
+  if (!userId) {
+    return { success: false, reason: "auth_required" };
+  }
   const today = getTodayDateString();
-  const state = loadStoredMissionState();
+  const state = loadStoredMissionState(userId);
   if (state.lastLoginClaimDate === today) {
     return { success: false, reason: "already_claimed" };
   }
@@ -222,20 +331,29 @@ export function claimDailyLoginPack(): { success: boolean; tier?: PackTier; reas
   const isMatchday = now.getDay() === 0 || now.getDay() === 6;
   const tier: PackTier = isMatchday ? "rojiblanco" : "aficionado";
 
-  addPacksToInventory(tier, 1);
-  saveStoredMissionState({ ...state, lastLoginClaimDate: today });
+  addPacksToInventory(tier, 1, userId);
+  saveStoredMissionState({ ...state, lastLoginClaimDate: today }, userId);
   return { success: true, tier };
 }
 
 /**
- * Awards the daily game pack when a user solves a daily minigame.
- * Strictly prevents awards from historical/archive challenges.
+ * Awards the daily game pack when an authenticated user solves a daily minigame.
+ * Strictly prevents awards from historical/archive challenges or unauthenticated guests.
+ *
+ * @param challengeDateStr - Optional date of the played challenge.
+ * @param userId - Optional unique user identifier.
  */
-export function awardDailyGamePack(challengeDateStr?: string): {
+export function awardDailyGamePack(
+  challengeDateStr?: string,
+  userId?: string
+): {
   awarded: boolean;
   tier?: PackTier;
-  reason?: "historic_archive" | "already_claimed_today";
+  reason?: "historic_archive" | "already_claimed_today" | "auth_required";
 } {
+  if (!userId) {
+    return { awarded: false, reason: "auth_required" };
+  }
   const today = getTodayDateString();
 
   // Strict check: if playing past dates from the archive modal, no pack awarded
@@ -243,26 +361,36 @@ export function awardDailyGamePack(challengeDateStr?: string): {
     return { awarded: false, reason: "historic_archive" };
   }
 
-  const state = loadStoredMissionState();
+  const state = loadStoredMissionState(userId);
   if (state.lastGameClaimDate === today) {
     return { awarded: false, reason: "already_claimed_today" };
   }
 
-  addPacksToInventory("rojiblanco", 1);
-  saveStoredMissionState({ ...state, lastGameClaimDate: today });
+  addPacksToInventory("rojiblanco", 1, userId);
+  saveStoredMissionState({ ...state, lastGameClaimDate: today }, userId);
   return { awarded: true, tier: "rojiblanco" };
 }
 
 /**
  * Recycles 10 duplicate cards into 1 Sobre Rojiblanco.
+ *
+ * @param userId - Optional unique user identifier.
  */
-export function recycleDuplicates(): {
+export function recycleDuplicates(userId?: string): {
   success: boolean;
   recycledCount: number;
   remainingDuplicates: number;
-  reason?: "insufficient_duplicates";
+  reason?: "insufficient_duplicates" | "auth_required";
 } {
-  const currentCards = loadUserCardInventory();
+  if (!userId) {
+    return {
+      success: false,
+      recycledCount: 0,
+      remainingDuplicates: 0,
+      reason: "auth_required",
+    };
+  }
+  const currentCards = loadUserCardInventory(userId);
   const duplicateEntries: Array<[string, number]> = [];
 
   for (const [slug, qty] of Object.entries(currentCards)) {
@@ -292,8 +420,8 @@ export function recycleDuplicates(): {
     neededToDeduct -= toTake;
   }
 
-  saveUserCardInventory(nextCards);
-  addPacksToInventory("rojiblanco", 1);
+  saveUserCardInventory(nextCards, userId);
+  addPacksToInventory("rojiblanco", 1, userId);
 
   return {
     success: true,
