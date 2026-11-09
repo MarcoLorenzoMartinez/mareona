@@ -36,9 +36,13 @@ export async function uploadAvatarImage(
     const fileExt = file.name.split(".").pop()?.toLowerCase() ?? "webp";
     const filePath = `${user.id}/avatar_${Date.now()}.${fileExt}`;
 
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
     const { error: uploadError } = await supabase.storage
       .from("avatars")
-      .upload(filePath, file, {
+      .upload(filePath, buffer, {
+        contentType: file.type || "image/jpeg",
         cacheControl: "3600",
         upsert: true,
       });
