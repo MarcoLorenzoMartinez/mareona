@@ -13,10 +13,10 @@ interface BanUserModalProps {
 
 const DURATION_OPTIONS = [
   { label: "1 día (advertencia)", value: 1 },
-  { label: "3 días (derbi/incidencia)", value: 3 },
+  { label: "3 días (incidencia)", value: 3 },
   { label: "7 días (falta grave)", value: 7 },
   { label: "30 días (reiteración)", value: 30 },
-  { label: "Indefinido / Permanente", value: null },
+  { label: "Permanente", value: null },
 ] as const;
 
 /**
@@ -59,13 +59,10 @@ export function BanUserModal({ user, isOpen, onClose }: BanUserModalProps) {
       aria-labelledby="ban-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
     >
-      <div className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-white p-6 shadow-xl">
-        <h2 id="ban-modal-title" className="text-lg font-bold text-[var(--foreground)]">
+      <div className="w-full max-w-md rounded-xl border border-[var(--border)] bg-white p-6 shadow-xl">
+        <h2 id="ban-modal-title" className="text-base font-bold text-[var(--foreground)]">
           Sancionar a @{user.username}
         </h2>
-        <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-          La cuenta no podrá emitir mensajes, porras ni participar en actividades sociales.
-        </p>
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
@@ -74,7 +71,7 @@ export function BanUserModal({ user, isOpen, onClose }: BanUserModalProps) {
             </label>
             <select
               id="duration-select"
-              value={duration ?? "permanent"}
+              value={duration === null ? "permanent" : duration}
               onChange={(e) => {
                 const val = e.target.value;
                 setDuration(val === "permanent" ? null : Number(val));
@@ -82,7 +79,7 @@ export function BanUserModal({ user, isOpen, onClose }: BanUserModalProps) {
               className="mt-1 w-full rounded-xl border border-[var(--border)] bg-white p-2.5 text-sm text-[var(--foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]"
             >
               {DURATION_OPTIONS.map((opt) => (
-                <option key={String(opt.value)} value={opt.value ?? "permanent"}>
+                <option key={opt.label} value={opt.value === null ? "permanent" : opt.value}>
                   {opt.label}
                 </option>
               ))}
@@ -91,7 +88,7 @@ export function BanUserModal({ user, isOpen, onClose }: BanUserModalProps) {
 
           <div>
             <label htmlFor="ban-reason" className="block text-xs font-semibold text-[var(--foreground)]">
-              Motivo formal (mínimo 3 caracteres)
+              Motivo (visible para moderación)
             </label>
             <textarea
               id="ban-reason"
@@ -99,26 +96,26 @@ export function BanUserModal({ user, isOpen, onClose }: BanUserModalProps) {
               rows={3}
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="Ej: Insultos reiterados y provocación en la tertulia..."
-              className="mt-1 w-full rounded-xl border border-[var(--border)] p-2.5 text-sm text-[var(--foreground)] placeholder-[var(--muted-foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]"
+              placeholder="Indica la infracción cometida..."
+              className="mt-1 w-full rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]"
             />
           </div>
 
           <div className="flex items-center justify-end gap-2 pt-2">
             <button
               type="button"
-              disabled={isPending}
               onClick={onClose}
-              className="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+              disabled={isPending}
+              className="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] disabled:opacity-50"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="min-h-[44px] rounded-full bg-[var(--brand,#e2001a)] px-5 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-rose-600 px-5 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {isPending ? "Aplicando..." : "Confirmar Sanción"}
+              {isPending ? "Aplicando..." : "Confirmar sanción"}
             </button>
           </div>
         </form>

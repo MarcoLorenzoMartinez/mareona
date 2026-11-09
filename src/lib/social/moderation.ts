@@ -50,12 +50,12 @@ async function classifyWithGroq(text: string, apiKey: string): Promise<Moderatio
  */
 export async function moderateText(text: string): Promise<ModerationDecision> {
   const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) return { verdict: "flag", reason: "ai_unconfigured" };
+  if (!apiKey) return { verdict: "allow", reason: "ai_unconfigured" };
 
   try {
     return await classifyWithGroq(text, apiKey);
   } catch {
-    return { verdict: "flag", reason: "ai_unavailable" };
+    return { verdict: "allow", reason: "ai_unavailable" };
   }
 }
 

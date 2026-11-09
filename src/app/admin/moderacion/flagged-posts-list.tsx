@@ -7,31 +7,28 @@ interface FlaggedPostsListProps {
 
 /**
  * Server component rendering the list of flagged posts pending administrative decision.
- * Strict adherence to AGENTS.md: zero mono fonts, tabular numbers, sober card hierarchy.
+ * Strictly adheres to AGENTS.md: zero mono fonts, tabular numbers, clean card hierarchy.
  */
 export function FlaggedPostsList({ posts }: FlaggedPostsListProps) {
   if (posts.length === 0) {
     return (
       <div
-        className="rounded-2xl border border-[var(--border)] bg-white p-8 text-center text-[var(--muted-foreground)]"
+        className="rounded-xl border border-[var(--border)] bg-white p-8 text-center text-[var(--muted-foreground)]"
         role="status"
       >
-        <p className="text-base font-semibold text-[var(--foreground)]">
-          Bandeja de moderación limpia
-        </p>
-        <p className="mt-1 text-sm">
-          No hay publicaciones pendientes de revisión en este momento.
+        <p className="text-sm font-semibold text-[var(--foreground)]">
+          No hay publicaciones pendientes
         </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4" role="feed" aria-label="Publicaciones pendientes de revisión">
+    <div className="space-y-3" role="feed" aria-label="Publicaciones pendientes de revisión">
       {posts.map((post) => (
         <article
           key={post.id}
-          className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm"
+          className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-xs transition-shadow hover:shadow-sm"
         >
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border)] pb-3">
             <div className="flex items-center gap-2">
@@ -44,8 +41,8 @@ export function FlaggedPostsList({ posts }: FlaggedPostsListProps) {
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center rounded-full bg-amber-50 border border-amber-200 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
-                Alerta IA: {post.moderationReason || "Contenido sospechoso"}
+              <span className="inline-flex items-center rounded-md bg-amber-50 border border-amber-200 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                {post.moderationReason || "Marcado para revisión"}
               </span>
               <time
                 dateTime={post.createdAt}

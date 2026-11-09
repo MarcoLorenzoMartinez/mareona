@@ -22,7 +22,7 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!message.trim()) {
-      toast.error("El mensaje del aviso no puede estar vacío");
+      toast.error("El mensaje no puede estar vacío");
       return;
     }
 
@@ -35,7 +35,7 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
       });
 
       if (res.success) {
-        toast.success("Configuración de aviso guardada correctamente");
+        toast.success("Aviso guardado correctamente");
       } else {
         toast.error("Error al guardar el aviso", { description: res.error });
       }
@@ -43,18 +43,15 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-xs">
+    <form onSubmit={handleSubmit} className="rounded-xl border border-[var(--border)] bg-white p-6 shadow-xs">
       <h2 className="text-base font-bold text-[var(--foreground)]">
-        Aviso Global para Aficionados
+        Aviso global
       </h2>
-      <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-        Publica una franja visible en la cabecera de todas las páginas de Mareona.
-      </p>
 
       <div className="mt-4 space-y-4">
         <div>
           <label htmlFor="announcement-msg" className="block text-xs font-semibold text-[var(--foreground)]">
-            Mensaje del aviso (máx. 300 caracteres)
+            Mensaje (máx. 300 caracteres)
           </label>
           <textarea
             id="announcement-msg"
@@ -63,7 +60,7 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
             required
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Ej: La porra del partido contra el Burgos ya está disponible..."
+            placeholder="Escribe el mensaje visible para los aficionados..."
             className="mt-1 w-full rounded-xl border border-[var(--border)] p-3 text-sm text-[var(--foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]"
           />
         </div>
@@ -71,7 +68,7 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
             <label htmlFor="announcement-type" className="block text-xs font-semibold text-[var(--foreground)]">
-              Nivel de prioridad
+              Prioridad
             </label>
             <select
               id="announcement-type"
@@ -79,9 +76,9 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
               onChange={(e) => setType(e.target.value as "info" | "warning" | "alert")}
               className="mt-1 w-full rounded-xl border border-[var(--border)] bg-white p-2.5 text-sm text-[var(--foreground)] focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand)]"
             >
-              <option value="info">Informativo (Neutro)</option>
-              <option value="warning">Atención (Ámbar)</option>
-              <option value="alert">Urgente / Incidencia (Rojo)</option>
+              <option value="info">Informativo</option>
+              <option value="warning">Atención</option>
+              <option value="alert">Urgente</option>
             </select>
           </div>
 
@@ -94,7 +91,7 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
               className="h-4 w-4 rounded border-[var(--border)] text-[var(--brand)] focus:ring-[var(--brand)]"
             />
             <label htmlFor="is-active-toggle" className="text-sm font-medium text-[var(--foreground)]">
-              Mostrar franja en cabecera
+              Mostrar aviso en cabecera
             </label>
           </div>
 
@@ -107,7 +104,7 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
               className="h-4 w-4 rounded border-[var(--border)] text-[var(--brand)] focus:ring-[var(--brand)]"
             />
             <label htmlFor="readonly-wall-toggle" className="text-sm font-medium text-[var(--foreground)]">
-              Poner muro social en solo lectura
+              Muro en solo lectura
             </label>
           </div>
         </div>
@@ -118,7 +115,7 @@ export function AnnouncementForm({ currentAnnouncement }: AnnouncementFormProps)
             disabled={isPending}
             className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-[var(--brand,#e2001a)] px-6 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
           >
-            {isPending ? "Guardando..." : "Guardar y Aplicar Aviso"}
+            {isPending ? "Guardando..." : "Guardar aviso"}
           </button>
         </div>
       </div>

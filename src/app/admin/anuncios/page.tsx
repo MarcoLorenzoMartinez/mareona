@@ -3,26 +3,21 @@ import { AnnouncementForm } from "./announcement-form";
 import { SystemCacheTools } from "./system-cache-tools";
 
 export const metadata = {
-  title: "Avisos y Sistema | Mareona Admin",
-  description: "Emisión de comunicados globales y gestión operativa de caché en Mareona",
+  title: "Comunicados | Mareona Admin",
+  description: "Emisión de avisos globales y gestión de caché",
 };
 
 /**
- * Server page for announcements, maintenance mode, and system cache control.
+ * Server page for announcements and system cache control.
  */
 export default async function AnnouncementsAdminPage() {
   const currentAnnouncement = await getLatestAnnouncementAdmin();
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-          Avisos del Sistema y Operaciones
-        </h1>
-        <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-          Control de mensajes prioritarios para toda la afición y purga manual de datos deportivos.
-        </p>
-      </div>
+    <div className="space-y-8 py-2">
+      <h1 className="text-lg font-bold tracking-tight text-[var(--foreground)]">
+        Comunicados
+      </h1>
 
       <AnnouncementForm currentAnnouncement={currentAnnouncement} />
 

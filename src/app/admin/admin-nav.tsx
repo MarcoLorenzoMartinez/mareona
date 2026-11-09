@@ -9,16 +9,16 @@ interface AdminNavItem {
 }
 
 const ADMIN_NAV_ITEMS: readonly AdminNavItem[] = [
-  { href: "/admin/moderacion", label: "Moderación UGC" },
-  { href: "/admin/usuarios", label: "Usuarios y Sanciones" },
-  { href: "/admin/anuncios", label: "Avisos del Sistema" },
-  { href: "/admin/estadisticas", label: "Métricas y Salud" },
+  { href: "/admin/estadisticas", label: "Métricas" },
+  { href: "/admin/moderacion", label: "Moderación" },
+  { href: "/admin/usuarios", label: "Usuarios" },
+  { href: "/admin/anuncios", label: "Comunicados" },
 ];
 
 /**
- * Top navigation pill bar for administrative submodules.
- * Follows AGENTS.md rule 9: pill shape (rounded-full), red active state with pure white text,
- * no mono fonts, high accessibility (WCAG 2.2 AA).
+ * Secondary navigation bar for the administrative section.
+ * Aligns with the platform's visual standard (SeasonNav / HistoricoNav):
+ * typographic tabs, 44px min tap targets, corporate red active border, and zero AI pill styling.
  */
 export function AdminNav() {
   const pathname = usePathname();
@@ -26,25 +26,27 @@ export function AdminNav() {
   return (
     <nav
       aria-label="Secciones del panel de administración"
-      className="flex flex-wrap items-center gap-2 border-b border-[var(--border)] pb-4"
+      className="w-full border-b border-[var(--border)] bg-white"
     >
-      {ADMIN_NAV_ITEMS.map((item) => {
-        const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            aria-current={isActive ? "page" : undefined}
-            className={`inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 ${
-              isActive
-                ? "bg-[var(--brand,#e2001a)] text-white shadow-xs font-bold"
-                : "border border-[var(--border)] bg-white text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            {item.label}
-          </Link>
-        );
-      })}
+      <div className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto scrollbar-none px-4 sm:px-6">
+        {ADMIN_NAV_ITEMS.map((item) => {
+          const isActive = pathname === item.href || (pathname !== null && pathname.startsWith(`${item.href}/`));
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive ? "page" : undefined}
+              className={`inline-flex min-h-[44px] items-center border-b-2 px-3.5 py-2 text-sm font-semibold transition-all duration-150 whitespace-nowrap active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] focus-visible:ring-offset-2 ${
+                isActive
+                  ? "border-[var(--primary)] text-[var(--primary)]"
+                  : "border-transparent text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 }

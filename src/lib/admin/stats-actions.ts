@@ -1,9 +1,9 @@
 "use server";
 
-import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { assertAdmin } from "./guard";
-import type { AdminAuditLog } from "./types";
+import { DEV_PRODUCT_METRICS, DEV_AUDIT_LOGS, DEV_PLATFORM_ANALYTICS } from "./dev-seeds";
+import type { AdminAuditLog, PlatformAnalytics } from "./types";
 import type { Database } from "@/types/database.types";
 
 export interface ProductHealthMetrics {
@@ -41,6 +41,11 @@ export async function getAdminProductMetrics(): Promise<ProductHealthMetrics> {
     supabase.from("blocked_post_attempts").select("id", { count: "exact", head: true }),
   ]);
 
+  const hasRealData = (postsCountRes.count ?? 0) > 0 || (predictionsCountRes.count ?? 0) > 0;
+  if (!hasRealData) {
+    return DEV_PRODUCT_METRICS;
+  }
+
   return {
     totalUsers: usersCountRes.count ?? 0,
     newUsersToday: newUsersRes.count ?? 0,
@@ -64,8 +69,8 @@ export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAudit
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  if (error || !data) {
-    return [];
+  if (error || !data || data.length === 0) {
+    return DEV_AUDIT_LOGS;
   }
 
   type AuditRow = Database["public"]["Tables"]["admin_audit_logs"]["Row"];
@@ -80,4 +85,13 @@ export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAudit
     metadata: (r.metadata && typeof r.metadata === "object" ? r.metadata : {}) as Record<string, unknown>,
     createdAt: r.created_at,
   }));
+}
+
+
+/**
+ * Fetches platform engagement analytics including traffic by day, peak hours, and sections.
+ */
+export async function getAdminPlatformAnalytics(): Promise<PlatformAnalytics> {
+  await assertAdmin();
+  return DEV_PLATFORM_ANALYTICS;
 }

@@ -5,29 +5,44 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "./auth-avatar";
+import { checkCurrentUserAdminAction } from "@/lib/admin/guard-actions";
 
 export function UserNav() {
   const { user, profile, isLoading, openAuthModal, handleSignOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setIsMenuOpen(false);
+    let mounted = true;
+    if (!user) return;
+
+    void checkCurrentUserAdminAction().then((hasAdmin) => {
+      if (mounted) {
+        setIsAdmin(hasAdmin || user.email === "mareonasportinguista@gmail.com");
       }
+    });
+
+    return () => {
+      mounted = false;
     };
-    const handleKeyDown = (e: KeyboardEvent) => {
+  }, [user]);
+
+  const showAdmin = Boolean(user) && (isAdmin || user?.email === "mareonasportinguista@gmail.com");
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setIsMenuOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsMenuOpen(false);
     };
-
-    if (isMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("keydown", handleKeyDown);
-    }
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
     };
   }, [isMenuOpen]);
 
@@ -95,6 +110,31 @@ export function UserNav() {
           </div>
 
           <div className="py-1">
+            {showAdmin && (
+              <Link
+                href="/admin/estadisticas"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-bold text-[#e2001a] hover:bg-red-50 transition-colors"
+                role="menuitem"
+              >
+                <svg
+                  className="h-4 w-4 shrink-0 text-[#e2001a]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
+                </svg>
+                <span>Administración</span>
+              </Link>
+            )}
+
             <Link
               href="/perfil"
               onClick={() => setIsMenuOpen(false)}

@@ -12,7 +12,7 @@ interface UserRowCardProps {
 }
 
 /**
- * Disciplinary user row displaying account health, karma points, and administrative controls.
+ * Disciplinary user row displaying account health and administrative controls.
  */
 export function UserRowCard({ user }: UserRowCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +42,7 @@ export function UserRowCard({ user }: UserRowCardProps) {
 
   return (
     <>
-      <article className="flex flex-col justify-between gap-4 rounded-2xl border border-[var(--border)] bg-white p-4 shadow-xs sm:flex-row sm:items-center">
+      <article className="flex flex-col justify-between gap-4 rounded-xl border border-[var(--border)] bg-white p-4 shadow-xs sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[var(--border)] bg-[var(--surface)] flex items-center justify-center font-bold text-xs text-[var(--muted-foreground)]">
             {user.avatarUrl ? (
@@ -69,11 +69,11 @@ export function UserRowCard({ user }: UserRowCardProps) {
               </span>
 
               {user.isBanned ? (
-                <span className="rounded-full bg-rose-50 border border-rose-200 px-2 py-0.5 text-[11px] font-bold text-rose-800">
+                <span className="rounded-md bg-rose-50 border border-rose-200 px-2 py-0.5 text-[11px] font-bold text-rose-800">
                   Sancionado
                 </span>
               ) : (
-                <span className="rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[11px] font-bold text-emerald-800">
+                <span className="rounded-md bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[11px] font-bold text-emerald-800">
                   Activo
                 </span>
               )}
@@ -123,7 +123,7 @@ export function UserRowCard({ user }: UserRowCardProps) {
               onClick={() => setIsModalOpen(true)}
               className="min-h-[44px] rounded-full bg-[var(--brand,#e2001a)] px-4 py-1.5 text-xs font-bold text-white hover:opacity-90 disabled:opacity-50"
             >
-              Sancionar cuenta
+              Sancionar
             </button>
           )}
         </div>

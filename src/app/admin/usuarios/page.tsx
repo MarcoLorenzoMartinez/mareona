@@ -1,10 +1,11 @@
+import { Suspense } from "react";
 import { searchAdminUsers } from "@/lib/admin/user-actions";
 import { UserSearchBar } from "./user-search-bar";
 import { UserRowCard } from "./user-row-card";
 
 export const metadata = {
-  title: "Gestión de Usuarios | Mareona Admin",
-  description: "Búsqueda y control disciplinario de aficionados y cuentas en Mareona",
+  title: "Usuarios | Mareona Admin",
+  description: "Búsqueda y control disciplinario de cuentas",
 };
 
 interface UsersAdminPageProps {
@@ -20,23 +21,20 @@ export default async function UsersAdminPage({ searchParams }: UsersAdminPagePro
   const users = await searchAdminUsers(query);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 py-2">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-            Usuarios y Disciplina
-          </h1>
-          <p className="mt-1 text-sm text-[var(--muted-foreground)]">
-            Gestión de perfiles, control de sanciones y restablecimiento de fotos de avatar.
-          </p>
-        </div>
+        <h1 className="text-lg font-bold tracking-tight text-[var(--foreground)]">
+          Usuarios
+        </h1>
 
-        <UserSearchBar />
+        <Suspense fallback={<div className="h-10 w-full max-w-md animate-pulse rounded-full bg-neutral-100" />}>
+          <UserSearchBar />
+        </Suspense>
       </div>
 
       <div className="flex items-center justify-between border-t border-[var(--border)] pt-4 text-xs text-[var(--muted-foreground)]">
         <span>
-          {query ? `Resultados para "${query}"` : "Cuentas registradas recientemente"}
+          {query ? `Resultados para "${query}"` : "Cuentas recientes"}
         </span>
         <span className="tabular-nums font-semibold text-[var(--foreground)]">
           {users.length} usuario{users.length === 1 ? "" : "s"}
@@ -45,14 +43,11 @@ export default async function UsersAdminPage({ searchParams }: UsersAdminPagePro
 
       {users.length === 0 ? (
         <div
-          className="rounded-2xl border border-[var(--border)] bg-white p-8 text-center text-[var(--muted-foreground)]"
+          className="rounded-xl border border-[var(--border)] bg-white p-8 text-center text-[var(--muted-foreground)]"
           role="status"
         >
-          <p className="text-base font-semibold text-[var(--foreground)]">
+          <p className="text-sm font-semibold text-[var(--foreground)]">
             No se encontraron usuarios
-          </p>
-          <p className="mt-1 text-sm">
-            Prueba a buscar por otro término o limpia el buscador para ver las cuentas recientes.
           </p>
         </div>
       ) : (

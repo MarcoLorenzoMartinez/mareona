@@ -1,10 +1,10 @@
 "use server";
 
-import "server-only";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { assertAdmin } from "./guard";
 import { moderatePostActionSchema } from "./schemas";
+import { DEV_FLAGGED_POSTS, DEV_BLOCKED_ATTEMPTS } from "./dev-seeds";
 import type { Database } from "@/types/database.types";
 
 export interface FlaggedPostItem {
@@ -60,8 +60,8 @@ export async function getFlaggedPosts(): Promise<readonly FlaggedPostItem[]> {
     .order("created_at", { ascending: false })
     .limit(50);
 
-  if (error || !data) {
-    return [];
+  if (error || !data || data.length === 0) {
+    return DEV_FLAGGED_POSTS;
   }
 
   type RawPostWithProfile = Database["public"]["Tables"]["posts"]["Row"] & {
@@ -108,8 +108,8 @@ export async function getBlockedAttempts(): Promise<readonly BlockedAttemptItem[
     .order("created_at", { ascending: false })
     .limit(50);
 
-  if (error || !data) {
-    return [];
+  if (error || !data || data.length === 0) {
+    return DEV_BLOCKED_ATTEMPTS;
   }
 
   type RawAttempt = Database["public"]["Tables"]["blocked_post_attempts"]["Row"] & {

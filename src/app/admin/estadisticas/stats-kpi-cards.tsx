@@ -11,27 +11,27 @@ interface StatsKpiCardsProps {
 export function StatsKpiCards({ metrics }: StatsKpiCardsProps) {
   const cards = [
     {
-      title: "Aficionados Registrados",
+      title: "Usuarios",
       value: metrics.totalUsers,
-      subtext: `+${metrics.newUsersToday} en las últimas 24h`,
+      subtext: `+${metrics.newUsersToday} en 24h`,
       highlight: false,
     },
     {
-      title: "Publicaciones en Tertulia",
+      title: "Publicaciones",
       value: metrics.totalPosts,
-      subtext: "Mensajes e hilos creados",
+      subtext: "Mensajes e hilos",
       highlight: false,
     },
     {
-      title: "Pronósticos en Porra",
+      title: "Pronósticos",
       value: metrics.totalPredictions,
-      subtext: "Participación en partidos",
+      subtext: "Porras enviadas",
       highlight: false,
     },
     {
-      title: "Seguridad y Filtros",
+      title: "Bloqueos",
       value: metrics.blockedAttemptsCount,
-      subtext: `${metrics.flaggedPostsCount} pendientes de revisión`,
+      subtext: `${metrics.flaggedPostsCount} pendientes`,
       highlight: metrics.flaggedPostsCount > 0,
     },
   ];
@@ -41,7 +41,7 @@ export function StatsKpiCards({ metrics }: StatsKpiCardsProps) {
       {cards.map((card) => (
         <div
           key={card.title}
-          className={`rounded-2xl border bg-white p-5 shadow-xs transition-shadow ${
+          className={`rounded-xl border bg-white p-5 shadow-xs transition-shadow ${
             card.highlight
               ? "border-amber-300 bg-amber-50/30"
               : "border-[var(--border)]"
@@ -50,7 +50,7 @@ export function StatsKpiCards({ metrics }: StatsKpiCardsProps) {
           <span className="text-xs font-semibold text-[var(--muted-foreground)]">
             {card.title}
           </span>
-          <div className="mt-2 text-3xl font-extrabold tracking-tight text-[var(--foreground)] tabular-nums">
+          <div className="mt-2 text-2xl font-black tracking-tight text-[var(--foreground)] tabular-nums">
             {card.value.toLocaleString("es-ES")}
           </div>
           <p className="mt-1 text-xs text-[var(--muted-foreground)] tabular-nums">

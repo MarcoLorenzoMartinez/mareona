@@ -58,3 +58,59 @@ export interface DisciplinaryUser {
   readonly bannedReason: string | null;
   readonly createdAt: string;
 }
+
+export interface DailyTrafficPoint {
+  readonly date: string;
+  readonly label: string;
+  readonly visits: number;
+  readonly uniqueVisitors: number;
+  readonly isMatchDay?: boolean;
+}
+
+export interface HourlyTrafficPoint {
+  readonly hour: number;
+  readonly label: string;
+  readonly count: number;
+  readonly percentage: number;
+  readonly isPeak?: boolean;
+}
+
+export interface SectionUsageStat {
+  readonly key: string;
+  readonly label: string;
+  readonly percentage: number;
+  readonly visits: number;
+}
+
+export interface DeviceUsageStat {
+  readonly device: string;
+  readonly label: string;
+  readonly percentage: number;
+  readonly count: number;
+}
+
+export interface AccessModeStat {
+  readonly mode: string;
+  readonly label: string;
+  readonly percentage: number;
+  readonly count: number;
+}
+
+export interface GeographicOriginStat {
+  readonly key: string;
+  readonly label: string;
+  readonly percentage: number;
+  readonly visits: number;
+}
+
+export interface PlatformAnalytics {
+  readonly dailyTraffic: readonly DailyTrafficPoint[];
+  readonly hourlyTraffic: readonly HourlyTrafficPoint[];
+  readonly sectionUsage: readonly SectionUsageStat[];
+  readonly deviceUsage: readonly DeviceUsageStat[];
+  readonly accessModes: readonly AccessModeStat[];
+  readonly geographicProvinces: readonly GeographicOriginStat[];
+  readonly geographicCountries: readonly GeographicOriginStat[];
+  readonly avgSessionMinutes: number;
+  readonly bounceRatePercentage: number;
+}

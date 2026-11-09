@@ -42,6 +42,13 @@ export async function verifyUserIsAdmin(
     .maybeSingle();
 
   if (error || !data) {
+    // In local development, recognize designated admin email if user_roles table is not yet seeded
+    if (process.env.NODE_ENV !== "production") {
+      const { data: userData } = await supabase.auth.getUser();
+      if (userData?.user?.email === "mareonasportinguista@gmail.com") {
+        return true;
+      }
+    }
     return false;
   }
 

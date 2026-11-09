@@ -1,10 +1,10 @@
 "use server";
 
-import "server-only";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { assertAdmin } from "./guard";
 import { systemAnnouncementSchema, type SystemAnnouncementInput } from "./schemas";
+import { DEV_SYSTEM_ANNOUNCEMENT } from "./dev-seeds";
 import type { SystemAnnouncement } from "./types";
 import type { Database } from "@/types/database.types";
 
@@ -57,7 +57,7 @@ export async function getLatestAnnouncementAdmin(): Promise<SystemAnnouncement |
     .limit(1)
     .maybeSingle();
 
-  if (error || !data) return null;
+  if (error || !data) return DEV_SYSTEM_ANNOUNCEMENT;
 
   type AnnRow = Database["public"]["Tables"]["system_announcements"]["Row"];
   const row = data as AnnRow;

@@ -1,7 +1,7 @@
 import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { assertAdmin } from "@/lib/admin/guard";
-import { TeamCrest } from "@/components/media/team-crest";
+import { UserNav } from "@/components/auth/user-nav";
 import { AdminNav } from "./admin-nav";
 
 interface AdminLayoutProps {
@@ -9,49 +9,53 @@ interface AdminLayoutProps {
 }
 
 async function AdminProtectedShell({ children }: { readonly children: ReactNode }) {
-  const { user } = await assertAdmin();
+  await assertAdmin();
 
   return (
     <div className="min-h-screen bg-white text-[var(--foreground)]">
-      <header className="border-b border-[var(--border)] bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-40 w-full border-b border-[var(--primary-strong)] bg-[var(--primary)] text-white shadow-xs">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <Link
+            href="/admin"
+            className="flex items-center gap-2.5 rounded-md p-1 text-white transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
+            aria-label="Panel de administración de Mareona"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.png"
+              alt="Mareona Logo"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-sm object-contain"
+            />
+            <div className="flex flex-col">
+              <span className="text-base font-black tracking-wider uppercase leading-none text-white">
+                Mareona
+              </span>
+              <span className="text-[10px] font-semibold tracking-widest text-white/80 uppercase mt-0.5">
+                Administración
+              </span>
+            </div>
+          </Link>
+
+          <div className="flex items-center gap-3 sm:gap-4">
             <Link
               href="/"
-              className="flex items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)]"
-              aria-label="Volver al inicio de Mareona"
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white/85 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
-              <TeamCrest teamName="Real Sporting" isSporting size="md" crestUrl={null} />
-              <div className="flex flex-col">
-                <span className="text-base font-bold tracking-tight text-[var(--foreground)]">
-                  Mareona Admin
-                </span>
-                <span className="text-xs text-[var(--muted-foreground)]">
-                  Gestión y Moderación Oficial
-                </span>
-              </div>
+              <span aria-hidden="true">&larr;</span>
+              <span className="hidden sm:inline">Volver a la web</span>
+              <span className="sm:hidden">Web</span>
             </Link>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span
-              className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-900"
-              role="status"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-600" aria-hidden="true" />
-              Acceso Restringido
-            </span>
-
-            <span className="hidden text-xs text-[var(--muted-foreground)] sm:inline tabular-nums">
-              {user.email}
-            </span>
+            <UserNav />
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <AdminNav />
-        <div className="mt-6">{children}</div>
+      <AdminNav />
+
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+        {children}
       </main>
     </div>
   );
@@ -66,8 +70,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-white p-6">
-          <div className="h-8 w-48 animate-pulse rounded bg-neutral-100" />
+        <div className="min-h-screen bg-white">
+          <header className="h-16 w-full border-b border-[var(--primary-strong)] bg-[var(--primary)]" />
+          <div className="mx-auto max-w-6xl p-6">
+            <div className="h-8 w-48 animate-pulse rounded bg-neutral-100" />
+          </div>
         </div>
       }
     >
