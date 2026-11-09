@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { assertAdmin } from "@/lib/admin/guard";
 import { TeamCrest } from "@/components/media/team-crest";
@@ -8,12 +8,7 @@ interface AdminLayoutProps {
   readonly children: ReactNode;
 }
 
-/**
- * Administrative Layout for Mareona.
- * Protected by server-side Zero-Trust guard (`assertAdmin`). Unauthenticated or unauthorized
- * requests trigger a 404 response to keep administrative areas completely hidden.
- */
-export default async function AdminLayout({ children }: AdminLayoutProps) {
+async function AdminProtectedShell({ children }: { readonly children: ReactNode }) {
   const { user } = await assertAdmin();
 
   return (
@@ -59,5 +54,24 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
         <div className="mt-6">{children}</div>
       </main>
     </div>
+  );
+}
+
+/**
+ * Administrative Layout for Mareona.
+ * Protected by server-side Zero-Trust guard (`assertAdmin`). Wrapped in a Suspense
+ * boundary to support Next.js partial prerendering while enforcing runtime auth validation.
+ */
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white p-6">
+          <div className="h-8 w-48 animate-pulse rounded bg-neutral-100" />
+        </div>
+      }
+    >
+      <AdminProtectedShell>{children}</AdminProtectedShell>
+    </Suspense>
   );
 }
