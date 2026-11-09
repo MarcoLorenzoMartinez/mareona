@@ -52,16 +52,20 @@ export function ProfileAvatarPicker({
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await uploadAvatarImage(formData);
-    setIsUploading(false);
-
-    if (!res.success || !res.data) {
-      setUploadError(res.error ?? "No se pudo subir la foto");
+    try {
+      const res = await uploadAvatarImage(formData);
+      if (!res.success || !res.data) {
+        setUploadError(res.error ?? "No se pudo subir la foto");
+        onSelect(previousAvatar);
+        return;
+      }
+      onSelect(res.data.url);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Error inesperado al subir la foto");
       onSelect(previousAvatar);
-      return;
+    } finally {
+      setIsUploading(false);
     }
-
-    onSelect(res.data.url);
   };
 
   const handleRemovePhoto = () => {

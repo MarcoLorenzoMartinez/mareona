@@ -48,7 +48,13 @@ export async function uploadAvatarImage(
       });
 
     if (uploadError) {
-      return { success: false, error: `Error al subir la imagen: ${uploadError.message}` };
+      const isMissingBucket = uploadError.message?.toLowerCase().includes("bucket not found");
+      return {
+        success: false,
+        error: isMissingBucket
+          ? "El bucket 'avatars' no existe en Supabase Storage. Créalo para subir fotos."
+          : `Error al subir la imagen: ${uploadError.message}`,
+      };
     }
 
     const {
