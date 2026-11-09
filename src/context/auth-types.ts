@@ -7,8 +7,8 @@ export interface AuthContextValue {
   readonly profile: UserProfile | null;
   readonly isLoading: boolean;
   readonly isAuthModalOpen: boolean;
-  readonly authModalMode: "signin" | "signup";
-  readonly openAuthModal: (mode?: "signin" | "signup") => void;
+  readonly authModalMode: "signin" | "signup" | "onboarding";
+  readonly openAuthModal: (mode?: "signin" | "signup" | "onboarding") => void;
   readonly closeAuthModal: () => void;
   readonly refreshProfile: () => Promise<void>;
   readonly handleSignOut: () => Promise<void>;

@@ -24,19 +24,27 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   if (code) {
     try {
       const supabase = await createClient();
-      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
-      if (!error) {
+      if (!error && data?.user) {
+        // Detect newly created user accounts (created in the last 60 seconds)
+        // to present the mandatory name & handle selection screen
+        const createdAtMs = new Date(data.user.created_at).getTime();
+        const isRecentSignup = Math.abs(Date.now() - createdAtMs) < 60_000;
+
+        const targetUrl = new URL(safeNext, origin);
+        if (isRecentSignup) {
+          targetUrl.searchParams.set("onboarding", "true");
+        }
+
         const forwardedHost = request.headers.get("x-forwarded-host");
         const isLocalEnv = process.env.NODE_ENV === "development";
 
-        if (isLocalEnv) {
-          return NextResponse.redirect(`${origin}${safeNext}`);
+        if (!isLocalEnv && forwardedHost) {
+          targetUrl.protocol = "https:";
+          targetUrl.host = forwardedHost;
         }
-        if (forwardedHost) {
-          return NextResponse.redirect(`https://${forwardedHost}${safeNext}`);
-        }
-        return NextResponse.redirect(`${origin}${safeNext}`);
+        return NextResponse.redirect(targetUrl);
       }
     } catch {
       // Supabase connection failure or invalid PKCE code

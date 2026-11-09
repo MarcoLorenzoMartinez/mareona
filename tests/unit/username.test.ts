@@ -2,6 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
   generateUsernameFromEmail,
+  generateDefaultDisplayName,
   resolveUsernameCollision,
 } from "../../src/lib/auth/username.ts";
 
@@ -62,5 +63,21 @@ describe("resolveUsernameCollision", () => {
     const resolved = resolveUsernameCollision(longBase, taken);
     assert.ok(resolved.length <= 20);
     assert.equal(resolved, "supercalifragilist_1");
+  });
+});
+
+describe("generateDefaultDisplayName", () => {
+  it("prioritizes external OAuth full name when available", () => {
+    assert.equal(generateDefaultDisplayName("Pelayo García", "pelayo@gmail.com"), "Pelayo García");
+  });
+
+  it("formats capitalized clean display name from email when metadata is empty", () => {
+    assert.equal(generateDefaultDisplayName(null, "marcos.gijon@gmail.com"), "Marcos Gijon");
+    assert.equal(generateDefaultDisplayName("", "quini_sporting@hotmail.com"), "Quini Sporting");
+  });
+
+  it("handles fallback to Aficionado when neither name nor email is available", () => {
+    assert.equal(generateDefaultDisplayName(null, null), "Aficionado");
+    assert.equal(generateDefaultDisplayName("", ""), "Aficionado");
   });
 });

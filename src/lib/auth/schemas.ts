@@ -46,6 +46,32 @@ export function generateUsernameFromEmail(email: string): string {
 }
 
 /**
+ * Resolves a proposed public display name from user metadata or email.
+ *
+ * @param metadataName - Optional full name from OAuth provider (e.g. Google).
+ * @param email - User email address.
+ * @returns Clean, formatted display name up to 40 characters.
+ */
+export function generateDefaultDisplayName(
+  metadataName?: string | null,
+  email?: string | null
+): string {
+  if (metadataName && metadataName.trim().length > 0) {
+    return metadataName.trim().slice(0, 40);
+  }
+  if (!email) return "Aficionado";
+  const localPart = email.split("@")[0]?.split("+")[0] ?? "";
+  const words = localPart
+    .replace(/[._-]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+  return words.length > 0 ? words.slice(0, 40) : "Aficionado";
+}
+
+/**
  * Generates the next available username by appending an incremental numeric suffix if taken.
  * Ensures the candidate never exceeds 20 characters.
  */

@@ -19,10 +19,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     clearSession,
   } = useAuthSession();
 
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalMode, setAuthModalMode] = useState<"signin" | "signup">("signin");
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return new URLSearchParams(window.location.search).get("onboarding") === "true";
+  });
 
-  const openAuthModal = useCallback((mode: "signin" | "signup" = "signin") => {
+  const [authModalMode, setAuthModalMode] = useState<"signin" | "signup" | "onboarding">(() => {
+    if (typeof window === "undefined") return "signin";
+    return new URLSearchParams(window.location.search).get("onboarding") === "true"
+      ? "onboarding"
+      : "signin";
+  });
+
+  const openAuthModal = useCallback((mode: "signin" | "signup" | "onboarding" = "signin") => {
     setAuthModalMode(mode);
     setIsAuthModalOpen(true);
   }, []);
