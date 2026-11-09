@@ -38,18 +38,14 @@ export function ProfileAvatarPicker({
       return;
     }
 
+    const previousAvatar = selectedAvatar;
+    const previewUrl = URL.createObjectURL(file);
+    onSelect(previewUrl);
     setIsUploading(true);
 
     const isDemo = !user || user.id.startsWith("00000000-0000-4000-8000");
     if (isDemo) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === "string") {
-          onSelect(reader.result);
-        }
-        setIsUploading(false);
-      };
-      reader.readAsDataURL(file);
+      setIsUploading(false);
       return;
     }
 
@@ -61,6 +57,7 @@ export function ProfileAvatarPicker({
 
     if (!res.success || !res.data) {
       setUploadError(res.error ?? "No se pudo subir la foto");
+      onSelect(previousAvatar);
       return;
     }
 

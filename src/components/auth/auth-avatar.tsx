@@ -36,6 +36,13 @@ export function AuthAvatar({
   className = "",
 }: AuthAvatarProps) {
   const [hasError, setHasError] = useState(false);
+  const [lastSrc, setLastSrc] = useState(src);
+
+  if (lastSrc !== src) {
+    setLastSrc(src);
+    setHasError(false);
+  }
+
   const sizeClass = SIZE_MAP[size];
   const pixelDimension = PIXEL_MAP[size];
 
@@ -59,7 +66,8 @@ export function AuthAvatar({
             src.startsWith("data:") ||
             src.startsWith("blob:") ||
             src.endsWith(".svg") ||
-            src.startsWith("/")
+            src.startsWith("/") ||
+            src.includes("supabase.co")
           }
         />
       </div>
