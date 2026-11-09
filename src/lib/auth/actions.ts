@@ -102,6 +102,22 @@ export async function signOut(): Promise<AuthActionResult> {
 }
 
 /**
+ * Aborts account creation: permanently deletes auth user and clears session cookies.
+ */
+export async function abortRegistration(): Promise<AuthActionResult> {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) await supabase.rpc("delete_current_user");
+    await supabase.auth.signOut();
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : "Error al cancelar" };
+  }
+}
+
+/**
  * Updates public profile attributes for the authenticated user.
  */
 export async function updateProfile(

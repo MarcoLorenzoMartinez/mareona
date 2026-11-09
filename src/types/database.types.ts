@@ -816,6 +816,10 @@ export interface Database {
         Args: { p_other_user: string };
         Returns: string;
       };
+      delete_current_user: {
+        Args: Record<PropertyKey, never>;
+        Returns: void;
+      };
       is_admin: {
         Args: { user_uuid?: string };
         Returns: boolean;

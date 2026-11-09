@@ -9,6 +9,7 @@ import { ProfileAvatarPicker } from "@/app/(main)/perfil/profile-avatar-picker";
 
 interface OnboardingStepProps {
   readonly onFinish: () => void;
+  readonly onCancel: () => void;
 }
 
 /**
@@ -16,7 +17,7 @@ interface OnboardingStepProps {
  * Pre-fills proposed default values (derived from OAuth metadata or email),
  * allowing fans to customize them or confirm them directly with a single click.
  */
-export function OnboardingStep({ onFinish }: OnboardingStepProps) {
+export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
   const { user, profile, refreshProfile, updateLocalProfile } = useAuth();
 
   const defaultDisplayName =
@@ -147,11 +148,19 @@ export function OnboardingStep({ onFinish }: OnboardingStepProps) {
           </div>
         )}
 
-        <div className="pt-2">
+        <div className="pt-2 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isSubmitting}
+            className="min-h-[44px] px-3.5 py-2 text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 rounded-lg cursor-pointer"
+          >
+            Cancelar y salir
+          </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full min-h-[44px] rounded-lg bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
+            className="flex-1 min-h-[44px] rounded-lg bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
           >
             {isSubmitting ? "Guardando..." : "Comenzar"}
           </button>
