@@ -1,7 +1,7 @@
 // Client: Modal de acceso familiar con inicio de sesión, registro y bienvenida opcional
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
 import { AuthCredentialsForm } from "./auth-credentials-form";
 import { OnboardingStep } from "./onboarding-step";
@@ -12,6 +12,7 @@ export function AuthModal() {
   const [step, setStep] = useState<"credentials" | "onboarding">(() =>
     authModalMode === "onboarding" ? "onboarding" : "credentials"
   );
+  const isBackdropMouseDownRef = useRef(false);
 
   if (prevMode !== authModalMode) {
     setPrevMode(authModalMode);
@@ -29,10 +30,28 @@ export function AuthModal() {
     closeAuthModal();
   }, [closeAuthModal]);
 
+  const handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    isBackdropMouseDownRef.current = e.target === e.currentTarget;
+  };
+
+  const handleBackdropMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Only close if mousedown AND mouseup occurred on the backdrop (prevents closing when selecting input text)
+    if (isBackdropMouseDownRef.current && e.target === e.currentTarget) {
+      // Never dismiss onboarding step accidentally via backdrop click
+      if (step !== "onboarding") {
+        handleClose();
+      }
+    }
+    isBackdropMouseDownRef.current = false;
+  };
+
   useEffect(() => {
     if (!isAuthModalOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose();
+      // Only allow closing via Escape in credentials mode, not during identity onboarding
+      if (e.key === "Escape" && step !== "onboarding") {
+        handleClose();
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
@@ -40,7 +59,7 @@ export function AuthModal() {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
-  }, [isAuthModalOpen, handleClose]);
+  }, [isAuthModalOpen, step, handleClose]);
 
   if (!isAuthModalOpen) return null;
 
@@ -60,22 +79,25 @@ export function AuthModal() {
       aria-modal="true"
       aria-label="Acceso a Mareona"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
-      onClick={handleClose}
+      onMouseDown={handleBackdropMouseDown}
+      onMouseUp={handleBackdropMouseUp}
     >
       <div
         className="relative w-full max-w-sm rounded-2xl bg-white p-6 pt-16 shadow-2xl border border-neutral-100 transition-all"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          type="button"
-          onClick={handleClose}
-          className="absolute top-3.5 right-3.5 flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
-          aria-label="Cerrar ventana"
-        >
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        {step !== "onboarding" && (
+          <button
+            type="button"
+            onClick={handleClose}
+            className="absolute top-3.5 right-3.5 flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
+            aria-label="Cerrar ventana"
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
 
         {step === "onboarding" ? (
           <OnboardingStep onFinish={handleClose} />
