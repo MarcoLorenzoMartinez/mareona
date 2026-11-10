@@ -29,7 +29,10 @@ export function MatchCommentsThread({
   const [comments, setComments] = useState<readonly MatchComment[]>(initialComments);
   const [navigationStack, setNavigationStack] = useState<readonly string[]>([]);
   const [viewingProfileId, setViewingProfileId] = useState<string | null>(null);
-  const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(false);
+  const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1";
+  });
 
   const handlePushThread = (commentId: string) => {
     setNavigationStack((prev) => [...prev, commentId]);

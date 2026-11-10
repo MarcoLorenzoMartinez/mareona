@@ -34,7 +34,10 @@ export function MobilePostComposerModal({
 }: MobilePostComposerModalProps) {
   const { profile } = useAuth();
   const [body, setBody] = useState("");
-  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(null);
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => {
+    if (typeof window === "undefined") return null;
+    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1" ? loadLocalSharedLineup() : null;
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -60,10 +63,7 @@ export function MobilePostComposerModal({
   if (!isOpen) return null;
 
   const handleToggleLineup = () => {
-    if (attachedLineup) {
-      setAttachedLineup(null);
-      return;
-    }
+    if (attachedLineup) { setAttachedLineup(null); return; }
     const draft = loadLocalSharedLineup();
     if (!draft) {
       toast.info("Aún no tienes una alineación guardada. Ve a Mi Once para crearla.");
@@ -81,16 +81,13 @@ export function MobilePostComposerModal({
       setError("Añade al menos 2 opciones a la encuesta");
       return;
     }
-
     const fullBody = attachedLineup
       ? `${body.trim() ? `${body.trim()}\n\n` : ""}${encodeSharedLineup(attachedLineup)}`
       : body.trim();
-
     setIsSubmitting(true);
     setError(null);
     const res = await createSocialPost({ body: fullBody, pollOptions: validPollOptions });
     setIsSubmitting(false);
-
     if (!res.success || !res.data) {
       setError(res.error ?? "No se pudo publicar el mensaje");
       return;

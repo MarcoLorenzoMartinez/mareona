@@ -17,7 +17,10 @@ export function SocialMobileComposerSection({
   onOpenAuth,
   isAuthenticated,
 }: SocialMobileComposerSectionProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(() => {
+    if (typeof window === "undefined" || !isAuthenticated) return false;
+    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1";
+  });
 
   return (
     <>

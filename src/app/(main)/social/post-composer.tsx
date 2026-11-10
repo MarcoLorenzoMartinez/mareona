@@ -1,7 +1,7 @@
 // Client: Compositor inline colapsable con soporte para encuestas y alineaciones de Mi Once
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
@@ -37,8 +37,14 @@ export function PostComposer({
 }: PostComposerProps) {
   const { user, profile, openAuthModal } = useAuth();
   const [body, setBody] = useState("");
-  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(null);
-  const [isExpanded, setIsExpanded] = useState(Boolean(parentId));
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => {
+    if (typeof window === "undefined" || parentId) return null;
+    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1" ? loadLocalSharedLineup() : null;
+  });
+  const [isExpanded, setIsExpanded] = useState(() => {
+    if (Boolean(parentId)) return true;
+    return typeof window !== "undefined" && new URLSearchParams(window.location.search).get("adjuntarOnce") === "1";
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -50,25 +56,27 @@ export function PostComposer({
   const remaining = maxBodyLength - body.length;
   const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
+  useEffect(() => {
+    if (attachedLineup && typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("adjuntarOnce") === "1") {
+        textareaRef.current?.focus();
+      }
+    }
+  }, [attachedLineup]);
+
   const autoGrow = (el: HTMLTextAreaElement) => {
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   };
 
   const handleFocus = () => {
-    if (!user) {
-      textareaRef.current?.blur();
-      openAuthModal("signin");
-      return;
-    }
+    if (!user) { textareaRef.current?.blur(); openAuthModal("signin"); return; }
     setIsExpanded(true);
   };
 
   const handleToggleLineup = () => {
-    if (attachedLineup) {
-      setAttachedLineup(null);
-      return;
-    }
+    if (attachedLineup) { setAttachedLineup(null); return; }
     const draft = loadLocalSharedLineup();
     if (!draft) {
       toast.info("Aún no tienes una alineación guardada. Ve a Mi Once para crearla.");
