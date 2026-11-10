@@ -82,11 +82,11 @@ export function PollDisplay({ poll }: PollDisplayProps) {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="mt-3 w-full rounded-2xl border border-[var(--border)] bg-white p-3.5 shadow-2xs"
+      className="mt-3 w-full space-y-3 pt-1"
       role="region"
-      aria-label="Encuesta"
+      aria-label="Encuesta de la tertulia"
     >
-      <div className="space-y-2">
+      <div className="space-y-3">
         {votes.map((option) => {
           const percentage =
             totalVotes > 0 ? Math.round((option.votesCount / totalVotes) * 100) : 0;
@@ -96,48 +96,38 @@ export function PollDisplay({ poll }: PollDisplayProps) {
             const isUserVote = isSelected;
 
             return (
-              <div
-                key={option.id}
-                className={`relative overflow-hidden rounded-xl border min-h-10 px-3.5 py-2.5 text-xs transition-colors ${
-                  isUserVote
-                    ? "border-red-200/80 bg-red-50/15"
-                    : "border-neutral-200/70 bg-neutral-50/40"
-                }`}
-              >
-                {/* Barra de porcentaje: tono neutro sobrio sin colores estridentes */}
-                <div
-                  className={`absolute inset-y-0 left-0 transition-all duration-500 ease-out ${
-                    isUserVote ? "bg-red-500/10" : "bg-neutral-200/60"
-                  }`}
-                  style={{ width: `${percentage}%` }}
-                  aria-hidden="true"
-                />
-
-                <div className="relative flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <span
-                      className={`truncate ${
-                        isUserVote ? "font-bold text-neutral-900" : "font-normal text-neutral-800"
-                      }`}
-                    >
-                      {option.label}
-                    </span>
-                    {isUserVote && (
-                      <span className="shrink-0 text-[11px] font-medium text-[var(--primary)]">
-                        (tu voto)
-                      </span>
-                    )}
-                  </div>
+              <div key={option.id} className="space-y-1.5">
+                <div className="flex items-baseline justify-between gap-3 text-xs">
+                  <span
+                    className={`truncate ${
+                      isUserVote
+                        ? "font-bold text-neutral-900"
+                        : "font-normal text-neutral-700"
+                    }`}
+                  >
+                    {option.label}
+                  </span>
 
                   <span
                     className={`font-sans tabular-nums shrink-0 text-xs ${
                       isUserVote
                         ? "font-bold text-[var(--primary)]"
-                        : "font-medium text-neutral-600"
+                        : "font-semibold text-neutral-600"
                     }`}
                   >
                     {percentage}%
                   </span>
+                </div>
+
+                {/* Barra de progreso limpia: roja si es tu elección, gris neutro si no */}
+                <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-100">
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ease-out ${
+                      isUserVote ? "bg-[var(--primary)]" : "bg-neutral-300"
+                    }`}
+                    style={{ width: `${percentage}%` }}
+                    aria-hidden="true"
+                  />
                 </div>
               </div>
             );
@@ -149,7 +139,7 @@ export function PollDisplay({ poll }: PollDisplayProps) {
               type="button"
               onClick={(e) => handleVote(option.id, e)}
               disabled={isSubmitting}
-              className="flex min-h-11 w-full items-center justify-between rounded-xl border border-neutral-200/90 bg-white px-3.5 py-2.5 text-left text-xs font-semibold text-neutral-800 transition-colors hover:border-[var(--primary)] hover:bg-red-50/40 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              className="flex min-h-10 w-full items-center justify-center rounded-full border border-neutral-300/80 bg-white px-4 py-2 text-center text-xs font-semibold text-neutral-800 transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
             >
               <span className="truncate">{option.label}</span>
             </button>
@@ -157,13 +147,9 @@ export function PollDisplay({ poll }: PollDisplayProps) {
         })}
       </div>
 
-      <div className="mt-2.5 flex items-center justify-between text-[11px] text-neutral-400 px-0.5">
-        <span>
-          <strong className="font-sans font-medium tabular-nums text-neutral-600">
-            {totalVotes}
-          </strong>{" "}
-          {totalVotes === 1 ? "voto" : "votos"}
-        </span>
+      <div className="text-[11px] font-medium text-neutral-400">
+        <span className="font-sans tabular-nums">{totalVotes}</span>{" "}
+        {totalVotes === 1 ? "voto" : "votos"}
       </div>
     </div>
   );
