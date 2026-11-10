@@ -8,6 +8,7 @@ import { AuthModal } from "@/components/auth/auth-modal";
 import { ToastContainer } from "@/components/ui/toast-container";
 import { PwaInstallProvider } from "@/components/pwa/pwa-install-provider";
 import { OfflineBanner } from "@/components/pwa/offline-banner";
+import { OfflineSyncListener } from "@/components/pwa/offline-sync-listener";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import "./globals.css";
 
@@ -67,6 +68,7 @@ export default function RootLayout({
               <GlobalAnnouncementBanner />
             </Suspense>
             <OfflineBanner />
+            <OfflineSyncListener />
             <AuthModal />
             {children}
             <ToastContainer />

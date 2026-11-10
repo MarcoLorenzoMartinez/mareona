@@ -7,14 +7,11 @@ import { getMaxAttemptsForLength, normalizeWord } from './engine';
 import { handleGuessSubmission } from './submission';
 import { getKeyboardLetterStatuses, clearAllWordleStorage } from './keyboard-eval';
 import {
-  STORAGE_KEY_PREFIX,
-  STATS_STORAGE_KEY,
-  INITIAL_WORDLE_STATS,
-  getInitialWordleState,
-  getInitialWordleStats,
+  STORAGE_KEY_PREFIX, STATS_STORAGE_KEY, INITIAL_WORDLE_STATS,
+  getInitialWordleState, getInitialWordleStats,
 } from './storage';
 
-export function useWordleGame(challenge: WordleDailyWord) {
+export function useWordleGame(challenge: WordleDailyWord, userId?: string) {
   const targetWord = normalizeWord(challenge.word);
   const targetLength = targetWord.length;
   const maxAttempts = getMaxAttemptsForLength(targetLength);
@@ -118,6 +115,7 @@ export function useWordleGame(challenge: WordleDailyWord) {
       targetLength,
       maxAttempts,
       challengeId: challenge.id,
+      userId,
       onShake: () => {
         setShakeRow(true);
         setTimeout(() => setShakeRow(false), 500);
@@ -130,26 +128,16 @@ export function useWordleGame(challenge: WordleDailyWord) {
       },
       setStats,
     });
-  }, [gameState, letters, targetLength, targetWord, maxAttempts, challenge.id]);
+  }, [gameState, letters, targetLength, targetWord, maxAttempts, challenge.id, userId]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        startTransition(() => submitGuess());
-      } else if (e.key === 'Backspace') {
-        e.preventDefault();
-        startTransition(() => deleteLetter());
-      } else if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        startTransition(() => moveCursorLeft());
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        startTransition(() => moveCursorRight());
-      } else if (/^[a-zA-ZñÑ]$/.test(e.key)) {
-        startTransition(() => addLetter(e.key));
-      }
+      if (e.key === 'Enter') { e.preventDefault(); startTransition(() => submitGuess()); }
+      else if (e.key === 'Backspace') { e.preventDefault(); startTransition(() => deleteLetter()); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); startTransition(() => moveCursorLeft()); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); startTransition(() => moveCursorRight()); }
+      else if (/^[a-zA-ZñÑ]$/.test(e.key)) { startTransition(() => addLetter(e.key)); }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -161,12 +149,7 @@ export function useWordleGame(challenge: WordleDailyWord) {
   const resetAllProgress = useCallback(() => {
     clearAllWordleStorage(STORAGE_KEY_PREFIX, STATS_STORAGE_KEY);
     setStats(INITIAL_WORDLE_STATS);
-    setGameState({
-      date: challenge.id,
-      word: targetWord,
-      guesses: [],
-      status: 'IN_PROGRESS',
-    });
+    setGameState({ date: challenge.id, word: targetWord, guesses: [], status: 'IN_PROGRESS' });
     setLetters(Array(targetLength).fill(''));
     setCursorIndex(0);
   }, [challenge.id, targetWord, targetLength]);

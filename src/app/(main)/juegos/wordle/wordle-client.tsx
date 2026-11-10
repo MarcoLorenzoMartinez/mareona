@@ -44,7 +44,7 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
     submitGuess,
     resetAllProgress,
     justFinished,
-  } = useWordleGame(challenge);
+  } = useWordleGame(challenge, user?.id);
 
   const isGameOver = gameState.status !== 'IN_PROGRESS';
 

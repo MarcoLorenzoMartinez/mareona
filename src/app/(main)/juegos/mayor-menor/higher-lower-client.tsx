@@ -24,8 +24,11 @@ import { HigherLowerCard } from './higher-lower-card';
 import { HigherLowerControls } from './higher-lower-controls';
 import { HigherLowerGameOverModal } from './higher-lower-game-over-modal';
 import { HigherLowerArenaBackground } from './higher-lower-arena-background';
+import { useAuth } from '@/context/auth-context';
+import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
 
 export function HigherLowerClient() {
+  const { user } = useAuth();
   const [mode, setMode] = useState<HigherLowerMode>('matches');
   const [stats, setStats] = useState<HigherLowerStats>(() => getStoredHigherLowerStats());
   const [currentScore, setCurrentScore] = useState(0);
@@ -90,6 +93,18 @@ export function HigherLowerClient() {
             saveHigherLowerStats(nextStats);
             return nextStats;
           });
+          try {
+            enqueueGameResult({
+              gameType: 'higher_lower',
+              challengeDate: new Date().toISOString().slice(0, 10),
+              won: currentScore >= 3,
+              score: currentScore,
+              completedAt: new Date().toISOString(),
+              userId: user?.id,
+            });
+          } catch {
+            // Offline queue allocation fallback
+          }
           setIsGameOverModalOpen(true);
         }
       });

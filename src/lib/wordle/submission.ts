@@ -1,6 +1,7 @@
 import { isValidWordGuess } from './words';
 import type { WordleChallengeState, WordleStats } from './types';
 import { computeUpdatedWordleStats, saveWordleState } from './storage';
+import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
 import { toast } from '@/lib/ui/toast';
 
 export interface SubmitAttemptParams {
@@ -10,6 +11,7 @@ export interface SubmitAttemptParams {
   targetLength: number;
   maxAttempts: number;
   challengeId: string;
+  userId?: string;
   onShake: () => void;
   onSuccess: (nextState: WordleChallengeState, isWin: boolean, isLoss: boolean) => void;
   setStats: React.Dispatch<React.SetStateAction<WordleStats>>;
@@ -25,6 +27,7 @@ export function handleGuessSubmission({
   targetLength,
   maxAttempts,
   challengeId,
+  userId,
   onShake,
   onSuccess,
   setStats,
@@ -61,6 +64,18 @@ export function handleGuessSubmission({
 
   if (isWin || isLoss) {
     setStats((prev) => computeUpdatedWordleStats(prev, isWin, nextGuesses.length, challengeId));
+    try {
+      enqueueGameResult({
+        gameType: 'wordle',
+        challengeDate: challengeId,
+        won: isWin,
+        score: nextGuesses.length,
+        completedAt: newState.completedAt || new Date().toISOString(),
+        userId,
+      });
+    } catch {
+      // Offline queue allocation fallback
+    }
   }
 }
 

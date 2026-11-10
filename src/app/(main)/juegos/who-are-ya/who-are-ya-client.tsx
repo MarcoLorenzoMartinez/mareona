@@ -12,13 +12,12 @@ import { WhoAreYaArchiveModal } from './who-are-ya-archive-modal';
 import { evaluatePlayerGuess, MAX_ATTEMPTS } from '@/lib/who-are-ya/engine';
 import { getPlayerForDate, getTodayDateStr } from '@/lib/who-are-ya/daily';
 import {
-  getStoredPlayerGuesses,
-  savePlayerGuesses,
-  getStoredWhoAreYaStats,
-  updateWhoAreYaStatsOnFinish,
-  type WhoAreYaStats,
+  getStoredPlayerGuesses, savePlayerGuesses, getStoredWhoAreYaStats,
+  updateWhoAreYaStatsOnFinish, type WhoAreYaStats,
 } from '@/lib/who-are-ya/storage';
 import type { WhoAreYaPlayer, PlayerGuessResult } from '@/lib/who-are-ya/types';
+import { useAuth } from '@/context/auth-context';
+import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
 
 interface WhoAreYaClientProps {
   players: WhoAreYaPlayer[];
@@ -26,6 +25,8 @@ interface WhoAreYaClientProps {
 }
 
 export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
+  const { user } = useAuth();
+  const userId = user?.id;
   const [selectedDate, setSelectedDate] = useState<string>(() =>
     typeof window === 'undefined' ? initialDate : getTodayDateStr()
   );
@@ -93,9 +94,21 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
       if (nextIsGameOver) {
         const updated = updateWhoAreYaStatsOnFinish(nextIsWon, nextGuesses.length, selectedDate);
         setStats(updated);
+        try {
+          enqueueGameResult({
+            gameType: "who_are_ya",
+            challengeDate: selectedDate,
+            won: nextIsWon,
+            score: nextGuesses.length,
+            completedAt: new Date().toISOString(),
+            userId,
+          });
+        } catch {
+          // Offline queue allocation fallback
+        }
       }
     },
-    [players, isGameOver, currentTargetPlayer, selectedDate, playerGuessesByDate]
+    [players, isGameOver, currentTargetPlayer, selectedDate, playerGuessesByDate, userId]
   );
 
   return (
