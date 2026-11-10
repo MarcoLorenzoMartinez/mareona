@@ -62,7 +62,7 @@ export function MatchThreadView({
             aria-label={`Ver perfil de ${comment.authorName}`}
             className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            <AuthAvatar src={comment.authorAvatar} alt="" size="md" />
+            <AuthAvatar src={comment.authorAvatar} alt={comment.authorName} size="md" />
           </button>
           <div className="min-w-0 flex-1 leading-tight">
             <button

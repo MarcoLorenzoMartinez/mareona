@@ -65,7 +65,7 @@ export function ProfilePostsList({
             key={post.id}
             className="flex gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60 sm:px-5"
           >
-            <AuthAvatar src={avatarUrl} alt="" size="md" />
+            <AuthAvatar src={avatarUrl} alt={displayName} size="md" />
             <div className="min-w-0 flex-1">
               <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
                 <span className="truncate font-bold text-neutral-900">

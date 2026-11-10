@@ -37,7 +37,7 @@ export function MatchReplyItem({
         aria-label={`Ver perfil de ${reply.authorName}`}
         className="h-fit shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
       >
-        <AuthAvatar src={reply.authorAvatar} alt="" size="md" />
+        <AuthAvatar src={reply.authorAvatar} alt={reply.authorName} size="md" />
       </button>
 
       <div className="min-w-0 flex-1">

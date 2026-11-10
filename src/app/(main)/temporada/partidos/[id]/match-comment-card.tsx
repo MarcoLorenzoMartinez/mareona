@@ -37,7 +37,7 @@ export function MatchCommentCard({
         aria-label={`Ver perfil de ${comment.authorName}`}
         className="h-fit shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
       >
-        <AuthAvatar src={comment.authorAvatar} alt="" size="md" />
+        <AuthAvatar src={comment.authorAvatar} alt={comment.authorName} size="md" />
       </button>
 
       <div className="min-w-0 flex-1">

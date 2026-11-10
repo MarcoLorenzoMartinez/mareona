@@ -93,7 +93,7 @@ export function MobilePostComposerModal({
       >
         <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
           <div className="flex items-center gap-2.5">
-            <AuthAvatar src={profile?.avatar_url} alt="" size="sm" />
+            <AuthAvatar src={profile?.avatar_url} alt={displayName} size="sm" />
             <span className="text-xs font-bold text-neutral-900">{displayName}</span>
           </div>
           <button

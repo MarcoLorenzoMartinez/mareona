@@ -40,7 +40,7 @@ export function PostCard({
         aria-label={`Ver perfil de ${post.authorName}`}
         className="h-fit shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
       >
-        <AuthAvatar src={post.authorAvatar} alt="" size="md" />
+        <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />
       </button>
 
       <div className="min-w-0 flex-1">

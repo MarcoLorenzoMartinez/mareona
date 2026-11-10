@@ -35,17 +35,12 @@ export function UserProfileModal({ userId, onClose, onOpenThread }: UserProfileM
       setPosts(res.posts);
       setIsLoading(false);
     });
-
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [userId]);
 
   useEffect(() => {
     if (!userId) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
     return () => {
@@ -155,7 +150,7 @@ export function UserProfileModal({ userId, onClose, onOpenThread }: UserProfileM
                   }}
                   className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60 sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--primary)]"
                 >
-                  <AuthAvatar src={profile.avatarUrl} alt="" size="md" />
+                  <AuthAvatar src={profile.avatarUrl} alt={profile.displayName || profile.username} size="md" />
                   <div className="min-w-0 flex-1">
                     <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
                       <span className="truncate font-bold text-neutral-900">

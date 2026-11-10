@@ -87,7 +87,7 @@ export function MatchCommentComposer({
       onSubmit={handleSubmit}
       className={`flex gap-3 border-b border-[var(--border)] px-4 py-3 transition-colors duration-150 ${className}`}
     >
-      <AuthAvatar src={profile?.avatar_url} alt="" size="md" className="shrink-0" />
+      <AuthAvatar src={profile?.avatar_url} alt={displayName} size="md" className="shrink-0" />
 
       <div className="min-w-0 flex-1">
         <label htmlFor={`match-composer-${parentId ?? "root"}`} className="sr-only">
