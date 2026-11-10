@@ -57,6 +57,22 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  html, body {
+    overscroll-behavior-y: none;
+  }
+
+  /* Ergonomía táctil: suprime el retardo de 300ms en interacción táctil */
+  button, a, [role="button"], input[type="button"], input[type="submit"] {
+    touch-action: manipulation;
+  }
+
+  /* Previene el zoom automático indeseado de iOS Safari al enfocar inputs */
+  @media (pointer: coarse) {
+    input, textarea, select {
+      font-size: 16px;
+    }
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);

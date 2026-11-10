@@ -32,9 +32,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const createdAtMs = new Date(data.user.created_at).getTime();
         const isRecentSignup = Math.abs(Date.now() - createdAtMs) < 60_000;
 
+        const isPwa = searchParams.get("pwa") === "1";
         const targetUrl = new URL(safeNext, origin);
         if (isRecentSignup) {
           targetUrl.searchParams.set("onboarding", "true");
+        }
+        if (isPwa && !targetUrl.searchParams.has("source")) {
+          targetUrl.searchParams.set("source", "pwa");
         }
 
         const forwardedHost = request.headers.get("x-forwarded-host");

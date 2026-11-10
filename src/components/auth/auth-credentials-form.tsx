@@ -6,6 +6,7 @@ import { signInWithPassword, signUpWithPassword } from "@/lib/auth/actions";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/context/auth-context";
 import { evaluateDemoAuth } from "@/lib/auth/demo-credentials";
+import { buildOAuthCallbackUrl } from "@/lib/auth/oauth-redirect";
 
 interface AuthCredentialsFormProps {
   readonly initialMode: "signin" | "signup";
@@ -27,8 +28,7 @@ export function AuthCredentialsForm({
   const handleOAuthGoogle = async () => {
     try {
       const supabase = createClient();
-      const currentPath = window.location.pathname || "/temporada";
-      const callbackUrl = `${window.location.origin}/auth/callback?next=${encodeURIComponent(currentPath)}`;
+      const callbackUrl = buildOAuthCallbackUrl(window.location.origin, window.location.pathname);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: { redirectTo: callbackUrl },
