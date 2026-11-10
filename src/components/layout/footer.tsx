@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { InstallAction } from "@/components/pwa/install-action";
-import { CONTACT_EMAIL } from "@/lib/legal/constants";
+import { CONTACT_EMAIL, COPYRIGHT_YEAR } from "@/lib/legal/constants";
 
 const LEGAL_LINKS = [
   { href: "/aviso-legal", label: "Aviso legal" },
@@ -14,12 +14,9 @@ const LINK_CLASS =
 
 /**
  * Global footer: legal navigation, support contact and the independence
- * disclaimer required by the brand rules. Kept as a Server Component so the
- * copyright year is resolved at render time without shipping client JS.
+ * disclaimer required by the brand rules.
  */
 export function Footer() {
-  const year = new Date().getFullYear();
-
   return (
     <footer className="mt-8 border-t border-[var(--border)] bg-[var(--background)] pb-24 md:pb-0">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-4 md:gap-3 md:px-6 md:py-6">
@@ -50,7 +47,7 @@ export function Footer() {
         </div>
 
         <p className="border-t border-[var(--border)] pt-3 text-xs leading-relaxed text-[var(--muted-foreground)] md:pt-4">
-          <span className="tabular-nums">© {year}</span> Mareona. Proyecto independiente de
+          <span className="tabular-nums">© {COPYRIGHT_YEAR}</span> Mareona. Proyecto independiente de
           aficionados, sin vinculación con el Real Sporting de Gijón, S.A.D.
         </p>
       </div>
