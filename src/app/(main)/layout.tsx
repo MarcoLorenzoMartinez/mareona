@@ -1,8 +1,9 @@
 import { MainNav } from "@/components/layout/main-nav";
+import { Footer } from "@/components/layout/footer";
 
 /**
  * Main application shell wrapping primary authenticated/public vertical areas.
- * Provides accessible skip-navigation link and offsets for mobile bottom navigation.
+ * Provides accessible skip-navigation link, global footer, and mobile navigation padding.
  */
 export default function MainLayout({
   children,
@@ -22,14 +23,17 @@ export default function MainLayout({
       {/* Dual navigation header and mobile bottom bar */}
       <MainNav />
 
-      {/* Main content landmark with bottom padding to avoid mobile nav overlap */}
+      {/* Main content landmark */}
       <main
         id="main-content"
         tabIndex={-1}
-        className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-4 pb-24 md:px-6 md:py-8 focus:outline-none"
+        className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-4 pb-12 md:px-6 md:py-8 focus:outline-none"
       >
         {children}
       </main>
+
+      {/* Global corporate footer */}
+      <Footer />
     </div>
   );
 }

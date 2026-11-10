@@ -118,6 +118,42 @@ export async function abortRegistration(): Promise<AuthActionResult> {
 }
 
 /**
+ * Permanently deletes the authenticated user's account and all associated personal data
+ * via delete_current_user RPC (GDPR right to be forgotten), then signs out.
+ */
+export async function deleteAccount(): Promise<AuthActionResult> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return { success: false, error: "No hay sesión activa para eliminar" };
+    }
+
+    const { error: rpcError } = await supabase.rpc("delete_current_user");
+    if (rpcError) {
+      return {
+        success: false,
+        error: `Error al eliminar los datos: ${rpcError.message}`,
+      };
+    }
+
+    await supabase.auth.signOut();
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch (err) {
+    return {
+      success: false,
+      error:
+        err instanceof Error ? err.message : "Error inesperado al eliminar la cuenta",
+    };
+  }
+}
+
+/**
  * Updates public profile attributes for the authenticated user.
  */
 export async function updateProfile(

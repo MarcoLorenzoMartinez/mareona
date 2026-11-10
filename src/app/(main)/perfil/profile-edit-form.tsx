@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/auth-context";
 import { updateProfile } from "@/lib/auth/actions";
 import { ProfileAvatarPicker } from "./profile-avatar-picker";
+import { DeleteAccountDialog } from "@/components/profile/delete-account-dialog";
 
 interface ProfileEditFormProps {
   readonly onCancel: () => void;
@@ -19,6 +20,7 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
     profile?.avatar_url ?? null
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     type: "success" | "error";
     text: string;
@@ -125,22 +127,37 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
         </p>
       )}
 
-      <div className="flex items-center justify-end gap-2 pt-1">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] pt-4">
         <button
           type="button"
-          onClick={onCancel}
-          className="min-h-9 rounded-full px-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          onClick={() => setIsDeleteDialogOpen(true)}
+          className="text-xs font-semibold text-red-600 transition-colors hover:text-red-700 underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs"
         >
-          Cancelar
+          Eliminar mi cuenta y mis datos
         </button>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="min-h-9 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
-        >
-          {isSubmitting ? "Guardando..." : "Guardar cambios"}
-        </button>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="min-h-9 rounded-full px-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="min-h-9 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+          >
+            {isSubmitting ? "Guardando..." : "Guardar cambios"}
+          </button>
+        </div>
       </div>
+
+      <DeleteAccountDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      />
     </form>
   );
 }
