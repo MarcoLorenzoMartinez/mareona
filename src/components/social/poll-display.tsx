@@ -2,7 +2,6 @@
 "use client";
 
 import { useState } from "react";
-import { Check } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { votePoll } from "@/lib/social/actions";
 import type { SocialPoll } from "@/lib/social/types";
@@ -117,12 +116,14 @@ export function PollDisplay({ poll }: PollDisplayProps) {
                 />
 
                 <div className="relative flex items-center justify-between gap-3">
-                  <span className="flex items-center gap-1.5 truncate">
+                  <span className="flex items-center gap-2 truncate">
                     {isUserVote && (
-                      <Check
-                        className="h-4 w-4 shrink-0 text-[var(--primary)] stroke-[2.5]"
+                      <span
+                        className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border border-[var(--primary)] bg-white"
                         aria-hidden="true"
-                      />
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
+                      </span>
                     )}
                     <span
                       className={`truncate ${
