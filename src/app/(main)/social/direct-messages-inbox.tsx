@@ -6,6 +6,7 @@ import { MessageSquare, MessageCirclePlus } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { getDirectConversations } from "@/lib/social/direct-messages-queries";
 import { formatRelativeTime } from "@/lib/social/format";
+import { decrementOptimisticUnreadChat } from "@/components/layout/use-social-notifications";
 import type { DirectConversationSummary } from "@/lib/social/direct-messages-types";
 
 interface DirectMessagesInboxProps {
@@ -78,49 +79,95 @@ export function DirectMessagesInbox({
       aria-label="Lista de conversaciones directas"
       className={`divide-y divide-[var(--border)] ${isPending ? "opacity-60" : "opacity-100"} transition-opacity`}
     >
-      {conversations.map((c) => (
-        <article
-          key={c.id}
-          onClick={() =>
-            onOpenConversation(c.id, {
-              id: c.otherUserId,
-              name: c.otherUserName,
-              username: c.otherUserUsername,
-              avatarUrl: c.otherUserAvatar,
-            })
-          }
-          className="flex cursor-pointer items-center gap-3 px-4 py-3.5 transition-colors duration-150 hover:bg-[var(--surface)]/70 sm:px-5"
-        >
-          <AuthAvatar src={c.otherUserAvatar} alt={c.otherUserName} size="md" />
+      {conversations.map((c) => {
+        const hasUnread = c.unreadCount > 0;
 
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center justify-between gap-2">
-              <span className="truncate text-sm font-bold text-neutral-900">
-                {c.otherUserName}
-              </span>
-              {c.lastMessageCreatedAt && (
-                <time
-                  dateTime={c.lastMessageCreatedAt}
-                  className="shrink-0 text-[11px] font-sans tabular-nums text-neutral-400"
+        return (
+          <article
+            key={c.id}
+            onClick={() => {
+              if (hasUnread) {
+                setConversations((prev) =>
+                  prev.map((item) => (item.id === c.id ? { ...item, unreadCount: 0 } : item))
+                );
+                decrementOptimisticUnreadChat();
+              }
+              onOpenConversation(c.id, {
+                id: c.otherUserId,
+                name: c.otherUserName,
+                username: c.otherUserUsername,
+                avatarUrl: c.otherUserAvatar,
+              });
+            }}
+            aria-label={`${c.otherUserName}${hasUnread ? `, ${c.unreadCount} mensaje no leído` : ""}`}
+            className={`flex cursor-pointer items-center gap-3 px-3 py-3.5 transition-colors duration-150 sm:px-4 ${
+              hasUnread
+                ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]"
+                : "hover:bg-[var(--surface)]/70"
+            }`}
+          >
+            {/* Left Unread Indicator Dot (iOS / Telegram standard) */}
+            <span
+              className={`h-2 w-2 shrink-0 rounded-full transition-opacity ${
+                hasUnread ? "bg-[var(--primary)]" : "opacity-0"
+              }`}
+              aria-hidden="true"
+            />
+
+            <AuthAvatar src={c.otherUserAvatar} alt={c.otherUserName} size="md" />
+
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <span
+                  className={`truncate text-sm ${
+                    hasUnread ? "font-bold text-neutral-950" : "font-semibold text-neutral-800"
+                  }`}
                 >
-                  {formatRelativeTime(c.lastMessageCreatedAt)}
-                </time>
-              )}
-            </div>
-
-            <div className="mt-0.5 flex items-center justify-between gap-2">
-              <p className="truncate text-xs text-neutral-500">
-                {c.lastMessageBody ? c.lastMessageBody : "Sin mensajes aún"}
-              </p>
-              {c.unreadCount > 0 && (
-                <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-[10px] font-bold tabular-nums text-white">
-                  {c.unreadCount}
+                  {c.otherUserName}
                 </span>
-              )}
+                {c.lastMessageCreatedAt && (
+                  <time
+                    dateTime={c.lastMessageCreatedAt}
+                    className={`shrink-0 text-[11px] font-sans tabular-nums ${
+                      hasUnread
+                        ? "font-bold text-[var(--primary)]"
+                        : "text-neutral-400"
+                    }`}
+                  >
+                    {formatRelativeTime(c.lastMessageCreatedAt)}
+                  </time>
+                )}
+              </div>
+
+              <div className="mt-0.5 flex items-center justify-between gap-2">
+                <p
+                  className={`truncate text-xs ${
+                    hasUnread
+                      ? "font-medium text-neutral-900"
+                      : "text-neutral-500"
+                  }`}
+                >
+                  {c.lastMessageBody ? (
+                    <>
+                      {c.lastMessageIsMine && (
+                        <span className="font-normal text-neutral-400">Tú: </span>
+                      )}
+                      <span>{c.lastMessageBody}</span>
+                    </>
+                  ) : (
+                    "Sin mensajes aún"
+                  )}
+                </p>
+                {hasUnread && (
+                  <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-[10px] font-bold tabular-nums text-white">
+                    {c.unreadCount > 9 ? "9+" : c.unreadCount}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </div>
   );
 }

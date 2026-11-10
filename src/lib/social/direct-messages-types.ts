@@ -18,5 +18,6 @@ export interface DirectConversationSummary {
   readonly otherUserAvatar: string | null;
   readonly lastMessageBody: string | null;
   readonly lastMessageCreatedAt: string | null;
+  readonly lastMessageIsMine?: boolean;
   readonly unreadCount: number;
 }

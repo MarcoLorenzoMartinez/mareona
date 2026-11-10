@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
 import { MobileNav, MobileNavFallback } from "./mobile-nav";
 import { UserNav } from "@/components/auth/user-nav";
+import { useSocialNotifications } from "./use-social-notifications";
 
 /**
  * Brand logo linking to home/temporada.
@@ -62,35 +63,39 @@ function BrandLogo() {
   );
 }
 
-function DesktopNavList({ pathname }: { readonly pathname: string | null }) {
+function DesktopNavList({
+  pathname,
+  unreadSocialCount = 0,
+}: { readonly pathname: string | null; readonly unreadSocialCount?: number }) {
   return (
     <nav aria-label="Navegación principal">
       <ul className="flex items-center gap-1.5">
         {NAV_ITEMS.map((item) => {
           const isActive =
             pathname !== null &&
-            (item.href === "/"
-              ? pathname === "/"
-              : pathname === item.href || pathname.startsWith(`${item.href}/`));
+            (item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`));
 
           return (
             <li key={item.href}>
               <Link
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`relative flex h-10 items-center rounded-md px-3.5 text-sm font-medium tracking-wide transition-colors duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] ${
-                  isActive
-                    ? "bg-white/18 font-bold text-white shadow-2xs"
-                    : "text-white/85 hover:bg-white/10 hover:text-white"
+                className={`relative flex h-10 items-center justify-center rounded-md px-3.5 text-sm font-medium tracking-wide transition-colors duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] ${
+                  isActive ? "bg-white/18 font-bold text-white shadow-2xs" : "text-white/85 hover:bg-white/10 hover:text-white"
                 }`}
               >
-                <span>{item.label}</span>
-                {isActive && (
-                  <span
-                    className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-white"
-                    aria-hidden="true"
-                  />
-                )}
+                <span className="relative inline-flex items-center">
+                  {item.label}
+                  {item.href === "/social" && unreadSocialCount > 0 && (
+                    <span
+                      className="absolute -top-1 -right-3 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-white px-1 text-[9px] font-bold leading-none tabular-nums text-[var(--primary)]"
+                      aria-label={`${unreadSocialCount} notificaciones en Social`}
+                    >
+                      {unreadSocialCount > 9 ? "9+" : unreadSocialCount}
+                    </span>
+                  )}
+                </span>
+                {isActive && <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-white" aria-hidden="true" />}
               </Link>
             </li>
           );
@@ -102,6 +107,7 @@ function DesktopNavList({ pathname }: { readonly pathname: string | null }) {
 
 function MainNavInner() {
   const pathname = usePathname();
+  const socialNotifications = useSocialNotifications();
 
   return (
     <>
@@ -109,7 +115,7 @@ function MainNavInner() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <BrandLogo />
           <div className="flex items-center gap-5">
-            <DesktopNavList pathname={pathname} />
+            <DesktopNavList pathname={pathname} unreadSocialCount={socialNotifications.totalUnread} />
             <UserNav />
           </div>
         </div>

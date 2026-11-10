@@ -3,8 +3,9 @@
 import { createClient } from "@/lib/supabase/server";
 import {
   isTestConversation,
-  getTestDirectConversation,
+  getTestDirectConversations,
   getTestDirectMessages,
+  markTestConversationAsRead,
   TEST_CONVERSATION_ID,
 } from "./test-friend-chat";
 import type { DirectConversationSummary, DirectMessage } from "./direct-messages-types";
@@ -29,7 +30,7 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       .eq("user_id", user.id);
 
     if (memberErr || !myMemberships || myMemberships.length === 0) {
-      return [getTestDirectConversation()];
+      return getTestDirectConversations();
     }
 
     const convIds = myMemberships.map((m) => m.conversation_id);
@@ -49,7 +50,7 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
     // 3. Fetch latest messages for each conversation
     const { data: latestMessages } = await supabase
       .from("messages")
-      .select("id, conversation_id, body, created_at")
+      .select("id, conversation_id, sender_id, body, created_at")
       .in("conversation_id", convIds)
       .is("deleted_at", null)
       .order("created_at", { ascending: false });
@@ -86,12 +87,13 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
         otherUserAvatar: profile.avatar_url,
         lastMessageBody: lastMsg?.body ?? null,
         lastMessageCreatedAt: lastMsg?.created_at ?? null,
+        lastMessageIsMine: lastMsg ? lastMsg.sender_id === user.id : false,
         unreadCount,
       });
     }
 
     if (!results.some((c) => c.id === TEST_CONVERSATION_ID)) {
-      results.unshift(getTestDirectConversation());
+      results.push(...getTestDirectConversations());
     }
 
     // Sort by most recent activity
@@ -101,7 +103,7 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       return timeB - timeA;
     });
   } catch {
-    return [getTestDirectConversation()];
+    return getTestDirectConversations();
   }
 }
 
@@ -112,7 +114,8 @@ export async function getDirectMessages(
   conversationId: string
 ): Promise<readonly DirectMessage[]> {
   if (isTestConversation(conversationId)) {
-    return getTestDirectMessages();
+    markTestConversationAsRead(conversationId);
+    return getTestDirectMessages(conversationId);
   }
 
   try {

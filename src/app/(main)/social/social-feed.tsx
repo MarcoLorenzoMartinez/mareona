@@ -14,6 +14,10 @@ import { SocialMobileComposerSection } from "./social-mobile-composer-section";
 import { getSocialPosts, deleteSocialPost } from "@/lib/social/actions";
 import { getOrCreateConversationWithFriend } from "@/lib/social/direct-messages-actions";
 import {
+  useSocialNotifications,
+  refreshSocialNotifications,
+} from "@/components/layout/use-social-notifications";
+import {
   findPostInTree,
   findParentInTree,
   addReplyToTree,
@@ -28,6 +32,7 @@ interface SocialFeedProps {
 
 export function SocialFeed({ initialPosts }: SocialFeedProps) {
   const { user, openAuthModal } = useAuth();
+  const socialNotifications = useSocialNotifications();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<SocialFeedTab>("all");
   const [posts, setPosts] = useState<readonly SocialPost[]>(initialPosts);
@@ -117,6 +122,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
             activeTab={activeTab}
             onTabChange={handleTabChange}
             onOpenProfile={(id) => setViewingProfileId(id)}
+            unreadMessagesCount={socialNotifications.unreadMessagesCount}
             onStartChat={(f) =>
               handleStartChatWithUser({
                 id: f.id,
@@ -132,15 +138,16 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
               <DirectChatView
                 conversationId={activeConversationId}
                 otherUser={activeChatUser}
-                onBack={() => { setActiveConversationId(null); setActiveChatUser(null); }}
+                onBack={() => {
+                  setActiveConversationId(null);
+                  setActiveChatUser(null);
+                  void refreshSocialNotifications();
+                }}
                 onOpenProfile={(id) => setViewingProfileId(id)}
               />
             ) : (
               <DirectMessagesInbox
-                onOpenConversation={(convId, other) => {
-                  setActiveConversationId(convId);
-                  setActiveChatUser(other);
-                }}
+                onOpenConversation={(convId, other) => { setActiveConversationId(convId); setActiveChatUser(other); }}
                 onOpenFriends={() => {}}
               />
             )

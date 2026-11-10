@@ -8,6 +8,7 @@ import { getDirectMessages } from "@/lib/social/direct-messages-queries";
 import { sendDirectMessage } from "@/lib/social/direct-messages-actions";
 import { createClient } from "@/lib/supabase/client";
 import { TEST_CONVERSATION_ID, TEST_FRIEND_ID } from "@/lib/social/test-friend-chat";
+import { refreshSocialNotifications } from "@/components/layout/use-social-notifications";
 import type { DirectMessage } from "@/lib/social/direct-messages-types";
 
 interface DirectChatViewProps {
@@ -33,9 +34,12 @@ export function DirectChatView({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
+    const el = containerRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior });
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -43,7 +47,8 @@ export function DirectChatView({
       if (cancelled) return;
       setMessages(data);
       setIsInitialLoading(false);
-      setTimeout(scrollToBottom, 50);
+      setTimeout(() => scrollToBottom("auto"), 20);
+      void refreshSocialNotifications();
     });
     return () => { cancelled = true; };
   }, [conversationId]);
@@ -125,7 +130,7 @@ export function DirectChatView({
       <DirectChatHeader otherUser={otherUser} onBack={onBack} onOpenProfile={onOpenProfile} />
 
       {/* Historial */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[var(--surface)]/30">
+      <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-[var(--surface)]/30">
         {isInitialLoading ? (
           <div className="py-12 text-center text-xs text-neutral-400">Cargando conversación...</div>
         ) : messages.length === 0 ? (
@@ -161,7 +166,6 @@ export function DirectChatView({
             </div>
           ))
         )}
-        <div ref={scrollRef} />
       </div>
 
       <DirectChatComposer

@@ -5,8 +5,15 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
+import { useSocialNotifications } from "./use-social-notifications";
 
-function MobileNavList({ pathname }: { readonly pathname: string | null }) {
+function MobileNavList({
+  pathname,
+  unreadSocialCount = 0,
+}: {
+  readonly pathname: string | null;
+  readonly unreadSocialCount?: number;
+}) {
   return (
     <nav
       aria-label="Navegación móvil"
@@ -41,6 +48,14 @@ function MobileNavList({ pathname }: { readonly pathname: string | null }) {
                     }`}
                     aria-hidden="true"
                   />
+                  {item.href === "/social" && unreadSocialCount > 0 && (
+                    <span
+                      className="absolute -top-1 -right-2 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-[9px] font-bold tabular-nums text-white ring-2 ring-white"
+                      aria-label={`${unreadSocialCount} notificaciones en Social`}
+                    >
+                      {unreadSocialCount > 9 ? "9+" : unreadSocialCount}
+                    </span>
+                  )}
                 </div>
                 <span
                   className={`text-[11px] leading-none tracking-tight ${
@@ -60,7 +75,8 @@ function MobileNavList({ pathname }: { readonly pathname: string | null }) {
 
 function MobileNavInner() {
   const pathname = usePathname();
-  return <MobileNavList pathname={pathname} />;
+  const notifications = useSocialNotifications();
+  return <MobileNavList pathname={pathname} unreadSocialCount={notifications.totalUnread} />;
 }
 
 export function MobileNavFallback() {
