@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { X } from "lucide-react";
+import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { ProfileModalHeader } from "./user-profile-modal-header";
 import { UserProfilePostsSection } from "./user-profile-posts-section";
@@ -63,31 +64,51 @@ export function UserProfileModal({
 
   const handleSendRequest = () => {
     if (!user) {
+      onClose();
       openAuthModal("signin");
+      toast.info("Inicia sesión para enviar solicitudes de amistad");
       return;
     }
     if (!profile) return;
 
     startTransition(async () => {
       if (profile.friendshipStatus === "pending_received" && profile.friendshipId) {
-        await respondFriendRequest({ friendshipId: profile.friendshipId, action: "accept" });
+        if (!profile.friendshipId.startsWith("demo-")) {
+          await respondFriendRequest({ friendshipId: profile.friendshipId, action: "accept" });
+        }
         setProfile((prev) => (prev ? { ...prev, friendshipStatus: "accepted" } : null));
+        toast.success("Solicitud de amistad aceptada");
       } else {
+        if (userId.startsWith("demo-")) {
+          setProfile((prev) =>
+            prev ? { ...prev, friendshipStatus: "pending_sent", friendshipId: `demo-friendship-${userId}` } : null
+          );
+          toast.success("Solicitud de amistad enviada");
+          return;
+        }
+
         const res = await sendFriendRequest({ addresseeId: userId });
         if (res.success) {
           setProfile((prev) =>
             prev ? { ...prev, friendshipStatus: "pending_sent", friendshipId: res.data?.friendshipId } : null
           );
+          toast.success("Solicitud de amistad enviada");
+        } else {
+          toast.error(res.error || "No se pudo enviar la solicitud de amistad");
         }
       }
     });
   };
 
   const handleRemoveFriend = () => {
-    if (!profile?.friendshipId) return;
+    const fId = profile?.friendshipId;
+    if (!fId) return;
     startTransition(async () => {
-      await removeFriendship(profile.friendshipId!);
+      if (!fId.startsWith("demo-")) {
+        await removeFriendship(fId);
+      }
       setProfile((prev) => (prev ? { ...prev, friendshipStatus: "none", friendshipId: undefined } : null));
+      toast.success("Amistad eliminada");
     });
   };
 

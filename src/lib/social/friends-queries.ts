@@ -3,6 +3,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { DEMO_SEARCH_AFICIONADOS } from "./seed-posts";
 import { filterFriendsList, normalizeSearchQuery } from "./friends-search-utils";
+import {
+  isTestFriend,
+  TEST_FRIEND_ID,
+  TEST_FRIENDSHIP_ID,
+  TEST_FRIEND_SUMMARY,
+} from "./test-friend-chat";
 import type { FriendSummary, FriendshipStatus } from "./friendship-schemas";
 
 /**
@@ -30,6 +36,10 @@ export async function getFriendIdsForUser(userId: string): Promise<readonly stri
 export async function getFriendshipStatusWith(
   targetUserId: string
 ): Promise<{ status: FriendshipStatus; friendshipId?: string }> {
+  if (isTestFriend(targetUserId)) {
+    return { status: "accepted", friendshipId: TEST_FRIENDSHIP_ID };
+  }
+
   try {
     const supabase = await createClient();
     const {
@@ -73,7 +83,7 @@ export async function getMyFriendsList(): Promise<readonly FriendSummary[]> {
       .eq("status", "accepted")
       .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`);
 
-    if (!rows || rows.length === 0) return [];
+    if (!rows || rows.length === 0) return [TEST_FRIEND_SUMMARY];
 
     const friendIds = rows.map((r) => (r.requester_id === user.id ? r.addressee_id : r.requester_id));
 
@@ -82,9 +92,9 @@ export async function getMyFriendsList(): Promise<readonly FriendSummary[]> {
       .select("id, username, display_name, avatar_url")
       .in("id", friendIds);
 
-    if (!profiles || profiles.length === 0) return [];
+    if (!profiles || profiles.length === 0) return [TEST_FRIEND_SUMMARY];
 
-    return profiles.map((p) => {
+    const mapped: FriendSummary[] = profiles.map((p) => {
       const match = rows.find((r) => r.requester_id === p.id || r.addressee_id === p.id);
       return {
         id: p.id,
@@ -94,8 +104,13 @@ export async function getMyFriendsList(): Promise<readonly FriendSummary[]> {
         avatarUrl: p.avatar_url,
       };
     });
+
+    if (!mapped.some((f) => f.id === TEST_FRIEND_ID)) {
+      mapped.unshift(TEST_FRIEND_SUMMARY);
+    }
+    return mapped;
   } catch {
-    return [];
+    return [TEST_FRIEND_SUMMARY];
   }
 }
 

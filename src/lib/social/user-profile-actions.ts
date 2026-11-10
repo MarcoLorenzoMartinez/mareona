@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getFriendshipStatusWith } from "./friends-queries";
 import { DEMO_SEARCH_AFICIONADOS, INITIAL_TERTULIA_POSTS } from "./seed-posts";
+import { isTestFriend, TEST_FRIENDSHIP_ID } from "./test-friend-chat";
 import type { UserSocialProfile } from "./friendship-schemas";
 import type { SocialPost } from "./types";
 
@@ -15,6 +16,7 @@ export async function getUserSocialProfile(
   // 1. Resolución instantánea si es un usuario de demostración / offline
   const demoSeed = DEMO_SEARCH_AFICIONADOS.find((d) => d.id === userId);
   if (demoSeed) {
+    const isFriend = isTestFriend(userId);
     const demoProfile: UserSocialProfile = {
       id: demoSeed.id,
       username: demoSeed.username,
@@ -22,7 +24,8 @@ export async function getUserSocialProfile(
       avatarUrl: demoSeed.avatarUrl,
       points: 150,
       createdAt: "2026-08-15T10:00:00Z",
-      friendshipStatus: "none",
+      friendshipStatus: isFriend ? "accepted" : "none",
+      friendshipId: isFriend ? TEST_FRIENDSHIP_ID : undefined,
     };
     const demoPosts = INITIAL_TERTULIA_POSTS.filter((p) => p.userId === userId);
     return { profile: demoProfile, posts: demoPosts };

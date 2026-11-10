@@ -1,6 +1,12 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import {
+  isTestConversation,
+  getTestDirectConversation,
+  getTestDirectMessages,
+  TEST_CONVERSATION_ID,
+} from "./test-friend-chat";
 import type { DirectConversationSummary, DirectMessage } from "./direct-messages-types";
 
 /**
@@ -22,7 +28,9 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       .select("conversation_id, last_read_at")
       .eq("user_id", user.id);
 
-    if (memberErr || !myMemberships || myMemberships.length === 0) return [];
+    if (memberErr || !myMemberships || myMemberships.length === 0) {
+      return [getTestDirectConversation()];
+    }
 
     const convIds = myMemberships.map((m) => m.conversation_id);
 
@@ -82,6 +90,10 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       });
     }
 
+    if (!results.some((c) => c.id === TEST_CONVERSATION_ID)) {
+      results.unshift(getTestDirectConversation());
+    }
+
     // Sort by most recent activity
     return results.sort((a, b) => {
       const timeA = a.lastMessageCreatedAt ? new Date(a.lastMessageCreatedAt).getTime() : 0;
@@ -89,7 +101,7 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       return timeB - timeA;
     });
   } catch {
-    return [];
+    return [getTestDirectConversation()];
   }
 }
 
@@ -99,6 +111,10 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
 export async function getDirectMessages(
   conversationId: string
 ): Promise<readonly DirectMessage[]> {
+  if (isTestConversation(conversationId)) {
+    return getTestDirectMessages();
+  }
+
   try {
     const supabase = await createClient();
     const {

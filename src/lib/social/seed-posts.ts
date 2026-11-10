@@ -1,5 +1,6 @@
 import type { SocialPost } from "./types";
 import type { FriendSummary } from "./friendship-schemas";
+import { TEST_FRIEND_ID } from "./test-friend-chat";
 
 /**
  * Initial community discussion seeds for offline / development / demo preview.
@@ -8,7 +9,7 @@ import type { FriendSummary } from "./friendship-schemas";
 export const INITIAL_TERTULIA_POSTS: readonly SocialPost[] = [
   {
     id: "tertulia-post-1",
-    userId: "demo-user-1",
+    userId: TEST_FRIEND_ID,
     authorName: "Pelayo Álvarez",
     authorUsername: "pelayo_gijon",
     authorAvatar: "/images/historical/quini-molinon.jpg",
@@ -71,7 +72,7 @@ export const INITIAL_TERTULIA_POSTS: readonly SocialPost[] = [
  */
 export const DEMO_SEARCH_AFICIONADOS: readonly FriendSummary[] = [
   {
-    id: "demo-user-1",
+    id: TEST_FRIEND_ID,
     friendshipId: "",
     username: "pelayo_gijon",
     displayName: "Pelayo Álvarez",

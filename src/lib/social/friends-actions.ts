@@ -33,7 +33,7 @@ export async function sendFriendRequest(
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return { success: false, error: "Debes iniciar sesión para conectar con aficionados" };
+      return { success: false, error: "Debes iniciar sesión para enviar solicitudes de amistad" };
     }
 
     if (user.id === parsed.data.addresseeId) {

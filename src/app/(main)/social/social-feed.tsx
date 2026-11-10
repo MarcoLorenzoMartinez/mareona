@@ -132,10 +132,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
               <DirectChatView
                 conversationId={activeConversationId}
                 otherUser={activeChatUser}
-                onBack={() => {
-                  setActiveConversationId(null);
-                  setActiveChatUser(null);
-                }}
+                onBack={() => { setActiveConversationId(null); setActiveChatUser(null); }}
                 onOpenProfile={(id) => setViewingProfileId(id)}
               />
             ) : (

@@ -10,6 +10,12 @@ import {
   type SendDirectMessageInput,
   type OpenDirectConversationInput,
 } from "./direct-messages-schemas";
+import {
+  isTestFriend,
+  isTestConversation,
+  sendTestDirectMessage,
+  TEST_CONVERSATION_ID,
+} from "./test-friend-chat";
 import type { DirectMessage } from "./direct-messages-types";
 
 interface ActionResult<T = void> {
@@ -26,10 +32,7 @@ export async function sendDirectMessage(
 ): Promise<ActionResult<DirectMessage>> {
   const parsed = sendDirectMessageSchema.safeParse(input);
   if (!parsed.success) {
-    return {
-      success: false,
-      error: parsed.error.issues[0]?.message ?? "Mensaje inválido",
-    };
+    return { success: false, error: parsed.error.issues[0]?.message ?? "Mensaje inválido" };
   }
 
   try {
@@ -43,11 +46,7 @@ export async function sendDirectMessage(
     }
 
     // Rate Limiting (10 messages per minute)
-    const rateLimit = checkRateLimit({
-      key: `dm_${user.id}`,
-      limit: 10,
-      windowMs: 60_000,
-    });
+    const rateLimit = checkRateLimit({ key: `dm_${user.id}`, limit: 10, windowMs: 60_000 });
     if (!rateLimit.allowed) {
       return {
         success: false,
@@ -63,10 +62,11 @@ export async function sendDirectMessage(
         body: parsed.data.body,
         reason: moderation.reason,
       });
-      return {
-        success: false,
-        error: moderation.reason || MODERATION_REJECTED_MESSAGE,
-      };
+      return { success: false, error: moderation.reason || MODERATION_REJECTED_MESSAGE };
+    }
+
+    if (isTestConversation(parsed.data.conversationId)) {
+      return { success: true, data: sendTestDirectMessage(parsed.data.body, user.id) };
     }
 
     // Verify permission to post in conversation via RPC
@@ -145,6 +145,10 @@ export async function getOrCreateConversationWithFriend(
 
     if (user.id === parsed.data.targetUserId) {
       return { success: false, error: "No puedes abrir una conversación contigo mismo" };
+    }
+
+    if (isTestFriend(parsed.data.targetUserId)) {
+      return { success: true, data: { conversationId: TEST_CONVERSATION_ID } };
     }
 
     // Verify friendship status is accepted

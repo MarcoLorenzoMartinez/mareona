@@ -7,6 +7,7 @@ import { DirectChatComposer } from "./direct-chat-composer";
 import { getDirectMessages } from "@/lib/social/direct-messages-queries";
 import { sendDirectMessage } from "@/lib/social/direct-messages-actions";
 import { createClient } from "@/lib/supabase/client";
+import { TEST_CONVERSATION_ID, TEST_FRIEND_ID } from "@/lib/social/test-friend-chat";
 import type { DirectMessage } from "@/lib/social/direct-messages-types";
 
 interface DirectChatViewProps {
@@ -39,11 +40,10 @@ export function DirectChatView({
   useEffect(() => {
     let cancelled = false;
     getDirectMessages(conversationId).then((data) => {
-      if (!cancelled) {
-        setMessages(data);
-        setIsInitialLoading(false);
-        setTimeout(scrollToBottom, 50);
-      }
+      if (cancelled) return;
+      setMessages(data);
+      setIsInitialLoading(false);
+      setTimeout(scrollToBottom, 50);
     });
     return () => { cancelled = true; };
   }, [conversationId]);
@@ -108,6 +108,13 @@ export function DirectChatView({
       setMessages((prev) => [...prev, res.data!]);
       setBody("");
       setTimeout(scrollToBottom, 50);
+      if (otherUser.id === TEST_FRIEND_ID || conversationId === TEST_CONVERSATION_ID) {
+        setTimeout(async () => {
+          const updated = await getDirectMessages(conversationId);
+          setMessages(updated);
+          setTimeout(scrollToBottom, 50);
+        }, 800);
+      }
     } else {
       setError(res.error ?? "No se pudo enviar el mensaje");
     }

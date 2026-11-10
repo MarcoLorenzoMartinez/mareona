@@ -60,9 +60,6 @@ export function DirectMessagesInbox({
         <h3 className="text-base font-bold text-neutral-900">
           Mensajes directos entre amigos
         </h3>
-        <p className="mt-1 max-w-sm text-xs text-neutral-500">
-          Inicia una conversación privada con los aficionados que tengas agregados como amigos para comentar la actualidad del Sporting.
-        </p>
         <button
           type="button"
           onClick={onOpenFriends}
