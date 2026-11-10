@@ -4,10 +4,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/auth-context";
 import { MatchCommentComposer } from "./match-comment-composer";
-import {
-  MobileMatchCommentFab,
-  MobileMatchCommentModal,
-} from "./mobile-match-comment-composer";
+import { MobileMatchCommentFab } from "./mobile-match-comment-fab";
+import { MobileMatchCommentModal } from "./mobile-match-comment-composer";
 import { MatchCommentCard } from "./match-comment-card";
 import { MatchThreadView } from "./match-thread-view";
 import { UserProfileModal } from "@/app/(main)/social/user-profile-modal";

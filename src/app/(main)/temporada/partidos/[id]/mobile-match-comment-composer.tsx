@@ -1,15 +1,22 @@
-// Client: Modal y botón flotante de comentario de partido para móvil (idéntico a Social)
+// Client: Modal de comentario de partido para móvil con soporte para Mi Once
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, Feather } from "lucide-react";
+import { X, Shield } from "lucide-react";
+import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { LineupAttachmentChip } from "@/components/lineup-builder/lineup-attachment-chip";
+import {
+  encodeSharedLineup,
+  loadLocalSharedLineup,
+  type SharedLineupData,
+} from "@/lib/lineup-builder/shared-lineup-codec";
 import { createMatchComment } from "@/lib/match-community/actions";
 import type { MatchComment } from "@/lib/match-community/types";
 
-const MAX_LENGTH = 500;
-const COUNTER_THRESHOLD = 400;
+const MAX_TOTAL_LENGTH = 500;
+const COUNTER_THRESHOLD = 380;
 
 interface MobileMatchCommentModalProps {
   readonly matchId: string;
@@ -26,19 +33,20 @@ export function MobileMatchCommentModal({
 }: MobileMatchCommentModalProps) {
   const { profile } = useAuth();
   const [body, setBody] = useState("");
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
-  const remaining = MAX_LENGTH - body.length;
-  const canSubmit = body.trim().length > 0 && !isSubmitting;
+  const lineupTagLen = attachedLineup ? encodeSharedLineup(attachedLineup).length + 2 : 0;
+  const maxBodyLength = Math.max(50, MAX_TOTAL_LENGTH - lineupTagLen);
+  const remaining = maxBodyLength - body.length;
+  const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
   useEffect(() => {
     if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
     return () => {
@@ -49,16 +57,30 @@ export function MobileMatchCommentModal({
 
   if (!isOpen) return null;
 
+  const handleToggleLineup = () => {
+    if (attachedLineup) {
+      setAttachedLineup(null);
+      return;
+    }
+    const draft = loadLocalSharedLineup();
+    if (!draft) {
+      toast.info("Aún no tienes una alineación guardada. Ve a Mi Once para crearla.");
+      return;
+    }
+    setAttachedLineup(draft);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
 
+    const fullBody = attachedLineup
+      ? `${body.trim() ? `${body.trim()}\n\n` : ""}${encodeSharedLineup(attachedLineup)}`
+      : body.trim();
+
     setIsSubmitting(true);
     setError(null);
-    const res = await createMatchComment({
-      matchId,
-      body: body.trim(),
-    });
+    const res = await createMatchComment({ matchId, body: fullBody });
     setIsSubmitting(false);
 
     if (!res.success || !res.data) {
@@ -74,6 +96,7 @@ export function MobileMatchCommentModal({
       replies: [],
     });
     setBody("");
+    setAttachedLineup(null);
     onClose();
   };
 
@@ -112,18 +135,27 @@ export function MobileMatchCommentModal({
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="¿Cómo ves el partido?"
-            maxLength={MAX_LENGTH}
+            maxLength={maxBodyLength}
             className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />
 
-          {error && (
-            <p role="alert" className="text-xs font-semibold text-[var(--primary)] mt-1">
-              {error}
-            </p>
+          {attachedLineup && (
+            <LineupAttachmentChip lineup={attachedLineup} onRemove={() => setAttachedLineup(null)} />
           )}
 
+          {error && <p role="alert" className="text-xs font-semibold text-[var(--primary)] mt-1">{error}</p>}
+
           <div className="mt-4 flex items-center justify-between pt-3 border-t border-[var(--border)]">
-            <div className="flex-1" />
+            {!attachedLineup ? (
+              <button
+                type="button"
+                onClick={handleToggleLineup}
+                className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-[var(--primary)]"
+              >
+                <Shield className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Mi Once</span>
+              </button>
+            ) : <div />}
 
             <div className="flex items-center gap-3">
               {body.length >= COUNTER_THRESHOLD && (
@@ -143,18 +175,5 @@ export function MobileMatchCommentModal({
         </form>
       </div>
     </div>
-  );
-}
-
-export function MobileMatchCommentFab({ onClick }: { readonly onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label="Escribir comentario del partido"
-      className="fixed bottom-20 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--primary)] text-white shadow-xl transition-transform duration-150 active:scale-95 sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
-    >
-      <Feather className="h-6 w-6" aria-hidden="true" strokeWidth={2.2} />
-    </button>
   );
 }

@@ -1,17 +1,24 @@
-// Client: Compositor inline colapsable con soporte para encuestas y contador progresivo
+// Client: Compositor inline colapsable con soporte para encuestas y alineaciones de Mi Once
 "use client";
 
 import { useRef, useState } from "react";
-import { BarChart2 } from "lucide-react";
+import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PollCreator } from "@/components/social/poll-creator";
 import { usePollDraft } from "@/components/social/use-poll-draft";
+import { LineupAttachmentChip } from "@/components/lineup-builder/lineup-attachment-chip";
+import { PostComposerControls } from "./post-composer-controls";
+import {
+  encodeSharedLineup,
+  loadLocalSharedLineup,
+  type SharedLineupData,
+} from "@/lib/lineup-builder/shared-lineup-codec";
 import { createSocialPost } from "@/lib/social/actions";
 import type { SocialPost } from "@/lib/social/types";
 
-const MAX_LENGTH = 500;
-const COUNTER_THRESHOLD = 400;
+const MAX_TOTAL_LENGTH = 500;
+const COUNTER_THRESHOLD = 380;
 
 interface PostComposerProps {
   readonly onPosted: (post: SocialPost) => void;
@@ -30,6 +37,7 @@ export function PostComposer({
 }: PostComposerProps) {
   const { user, profile, openAuthModal } = useAuth();
   const [body, setBody] = useState("");
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(null);
   const [isExpanded, setIsExpanded] = useState(Boolean(parentId));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,8 +45,10 @@ export function PostComposer({
   const poll = usePollDraft();
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
-  const remaining = MAX_LENGTH - body.length;
-  const canSubmit = body.trim().length > 0 && !isSubmitting;
+  const lineupTagLen = attachedLineup ? encodeSharedLineup(attachedLineup).length + 2 : 0;
+  const maxBodyLength = Math.max(50, MAX_TOTAL_LENGTH - lineupTagLen);
+  const remaining = maxBodyLength - body.length;
+  const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
   const autoGrow = (el: HTMLTextAreaElement) => {
     el.style.height = "auto";
@@ -54,6 +64,20 @@ export function PostComposer({
     setIsExpanded(true);
   };
 
+  const handleToggleLineup = () => {
+    if (attachedLineup) {
+      setAttachedLineup(null);
+      return;
+    }
+    const draft = loadLocalSharedLineup();
+    if (!draft) {
+      toast.info("Aún no tienes una alineación guardada. Ve a Mi Once para crearla.");
+      return;
+    }
+    setAttachedLineup(draft);
+    setIsExpanded(true);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
@@ -64,9 +88,13 @@ export function PostComposer({
       return;
     }
 
+    const fullBody = attachedLineup
+      ? `${body.trim() ? `${body.trim()}\n\n` : ""}${encodeSharedLineup(attachedLineup)}`
+      : body.trim();
+
     setIsSubmitting(true);
     setError(null);
-    const res = await createSocialPost({ body: body.trim(), parentId, pollOptions: validPollOptions });
+    const res = await createSocialPost({ body: fullBody, parentId, pollOptions: validPollOptions });
     setIsSubmitting(false);
 
     if (!res.success || !res.data) {
@@ -81,6 +109,7 @@ export function PostComposer({
       authorAvatar: profile?.avatar_url || null,
     });
     setBody("");
+    setAttachedLineup(null);
     poll.resetPoll();
     if (!parentId) setIsExpanded(false);
     if (textareaRef.current) textareaRef.current.style.height = "auto";
@@ -99,9 +128,13 @@ export function PostComposer({
           onFocus={handleFocus}
           onChange={(e) => { setBody(e.target.value); autoGrow(e.target); }}
           placeholder={placeholder}
-          maxLength={MAX_LENGTH}
+          maxLength={maxBodyLength}
           className="block w-full resize-none bg-transparent py-1.5 text-[15px] sm:text-base leading-snug text-neutral-900 placeholder:text-neutral-400 focus:outline-none transition-all"
         />
+
+        {attachedLineup && (
+          <LineupAttachmentChip lineup={attachedLineup} onRemove={() => setAttachedLineup(null)} />
+        )}
 
         {poll.isPollActive && (
           <PollCreator
@@ -116,50 +149,20 @@ export function PostComposer({
         {error && <p role="alert" className="mt-1 text-xs font-semibold text-[var(--primary)]">{error}</p>}
 
         {isExpanded && (
-          <div className="mt-2.5 flex items-center justify-between pt-2 border-t border-neutral-100 animate-in fade-in duration-150">
-            <div>
-              {!parentId && !poll.isPollActive && (
-                <button
-                  type="button"
-                  onClick={poll.activatePoll}
-                  aria-label="Añadir encuesta a la publicación"
-                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-                >
-                  <BarChart2 className="h-4 w-4" aria-hidden="true" />
-                  <span>Encuesta</span>
-                </button>
-              )}
-            </div>
-
-            <div className="flex items-center gap-3">
-              {!parentId && !body && !poll.isPollActive && (
-                <button
-                  type="button"
-                  onClick={() => setIsExpanded(false)}
-                  className="rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 transition-colors"
-                >
-                  Cancelar
-                </button>
-              )}
-
-              {body.length >= COUNTER_THRESHOLD && (
-                <span
-                  aria-live="polite"
-                  className={`font-sans text-xs tabular-nums ${remaining < 20 ? "font-bold text-[var(--primary-strong)]" : "text-neutral-500"}`}
-                >
-                  {remaining}
-                </span>
-              )}
-
-              <button
-                type="submit"
-                disabled={!canSubmit}
-                className="min-h-9 rounded-full bg-[var(--primary)] px-5 text-sm font-bold text-white transition-[transform,opacity] duration-150 hover:bg-[var(--primary-strong)] active:scale-95 disabled:opacity-50 disabled:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
-              >
-                {isSubmitting ? "Publicando…" : submitLabel}
-              </button>
-            </div>
-          </div>
+          <PostComposerControls
+            parentId={parentId}
+            isPollActive={poll.isPollActive}
+            hasAttachedLineup={Boolean(attachedLineup)}
+            onActivatePoll={poll.activatePoll}
+            onToggleLineup={handleToggleLineup}
+            onCancel={() => setIsExpanded(false)}
+            canCancel={!parentId && !body && !poll.isPollActive && !attachedLineup}
+            showCounter={body.length >= COUNTER_THRESHOLD}
+            remaining={remaining}
+            canSubmit={canSubmit}
+            isSubmitting={isSubmitting}
+            submitLabel={submitLabel}
+          />
         )}
       </div>
     </form>

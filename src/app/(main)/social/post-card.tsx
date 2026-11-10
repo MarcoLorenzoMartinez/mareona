@@ -4,6 +4,8 @@
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PollDisplay } from "@/components/social/poll-display";
+import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "./post-actions";
 import { PostAuthorLine } from "./post-author-line";
 import type { SocialPost } from "@/lib/social/types";
@@ -25,6 +27,7 @@ export function PostCard({
   const repliesCount = post.repliesCount ?? post.replies?.length ?? 0;
   const openThread = () => onOpenThread(post.id);
   const isOwner = Boolean(user && user.id === post.userId);
+  const { cleanBody, lineup } = parsePostLineup(post.body);
 
   return (
     <article
@@ -45,9 +48,13 @@ export function PostCard({
 
       <div className="min-w-0 flex-1">
         <PostAuthorLine post={post} onOpenProfile={onOpenProfile} />
-        <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
-          {post.body}
-        </p>
+        {cleanBody && (
+          <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
+            {cleanBody}
+          </p>
+        )}
+
+        {lineup && <SharedLineupPitchCard lineup={lineup} />}
 
         {post.poll && <PollDisplay poll={post.poll} />}
 
@@ -56,7 +63,7 @@ export function PostCard({
           repliesCount={repliesCount}
           onOpenThread={openThread}
           postId={post.id}
-          postBody={post.body}
+          postBody={cleanBody || post.body}
           onDelete={isOwner && onDelete ? () => onDelete(post.id) : undefined}
         />
       </div>

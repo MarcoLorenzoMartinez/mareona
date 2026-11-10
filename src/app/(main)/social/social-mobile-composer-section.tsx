@@ -2,7 +2,8 @@
 "use client";
 
 import { useState } from "react";
-import { MobilePostComposerFab, MobilePostComposerModal } from "./mobile-post-composer";
+import { MobilePostComposerFab } from "./mobile-post-composer-fab";
+import { MobilePostComposerModal } from "./mobile-post-composer";
 import type { SocialPost } from "@/lib/social/types";
 
 interface SocialMobileComposerSectionProps {

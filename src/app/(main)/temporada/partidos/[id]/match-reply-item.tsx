@@ -2,6 +2,8 @@
 "use client";
 
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "@/app/(main)/social/post-actions";
 import { formatRelativeTime } from "@/lib/social/format";
 import type { MatchComment } from "@/lib/match-community/types";
@@ -19,6 +21,7 @@ export function MatchReplyItem({
 }: MatchReplyItemProps) {
   const count = reply.replies?.length ?? 0;
   const drillDown = () => onDrillDown(reply.id);
+  const { cleanBody, lineup } = parsePostLineup(reply.body);
 
   const openProfile = (e: React.MouseEvent) => {
     if (!reply.authorId || !onOpenProfile) return;
@@ -62,9 +65,13 @@ export function MatchReplyItem({
           </time>
         </div>
 
-        <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
-          {reply.body}
-        </p>
+        {cleanBody && (
+          <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
+            {cleanBody}
+          </p>
+        )}
+
+        {lineup && <SharedLineupPitchCard lineup={lineup} />}
 
         <PostActions
           likesCount={reply.likesCount}

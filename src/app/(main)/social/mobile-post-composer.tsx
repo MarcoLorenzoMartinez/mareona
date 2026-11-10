@@ -1,17 +1,25 @@
-// Client: Modal de redacción para dispositivos móviles con diseño accesible, encuestas y área cómoda
+// Client: Modal de redacción para dispositivos móviles con diseño accesible, encuestas y Mi Once
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, Feather, BarChart2 } from "lucide-react";
+import { X } from "lucide-react";
+import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PollCreator } from "@/components/social/poll-creator";
 import { usePollDraft } from "@/components/social/use-poll-draft";
+import { LineupAttachmentChip } from "@/components/lineup-builder/lineup-attachment-chip";
+import { MobilePostComposerActions } from "./mobile-post-composer-actions";
+import {
+  encodeSharedLineup,
+  loadLocalSharedLineup,
+  type SharedLineupData,
+} from "@/lib/lineup-builder/shared-lineup-codec";
 import { createSocialPost } from "@/lib/social/actions";
 import type { SocialPost } from "@/lib/social/types";
 
-const MAX_LENGTH = 500;
-const COUNTER_THRESHOLD = 400;
+const MAX_TOTAL_LENGTH = 500;
+const COUNTER_THRESHOLD = 380;
 
 interface MobilePostComposerModalProps {
   readonly isOpen: boolean;
@@ -26,14 +34,17 @@ export function MobilePostComposerModal({
 }: MobilePostComposerModalProps) {
   const { profile } = useAuth();
   const [body, setBody] = useState("");
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const poll = usePollDraft();
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
-  const remaining = MAX_LENGTH - body.length;
-  const canSubmit = body.trim().length > 0 && !isSubmitting;
+  const lineupTagLen = attachedLineup ? encodeSharedLineup(attachedLineup).length + 2 : 0;
+  const maxBodyLength = Math.max(50, MAX_TOTAL_LENGTH - lineupTagLen);
+  const remaining = maxBodyLength - body.length;
+  const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -48,6 +59,19 @@ export function MobilePostComposerModal({
 
   if (!isOpen) return null;
 
+  const handleToggleLineup = () => {
+    if (attachedLineup) {
+      setAttachedLineup(null);
+      return;
+    }
+    const draft = loadLocalSharedLineup();
+    if (!draft) {
+      toast.info("Aún no tienes una alineación guardada. Ve a Mi Once para crearla.");
+      return;
+    }
+    setAttachedLineup(draft);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
@@ -58,9 +82,13 @@ export function MobilePostComposerModal({
       return;
     }
 
+    const fullBody = attachedLineup
+      ? `${body.trim() ? `${body.trim()}\n\n` : ""}${encodeSharedLineup(attachedLineup)}`
+      : body.trim();
+
     setIsSubmitting(true);
     setError(null);
-    const res = await createSocialPost({ body: body.trim(), pollOptions: validPollOptions });
+    const res = await createSocialPost({ body: fullBody, pollOptions: validPollOptions });
     setIsSubmitting(false);
 
     if (!res.success || !res.data) {
@@ -75,6 +103,7 @@ export function MobilePostComposerModal({
       authorAvatar: profile?.avatar_url || null,
     });
     setBody("");
+    setAttachedLineup(null);
     poll.resetPoll();
     onClose();
   };
@@ -114,9 +143,13 @@ export function MobilePostComposerModal({
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="¿Qué opinas hoy sobre el Sporting?"
-            maxLength={MAX_LENGTH}
+            maxLength={maxBodyLength}
             className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />
+
+          {attachedLineup && (
+            <LineupAttachmentChip lineup={attachedLineup} onRemove={() => setAttachedLineup(null)} />
+          )}
 
           {poll.isPollActive && (
             <PollCreator
@@ -130,50 +163,18 @@ export function MobilePostComposerModal({
 
           {error && <p role="alert" className="text-xs font-semibold text-[var(--primary)] mt-1">{error}</p>}
 
-          <div className="mt-4 flex items-center justify-between pt-3 border-t border-[var(--border)]">
-            <div>
-              {!poll.isPollActive && (
-                <button
-                  type="button"
-                  onClick={poll.activatePoll}
-                  className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-[var(--primary)]"
-                >
-                  <BarChart2 className="h-4 w-4" aria-hidden="true" />
-                  <span>Encuesta</span>
-                </button>
-              )}
-            </div>
-
-            <div className="flex items-center gap-3">
-              {body.length >= COUNTER_THRESHOLD && (
-                <span className={`font-sans text-xs tabular-nums ${remaining < 20 ? "font-bold text-[var(--primary)]" : "text-neutral-500"}`}>
-                  {remaining}
-                </span>
-              )}
-              <button
-                type="submit"
-                disabled={!canSubmit}
-                className="rounded-full bg-[var(--primary)] px-5 py-2 text-xs font-bold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-50"
-              >
-                {isSubmitting ? "Publicando…" : "Publicar"}
-              </button>
-            </div>
-          </div>
+          <MobilePostComposerActions
+            isPollActive={poll.isPollActive}
+            hasAttachedLineup={Boolean(attachedLineup)}
+            onActivatePoll={poll.activatePoll}
+            onToggleLineup={handleToggleLineup}
+            showCounter={body.length >= COUNTER_THRESHOLD}
+            remaining={remaining}
+            canSubmit={canSubmit}
+            isSubmitting={isSubmitting}
+          />
         </form>
       </div>
     </div>
-  );
-}
-
-export function MobilePostComposerFab({ onClick }: { readonly onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label="Escribir publicación en la tertulia"
-      className="fixed bottom-20 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--primary)] text-white shadow-xl transition-transform duration-150 active:scale-95 sm:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
-    >
-      <Feather className="h-6 w-6" aria-hidden="true" strokeWidth={2.2} />
-    </button>
   );
 }
