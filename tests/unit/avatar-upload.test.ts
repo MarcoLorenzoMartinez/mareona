@@ -6,13 +6,13 @@ import {
 } from "../../src/lib/auth/avatar-validation.ts";
 
 describe("validateAvatarFile", () => {
-  it("accepts valid JPEG, PNG and WebP files under 3MB", () => {
+  it("accepts valid JPEG, PNG and WebP files under 2MB", () => {
     const validJpg = validateAvatarFile({
       size: 1024 * 1024,
       type: "image/jpeg",
     });
     const validPng = validateAvatarFile({
-      size: 2 * 1024 * 1024,
+      size: 1.5 * 1024 * 1024,
       type: "image/png",
     });
     const validWebp = validateAvatarFile({
@@ -25,7 +25,7 @@ describe("validateAvatarFile", () => {
     assert.equal(validWebp.valid, true);
   });
 
-  it("rejects files larger than 3MB", () => {
+  it("rejects files larger than 2MB", () => {
     const tooLarge = validateAvatarFile({
       size: MAX_AVATAR_FILE_SIZE + 1,
       type: "image/jpeg",

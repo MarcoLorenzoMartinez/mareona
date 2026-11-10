@@ -12,6 +12,7 @@ import {
 } from "./schemas";
 import { MODERATION_REJECTED_MESSAGE, moderateText } from "./moderation";
 import { logBlockedAttempt } from "./moderation-log";
+import { checkRateLimit } from "@/lib/security/rate-limiter";
 import { INITIAL_TERTULIA_POSTS } from "./seed-posts";
 import type { SocialPost, SocialPoll } from "./types";
 import type { Database } from "@/types/database.types";
@@ -47,6 +48,15 @@ export async function createSocialPost(
         success: false,
         error: "Debes iniciar sesión para participar en la tertulia",
       };
+    }
+
+    const rateLimit = checkRateLimit({
+      key: `social_post_${user.id}`,
+      limit: 5,
+      windowMs: 60_000,
+    });
+    if (!rateLimit.allowed) {
+      return { success: false, error: rateLimit.error };
     }
 
     const moderation = await moderateText(parsed.data.body);

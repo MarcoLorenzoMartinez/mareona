@@ -4,7 +4,7 @@ export const ALLOWED_AVATAR_MIME_TYPES = [
   "image/webp",
 ] as const;
 
-export const MAX_AVATAR_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
+export const MAX_AVATAR_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
 
 /**
  * Validates file constraints for user avatars.
@@ -16,7 +16,7 @@ export function validateAvatarFile(file: {
   if (file.size > MAX_AVATAR_FILE_SIZE) {
     return {
       valid: false,
-      error: "La imagen es demasiado pesada. El límite es de 3 MB.",
+      error: "La imagen es demasiado pesada. El límite es de 2 MB.",
     };
   }
 

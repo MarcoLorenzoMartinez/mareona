@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 import { Camera, Loader2, Trash2 } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { validateAvatarFile } from "@/lib/auth/avatar-validation";
+import { compressAvatarImage } from "@/lib/auth/avatar-compression";
 import { uploadAvatarImage } from "@/lib/auth/avatar-upload";
 import { useAuth } from "@/context/auth-context";
 
@@ -32,27 +33,30 @@ export function ProfileAvatarPicker({
     if (!file) return;
 
     setUploadError(null);
-    const validation = validateAvatarFile(file);
-    if (!validation.valid) {
-      setUploadError(validation.error ?? "Archivo no válido");
-      return;
-    }
-
-    const previousAvatar = selectedAvatar;
-    const previewUrl = URL.createObjectURL(file);
-    onSelect(previewUrl);
     setIsUploading(true);
-
-    const isDemo = !user || user.id.startsWith("00000000-0000-4000-8000");
-    if (isDemo) {
-      setIsUploading(false);
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
+    const previousAvatar = selectedAvatar;
 
     try {
+      const optimized = await compressAvatarImage(file);
+      const validation = validateAvatarFile(optimized);
+      if (!validation.valid) {
+        setUploadError(validation.error ?? "Archivo no válido");
+        setIsUploading(false);
+        return;
+      }
+
+      const previewUrl = URL.createObjectURL(optimized);
+      onSelect(previewUrl);
+
+      const isDemo = !user || user.id.startsWith("00000000-0000-4000-8000");
+      if (isDemo) {
+        setIsUploading(false);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", optimized);
+
       const res = await uploadAvatarImage(formData);
       if (!res.success || !res.data) {
         setUploadError(res.error ?? "No se pudo subir la foto");

@@ -4,13 +4,10 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { MODERATION_REJECTED_MESSAGE, moderateText } from "@/lib/social/moderation";
 import { logBlockedAttempt } from "@/lib/social/moderation-log";
+import { checkRateLimit } from "@/lib/security/rate-limiter";
 import {
-  createMatchCommentSchema,
-  submitMvpVoteSchema,
-  submitPlayerRatingSchema,
-  type CreateMatchCommentInput,
-  type SubmitMvpVoteInput,
-  type SubmitPlayerRatingInput,
+  createMatchCommentSchema, submitMvpVoteSchema, submitPlayerRatingSchema,
+  type CreateMatchCommentInput, type SubmitMvpVoteInput, type SubmitPlayerRatingInput,
 } from "./schemas";
 import { buildMatchCommentTree } from "./comment-tree";
 import type { MatchComment } from "./types";
@@ -66,6 +63,15 @@ export async function createMatchComment(
         success: false,
         error: "Debes iniciar sesión para comentar en el partido",
       };
+    }
+
+    const rateLimit = checkRateLimit({
+      key: `match_comment_${user.id}`,
+      limit: 5,
+      windowMs: 60_000,
+    });
+    if (!rateLimit.allowed) {
+      return { success: false, error: rateLimit.error };
     }
 
     const moderation = await moderateText(parsed.data.body);
@@ -147,15 +153,10 @@ export async function submitMvpVote(
   input: SubmitMvpVoteInput
 ): Promise<ActionResult<{ playerId: string; previousPlayerId?: string | null }>> {
   const parsed = submitMvpVoteSchema.safeParse(input);
-  if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0]?.message };
-  }
+  if (!parsed.success) return { success: false, error: parsed.error.issues[0]?.message };
   return {
     success: true,
-    data: {
-      playerId: parsed.data.playerId,
-      previousPlayerId: parsed.data.previousPlayerId ?? null,
-    },
+    data: { playerId: parsed.data.playerId, previousPlayerId: parsed.data.previousPlayerId ?? null },
   };
 }
 
@@ -163,14 +164,9 @@ export async function submitPlayerRating(
   input: SubmitPlayerRatingInput
 ): Promise<ActionResult<{ targetId: string; userRating: number }>> {
   const parsed = submitPlayerRatingSchema.safeParse(input);
-  if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0]?.message };
-  }
+  if (!parsed.success) return { success: false, error: parsed.error.issues[0]?.message };
   return {
     success: true,
-    data: {
-      targetId: parsed.data.targetId,
-      userRating: parsed.data.rating,
-    },
+    data: { targetId: parsed.data.targetId, userRating: parsed.data.rating },
   };
 }
