@@ -1,23 +1,25 @@
-// Client: Feed reactivo de la tertulia con navegación en hilo, encuestas, compartir y borrado propio
+// Client: Feed reactivo de la tertulia con mensajes directos, hilos y gestión comunitaria
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
-import { PostComposer } from "./post-composer";
-import { MobilePostComposerModal, MobilePostComposerFab } from "./mobile-post-composer";
-import { PostCard } from "./post-card";
 import { ThreadView } from "./thread-view";
-import { FriendsModal } from "./friends-modal";
+import { SocialFeedHeader } from "./social-feed-header";
 import { UserProfileModal } from "./user-profile-modal";
-import { FeedTabSelector, type SocialFeedTab } from "./feed-tab-selector";
+import { SocialTimeline } from "./social-timeline";
+import { DirectMessagesInbox } from "./direct-messages-inbox";
+import { DirectChatView } from "./direct-chat-view";
+import { SocialMobileComposerSection } from "./social-mobile-composer-section";
 import { getSocialPosts, deleteSocialPost } from "@/lib/social/actions";
+import { getOrCreateConversationWithFriend } from "@/lib/social/direct-messages-actions";
 import {
   findPostInTree,
   findParentInTree,
   addReplyToTree,
   removePostFromTree,
 } from "@/lib/social/post-tree";
+import type { SocialFeedTab } from "./feed-tab-selector";
 import type { SocialPost } from "@/lib/social/types";
 
 interface SocialFeedProps {
@@ -31,57 +33,64 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
   const [posts, setPosts] = useState<readonly SocialPost[]>(initialPosts);
   const [navigationStack, setNavigationStack] = useState<readonly string[]>(() => {
     const sharedPostId = searchParams.get("post");
-    if (sharedPostId && findPostInTree(initialPosts, sharedPostId)) {
-      return [sharedPostId];
-    }
-    return [];
+    return sharedPostId && findPostInTree(initialPosts, sharedPostId) ? [sharedPostId] : [];
   });
   const [viewingProfileId, setViewingProfileId] = useState<string | null>(null);
-  const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(false);
   const [isPendingFilter, startTransition] = useTransition();
 
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const [activeChatUser, setActiveChatUser] = useState<{
+    readonly id: string;
+    readonly name: string;
+    readonly username: string;
+    readonly avatarUrl: string | null;
+  } | null>(null);
+
   const handleTabChange = (tab: SocialFeedTab) => {
-    if (tab === "friends" && !user) {
+    if ((tab === "friends" || tab === "messages") && !user) {
       openAuthModal("signin");
       return;
     }
-
     setActiveTab(tab);
-    startTransition(async () => {
-      const filtered = await getSocialPosts(tab);
-      setPosts(filtered);
-    });
+    setActiveConversationId(null);
+    if (tab !== "messages") {
+      startTransition(async () => {
+        const filtered = await getSocialPosts(tab);
+        setPosts(filtered);
+      });
+    }
   };
 
-  const handlePostCreated = (newPost: SocialPost) => {
-    setPosts((prev) => [newPost, ...prev]);
+  const handleStartChatWithUser = async (targetUser: {
+    readonly id: string;
+    readonly name: string;
+    readonly username: string;
+    readonly avatarUrl: string | null;
+  }) => {
+    if (!user) {
+      openAuthModal("signin");
+      return;
+    }
+    const res = await getOrCreateConversationWithFriend({ targetUserId: targetUser.id });
+    if (res.success && res.data) {
+      setActiveTab("messages");
+      setActiveConversationId(res.data.conversationId);
+      setActiveChatUser(targetUser);
+    }
   };
 
+  const handlePostCreated = (newPost: SocialPost) => setPosts((prev) => [newPost, ...prev]);
   const handleDeletePost = async (postId: string) => {
     setPosts((prev) => removePostFromTree(prev, postId));
-    if (navigationStack.includes(postId)) {
-      setNavigationStack((prev) => prev.filter((id) => id !== postId));
-    }
+    if (navigationStack.includes(postId)) setNavigationStack((prev) => prev.filter((id) => id !== postId));
     await deleteSocialPost({ postId });
   };
-
-  const handlePushThread = (postId: string) => {
-    setNavigationStack((prev) => [...prev, postId]);
-  };
-
-  const handlePopThread = () => {
-    setNavigationStack((prev) => prev.slice(0, -1));
-  };
-
-  const handleAddReply = (parentId: string, newReply: SocialPost) => {
-    setPosts((prev) => addReplyToTree(prev, parentId, newReply));
-  };
+  const handlePushThread = (postId: string) => setNavigationStack((prev) => [...prev, postId]);
+  const handlePopThread = () => setNavigationStack((prev) => prev.slice(0, -1));
 
   useEffect(() => {
     if (navigationStack.length === 0) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handlePopThread();
-    };
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") handlePopThread(); };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigationStack.length]);
@@ -98,44 +107,57 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
           parentPost={parentPost}
           onBack={handlePopThread}
           onDrillDown={handlePushThread}
-          onAddReply={handleAddReply}
+          onAddReply={(parentId, reply) => setPosts((prev) => addReplyToTree(prev, parentId, reply))}
           onOpenProfile={(id) => setViewingProfileId(id)}
           onDeletePost={handleDeletePost}
         />
       ) : (
         <>
-          <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] bg-white px-4 py-2">
-            <FeedTabSelector activeTab={activeTab} onTabChange={handleTabChange} />
-            <FriendsModal onOpenProfile={(id) => setViewingProfileId(id)} />
-          </div>
+          <SocialFeedHeader
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+            onOpenProfile={(id) => setViewingProfileId(id)}
+            onStartChat={(f) =>
+              handleStartChatWithUser({
+                id: f.id,
+                name: f.displayName || f.username,
+                username: f.username,
+                avatarUrl: f.avatarUrl,
+              })
+            }
+          />
 
-          <PostComposer onPosted={handlePostCreated} className="hidden sm:flex" />
-
-          <section
-            aria-label="Publicaciones de la tertulia"
-            aria-busy={isPendingFilter}
-            className={`transition-opacity duration-150 ${
-              isPendingFilter ? "pointer-events-none opacity-50" : "opacity-100"
-            }`}
-          >
-            {posts.length === 0 ? (
-              <p className="px-4 py-12 text-center text-sm font-semibold text-neutral-600">
-                {activeTab === "friends"
-                  ? "Tus amigos aún no han publicado"
-                  : "Aún no hay publicaciones"}
-              </p>
+          {activeTab === "messages" ? (
+            activeConversationId && activeChatUser ? (
+              <DirectChatView
+                conversationId={activeConversationId}
+                otherUser={activeChatUser}
+                onBack={() => {
+                  setActiveConversationId(null);
+                  setActiveChatUser(null);
+                }}
+                onOpenProfile={(id) => setViewingProfileId(id)}
+              />
             ) : (
-              posts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  post={post}
-                  onOpenThread={handlePushThread}
-                  onOpenProfile={(id) => setViewingProfileId(id)}
-                  onDelete={handleDeletePost}
-                />
-              ))
-            )}
-          </section>
+              <DirectMessagesInbox
+                onOpenConversation={(convId, other) => {
+                  setActiveConversationId(convId);
+                  setActiveChatUser(other);
+                }}
+                onOpenFriends={() => {}}
+              />
+            )
+          ) : (
+            <SocialTimeline
+              posts={posts}
+              activeTab={activeTab}
+              isPendingFilter={isPendingFilter}
+              onPostCreated={handlePostCreated}
+              onPushThread={handlePushThread}
+              onOpenProfile={(id) => setViewingProfileId(id)}
+              onDeletePost={handleDeletePost}
+            />
+          )}
         </>
       )}
 
@@ -143,22 +165,16 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
         userId={viewingProfileId}
         onClose={() => setViewingProfileId(null)}
         onOpenThread={handlePushThread}
+        onStartChat={handleStartChatWithUser}
       />
 
-      <MobilePostComposerFab
-        onClick={() => {
-          if (!user) {
-            openAuthModal("signin");
-            return;
-          }
-          setIsMobileComposerOpen(true);
-        }}
-      />
-      <MobilePostComposerModal
-        isOpen={isMobileComposerOpen}
-        onClose={() => setIsMobileComposerOpen(false)}
-        onPosted={handlePostCreated}
-      />
+      {activeTab !== "messages" && (
+        <SocialMobileComposerSection
+          onPosted={handlePostCreated}
+          onOpenAuth={() => openAuthModal("signin")}
+          isAuthenticated={Boolean(user)}
+        />
+      )}
     </div>
   );
 }

@@ -11,9 +11,10 @@ import type { FriendSummary } from "@/lib/social/friendship-schemas";
 
 interface FriendsModalProps {
   readonly onOpenProfile: (userId: string) => void;
+  readonly onStartChat?: (friend: FriendSummary) => void;
 }
 
-export function FriendsModal({ onOpenProfile }: FriendsModalProps) {
+export function FriendsModal({ onOpenProfile, onStartChat }: FriendsModalProps) {
   const { user, openAuthModal } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [tab, setTab] = useState<"friends" | "search">("friends");
@@ -158,6 +159,10 @@ export function FriendsModal({ onOpenProfile }: FriendsModalProps) {
                 }}
                 onRemove={handleRemove}
                 onSendRequest={handleSendRequest}
+                onStartChat={(f) => {
+                  setIsOpen(false);
+                  onStartChat?.(f);
+                }}
               />
             </div>
           </div>

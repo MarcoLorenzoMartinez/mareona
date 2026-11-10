@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { UserPlus, UserCheck, UserX } from "lucide-react";
+import { UserPlus, UserCheck, UserX, MessageSquare } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
 
@@ -11,6 +11,7 @@ interface ProfileModalHeaderProps {
   readonly isCurrentUser: boolean;
   readonly onSendRequest: () => void;
   readonly onRemoveFriend: () => void;
+  readonly onOpenChat?: () => void;
   readonly onClose: () => void;
   readonly isPendingAction: boolean;
 }
@@ -20,6 +21,7 @@ export function ProfileModalHeader({
   isCurrentUser,
   onSendRequest,
   onRemoveFriend,
+  onOpenChat,
   onClose,
   isPendingAction,
 }: ProfileModalHeaderProps) {
@@ -52,15 +54,27 @@ export function ProfileModalHeader({
         ) : (
           <div>
             {profile.friendshipStatus === "accepted" && (
-              <button
-                type="button"
-                onClick={onRemoveFriend}
-                disabled={isPendingAction}
-                className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3.5 text-xs font-semibold text-neutral-700 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
-              >
-                <UserX className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>Dejar de conectar</span>
-              </button>
+              <div className="flex items-center gap-1.5">
+                {onOpenChat && (
+                  <button
+                    type="button"
+                    onClick={onOpenChat}
+                    className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--primary)] px-3.5 text-xs font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
+                  >
+                    <MessageSquare className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>Mensaje</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={onRemoveFriend}
+                  disabled={isPendingAction}
+                  className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 text-xs font-semibold text-neutral-700 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50 cursor-pointer"
+                >
+                  <UserX className="h-3.5 w-3.5" aria-hidden="true" />
+                  <span>Eliminar</span>
+                </button>
+              </div>
             )}
 
             {profile.friendshipStatus === "pending_sent" && (

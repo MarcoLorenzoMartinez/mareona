@@ -1,7 +1,7 @@
 // Client: Lista de amigos y buscador en FriendsModal
 "use client";
 
-import { Search, UserCheck } from "lucide-react";
+import { Search, MessageSquare, UserCheck } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import type { FriendSummary } from "@/lib/social/friendship-schemas";
 
@@ -15,6 +15,7 @@ interface FriendsListContentProps {
   readonly onOpenProfile: (id: string) => void;
   readonly onRemove: (id: string, name: string) => void;
   readonly onSendRequest: (id: string, name: string) => void;
+  readonly onStartChat?: (friend: FriendSummary) => void;
 }
 
 export function FriendsListContent({
@@ -27,6 +28,7 @@ export function FriendsListContent({
   onOpenProfile,
   onRemove,
   onSendRequest,
+  onStartChat,
 }: FriendsListContentProps) {
   if (tab === "friends") {
     if (friends.length === 0) {
@@ -43,7 +45,7 @@ export function FriendsListContent({
         {friends.map((f) => (
           <div
             key={f.id}
-            className="flex items-center justify-between rounded-xl border border-neutral-100 p-2.5 hover:bg-neutral-50/60 transition-colors"
+            className="flex items-center justify-between gap-2 rounded-xl border border-neutral-100 p-2.5 hover:bg-neutral-50/60 transition-colors"
           >
             <button
               type="button"
@@ -56,13 +58,26 @@ export function FriendsListContent({
                 <p className="text-[11px] text-neutral-400">@{f.username}</p>
               </div>
             </button>
-            <button
-              type="button"
-              onClick={() => onRemove(f.friendshipId, f.displayName || f.username)}
-              className="rounded-full border border-neutral-200 px-2.5 py-1 text-[11px] font-semibold text-neutral-600 hover:border-red-200 hover:text-[var(--primary)] transition-colors cursor-pointer"
-            >
-              Eliminar
-            </button>
+            <div className="flex items-center gap-1.5 shrink-0">
+              {onStartChat && (
+                <button
+                  type="button"
+                  onClick={() => onStartChat(f)}
+                  aria-label={`Enviar mensaje a ${f.displayName || f.username}`}
+                  className="inline-flex items-center gap-1 rounded-full bg-[var(--primary)] text-white px-2.5 py-1 text-[11px] font-bold hover:bg-[#b30015] transition-colors cursor-pointer"
+                >
+                  <MessageSquare className="h-3 w-3" aria-hidden="true" />
+                  <span>Hablar</span>
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => onRemove(f.friendshipId, f.displayName || f.username)}
+                className="rounded-full border border-neutral-200 px-2 py-1 text-[11px] font-semibold text-neutral-500 hover:border-red-200 hover:text-[var(--primary)] transition-colors cursor-pointer"
+              >
+                Eliminar
+              </button>
+            </div>
           </div>
         ))}
       </div>

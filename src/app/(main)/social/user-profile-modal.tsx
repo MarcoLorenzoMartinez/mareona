@@ -1,14 +1,13 @@
-// Client: Modal de perfil de usuario estilo timeline con publicaciones y acciones
+// Client: Modal de perfil de aficionado con información, publicaciones y acciones de contacto
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
 import { X } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
-import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { ProfileModalHeader } from "./user-profile-modal-header";
+import { UserProfilePostsSection } from "./user-profile-posts-section";
 import { getUserSocialProfile } from "@/lib/social/user-profile-actions";
 import { sendFriendRequest, removeFriendship, respondFriendRequest } from "@/lib/social/friends-actions";
-import { formatRelativeTime } from "@/lib/social/format";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
 import type { SocialPost } from "@/lib/social/types";
 
@@ -16,9 +15,20 @@ interface UserProfileModalProps {
   readonly userId: string | null;
   readonly onClose: () => void;
   readonly onOpenThread: (postId: string) => void;
+  readonly onStartChat?: (user: {
+    readonly id: string;
+    readonly name: string;
+    readonly username: string;
+    readonly avatarUrl: string | null;
+  }) => void;
 }
 
-export function UserProfileModal({ userId, onClose, onOpenThread }: UserProfileModalProps) {
+export function UserProfileModal({
+  userId,
+  onClose,
+  onOpenThread,
+  onStartChat,
+}: UserProfileModalProps) {
   const { user, openAuthModal } = useAuth();
   const [profile, setProfile] = useState<UserSocialProfile | null>(null);
   const [posts, setPosts] = useState<readonly SocialPost[]>([]);
@@ -28,7 +38,6 @@ export function UserProfileModal({ userId, onClose, onOpenThread }: UserProfileM
   useEffect(() => {
     if (!userId) return;
     let cancelled = false;
-
     getUserSocialProfile(userId).then((res) => {
       if (cancelled) return;
       setProfile(res.profile);
@@ -50,7 +59,6 @@ export function UserProfileModal({ userId, onClose, onOpenThread }: UserProfileM
   }, [userId, onClose]);
 
   if (!userId) return null;
-
   const isCurrentUser = user?.id === userId;
 
   const handleSendRequest = () => {
@@ -116,59 +124,25 @@ export function UserProfileModal({ userId, onClose, onOpenThread }: UserProfileM
               isCurrentUser={isCurrentUser}
               onSendRequest={handleSendRequest}
               onRemoveFriend={handleRemoveFriend}
+              onOpenChat={() => {
+                onClose();
+                onStartChat?.({
+                  id: profile.id,
+                  name: profile.displayName || profile.username,
+                  username: profile.username,
+                  avatarUrl: profile.avatarUrl,
+                });
+              }}
               onClose={onClose}
               isPendingAction={isPendingAction}
             />
 
-            <div className="border-b border-[var(--border)] bg-[var(--surface)]/50 px-4 py-2 sm:px-5">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-                Publicaciones{" "}
-                <span className="font-sans tabular-nums text-neutral-400">({posts.length})</span>
-              </h4>
-            </div>
-
-            {posts.length === 0 ? (
-              <p className="px-4 py-10 text-center text-sm font-semibold text-neutral-600">
-                Aún no ha publicado en la tertulia
-              </p>
-            ) : (
-              posts.map((post) => (
-                <article
-                  key={post.id}
-                  onClick={() => {
-                    onClose();
-                    onOpenThread(post.id);
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      onClose();
-                      onOpenThread(post.id);
-                    }
-                  }}
-                  className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60 sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--primary)]"
-                >
-                  <AuthAvatar src={profile.avatarUrl} alt={profile.displayName || profile.username} size="md" />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
-                      <span className="truncate font-bold text-neutral-900">
-                        {profile.displayName || profile.username}
-                      </span>
-                      <span className="truncate text-neutral-500">@{profile.username}</span>
-                      <span aria-hidden="true" className="text-neutral-400">·</span>
-                      <time dateTime={post.createdAt} className="shrink-0 text-xs text-neutral-500">
-                        {formatRelativeTime(post.createdAt)}
-                      </time>
-                    </div>
-                    <p className="mt-0.5 whitespace-pre-line break-words text-sm leading-snug text-neutral-900">
-                      {post.body}
-                    </p>
-                  </div>
-                </article>
-              ))
-            )}
+            <UserProfilePostsSection
+              profile={profile}
+              posts={posts}
+              onOpenThread={onOpenThread}
+              onClose={onClose}
+            />
           </div>
         )}
       </div>
