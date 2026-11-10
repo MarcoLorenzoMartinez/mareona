@@ -100,48 +100,44 @@ export function PollDisplay({ poll }: PollDisplayProps) {
                 key={option.id}
                 className={`relative overflow-hidden rounded-xl border min-h-11 px-3.5 py-2.5 text-xs transition-colors ${
                   isUserVote
-                    ? "border-red-200/90 bg-red-50/20"
-                    : "border-neutral-200/80 bg-neutral-100/50"
+                    ? "border-red-200 bg-red-50/20"
+                    : "border-neutral-200/80 bg-neutral-50/60"
                 }`}
               >
-                {/* Barra de porcentaje: el voto del usuario en rojo sutil y las demás respuestas en gris */}
+                {/* Barra de porcentaje: fondo suave para no sobrecargar */}
                 <div
                   className={`absolute inset-y-0 left-0 transition-all duration-500 ease-out ${
-                    isUserVote
-                      ? "bg-red-200/80"
-                      : "bg-neutral-200"
+                    isUserVote ? "bg-red-100" : "bg-neutral-200/70"
                   }`}
                   style={{ width: `${percentage}%` }}
                   aria-hidden="true"
                 />
 
                 <div className="relative flex items-center justify-between gap-3">
-                  <span className="flex items-center gap-2 truncate">
+                  <span
+                    className={`truncate ${
+                      isUserVote ? "font-bold text-neutral-900" : "font-medium text-neutral-700"
+                    }`}
+                  >
+                    {option.label}
+                  </span>
+
+                  <div className="flex items-center gap-2 shrink-0">
                     {isUserVote && (
-                      <span
-                        className="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border border-[var(--primary)] bg-white"
-                        aria-hidden="true"
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
+                      <span className="rounded-full bg-red-100/90 px-2 py-0.5 text-[10px] font-bold text-[var(--primary)] border border-red-200/60">
+                        Tu voto
                       </span>
                     )}
                     <span
-                      className={`truncate ${
-                        isUserVote ? "font-bold text-neutral-950" : "font-medium text-neutral-800"
+                      className={`font-sans tabular-nums text-xs ${
+                        isUserVote
+                          ? "font-bold text-[var(--primary)]"
+                          : "font-semibold text-neutral-700"
                       }`}
                     >
-                      {option.label}
+                      {percentage}%
                     </span>
-                  </span>
-                  <span
-                    className={`font-sans tabular-nums shrink-0 text-xs font-bold ${
-                      isUserVote
-                        ? "text-[var(--primary)] font-black"
-                        : "text-neutral-800"
-                    }`}
-                  >
-                    {percentage}%
-                  </span>
+                  </div>
                 </div>
               </div>
             );
