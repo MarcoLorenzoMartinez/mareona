@@ -6,6 +6,9 @@ import { GlobalAnnouncementBanner } from "@/components/layout/global-announcemen
 import { AuthProvider } from "@/context/auth-context";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { ToastContainer } from "@/components/ui/toast-container";
+import { PwaInstallProvider } from "@/components/pwa/pwa-install-provider";
+import { OfflineBanner } from "@/components/pwa/offline-banner";
+import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,10 +25,16 @@ export const metadata: Metadata = {
     "Hub comunitario, red social y plataforma de datos para los aficionados del Real Sporting de Gijón.",
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/favicon.ico" },
     ],
-    apple: "/logo.png",
+    apple: { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Mareona",
+    // "default" keeps the status bar opaque: the app headers do not yet pad for the notch.
+    statusBarStyle: "default",
   },
 };
 
@@ -51,15 +60,19 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]"
       >
-        <AuthProvider>
-          <TopProgressBar />
-          <Suspense fallback={null}>
-            <GlobalAnnouncementBanner />
-          </Suspense>
-          <AuthModal />
-          {children}
-          <ToastContainer />
-        </AuthProvider>
+        <PwaInstallProvider>
+          <AuthProvider>
+            <TopProgressBar />
+            <Suspense fallback={null}>
+              <GlobalAnnouncementBanner />
+            </Suspense>
+            <OfflineBanner />
+            <AuthModal />
+            {children}
+            <ToastContainer />
+          </AuthProvider>
+          <ServiceWorkerRegister />
+        </PwaInstallProvider>
       </body>
     </html>
   );

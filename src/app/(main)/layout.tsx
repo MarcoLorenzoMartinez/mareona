@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import { MainNav } from "@/components/layout/main-nav";
 import { Footer } from "@/components/layout/footer";
+import { InstallBanner } from "@/components/pwa/install-banner";
 
 /**
  * Main application shell wrapping primary authenticated/public vertical areas.
@@ -34,6 +36,10 @@ export default function MainLayout({
 
       {/* Global corporate footer */}
       <Footer />
+
+      <Suspense fallback={null}>
+        <InstallBanner />
+      </Suspense>
     </div>
   );
 }

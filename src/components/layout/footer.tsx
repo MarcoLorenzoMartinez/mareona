@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { InstallAction } from "@/components/pwa/install-action";
 import { CONTACT_EMAIL } from "@/lib/legal/constants";
 
 const LEGAL_LINKS = [
@@ -40,6 +41,9 @@ export function Footer() {
                 <a href={`mailto:${CONTACT_EMAIL}`} className={LINK_CLASS}>
                   Contacto
                 </a>
+              </li>
+              <li>
+                <InstallAction label="Instalar app" className={LINK_CLASS} />
               </li>
             </ul>
           </nav>
