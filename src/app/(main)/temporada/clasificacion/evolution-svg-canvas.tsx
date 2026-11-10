@@ -14,6 +14,8 @@ interface EvolutionSvgCanvasProps {
 /**
  * Pure SVG presentation layer for rendering points and position trajectory lines,
  * axes scales, gridlines, and interactive matchday data markers.
+ * Position (table ranking) is the primary bold red line, while points accumulation
+ * is the secondary graphite dashed line.
  */
 export function EvolutionSvgCanvas({
   evolution,
@@ -35,7 +37,6 @@ export function EvolutionSvgCanvas({
     positionCoords,
     pointsLinePath,
     positionLinePath,
-    pointsAreaPath,
   } = computeChartGeometry(evolution);
 
   return (
@@ -45,14 +46,7 @@ export function EvolutionSvgCanvas({
         className="h-auto w-full overflow-visible"
         aria-hidden="true"
       >
-        <defs>
-          <linearGradient id="pointsAreaGradDual" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#e2001a" stopOpacity="0.16" />
-            <stop offset="100%" stopColor="#e2001a" stopOpacity="0.01" />
-          </linearGradient>
-        </defs>
-
-        {/* Promotion & Playoff Reference Bands and Scales */}
+        {/* Promotion & Playoff Reference Bands and Dual-Axis Scales */}
         <EvolutionChartAxes
           plotWidth={plotWidth}
           width={width}
@@ -82,18 +76,13 @@ export function EvolutionSvgCanvas({
           );
         })}
 
-        {/* Area fill */}
-        {showPoints && pointsAreaPath && (
-          <path d={pointsAreaPath} fill="url(#pointsAreaGradDual)" />
-        )}
-
-        {/* Position trajectory line */}
-        {showPosition && (
+        {/* Points trajectory line (secondary: subtle graphite dashed line) */}
+        {showPoints && (
           <path
-            d={positionLinePath}
+            d={pointsLinePath}
             fill="none"
             stroke="#737373"
-            strokeOpacity="0.65"
+            strokeOpacity="0.75"
             strokeWidth="1.5"
             strokeDasharray="4 4"
             strokeLinecap="round"
@@ -101,10 +90,10 @@ export function EvolutionSvgCanvas({
           />
         )}
 
-        {/* Points trajectory line */}
-        {showPoints && (
+        {/* Position trajectory line (primary: bold corporate red solid line) */}
+        {showPosition && (
           <path
-            d={pointsLinePath}
+            d={positionLinePath}
             fill="none"
             stroke="#e2001a"
             strokeWidth="3"

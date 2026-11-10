@@ -73,13 +73,15 @@ export function EvolutionMatchDetail({ point }: EvolutionMatchDetailProps) {
         </div>
       </div>
 
-      {/* Right side: Accumulated points and ranking stats */}
+      {/* Right side: Position (primary) and accumulated points (secondary) */}
       <div className="flex items-center gap-4 text-xs text-[var(--foreground)]">
         <span className="flex items-center gap-1.5">
           <span className="h-2 w-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />
-          <span className="font-bold tabular-nums">{point.cumulativePoints}</span>
+          <span className="font-bold text-[var(--foreground)] tabular-nums">
+            {point.position}.º
+          </span>
           <span className="text-[var(--foreground-muted)]">
-            {dict.season.standings.columns.points}
+            {dict.season.standings.columns.pos}
           </span>
         </span>
         <span className="flex items-center gap-1.5 text-[var(--foreground-muted)]">
@@ -88,9 +90,9 @@ export function EvolutionMatchDetail({ point }: EvolutionMatchDetailProps) {
             aria-hidden="true"
           />
           <span className="font-bold text-[var(--foreground)] tabular-nums">
-            {point.position}.º
+            {point.cumulativePoints}
           </span>
-          <span>{dict.season.standings.columns.pos}</span>
+          <span>{dict.season.standings.columns.points}</span>
         </span>
       </div>
     </div>

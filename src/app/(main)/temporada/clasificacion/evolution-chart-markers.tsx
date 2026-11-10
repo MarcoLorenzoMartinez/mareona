@@ -14,6 +14,8 @@ interface EvolutionChartMarkersProps {
 /**
  * Interactive SVG node markers for data points on the evolution timeline,
  * supporting keyboard navigation, focus management, and selection states.
+ * Table ranking (Position) markers are circular rojiblancos (primary),
+ * while Points markers are understated graphite squares (secondary).
  */
 export function EvolutionChartMarkers({
   evolution,
@@ -43,23 +45,25 @@ export function EvolutionChartMarkers({
             }}
             tabIndex={0}
             role="button"
-            aria-label={`Jornada ${p.matchday}: ${p.cumulativePoints} pts, ${p.position}.ª`}
+            aria-label={`Jornada ${p.matchday}: ${p.position}.ª posición, ${p.cumulativePoints} pts`}
           >
             {isSelected && (
               <line
-                x1={ptsCoord.x}
+                x1={posCoord.x}
                 y1={35}
-                x2={ptsCoord.x}
+                x2={posCoord.x}
                 y2={35 + plotHeight}
                 stroke="var(--border)"
                 strokeWidth="1.5"
                 strokeDasharray="2 2"
               />
             )}
-            {showPosition && (
+
+            {/* Points Marker (Secondary: understated graphite square) */}
+            {showPoints && (
               <rect
-                x={posCoord.x - (isSelected ? 3.5 : 2.5)}
-                y={posCoord.y - (isSelected ? 3.5 : 2.5)}
+                x={ptsCoord.x - (isSelected ? 3.5 : 2.5)}
+                y={ptsCoord.y - (isSelected ? 3.5 : 2.5)}
                 width={isSelected ? 7 : 5}
                 height={isSelected ? 7 : 5}
                 rx="1"
@@ -68,12 +72,14 @@ export function EvolutionChartMarkers({
                 strokeWidth={isSelected ? "1.8" : "1.2"}
               />
             )}
-            {showPoints && (
+
+            {/* Position Marker (Primary: bold corporate red circle) */}
+            {showPosition && (
               <>
                 {isSelected && (
                   <circle
-                    cx={ptsCoord.x}
-                    cy={ptsCoord.y}
+                    cx={posCoord.x}
+                    cy={posCoord.y}
                     r="8.5"
                     fill="none"
                     stroke="#e2001a"
@@ -82,8 +88,8 @@ export function EvolutionChartMarkers({
                   />
                 )}
                 <circle
-                  cx={ptsCoord.x}
-                  cy={ptsCoord.y}
+                  cx={posCoord.x}
+                  cy={posCoord.y}
                   r={isSelected ? "5.5" : "4"}
                   fill="#ffffff"
                   stroke="#e2001a"
