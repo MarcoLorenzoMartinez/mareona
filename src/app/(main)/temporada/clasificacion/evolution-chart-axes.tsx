@@ -1,4 +1,5 @@
 import { getDictionary } from "@/i18n";
+import { CHART_DIMENSIONS } from "./evolution-math";
 
 interface EvolutionChartAxesProps {
   readonly plotWidth: number;
@@ -26,8 +27,8 @@ function getPointsTicks(maxY: number): readonly number[] {
 
 /**
  * SVG background reference bands and dual-axis scales.
- * Table ranking (Posición) is the primary metric on the left Y-axis,
- * while accumulated points (Puntos) is the secondary metric on the right Y-axis.
+ * Table ranking (Posición) title is centered right above the left scale numbers,
+ * and accumulated points (Puntos) title is centered right above the right scale numbers.
  */
 export function EvolutionChartAxes({
   plotWidth,
@@ -42,13 +43,18 @@ export function EvolutionChartAxes({
   const t = dict.season.standings.evolution;
   const pointsTicks = getPointsTicks(maxYPoints);
 
+  const { paddingLeft, paddingRight } = CHART_DIMENSIONS;
+  const rightEdge = width - paddingRight;
+  const leftCenter = paddingLeft / 2;
+  const rightCenter = width - paddingRight / 2;
+
   return (
     <>
       {/* Promotion & Playoff Reference Bands */}
       {showPosition && (
         <>
           <rect
-            x={45}
+            x={paddingLeft}
             y={getYPosition(1)}
             width={plotWidth}
             height={getYPosition(2) - getYPosition(1) + 4}
@@ -57,7 +63,7 @@ export function EvolutionChartAxes({
             rx="2"
           />
           <rect
-            x={45}
+            x={paddingLeft}
             y={getYPosition(3)}
             width={plotWidth}
             height={getYPosition(6) - getYPosition(3) + 4}
@@ -72,10 +78,10 @@ export function EvolutionChartAxes({
       {showPosition && (
         <g>
           <text
-            x={45}
+            x={leftCenter}
             y={20}
-            textAnchor="start"
-            fontSize="9.5"
+            textAnchor="middle"
+            fontSize="9"
             fill="var(--primary)"
             fontWeight="700"
             className="uppercase tracking-wider select-none"
@@ -88,16 +94,16 @@ export function EvolutionChartAxes({
             return (
               <g key={`pos-${pos}`}>
                 <line
-                  x1={45}
+                  x1={paddingLeft}
                   y1={y}
-                  x2={width - 45}
+                  x2={rightEdge}
                   y2={y}
                   stroke="var(--border)"
                   strokeDasharray="3 3"
                   strokeWidth="1"
                 />
                 <text
-                  x={37}
+                  x={paddingLeft - 8}
                   y={y + 3.5}
                   textAnchor="end"
                   fontSize="10"
@@ -116,10 +122,10 @@ export function EvolutionChartAxes({
       {showPoints && (
         <g>
           <text
-            x={width - 45}
+            x={rightCenter}
             y={20}
-            textAnchor="end"
-            fontSize="9.5"
+            textAnchor="middle"
+            fontSize="9"
             fill="var(--foreground-muted)"
             fontWeight="700"
             className="uppercase tracking-wider select-none"
@@ -133,9 +139,9 @@ export function EvolutionChartAxes({
               <g key={`pts-${tick}`}>
                 {!showPosition && (
                   <line
-                    x1={45}
+                    x1={paddingLeft}
                     y1={y}
-                    x2={width - 45}
+                    x2={rightEdge}
                     y2={y}
                     stroke="var(--border)"
                     strokeDasharray="3 3"
@@ -143,7 +149,7 @@ export function EvolutionChartAxes({
                   />
                 )}
                 <text
-                  x={width - 37}
+                  x={rightEdge + 8}
                   y={y + 3.5}
                   textAnchor="start"
                   fontSize="9.5"

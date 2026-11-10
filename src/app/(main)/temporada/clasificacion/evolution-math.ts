@@ -3,8 +3,8 @@ import type { MatchdayEvolutionPoint } from "@/lib/sports-api/types";
 export const CHART_DIMENSIONS = {
   width: 660,
   height: 270,
-  paddingLeft: 45,
-  paddingRight: 45,
+  paddingLeft: 52,
+  paddingRight: 52,
   paddingTop: 35,
   paddingBottom: 40,
 } as const;
