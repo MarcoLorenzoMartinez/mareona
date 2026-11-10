@@ -49,7 +49,7 @@ export async function signInWithPassword(
  */
 export async function signUpWithPassword(
   input: SignUpInput
-): Promise<AuthActionResult<{ readonly isNewUser: boolean }>> {
+): Promise<AuthActionResult<{ readonly isNewUser: boolean; readonly requiresEmailConfirmation?: boolean }>> {
   const parsed = signUpSchema.safeParse(input);
   if (!parsed.success) {
     return {
@@ -84,7 +84,30 @@ export async function signUpWithPassword(
   }
 
   revalidatePath("/", "layout");
-  return { success: true, data: { isNewUser: Boolean(data.user) } };
+  return {
+    success: true,
+    data: {
+      isNewUser: Boolean(data.user),
+      requiresEmailConfirmation: !data.session,
+    },
+  };
+}
+
+/**
+ * Resends the signup confirmation email to the provided address.
+ */
+export async function resendConfirmationEmail(email: string): Promise<AuthActionResult> {
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email: email.trim(),
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch {
+    return { success: false, error: "No se pudo reenviar el correo de confirmación" };
+  }
 }
 
 /**
