@@ -18,6 +18,7 @@ import {
   setCachedPayload,
   TTL_STANDINGS_MS,
   TTL_FIXTURES_MS,
+  TTL_LIVE_MATCH_MS,
   TTL_SQUAD_MS,
   resolveMatchDetailTtlMs,
 } from "./cache.ts";
@@ -202,10 +203,12 @@ export async function fetchNextFixture(
     const nextChronological = upcoming.length > 0 ? upcoming[0] : null;
 
     if (nextChronological) {
+      const isLive = nextChronological.status === "live";
+      const ttl = isLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
       memoryCachedNextFixture = {
         teamId,
         data: nextChronological,
-        expiresAt: now + TTL_FIXTURES_MS,
+        expiresAt: now + ttl,
       };
 
       if (supabase) {
@@ -213,7 +216,7 @@ export async function fetchNextFixture(
           supabase,
           cacheKey,
           nextChronological as unknown as Record<string, unknown>,
-          TTL_FIXTURES_MS
+          ttl
         );
       }
       return nextChronological;
@@ -221,10 +224,12 @@ export async function fetchNextFixture(
 
     const liveMatch = await fetchEspnSportingMatch();
     if (liveMatch) {
+      const isLive = liveMatch.status === "live";
+      const ttl = isLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
       memoryCachedNextFixture = {
         teamId,
         data: liveMatch,
-        expiresAt: now + TTL_FIXTURES_MS,
+        expiresAt: now + ttl,
       };
 
       if (supabase) {
@@ -232,7 +237,7 @@ export async function fetchNextFixture(
           supabase,
           cacheKey,
           liveMatch as unknown as Record<string, unknown>,
-          TTL_FIXTURES_MS
+          ttl
         );
       }
       return liveMatch;
@@ -317,9 +322,11 @@ export async function fetchSportingSeasonMatches(
   if (supabase) {
     const cached = await getCachedPayload<DomainMatchSummary[]>(supabase, cacheKey);
     if (cached) {
+      const hasLive = cached.some((m) => m.status === "live");
+      const ttl = hasLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
       memoryCachedSeasonMatches = {
         data: cached,
-        expiresAt: now + TTL_FIXTURES_MS,
+        expiresAt: now + ttl,
       };
       return cached;
     }
@@ -337,9 +344,11 @@ export async function fetchSportingSeasonMatches(
     );
 
     if (matches.length > 0) {
+      const hasLive = matches.some((m) => m.status === "live");
+      const ttl = hasLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
       memoryCachedSeasonMatches = {
         data: matches,
-        expiresAt: now + TTL_FIXTURES_MS,
+        expiresAt: now + ttl,
       };
 
       if (supabase) {
@@ -347,7 +356,7 @@ export async function fetchSportingSeasonMatches(
           supabase,
           cacheKey,
           matches as unknown as Record<string, unknown>[],
-          TTL_FIXTURES_MS
+          ttl
         );
       }
       return matches;

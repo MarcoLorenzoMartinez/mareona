@@ -5,6 +5,7 @@ import { ShotMapCanvas } from "./shot-map-canvas";
 import { AttackingZonesPitch } from "./attacking-zones-pitch";
 import { MatchMomentumChart } from "./match-momentum-chart";
 import { StatBar } from "./stat-bar";
+import { MatchStatsLiveConsolidating } from "./match-stats-live-consolidating";
 
 interface StatItem {
   readonly label: string;
@@ -29,12 +30,17 @@ export function MatchStatsPanel({ match }: { readonly match: DomainMatchDetail }
   const t = dict.season.matchDetail.stats;
   const adv = match.advancedStats;
   const isScheduled = match.status === "scheduled";
+  const isLive = match.status === "live";
   const hasStats = !isScheduled && (match.statGroups.length > 0 || Boolean(adv));
 
   if (!hasStats) {
+    if (isLive) {
+      return <MatchStatsLiveConsolidating />;
+    }
+
     return (
       <div className="rounded-xl border border-[var(--border)] bg-white p-8 text-center shadow-2xs">
-        <p className="text-sm font-medium text-[var(--foreground-muted)]">
+        <p className="text-sm font-medium text-[var(--muted-foreground)]">
           {isScheduled ? t.pendingStats : t.noStats}
         </p>
       </div>

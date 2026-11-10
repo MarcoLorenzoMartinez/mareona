@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
 import { MatchRow } from "./match-row";
+import { useLiveMatchesPoll } from "../use-live-matches-poll";
 
 type FilterMode = "all" | "finished" | "upcoming";
 
@@ -15,8 +16,10 @@ interface MatchesListProps {
 /**
  * Filterable match schedule list component (All / Finished / Upcoming)
  * adhering to WCAG 2.2 AA and responsive layout.
+ * Automatically polls for live match score updates during match windows.
  */
-export function MatchesList({ matches }: MatchesListProps) {
+export function MatchesList({ matches: initialMatches }: MatchesListProps) {
+  const { matches } = useLiveMatchesPoll(initialMatches);
   const dict = getDictionary();
   const t = dict.season.matchesList;
 
