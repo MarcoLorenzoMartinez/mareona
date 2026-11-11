@@ -33,6 +33,9 @@ import { fetchFotMobAdvancedStats } from "./fotmob.ts";
 import { fetchSportingCopaMatches } from "./copa.ts";
 import { fetchFotMobMatchDetail } from "./fotmob-match-detail.ts";
 import type { createClient } from "@/lib/supabase/server";
+import { createLogger } from "../logger/core.ts";
+
+const sportsLog = createLogger({ context: "sports-api" });
 
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
@@ -108,8 +111,8 @@ export async function fetchStandings(
         }
         return liveRows;
       }
-    } catch {
-      // Fall through to API-Football fallback
+    } catch (err) {
+      sportsLog.warn("ESPN live standings request failed, falling back to API-Football", { season }, err);
     }
   }
 
@@ -242,8 +245,8 @@ export async function fetchNextFixture(
       }
       return liveMatch;
     }
-  } catch {
-    // Fall through to API-Football
+  } catch (err) {
+    sportsLog.warn("ESPN live match detail request failed, falling back to API-Football", { teamId }, err);
   }
 
   // 3. Fallback to API-Football

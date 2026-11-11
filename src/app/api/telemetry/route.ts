@@ -2,6 +2,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { resolveProvinceName, resolveCountryName } from "@/lib/telemetry/geolocation";
+import { logger } from "@/lib/logger";
+
+const log = logger.child("telemetry");
 
 const telemetryPayloadSchema = z.object({
   pathname: z.string().min(1).max(255),
@@ -29,11 +32,15 @@ export async function POST(request: NextRequest) {
 
     const parsed = telemetryPayloadSchema.safeParse(rawBody);
     if (!parsed.success) {
+      log.warn("Telemetry ping rejected: invalid payload schema", {
+        issues: parsed.error.issues,
+      });
       return NextResponse.json({ ok: false, error: "Invalid payload" }, { status: 400 });
     }
 
     // Ignore internal administration routes from public telemetry
     if (parsed.data.pathname.startsWith("/admin")) {
+      log.debug("Telemetry ping ignored: admin route", { path: parsed.data.pathname });
       return NextResponse.json({ ok: true, ignored: "admin_route" });
     }
 
@@ -56,7 +63,7 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createClient();
 
-    await supabase.from("site_visits").insert({
+    const { error: insertError } = await supabase.from("site_visits").insert({
       pathname: parsed.data.pathname,
       device_type: parsed.data.deviceType,
       is_pwa: parsed.data.isPwa,
@@ -66,9 +73,23 @@ export async function POST(request: NextRequest) {
       province,
     });
 
+    if (insertError) {
+      log.error("Failed to insert telemetry visit to database", insertError, {
+        path: parsed.data.pathname,
+      });
+      return NextResponse.json({ ok: false }, { status: 500 });
+    }
+
+    log.debug("Telemetry ping recorded successfully", {
+      path: parsed.data.pathname,
+      device: parsed.data.deviceType,
+      isPwa: parsed.data.isPwa,
+    });
+
     return NextResponse.json({ ok: true });
-  } catch {
+  } catch (err) {
     // Fail silently: telemetry must never interrupt user experience
+    log.error("Unhandled exception in telemetry ingestion endpoint", err);
     return NextResponse.json({ ok: false }, { status: 200 });
   }
 }
