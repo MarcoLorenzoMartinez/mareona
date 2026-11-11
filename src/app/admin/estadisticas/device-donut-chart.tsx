@@ -3,6 +3,8 @@ import type { DeviceUsageStat, AccessModeStat } from "@/lib/admin/types";
 interface DeviceDonutChartProps {
   readonly devices: readonly DeviceUsageStat[];
   readonly accessModes?: readonly AccessModeStat[];
+  readonly avgSessionMinutes?: number;
+  readonly bounceRatePercentage?: number;
   readonly matchDayMultiplier?: number;
 }
 
@@ -11,12 +13,23 @@ const DEVICE_STYLES: Record<string, { dot: string; stroke: string }> = {
   desktop: { dot: "bg-neutral-800", stroke: "#262626" },
 };
 
+function formatMinutesAndSeconds(decimalMinutes: number): string {
+  if (!decimalMinutes || decimalMinutes <= 0) return "00:00";
+  const totalSeconds = Math.round(decimalMinutes * 60);
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+}
+
 /**
- * Visual card unifying device distribution (donut) and PWA mobile adoption metrics.
+ * Visual card unifying device distribution (donut ring), PWA adoption,
+ * and key session quality indicators in a clean, balanced layout.
  */
 export function DeviceDonutChart({
   devices,
   accessModes = [],
+  avgSessionMinutes = 0,
+  bounceRatePercentage = 0,
   matchDayMultiplier = 2.1,
 }: DeviceDonutChartProps) {
   const mobileDevice = devices.find((d) => d.device === "mobile");
@@ -29,18 +42,19 @@ export function DeviceDonutChart({
   const strokeWidth = 12;
   const circumference = 2 * Math.PI * radius;
   const mobileArcLength = (mobilePercent / 100) * circumference;
+  const formattedDuration = formatMinutesAndSeconds(avgSessionMinutes);
 
   return (
     <div className="flex h-full flex-col rounded-xl border border-[var(--border)] bg-white p-5 shadow-xs">
       <div className="border-b border-[var(--border)] pb-4">
-        <h2 className="text-sm font-bold text-[var(--foreground)]">Dispositivos y acceso</h2>
+        <h2 className="text-sm font-bold text-[var(--foreground)]">Dispositivos y retención</h2>
       </div>
 
       <div className="flex flex-1 items-center justify-center gap-7 py-4">
         {/* Donut ring */}
         <div className="shrink-0">
           <svg width="112" height="112" viewBox="0 0 90 90" className="-rotate-90">
-            {/* Desktop / Base arc */}
+            {/* Desktop base arc */}
             <circle
               cx="45"
               cy="45"
@@ -49,7 +63,7 @@ export function DeviceDonutChart({
               strokeWidth={strokeWidth}
               className="fill-transparent"
             />
-            {/* Mobile / Primary arc */}
+            {/* Mobile primary arc */}
             <circle
               cx="45"
               cy="45"
@@ -93,17 +107,34 @@ export function DeviceDonutChart({
         </div>
       </div>
 
-      {/* Integrated PWA & Matchday Footer */}
-      <div className="flex items-center justify-between border-t border-[var(--border)] pt-3 text-xs">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold text-[var(--foreground)]">App instalada (PWA):</span>
-          <span className="font-bold text-[#e2001a] tabular-nums font-sans">{pwaPercent}%</span>
+      {/* Integrated Technical & Quality Footer */}
+      <div className="space-y-2 border-t border-[var(--border)] pt-3 text-xs">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[var(--muted-foreground)]">App instalada (PWA):</span>
+            <span className="font-bold text-[#e2001a] tabular-nums font-sans">{pwaPercent}%</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[var(--muted-foreground)]">Día de partido:</span>
+            <span className="font-bold text-[var(--foreground)] tabular-nums font-sans">
+              +{Math.round((matchDayMultiplier - 1) * 100)}%
+            </span>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="text-[var(--muted-foreground)]">Día de partido:</span>
-          <span className="font-black text-[var(--foreground)] tabular-nums font-sans">
-            +{Math.round((matchDayMultiplier - 1) * 100)}%
-          </span>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[var(--muted-foreground)]">Tiempo medio:</span>
+            <span className="font-bold text-[var(--foreground)] tabular-nums font-sans">
+              {formattedDuration} min
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[var(--muted-foreground)]">Tasa de rebote:</span>
+            <span className="font-bold text-[var(--foreground)] tabular-nums font-sans">
+              {bounceRatePercentage}%
+            </span>
+          </div>
         </div>
       </div>
     </div>

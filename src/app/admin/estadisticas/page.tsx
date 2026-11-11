@@ -6,11 +6,9 @@ import {
 import { StatsKpiCards } from "./stats-kpi-cards";
 import { TrafficAreaChart } from "./traffic-area-chart";
 import { HourlyTrafficChart } from "./hourly-traffic-chart";
-import { SectionUsageBars } from "./section-usage-bars";
-import { DeviceDonutChart } from "./device-donut-chart";
-import { GeographicOriginBars } from "./geographic-origin-bars";
-import { SessionQualityCard } from "./session-quality-card";
 import { TopPagesCard } from "./top-pages-card";
+import { GeographicOriginBars } from "./geographic-origin-bars";
+import { DeviceDonutChart } from "./device-donut-chart";
 import { AuditLogsTable } from "./audit-logs-table";
 
 export const metadata = {
@@ -45,10 +43,10 @@ export default async function StatsAdminPage() {
         <TrafficAreaChart points={analytics.dailyTraffic} />
       </div>
 
-      {/* Visual Analytics Grid: 3x2 Symmetrical Cards (6 modules) */}
+      {/* Visual Analytics Grid: 2x2 Balanced Cards (4 core modules) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 items-stretch">
         <HourlyTrafficChart hours={analytics.hourlyTraffic} />
-        <SectionUsageBars sections={analytics.sectionUsage} />
+        <TopPagesCard pages={analytics.topPages} />
         <GeographicOriginBars
           provinces={analytics.geographicProvinces}
           countries={analytics.geographicCountries}
@@ -56,14 +54,10 @@ export default async function StatsAdminPage() {
         <DeviceDonutChart
           devices={analytics.deviceUsage}
           accessModes={analytics.accessModes}
-          matchDayMultiplier={analytics.matchDayMultiplier}
-        />
-        <SessionQualityCard
           avgSessionMinutes={analytics.avgSessionMinutes}
           bounceRatePercentage={analytics.bounceRatePercentage}
-          pagesPerSession={analytics.pagesPerSession}
+          matchDayMultiplier={analytics.matchDayMultiplier}
         />
-        <TopPagesCard pages={analytics.topPages} />
       </div>
 
       {/* Audit Log Table */}
