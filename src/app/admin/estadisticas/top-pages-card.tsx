@@ -13,11 +13,8 @@ export function TopPagesCard({ pages }: TopPagesCardProps) {
 
   return (
     <div className="flex h-full flex-col rounded-xl border border-[var(--border)] bg-white p-5 shadow-xs">
-      <div className="flex items-center justify-between border-b border-[var(--border)] pb-4">
+      <div className="border-b border-[var(--border)] pb-4">
         <h2 className="text-sm font-bold text-[var(--foreground)]">Páginas más visitadas</h2>
-        <span className="text-xs font-medium text-[var(--muted-foreground)] tabular-nums">
-          {pages.length} {pages.length === 1 ? "ruta" : "rutas"}
-        </span>
       </div>
 
       {pages.length === 0 ? (
@@ -25,7 +22,7 @@ export function TopPagesCard({ pages }: TopPagesCardProps) {
           Sin visitas registradas aún
         </div>
       ) : (
-        <div className="mt-2 max-h-[224px] overflow-y-auto pr-1 divide-y divide-[var(--border)] [scrollbar-width:thin]">
+        <div className="custom-scrollbar mt-2 max-h-[224px] overflow-y-auto pr-2 divide-y divide-[var(--border)]">
           {pages.map((page) => {
             const relativePercent = Math.round((page.visits / maxVisits) * 100);
 
