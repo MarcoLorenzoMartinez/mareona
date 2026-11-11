@@ -30,8 +30,8 @@ export function SocialFeedHeader({
       <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
         <button
           type="button"
-          onClick={() => onTabChange(isMessagesActive ? "all" : "messages")}
-          aria-label={isMessagesActive ? "Volver a la tertulia" : "Abrir mensajes directos"}
+          onClick={() => onTabChange("messages")}
+          aria-label="Ver mensajes directos"
           aria-pressed={isMessagesActive}
           className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold shadow-xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
             isMessagesActive

@@ -66,11 +66,26 @@ describe('Sporting Words & Non-repeating Bag Suite', () => {
       assert.equal(isValidWordGuess('CANTABA', 7), true);
     });
 
-    it('accepts Sporting de Gijón catalog words and player names', () => {
+    it('accepts Sporting de Gijón catalog words and player names including those with letter Ñ', () => {
       assert.equal(isValidWordGuess('QUINI', 5), true);
       assert.equal(isValidWordGuess('MAREO', 5), true);
       assert.equal(isValidWordGuess('MOLINON', 7), true);
       assert.equal(isValidWordGuess('ROJIBLANCO', 10), true);
+      // Sporting players and terms containing Ñ
+      assert.equal(isValidWordGuess('MARIÑO', 6), true);
+      assert.equal(isValidWordGuess('mariño', 6), true);
+      assert.equal(isValidWordGuess('ERAÑA', 5), true);
+      assert.equal(isValidWordGuess('MUÑIZ', 5), true);
+      assert.equal(isValidWordGuess('YAÑEZ', 5), true);
+      assert.equal(isValidWordGuess('CASTAÑER', 8), true);
+    });
+
+    it('accepts valid Spanish words containing letter Ñ from dictionary', () => {
+      assert.equal(isValidWordGuess('SEÑOR', 5), true);
+      assert.equal(isValidWordGuess('SUEÑO', 5), true);
+      assert.equal(isValidWordGuess('NIÑOS', 5), true);
+      assert.equal(isValidWordGuess('BAÑOS', 5), true);
+      assert.equal(isValidWordGuess('PAÑAL', 5), true);
     });
 
     it('rejects invalid, random strings and gibberish', () => {
