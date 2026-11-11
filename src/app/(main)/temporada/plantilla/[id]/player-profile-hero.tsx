@@ -35,7 +35,7 @@ export function PlayerProfileHero({ player, profile }: PlayerProfileHeroProps) {
         {dorsal !== null && dorsal !== undefined && (
           <div
             aria-hidden="true"
-            className="absolute -top-4 right-3 sm:right-6 pointer-events-none select-none z-0"
+            className="absolute top-3 right-4 sm:-top-4 sm:right-6 pointer-events-none select-none z-0"
           >
             <span className="text-8xl sm:text-9xl font-black text-[var(--primary)] opacity-20 tabular-nums tracking-tighter leading-none">
               {dorsal}
@@ -67,50 +67,74 @@ export function PlayerProfileHero({ player, profile }: PlayerProfileHeroProps) {
               </h1>
             </div>
 
-            {/* Píldoras con datos biométricos */}
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-1 text-xs">
+            {/* Ficha técnica del futbolista (estilo tipográfico sobrio sin cápsulas de plantilla) */}
+            <dl className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:items-center gap-x-7 gap-y-3.5 pt-3 border-t border-neutral-100 w-full text-left">
               {bio?.preferredFoot && (
-                <div className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 font-semibold text-neutral-700">
-                  <span className="text-neutral-600 font-bold">Pie:</span>
-                  <span className="font-bold text-neutral-900">{bio.preferredFoot}</span>
+                <div className="flex flex-col">
+                  <dt className="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">
+                    Pie
+                  </dt>
+                  <dd className="mt-0.5 text-sm font-bold text-neutral-900">
+                    {bio.preferredFoot}
+                  </dd>
                 </div>
               )}
 
               {bio?.height && (
-                <div className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 font-semibold text-neutral-700">
-                  <span className="text-neutral-600 font-bold">Altura:</span>
-                  <span className="font-bold text-neutral-900 tabular-nums">{bio.height}</span>
+                <div className="flex flex-col">
+                  <dt className="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">
+                    Altura
+                  </dt>
+                  <dd className="mt-0.5 text-sm font-bold text-neutral-900 tabular-nums">
+                    {bio.height}
+                  </dd>
                 </div>
               )}
 
               {bio?.age && (
-                <div className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 font-semibold text-neutral-700">
-                  <span className="text-neutral-600 font-bold">Edad:</span>
-                  <span className="font-bold text-neutral-900 tabular-nums">{bio.age} años</span>
+                <div className="flex flex-col">
+                  <dt className="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">
+                    Edad
+                  </dt>
+                  <dd className="mt-0.5 text-sm font-bold text-neutral-900 tabular-nums">
+                    {bio.age} años
+                  </dd>
                 </div>
               )}
 
               {countryName && (
-                <div className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 font-semibold text-neutral-700">
-                  <span className="text-neutral-600 font-bold">País:</span>
-                  <span className="font-bold text-neutral-900">{countryName}</span>
+                <div className="flex flex-col">
+                  <dt className="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">
+                    País
+                  </dt>
+                  <dd className="mt-0.5 text-sm font-bold text-neutral-900">
+                    {countryName}
+                  </dd>
                 </div>
               )}
 
               {bio?.marketValue && (
-                <div className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 font-semibold text-neutral-700">
-                  <span className="text-neutral-600 font-bold">Valor:</span>
-                  <span className="font-bold text-neutral-900 tabular-nums">{bio.marketValue}</span>
+                <div className="flex flex-col">
+                  <dt className="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">
+                    Valor
+                  </dt>
+                  <dd className="mt-0.5 text-sm font-bold text-neutral-900 tabular-nums">
+                    {bio.marketValue}
+                  </dd>
                 </div>
               )}
 
               {bio?.contractEnd && (
-                <div className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 font-semibold text-neutral-700">
-                  <span className="text-neutral-600 font-bold">Contrato:</span>
-                  <span className="font-bold text-neutral-900 tabular-nums">{bio.contractEnd}</span>
+                <div className="flex flex-col">
+                  <dt className="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">
+                    Contrato
+                  </dt>
+                  <dd className="mt-0.5 text-sm font-bold text-neutral-900 tabular-nums">
+                    {bio.contractEnd}
+                  </dd>
                 </div>
               )}
-            </div>
+            </dl>
           </div>
         </div>
       </div>

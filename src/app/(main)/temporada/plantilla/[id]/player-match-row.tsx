@@ -4,6 +4,7 @@
 import { SportShoe } from "lucide-react";
 import type { PlayerSeasonMatchLog } from "@/lib/sports-api/fotmob-player-profile-types";
 import { SoccerBallIcon } from "@/components/icons/soccer-ball-icon";
+import { TeamCrest } from "@/components/media/team-crest";
 import { getRatingBadgeStyle } from "../../partidos/[id]/rating-color";
 
 interface PlayerMatchRowProps {
@@ -19,6 +20,10 @@ export function PlayerMatchRow({ match: m, onSelect }: PlayerMatchRowProps) {
       })
     : "";
   const badge = m.rating !== null ? getRatingBadgeStyle(m.rating) : null;
+  const opponentCrestUrl =
+    m.opponentTeamId > 0
+      ? `https://images.fotmob.com/image_resources/logo/teamlogo/${m.opponentTeamId}.png`
+      : null;
 
   return (
     <button
@@ -31,9 +36,9 @@ export function PlayerMatchRow({ match: m, onSelect }: PlayerMatchRowProps) {
           : "opacity-60 cursor-default"
       }`}
     >
-      {/* 1. Fecha, Resultado (V/E/D), Rival y Condición */}
+      {/* 1. Fecha, Resultado (V/E/D), Rival con Escudo y Condición */}
       <div className="flex items-center gap-3 min-w-0">
-        <span className="w-9 text-xs font-semibold text-neutral-500 tabular-nums shrink-0">
+        <span className="w-9 text-xs font-semibold text-neutral-600 tabular-nums shrink-0">
           {dateStr}
         </span>
 
@@ -49,10 +54,18 @@ export function PlayerMatchRow({ match: m, onSelect }: PlayerMatchRowProps) {
           >
             {m.result === "W" ? "V" : m.result === "D" ? "E" : "D"}
           </span>
+          <div className="shrink-0">
+            <TeamCrest
+              crestUrl={opponentCrestUrl}
+              teamName={m.opponentName}
+              size="sm"
+              isSporting={false}
+            />
+          </div>
           <span className="text-xs font-bold text-neutral-900 truncate">
             {m.opponentName}
           </span>
-          <span className="text-[10px] font-bold text-neutral-500 shrink-0">
+          <span className="text-[10px] font-semibold text-neutral-600 shrink-0">
             {m.isHome ? "(C)" : "(F)"}
           </span>
         </div>
