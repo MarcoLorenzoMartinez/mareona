@@ -16,6 +16,7 @@ interface FriendsListContentProps {
   readonly onRemove: (id: string, name: string) => void;
   readonly onSendRequest: (id: string, name: string) => void;
   readonly onStartChat?: (friend: FriendSummary) => void;
+  readonly onSwitchToSearch?: () => void;
 }
 
 export function FriendsListContent({
@@ -29,6 +30,7 @@ export function FriendsListContent({
   onRemove,
   onSendRequest,
   onStartChat,
+  onSwitchToSearch,
 }: FriendsListContentProps) {
   if (tab === "friends") {
     if (friends.length === 0) {
@@ -36,6 +38,16 @@ export function FriendsListContent({
         <div className="py-10 text-center">
           <p className="text-sm font-semibold text-neutral-600">Aún no tienes amigos agregados</p>
           <p className="text-xs text-neutral-400 mt-1">Usa Buscar o pulsa en perfiles en la tertulia.</p>
+          {onSwitchToSearch && (
+            <button
+              type="button"
+              onClick={onSwitchToSearch}
+              className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[var(--primary)] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#b30015] transition-colors cursor-pointer"
+            >
+              <Search className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Buscar aficionados</span>
+            </button>
+          )}
         </div>
       );
     }

@@ -13,5 +13,11 @@ export const openDirectConversationSchema = z.object({
   targetUserId: z.string().uuid("Identificador de aficionado inválido"),
 });
 
+export const deleteDirectMessageSchema = z.object({
+  messageId: z.string().uuid("Identificador de mensaje inválido"),
+  conversationId: z.string().uuid("Identificador de conversación inválido"),
+});
+
 export type SendDirectMessageInput = z.infer<typeof sendDirectMessageSchema>;
 export type OpenDirectConversationInput = z.infer<typeof openDirectConversationSchema>;
+export type DeleteDirectMessageInput = z.infer<typeof deleteDirectMessageSchema>;

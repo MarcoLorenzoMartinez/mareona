@@ -54,9 +54,14 @@ const SECTIONS: readonly LegalSection[] = [
               "Prestar las funciones de juegos, porra y tertulia.",
             ],
             [
-              "Intentos de publicación bloqueados, sanciones y acciones de moderación",
-              "Sistema de moderación",
-              "Mantener un entorno respetuoso y seguro.",
+              "Mensajería privada entre amigos (chats 1:1)",
+              "Tus conversaciones directas",
+              "Permitir la comunicación privada entre usuarios con amistad mutua aceptada.",
+            ],
+            [
+              "Intentos bloqueados, mensajes suprimidos en custodia y acciones de moderación",
+              "Sistema de seguridad y custodia legal",
+              "Prevenir abusos y atender requerimientos judiciales o policiales ante ilícitos.",
             ],
             [
               "Dirección IP y datos técnicos de la conexión",
@@ -75,49 +80,51 @@ const SECTIONS: readonly LegalSection[] = [
       <LegalList>
         <li>
           <LegalStrong>Ejecución del servicio</LegalStrong> que solicitas al crear tu cuenta (art.
-          6.1.b RGPD): cuenta, perfil, juegos, porra y tertulia.
+          6.1.b RGPD): cuenta, perfil, juegos, porra, tertulia y mensajería directa.
         </li>
         <li>
-          <LegalStrong>Interés legítimo</LegalStrong> (art. 6.1.f RGPD): seguridad, prevención de
-          abusos y moderación.
+          <LegalStrong>Interés legítimo</LegalStrong> (art. 6.1.f RGPD): seguridad perimetral,
+          prevención de abusos y filtrado automatizado anti-acoso.
+        </li>
+        <li>
+          <LegalStrong>Obligación legal y custodia bloqueada</LegalStrong> (art. 6.1.c RGPD y art. 32
+          LOPDGDD): conservación restringida de evidencias para su puesta a disposición exclusiva de
+          jueces, tribunales, Ministerio Fiscal o Fuerzas y Cuerpos de Seguridad.
         </li>
       </LegalList>
     ),
   },
   {
     id: "destinatarios",
-    title: "Destinatarios y proveedores",
+    title: "Destinatarios, confidencialidad y proveedores",
     content: (
       <>
         <LegalP>No vendemos tus datos ni los usamos para publicidad. Recurrimos a estos proveedores:</LegalP>
         <LegalList>
-          <li>
-            <LegalStrong>Supabase:</LegalStrong> base de datos, autenticación y almacenamiento de
-            avatares.
-          </li>
-          <li>
-            <LegalStrong>Vercel:</LegalStrong> alojamiento de la web.
-          </li>
-          <li>
-            <LegalStrong>Google:</LegalStrong> inicio de sesión mediante Google OAuth.
-          </li>
+          <li><LegalStrong>Supabase:</LegalStrong> base de datos, autenticación y almacenamiento de avatares.</li>
+          <li><LegalStrong>Vercel:</LegalStrong> alojamiento de la web.</li>
+          <li><LegalStrong>Google:</LegalStrong> inicio de sesión mediante Google OAuth.</li>
         </LegalList>
         <LegalP>
-          Algunos de ellos pueden tratar datos fuera del Espacio Económico Europeo, con las
-          garantías previstas por el RGPD (decisiones de adecuación o cláusulas contractuales tipo).
-          Tu nombre visible, apodo, avatar, puntos y publicaciones son visibles para otros
-          usuarios.
+          Tu nombre visible, apodo, avatar, puntos y publicaciones son públicos. En cambio, tus{" "}
+          <LegalStrong>mensajes privados</LegalStrong> son estrictamente confidenciales entre emisor
+          y receptor mediante aislamiento en base de datos (Row Level Security): no son públicos ni
+          se exponen en paneles de moderación ordinarios, sin perjuicio de la custodia legal
+          restringida ante requerimientos judiciales.
         </LegalP>
       </>
     ),
   },
   {
     id: "conservacion",
-    title: "Conservación",
+    title: "Conservación y bloqueo legal",
     content: (
       <LegalP>
-        Conservamos tus datos mientras mantengas la cuenta. Al eliminarla se suprimen tus datos sin
-        demora indebida; las copias de seguridad se sobrescriben en su ciclo ordinario de rotación.
+        Conservamos tus datos mientras mantengas la cuenta. Cuando eliminas un mensaje privado
+        enviado, deja de ser visible de inmediato para ambos participantes en el chat, pero el
+        registro queda bloqueado en custodia técnica restringida (art. 32 LOPDGDD) con el único fin
+        de impedir la destrucción de pruebas e investigar posibles delitos a requerimiento judicial.
+        Al eliminar tu cuenta se suprimen tus datos en cascada sin demora indebida.
       </LegalP>
     ),
   },
@@ -126,31 +133,19 @@ const SECTIONS: readonly LegalSection[] = [
     title: "Tus derechos",
     content: (
       <>
-        <LegalP>
-          Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y
-          portabilidad:
-        </LegalP>
+        <LegalP>Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad:</LegalP>
         <LegalList>
           <li>
-            <LegalStrong>Rectificación:</LegalStrong> edita tu perfil desde{" "}
-            <Link href="/perfil" className={INLINE_LINK}>
-              Perfil
-            </Link>
-            .
+            <LegalStrong>Rectificación y supresión de mensajes:</LegalStrong> edita tu{" "}
+            <Link href="/perfil" className={INLINE_LINK}>Perfil</Link> o elimina tus propios mensajes enviados desde el propio chat.
           </li>
           <li>
-            <LegalStrong>Supresión:</LegalStrong> usa «Eliminar mi cuenta y mis datos» en la edición
-            de tu perfil. Es inmediato e irreversible.
+            <LegalStrong>Supresión de cuenta:</LegalStrong> usa «Eliminar mi cuenta y mis datos» en tu perfil. Es inmediato e irreversible.
           </li>
           <li>
-            <LegalStrong>Resto de derechos:</LegalStrong> escribe a <LegalMail />. Responderemos en
-            el plazo máximo de un mes.
+            <LegalStrong>Resto de derechos:</LegalStrong> escribe a <LegalMail />. Puedes reclamar ante la AEPD (aepd.es).
           </li>
         </LegalList>
-        <LegalP>
-          Si consideras que tus derechos no han sido atendidos, puedes reclamar ante la Agencia
-          Española de Protección de Datos (aepd.es).
-        </LegalP>
       </>
     ),
   },
@@ -159,9 +154,8 @@ const SECTIONS: readonly LegalSection[] = [
     title: "Menores de edad",
     content: (
       <LegalP>
-        Conforme al artículo 7 de la LOPDGDD, Mareona está destinada a personas mayores de 14
-        años. Si se detecta una cuenta perteneciente a un menor de dicha edad sin la debida
-        autorización parental, se procederá a su supresión.
+        Conforme al artículo 7 de la LOPDGDD, Mareona está destinada a mayores de 14 años. Si se
+        detecta una cuenta de un menor de dicha edad sin autorización parental, será suprimida.
       </LegalP>
     ),
   },
@@ -169,20 +163,11 @@ const SECTIONS: readonly LegalSection[] = [
     id: "seguridad",
     title: "Seguridad y cambios",
     content: (
-      <>
-        <LegalP>
-          Aplicamos cifrado en tránsito y control de acceso por usuario en la base de datos para
-          proteger tu información.
-        </LegalP>
-        <LegalP>
-          Si modificamos esta política, actualizaremos la fecha que figura al inicio de la página.
-          El uso de cookies y almacenamiento local se detalla en la{" "}
-          <Link href="/cookies" className={INLINE_LINK}>
-            Política de cookies
-          </Link>
-          .
-        </LegalP>
-      </>
+      <LegalP>
+        Aplicamos cifrado en tránsito (TLS), cifrado en reposo y políticas de seguridad a nivel de
+        fila (RLS). El uso de almacenamiento local se detalla en la{" "}
+        <Link href="/cookies" className={INLINE_LINK}>Política de cookies</Link>.
+      </LegalP>
     ),
   },
 ];

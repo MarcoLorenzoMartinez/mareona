@@ -1,18 +1,13 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import {
-  isTestConversation,
-  getTestDirectConversations,
-  getTestDirectMessages,
-  markTestConversationAsRead,
-  TEST_CONVERSATION_ID,
-} from "./test-friend-chat";
 import type { DirectConversationSummary, DirectMessage } from "./direct-messages-types";
 
 /**
  * Retrieves all direct message conversations for the authenticated user,
- * populated with the friend's identity and preview of the latest message.
+ * populated with the friend's identity and preview of the latest visible message.
+ *
+ * @returns Ordered list of active 1:1 conversations (empty array if none exist).
  */
 export async function getDirectConversations(): Promise<readonly DirectConversationSummary[]> {
   try {
@@ -30,7 +25,7 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       .eq("user_id", user.id);
 
     if (memberErr || !myMemberships || myMemberships.length === 0) {
-      return getTestDirectConversations();
+      return [];
     }
 
     const convIds = myMemberships.map((m) => m.conversation_id);
@@ -47,7 +42,7 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
 
     if (otherErr || !otherMembers) return [];
 
-    // 3. Fetch latest messages for each conversation
+    // 3. Fetch latest non-deleted messages for each conversation
     const { data: latestMessages } = await supabase
       .from("messages")
       .select("id, conversation_id, sender_id, body, created_at")
@@ -76,8 +71,12 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       const lastMsg = convMessages[0] ?? null;
 
       const unreadCount = membership.last_read_at
-        ? convMessages.filter((m) => new Date(m.created_at) > new Date(membership.last_read_at!)).length
-        : convMessages.length;
+        ? convMessages.filter(
+            (m) =>
+              m.sender_id !== user.id &&
+              new Date(m.created_at) > new Date(membership.last_read_at!)
+          ).length
+        : convMessages.filter((m) => m.sender_id !== user.id).length;
 
       results.push({
         id: membership.conversation_id,
@@ -92,10 +91,6 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       });
     }
 
-    if (!results.some((c) => c.id === TEST_CONVERSATION_ID)) {
-      results.push(...getTestDirectConversations());
-    }
-
     // Sort by most recent activity
     return results.sort((a, b) => {
       const timeA = a.lastMessageCreatedAt ? new Date(a.lastMessageCreatedAt).getTime() : 0;
@@ -103,21 +98,19 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
       return timeB - timeA;
     });
   } catch {
-    return getTestDirectConversations();
+    return [];
   }
 }
 
 /**
- * Fetches all ordered messages in a direct conversation and marks it read.
+ * Fetches all ordered non-deleted messages in a direct conversation and marks it read.
+ *
+ * @param conversationId - Target conversation UUID.
+ * @returns Ordered list of active messages visible to conversation members.
  */
 export async function getDirectMessages(
   conversationId: string
 ): Promise<readonly DirectMessage[]> {
-  if (isTestConversation(conversationId)) {
-    markTestConversationAsRead(conversationId);
-    return getTestDirectMessages(conversationId);
-  }
-
   try {
     const supabase = await createClient();
     const {

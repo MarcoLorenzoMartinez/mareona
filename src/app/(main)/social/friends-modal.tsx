@@ -2,8 +2,9 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-import { Users, X } from "lucide-react";
+import { Users } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { FriendsModalHeader } from "./friends-modal-header";
 import { FriendsListContent } from "./friends-list-content";
 import { getMyFriendsList, searchAficionados } from "@/lib/social/friends-queries";
 import { removeFriendship, sendFriendRequest } from "@/lib/social/friends-actions";
@@ -12,26 +13,58 @@ import type { FriendSummary } from "@/lib/social/friendship-schemas";
 interface FriendsModalProps {
   readonly onOpenProfile: (userId: string) => void;
   readonly onStartChat?: (friend: FriendSummary) => void;
+  readonly isOpen?: boolean;
+  readonly onOpenChange?: (open: boolean) => void;
+  readonly defaultTab?: "friends" | "search";
 }
 
-export function FriendsModal({ onOpenProfile, onStartChat }: FriendsModalProps) {
+export function FriendsModal({
+  onOpenProfile,
+  onStartChat,
+  isOpen: controlledIsOpen,
+  onOpenChange,
+  defaultTab = "friends",
+}: FriendsModalProps) {
   const { user, openAuthModal } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
-  const [tab, setTab] = useState<"friends" | "search">("friends");
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
+
+  const setIsOpen = (open: boolean) => {
+    setInternalIsOpen(open);
+    onOpenChange?.(open);
+  };
+
+  const [tab, setTab] = useState<"friends" | "search">(defaultTab);
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
   const [friends, setFriends] = useState<readonly FriendSummary[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<readonly FriendSummary[]>([]);
   const [isPending, startTransition] = useTransition();
   const [actionMessage, setActionMessage] = useState<string | null>(null);
 
+  if (isOpen && !prevIsOpen) {
+    setPrevIsOpen(true);
+    setTab(defaultTab);
+    setActionMessage(null);
+  } else if (!isOpen && prevIsOpen) {
+    setPrevIsOpen(false);
+  }
+
   useEffect(() => {
     if (!isOpen) return;
+
+    let cancelled = false;
+    getMyFriendsList().then((list) => {
+      if (!cancelled) setFriends(list);
+    });
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
     };
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
     return () => {
+      cancelled = true;
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
@@ -43,11 +76,6 @@ export function FriendsModal({ onOpenProfile, onStartChat }: FriendsModalProps) 
       return;
     }
     setIsOpen(true);
-    setActionMessage(null);
-    startTransition(async () => {
-      const list = await getMyFriendsList();
-      setFriends(list);
-    });
   };
 
   const handleSearch = (query: string) => {
@@ -103,41 +131,12 @@ export function FriendsModal({ onOpenProfile, onStartChat }: FriendsModalProps) 
             className="relative w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl border border-neutral-100 flex flex-col max-h-[85vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setTab("friends")}
-                  className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
-                    tab === "friends"
-                      ? "bg-[var(--primary)] text-white font-bold"
-                      : "text-neutral-600 hover:text-neutral-900"
-                  }`}
-                >
-                  Mis Amigos ({friends.length})
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTab("search")}
-                  className={`rounded-full px-3 py-1 text-xs font-semibold transition-all ${
-                    tab === "search"
-                      ? "bg-[var(--primary)] text-white font-bold"
-                      : "text-neutral-600 hover:text-neutral-900"
-                  }`}
-                >
-                  Buscar Aficionados
-                </button>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 cursor-pointer"
-                aria-label="Cerrar ventana"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
+            <FriendsModalHeader
+              tab={tab}
+              friendsCount={friends.length}
+              onTabChange={setTab}
+              onClose={() => setIsOpen(false)}
+            />
 
             {actionMessage && (
               <p className="mt-2 text-center text-xs font-medium text-[var(--primary)]">
@@ -163,6 +162,7 @@ export function FriendsModal({ onOpenProfile, onStartChat }: FriendsModalProps) 
                   setIsOpen(false);
                   onStartChat?.(f);
                 }}
+                onSwitchToSearch={() => setTab("search")}
               />
             </div>
           </div>

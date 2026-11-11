@@ -7,15 +7,11 @@ import { logBlockedAttempt } from "./moderation-log";
 import {
   sendDirectMessageSchema,
   openDirectConversationSchema,
+  deleteDirectMessageSchema,
   type SendDirectMessageInput,
   type OpenDirectConversationInput,
+  type DeleteDirectMessageInput,
 } from "./direct-messages-schemas";
-import {
-  isTestFriend,
-  isTestConversation,
-  sendTestDirectMessage,
-  TEST_CONVERSATION_ID,
-} from "./test-friend-chat";
 import type { DirectMessage } from "./direct-messages-types";
 
 interface ActionResult<T = void> {
@@ -26,6 +22,9 @@ interface ActionResult<T = void> {
 
 /**
  * Sends a private direct message to an active conversation between friends.
+ *
+ * @param input - Conversation UUID and message body.
+ * @returns Action result with the created message or an error description in Spanish.
  */
 export async function sendDirectMessage(
   input: SendDirectMessageInput
@@ -54,19 +53,16 @@ export async function sendDirectMessage(
       };
     }
 
-    // AI/Regex Safety Moderation
+    // AI/Safety Moderation: blocked attempts are preserved in restricted legal custody
     const moderation = await moderateText(parsed.data.body);
     if (moderation.verdict === "block") {
       await logBlockedAttempt(supabase, {
         userId: user.id,
         body: parsed.data.body,
         reason: moderation.reason,
+        channel: "direct_message",
       });
       return { success: false, error: moderation.reason || MODERATION_REJECTED_MESSAGE };
-    }
-
-    if (isTestConversation(parsed.data.conversationId)) {
-      return { success: true, data: sendTestDirectMessage(parsed.data.body, user.id) };
     }
 
     // Verify permission to post in conversation via RPC
@@ -123,7 +119,59 @@ export async function sendDirectMessage(
 }
 
 /**
+ * Soft-deletes a private message sent by the authenticated user.
+ * Marks `deleted_at` so the message immediately disappears from the chat for both
+ * participants, while preserving the original record in blocked legal custody
+ * (Art. 32 LOPDGDD / LSSI-CE) in case of a judicial warrant or offense investigation.
+ *
+ * @param input - Target messageId and conversationId.
+ * @returns Action result confirming soft-deletion.
+ */
+export async function deleteDirectMessage(
+  input: DeleteDirectMessageInput
+): Promise<ActionResult<{ messageId: string }>> {
+  const parsed = deleteDirectMessageSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message ?? "Solicitud inválida" };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: "Debes iniciar sesión para eliminar un mensaje" };
+    }
+
+    const { data: updated, error: updateErr } = await supabase
+      .from("messages")
+      .update({ deleted_at: new Date().toISOString() })
+      .match({
+        id: parsed.data.messageId,
+        conversation_id: parsed.data.conversationId,
+        sender_id: user.id,
+      })
+      .is("deleted_at", null)
+      .select("id")
+      .maybeSingle();
+
+    if (updateErr || !updated) {
+      return { success: false, error: "No se pudo eliminar el mensaje" };
+    }
+
+    return { success: true, data: { messageId: updated.id } };
+  } catch {
+    return { success: false, error: "Error inesperado al eliminar el mensaje" };
+  }
+}
+
+/**
  * Opens or initializes a 1-on-1 private conversation, verifying mutual friendship first.
+ *
+ * @param input - Target friend user UUID.
+ * @returns Action result with the resolved conversationId.
  */
 export async function getOrCreateConversationWithFriend(
   input: OpenDirectConversationInput
@@ -147,16 +195,20 @@ export async function getOrCreateConversationWithFriend(
       return { success: false, error: "No puedes abrir una conversación contigo mismo" };
     }
 
-    if (isTestFriend(parsed.data.targetUserId)) {
-      return { success: true, data: { conversationId: TEST_CONVERSATION_ID } };
-    }
-
     // Verify friendship status is accepted
     const filter = `and(requester_id.eq.${user.id},addressee_id.eq.${parsed.data.targetUserId}),and(requester_id.eq.${parsed.data.targetUserId},addressee_id.eq.${user.id})`;
-    const { data: friendship } = await supabase.from("friendships").select("id").eq("status", "accepted").or(filter).maybeSingle();
+    const { data: friendship } = await supabase
+      .from("friendships")
+      .select("id")
+      .eq("status", "accepted")
+      .or(filter)
+      .maybeSingle();
 
     if (!friendship) {
-      return { success: false, error: "Solo puedes iniciar conversaciones privadas con aficionados con los que estés conectado como amigos" };
+      return {
+        success: false,
+        error: "Solo puedes iniciar conversaciones privadas con aficionados con los que estés conectado como amigos",
+      };
     }
 
     const { data: conversationId, error: rpcErr } = await supabase.rpc(

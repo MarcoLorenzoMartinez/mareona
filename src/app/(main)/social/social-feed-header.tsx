@@ -12,6 +12,9 @@ interface SocialFeedHeaderProps {
   readonly onOpenProfile: (id: string) => void;
   readonly onStartChat: (friend: FriendSummary) => void;
   readonly unreadMessagesCount?: number;
+  readonly isFriendsOpen?: boolean;
+  readonly onFriendsOpenChange?: (open: boolean) => void;
+  readonly friendsModalTab?: "friends" | "search";
 }
 
 export function SocialFeedHeader({
@@ -20,6 +23,9 @@ export function SocialFeedHeader({
   onOpenProfile,
   onStartChat,
   unreadMessagesCount = 0,
+  isFriendsOpen,
+  onFriendsOpenChange,
+  friendsModalTab = "friends",
 }: SocialFeedHeaderProps) {
   const isMessagesActive = activeTab === "messages";
 
@@ -52,7 +58,13 @@ export function SocialFeedHeader({
           )}
         </button>
 
-        <FriendsModal onOpenProfile={onOpenProfile} onStartChat={onStartChat} />
+        <FriendsModal
+          onOpenProfile={onOpenProfile}
+          onStartChat={onStartChat}
+          isOpen={isFriendsOpen}
+          onOpenChange={onFriendsOpenChange}
+          defaultTab={friendsModalTab}
+        />
       </div>
     </div>
   );

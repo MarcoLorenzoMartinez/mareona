@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { assertAdmin } from "./guard";
 import { moderatePostActionSchema } from "./schemas";
 import { DEV_FLAGGED_POSTS, DEV_BLOCKED_ATTEMPTS } from "./dev-seeds";
+import { redactAuditBodyForWebPanel } from "@/lib/social/dm-privacy-custody";
 import type { Database } from "@/types/database.types";
 
 export interface FlaggedPostItem {
@@ -121,7 +122,7 @@ export async function getBlockedAttempts(): Promise<readonly BlockedAttemptItem[
   return rawAttempts.map((attempt) => ({
     id: attempt.id,
     userId: attempt.user_id,
-    body: attempt.body,
+    body: redactAuditBodyForWebPanel(attempt.body, attempt.reason),
     reason: attempt.reason,
     createdAt: attempt.created_at,
     author: {

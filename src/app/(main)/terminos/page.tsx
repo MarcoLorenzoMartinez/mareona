@@ -29,15 +29,18 @@ const SECTIONS: readonly LegalSection[] = [
   },
   {
     id: "normas",
-    title: "Normas de la tertulia",
+    title: "Normas de la tertulia y mensajería privada",
     content: (
       <>
-        <LegalP>La rivalidad deportiva es bienvenida; la falta de respeto, no. Está prohibido publicar:</LegalP>
+        <LegalP>
+          La rivalidad deportiva es bienvenida; la falta de respeto, no. Tanto en el muro público
+          como en los chats privados entre usuarios está prohibido enviar o publicar:
+        </LegalP>
         <LegalList>
-          <li>Insultos, acoso, amenazas o incitación a la violencia.</li>
+          <li>Insultos, acoso, coacciones, amenazas o incitación a la violencia.</li>
           <li>Contenido racista, xenófobo, machista, homófobo o discriminatorio.</li>
-          <li>Datos personales de terceros o contenido que vulnere su intimidad.</li>
-          <li>Publicidad no autorizada, spam o contenido ilegal.</li>
+          <li>Datos personales de terceros sin consentimiento o contenido que vulnere su intimidad.</li>
+          <li>Publicidad no autorizada, spam, estafas, enlaces maliciosos o cualquier acto delictivo.</li>
           <li>Suplantación de identidad.</li>
         </LegalList>
       </>
@@ -45,13 +48,23 @@ const SECTIONS: readonly LegalSection[] = [
   },
   {
     id: "moderacion",
-    title: "Moderación",
+    title: "Moderación, privacidad de chats y custodia legal",
     content: (
       <>
         <LegalP>
-          Mareona combina un filtro automático de palabras con revisión manual. El equipo puede
-          retirar contenido que incumpla estas normas y suspender cuentas de forma temporal o
-          permanente según la gravedad.
+          Mareona combina un filtro automático preventivo con revisión de incidencias en el muro
+          público. En los <LegalStrong>mensajes privados</LegalStrong>, el filtro automatizado
+          impide el envío de expresiones gravemente ofensivas sin exponer el contenido de tus
+          conversaciones privadas al panel de moderadores.
+        </LegalP>
+        <LegalP>
+          Puedes eliminar en cualquier momento los mensajes privados que hayas enviado para que
+          dejen de mostrarse en la conversación. No obstante, para evitar que el borrado se utilice
+          para ocultar pruebas de posibles delitos, acoso o infracciones graves, los mensajes
+          suprimidos y los intentos bloqueados permanecen en{" "}
+          <LegalStrong>custodia legal bloqueada</LegalStrong> (art. 32 LOPDGDD), inaccesibles para
+          los usuarios y moderadores ordinarios y disponibles exclusivamente ante requerimientos de
+          jueces, tribunales o Fuerzas y Cuerpos de Seguridad.
         </LegalP>
         <LegalP>
           Si crees que una decisión de moderación es un error, escríbenos a <LegalMail /> y la
@@ -137,14 +150,8 @@ const SECTIONS: readonly LegalSection[] = [
         </LegalP>
         <LegalP>
           Se rigen por la <LegalStrong>legislación española</LegalStrong>. Consulta también el{" "}
-          <Link href="/aviso-legal" className={INLINE_LINK}>
-            Aviso legal
-          </Link>{" "}
-          y la{" "}
-          <Link href="/privacidad" className={INLINE_LINK}>
-            Política de privacidad
-          </Link>
-          .
+          <Link href="/aviso-legal" className={INLINE_LINK}>Aviso legal</Link> y la{" "}
+          <Link href="/privacidad" className={INLINE_LINK}>Política de privacidad</Link>.
         </LegalP>
       </>
     ),
