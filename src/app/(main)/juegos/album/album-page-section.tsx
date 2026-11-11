@@ -14,6 +14,7 @@ interface AlbumPageSectionProps {
   readonly cards: readonly Card[];
   readonly getCardStatus: (slug: string) => { isOwned: boolean; quantity: number };
   readonly newlyAcquiredSlugs?: ReadonlySet<string>;
+  readonly onCardPasted?: (slug: string) => void;
 }
 
 /**
@@ -27,6 +28,7 @@ export function AlbumPageSection({
   cards,
   getCardStatus,
   newlyAcquiredSlugs = new Set(),
+  onCardPasted,
 }: AlbumPageSectionProps) {
   const slots = Array.from({ length: CARDS_PER_PAGE });
 
@@ -74,7 +76,10 @@ export function AlbumPageSection({
           return (
             <div key={card.id} className="relative aspect-[63/90] w-full">
               {isOwned ? (
-                <AlbumPastedCard isNew={isNew}>
+                <AlbumPastedCard
+                  isNew={isNew}
+                  onPasted={isNew && onCardPasted ? () => onCardPasted(card.slug) : undefined}
+                >
                   <HistoricalCard
                     card={card}
                     isOwned

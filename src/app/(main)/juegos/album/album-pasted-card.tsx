@@ -1,25 +1,37 @@
 "use client"; // Client: Contenedor de cromo pegado con animación física y brillo satinado
 
-import type { ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 
 interface AlbumPastedCardProps {
   readonly children: ReactNode;
   readonly isNew?: boolean;
+  readonly onPasted?: () => void;
 }
 
 /**
  * Wraps a HistoricalCard to sit squarely and flush within its album slot.
  * Ensures strictly proportional dimensions matching the album grid cell,
- * physical sticking animation for newly acquired cards, and a subtle satin gloss sheen.
+ * physical sticking animation for newly acquired cards (played only once),
+ * and a subtle satin gloss sheen.
  */
 export function AlbumPastedCard({
   children,
   isNew = false,
+  onPasted,
 }: AlbumPastedCardProps) {
+  // Retain animation status for this mount so removing the slug does not interrupt the CSS transition
+  const [shouldAnimate] = useState(isNew);
+
+  useEffect(() => {
+    if (isNew && onPasted) {
+      onPasted();
+    }
+  }, [isNew, onPasted]);
+
   return (
     <div
       className={`relative w-full h-full aspect-[63/90] ${
-        isNew ? "animate-sticker-stick" : ""
+        shouldAnimate ? "animate-sticker-stick" : ""
       }`}
     >
       {/* Sombra plana de cromo adherido al cartón */}

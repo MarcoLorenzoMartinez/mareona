@@ -1,7 +1,7 @@
 // Client: Orquestador interactivo del juego Mayor o Menor
 'use client';
 
-import React, { useState, useCallback, useEffect, useTransition } from 'react';
+import React, { useState, useCallback, useTransition } from 'react';
 import type {
   HigherLowerMode,
   HigherLowerPlayer,
@@ -114,7 +114,7 @@ export function HigherLowerClient() {
   const bestScoreForMode = stats.bestScoreByMode[mode] || 0;
 
   return (
-    <div className="flex flex-col gap-6 max-w-4xl mx-auto w-full">
+    <div className="flex flex-col gap-3 sm:gap-6 max-w-4xl mx-auto w-full">
       <HigherLowerHeader
         mode={mode}
         onSelectMode={handleModeChange}
@@ -125,11 +125,12 @@ export function HigherLowerClient() {
 
       <section
         aria-label="Área de comparación"
-        className="relative flex flex-col items-center p-4 sm:p-7 rounded-3xl"
+        className="relative flex flex-col items-center p-2 sm:p-7 rounded-3xl"
       >
         <HigherLowerArenaBackground />
 
-        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start justify-items-center w-full z-10">
+        {/* Tarjetas enfrentadas permanentemente en 2 columnas (móvil y escritorio) */}
+        <div className="relative grid grid-cols-2 gap-2 sm:gap-8 items-stretch justify-items-center w-full z-10 max-w-3xl mx-auto">
           {/* Tarjeta 1 (Izquierda: Jugador de referencia) */}
           <div className="flex flex-col items-center w-full">
             <HigherLowerCard
@@ -139,13 +140,13 @@ export function HigherLowerClient() {
             />
           </div>
 
-          {/* Insignia Central VS sutil */}
-          <div className="absolute left-1/2 top-[180px] -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white/95 font-bold text-[11px] tracking-wider text-neutral-400 shadow-xs backdrop-blur-xs pointer-events-none">
+          {/* Insignia Central VS perfectamente centrada entre ambas tarjetas */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex h-7 w-7 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-neutral-200 bg-white/95 font-bold text-[9px] sm:text-[11px] tracking-wider text-neutral-400 shadow-xs backdrop-blur-xs pointer-events-none">
             VS
           </div>
 
-          {/* Tarjeta 2 (Derecha: Jugador misterioso + controles justo debajo) */}
-          <div className="flex flex-col items-center w-full gap-4">
+          {/* Tarjeta 2 (Derecha: Jugador misterioso) */}
+          <div className="flex flex-col items-center w-full">
             <HigherLowerCard
               player={rightPlayer}
               mode={mode}
@@ -153,14 +154,15 @@ export function HigherLowerClient() {
               isMystery={!isRevealed}
               outcome={guessOutcome}
             />
-
-            <div className="w-full max-w-sm flex justify-center min-h-[52px]">
-              <HigherLowerControls
-                onGuess={handleGuess}
-                disabled={isRevealed}
-              />
-            </div>
           </div>
+        </div>
+
+        {/* Controles unificados horizontalmente a la altura del pulgar */}
+        <div className="w-full max-w-md mx-auto mt-3 sm:mt-5 z-10">
+          <HigherLowerControls
+            onGuess={handleGuess}
+            disabled={isRevealed}
+          />
         </div>
       </section>
 

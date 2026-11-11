@@ -23,7 +23,7 @@ export function StandingsTable({
   const t = dict.season.standings;
 
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-white p-4 shadow-2xs sm:p-5">
+    <div className="rounded-xl border border-[var(--border)] bg-white p-2.5 sm:p-5 shadow-2xs">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <caption className="sr-only">
@@ -31,13 +31,16 @@ export function StandingsTable({
           </caption>
           <thead>
             <tr className="border-b border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)] uppercase">
-              <th scope="col" className="w-10 sm:w-12 py-2.5 pl-3 text-center">
+              <th scope="col" className="w-8 sm:w-12 py-2.5 pl-2 sm:pl-3 text-center">
                 {t.columns.pos}
               </th>
-              <th scope="col" className="py-2.5 pl-1.5 sm:pl-2 pr-2 text-left">
+              <th scope="col" className="py-2.5 pl-1.5 sm:pl-2 pr-1 sm:pr-2 text-left">
                 {t.columns.team}
               </th>
-              <th scope="col" className="w-10 sm:w-12 py-2.5 text-center" title={t.columnTitles.played}>
+              <th scope="col" className="w-9 sm:w-14 py-2.5 text-center font-bold px-0.5 sm:px-1" title={t.columnTitles.points}>
+                {t.columns.points}
+              </th>
+              <th scope="col" className="w-8 sm:w-12 py-2.5 px-0.5 sm:px-1 text-center" title={t.columnTitles.played}>
                 {t.columns.played}
               </th>
               <th scope="col" className="hidden sm:table-cell w-10 sm:w-12 py-2.5 text-center" title={t.columnTitles.won}>
@@ -55,10 +58,7 @@ export function StandingsTable({
               <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title={t.columnTitles.goalsAgainst}>
                 {t.columns.goalsAgainst}
               </th>
-              <th scope="col" className="w-12 sm:w-14 py-2.5 text-center font-bold px-1" title={t.columnTitles.points}>
-                {t.columns.points}
-              </th>
-              <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right" title={t.columnTitles.goalDifference}>
+              <th scope="col" className="w-10 sm:w-14 py-2.5 pr-2 sm:pr-3 text-right" title={t.columnTitles.goalDifference}>
                 {t.columns.goalDifference}
               </th>
             </tr>

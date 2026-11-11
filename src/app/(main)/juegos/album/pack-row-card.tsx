@@ -11,12 +11,13 @@ interface PackRowCardProps {
   readonly isAnticipating?: boolean;
   readonly index: number;
   readonly onReveal: () => void;
+  readonly totalCards?: number;
 }
 
 /**
- * Individual card slot displayed side-by-side in the pack reveal modal.
- * Features concentric metallic borders before reveal and elevated 3D flip
- * physics with foil sheen sweep and impact burst for Silver/Gold cards.
+ * Individual card slot displayed in the pack reveal modal.
+ * Uses uniform proportional dimensions across all pack tiers (Aficionado, Rojiblanco, Leyenda)
+ * ensuring consistent collectible physical scale on both mobile and desktop.
  */
 export function PackRowCard({
   card,
@@ -64,6 +65,9 @@ export function PackRowCard({
       ? "transition-transform duration-750 ease-[cubic-bezier(0.34,1.45,0.64,1)]"
       : "transition-transform duration-600 ease-out";
 
+  // Identical, uniform card scale across all tiers for visual continuity
+  const cardWidthClass = "w-[26.5vw] xs:w-[27.5vw] max-w-[170px] sm:w-40 md:w-44";
+
   return (
     <div
       className={`relative flex flex-col items-center shrink-0 select-none ${
@@ -90,7 +94,7 @@ export function PackRowCard({
             ? `${card.knownAs}, ${card.eraLabel}`
             : `Cromo ${index + 1} por descubrir`
         }
-        className={`relative w-40 sm:w-44 aspect-[63/90] perspective-1000 transition-shadow duration-300 rounded-none ${glowStyle} ${
+        className={`relative ${cardWidthClass} aspect-[63/90] perspective-1000 transition-shadow duration-300 rounded-none ${glowStyle} ${
           !isRevealed ? "cursor-pointer hover:scale-[1.03] active:scale-[0.98]" : ""
         } ${popContainerClass}`}
       >

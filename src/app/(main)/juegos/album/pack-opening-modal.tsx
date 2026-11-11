@@ -105,21 +105,21 @@ export function PackOpeningModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="pack-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 sm:p-6 backdrop-blur-xs select-none animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-2 sm:p-6 backdrop-blur-xs select-none animate-in fade-in duration-200"
     >
-      <div className="relative flex w-full max-w-5xl flex-col items-center rounded-2xl border border-[var(--border)] bg-white p-5 sm:p-7 shadow-xl">
+      <div className="relative flex w-full max-w-5xl max-h-[92vh] overflow-y-auto flex-col items-center rounded-2xl border border-[var(--border)] bg-white p-3.5 sm:p-7 shadow-xl">
         {/* Cabecera limpia y deportiva */}
-        <div className="flex w-full items-center justify-between border-b border-[var(--border)] pb-3">
-          <div className="flex items-center gap-3">
+        <div className="flex w-full items-center justify-between border-b border-[var(--border)] pb-2.5 sm:pb-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <MiniPack tier={tier} />
-            <h2 id="pack-modal-title" className="font-sans text-sm sm:text-base font-bold text-neutral-900 uppercase tracking-wide">
+            <h2 id="pack-modal-title" className="font-sans text-xs sm:text-base font-bold text-neutral-900 uppercase tracking-wide truncate">
               {config.name}
             </h2>
             {!allRevealed && (
               <button
                 type="button"
                 onClick={handleRevealAllNow}
-                className="ml-2 rounded-full border border-[var(--border)] bg-neutral-50 px-2.5 py-0.5 text-[11px] font-bold text-neutral-600 hover:border-[#e2001a] hover:text-[#e2001a] hover:bg-red-50/50 active:scale-95 transition-all cursor-pointer"
+                className="shrink-0 rounded-full border border-[var(--border)] bg-neutral-50 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-neutral-600 hover:border-[#e2001a] hover:text-[#e2001a] hover:bg-red-50/50 active:scale-95 transition-all cursor-pointer"
                 title="Mostrar todos los cromos al instante sin esperar la animación"
               >
                 Saltar animación
@@ -131,15 +131,15 @@ export function PackOpeningModal({
             type="button"
             onClick={handleClose}
             aria-label="Cerrar modal"
-            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors cursor-pointer"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors cursor-pointer"
           >
             ✕
           </button>
         </div>
 
-        {/* Fila horizontal centrada de cromos con holgura para elevación 3D */}
-        <div className="my-3 flex w-full items-center justify-center overflow-x-auto py-7 px-4 scrollbar-none">
-          <div className="flex items-center justify-center gap-3 sm:gap-4 min-w-max">
+        {/* Fila de cromos adaptativa y centrada */}
+        <div className="my-2 sm:my-3 flex w-full items-center justify-center py-4 sm:py-7 px-1 sm:px-4">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap sm:flex-nowrap max-w-full">
             {cards.map((card, idx) => (
               <PackRowCard
                 key={`${card.id}-${idx}`}
@@ -149,6 +149,7 @@ export function PackOpeningModal({
                 isRevealed={idx < revealedCount}
                 isAnticipating={idx === anticipatingIndex}
                 onReveal={() => idx >= revealedCount && setRevealedCount(idx + 1)}
+                totalCards={cards.length}
               />
             ))}
           </div>

@@ -1,7 +1,7 @@
 // Client: Interacción táctil, hover y selección interactiva de puntos en el gráfico
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import type { HistoricalChartPoint } from "@/lib/historical/types";
 
 interface EvolutionChartProps {
@@ -20,12 +20,14 @@ const PAD_BOTTOM = 30;
 /**
  * Interactive SVG trajectory chart plotting Real Sporting league finishes from 1928 to present.
  * Inverts the Y-axis so 1st place is at the top, cleanly separating 1.ª and 2.ª División.
+ * Starts scrolled to the end on mobile viewports so recent seasons are immediately visible.
  */
 export function HistoricalEvolutionChart({
   points,
   selectedSeasonId,
   onSelectSeason,
 }: EvolutionChartProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const innerWidth = WIDTH - PAD_LEFT - PAD_RIGHT;
   const innerHeight = HEIGHT - PAD_TOP - PAD_BOTTOM;
@@ -38,8 +40,29 @@ export function HistoricalEvolutionChart({
   const getX = (year: number) => PAD_LEFT + ((year - minYear) / yearSpan) * innerWidth;
   const getY = (rank: number) => PAD_TOP + ((rank - 1) / 41) * innerHeight;
 
+  // On mount, position the horizontal scroll at the rightmost end so the most recent seasons are visible first
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const scrollToRecent = () => {
+      el.scrollLeft = el.scrollWidth;
+    };
+
+    scrollToRecent();
+    const frameId = requestAnimationFrame(scrollToRecent);
+
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
   const polylinePoints = useMemo(() => {
-    return points.map((p) => `${getX(p.year).toFixed(1)},${getY(p.effectiveRank).toFixed(1)}`).join(" ");
+    return points
+      .map((p) => {
+        const x = PAD_LEFT + ((p.year - minYear) / yearSpan) * innerWidth;
+        const y = PAD_TOP + ((p.effectiveRank - 1) / 41) * innerHeight;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      })
+      .join(" ");
   }, [points, minYear, yearSpan, innerWidth, innerHeight]);
 
   const yDiv = getY(20.5);
@@ -47,7 +70,7 @@ export function HistoricalEvolutionChart({
   return (
     <section aria-label="Evolución histórica en Liga" className="w-full">
       <div className="rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs">
-        <div className="overflow-x-auto scrollbar-none">
+        <div ref={scrollContainerRef} className="overflow-x-auto scrollbar-none touch-pan-x">
           <svg
             viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
             className="w-full min-w-[700px] h-auto select-none overflow-visible"

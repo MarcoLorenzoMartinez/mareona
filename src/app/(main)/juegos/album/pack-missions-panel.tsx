@@ -17,6 +17,7 @@ interface PackMissionsPanelProps {
 /**
  * Editorial list of daily pack rewards.
  * Replaces generic AI text badges with genuine mini FUT foil pack previews next to action buttons.
+ * Uses adaptive wrapping for the duplicate exchange bar to preserve vertical pack alignment on mobile.
  */
 export function PackMissionsPanel({
   missionState,
@@ -42,12 +43,12 @@ export function PackMissionsPanel({
 
       <div className="flex flex-col divide-y divide-[var(--border)] rounded-xl border border-[var(--border)] bg-white overflow-hidden shadow-2xs">
         {/* Fila 1: Visita Diaria */}
-        <div className="flex items-center justify-between px-4 py-2.5">
-          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
+        <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5">
+          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)] min-w-0 pr-2">
             Visita diaria
           </span>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               type="button"
               disabled={missionState.hasClaimedDailyLogin || isClaimingLogin}
@@ -65,12 +66,12 @@ export function PackMissionsPanel({
         </div>
 
         {/* Fila 2: Reto Diario de Juegos */}
-        <div className="flex items-center justify-between px-4 py-2.5">
-          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
+        <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5">
+          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)] min-w-0 pr-2">
             Reto diario de juegos
           </span>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             {missionState.hasClaimedDailyGame ? (
               <span className="rounded-full bg-neutral-100 px-3.5 py-1 font-sans text-xs font-bold text-neutral-400">
                 Conseguido
@@ -88,12 +89,12 @@ export function PackMissionsPanel({
         </div>
 
         {/* Fila 3: La Porra */}
-        <div className="flex items-center justify-between px-4 py-2.5">
-          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
+        <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5">
+          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)] min-w-0 pr-2">
             La Porra de la jornada
           </span>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             <Link
               href="/juegos/porra"
               className="rounded-full border border-[var(--border)] px-3.5 py-1 text-xs font-bold text-[var(--foreground)] hover:border-amber-600 hover:text-amber-700 transition-colors"
@@ -105,25 +106,27 @@ export function PackMissionsPanel({
         </div>
 
         {/* Fila 4: Taco de Repetidos */}
-        <div className="flex items-center justify-between px-4 py-2.5">
-          <div className="flex items-center gap-3">
-            <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
-              Taco de repetidos
-            </span>
-            <div className="flex items-center gap-2">
-              <span className="font-sans text-xs font-bold tabular-nums text-neutral-500">
-                {duplicateCount}/{DUPLICATES_RECIPE_COST}
+        <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5">
+          <div className="min-w-0 pr-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-3">
+              <span className="text-xs sm:text-sm font-bold text-[var(--foreground)] whitespace-nowrap">
+                Taco de repetidos
               </span>
-              <div className="h-1.5 w-16 sm:w-24 overflow-hidden rounded-full bg-neutral-100">
-                <div
-                  className="h-full bg-[#e2001a] transition-all duration-300"
-                  style={{ width: `${recycleProgressPct}%` }}
-                />
+              <div className="flex items-center gap-1.5">
+                <span className="font-sans text-[11px] sm:text-xs font-bold tabular-nums text-neutral-500">
+                  {duplicateCount}/{DUPLICATES_RECIPE_COST}
+                </span>
+                <div className="h-1.5 w-14 sm:w-20 overflow-hidden rounded-full bg-neutral-100">
+                  <div
+                    className="h-full bg-[#e2001a] transition-all duration-300"
+                    style={{ width: `${recycleProgressPct}%` }}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             <button
               type="button"
               disabled={!canRecycle || isRecycling}

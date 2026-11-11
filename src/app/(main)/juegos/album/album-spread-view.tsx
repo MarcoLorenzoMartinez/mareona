@@ -17,12 +17,14 @@ interface AlbumSpreadViewProps {
   readonly cards: readonly Card[];
   readonly getCardStatus: (slug: string) => { isOwned: boolean; quantity: number };
   readonly newlyAcquiredSlugs?: ReadonlySet<string>;
+  readonly onCardPasted?: (slug: string) => void;
 }
 
 export function AlbumSpreadView({
   cards,
   getCardStatus,
   newlyAcquiredSlugs = new Set(),
+  onCardPasted,
 }: AlbumSpreadViewProps) {
   const sortedCards = useMemo(() => sortCardsChronologically(cards), [cards]);
   const pages = useMemo(() => paginateCards(sortedCards, CARDS_PER_PAGE), [sortedCards]);
@@ -58,12 +60,9 @@ export function AlbumSpreadView({
     [currentPage, totalPages]
   );
 
-  // Atajos de teclado para hojear el álbum físico (1 página en móvil, 2 en escritorio)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-        return;
-      }
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
       if (e.key === "ArrowLeft") {
         e.preventDefault();
         handleTurnToPage(e.shiftKey ? activePage - (isDoublePage ? 10 : 5) : activePage - step);
@@ -78,7 +77,6 @@ export function AlbumSpreadView({
         handleTurnToPage(totalPages);
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activePage, step, isDoublePage, totalPages, handleTurnToPage]);
@@ -88,16 +86,25 @@ export function AlbumSpreadView({
   const rightChapter = getChapter(rightPageNum);
   const mobileChapter = getChapter(currentPage);
 
-  const leftCards = pages[leftPageNum - 1] ?? [];
-  const rightCards = pages[rightPageNum - 1] ?? [];
-  const mobileCards = pages[currentPage - 1] ?? [];
-
   const canPrev = isDoublePage ? leftPageNum > 1 : currentPage > 1;
   const canNext = isDoublePage ? rightPageNum < totalPages : currentPage < totalPages;
   const navLabel =
     isDoublePage && leftPageNum !== rightPageNum
       ? `Páginas ${leftPageNum}–${rightPageNum} de ${totalPages}`
       : `Página ${activePage} de ${totalPages}`;
+
+  const renderPage = (pageNum: number, chapterLabel?: string, showTitle = true) => (
+    <AlbumPageSection
+      pageNumber={pageNum}
+      totalPages={totalPages}
+      pageTitle={chapterLabel ?? "Colección de Cromos"}
+      showHeaderTitle={showTitle}
+      cards={pages[pageNum - 1] ?? []}
+      getCardStatus={getCardStatus}
+      newlyAcquiredSlugs={newlyAcquiredSlugs}
+      onCardPasted={onCardPasted}
+    />
+  );
 
   return (
     <div
@@ -112,14 +119,12 @@ export function AlbumSpreadView({
         touchStartX.current = null;
       }}
     >
-      {/* 1. Viñetas de capítulos físicas integradas sobre el álbum */}
       <AlbumChapterTabs
         chapters={chapters}
         currentPage={activePage}
         onSelectPage={handleTurnToPage}
       />
 
-      {/* 2. Pliego físico abierto del álbum (1 página en móvil, 2 en escritorio) */}
       <AlbumBookSpread
         pageNumber={activePage}
         totalPages={totalPages}
@@ -128,42 +133,11 @@ export function AlbumSpreadView({
         onNextPage={() => handleTurnToPage(activePage + step)}
         canPrev={canPrev}
         canNext={canNext}
-        leftPage={
-          <AlbumPageSection
-            pageNumber={leftPageNum}
-            totalPages={totalPages}
-            pageTitle={leftChapter?.label ?? "Colección de Cromos"}
-            showHeaderTitle={true}
-            cards={leftCards}
-            getCardStatus={getCardStatus}
-            newlyAcquiredSlugs={newlyAcquiredSlugs}
-          />
-        }
-        rightPage={
-          <AlbumPageSection
-            pageNumber={rightPageNum}
-            totalPages={totalPages}
-            pageTitle={rightChapter?.label ?? "Colección de Cromos"}
-            showHeaderTitle={false}
-            cards={rightCards}
-            getCardStatus={getCardStatus}
-            newlyAcquiredSlugs={newlyAcquiredSlugs}
-          />
-        }
-        mobilePage={
-          <AlbumPageSection
-            pageNumber={currentPage}
-            totalPages={totalPages}
-            pageTitle={mobileChapter?.label ?? "Colección de Cromos"}
-            showHeaderTitle={true}
-            cards={mobileCards}
-            getCardStatus={getCardStatus}
-            newlyAcquiredSlugs={newlyAcquiredSlugs}
-          />
-        }
+        leftPage={renderPage(leftPageNum, leftChapter?.label, true)}
+        rightPage={renderPage(rightPageNum, rightChapter?.label, false)}
+        mobilePage={renderPage(currentPage, mobileChapter?.label, true)}
       />
 
-      {/* 3. Riel deslizador antiguo debajo del álbum */}
       <div className="mt-4">
         <AlbumPageNav
           currentPage={activePage}

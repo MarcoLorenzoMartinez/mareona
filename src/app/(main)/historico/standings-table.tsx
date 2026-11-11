@@ -17,7 +17,7 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
 
   return (
     <section aria-label={`Clasificación oficial de la temporada ${season.label}`} className="w-full">
-      <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
+      <div className="rounded-xl border border-[var(--border)] bg-white p-2.5 sm:p-5 shadow-2xs">
         <div className="mb-4 border-b border-[var(--border)] pb-3">
           <h3 className="text-base font-bold text-[var(--foreground)]">
             {season.tierName}
@@ -37,16 +37,16 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
             </caption>
             <thead>
               <tr className="border-b border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)] uppercase">
-                <th scope="col" className="w-10 sm:w-12 py-2.5 pl-3 text-center">Pos</th>
-                <th scope="col" className="py-2.5 pl-2 pr-2 text-left">Equipo</th>
-                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center px-1">PJ</th>
+                <th scope="col" className="w-8 sm:w-12 py-2.5 pl-2 sm:pl-3 text-center">Pos</th>
+                <th scope="col" className="py-2.5 pl-1.5 sm:pl-2 pr-1 sm:pr-2 text-left">Equipo</th>
+                <th scope="col" className="w-9 sm:w-14 py-2.5 text-center font-bold px-0.5 sm:px-1">Pts</th>
+                <th scope="col" className="w-8 sm:w-12 py-2.5 text-center px-0.5 sm:px-1">PJ</th>
                 <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell px-1">PG</th>
                 <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell px-1">PE</th>
                 <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell px-1">PP</th>
                 <th scope="col" className="w-12 sm:w-14 py-2.5 text-center hidden md:table-cell px-1">GF</th>
                 <th scope="col" className="w-12 sm:w-14 py-2.5 text-center hidden md:table-cell px-1">GC</th>
-                <th scope="col" className="w-11 sm:w-14 py-2.5 text-center font-bold px-1">Pts</th>
-                <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right">DG</th>
+                <th scope="col" className="w-10 sm:w-14 py-2.5 pr-2 sm:pr-3 text-right">DG</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--border)]">
@@ -67,7 +67,7 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
                   >
                     {/* Posición con barra vertical de acento */}
                     <td
-                      className="relative py-2.5 pl-3 pr-2 text-center"
+                      className="relative py-2.5 pl-2 sm:pl-3 pr-1 text-center"
                       aria-label={`Posición ${row.position}, ${badgeStyle.label}`}
                     >
                       {badgeStyle.barClass && (
@@ -82,8 +82,8 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
                     </td>
 
                     {/* Escudo y Nombre del Equipo */}
-                    <td className="py-2.5 pl-2 pr-2 text-left">
-                      <div className="flex items-center gap-2">
+                    <td className="py-2.5 pl-1.5 sm:pl-2 pr-1 sm:pr-2 text-left">
+                      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                         <TeamCrest
                           crestUrl={row.crestUrl}
                           teamName={row.teamName}
@@ -91,7 +91,7 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
                           isSporting={row.isSporting}
                         />
                         <span
-                          className={`truncate max-w-[160px] sm:max-w-[240px] ${
+                          className={`truncate ${
                             row.isSporting ? "font-bold text-[var(--primary)]" : ""
                           }`}
                         >
@@ -100,8 +100,13 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
                       </div>
                     </td>
 
+                    {/* Puntos */}
+                    <td className="py-2.5 px-0.5 sm:px-1 text-center font-bold tabular-nums text-[var(--foreground)]">
+                      {row.points}
+                    </td>
+
                     {/* PJ */}
-                    <td className="py-2.5 px-1 text-center tabular-nums text-[var(--foreground-muted)]">
+                    <td className="py-2.5 px-0.5 sm:px-1 text-center tabular-nums text-[var(--foreground-muted)]">
                       {row.played}
                     </td>
 
@@ -130,14 +135,9 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
                       {row.goalsAgainst}
                     </td>
 
-                    {/* Puntos */}
-                    <td className="py-2.5 px-1 text-center font-bold tabular-nums text-[var(--foreground)]">
-                      {row.points}
-                    </td>
-
                     {/* DG */}
                     <td
-                      className={`py-2.5 pr-3 text-right tabular-nums text-xs font-semibold ${
+                      className={`py-2.5 pr-2 sm:pr-3 text-right tabular-nums text-xs font-semibold whitespace-nowrap ${
                         isPositive
                           ? "text-emerald-700"
                           : goalDiff < 0

@@ -38,7 +38,7 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
       }`}
     >
       <td
-        className="relative py-2.5 pl-3 pr-2 text-center"
+        className="relative py-2.5 pl-2 sm:pl-3 pr-1 text-center"
         aria-label={`Posición ${row.position}${
           isDirectPromotion
             ? `, ${t.zones.promotion}`
@@ -60,8 +60,8 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
         </span>
       </td>
 
-      <td className="py-2.5 pl-1.5 sm:pl-2 pr-2">
-        <div className="flex items-center gap-2.5 min-w-0">
+      <td className="py-2.5 pl-1.5 sm:pl-2 pr-1 sm:pr-2">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
           <TeamCrest
             crestUrl={row.crestUrl}
             teamName={row.teamName}
@@ -78,7 +78,11 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
         </div>
       </td>
 
-      <td className="py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
+      <td className="py-2.5 px-0.5 sm:px-1 text-center font-bold tabular-nums text-[var(--foreground)]">
+        {row.points}
+      </td>
+
+      <td className="py-2.5 px-0.5 sm:px-1 text-center tabular-nums text-[var(--foreground-muted)]">
         {row.played}
       </td>
       <td className="hidden sm:table-cell py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
@@ -97,11 +101,7 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
         {row.goalsAgainst}
       </td>
 
-      <td className="py-2.5 px-1 text-center font-bold tabular-nums text-[var(--foreground)]">
-        {row.points}
-      </td>
-
-      <td className="py-2.5 pr-3 text-right tabular-nums text-xs sm:text-sm font-medium">
+      <td className="py-2.5 pr-2 sm:pr-3 text-right tabular-nums text-xs sm:text-sm font-medium whitespace-nowrap">
         <span
           className={
             goalDiff > 0

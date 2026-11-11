@@ -1,10 +1,16 @@
-// Client: Panel lateral y cajón accesible para filtrar y seleccionar jugadores
+// Client: Panel accesible para filtrar y seleccionar jugadores de la plantilla
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { X } from "lucide-react";
 import { PlayerRowItem } from "./player-row-item";
 import { CustomPlayerModal } from "./custom-player-modal";
-import { matchesSearchQuery } from "@/lib/utils/search-utils";
+import { RosterFilterPills } from "./roster-filter-pills";
+import {
+  getTargetPositionFromRole,
+  filterAndSortRosterPlayers,
+  calculateDividerIndex,
+} from "@/lib/lineup-builder/roster-filter";
 import type { LineupPlayer, PlayerCategory } from "@/lib/lineup-builder/types";
 
 interface RosterDrawerProps {
@@ -13,26 +19,9 @@ interface RosterDrawerProps {
   readonly activeSlotRole: string | null;
   readonly onAssignPlayer: (player: LineupPlayer) => void;
   readonly onAddCustomPlayer: (player: LineupPlayer) => void;
+  readonly onClose?: () => void;
+  readonly isModal?: boolean;
 }
-
-/**
- * Maps granular tactical role (e.g. LI, DFC, MCD, DC) to high-level squad line.
- */
-function getTargetPositionFromRole(role: string | null): "POR" | "DEF" | "MED" | "DEL" | null {
-  if (!role) return null;
-  if (role === "POR") return "POR";
-  if (["LI", "LD", "DFC", "CAD", "CAI"].includes(role)) return "DEF";
-  if (["MCD", "MC", "MCO"].includes(role)) return "MED";
-  if (["EI", "ED", "DC"].includes(role)) return "DEL";
-  return null;
-}
-
-const POSITION_ORDER: Record<string, number> = {
-  POR: 0,
-  DEF: 1,
-  MED: 2,
-  DEL: 3,
-};
 
 export function RosterDrawer({
   players,
@@ -40,6 +29,8 @@ export function RosterDrawer({
   activeSlotRole,
   onAssignPlayer,
   onAddCustomPlayer,
+  onClose,
+  isModal = false,
 }: RosterDrawerProps) {
   const [selectedCategory, setSelectedCategory] = useState<PlayerCategory | "all">("first_team");
   const [selectedPosition, setSelectedPosition] = useState<string>("all");
@@ -51,86 +42,54 @@ export function RosterDrawer({
     [activeSlotRole]
   );
 
-  const sortedAndFilteredPlayers = useMemo(() => {
-    // 1. Filtrar jugadores según filtros activos y búsqueda
-    const filtered = players.filter((player) => {
-      if (selectedCategory !== "all" && player.category !== selectedCategory) return false;
-      if (selectedPosition !== "all" && player.defaultPosition !== selectedPosition) return false;
-      if (searchQuery.trim()) {
-        const query = searchQuery.trim();
-        const matchesName =
-          matchesSearchQuery(player.displayName, query) ||
-          matchesSearchQuery(player.fullName, query);
-        const matchesNumber = player.shirtNumber?.toString() === query;
-        if (!matchesName && !matchesNumber) return false;
-      }
-      return true;
-    });
+  const sortedAndFilteredPlayers = useMemo(
+    () =>
+      filterAndSortRosterPlayers({
+        players,
+        assignedPlayerIds,
+        selectedCategory,
+        selectedPosition,
+        searchQuery,
+        targetPosition,
+      }),
+    [players, assignedPlayerIds, selectedCategory, selectedPosition, searchQuery, targetPosition]
+  );
 
-    // 2. Ordenar priorizando la demarcación de la posición activa y luego por posición reglamentaria (POR -> DEF -> MED -> DEL)
-    return filtered.slice().sort((a, b) => {
-      // Prioridad 1: Coincidencia con la demarcación de la posición que se está asignando
-      if (targetPosition) {
-        const aMatches = a.defaultPosition === targetPosition;
-        const bMatches = b.defaultPosition === targetPosition;
-        if (aMatches && !bMatches) return -1;
-        if (!aMatches && bMatches) return 1;
-      }
-
-      // Prioridad 2: Jugadores que aún no están en el campo primero
-      const aAssigned = assignedPlayerIds.has(a.id);
-      const bAssigned = assignedPlayerIds.has(b.id);
-      if (!aAssigned && bAssigned) return -1;
-      if (aAssigned && !bAssigned) return 1;
-
-      // Prioridad 3: Orden natural por posición reglamentaria
-      const posA = POSITION_ORDER[a.defaultPosition] ?? 99;
-      const posB = POSITION_ORDER[b.defaultPosition] ?? 99;
-      if (posA !== posB) return posA - posB;
-
-      // Prioridad 4: Primer equipo antes que filial y juvenil
-      const categoryOrder: Record<string, number> = {
-        first_team: 0,
-        custom: 1,
-        filial: 2,
-        juvenil: 3,
-      };
-      const catA = categoryOrder[a.category] ?? 99;
-      const catB = categoryOrder[b.category] ?? 99;
-      if (catA !== catB) return catA - catB;
-
-      // Prioridad 5: Dorsal más bajo
-      const numA = a.shirtNumber ?? 999;
-      const numB = b.shirtNumber ?? 999;
-      return numA - numB;
-    });
-  }, [players, selectedCategory, selectedPosition, searchQuery, targetPosition, assignedPlayerIds]);
-
-  // Encuentra el índice del primer futbolista que ya no pertenece a la demarcación sugerida
-  const dividerIndex = useMemo(() => {
-    if (!targetPosition || selectedPosition !== "all") return -1;
-    const firstOther = sortedAndFilteredPlayers.findIndex(
-      (p) => p.defaultPosition !== targetPosition
-    );
-    // Solo mostramos la línea si hay al menos un jugador de la posición y al menos otro del resto
-    if (firstOther > 0 && firstOther < sortedAndFilteredPlayers.length) {
-      return firstOther;
-    }
-    return -1;
-  }, [sortedAndFilteredPlayers, targetPosition, selectedPosition]);
+  const dividerIndex = useMemo(
+    () => calculateDividerIndex(sortedAndFilteredPlayers, targetPosition, selectedPosition),
+    [sortedAndFilteredPlayers, targetPosition, selectedPosition]
+  );
 
   return (
     <aside
       aria-label="Selección de plantilla"
-      className="flex flex-col w-full rounded-2xl border border-[var(--border)] bg-white p-4 shadow-sm"
+      className={`flex flex-col w-full bg-white ${
+        isModal ? "p-4" : "rounded-2xl border border-[var(--border)] p-4 shadow-sm"
+      }`}
     >
       <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-        <h2 className="text-sm font-bold text-neutral-900">
-          Plantilla
-        </h2>
+        <div>
+          <h2 className="text-sm font-bold text-neutral-900">
+            {activeSlotRole ? `Plantilla (${activeSlotRole})` : "Plantilla"}
+          </h2>
+          {isModal && (
+            <p className="text-[11px] text-neutral-500">
+              Toca un futbolista para asignarlo a esta demarcación
+            </p>
+          )}
+        </div>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Cerrar selección de plantilla"
+            className="rounded-full p-2 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e2001a]"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
       </div>
 
-      {/* Buscador */}
       <div className="mt-3">
         <input
           type="search"
@@ -141,49 +100,18 @@ export function RosterDrawer({
         />
       </div>
 
-      {/* Selector de categoría (Píldoras) */}
-      <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
-        {[
-          { key: "all", label: "Todos" },
-          { key: "first_team", label: "1er Equipo" },
-          { key: "filial", label: "Sporting At." },
-          { key: "juvenil", label: "Juvenil DH" },
-        ].map((cat) => (
-          <button
-            key={cat.key}
-            type="button"
-            onClick={() => setSelectedCategory(cat.key as PlayerCategory | "all")}
-            className={`rounded-full px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap transition-colors ${
-              selectedCategory === cat.key
-                ? "bg-[#e2001a] text-white"
-                : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
-            }`}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
+      <RosterFilterPills
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+        selectedPosition={selectedPosition}
+        onSelectPosition={setSelectedPosition}
+      />
 
-      {/* Selector de demarcación */}
-      <div className="mt-2 flex items-center gap-1">
-        {["all", "POR", "DEF", "MED", "DEL"].map((pos) => (
-          <button
-            key={pos}
-            type="button"
-            onClick={() => setSelectedPosition(pos)}
-            className={`rounded-md px-2 py-0.5 text-[10px] font-bold transition-colors ${
-              selectedPosition === pos
-                ? "bg-neutral-900 text-white"
-                : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
-            }`}
-          >
-            {pos === "all" ? "Líneas" : pos}
-          </button>
-        ))}
-      </div>
-
-      {/* Lista de futbolistas ordenados con prioridad inteligente y divisor sutil */}
-      <ul className="mt-3 flex flex-col gap-2 max-h-[460px] overflow-y-auto pr-1">
+      <ul
+        className={`mt-3 flex flex-col gap-2 overflow-y-auto pr-1 ${
+          isModal ? "max-h-[50vh] sm:max-h-[420px]" : "max-h-[460px]"
+        }`}
+      >
         {sortedAndFilteredPlayers.length > 0 ? (
           sortedAndFilteredPlayers.map((player, index) => (
             <React.Fragment key={player.id}>
@@ -214,7 +142,6 @@ export function RosterDrawer({
         )}
       </ul>
 
-      {/* Acción secundaria discreta para dar de alta jugador */}
       <div className="mt-3 pt-2.5 border-t border-neutral-100 flex justify-center">
         <button
           type="button"
