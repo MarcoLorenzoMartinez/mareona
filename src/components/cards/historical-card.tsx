@@ -39,11 +39,13 @@ export function HistoricalCard({
 }: HistoricalCardProps) {
   const [imgError, setImgError] = useState(false);
 
-  // Si el usuario aún no posee el cromo, se muestra el reverso oficial de Mareona (negro con la ola blanca)
+  // Si el usuario aún no posee el cromo, se muestra el reverso oficial de Mareona
   if (!isOwned) {
+    const tier = (card.ovr ?? 70) >= 86 ? "gold" : (card.ovr ?? 70) >= 80 ? "silver" : "standard";
     return (
       <CardBack
         size={size}
+        tier={tier}
         isSelected={isSelected}
         onClick={onCardClick ? () => onCardClick(card) : undefined}
         title="Cromo por descubrir"
@@ -155,9 +157,7 @@ export function HistoricalCard({
             subtitle={
               card.kind === "crest" || card.kind === "coach"
                 ? card.eraLabel
-                : card.year
-                  ? `${card.year}`
-                  : card.eraLabel
+                : card.year ? `${card.year}` : card.eraLabel
             }
             kind={card.kind ?? "coach"}
           />

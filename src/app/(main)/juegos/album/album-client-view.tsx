@@ -1,6 +1,6 @@
 "use client"; // Client: Gestión interactiva de colección, filtros, inventario de sobres y pegado
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { toast } from "@/lib/ui/toast";
 import type { Card, PackTier } from "@/lib/cards/types";
 import { useAuth } from "@/context/auth-context";
@@ -53,6 +53,23 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     missionState,
     setMissionState,
   } = useAlbumInventory(user?.id);
+
+  // Aprovisionamiento automático de lote de sobres para cuentas evaluadoras
+  useEffect(() => {
+    if (user?.id && isDemo) {
+      const seededKey = `mareona_tester_packs_seeded_${user.id}`;
+      if (!window.localStorage.getItem(seededKey)) {
+        addPacksToInventory("aficionado", 3, user.id);
+        addPacksToInventory("rojiblanco", 3, user.id);
+        addPacksToInventory("leyenda", 3, user.id);
+        setPackInventory(loadUserPackInventory(user.id));
+        window.localStorage.setItem(seededKey, "true");
+        toast.success("¡Lote de prueba otorgado!", {
+          description: "3 sobres Aficionado, 3 Rojiblanco y 3 Leyenda añadidos a tu cuenta.",
+        });
+      }
+    }
+  }, [user, isDemo, setPackInventory]);
 
   const totalPacks = user
     ? packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda

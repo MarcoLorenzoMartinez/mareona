@@ -68,6 +68,7 @@ export function isDemoEmail(email?: string | null): boolean {
   return (
     clean === DEMO_CREDENTIALS.login.email ||
     clean === DEMO_CREDENTIALS.register.email ||
+    clean === "mareonasportinguista@gmail.com" ||
     clean.includes("demo")
   );
 }

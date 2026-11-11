@@ -137,8 +137,8 @@ export function PackOpeningModal({
           </button>
         </div>
 
-        {/* Fila horizontal centrada de cromos */}
-        <div className="my-6 flex w-full items-center justify-center overflow-x-auto py-3 px-2 scrollbar-none">
+        {/* Fila horizontal centrada de cromos con holgura para elevación 3D */}
+        <div className="my-3 flex w-full items-center justify-center overflow-x-auto py-7 px-4 scrollbar-none">
           <div className="flex items-center justify-center gap-3 sm:gap-4 min-w-max">
             {cards.map((card, idx) => (
               <PackRowCard
