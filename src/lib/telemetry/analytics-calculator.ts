@@ -128,7 +128,7 @@ export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): Platfor
     percentage: total > 0 ? Math.round(((sectionCounts.get(s.key) || 0) / total) * 100) : 0,
   }));
 
-  // Top Pages ranking
+  // Top Pages ranking with scrollable full list support
   let topPages: TopPageStat[] = Array.from(pagePathCounts.entries())
     .map(([path, visits]) => ({
       path,
@@ -137,16 +137,15 @@ export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): Platfor
       percentage: total > 0 ? Math.round((visits / total) * 100) : 0,
     }))
     .sort((a, b) => b.visits - a.visits)
-    .slice(0, 5);
+    .slice(0, 30);
 
   if (topPages.length === 0) {
-    topPages = [
-      { path: "/temporada/clasificacion", label: "Clasificación", visits: 0, percentage: 0 },
-      { path: "/juegos/wordle", label: "Wordle Sportinguista", visits: 0, percentage: 0 },
-      { path: "/juegos/porra", label: "La Porra", visits: 0, percentage: 0 },
-      { path: "/social", label: "Tertulia Social", visits: 0, percentage: 0 },
-      { path: "/historico/efemerides", label: "Efemérides", visits: 0, percentage: 0 },
-    ];
+    topPages = Object.entries(CANONICAL_PATH_LABELS).map(([path, label]) => ({
+      path,
+      label,
+      visits: 0,
+      percentage: 0,
+    }));
   }
 
   const deviceUsage: DeviceUsageStat[] = [
