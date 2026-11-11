@@ -1,9 +1,13 @@
-// Client: Cabecera con datos y acciones de relación del perfil de aficionado
+// Client: Cabecera con datos, acciones de amistad y controles de seguridad (bloqueo/denuncia)
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { UserPlus, UserCheck, UserX, MessageSquare } from "lucide-react";
+import { UserPlus, UserCheck, UserX, MessageSquare, Ban, Flag } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { toast } from "@/lib/ui/toast";
+import { blockUserAction, unblockUserAction } from "@/lib/social/safety-actions";
+import { UserReportModal } from "./user-report-modal";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
 
 interface ProfileModalHeaderProps {
@@ -14,6 +18,7 @@ interface ProfileModalHeaderProps {
   readonly onOpenChat?: () => void;
   readonly onClose: () => void;
   readonly isPendingAction: boolean;
+  readonly onBlockStateChange?: (isBlocked: boolean) => void;
 }
 
 export function ProfileModalHeader({
@@ -24,19 +29,37 @@ export function ProfileModalHeader({
   onOpenChat,
   onClose,
   isPendingAction,
+  onBlockStateChange,
 }: ProfileModalHeaderProps) {
+  const [isBlockBusy, setIsBlockBusy] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+
   const memberSince = (() => {
     try {
-      return new Date(profile.createdAt).toLocaleDateString("es-ES", {
-        month: "long",
-        year: "numeric",
-      });
+      return new Date(profile.createdAt).toLocaleDateString("es-ES", { month: "long", year: "numeric" });
     } catch {
       return "reciente";
     }
   })();
 
   const displayName = profile.displayName || profile.username;
+  const isBlocked = Boolean(profile.isBlockedByMe);
+
+  const handleToggleBlock = async () => {
+    if (isBlockBusy) return;
+    setIsBlockBusy(true);
+    const res = isBlocked
+      ? await unblockUserAction({ targetUserId: profile.id })
+      : await blockUserAction({ targetUserId: profile.id });
+    setIsBlockBusy(false);
+
+    if (res.success) {
+      toast.success(isBlocked ? `Has desbloqueado a @${profile.username}` : `Has bloqueado a @${profile.username}`);
+      onBlockStateChange?.(!isBlocked);
+    } else {
+      toast.error(res.error ?? "No se pudo actualizar el bloqueo");
+    }
+  };
 
   return (
     <div className="border-b border-[var(--border)] bg-white px-4 py-4 sm:px-5">
@@ -51,6 +74,16 @@ export function ProfileModalHeader({
           >
             Editar perfil
           </Link>
+        ) : isBlocked ? (
+          <button
+            type="button"
+            onClick={handleToggleBlock}
+            disabled={isBlockBusy}
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3.5 text-xs font-bold text-[var(--primary)] hover:bg-red-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
+          >
+            <Ban className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Desbloquear</span>
+          </button>
         ) : (
           <div>
             {profile.friendshipStatus === "accepted" && (
@@ -76,14 +109,12 @@ export function ProfileModalHeader({
                 </button>
               </div>
             )}
-
             {profile.friendshipStatus === "pending_sent" && (
               <span className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--surface)] px-3.5 text-xs font-semibold text-neutral-500">
                 <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Solicitud enviada</span>
               </span>
             )}
-
             {profile.friendshipStatus === "pending_received" && (
               <button
                 type="button"
@@ -95,7 +126,6 @@ export function ProfileModalHeader({
                 <span>Aceptar solicitud</span>
               </button>
             )}
-
             {profile.friendshipStatus === "none" && (
               <button
                 type="button"
@@ -116,16 +146,33 @@ export function ProfileModalHeader({
         <p className="text-xs text-neutral-500">@{profile.username}</p>
       </div>
 
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-500">
-        <span>
-          <strong className="font-sans font-bold tabular-nums text-neutral-900">
-            {profile.points}
-          </strong>{" "}
-          puntos
-        </span>
-        <span aria-hidden="true" className="text-neutral-300">·</span>
-        <span>Desde {memberSince}</span>
+      <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500">
+        <div className="flex items-center gap-x-2">
+          <span><strong className="font-sans font-bold tabular-nums text-neutral-900">{profile.points}</strong> puntos</span>
+          <span aria-hidden="true" className="text-neutral-300">·</span>
+          <span>Desde {memberSince}</span>
+        </div>
+
+        {!isCurrentUser && (
+          <div className="flex items-center gap-3">
+            <button type="button" onClick={handleToggleBlock} disabled={isBlockBusy} className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-500 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs cursor-pointer">
+              <Ban className="h-3 w-3" aria-hidden="true" />
+              <span>{isBlocked ? "Desbloquear" : "Bloquear"}</span>
+            </button>
+            <button type="button" onClick={() => setReportOpen(true)} className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-500 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs cursor-pointer">
+              <Flag className="h-3 w-3" aria-hidden="true" />
+              <span>Denunciar</span>
+            </button>
+          </div>
+        )}
       </div>
+
+      <UserReportModal
+        isOpen={reportOpen}
+        targetUser={{ id: profile.id, name: displayName, username: profile.username }}
+        onClose={() => setReportOpen(false)}
+        onBlocked={() => onBlockStateChange?.(true)}
+      />
     </div>
   );
 }

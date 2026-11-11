@@ -156,6 +156,11 @@ export function UserProfileModal({
               }}
               onClose={onClose}
               isPendingAction={isPendingAction}
+              onBlockStateChange={(blocked) =>
+                setProfile((prev) =>
+                  prev ? { ...prev, isBlockedByMe: blocked, friendshipStatus: blocked ? "none" : prev.friendshipStatus, friendshipId: blocked ? undefined : prev.friendshipId } : null
+                )
+              }
             />
 
             <UserProfilePostsSection

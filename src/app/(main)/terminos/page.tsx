@@ -48,23 +48,25 @@ const SECTIONS: readonly LegalSection[] = [
   },
   {
     id: "moderacion",
-    title: "Moderación, privacidad de chats y custodia legal",
+    title: "Moderación, bloqueos, denuncias y custodia legal",
     content: (
       <>
         <LegalP>
-          Mareona combina un filtro automático preventivo con revisión de incidencias en el muro
-          público. En los <LegalStrong>mensajes privados</LegalStrong>, el filtro automatizado
-          impide el envío de expresiones gravemente ofensivas sin exponer el contenido de tus
-          conversaciones privadas al panel de moderadores.
+          En el <LegalStrong>muro público</LegalStrong>, Mareona combina un filtro automático
+          preventivo con revisión manual. En cambio, en los{" "}
+          <LegalStrong>mensajes privados 1:1</LegalStrong>, Mareona no inspecciona ni filtra
+          preventivamente el texto de tus conversaciones entre amigos: la protección descansa en el
+          consentimiento de amistad previa y en las herramientas de{" "}
+          <LegalStrong>bloqueo inmediato</LegalStrong> y{" "}
+          <LegalStrong>denuncia voluntaria</LegalStrong>.
         </LegalP>
         <LegalP>
-          Puedes eliminar en cualquier momento los mensajes privados que hayas enviado para que
-          dejen de mostrarse en la conversación. No obstante, para evitar que el borrado se utilice
-          para ocultar pruebas de posibles delitos, acoso o infracciones graves, los mensajes
-          suprimidos y los intentos bloqueados permanecen en{" "}
-          <LegalStrong>custodia legal bloqueada</LegalStrong> (art. 32 LOPDGDD), inaccesibles para
-          los usuarios y moderadores ordinarios y disponibles exclusivamente ante requerimientos de
-          jueces, tribunales o Fuerzas y Cuerpos de Seguridad.
+          Si sufres acoso, amenazas o abusos, puedes bloquear al usuario en un clic o denunciar la
+          conversación para que el equipo de moderación revise las pruebas aportadas. Además, aunque
+          puedes eliminar tus mensajes enviados para que dejen de mostrarse en el chat, los mensajes
+          suprimidos permanecen en <LegalStrong>custodia legal bloqueada</LegalStrong> (art. 32
+          LOPDGDD) para impedir la destrucción de pruebas ante posibles delitos y atender
+          exclusivamente requerimientos de jueces, tribunales o Fuerzas y Cuerpos de Seguridad.
         </LegalP>
         <LegalP>
           Si crees que una decisión de moderación es un error, escríbenos a <LegalMail /> y la

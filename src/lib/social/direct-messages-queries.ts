@@ -30,17 +30,25 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
 
     const convIds = myMemberships.map((m) => m.conversation_id);
 
-    // 2. Fetch the other participant profiles for each conversation
-    const { data: otherMembers, error: otherErr } = await supabase
-      .from("conversation_members")
-      .select(
-        `conversation_id, user_id,
-         profiles (id, username, display_name, avatar_url)`
-      )
-      .in("conversation_id", convIds)
-      .neq("user_id", user.id);
+    // 2. Fetch the other participant profiles and user's active blocks in parallel
+    const [{ data: otherMembers, error: otherErr }, { data: myBlocks }] = await Promise.all([
+      supabase
+        .from("conversation_members")
+        .select(
+          `conversation_id, user_id,
+           profiles (id, username, display_name, avatar_url)`
+        )
+        .in("conversation_id", convIds)
+        .neq("user_id", user.id),
+      supabase
+        .from("user_blocks")
+        .select("blocked_id")
+        .eq("blocker_id", user.id),
+    ]);
 
     if (otherErr || !otherMembers) return [];
+
+    const blockedIds = new Set((myBlocks ?? []).map((b) => b.blocked_id));
 
     // 3. Fetch latest non-deleted messages for each conversation
     const { data: latestMessages } = await supabase
@@ -54,7 +62,7 @@ export async function getDirectConversations(): Promise<readonly DirectConversat
 
     for (const membership of myMemberships) {
       const other = otherMembers.find((m) => m.conversation_id === membership.conversation_id);
-      if (!other) continue;
+      if (!other || blockedIds.has(other.user_id)) continue;
 
       const profile = other.profiles as {
         id: string;

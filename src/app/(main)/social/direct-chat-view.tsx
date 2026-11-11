@@ -48,7 +48,12 @@ export function DirectChatView({
 
   return (
     <div className="flex flex-col h-[520px] max-h-[75vh]">
-      <DirectChatHeader otherUser={otherUser} onBack={onBack} onOpenProfile={onOpenProfile} />
+      <DirectChatHeader
+        conversationId={conversationId}
+        otherUser={otherUser}
+        onBack={onBack}
+        onOpenProfile={onOpenProfile}
+      />
 
       <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-[var(--surface)]/30">
         {isInitialLoading ? (

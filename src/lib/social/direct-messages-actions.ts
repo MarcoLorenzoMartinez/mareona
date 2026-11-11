@@ -2,8 +2,6 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/security/rate-limiter";
-import { MODERATION_REJECTED_MESSAGE, moderateText } from "./moderation";
-import { logBlockedAttempt } from "./moderation-log";
 import {
   sendDirectMessageSchema,
   openDirectConversationSchema,
@@ -22,6 +20,9 @@ interface ActionResult<T = void> {
 
 /**
  * Sends a private direct message to an active conversation between friends.
+ * Private 1:1 messages are never inspected or blocked preventively by automated
+ * content filters; safety relies on mutual friendship, user blocking, and
+ * victim-initiated reporting.
  *
  * @param input - Conversation UUID and message body.
  * @returns Action result with the created message or an error description in Spanish.
@@ -44,7 +45,7 @@ export async function sendDirectMessage(
       return { success: false, error: "Debes iniciar sesión para enviar mensajes" };
     }
 
-    // Rate Limiting (10 messages per minute)
+    // Technical anti-spam rate limiting (10 messages per minute, without content inspection)
     const rateLimit = checkRateLimit({ key: `dm_${user.id}`, limit: 10, windowMs: 60_000 });
     if (!rateLimit.allowed) {
       return {
@@ -53,19 +54,7 @@ export async function sendDirectMessage(
       };
     }
 
-    // AI/Safety Moderation: blocked attempts are preserved in restricted legal custody
-    const moderation = await moderateText(parsed.data.body);
-    if (moderation.verdict === "block") {
-      await logBlockedAttempt(supabase, {
-        userId: user.id,
-        body: parsed.data.body,
-        reason: moderation.reason,
-        channel: "direct_message",
-      });
-      return { success: false, error: moderation.reason || MODERATION_REJECTED_MESSAGE };
-    }
-
-    // Verify permission to post in conversation via RPC
+    // Verify membership and absence of mutual block via RPC
     const { data: canMessage } = await supabase.rpc("can_message_conversation", {
       p_conversation_id: parsed.data.conversationId,
     });
@@ -73,7 +62,7 @@ export async function sendDirectMessage(
     if (!canMessage) {
       return {
         success: false,
-        error: "No puedes enviar mensajes a esta conversación o has sido bloqueado",
+        error: "No puedes enviar mensajes a esta conversación porque existe un bloqueo activo",
       };
     }
 
@@ -168,7 +157,8 @@ export async function deleteDirectMessage(
 }
 
 /**
- * Opens or initializes a 1-on-1 private conversation, verifying mutual friendship first.
+ * Opens or initializes a 1-on-1 private conversation, verifying mutual friendship
+ * and absence of user blocks first.
  *
  * @param input - Target friend user UUID.
  * @returns Action result with the resolved conversationId.
@@ -193,6 +183,21 @@ export async function getOrCreateConversationWithFriend(
 
     if (user.id === parsed.data.targetUserId) {
       return { success: false, error: "No puedes abrir una conversación contigo mismo" };
+    }
+
+    // Verify no block exists from the current user
+    const { data: existingBlock } = await supabase
+      .from("user_blocks")
+      .select("blocked_id")
+      .eq("blocker_id", user.id)
+      .eq("blocked_id", parsed.data.targetUserId)
+      .maybeSingle();
+
+    if (existingBlock) {
+      return {
+        success: false,
+        error: "Has bloqueado a este aficionado. Desbloquéalo desde su perfil para poder hablar.",
+      };
     }
 
     // Verify friendship status is accepted

@@ -56,12 +56,12 @@ const SECTIONS: readonly LegalSection[] = [
             [
               "Mensajería privada entre amigos (chats 1:1)",
               "Tus conversaciones directas",
-              "Permitir la comunicación privada entre usuarios con amistad mutua aceptada.",
+              "Comunicación privada entre usuarios con amistad mutua aceptada, sin inspección automatizada de contenido.",
             ],
             [
-              "Intentos bloqueados, mensajes suprimidos en custodia y acciones de moderación",
-              "Sistema de seguridad y custodia legal",
-              "Prevenir abusos y atender requerimientos judiciales o policiales ante ilícitos.",
+              "Denuncias de usuarios, intentos bloqueados en muro público y custodia legal",
+              "Denuncias voluntarias y sistema de seguridad",
+              "Atender denuncias por abusos y cumplir el deber de custodia legal ante requerimientos judiciales.",
             ],
             [
               "Dirección IP y datos técnicos de la conexión",
@@ -84,7 +84,7 @@ const SECTIONS: readonly LegalSection[] = [
         </li>
         <li>
           <LegalStrong>Interés legítimo</LegalStrong> (art. 6.1.f RGPD): seguridad perimetral,
-          prevención de abusos y filtrado automatizado anti-acoso.
+          bloqueos entre usuarios y tramitación de denuncias voluntarias.
         </li>
         <li>
           <LegalStrong>Obligación legal y custodia bloqueada</LegalStrong> (art. 6.1.c RGPD y art. 32
@@ -106,11 +106,12 @@ const SECTIONS: readonly LegalSection[] = [
           <li><LegalStrong>Google:</LegalStrong> inicio de sesión mediante Google OAuth.</li>
         </LegalList>
         <LegalP>
-          Tu nombre visible, apodo, avatar, puntos y publicaciones son públicos. En cambio, tus{" "}
-          <LegalStrong>mensajes privados</LegalStrong> son estrictamente confidenciales entre emisor
-          y receptor mediante aislamiento en base de datos (Row Level Security): no son públicos ni
-          se exponen en paneles de moderación ordinarios, sin perjuicio de la custodia legal
-          restringida ante requerimientos judiciales.
+          Tu nombre visible, apodo, avatar, puntos y publicaciones son públicos. En cambio,{" "}
+          <LegalStrong>Mareona no lee, inspecciona ni analiza de forma automatizada el contenido de
+          tus conversaciones privadas entre amigos</LegalStrong>. Los mensajes directos están aislados
+          en base de datos (Row Level Security) entre emisor y receptor, y solo se revisan si uno de
+          los participantes decide denunciar expresamente la conversación por acoso o conducta ilícita,
+          o si media un requerimiento judicial.
         </LegalP>
       </>
     ),
@@ -137,7 +138,7 @@ const SECTIONS: readonly LegalSection[] = [
         <LegalList>
           <li>
             <LegalStrong>Rectificación y supresión de mensajes:</LegalStrong> edita tu{" "}
-            <Link href="/perfil" className={INLINE_LINK}>Perfil</Link> o elimina tus propios mensajes enviados desde el propio chat.
+            <Link href="/perfil" className={INLINE_LINK}>Perfil</Link> o elimina tus propios mensajes enviados desde el chat.
           </li>
           <li>
             <LegalStrong>Supresión de cuenta:</LegalStrong> usa «Eliminar mi cuenta y mis datos» en tu perfil. Es inmediato e irreversible.

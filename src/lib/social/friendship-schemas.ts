@@ -31,4 +31,5 @@ export interface UserSocialProfile {
   readonly createdAt: string;
   readonly friendshipStatus: FriendshipStatus;
   readonly friendshipId?: string;
+  readonly isBlockedByMe?: boolean;
 }

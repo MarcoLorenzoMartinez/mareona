@@ -38,9 +38,12 @@ export async function getUserSocialProfile(
 
   try {
     const supabase = await createClient();
+    const {
+      data: { user: currentUser },
+    } = await supabase.auth.getUser();
 
     // Consultas en paralelo para máximo rendimiento
-    const [profileRes, statusInfo, postsRes] = await Promise.all([
+    const [profileRes, statusInfo, postsRes, blockRes] = await Promise.all([
       supabase
         .from("profiles")
         .select("id, username, display_name, avatar_url, points, created_at")
@@ -54,6 +57,14 @@ export async function getUserSocialProfile(
         .is("deleted_at", null)
         .order("created_at", { ascending: false })
         .limit(20),
+      currentUser && currentUser.id !== userId
+        ? supabase
+            .from("user_blocks")
+            .select("blocked_id")
+            .eq("blocker_id", currentUser.id)
+            .eq("blocked_id", userId)
+            .maybeSingle()
+        : Promise.resolve({ data: null }),
     ]);
 
     const profileData = profileRes.data;
@@ -68,6 +79,7 @@ export async function getUserSocialProfile(
       createdAt: profileData.created_at,
       friendshipStatus: statusInfo.status,
       friendshipId: statusInfo.friendshipId,
+      isBlockedByMe: Boolean(blockRes.data),
     };
 
     const posts: readonly SocialPost[] = (postsRes.data ?? []).map((p) => ({

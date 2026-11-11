@@ -7,8 +7,12 @@ import {
 } from "../../src/lib/social/direct-messages-schemas.ts";
 import {
   DM_AUDIT_REASON_PREFIX,
+  USER_REPORT_REASON_PREFIX,
   REDACTED_DM_AUDIT_BODY,
+  blockUserSchema,
+  reportUserSchema,
   formatBlockedAttemptReason,
+  formatUserReportAuditEntry,
   isPrivateMessageAuditEntry,
   redactAuditBodyForWebPanel,
 } from "../../src/lib/social/dm-privacy-custody.ts";
@@ -77,7 +81,34 @@ test("deleteDirectMessageSchema validates messageId and conversationId UUIDs", (
   assert.equal(invalidConvId.success, false);
 });
 
-test("DM legal custody & audit privacy helpers tag and redact private messages properly", () => {
+test("blockUserSchema and reportUserSchema validate safety inputs properly", () => {
+  const validBlock = blockUserSchema.safeParse({
+    targetUserId: "123e4567-e89b-12d3-a456-426614174000",
+  });
+  assert.equal(validBlock.success, true);
+
+  const invalidBlock = blockUserSchema.safeParse({
+    targetUserId: "not-a-uuid",
+  });
+  assert.equal(invalidBlock.success, false);
+
+  const validReport = reportUserSchema.safeParse({
+    targetUserId: "123e4567-e89b-12d3-a456-426614174000",
+    category: "threats",
+    details: "Amenazas reiteradas por mensaje directo",
+    conversationId: "123e4567-e89b-12d3-a456-426614174009",
+    alsoBlock: true,
+  });
+  assert.equal(validReport.success, true);
+
+  const invalidReportCategory = reportUserSchema.safeParse({
+    targetUserId: "123e4567-e89b-12d3-a456-426614174000",
+    category: "unknown_category",
+  });
+  assert.equal(invalidReportCategory.success, false);
+});
+
+test("DM legal custody & victim-consented report helpers handle visibility rules accurately", () => {
   const postReason = formatBlockedAttemptReason("insulto_grave", "post");
   assert.equal(postReason, "insulto_grave");
   assert.equal(isPrivateMessageAuditEntry(postReason), false);
@@ -90,7 +121,23 @@ test("DM legal custody & audit privacy helpers tag and redact private messages p
   assert.equal(dmReason, `${DM_AUDIT_REASON_PREFIX} amenaza_detectada`);
   assert.equal(isPrivateMessageAuditEntry(dmReason), true);
 
-  // Web panel redacts private DM body while DB retains raw text for judicial custody
+  // Un-reported private DMs are redacted in web panel
   const redacted = redactAuditBodyForWebPanel("Contenido privado sensible", dmReason);
   assert.equal(redacted, REDACTED_DM_AUDIT_BODY);
+
+  // Victim-consented reports are visible to moderators for review
+  const reportEntry = formatUserReportAuditEntry({
+    reportedUsername: "infractor_gijon",
+    reportedUserId: "123e4567-e89b-12d3-a456-426614174000",
+    category: "harassment",
+    details: "Insultos continuos",
+    transcriptLines: ["[2026-11-11T01:00:00Z] @infractor_gijon: Mensaje ofensivo"],
+  });
+  assert.equal(reportEntry.reason.startsWith(USER_REPORT_REASON_PREFIX), true);
+  assert.equal(isPrivateMessageAuditEntry(reportEntry.reason), false);
+  assert.equal(
+    redactAuditBodyForWebPanel(reportEntry.body, reportEntry.reason),
+    reportEntry.body
+  );
+  assert.equal(reportEntry.body.includes("@infractor_gijon"), true);
 });

@@ -1,10 +1,15 @@
-// Client: Cabecera con datos del aficionado y botón de retroceso para el chat directo
+// Client: Cabecera del chat directo con perfil del interlocutor y opciones de seguridad (bloqueo y denuncia)
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, MoreVertical, Ban, Flag } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { toast } from "@/lib/ui/toast";
+import { blockUserAction } from "@/lib/social/safety-actions";
+import { UserReportModal } from "./user-report-modal";
 
 interface DirectChatHeaderProps {
+  readonly conversationId: string;
   readonly otherUser: {
     readonly id: string;
     readonly name: string;
@@ -16,12 +21,32 @@ interface DirectChatHeaderProps {
 }
 
 export function DirectChatHeader({
+  conversationId,
   otherUser,
   onBack,
   onOpenProfile,
 }: DirectChatHeaderProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [isBlocking, setIsBlocking] = useState(false);
+
+  const handleBlock = async () => {
+    if (isBlocking) return;
+    setIsBlocking(true);
+    setMenuOpen(false);
+    const res = await blockUserAction({ targetUserId: otherUser.id });
+    setIsBlocking(false);
+
+    if (res.success) {
+      toast.success(`Has bloqueado a @${otherUser.username}`);
+      onBack();
+    } else {
+      toast.error(res.error ?? "No se pudo bloquear al usuario");
+    }
+  };
+
   return (
-    <div className="flex items-center gap-3 border-b border-[var(--border)] bg-white px-3 py-2.5">
+    <div className="relative flex items-center gap-3 border-b border-[var(--border)] bg-white px-3 py-2.5">
       <button
         type="button"
         onClick={onBack}
@@ -30,6 +55,7 @@ export function DirectChatHeader({
       >
         <ArrowLeft className="h-5 w-5" aria-hidden="true" />
       </button>
+
       <button
         type="button"
         onClick={() => onOpenProfile(otherUser.id)}
@@ -41,6 +67,58 @@ export function DirectChatHeader({
           <p className="truncate text-[11px] text-neutral-400">@{otherUser.username}</p>
         </div>
       </button>
+
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label="Opciones de seguridad de la conversación"
+          aria-expanded={menuOpen}
+          className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-[var(--surface)] hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+        >
+          <MoreVertical className="h-4 w-4" aria-hidden="true" />
+        </button>
+
+        {menuOpen && (
+          <div
+            role="menu"
+            aria-label="Acciones de seguridad"
+            className="absolute right-0 top-10 z-30 w-52 rounded-xl border border-[var(--border)] bg-white p-1.5 shadow-lg"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                setMenuOpen(false);
+                setReportOpen(true);
+              }}
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-semibold text-neutral-700 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            >
+              <Flag className="h-3.5 w-3.5 text-neutral-500" aria-hidden="true" />
+              <span>Denunciar conversación</span>
+            </button>
+
+            <button
+              type="button"
+              role="menuitem"
+              disabled={isBlocking}
+              onClick={handleBlock}
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-bold text-[var(--primary)] hover:bg-red-50/60 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            >
+              <Ban className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Bloquear a @{otherUser.username}</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      <UserReportModal
+        isOpen={reportOpen}
+        targetUser={otherUser}
+        conversationId={conversationId}
+        onClose={() => setReportOpen(false)}
+        onBlocked={() => onBack()}
+      />
     </div>
   );
 }
