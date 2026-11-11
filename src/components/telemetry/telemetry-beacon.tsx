@@ -35,6 +35,20 @@ function detectDeviceType(): "mobile" | "desktop" {
   return isSmallScreen || isMobileUa ? "mobile" : "desktop";
 }
 
+function isIgnoredEnvironment(): boolean {
+  if (typeof window === "undefined") return true;
+  if (process.env.NEXT_PUBLIC_ENABLE_LOCAL_TELEMETRY === "true") return false;
+  return (
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1" ||
+    window.location.hostname.endsWith(".local")
+  );
+}
+
+function isIgnoredRoute(path: string): boolean {
+  return path.startsWith("/admin");
+}
+
 function sendTelemetryPing(payload: Record<string, unknown>) {
   if (typeof window === "undefined") return;
 
@@ -67,6 +81,11 @@ export function TelemetryBeacon() {
   const lastPathnameRef = useRef<string>("");
 
   useEffect(() => {
+    // Suppress telemetry pings in local development environments
+    if (isIgnoredEnvironment()) {
+      return;
+    }
+
     const isPwa = detectIsPwa();
     const deviceType = detectDeviceType();
     const sessionId = getOrCreateSessionId();
@@ -76,8 +95,11 @@ export function TelemetryBeacon() {
       lastPathnameRef.current = pathname;
     }
 
-    // If pathname changed, flush duration of previous page
-    if (lastPathnameRef.current && lastPathnameRef.current !== pathname) {
+    const wasLastAdmin = isIgnoredRoute(lastPathnameRef.current);
+    const isCurrentAdmin = isIgnoredRoute(pathname);
+
+    // If pathname changed and previous route was trackable, flush duration
+    if (lastPathnameRef.current && lastPathnameRef.current !== pathname && !wasLastAdmin) {
       const elapsedSeconds = Math.max(1, Math.round((Date.now() - pageStartRef.current) / 1000));
       sendTelemetryPing({
         pathname: lastPathnameRef.current,
@@ -88,20 +110,23 @@ export function TelemetryBeacon() {
       });
     }
 
-    // Record entry to the new page
+    // Update pointers
     lastPathnameRef.current = pathname;
     pageStartRef.current = Date.now();
 
-    sendTelemetryPing({
-      pathname,
-      deviceType,
-      isPwa,
-      sessionId,
-      durationSeconds: 0,
-    });
+    // Do not record entry pings for administrative routes
+    if (!isCurrentAdmin) {
+      sendTelemetryPing({
+        pathname,
+        deviceType,
+        isPwa,
+        sessionId,
+        durationSeconds: 0,
+      });
+    }
 
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
+      if (document.visibilityState === "hidden" && !isIgnoredRoute(lastPathnameRef.current)) {
         const elapsed = Math.max(1, Math.round((Date.now() - pageStartRef.current) / 1000));
         sendTelemetryPing({
           pathname: lastPathnameRef.current,

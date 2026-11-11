@@ -131,4 +131,28 @@ describe("Telemetry & Cookieless Analytics Suite", () => {
       assert.equal(analytics.topPages[0].visits, 1);
     });
   });
+
+  describe("Telemetry Filters & Exclusions", () => {
+    it("identifies administrative and internal paths for exclusion", () => {
+      const isIgnored = (path: string) => path.startsWith("/admin");
+
+      assert.equal(isIgnored("/admin"), true);
+      assert.equal(isIgnored("/admin/estadisticas"), true);
+      assert.equal(isIgnored("/admin/partidos"), true);
+      assert.equal(isIgnored("/temporada"), false);
+      assert.equal(isIgnored("/juegos/porra"), false);
+      assert.equal(isIgnored("/"), false);
+    });
+
+    it("identifies localhost and development hostnames", () => {
+      const isLocalhost = (host: string) =>
+        host === "localhost" || host === "127.0.0.1" || host.endsWith(".local");
+
+      assert.equal(isLocalhost("localhost"), true);
+      assert.equal(isLocalhost("127.0.0.1"), true);
+      assert.equal(isLocalhost("my-mac.local"), true);
+      assert.equal(isLocalhost("mareona.es"), false);
+      assert.equal(isLocalhost("mareona.vercel.app"), false);
+    });
+  });
 });

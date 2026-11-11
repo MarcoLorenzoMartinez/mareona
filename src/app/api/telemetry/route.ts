@@ -32,6 +32,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: false, error: "Invalid payload" }, { status: 400 });
     }
 
+    // Ignore internal administration routes from public telemetry
+    if (parsed.data.pathname.startsWith("/admin")) {
+      return NextResponse.json({ ok: true, ignored: "admin_route" });
+    }
+
+    // Ignore local development requests unless explicitly forced
+    const host = request.headers.get("host") || "";
+    const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");
+    const isForceEnabled = process.env.NEXT_PUBLIC_ENABLE_LOCAL_TELEMETRY === "true";
+
+    if ((process.env.NODE_ENV === "development" || isLocalhost) && !isForceEnabled) {
+      return NextResponse.json({ ok: true, ignored: "dev_environment" });
+    }
+
     // Extract geo-headers safely provided by Vercel CDN at the edge
     const countryHeader = request.headers.get("x-vercel-ip-country");
     const regionHeader = request.headers.get("x-vercel-ip-country-region");
