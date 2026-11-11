@@ -1,7 +1,7 @@
 import matchesData from "../../data/historical/matches.json" with { type: "json" };
 import rivalsGeoData from "../../data/historical/rivals-geo.json" with { type: "json" };
 import seasonsData from "../../data/historical/seasons.json" with { type: "json" };
-import { canonicalizeOpponentName } from "./canonical-opponents.ts";
+import { canonicalizeOpponentName, MODERN_OPPONENT_ALIASES } from "./canonical-opponents.ts";
 import { matchesSearchQuery } from "../utils/search-utils.ts";
 import type {
   CompetitionStats,
@@ -52,10 +52,15 @@ function resolveRefinedCompetition(competition: string, season: string): string 
   return competition;
 }
 
+let cachedAllRivals: RivalH2HSummary[] | null = null;
+
 /**
  * Returns all verified historical rivals with geographic context and aggregated H2H record.
  */
 export function getAllRivalsSummaries(): RivalH2HSummary[] {
+  if (cachedAllRivals) {
+    return cachedAllRivals;
+  }
   const matchesByRival = new Map<string, RivalH2HMatch[]>();
 
   for (const [season, rawList] of Object.entries(matchesData as Record<string, readonly RawMatch[]>)) {
@@ -181,7 +186,87 @@ export function getAllRivalsSummaries(): RivalH2HSummary[] {
     });
   }
 
-  return summaries.sort((a, b) => a.name.localeCompare(b.name, "es"));
+  cachedAllRivals = summaries.sort((a, b) => a.name.localeCompare(b.name, "es"));
+  return cachedAllRivals;
+}
+
+/**
+ * Normalizes a text string by removing diacritical accents and lowercase formatting.
+ */
+function normalizeString(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+const RESERVE_TEAM_REGEX = /\b(b|ii|2|promesas|atletic|atlètic|castilla|mestalla|filial|sanse)\b/i;
+
+/**
+ * Checks whether a team name indicates a reserve or filial team.
+ */
+function isReserveTeam(name: string): boolean {
+  return RESERVE_TEAM_REGEX.test(name);
+}
+
+/**
+ * Resolves the historical H2H summary for a rival by team name.
+ * Robust against minor spelling, prefix variants (e.g. CD, RC, Real)
+ * and contemporary sports API naming.
+ * Strictly isolates first teams from reserve/filial teams to prevent false positives.
+ *
+ * @param opponentName Team name to resolve.
+ * @returns Complete RivalH2HSummary if historical matches exist, or null if no records are found.
+ */
+export function findRivalH2H(opponentName: string): RivalH2HSummary | null {
+  if (!opponentName || !opponentName.trim()) return null;
+
+  const all = getAllRivalsSummaries();
+  const raw = opponentName.trim();
+  const lower = raw.toLowerCase();
+  const targetIsReserve = isReserveTeam(raw);
+
+  // 1. Direct alias dictionary lookup (e.g. "Real Sociedad II" -> "Real Sociedad B")
+  const aliased = MODERN_OPPONENT_ALIASES[lower];
+  if (aliased) {
+    const found = all.find((r) => r.name.toLowerCase() === aliased.toLowerCase());
+    if (found) return found;
+  }
+
+  // 2. Exact match (case-insensitive)
+  const exact = all.find((r) => r.name.toLowerCase() === lower);
+  if (exact) return exact;
+
+  // 3. Historical canonical map resolution
+  const canon = canonicalizeOpponentName(raw);
+  const foundCanon = all.find((r) => r.name.toLowerCase() === canon.toLowerCase());
+  if (foundCanon) return foundCanon;
+
+  // 4. Accent-normalized matching
+  const normTarget = normalizeString(raw);
+  const foundNorm = all.find((r) => {
+    if (targetIsReserve !== isReserveTeam(r.name)) return false;
+    return normalizeString(r.name) === normTarget;
+  });
+  if (foundNorm) return foundNorm;
+
+  // 5. Containment matching (only when both are reserves, or both are first teams)
+  for (const r of all) {
+    if (targetIsReserve !== isReserveTeam(r.name)) {
+      continue;
+    }
+
+    const rNorm = normalizeString(r.name);
+    if (
+      (normTarget.length >= 5 && rNorm.includes(normTarget)) ||
+      (rNorm.length >= 5 && normTarget.includes(rNorm))
+    ) {
+      return r;
+    }
+  }
+
+  return null;
 }
 
 /**

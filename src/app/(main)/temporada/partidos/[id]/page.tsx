@@ -3,6 +3,7 @@ import { connection } from "next/server";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { fetchMatchDetail, fetchNextFixture } from "@/lib/sports-api/client";
+import { findRivalH2H } from "@/lib/historical/rivals-service";
 import { getDictionary } from "@/i18n";
 import { MatchDetailView } from "./match-detail-view";
 
@@ -72,6 +73,11 @@ async function MatchDetailContent({ params }: MatchDetailPageProps) {
     );
   }
 
+  const opponentName = match.homeTeam.isSporting
+    ? match.awayTeam.name
+    : match.homeTeam.name;
+  const rivalH2H = findRivalH2H(opponentName);
+
   return (
     <div className="flex flex-col gap-3">
       <nav aria-label="Navegación de retorno" className="-mt-1">
@@ -86,6 +92,7 @@ async function MatchDetailContent({ params }: MatchDetailPageProps) {
       <MatchDetailView
         initialMatch={match}
         isNextFixture={nextFixture?.externalId === match.externalId}
+        rivalH2H={rivalH2H}
       />
     </div>
   );

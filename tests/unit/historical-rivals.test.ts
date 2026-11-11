@@ -6,6 +6,7 @@ import {
   sortRivals,
   getSummariesByCommunity,
   getSummariesByCountry,
+  findRivalH2H,
 } from "../../src/lib/historical/rivals-service.ts";
 import { formatRivalLocation } from "../../src/lib/historical/rival-location.ts";
 
@@ -272,6 +273,85 @@ describe("Historical Rivals Service", () => {
         formatRivalLocation({ isInternational: true, country: "República Checa" }),
         "República Checa"
       );
+    });
+  });
+
+  describe("findRivalH2H", () => {
+    it("finds exact rival names correctly", () => {
+      const oviedo = findRivalH2H("Real Oviedo");
+      assert.ok(oviedo);
+      assert.equal(oviedo.name, "Real Oviedo");
+      assert.equal(oviedo.played, 121);
+
+      const albacete = findRivalH2H("Albacete Balompié");
+      assert.ok(albacete);
+      assert.equal(albacete.name, "Albacete Balompié");
+    });
+
+    it("resolves modern sports API aliases to canonical historical names", () => {
+      const depor1 = findRivalH2H("Deportivo de La Coruña");
+      assert.ok(depor1);
+      assert.equal(depor1.name, "RC Deportivo");
+
+      const depor2 = findRivalH2H("Deportivo La Coruña");
+      assert.ok(depor2);
+      assert.equal(depor2.name, "RC Deportivo");
+
+      const eldense = findRivalH2H("CD Eldense");
+      assert.ok(eldense);
+      assert.equal(eldense.name, "Eldense");
+
+      const atletico = findRivalH2H("Atlético Madrid");
+      assert.ok(atletico);
+      assert.equal(atletico.name, "Atlético de Madrid");
+    });
+
+    it("handles accent and case insensitivity gracefully", () => {
+      const eibar = findRivalH2H("sd eibar");
+      assert.ok(eibar);
+      assert.equal(eibar.name, "SD Eibar");
+
+      const cadiz = findRivalH2H("Cadiz CF");
+      assert.ok(cadiz);
+      assert.equal(cadiz.name, "Cádiz CF");
+    });
+
+    it("strictly isolates reserve and filial teams from first teams", () => {
+      // Real Sociedad B vs Real Sociedad
+      const sanse = findRivalH2H("Real Sociedad II");
+      assert.ok(sanse);
+      assert.equal(sanse.name, "Real Sociedad B");
+      assert.equal(sanse.played, 8);
+
+      const sanseDirect = findRivalH2H("Real Sociedad B");
+      assert.ok(sanseDirect);
+      assert.equal(sanseDirect.name, "Real Sociedad B");
+
+      const laReal = findRivalH2H("Real Sociedad");
+      assert.ok(laReal);
+      assert.equal(laReal.name, "Real Sociedad");
+      assert.equal(laReal.played, 102);
+
+      // Barcelona Atlètic vs FC Barcelona
+      const barcaB = findRivalH2H("FC Barcelona II");
+      assert.ok(barcaB);
+      assert.equal(barcaB.name, "FC Barcelona Atlètic");
+
+      const barcaFirst = findRivalH2H("FC Barcelona");
+      assert.ok(barcaFirst);
+      assert.equal(barcaFirst.name, "FC Barcelona");
+
+      // Reserve team with no historical clashes against Sporting must NEVER fall back to first team
+      assert.equal(findRivalH2H("Getafe B"), null);
+      assert.equal(findRivalH2H("Betis Deportivo"), null);
+    });
+
+    it("returns null safely for unprecedented or unknown opponents with zero records", () => {
+      assert.equal(findRivalH2H("CD Cazalegas"), null);
+      assert.equal(findRivalH2H("CF Panadería Pulido"), null);
+      assert.equal(findRivalH2H("Equipo Inexistente FC"), null);
+      assert.equal(findRivalH2H(""), null);
+      assert.equal(findRivalH2H("   "), null);
     });
   });
 });

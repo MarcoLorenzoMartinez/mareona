@@ -12,15 +12,51 @@ export const SPORTING_GIJON_TEAM_ID = 731;
 export const CANONICAL_SPORTING_NAME = "Real Sporting";
 
 /**
+ * Known reserve / filial teams with institutional or canonical official identities.
+ */
+const CANONICAL_RESERVE_NAMES: Readonly<Record<string, string>> = {
+  "real madrid ii": "Real Madrid Castilla",
+  "real madrid b": "Real Madrid Castilla",
+  "sevilla ii": "Sevilla Atlético",
+  "sevilla b": "Sevilla Atlético",
+  "valencia ii": "Valencia Mestalla",
+  "valencia b": "Valencia Mestalla",
+  "athletic club ii": "Bilbao Athletic",
+  "athletic ii": "Bilbao Athletic",
+  "athletic b": "Bilbao Athletic",
+  "fc barcelona ii": "FC Barcelona Atlètic",
+  "barcelona ii": "FC Barcelona Atlètic",
+  "barcelona b": "FC Barcelona Atlètic",
+  "osasuna ii": "Osasuna Promesas",
+  "celta ii": "RC Celta Fortuna",
+};
+
+/**
  * Normalizes team names across data ingestion boundaries.
- * Enforces CANONICAL_SPORTING_NAME whenever the team corresponds to Sporting.
+ * Enforces CANONICAL_SPORTING_NAME whenever the team corresponds to Sporting,
+ * and canonical Spanish reserve team nomenclature (e.g. "Real Sociedad II" -> "Real Sociedad B").
  *
  * @param name Original name provided by external API.
  * @param isSporting Flag indicating if this team is Sporting.
  * @returns Canonical team name.
  */
 export function normalizeTeamName(name: string, isSporting: boolean): string {
-  return isSporting ? CANONICAL_SPORTING_NAME : name;
+  if (isSporting) return CANONICAL_SPORTING_NAME;
+  const trimmed = name.trim();
+  const lower = trimmed.toLowerCase();
+
+  // 1. Check institutional filial names with recognized historical identity
+  const institutional = CANONICAL_RESERVE_NAMES[lower];
+  if (institutional) {
+    return institutional;
+  }
+
+  // 2. Generic rule: replace roman numeral II suffix with standard Spanish B suffix
+  if (/\bII$/i.test(trimmed)) {
+    return trimmed.replace(/\s+II$/i, " B");
+  }
+
+  return trimmed;
 }
 
 /**

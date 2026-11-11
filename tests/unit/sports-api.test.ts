@@ -170,7 +170,7 @@ test("Cache validation correctly evaluates TTL", () => {
   assert.equal(isCacheValid(pastDate), false);
 });
 
-test("normalizeTeamName canonicalizes club name to 'Real Sporting'", async () => {
+test("normalizeTeamName canonicalizes club name to 'Real Sporting' and filial teams", async () => {
   const { normalizeTeamName, CANONICAL_SPORTING_NAME } = await import(
     "../../src/lib/sports-api/types.ts"
   );
@@ -179,6 +179,16 @@ test("normalizeTeamName canonicalizes club name to 'Real Sporting'", async () =>
   assert.equal(normalizeTeamName("Sporting de Gijón", true), "Real Sporting");
   assert.equal(normalizeTeamName("Real Sporting", true), "Real Sporting");
   assert.equal(normalizeTeamName("Real Zaragoza", false), "Real Zaragoza");
+
+  // Filial / reserve team canonicalization
+  assert.equal(normalizeTeamName("Real Sociedad II", false), "Real Sociedad B");
+  assert.equal(normalizeTeamName("Villarreal CF II", false), "Villarreal CF B");
+  assert.equal(normalizeTeamName("Levante UD II", false), "Levante UD B");
+  assert.equal(normalizeTeamName("Real Madrid II", false), "Real Madrid Castilla");
+  assert.equal(normalizeTeamName("Sevilla II", false), "Sevilla Atlético");
+  assert.equal(normalizeTeamName("Valencia II", false), "Valencia Mestalla");
+  assert.equal(normalizeTeamName("Athletic Club II", false), "Bilbao Athletic");
+  assert.equal(normalizeTeamName("FC Barcelona II", false), "FC Barcelona Atlètic");
 });
 
 test("getCurrentSeasonYear and getSeasonLabel calculate active season dynamically", async () => {
