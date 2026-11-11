@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { getSecurityHeaders } from "./src/lib/security/headers";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -18,6 +19,11 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   async headers() {
     return [
+      {
+        // Apply defense-in-depth security headers to all application routes
+        source: "/(.*)",
+        headers: getSecurityHeaders().map((h) => ({ key: h.key, value: h.value })),
+      },
       {
         // The worker must never be served stale, or fixes would not reach installed apps.
         source: "/sw.js",

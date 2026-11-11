@@ -17,13 +17,31 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mareona.es";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(appUrl),
   title: {
-    default: "Mareona",
+    default: "Mareona — La grada digital del Real Sporting",
     template: "%s — Mareona",
   },
   description:
     "Hub comunitario, red social y plataforma de datos para los aficionados del Real Sporting de Gijón.",
+  openGraph: {
+    title: "Mareona — La grada digital del Real Sporting",
+    description:
+      "Partidos en directo, clasificación, porras, juegos diarios y archivo histórico del Real Sporting.",
+    url: "/",
+    siteName: "Mareona",
+    locale: "es_ES",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mareona — La grada digital del Real Sporting",
+    description:
+      "Partidos en directo, clasificación, porras, juegos diarios y archivo histórico del Real Sporting.",
+  },
   icons: {
     icon: [
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },

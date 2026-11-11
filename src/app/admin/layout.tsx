@@ -1,8 +1,17 @@
 import { Suspense, type ReactNode } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { assertAdmin } from "@/lib/admin/guard";
 import { UserNav } from "@/components/auth/user-nav";
 import { AdminNav } from "./admin-nav";
+
+export const metadata: Metadata = {
+  title: "Administración",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 interface AdminLayoutProps {
   readonly children: ReactNode;
