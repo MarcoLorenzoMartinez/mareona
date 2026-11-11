@@ -98,7 +98,7 @@ export function PlayerMatchRow({ match: m, onSelect }: PlayerMatchRowProps) {
         )}
 
         {/* Marcador del partido */}
-        <span className="text-xs font-bold text-neutral-700 tabular-nums">
+        <span className="text-xs font-bold text-neutral-700 tabular-nums whitespace-nowrap">
           {m.homeScore} - {m.awayScore}
         </span>
 

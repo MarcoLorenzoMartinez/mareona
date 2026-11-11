@@ -55,11 +55,11 @@ export function StandingsTable({
               <th scope="col" className="hidden md:table-cell w-10 sm:w-12 py-2.5 text-center" title={t.columnTitles.goalsAgainst}>
                 {t.columns.goalsAgainst}
               </th>
-              <th scope="col" className="w-12 sm:w-14 py-2.5 text-center" title={t.columnTitles.goalDifference}>
-                {t.columns.goalDifference}
-              </th>
-              <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right" title={t.columnTitles.points}>
+              <th scope="col" className="w-12 sm:w-14 py-2.5 text-center font-bold px-1" title={t.columnTitles.points}>
                 {t.columns.points}
+              </th>
+              <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right" title={t.columnTitles.goalDifference}>
+                {t.columns.goalDifference}
               </th>
             </tr>
           </thead>

@@ -58,16 +58,17 @@ export function LegacyRankingsRow({ player, category }: LegacyRankingsRowProps) 
       {/* Scorers */}
       {category === "scorers" && (
         <>
-          <td className="py-2.5 px-3 text-center text-neutral-700 font-semibold">
+          <td className="py-2.5 px-2 sm:px-3 text-center text-neutral-700 font-semibold">
             {player.totalPlayed}
           </td>
-          <td className="py-2.5 px-3 text-center font-semibold text-neutral-600">
+          <td className="hidden sm:table-cell py-2.5 px-3 text-center font-semibold text-neutral-600">
             <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] font-bold text-neutral-800">
               {goalRatio}
             </span>
           </td>
-          <td className="py-2.5 px-3 text-right font-black text-neutral-900 text-sm">
-            {player.totalGoals} {player.totalGoals === 1 ? "gol" : "goles"}
+          <td className="py-2.5 px-2 sm:px-3 text-right font-black text-neutral-900 text-sm">
+            <span className="sm:hidden">{player.totalGoals}</span>
+            <span className="hidden sm:inline">{player.totalGoals} {player.totalGoals === 1 ? "gol" : "goles"}</span>
           </td>
         </>
       )}
@@ -75,18 +76,19 @@ export function LegacyRankingsRow({ player, category }: LegacyRankingsRowProps) 
       {/* Appearances */}
       {category === "appearances" && (
         <>
-          <td className="py-2.5 px-3 text-neutral-600 font-medium">{player.position}</td>
-          <td className="py-2.5 px-3 text-center font-medium">
+          <td className="hidden sm:table-cell py-2.5 px-3 text-neutral-600 font-medium">{player.position}</td>
+          <td className="hidden md:table-cell py-2.5 px-3 text-center font-medium">
             <div className="flex flex-col items-center">
               <span className="font-bold text-neutral-800">{player.seasonCount} temp.</span>
               <span className="text-[10px] text-neutral-400">{seasonRangeLabel}</span>
             </div>
           </td>
-          <td className="py-2.5 px-3 text-center text-neutral-600 font-medium">
+          <td className="hidden sm:table-cell py-2.5 px-3 text-center text-neutral-600 font-medium">
             {player.totalMinutes.toLocaleString("es-ES")} min
           </td>
-          <td className="py-2.5 px-3 text-right font-black text-neutral-900 text-sm">
-            {player.totalPlayed} {player.totalPlayed === 1 ? "partido" : "partidos"}
+          <td className="py-2.5 px-2 sm:px-3 text-right font-black text-neutral-900 text-sm">
+            <span className="sm:hidden">{player.totalPlayed}</span>
+            <span className="hidden sm:inline">{player.totalPlayed} {player.totalPlayed === 1 ? "partido" : "partidos"}</span>
           </td>
         </>
       )}
@@ -94,15 +96,16 @@ export function LegacyRankingsRow({ player, category }: LegacyRankingsRowProps) 
       {/* Seasons */}
       {category === "seasons" && (
         <>
-          <td className="py-2.5 px-3 text-neutral-600 font-medium">{player.position}</td>
-          <td className="py-2.5 px-3 text-center text-neutral-600 font-medium">
+          <td className="hidden sm:table-cell py-2.5 px-3 text-neutral-600 font-medium">{player.position}</td>
+          <td className="hidden sm:table-cell py-2.5 px-3 text-center text-neutral-600 font-medium">
             {seasonRangeLabel}
           </td>
-          <td className="py-2.5 px-3 text-center text-neutral-700 font-semibold">
+          <td className="hidden md:table-cell py-2.5 px-3 text-center text-neutral-700 font-semibold">
             {player.totalPlayed}
           </td>
-          <td className="py-2.5 px-3 text-right font-black text-neutral-900 text-sm">
-            {player.seasonCount} {player.seasonCount === 1 ? "temporada" : "temporadas"}
+          <td className="py-2.5 px-2 sm:px-3 text-right font-black text-neutral-900 text-sm">
+            <span className="sm:hidden">{player.seasonCount}</span>
+            <span className="hidden sm:inline">{player.seasonCount} {player.seasonCount === 1 ? "temporada" : "temporadas"}</span>
           </td>
         </>
       )}

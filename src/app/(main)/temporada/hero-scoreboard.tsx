@@ -38,7 +38,7 @@ export function HeroScoreboard({
         }`}
       >
         <span
-          className={`text-xl md:text-2xl font-black tracking-tight font-sans tabular-nums leading-none ${
+          className={`text-xl md:text-2xl font-black tracking-tight font-sans tabular-nums leading-none whitespace-nowrap ${
             isLive ? "text-[var(--primary)]" : "text-[var(--foreground)]"
           }`}
         >

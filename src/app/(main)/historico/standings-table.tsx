@@ -39,13 +39,13 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
               <tr className="border-b border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)] uppercase">
                 <th scope="col" className="w-10 sm:w-12 py-2.5 pl-3 text-center">Pos</th>
                 <th scope="col" className="py-2.5 pl-2 pr-2 text-left">Equipo</th>
-                <th scope="col" className="w-14 sm:w-16 py-2.5 text-right font-black">Pts</th>
-                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center">PJ</th>
-                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell">PG</th>
-                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell">PE</th>
-                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell">PP</th>
-                <th scope="col" className="w-12 sm:w-14 py-2.5 text-center hidden md:table-cell">GF</th>
-                <th scope="col" className="w-12 sm:w-14 py-2.5 text-center hidden md:table-cell">GC</th>
+                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center px-1">PJ</th>
+                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell px-1">PG</th>
+                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell px-1">PE</th>
+                <th scope="col" className="w-10 sm:w-12 py-2.5 text-center hidden sm:table-cell px-1">PP</th>
+                <th scope="col" className="w-12 sm:w-14 py-2.5 text-center hidden md:table-cell px-1">GF</th>
+                <th scope="col" className="w-12 sm:w-14 py-2.5 text-center hidden md:table-cell px-1">GC</th>
+                <th scope="col" className="w-11 sm:w-14 py-2.5 text-center font-bold px-1">Pts</th>
                 <th scope="col" className="w-12 sm:w-14 py-2.5 pr-3 text-right">DG</th>
               </tr>
             </thead>
@@ -100,45 +100,49 @@ export function HistoricalStandingsTable({ rows, season }: StandingsTableProps) 
                       </div>
                     </td>
 
-                    {/* Puntos */}
-                    <td className="py-2.5 text-right font-black tabular-nums text-[var(--foreground)]">
-                      {row.points}
-                    </td>
-
                     {/* PJ */}
-                    <td className="py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
+                    <td className="py-2.5 px-1 text-center tabular-nums text-[var(--foreground-muted)]">
                       {row.played}
                     </td>
 
                     {/* PG */}
-                    <td className="py-2.5 text-center tabular-nums text-neutral-600 hidden sm:table-cell">
+                    <td className="py-2.5 px-1 text-center tabular-nums text-neutral-600 hidden sm:table-cell">
                       {row.won}
                     </td>
 
                     {/* PE */}
-                    <td className="py-2.5 text-center tabular-nums text-neutral-600 hidden sm:table-cell">
+                    <td className="py-2.5 px-1 text-center tabular-nums text-neutral-600 hidden sm:table-cell">
                       {row.drawn}
                     </td>
 
                     {/* PP */}
-                    <td className="py-2.5 text-center tabular-nums text-neutral-600 hidden sm:table-cell">
+                    <td className="py-2.5 px-1 text-center tabular-nums text-neutral-600 hidden sm:table-cell">
                       {row.lost}
                     </td>
 
                     {/* GF */}
-                    <td className="py-2.5 text-center tabular-nums text-neutral-600 hidden md:table-cell">
+                    <td className="py-2.5 px-1 text-center tabular-nums text-neutral-600 hidden md:table-cell">
                       {row.goalsFor}
                     </td>
 
                     {/* GC */}
-                    <td className="py-2.5 text-center tabular-nums text-neutral-600 hidden md:table-cell">
+                    <td className="py-2.5 px-1 text-center tabular-nums text-neutral-600 hidden md:table-cell">
                       {row.goalsAgainst}
+                    </td>
+
+                    {/* Puntos */}
+                    <td className="py-2.5 px-1 text-center font-bold tabular-nums text-[var(--foreground)]">
+                      {row.points}
                     </td>
 
                     {/* DG */}
                     <td
                       className={`py-2.5 pr-3 text-right tabular-nums text-xs font-semibold ${
-                        isPositive ? "text-emerald-700" : goalDiff < 0 ? "text-rose-700" : "text-neutral-500"
+                        isPositive
+                          ? "text-emerald-700"
+                          : goalDiff < 0
+                          ? "text-red-600"
+                          : "text-neutral-500"
                       }`}
                     >
                       {isPositive ? `+${goalDiff}` : goalDiff}

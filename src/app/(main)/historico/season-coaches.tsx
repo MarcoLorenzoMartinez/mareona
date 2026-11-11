@@ -34,9 +34,6 @@ export function HistoricalSeasonCoaches({ coaches, seasonLabel }: SeasonCoachesP
           </span>
           <h3 className="text-base font-bold text-[var(--foreground)]">Cuerpo Técnico</h3>
         </div>
-        <span className="rounded-full bg-[var(--surface)] px-2.5 py-0.5 text-xs font-semibold text-[var(--foreground-muted)] border border-[var(--border)] tabular-nums">
-          {coaches.length} {coaches.length === 1 ? "entrenador" : "entrenadores"}
-        </span>
       </div>
 
       <div className="overflow-x-auto mt-2">
@@ -49,19 +46,19 @@ export function HistoricalSeasonCoaches({ coaches, seasonLabel }: SeasonCoachesP
               <th scope="col" className="py-2.5 px-2 text-center hidden sm:table-cell">
                 Etapa / Jornadas
               </th>
-              <th scope="col" className="w-14 py-2.5 text-center font-bold">
+              <th scope="col" className="w-12 sm:w-14 py-2.5 px-1.5 sm:px-2 text-center font-bold">
                 PJ
               </th>
-              <th scope="col" className="w-14 py-2.5 text-center font-bold text-emerald-700">
+              <th scope="col" className="hidden sm:table-cell w-14 py-2.5 px-2 text-center font-bold text-emerald-700">
                 PG
               </th>
-              <th scope="col" className="w-14 py-2.5 text-center font-bold text-neutral-600">
+              <th scope="col" className="hidden sm:table-cell w-14 py-2.5 px-2 text-center font-bold text-neutral-600">
                 PE
               </th>
-              <th scope="col" className="w-14 py-2.5 text-center font-bold text-neutral-500">
+              <th scope="col" className="hidden sm:table-cell w-14 py-2.5 px-2 text-center font-bold text-neutral-500">
                 PP
               </th>
-              <th scope="col" className="w-16 py-2.5 pr-2 text-right font-black">
+              <th scope="col" className="w-16 sm:w-20 py-2.5 pl-1.5 pr-2 sm:px-2 text-right font-black whitespace-nowrap">
                 % Vict.
               </th>
             </tr>
@@ -80,10 +77,9 @@ export function HistoricalSeasonCoaches({ coaches, seasonLabel }: SeasonCoachesP
                       size="sm"
                       className="h-8 w-8 rounded-full border border-[var(--border)] object-cover object-top shrink-0 bg-neutral-100"
                     />
-                    <div className="min-w-0">
-                      <span className="font-bold text-[var(--foreground)] block truncate">{coach.alias}</span>
-                      <span className="text-[11px] text-[var(--foreground-muted)] block truncate">{coach.fullName}</span>
-                    </div>
+                    <span className="font-bold text-[var(--foreground)] truncate">
+                      {coach.alias || coach.fullName}
+                    </span>
                   </div>
                 </td>
                 <td className="py-2.5 px-2 text-center hidden sm:table-cell">
@@ -95,19 +91,19 @@ export function HistoricalSeasonCoaches({ coaches, seasonLabel }: SeasonCoachesP
                     <span className="text-xs text-[var(--foreground-muted)]">Temporada completa</span>
                   )}
                 </td>
-                <td className="py-2.5 text-center tabular-nums font-bold text-[var(--foreground)]">
+                <td className="py-2.5 px-1.5 sm:px-2 text-center tabular-nums font-bold text-[var(--foreground)]">
                   {coach.matches ?? "—"}
                 </td>
-                <td className="py-2.5 text-center tabular-nums font-bold text-emerald-700">
+                <td className="hidden sm:table-cell py-2.5 px-2 text-center tabular-nums font-bold text-emerald-700">
                   {coach.won !== undefined ? coach.won : "—"}
                 </td>
-                <td className="py-2.5 text-center tabular-nums font-semibold text-neutral-600">
+                <td className="hidden sm:table-cell py-2.5 px-2 text-center tabular-nums font-semibold text-neutral-600">
                   {coach.drawn !== undefined ? coach.drawn : "—"}
                 </td>
-                <td className="py-2.5 text-center tabular-nums font-semibold text-neutral-500">
+                <td className="hidden sm:table-cell py-2.5 px-2 text-center tabular-nums font-semibold text-neutral-500">
                   {coach.lost !== undefined ? coach.lost : "—"}
                 </td>
-                <td className="py-2.5 pr-2 text-right tabular-nums font-black text-sm text-[var(--foreground)]">
+                <td className="py-2.5 pl-1.5 pr-2 text-right tabular-nums font-black text-sm text-[var(--foreground)] whitespace-nowrap">
                   {calculateWinRate(coach.matches, coach.won)}
                 </td>
               </tr>

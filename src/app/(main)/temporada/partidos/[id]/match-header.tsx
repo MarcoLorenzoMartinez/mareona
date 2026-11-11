@@ -126,7 +126,7 @@ export function MatchHeader({ match }: MatchHeaderProps) {
             }`}
           >
             <span
-              className={`text-xl md:text-2xl font-black tracking-tight tabular-nums leading-none ${
+              className={`text-xl md:text-2xl font-black tracking-tight tabular-nums leading-none whitespace-nowrap ${
                 isLive ? "text-[var(--primary)]" : "text-[var(--foreground)]"
               }`}
             >

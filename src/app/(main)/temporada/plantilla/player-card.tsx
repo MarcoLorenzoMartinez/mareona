@@ -26,7 +26,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
     <Link
       href={href}
       aria-label={`${player.displayName} ${dorsalLabel} — Ver perfil y estadísticas completas`}
-      className="group relative flex flex-col justify-end rounded-2xl border border-[var(--border)] bg-white shadow-2xs transition-all duration-150 hover:border-neutral-300 hover:shadow-md select-none text-left overflow-hidden h-64 sm:h-72 focus-visible:outline-2 focus-visible:outline-[var(--primary)]"
+      className="group relative flex flex-col justify-end rounded-2xl border border-[var(--border)] bg-white shadow-2xs transition-all duration-150 hover:border-neutral-300 hover:shadow-md select-none text-left overflow-hidden h-52 sm:h-72 focus-visible:outline-2 focus-visible:outline-[var(--primary)]"
     >
       {/* Dorsal: Large red number positioned on the right */}
       {player.shirtNumber !== null && (
@@ -34,7 +34,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
           aria-hidden="true"
           className="absolute top-2 right-2.5 sm:right-3.5 z-0 pointer-events-none select-none"
         >
-          <span className="text-6xl sm:text-7xl font-black text-[var(--primary)] opacity-35 group-hover:opacity-55 transition-opacity tabular-nums tracking-tighter leading-none">
+          <span className="text-5xl sm:text-7xl font-black text-[var(--primary)] opacity-35 group-hover:opacity-55 transition-opacity tabular-nums tracking-tighter leading-none">
             {player.shirtNumber}
           </span>
         </div>
@@ -48,12 +48,12 @@ export function PlayerCard({ player }: PlayerCardProps) {
           playerName={player.displayName}
           shirtNumber={player.shirtNumber}
           size="card"
-          className="h-52 sm:h-60 transition-transform duration-200 group-hover:scale-105"
+          className="h-44 sm:h-60 transition-transform duration-200 group-hover:scale-105"
         />
       </div>
 
       {/* Bottom gradient overlay: Balanced medium height, cleanly softening the bust cut without encroaching on chest */}
-      <div className="absolute inset-x-0 bottom-0 z-20 flex h-20 sm:h-22 flex-col items-center justify-end px-3 pb-3 bg-gradient-to-t from-[var(--primary)] from-25% via-[var(--primary)]/60 to-transparent text-center pointer-events-none">
+      <div className="absolute inset-x-0 bottom-0 z-20 flex h-16 sm:h-22 flex-col items-center justify-end px-2.5 sm:px-3 pb-2.5 sm:pb-3 bg-gradient-to-t from-[var(--primary)] from-25% via-[var(--primary)]/60 to-transparent text-center pointer-events-none">
         <h3 className="text-xs sm:text-sm font-black tracking-wider text-white uppercase line-clamp-1 drop-shadow-xs">
           {player.displayName}
         </h3>

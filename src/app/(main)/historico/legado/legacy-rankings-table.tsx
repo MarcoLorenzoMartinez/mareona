@@ -28,29 +28,38 @@ export function LegacyRankingsTable({ players, category }: LegacyRankingsTablePr
         <table className="w-full text-left border-collapse text-xs">
           <thead>
             <tr className="border-b border-[var(--border)] bg-neutral-50/70 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-              <th scope="col" className="py-2.5 px-3 text-center w-12">Pos</th>
-              <th scope="col" className="py-2.5 px-3">Futbolista</th>
+              <th scope="col" className="py-2.5 px-2 sm:px-3 text-center w-10 sm:w-12">Pos</th>
+              <th scope="col" className="py-2.5 px-2 sm:px-3">Futbolista</th>
               {category === "scorers" && (
                 <>
-                  <th scope="col" className="py-2.5 px-3 text-center">Partidos</th>
-                  <th scope="col" className="py-2.5 px-3 text-center">Promedio (gol/partido)</th>
-                  <th scope="col" className="py-2.5 px-3 text-right">Total Goles</th>
+                  <th scope="col" className="py-2.5 px-2 sm:px-3 text-center">Partidos</th>
+                  <th scope="col" className="hidden sm:table-cell py-2.5 px-3 text-center">Promedio (gol/partido)</th>
+                  <th scope="col" className="py-2.5 px-2 sm:px-3 text-right">
+                    <span className="sm:hidden">Goles</span>
+                    <span className="hidden sm:inline">Total Goles</span>
+                  </th>
                 </>
               )}
               {category === "appearances" && (
                 <>
-                  <th scope="col" className="py-2.5 px-3">Posición</th>
-                  <th scope="col" className="py-2.5 px-3 text-center">Temporadas</th>
-                  <th scope="col" className="py-2.5 px-3 text-center">Minutos Jugados</th>
-                  <th scope="col" className="py-2.5 px-3 text-right">Total Partidos</th>
+                  <th scope="col" className="hidden sm:table-cell py-2.5 px-3">Posición</th>
+                  <th scope="col" className="hidden md:table-cell py-2.5 px-3 text-center">Temporadas</th>
+                  <th scope="col" className="hidden sm:table-cell py-2.5 px-3 text-center">Minutos Jugados</th>
+                  <th scope="col" className="py-2.5 px-2 sm:px-3 text-right">
+                    <span className="sm:hidden">Partidos</span>
+                    <span className="hidden sm:inline">Total Partidos</span>
+                  </th>
                 </>
               )}
               {category === "seasons" && (
                 <>
-                  <th scope="col" className="py-2.5 px-3">Posición</th>
-                  <th scope="col" className="py-2.5 px-3 text-center">Periodo Activo</th>
-                  <th scope="col" className="py-2.5 px-3 text-center">Partidos</th>
-                  <th scope="col" className="py-2.5 px-3 text-right">Total Temporadas</th>
+                  <th scope="col" className="hidden sm:table-cell py-2.5 px-3">Posición</th>
+                  <th scope="col" className="hidden sm:table-cell py-2.5 px-3 text-center">Periodo Activo</th>
+                  <th scope="col" className="hidden md:table-cell py-2.5 px-3 text-center">Partidos</th>
+                  <th scope="col" className="py-2.5 px-2 sm:px-3 text-right">
+                    <span className="sm:hidden">Temporadas</span>
+                    <span className="hidden sm:inline">Total Temporadas</span>
+                  </th>
                 </>
               )}
             </tr>

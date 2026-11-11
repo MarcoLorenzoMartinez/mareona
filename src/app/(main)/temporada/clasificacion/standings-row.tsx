@@ -97,7 +97,11 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
         {row.goalsAgainst}
       </td>
 
-      <td className="py-2.5 text-center tabular-nums text-xs sm:text-sm font-medium">
+      <td className="py-2.5 px-1 text-center font-bold tabular-nums text-[var(--foreground)]">
+        {row.points}
+      </td>
+
+      <td className="py-2.5 pr-3 text-right tabular-nums text-xs sm:text-sm font-medium">
         <span
           className={
             goalDiff > 0
@@ -109,10 +113,6 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
         >
           {goalDiff > 0 ? `+${goalDiff}` : goalDiff}
         </span>
-      </td>
-
-      <td className="py-2.5 pr-3 text-right font-black tabular-nums text-[var(--foreground)]">
-        {row.points}
       </td>
     </tr>
   );
