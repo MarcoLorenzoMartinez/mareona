@@ -2,7 +2,8 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { assertAdmin } from "./guard";
-import { DEV_PRODUCT_METRICS, DEV_AUDIT_LOGS, DEV_PLATFORM_ANALYTICS } from "./dev-seeds";
+import { DEV_PRODUCT_METRICS, DEV_AUDIT_LOGS } from "./dev-seeds";
+import { computePlatformAnalytics } from "@/lib/telemetry/analytics-calculator";
 import type { AdminAuditLog, PlatformAnalytics } from "./types";
 import type { Database } from "@/types/database.types";
 
@@ -90,8 +91,25 @@ export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAudit
 
 /**
  * Fetches platform engagement analytics including traffic by day, peak hours, and sections.
+ * Privacy-first and cookieless: dynamically aggregates real telemetry from `site_visits`.
  */
 export async function getAdminPlatformAnalytics(): Promise<PlatformAnalytics> {
   await assertAdmin();
-  return DEV_PLATFORM_ANALYTICS;
+  const supabase = await createClient();
+
+  const thirtyDaysAgoIso = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  const { data, error } = await supabase
+    .from("site_visits")
+    .select("*")
+    .gte("created_at", thirtyDaysAgoIso)
+    .order("created_at", { ascending: true })
+    .limit(5000);
+
+  if (error || !data || data.length === 0) {
+    return computePlatformAnalytics([]);
+  }
+
+  type SiteVisitRow = Database["public"]["Tables"]["site_visits"]["Row"];
+  return computePlatformAnalytics(data as unknown as readonly SiteVisitRow[]);
 }

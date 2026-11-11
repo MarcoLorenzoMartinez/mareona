@@ -10,6 +10,7 @@ import { PwaInstallProvider } from "@/components/pwa/pwa-install-provider";
 import { OfflineBanner } from "@/components/pwa/offline-banner";
 import { OfflineSyncListener } from "@/components/pwa/offline-sync-listener";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
+import { TelemetryBeacon } from "@/components/telemetry/telemetry-beacon";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -87,6 +88,7 @@ export default function RootLayout({
             </Suspense>
             <OfflineBanner />
             <OfflineSyncListener />
+            <TelemetryBeacon />
             <AuthModal />
             {children}
             <ToastContainer />

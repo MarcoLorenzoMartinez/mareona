@@ -113,4 +113,6 @@ export interface PlatformAnalytics {
   readonly geographicCountries: readonly GeographicOriginStat[];
   readonly avgSessionMinutes: number;
   readonly bounceRatePercentage: number;
+  readonly pagesPerSession: number;
+  readonly matchDayMultiplier: number;
 }

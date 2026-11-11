@@ -278,4 +278,6 @@ export const DEV_PLATFORM_ANALYTICS: PlatformAnalytics = {
   ],
   avgSessionMinutes: 4 + 56 / 60, // 04:56
   bounceRatePercentage: 22.4,
+  pagesPerSession: 3.2,
+  matchDayMultiplier: 2.1,
 };

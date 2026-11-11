@@ -801,6 +801,42 @@ export interface Database {
         };
         Relationships: [];
       };
+      site_visits: {
+        Row: {
+          id: number;
+          pathname: string;
+          device_type: string;
+          is_pwa: boolean;
+          session_id: string | null;
+          duration_seconds: number;
+          country: string;
+          province: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: number;
+          pathname: string;
+          device_type: string;
+          is_pwa?: boolean;
+          session_id?: string | null;
+          duration_seconds?: number;
+          country?: string;
+          province?: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: number;
+          pathname?: string;
+          device_type?: string;
+          is_pwa?: boolean;
+          session_id?: string | null;
+          duration_seconds?: number;
+          country?: string;
+          province?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
