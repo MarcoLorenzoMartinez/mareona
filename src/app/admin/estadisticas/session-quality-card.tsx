@@ -14,6 +14,7 @@ function formatMinutesAndSeconds(decimalMinutes: number): string {
 
 /**
  * Visual card displaying engagement quality metrics: session duration, bounce rate and depth.
+ * Clean, flat editorial design without nested gray boxes or AI-template clutter.
  */
 export function SessionQualityCard({
   avgSessionMinutes,
@@ -28,9 +29,9 @@ export function SessionQualityCard({
         <h2 className="text-sm font-bold text-[var(--foreground)]">Calidad de sesión y retención</h2>
       </div>
 
-      <div className="mt-5 grid flex-1 grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mt-5 grid flex-1 grid-cols-3 divide-x divide-[var(--border)] py-2">
         {/* Metric 1: Avg Duration */}
-        <div className="flex flex-col justify-between rounded-lg border border-[var(--border)] bg-[var(--surface)]/50 p-4">
+        <div className="flex flex-col justify-between pr-4">
           <span className="text-xs font-semibold text-[var(--muted-foreground)]">
             Tiempo medio
           </span>
@@ -41,12 +42,12 @@ export function SessionQualityCard({
             <span className="ml-1 text-xs font-medium text-[var(--muted-foreground)]">min</span>
           </div>
           <span className="text-[11px] text-[var(--muted-foreground)]">
-            Permanencia en lectura y juego
+            Lectura y juego
           </span>
         </div>
 
         {/* Metric 2: Bounce Rate */}
-        <div className="flex flex-col justify-between rounded-lg border border-[var(--border)] bg-[var(--surface)]/50 p-4">
+        <div className="flex flex-col justify-between px-4">
           <span className="text-xs font-semibold text-[var(--muted-foreground)]">
             Tasa de rebote
           </span>
@@ -56,14 +57,14 @@ export function SessionQualityCard({
             </span>
           </div>
           <span className="text-[11px] text-[var(--muted-foreground)]">
-            Visitas de una sola pantalla
+            Pantalla única
           </span>
         </div>
 
         {/* Metric 3: Depth */}
-        <div className="flex flex-col justify-between rounded-lg border border-[var(--border)] bg-[var(--surface)]/50 p-4">
+        <div className="flex flex-col justify-between pl-4">
           <span className="text-xs font-semibold text-[var(--muted-foreground)]">
-            Páginas por visita
+            Páginas / visita
           </span>
           <div className="my-2">
             <span className="text-2xl font-black tracking-tight text-[#e2001a] tabular-nums font-sans">
@@ -72,7 +73,7 @@ export function SessionQualityCard({
             <span className="ml-1 text-xs font-medium text-[var(--muted-foreground)]">págs</span>
           </div>
           <span className="text-[11px] text-[var(--muted-foreground)]">
-            Profundidad media de navegación
+            Profundidad media
           </span>
         </div>
       </div>
