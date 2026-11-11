@@ -103,6 +103,13 @@ export interface GeographicOriginStat {
   readonly visits: number;
 }
 
+export interface TopPageStat {
+  readonly path: string;
+  readonly label: string;
+  readonly visits: number;
+  readonly percentage: number;
+}
+
 export interface PlatformAnalytics {
   readonly dailyTraffic: readonly DailyTrafficPoint[];
   readonly hourlyTraffic: readonly HourlyTrafficPoint[];
@@ -111,6 +118,7 @@ export interface PlatformAnalytics {
   readonly accessModes: readonly AccessModeStat[];
   readonly geographicProvinces: readonly GeographicOriginStat[];
   readonly geographicCountries: readonly GeographicOriginStat[];
+  readonly topPages: readonly TopPageStat[];
   readonly avgSessionMinutes: number;
   readonly bounceRatePercentage: number;
   readonly pagesPerSession: number;

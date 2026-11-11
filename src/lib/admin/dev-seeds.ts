@@ -276,6 +276,13 @@ export const DEV_PLATFORM_ANALYTICS: PlatformAnalytics = {
     { key: "uk", label: "Reino Unido", percentage: 2, visits: 21 },
     { key: "otros", label: "Otros", percentage: 2, visits: 21 },
   ],
+  topPages: [
+    { path: "/temporada/clasificacion", label: "Clasificación LaLiga", visits: 385, percentage: 36 },
+    { path: "/juegos/wordle", label: "Wordle Sportinguista", visits: 290, percentage: 27 },
+    { path: "/juegos/porra", label: "La Porra del Sporting", visits: 195, percentage: 18 },
+    { path: "/social", label: "Tertulia Social", visits: 115, percentage: 11 },
+    { path: "/historico/efemerides", label: "Efemérides Históricas", visits: 85, percentage: 8 },
+  ],
   avgSessionMinutes: 4 + 56 / 60, // 04:56
   bounceRatePercentage: 22.4,
   pagesPerSession: 3.2,

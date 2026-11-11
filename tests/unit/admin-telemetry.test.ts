@@ -124,6 +124,11 @@ describe("Telemetry & Cookieless Analytics Suite", () => {
       // Pages per session: 3 visits / 2 sessions = 1.5 pages
       assert.equal(analytics.pagesPerSession, 1.5);
       assert.ok(analytics.matchDayMultiplier >= 1.0);
+
+      // Top pages calculation
+      assert.ok(analytics.topPages.length > 0);
+      assert.equal(analytics.topPages[0].path, "/temporada");
+      assert.equal(analytics.topPages[0].visits, 1);
     });
   });
 });

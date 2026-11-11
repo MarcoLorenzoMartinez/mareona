@@ -10,7 +10,7 @@ import { SectionUsageBars } from "./section-usage-bars";
 import { DeviceDonutChart } from "./device-donut-chart";
 import { GeographicOriginBars } from "./geographic-origin-bars";
 import { SessionQualityCard } from "./session-quality-card";
-import { AppAdoptionCard } from "./app-adoption-card";
+import { TopPagesCard } from "./top-pages-card";
 import { AuditLogsTable } from "./audit-logs-table";
 
 export const metadata = {
@@ -53,16 +53,17 @@ export default async function StatsAdminPage() {
           provinces={analytics.geographicProvinces}
           countries={analytics.geographicCountries}
         />
-        <DeviceDonutChart devices={analytics.deviceUsage} />
+        <DeviceDonutChart
+          devices={analytics.deviceUsage}
+          accessModes={analytics.accessModes}
+          matchDayMultiplier={analytics.matchDayMultiplier}
+        />
         <SessionQualityCard
           avgSessionMinutes={analytics.avgSessionMinutes}
           bounceRatePercentage={analytics.bounceRatePercentage}
           pagesPerSession={analytics.pagesPerSession}
         />
-        <AppAdoptionCard
-          accessModes={analytics.accessModes}
-          matchDayMultiplier={analytics.matchDayMultiplier}
-        />
+        <TopPagesCard pages={analytics.topPages} />
       </div>
 
       {/* Audit Log Table */}
