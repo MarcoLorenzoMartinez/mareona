@@ -619,8 +619,8 @@
     "nationality": "España",
     "startYear": 2019,
     "endYear": 2027,
-    "totalPlayed": 202,
-    "totalGoals": 7,
+    "totalPlayed": 206,
+    "totalGoals": 9,
     "photoUrl": "https://www.bdfutbol.com/i/j/22624b.jpg"
   },
   {
@@ -634,6 +634,18 @@
     "totalPlayed": 199,
     "totalGoals": 0,
     "photoUrl": "https://www.bdfutbol.com/i/j/4695.jpg"
+  },
+  {
+    "bdfId": 22661,
+    "name": "Gaspar",
+    "fullName": "Gaspar Campos-Ansó Fernández",
+    "position": "Delantero",
+    "nationality": "España",
+    "startYear": 2019,
+    "endYear": 2027,
+    "totalPlayed": 195,
+    "totalGoals": 24,
+    "photoUrl": "https://www.bdfutbol.com/i/j/22661b.jpg"
   },
   {
     "bdfId": 4138,
@@ -670,18 +682,6 @@
     "totalPlayed": 190,
     "totalGoals": 12,
     "photoUrl": "https://www.bdfutbol.com/i/j/101315c.jpg"
-  },
-  {
-    "bdfId": 22661,
-    "name": "Gaspar",
-    "fullName": "Gaspar Campos-Ansó Fernández",
-    "position": "Delantero",
-    "nationality": "España",
-    "startYear": 2019,
-    "endYear": 2027,
-    "totalPlayed": 190,
-    "totalGoals": 24,
-    "photoUrl": "https://www.bdfutbol.com/i/j/22661b.jpg"
   },
   {
     "bdfId": 9541,
@@ -852,6 +852,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/400206d.jpg"
   },
   {
+    "bdfId": 20443,
+    "name": "Otero",
+    "fullName": "Juan Ferney Otero Tovar",
+    "position": "Delantero",
+    "nationality": "Colombia",
+    "startYear": 2022,
+    "endYear": 2027,
+    "totalPlayed": 169,
+    "totalGoals": 45,
+    "photoUrl": "https://www.bdfutbol.com/i/j/20443b.jpg"
+  },
+  {
     "bdfId": 2148,
     "name": "Pablo Álvarez",
     "fullName": "Pablo Álvarez Núñez",
@@ -886,18 +898,6 @@
     "totalPlayed": 165,
     "totalGoals": 23,
     "photoUrl": "https://www.bdfutbol.com/i/j/8741d.jpg"
-  },
-  {
-    "bdfId": 20443,
-    "name": "Otero",
-    "fullName": "Juan Ferney Otero Tovar",
-    "position": "Delantero",
-    "nationality": "Colombia",
-    "startYear": 2022,
-    "endYear": 2027,
-    "totalPlayed": 164,
-    "totalGoals": 44,
-    "photoUrl": "https://www.bdfutbol.com/i/j/20443b.jpg"
   },
   {
     "bdfId": 1910,
@@ -1224,6 +1224,30 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/201014d.jpg"
   },
   {
+    "bdfId": 101843,
+    "name": "Yáñez",
+    "fullName": "Orlando Rubén Yáñez Alabart",
+    "position": "Portero",
+    "nationality": "España",
+    "startYear": 2023,
+    "endYear": 2027,
+    "totalPlayed": 132,
+    "totalGoals": 0,
+    "photoUrl": "https://www.bdfutbol.com/i/j/101843h.jpg"
+  },
+  {
+    "bdfId": 25942,
+    "name": "Pablo García",
+    "fullName": "Pablo García Carrasco",
+    "position": "Defensa",
+    "nationality": "España",
+    "startYear": 2020,
+    "endYear": 2027,
+    "totalPlayed": 131,
+    "totalGoals": 2,
+    "photoUrl": "https://www.bdfutbol.com/i/j/25942c.jpg"
+  },
+  {
     "bdfId": 10907,
     "name": "Sión I",
     "fullName": "Florentino Sión Mortera",
@@ -1246,30 +1270,6 @@
     "totalPlayed": 129,
     "totalGoals": 1,
     "photoUrl": "https://www.bdfutbol.com/i/j/10577.jpg"
-  },
-  {
-    "bdfId": 25942,
-    "name": "Pablo García",
-    "fullName": "Pablo García Carrasco",
-    "position": "Defensa",
-    "nationality": "España",
-    "startYear": 2020,
-    "endYear": 2027,
-    "totalPlayed": 128,
-    "totalGoals": 2,
-    "photoUrl": "https://www.bdfutbol.com/i/j/25942c.jpg"
-  },
-  {
-    "bdfId": 101843,
-    "name": "Yáñez",
-    "fullName": "Orlando Rubén Yáñez Alabart",
-    "position": "Portero",
-    "nationality": "España",
-    "startYear": 2023,
-    "endYear": 2027,
-    "totalPlayed": 128,
-    "totalGoals": 0,
-    "photoUrl": "https://www.bdfutbol.com/i/j/101843h.jpg"
   },
   {
     "bdfId": 3571,
@@ -1428,6 +1428,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/6287c.jpg"
   },
   {
+    "bdfId": 43015,
+    "name": "Diego Sánchez",
+    "fullName": "Diego Sánchez Pérez",
+    "position": "Defensa",
+    "nationality": "España",
+    "startYear": 2021,
+    "endYear": 2027,
+    "totalPlayed": 119,
+    "totalGoals": 2,
+    "photoUrl": "https://www.bdfutbol.com/i/j/43015b.jpg"
+  },
+  {
     "bdfId": 9586,
     "name": "Castañer",
     "fullName": "Luis Castañer Viñas",
@@ -1438,18 +1450,6 @@
     "totalPlayed": 118,
     "totalGoals": 1,
     "photoUrl": "https://www.bdfutbol.com/i/j/9586.jpg"
-  },
-  {
-    "bdfId": 43015,
-    "name": "Diego Sánchez",
-    "fullName": "Diego Sánchez Pérez",
-    "position": "Defensa",
-    "nationality": "España",
-    "startYear": 2021,
-    "endYear": 2027,
-    "totalPlayed": 117,
-    "totalGoals": 2,
-    "photoUrl": "https://www.bdfutbol.com/i/j/43015b.jpg"
   },
   {
     "bdfId": 43018,
@@ -1512,6 +1512,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/2301d.jpg"
   },
   {
+    "bdfId": 43013,
+    "name": "Nacho Martín",
+    "fullName": "Ignacio Martín Gómez",
+    "position": "Centrocampista",
+    "nationality": "España",
+    "startYear": 2021,
+    "endYear": 2027,
+    "totalPlayed": 115,
+    "totalGoals": 1,
+    "photoUrl": "https://www.bdfutbol.com/i/j/43013.jpg"
+  },
+  {
     "bdfId": 6170,
     "name": "Luis Morán",
     "fullName": "Luis Morán Sánchez",
@@ -1522,18 +1534,6 @@
     "totalPlayed": 114,
     "totalGoals": 12,
     "photoUrl": "https://www.bdfutbol.com/i/j/6170.jpg"
-  },
-  {
-    "bdfId": 43013,
-    "name": "Nacho Martín",
-    "fullName": "Ignacio Martín Gómez",
-    "position": "Centrocampista",
-    "nationality": "España",
-    "startYear": 2021,
-    "endYear": 2027,
-    "totalPlayed": 112,
-    "totalGoals": 1,
-    "photoUrl": "https://www.bdfutbol.com/i/j/43013.jpg"
   },
   {
     "bdfId": 22414,
@@ -1932,6 +1932,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/5626b.jpg"
   },
   {
+    "bdfId": 23584,
+    "name": "Gelabert",
+    "fullName": "César Gelabert Piña",
+    "position": "Centrocampista",
+    "nationality": "España",
+    "startYear": 2024,
+    "endYear": 2027,
+    "totalPlayed": 91,
+    "totalGoals": 15,
+    "photoUrl": "https://www.bdfutbol.com/i/j/23584c.jpg"
+  },
+  {
     "bdfId": 2067,
     "name": "Narciso",
     "fullName": "Narciso Manuel Rodríguez de Armas",
@@ -1966,18 +1978,6 @@
     "totalPlayed": 89,
     "totalGoals": 5,
     "photoUrl": "https://www.bdfutbol.com/i/j/2149c.jpg"
-  },
-  {
-    "bdfId": 23584,
-    "name": "Gelabert",
-    "fullName": "César Gelabert Piña",
-    "position": "Centrocampista",
-    "nationality": "España",
-    "startYear": 2024,
-    "endYear": 2027,
-    "totalPlayed": 89,
-    "totalGoals": 14,
-    "photoUrl": "https://www.bdfutbol.com/i/j/23584c.jpg"
   },
   {
     "bdfId": 317,
@@ -3132,6 +3132,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/6471b.jpg"
   },
   {
+    "bdfId": 21483,
+    "name": "Corredera",
+    "fullName": "Alexandre Corredera Alardi",
+    "position": "Centrocampista",
+    "nationality": "España",
+    "startYear": 2025,
+    "endYear": 2027,
+    "totalPlayed": 52,
+    "totalGoals": 1,
+    "photoUrl": "https://www.bdfutbol.com/i/j/21483g.jpg"
+  },
+  {
     "bdfId": 10576,
     "name": "Méndez",
     "fullName": "Francisco Méndez Alonso",
@@ -3300,16 +3312,16 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/755d.jpg"
   },
   {
-    "bdfId": 21483,
-    "name": "Corredera",
-    "fullName": "Alexandre Corredera Alardi",
-    "position": "Centrocampista",
+    "bdfId": 24313,
+    "name": "Pablo Vázquez",
+    "fullName": "Pablo Vázquez Pérez",
+    "position": "Defensa",
     "nationality": "España",
     "startYear": 2025,
     "endYear": 2027,
     "totalPlayed": 48,
-    "totalGoals": 1,
-    "photoUrl": "https://www.bdfutbol.com/i/j/21483g.jpg"
+    "totalGoals": 4,
+    "photoUrl": "https://www.bdfutbol.com/i/j/24313h.jpg"
   },
   {
     "bdfId": 15513,
@@ -3394,18 +3406,6 @@
     "totalPlayed": 46,
     "totalGoals": 1,
     "photoUrl": "https://www.bdfutbol.com/i/j/802g.jpg"
-  },
-  {
-    "bdfId": 24313,
-    "name": "Pablo Vázquez",
-    "fullName": "Pablo Vázquez Pérez",
-    "position": "Defensa",
-    "nationality": "España",
-    "startYear": 2025,
-    "endYear": 2027,
-    "totalPlayed": 46,
-    "totalGoals": 4,
-    "photoUrl": "https://www.bdfutbol.com/i/j/24313h.jpg"
   },
   {
     "bdfId": 40061,
@@ -4236,6 +4236,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/19036g.jpg"
   },
   {
+    "bdfId": 209417,
+    "name": "Manu Rodríguez",
+    "fullName": "Manuel Rodríguez Paz",
+    "position": "Centrocampista",
+    "nationality": "España",
+    "startYear": 2025,
+    "endYear": 2027,
+    "totalPlayed": 37,
+    "totalGoals": 2,
+    "photoUrl": "https://www.bdfutbol.com/i/j/209417b.jpg"
+  },
+  {
     "bdfId": 10178,
     "name": "Meana",
     "fullName": "Manuel Meana Vallina",
@@ -4306,18 +4318,6 @@
     "totalPlayed": 36,
     "totalGoals": 0,
     "photoUrl": "https://www.bdfutbol.com/i/j/40841c.jpg"
-  },
-  {
-    "bdfId": 209417,
-    "name": "Manu Rodríguez",
-    "fullName": "Manuel Rodríguez Paz",
-    "position": "Centrocampista",
-    "nationality": "España",
-    "startYear": 2025,
-    "endYear": 2027,
-    "totalPlayed": 36,
-    "totalGoals": 2,
-    "photoUrl": "https://www.bdfutbol.com/i/j/209417b.jpg"
   },
   {
     "bdfId": 204939,
@@ -5844,6 +5844,18 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/9769c.jpg"
   },
   {
+    "bdfId": 13651,
+    "name": "Cuenca",
+    "fullName": "Andrés Cuenca Cejudo",
+    "position": "Defensa",
+    "nationality": "España",
+    "startYear": 2025,
+    "endYear": 2027,
+    "totalPlayed": 20,
+    "totalGoals": 0,
+    "photoUrl": "https://www.bdfutbol.com/i/j/13651c.jpg"
+  },
+  {
     "bdfId": 10662,
     "name": "Victorero",
     "fullName": "Enrique Victorero Ordieres",
@@ -6372,18 +6384,6 @@
     "photoUrl": "https://www.bdfutbol.com/i/j/20591b.jpg"
   },
   {
-    "bdfId": 13651,
-    "name": "Cuenca",
-    "fullName": "Andrés Cuenca Cejudo",
-    "position": "Defensa",
-    "nationality": "España",
-    "startYear": 2025,
-    "endYear": 2027,
-    "totalPlayed": 16,
-    "totalGoals": 0,
-    "photoUrl": "https://www.bdfutbol.com/i/j/13651c.jpg"
-  },
-  {
     "bdfId": 21032,
     "name": "Oliván",
     "fullName": "Brian Oliván Herrero",
@@ -6514,6 +6514,18 @@
     "totalPlayed": 15,
     "totalGoals": 2,
     "photoUrl": "https://www.bdfutbol.com/i/j/7736b.jpg"
+  },
+  {
+    "bdfId": 29027,
+    "name": "Loum",
+    "fullName": "Mamadou Loum Ndiaye",
+    "position": "Centrocampista",
+    "nationality": "Senegal",
+    "startYear": 2025,
+    "endYear": 2027,
+    "totalPlayed": 15,
+    "totalGoals": 0,
+    "photoUrl": "https://www.bdfutbol.com/i/j/29027f.jpg"
   },
   {
     "bdfId": 2360,
@@ -7222,18 +7234,6 @@
     "totalPlayed": 11,
     "totalGoals": 3,
     "photoUrl": "https://www.bdfutbol.com/i/j/204985.jpg"
-  },
-  {
-    "bdfId": 29027,
-    "name": "Loum",
-    "fullName": "Mamadou Loum Ndiaye",
-    "position": "Centrocampista",
-    "nationality": "Senegal",
-    "startYear": 2025,
-    "endYear": 2027,
-    "totalPlayed": 11,
-    "totalGoals": 0,
-    "photoUrl": "https://www.bdfutbol.com/i/j/29027f.jpg"
   },
   {
     "bdfId": 3350,

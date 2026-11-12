@@ -32,6 +32,7 @@ import {
 import { fetchFotMobAdvancedStats } from "./fotmob.ts";
 import { fetchSportingCopaMatches } from "./copa.ts";
 import { fetchFotMobMatchDetail } from "./fotmob-match-detail.ts";
+import { triggerCardSyncForFinishedMatch } from "../cards/card-catalog-sync.ts";
 import type { createClient } from "@/lib/supabase/server";
 import { createLogger } from "../logger/core.ts";
 
@@ -557,6 +558,9 @@ export async function fetchMatchDetail(
           sanitized as unknown as Record<string, unknown>,
           resolveMatchDetailTtlMs(sanitized.status)
         );
+        if (sanitized.status === "finished") {
+          void triggerCardSyncForFinishedMatch(supabase, sanitized);
+        }
       }
       memoryCachedMatchDetails.set(matchId, {
         data: sanitized,
@@ -576,6 +580,9 @@ export async function fetchMatchDetail(
           sanitized as unknown as Record<string, unknown>,
           resolveMatchDetailTtlMs(sanitized.status)
         );
+        if (sanitized.status === "finished") {
+          void triggerCardSyncForFinishedMatch(supabase, sanitized);
+        }
       }
       memoryCachedMatchDetails.set(matchId, {
         data: sanitized,

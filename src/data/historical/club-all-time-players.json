@@ -770,9 +770,9 @@
     "fullName": "Guillermo Rosas Alonso",
     "position": "Defensa",
     "photoUrl": "https://www.bdfutbol.com/i/j/22624b.jpg",
-    "totalPlayed": 202,
-    "totalMinutes": 15679,
-    "totalGoals": 7,
+    "totalPlayed": 206,
+    "totalMinutes": 16039,
+    "totalGoals": 9,
     "seasonCount": 7,
     "startSeason": "2019/20",
     "endSeason": "2026/27",
@@ -793,6 +793,21 @@
     "endSeason": "2007/08",
     "startYear": 2002,
     "endYear": 2008
+  },
+  {
+    "bdfId": 22661,
+    "name": "Gaspar",
+    "fullName": "Gaspar Campos-Ansó Fernández",
+    "position": "Delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/22661b.jpg",
+    "totalPlayed": 195,
+    "totalMinutes": 10983,
+    "totalGoals": 24,
+    "seasonCount": 8,
+    "startSeason": "2019/20",
+    "endSeason": "2026/27",
+    "startYear": 2019,
+    "endYear": 2027
   },
   {
     "bdfId": 4138,
@@ -838,21 +853,6 @@
     "endSeason": "2021/22",
     "startYear": 2013,
     "endYear": 2022
-  },
-  {
-    "bdfId": 22661,
-    "name": "Gaspar",
-    "fullName": "Gaspar Campos-Ansó Fernández",
-    "position": "Delantero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/22661b.jpg",
-    "totalPlayed": 190,
-    "totalMinutes": 10626,
-    "totalGoals": 24,
-    "seasonCount": 8,
-    "startSeason": "2019/20",
-    "endSeason": "2026/27",
-    "startYear": 2019,
-    "endYear": 2027
   },
   {
     "bdfId": 9541,
@@ -1065,6 +1065,21 @@
     "endYear": 2022
   },
   {
+    "bdfId": 20443,
+    "name": "Otero",
+    "fullName": "Juan Ferney Otero Tovar",
+    "position": "Delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/20443b.jpg",
+    "totalPlayed": 169,
+    "totalMinutes": 12915,
+    "totalGoals": 45,
+    "seasonCount": 5,
+    "startSeason": "2022/23",
+    "endSeason": "2026/27",
+    "startYear": 2022,
+    "endYear": 2027
+  },
+  {
     "bdfId": 2148,
     "name": "Pablo Álvarez",
     "fullName": "Pablo Álvarez Núñez",
@@ -1108,21 +1123,6 @@
     "endSeason": "2022/23",
     "startYear": 2018,
     "endYear": 2023
-  },
-  {
-    "bdfId": 20443,
-    "name": "Otero",
-    "fullName": "Juan Ferney Otero Tovar",
-    "position": "Delantero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/20443b.jpg",
-    "totalPlayed": 164,
-    "totalMinutes": 12634,
-    "totalGoals": 44,
-    "seasonCount": 5,
-    "startSeason": "2022/23",
-    "endSeason": "2026/27",
-    "startYear": 2022,
-    "endYear": 2027
   },
   {
     "bdfId": 1910,
@@ -1530,6 +1530,36 @@
     "endYear": 2023
   },
   {
+    "bdfId": 101843,
+    "name": "Yáñez",
+    "fullName": "Orlando Rubén Yáñez Alabart",
+    "position": "Portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/101843h.jpg",
+    "totalPlayed": 132,
+    "totalMinutes": 11763,
+    "totalGoals": 0,
+    "seasonCount": 4,
+    "startSeason": "2023/24",
+    "endSeason": "2026/27",
+    "startYear": 2023,
+    "endYear": 2027
+  },
+  {
+    "bdfId": 25942,
+    "name": "Pablo García",
+    "fullName": "Pablo García Carrasco",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/25942c.jpg",
+    "totalPlayed": 131,
+    "totalMinutes": 6427,
+    "totalGoals": 2,
+    "seasonCount": 6,
+    "startSeason": "2020/21",
+    "endSeason": "2026/27",
+    "startYear": 2020,
+    "endYear": 2027
+  },
+  {
     "bdfId": 10907,
     "name": "Sión I",
     "fullName": "Florentino Sión Mortera",
@@ -1558,36 +1588,6 @@
     "endSeason": "1947/48",
     "startYear": 1941,
     "endYear": 1948
-  },
-  {
-    "bdfId": 25942,
-    "name": "Pablo García",
-    "fullName": "Pablo García Carrasco",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/25942c.jpg",
-    "totalPlayed": 128,
-    "totalMinutes": 6302,
-    "totalGoals": 2,
-    "seasonCount": 6,
-    "startSeason": "2020/21",
-    "endSeason": "2026/27",
-    "startYear": 2020,
-    "endYear": 2027
-  },
-  {
-    "bdfId": 101843,
-    "name": "Yáñez",
-    "fullName": "Orlando Rubén Yáñez Alabart",
-    "position": "Portero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/101843h.jpg",
-    "totalPlayed": 128,
-    "totalMinutes": 11403,
-    "totalGoals": 0,
-    "seasonCount": 4,
-    "startSeason": "2023/24",
-    "endSeason": "2026/27",
-    "startYear": 2023,
-    "endYear": 2027
   },
   {
     "bdfId": 3571,
@@ -1785,6 +1785,21 @@
     "endYear": 2016
   },
   {
+    "bdfId": 43015,
+    "name": "Diego Sánchez",
+    "fullName": "Diego Sánchez Pérez",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/43015b.jpg",
+    "totalPlayed": 119,
+    "totalMinutes": 8808,
+    "totalGoals": 2,
+    "seasonCount": 6,
+    "startSeason": "2021/22",
+    "endSeason": "2026/27",
+    "startYear": 2021,
+    "endYear": 2027
+  },
+  {
     "bdfId": 9586,
     "name": "Castañer",
     "fullName": "Luis Castañer Viñas",
@@ -1798,21 +1813,6 @@
     "endSeason": "1961/62",
     "startYear": 1957,
     "endYear": 1962
-  },
-  {
-    "bdfId": 43015,
-    "name": "Diego Sánchez",
-    "fullName": "Diego Sánchez Pérez",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/43015b.jpg",
-    "totalPlayed": 117,
-    "totalMinutes": 8706,
-    "totalGoals": 2,
-    "seasonCount": 6,
-    "startSeason": "2021/22",
-    "endSeason": "2026/27",
-    "startYear": 2021,
-    "endYear": 2027
   },
   {
     "bdfId": 43018,
@@ -1890,6 +1890,21 @@
     "endYear": 2003
   },
   {
+    "bdfId": 43013,
+    "name": "Nacho Martín",
+    "fullName": "Ignacio Martín Gómez",
+    "position": "Centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/43013.jpg",
+    "totalPlayed": 115,
+    "totalMinutes": 6406,
+    "totalGoals": 1,
+    "seasonCount": 5,
+    "startSeason": "2021/22",
+    "endSeason": "2026/27",
+    "startYear": 2021,
+    "endYear": 2027
+  },
+  {
     "bdfId": 6170,
     "name": "Luis Morán",
     "fullName": "Luis Morán Sánchez",
@@ -1903,21 +1918,6 @@
     "endSeason": "2011/12",
     "startYear": 2006,
     "endYear": 2012
-  },
-  {
-    "bdfId": 43013,
-    "name": "Nacho Martín",
-    "fullName": "Ignacio Martín Gómez",
-    "position": "Centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/43013.jpg",
-    "totalPlayed": 112,
-    "totalMinutes": 6262,
-    "totalGoals": 1,
-    "seasonCount": 5,
-    "startSeason": "2021/22",
-    "endSeason": "2026/27",
-    "startYear": 2021,
-    "endYear": 2027
   },
   {
     "bdfId": 22414,
@@ -2415,6 +2415,21 @@
     "endYear": 2010
   },
   {
+    "bdfId": 23584,
+    "name": "Gelabert",
+    "fullName": "César Gelabert Piña",
+    "position": "Centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/23584c.jpg",
+    "totalPlayed": 91,
+    "totalMinutes": 6649,
+    "totalGoals": 15,
+    "seasonCount": 3,
+    "startSeason": "2024/25",
+    "endSeason": "2026/27",
+    "startYear": 2024,
+    "endYear": 2027
+  },
+  {
     "bdfId": 2067,
     "name": "Narciso",
     "fullName": "Narciso Manuel Rodríguez de Armas",
@@ -2458,21 +2473,6 @@
     "endSeason": "2002/03",
     "startYear": 1999,
     "endYear": 2003
-  },
-  {
-    "bdfId": 23584,
-    "name": "Gelabert",
-    "fullName": "César Gelabert Piña",
-    "position": "Centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/23584c.jpg",
-    "totalPlayed": 89,
-    "totalMinutes": 6469,
-    "totalGoals": 14,
-    "seasonCount": 3,
-    "startSeason": "2024/25",
-    "endSeason": "2026/27",
-    "startYear": 2024,
-    "endYear": 2027
   },
   {
     "bdfId": 317,
@@ -3915,6 +3915,21 @@
     "endYear": 2000
   },
   {
+    "bdfId": 21483,
+    "name": "Corredera",
+    "fullName": "Alexandre Corredera Alardi",
+    "position": "Centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/21483g.jpg",
+    "totalPlayed": 52,
+    "totalMinutes": 4511,
+    "totalGoals": 1,
+    "seasonCount": 2,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
+  },
+  {
     "bdfId": 10576,
     "name": "Méndez",
     "fullName": "Francisco Méndez Alonso",
@@ -4125,14 +4140,14 @@
     "endYear": 1997
   },
   {
-    "bdfId": 21483,
-    "name": "Corredera",
-    "fullName": "Alexandre Corredera Alardi",
-    "position": "Centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/21483g.jpg",
+    "bdfId": 24313,
+    "name": "Pablo Vázquez",
+    "fullName": "Pablo Vázquez Pérez",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/24313h.jpg",
     "totalPlayed": 48,
-    "totalMinutes": 4165,
-    "totalGoals": 1,
+    "totalMinutes": 4076,
+    "totalGoals": 4,
     "seasonCount": 2,
     "startSeason": "2025/26",
     "endSeason": "2026/27",
@@ -4243,21 +4258,6 @@
     "endSeason": "2000/01",
     "startYear": 1999,
     "endYear": 2001
-  },
-  {
-    "bdfId": 24313,
-    "name": "Pablo Vázquez",
-    "fullName": "Pablo Vázquez Pérez",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/24313h.jpg",
-    "totalPlayed": 46,
-    "totalMinutes": 3896,
-    "totalGoals": 4,
-    "seasonCount": 2,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
   },
   {
     "bdfId": 40061,
@@ -5295,6 +5295,21 @@
     "endYear": 2023
   },
   {
+    "bdfId": 209417,
+    "name": "Manu Rodríguez",
+    "fullName": "Manuel Rodríguez Paz",
+    "position": "Centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/209417b.jpg",
+    "totalPlayed": 37,
+    "totalMinutes": 2180,
+    "totalGoals": 2,
+    "seasonCount": 2,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
+  },
+  {
     "bdfId": 10178,
     "name": "Meana",
     "fullName": "Manuel Meana Vallina",
@@ -5383,21 +5398,6 @@
     "endSeason": "2025/26",
     "startYear": 2025,
     "endYear": 2026
-  },
-  {
-    "bdfId": 209417,
-    "name": "Manu Rodríguez",
-    "fullName": "Manuel Rodríguez Paz",
-    "position": "Centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/209417b.jpg",
-    "totalPlayed": 36,
-    "totalMinutes": 2110,
-    "totalGoals": 2,
-    "seasonCount": 2,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
   },
   {
     "bdfId": 204939,
@@ -7305,6 +7305,21 @@
     "endYear": 1955
   },
   {
+    "bdfId": 13651,
+    "name": "Cuenca",
+    "fullName": "Andrés Cuenca Cejudo",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/13651c.jpg",
+    "totalPlayed": 20,
+    "totalMinutes": 1589,
+    "totalGoals": 0,
+    "seasonCount": 2,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
+  },
+  {
     "bdfId": 10662,
     "name": "Victorero",
     "fullName": "Enrique Victorero Ordieres",
@@ -7965,21 +7980,6 @@
     "endYear": 2020
   },
   {
-    "bdfId": 13651,
-    "name": "Cuenca",
-    "fullName": "Andrés Cuenca Cejudo",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/13651c.jpg",
-    "totalPlayed": 16,
-    "totalMinutes": 1249,
-    "totalGoals": 0,
-    "seasonCount": 2,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
-  },
-  {
     "bdfId": 21032,
     "name": "Oliván",
     "fullName": "Brian Oliván Herrero",
@@ -8143,6 +8143,21 @@
     "endSeason": "1961/62",
     "startYear": 1961,
     "endYear": 1962
+  },
+  {
+    "bdfId": 29027,
+    "name": "Loum",
+    "fullName": "Mamadou Loum Ndiaye",
+    "position": "Centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/29027f.jpg",
+    "totalPlayed": 15,
+    "totalMinutes": 315,
+    "totalGoals": 0,
+    "seasonCount": 2,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
   },
   {
     "bdfId": 2360,
@@ -8655,6 +8670,21 @@
     "endYear": 1940
   },
   {
+    "bdfId": 705509,
+    "name": "Sarco",
+    "fullName": "Alejo Uriel Sarco",
+    "position": "Delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/705509f.jpg",
+    "totalPlayed": 13,
+    "totalMinutes": 647,
+    "totalGoals": 3,
+    "seasonCount": 1,
+    "startSeason": "2026/27",
+    "endSeason": "2026/27",
+    "startYear": 2026,
+    "endYear": 2027
+  },
+  {
     "bdfId": 1022791,
     "name": "Cayetano",
     "fullName": "Cayetano Rodríguez",
@@ -9030,21 +9060,6 @@
     "endYear": 1935
   },
   {
-    "bdfId": 29027,
-    "name": "Loum",
-    "fullName": "Mamadou Loum Ndiaye",
-    "position": "Centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/29027f.jpg",
-    "totalPlayed": 11,
-    "totalMinutes": 182,
-    "totalGoals": 0,
-    "seasonCount": 2,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
-  },
-  {
     "bdfId": 3350,
     "name": "Rinaldi",
     "fullName": "Jorge Roberto Rinaldi Pilypas",
@@ -9300,6 +9315,66 @@
     "endYear": 2001
   },
   {
+    "bdfId": 13691,
+    "name": "Iker Martínez",
+    "fullName": "Iker Martínez Martínez",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/13691.jpg",
+    "totalPlayed": 10,
+    "totalMinutes": 297,
+    "totalGoals": 0,
+    "seasonCount": 3,
+    "startSeason": "2024/25",
+    "endSeason": "2026/27",
+    "startYear": 2024,
+    "endYear": 2027
+  },
+  {
+    "bdfId": 304700,
+    "name": "Duñabeitia",
+    "fullName": "Aimar Duñabeitia Madariaga",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/304700f.jpg",
+    "totalPlayed": 10,
+    "totalMinutes": 796,
+    "totalGoals": 1,
+    "seasonCount": 1,
+    "startSeason": "2026/27",
+    "endSeason": "2026/27",
+    "startYear": 2026,
+    "endYear": 2027
+  },
+  {
+    "bdfId": 207929,
+    "name": "Conde",
+    "fullName": "Miguel Conde Piñeiro",
+    "position": "Delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/207929b.jpg",
+    "totalPlayed": 10,
+    "totalMinutes": 144,
+    "totalGoals": 1,
+    "seasonCount": 2,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
+  },
+  {
+    "bdfId": 111331,
+    "name": "Prendes",
+    "fullName": "Enol Prendes Ortiz",
+    "position": "Centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/111331.jpg",
+    "totalPlayed": 10,
+    "totalMinutes": 383,
+    "totalGoals": 1,
+    "seasonCount": 2,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
+  },
+  {
     "bdfId": 1022652,
     "name": "Candasu",
     "fullName": "Jesús Rodríguez González",
@@ -9373,21 +9448,6 @@
     "endSeason": "2024/25",
     "startYear": 2023,
     "endYear": 2025
-  },
-  {
-    "bdfId": 13691,
-    "name": "Iker Martínez",
-    "fullName": "Iker Martínez Martínez",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/13691.jpg",
-    "totalPlayed": 9,
-    "totalMinutes": 207,
-    "totalGoals": 0,
-    "seasonCount": 3,
-    "startSeason": "2024/25",
-    "endSeason": "2026/27",
-    "startYear": 2024,
-    "endYear": 2027
   },
   {
     "bdfId": 10702,
@@ -9478,21 +9538,6 @@
     "endSeason": "1933/34",
     "startYear": 1933,
     "endYear": 1934
-  },
-  {
-    "bdfId": 705509,
-    "name": "Sarco",
-    "fullName": "Alejo Uriel Sarco",
-    "position": "Delantero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/705509f.jpg",
-    "totalPlayed": 9,
-    "totalMinutes": 387,
-    "totalGoals": 1,
-    "seasonCount": 1,
-    "startSeason": "2026/27",
-    "endSeason": "2026/27",
-    "startYear": 2026,
-    "endYear": 2027
   },
   {
     "bdfId": 17293,
@@ -9705,21 +9750,6 @@
     "endYear": 2000
   },
   {
-    "bdfId": 304700,
-    "name": "Duñabeitia",
-    "fullName": "Aimar Duñabeitia Madariaga",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/304700f.jpg",
-    "totalPlayed": 8,
-    "totalMinutes": 636,
-    "totalGoals": 1,
-    "seasonCount": 1,
-    "startSeason": "2026/27",
-    "endSeason": "2026/27",
-    "startYear": 2026,
-    "endYear": 2027
-  },
-  {
     "bdfId": 205027,
     "name": "Cocaño",
     "fullName": "Guillermo Cocaño Sánchez",
@@ -9808,6 +9838,36 @@
     "endSeason": "1961/62",
     "startYear": 1961,
     "endYear": 1962
+  },
+  {
+    "bdfId": 28486,
+    "name": "Ferrari",
+    "fullName": "Andrés Martín Ferrari Malviera",
+    "position": "Delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/28486b.jpg",
+    "totalPlayed": 8,
+    "totalMinutes": 290,
+    "totalGoals": 2,
+    "seasonCount": 2,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
+  },
+  {
+    "bdfId": 41169,
+    "name": "Iosifov",
+    "fullName": "Nikita Igorevich Iosifov",
+    "position": "Delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/41169f.jpg",
+    "totalPlayed": 8,
+    "totalMinutes": 505,
+    "totalGoals": 1,
+    "seasonCount": 1,
+    "startSeason": "2026/27",
+    "endSeason": "2026/27",
+    "startYear": 2026,
+    "endYear": 2027
   },
   {
     "bdfId": 206345,
@@ -10018,51 +10078,6 @@
     "endSeason": "2018/19",
     "startYear": 2018,
     "endYear": 2019
-  },
-  {
-    "bdfId": 28486,
-    "name": "Ferrari",
-    "fullName": "Andrés Martín Ferrari Malviera",
-    "position": "Delantero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/28486b.jpg",
-    "totalPlayed": 7,
-    "totalMinutes": 273,
-    "totalGoals": 2,
-    "seasonCount": 2,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
-  },
-  {
-    "bdfId": 207929,
-    "name": "Conde",
-    "fullName": "Miguel Conde Piñeiro",
-    "position": "Delantero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/207929b.jpg",
-    "totalPlayed": 7,
-    "totalMinutes": 56,
-    "totalGoals": 0,
-    "seasonCount": 2,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
-  },
-  {
-    "bdfId": 41169,
-    "name": "Iosifov",
-    "fullName": "Nikita Igorevich Iosifov",
-    "position": "Delantero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/41169f.jpg",
-    "totalPlayed": 7,
-    "totalMinutes": 488,
-    "totalGoals": 1,
-    "seasonCount": 1,
-    "startSeason": "2026/27",
-    "endSeason": "2026/27",
-    "startYear": 2026,
-    "endYear": 2027
   },
   {
     "bdfId": 16249,
@@ -10410,6 +10425,51 @@
     "endYear": 1962
   },
   {
+    "bdfId": 725665,
+    "name": "Matabuena",
+    "fullName": "Diego Matabuena Álvarez",
+    "position": "Centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/725665.jpg",
+    "totalPlayed": 6,
+    "totalMinutes": 228,
+    "totalGoals": 0,
+    "seasonCount": 1,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
+  },
+  {
+    "bdfId": 19038,
+    "name": "Jorge Sáenz",
+    "fullName": "Jorge Sáenz de Miera Colmeiro",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/19038f.jpg",
+    "totalPlayed": 6,
+    "totalMinutes": 540,
+    "totalGoals": 0,
+    "seasonCount": 1,
+    "startSeason": "2026/27",
+    "endSeason": "2026/27",
+    "startYear": 2026,
+    "endYear": 2027
+  },
+  {
+    "bdfId": 23542,
+    "name": "Guillamón",
+    "fullName": "Hugo Guillamón Sanmartín",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/11207c.jpg",
+    "totalPlayed": 6,
+    "totalMinutes": 220,
+    "totalGoals": 0,
+    "seasonCount": 1,
+    "startSeason": "2026/27",
+    "endSeason": "2026/27",
+    "startYear": 2026,
+    "endYear": 2027
+  },
+  {
     "bdfId": 11207,
     "name": "Guillamón",
     "fullName": "José Guillamón Rodríguez",
@@ -10560,21 +10620,6 @@
     "endYear": 2021
   },
   {
-    "bdfId": 111331,
-    "name": "Prendes",
-    "fullName": "Enol Prendes Ortiz",
-    "position": "Centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/111331.jpg",
-    "totalPlayed": 5,
-    "totalMinutes": 140,
-    "totalGoals": 0,
-    "seasonCount": 2,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
-  },
-  {
     "bdfId": 573,
     "name": "Diego",
     "fullName": "Diego Díaz Garrido",
@@ -10678,6 +10723,36 @@
     "endSeason": "1961/62",
     "startYear": 1961,
     "endYear": 1962
+  },
+  {
+    "bdfId": 309089,
+    "name": "Rubio",
+    "fullName": "Bruno Rubio Argüelles",
+    "position": "Centrocampista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/309089.jpg",
+    "totalPlayed": 5,
+    "totalMinutes": 102,
+    "totalGoals": 0,
+    "seasonCount": 1,
+    "startSeason": "2025/26",
+    "endSeason": "2026/27",
+    "startYear": 2025,
+    "endYear": 2027
+  },
+  {
+    "bdfId": 103051,
+    "name": "Gularte",
+    "fullName": "Emanuel Gularte Méndez",
+    "position": "Defensa",
+    "photoUrl": "https://www.bdfutbol.com/i/j/103051f.jpg",
+    "totalPlayed": 5,
+    "totalMinutes": 374,
+    "totalGoals": 0,
+    "seasonCount": 1,
+    "startSeason": "2026/27",
+    "endSeason": "2026/27",
+    "startYear": 2026,
+    "endYear": 2027
   },
   {
     "bdfId": 109816,
@@ -11263,21 +11338,6 @@
     "endSeason": "2016/17",
     "startYear": 2016,
     "endYear": 2017
-  },
-  {
-    "bdfId": 309089,
-    "name": "Rubio",
-    "fullName": "Bruno Rubio Argüelles",
-    "position": "Centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/309089.jpg",
-    "totalPlayed": 3,
-    "totalMinutes": 45,
-    "totalGoals": 0,
-    "seasonCount": 1,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
   },
   {
     "bdfId": 18705,
@@ -11968,51 +12028,6 @@
     "endSeason": "2022/23",
     "startYear": 2022,
     "endYear": 2023
-  },
-  {
-    "bdfId": 725665,
-    "name": "Matabuena",
-    "fullName": "Diego Matabuena Álvarez",
-    "position": "Centrocampista",
-    "photoUrl": "https://www.bdfutbol.com/i/j/725665.jpg",
-    "totalPlayed": 2,
-    "totalMinutes": 53,
-    "totalGoals": 0,
-    "seasonCount": 1,
-    "startSeason": "2025/26",
-    "endSeason": "2026/27",
-    "startYear": 2025,
-    "endYear": 2027
-  },
-  {
-    "bdfId": 103051,
-    "name": "Gularte",
-    "fullName": "Emanuel Gularte Méndez",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/103051f.jpg",
-    "totalPlayed": 2,
-    "totalMinutes": 174,
-    "totalGoals": 0,
-    "seasonCount": 1,
-    "startSeason": "2026/27",
-    "endSeason": "2026/27",
-    "startYear": 2026,
-    "endYear": 2027
-  },
-  {
-    "bdfId": 19038,
-    "name": "Jorge Sáenz",
-    "fullName": "Jorge Sáenz de Miera Colmeiro",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/19038f.jpg",
-    "totalPlayed": 2,
-    "totalMinutes": 180,
-    "totalGoals": 0,
-    "seasonCount": 1,
-    "startSeason": "2026/27",
-    "endSeason": "2026/27",
-    "startYear": 2026,
-    "endYear": 2027
   },
   {
     "bdfId": 40081,
@@ -12990,21 +13005,6 @@
     "endYear": 2023
   },
   {
-    "bdfId": 23542,
-    "name": "Guillamón",
-    "fullName": "Hugo Guillamón Sanmartín",
-    "position": "Defensa",
-    "photoUrl": "https://www.bdfutbol.com/i/j/11207c.jpg",
-    "totalPlayed": 1,
-    "totalMinutes": 5,
-    "totalGoals": 0,
-    "seasonCount": 1,
-    "startSeason": "2026/27",
-    "endSeason": "2026/27",
-    "startYear": 2026,
-    "endYear": 2027
-  },
-  {
     "bdfId": 204938,
     "name": "Bona",
     "fullName": "Julián Bona Antomás",
@@ -13138,6 +13138,21 @@
     "endSeason": "1964/65",
     "startYear": 1964,
     "endYear": 1965
+  },
+  {
+    "bdfId": 201955,
+    "name": "Arana",
+    "fullName": "Egoitz Arana Aizpuru",
+    "position": "Portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/201955f.jpg",
+    "totalPlayed": 1,
+    "totalMinutes": 90,
+    "totalGoals": 0,
+    "seasonCount": 1,
+    "startSeason": "2026/27",
+    "endSeason": "2026/27",
+    "startYear": 2026,
+    "endYear": 2027
   },
   {
     "bdfId": 3074,
@@ -14023,21 +14038,6 @@
     "endSeason": "2025/26",
     "startYear": 2025,
     "endYear": 2026
-  },
-  {
-    "bdfId": 201955,
-    "name": "Arana",
-    "fullName": "Egoitz Arana Aizpuru",
-    "position": "Portero",
-    "photoUrl": "https://www.bdfutbol.com/i/j/201955f.jpg",
-    "totalPlayed": 0,
-    "totalMinutes": 0,
-    "totalGoals": 0,
-    "seasonCount": 1,
-    "startSeason": "2026/27",
-    "endSeason": "2026/27",
-    "startYear": 2026,
-    "endYear": 2027
   },
   {
     "bdfId": 11553,

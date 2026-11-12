@@ -118,11 +118,13 @@ describe("Cards Finished Matches Sync Suite", () => {
   it("resolves active Sporting players to their canonical card slugs", () => {
     assert.equal(resolveCardSlugForPlayer({ name: "Guillermo Rosas Alonso", jersey: 2 }), "guille-rosas-2019");
     assert.equal(resolveCardSlugForPlayer({ name: "César Gelabert Piña", jersey: 22 }), "cesar-gelabert-2024");
-    assert.equal(resolveCardSlugForPlayer({ name: "José Ángel Valdés", jersey: 3 }), "cote-2008");
-    assert.equal(resolveCardSlugForPlayer({ name: "Nacho Méndez", jersey: 10 }), "nacho-mendez-2017");
+    assert.equal(resolveCardSlugForPlayer({ name: "Pablo García Carrasco", jersey: 3 }), "pablo-garcia-2020");
+    assert.equal(resolveCardSlugForPlayer({ name: "Alexandre Corredera", jersey: 14 }), "corredera-2025");
     assert.equal(resolveCardSlugForPlayer({ name: "Nacho Martín", jersey: 6 }), "nacho-martin-2021");
     assert.equal(resolveCardSlugForPlayer({ name: "Gaspar Campos", jersey: 7 }), "gaspar-campos-2019");
     assert.equal(resolveCardSlugForPlayer({ name: "Rubén Yáñez", jersey: 1 }), "ruben-yanez-2023");
+    assert.equal(resolveCardSlugForPlayer({ name: "Andrés Ferrari", jersey: 9 }), null);
+    assert.equal(resolveCardSlugForPlayer({ name: "Egoitz Arana", jersey: 13 }), null);
     assert.equal(resolveCardSlugForPlayer({ name: "Desconocido Sin Ficha", jersey: 99 }), null);
   });
 

@@ -1450,7 +1450,7 @@ export interface MatchdayEvolutionPoint {
 }
 
 /**
- * Historical league positions for Real Sporting in 2026/27 after each matchday (Jornadas 1..9).
+ * Historical league positions for Real Sporting in 2026/27 after each matchday (Jornadas 1..13).
  */
 export const SPORTING_HISTORICAL_POSITIONS: Readonly<Record<number, number>> = {
   1: 5,
@@ -1462,6 +1462,10 @@ export const SPORTING_HISTORICAL_POSITIONS: Readonly<Record<number, number>> = {
   7: 8,
   8: 5,
   9: 6,
+  10: 4,
+  11: 8,
+  12: 6,
+  13: 7,
 };
 
 /**
