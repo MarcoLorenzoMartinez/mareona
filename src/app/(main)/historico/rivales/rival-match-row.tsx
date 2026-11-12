@@ -67,7 +67,7 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
           {match.date}
         </span>
         <span className="text-[10px] text-[var(--muted-foreground)] truncate font-sans tabular-nums">
-          {match.competition} · {match.season}
+          {match.competition} ({match.season})
         </span>
       </div>
 

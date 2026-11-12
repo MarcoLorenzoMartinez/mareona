@@ -1,4 +1,4 @@
-// Client: Componentes atómicos para tarjetas de titulares y fichas de banquillo
+// Client: Componentes atómicos para tarjetas de titulares y filas de banquillo
 "use client";
 
 import type { HistoricalMatchPlayer } from "@/lib/historical/types";
@@ -11,15 +11,14 @@ interface StarterCardProps {
 
 /**
  * Compact vertical player card displaying bust photo or avatar fallback, and alias.
- * Uniform fixed size across all positions without individual repetitive badges.
+ * Calibrated uniform dimensions (48px mobile / 60px desktop) so all tactical lines
+ * (including 5 players) share identical scale and fit cleanly on mobile screens.
  */
 export function StarterCard({ player, teamColor }: StarterCardProps) {
   return (
-    <div
-      className="group flex flex-col items-center justify-start text-center w-[72px] sm:w-[80px] py-1 px-0.5 rounded-xl transition-all shrink-0 hover:bg-neutral-100/60 cursor-default"
-    >
+    <div className="flex flex-col items-center justify-start text-center py-1 px-0.5 shrink-0 select-none w-[58px] sm:w-[76px]">
       <div
-        className="relative flex items-center justify-center rounded-full p-0.5 border-2 shadow-xs group-hover:scale-105 transition-transform bg-white shrink-0"
+        className="relative flex items-center justify-center rounded-full p-0.5 border-2 shadow-xs bg-white shrink-0"
         style={{ borderColor: teamColor }}
       >
         <PlayerPhoto
@@ -27,11 +26,11 @@ export function StarterCard({ player, teamColor }: StarterCardProps) {
           playerName={player.name}
           size="custom"
           teamColor={teamColor}
-          className="h-11 w-11 sm:h-12 sm:w-12 rounded-full object-cover object-top shrink-0"
+          className="h-12 w-12 sm:h-15 sm:w-15 rounded-full object-cover object-top shrink-0"
         />
       </div>
       <span
-        className="font-bold text-[11px] sm:text-xs text-[var(--foreground)] truncate max-w-full text-center mt-1.5 px-0.5 leading-tight block"
+        className="font-semibold text-neutral-800 truncate max-w-full text-center mt-1 px-0.5 leading-tight block text-[10px] sm:text-xs"
         title={player.name}
       >
         {player.name}
@@ -40,38 +39,59 @@ export function StarterCard({ player, teamColor }: StarterCardProps) {
   );
 }
 
-interface BenchChipProps {
+interface BenchRowProps {
   readonly player: HistoricalMatchPlayer;
   readonly teamColor: string;
 }
 
 /**
- * Pill chip for substitute bench players with micro-photo and alias.
+ * Clean official roster row for substitute bench players.
+ * Non-interactive row with industry-standard substitution indicator (green entry arrow).
  */
-export function BenchChip({ player, teamColor }: BenchChipProps) {
+export function BenchRow({ player, teamColor }: BenchRowProps) {
   const played = player.subIn !== undefined;
   return (
     <div
-      className={`inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs transition-colors ${
-        played
-          ? "font-semibold text-[var(--foreground)] shadow-2xs hover:bg-[var(--surface)]"
-          : "font-medium text-[var(--foreground-muted)] hover:bg-white"
-      }`}
-      style={{
-        backgroundColor: played ? `${teamColor}12` : `${teamColor}06`,
-        borderColor: played ? `${teamColor}33` : `${teamColor}1a`,
-        borderWidth: "1px",
-      }}
+      className="flex items-center justify-between py-1 px-1.5 text-xs select-none"
       title={played ? `Jugó (entró en el minuto ${player.subIn})` : "Suplente sin minutos"}
     >
-      <PlayerPhoto
-        photoUrl={player.photoUrl}
-        playerName={player.name}
-        size="custom"
-        teamColor={teamColor}
-        className="h-5 w-5 rounded-full border border-neutral-200/80 object-cover object-top shrink-0 bg-white"
-      />
-      <span className="truncate">{player.name}</span>
+      <div className="flex items-center gap-2 min-w-0 pr-2">
+        <PlayerPhoto
+          photoUrl={player.photoUrl}
+          playerName={player.name}
+          size="custom"
+          teamColor={teamColor}
+          className="h-6 w-6 rounded-full border border-neutral-300 object-cover object-top shrink-0 bg-white"
+        />
+        <span className={`truncate text-xs ${played ? "font-semibold text-neutral-900" : "font-normal text-neutral-600"}`}>
+          {player.name}
+        </span>
+      </div>
+      {played ? (
+        <span
+          className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 tabular-nums shrink-0"
+          title={`Entró al terreno de juego en el minuto ${player.subIn}`}
+          aria-label={`Sustitución: entró en el minuto ${player.subIn}`}
+        >
+          <svg
+            className="h-3 w-3 text-emerald-600 shrink-0"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              d="M8 14a.75.75 0 01-.75-.75V4.56L4.03 7.78a.75.75 0 01-1.06-1.06l4.5-4.5a.75.75 0 011.06 0l4.5 4.5a.75.75 0 011.06 0L8.75 4.56v8.69A.75.75 0 018 14z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span>{player.subIn}&apos;</span>
+        </span>
+      ) : (
+        <span className="text-[10px] text-neutral-400 shrink-0 select-none" title="No disputó minutos">
+          —
+        </span>
+      )}
     </div>
   );
 }
