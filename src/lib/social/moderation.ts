@@ -2,9 +2,12 @@ import "server-only";
 
 import {
   MODERATION_SYSTEM_PROMPT,
+  MODERATION_REJECTED_MESSAGE,
   parseModerationResponse,
   type ModerationDecision,
 } from "./moderation-ai";
+
+export { MODERATION_REJECTED_MESSAGE };
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 // Gemma 2 was retired on Groq; Llama 3.1 8B is the fastest supported model. Override via env.
@@ -58,6 +61,3 @@ export async function moderateText(text: string): Promise<ModerationDecision> {
     return { verdict: "allow", reason: "ai_unavailable" };
   }
 }
-
-export const MODERATION_REJECTED_MESSAGE =
-  "Tu mensaje no cumple las normas de convivencia por contener expresiones ofensivas";

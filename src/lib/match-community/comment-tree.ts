@@ -20,18 +20,33 @@ interface RawPostRow {
     | null;
 }
 
+interface MutableComment {
+  id: string;
+  matchId: string;
+  authorId: string;
+  authorName: string;
+  authorUsername: string;
+  authorAvatar: string | null;
+  body: string;
+  createdAt: string;
+  parentId: string | null;
+  likesCount: number;
+  replies: MutableComment[];
+}
+
 export function buildMatchCommentTree(
   rows: readonly RawPostRow[],
   matchId: string
 ): MatchComment[] {
-  const postMap = new Map<string, MatchComment>();
-  const roots: MatchComment[] = [];
+  const postMap = new Map<string, MutableComment>();
+  const roots: MutableComment[] = [];
+  const replies: MutableComment[] = [];
 
   for (const post of rows) {
     const profile = Array.isArray(post.profiles)
       ? post.profiles[0]
       : post.profiles;
-    const comment: MatchComment = {
+    const comment: MutableComment = {
       id: post.id,
       matchId,
       authorId: post.user_id,
@@ -45,16 +60,19 @@ export function buildMatchCommentTree(
       replies: [],
     };
     postMap.set(comment.id, comment);
-  }
 
-  for (const comment of postMap.values()) {
-    if (comment.parentId && postMap.has(comment.parentId)) {
-      const parent = postMap.get(comment.parentId)!;
-      const currentReplies = [...(parent.replies ?? [])];
-      currentReplies.push(comment);
-      postMap.set(comment.parentId, { ...parent, replies: currentReplies });
+    if (comment.parentId) {
+      replies.push(comment);
     } else {
       roots.push(comment);
+    }
+  }
+
+  for (const reply of replies) {
+    if (reply.parentId && postMap.has(reply.parentId)) {
+      postMap.get(reply.parentId)!.replies.push(reply);
+    } else {
+      roots.push(reply);
     }
   }
 

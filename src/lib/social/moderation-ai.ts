@@ -7,6 +7,9 @@ export interface ModerationDecision {
   readonly reason: string;
 }
 
+export const MODERATION_REJECTED_MESSAGE =
+  "Tu mensaje no cumple las normas de convivencia por contener expresiones ofensivas";
+
 const aiResponseSchema = z.object({
   verdict: z.enum(["allow", "flag", "block"]),
   reason: z.string().max(200).optional(),
