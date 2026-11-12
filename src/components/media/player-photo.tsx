@@ -8,7 +8,7 @@ interface PlayerPhotoProps {
   readonly photoUrl: string | null | undefined;
   readonly playerName: string;
   readonly shirtNumber?: number | null;
-  readonly size?: "sm" | "md" | "lg" | "card";
+  readonly size?: "sm" | "md" | "lg" | "card" | "custom";
   readonly className?: string;
   readonly isDecorative?: boolean;
   readonly teamColor?: string;
@@ -19,6 +19,7 @@ const SIZE_CLASSES = {
   md: "h-16 w-16",
   lg: "h-24 w-24",
   card: "h-52 sm:h-60 w-full",
+  custom: "",
 } as const;
 
 /**

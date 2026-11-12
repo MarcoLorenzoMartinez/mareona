@@ -66,7 +66,7 @@ function TeamLineupColumn({
             <PlayerPhoto
               photoUrl={coach.photoUrl}
               playerName={coach.name}
-              size="sm"
+              size="custom"
               teamColor={teamColor}
               className="h-5 w-5 rounded-full border border-neutral-200 object-cover object-top shrink-0 bg-neutral-100"
             />

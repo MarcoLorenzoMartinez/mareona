@@ -143,7 +143,7 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
                 <PlayerPhoto
                   photoUrl={detail.referee.photoUrl}
                   playerName={detail.referee.name}
-                  size="sm"
+                  size="custom"
                   className="h-5 w-5 rounded-full border border-[var(--border)] object-cover object-top bg-neutral-100"
                 />
               )}

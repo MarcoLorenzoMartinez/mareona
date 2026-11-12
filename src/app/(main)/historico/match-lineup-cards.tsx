@@ -16,17 +16,20 @@ interface StarterCardProps {
 export function StarterCard({ player, teamColor }: StarterCardProps) {
   return (
     <div
-      className="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl border shadow-2xs hover:shadow-xs transition-all text-center w-[72px] sm:w-[78px] h-[76px] sm:h-[82px] shrink-0"
+      className="flex flex-col items-center justify-between py-1.5 px-1 rounded-xl border shadow-2xs hover:shadow-xs transition-all text-center w-[72px] sm:w-[80px] min-h-[78px] sm:min-h-[84px] shrink-0"
       style={{ backgroundColor: `${teamColor}0a`, borderColor: `${teamColor}22` }}
     >
       <PlayerPhoto
         photoUrl={player.photoUrl}
         playerName={player.name}
-        size="md"
+        size="custom"
         teamColor={teamColor}
-        className="h-11 w-11 sm:h-12 sm:w-12 rounded-full border border-neutral-200/80 object-cover object-top shrink-0 bg-white shadow-2xs"
+        className="h-10 w-10 sm:h-11 sm:w-11 rounded-full border border-neutral-200/80 object-cover object-top shrink-0 bg-white shadow-2xs"
       />
-      <span className="font-bold text-[10px] sm:text-[11px] text-[var(--foreground)] truncate max-w-full text-center mt-1 px-0.5">
+      <span
+        className="font-bold text-[10px] sm:text-[11px] text-[var(--foreground)] truncate max-w-full text-center mt-1 px-0.5 leading-tight block"
+        title={player.name}
+      >
         {player.name}
       </span>
     </div>
@@ -60,7 +63,7 @@ export function BenchChip({ player, teamColor }: BenchChipProps) {
       <PlayerPhoto
         photoUrl={player.photoUrl}
         playerName={player.name}
-        size="sm"
+        size="custom"
         teamColor={teamColor}
         className="h-5 w-5 rounded-full border border-neutral-200/80 object-cover object-top shrink-0 bg-white"
       />
