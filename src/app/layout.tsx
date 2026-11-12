@@ -36,12 +36,21 @@ export const metadata: Metadata = {
     siteName: "Mareona",
     locale: "es_ES",
     type: "website",
+    images: [
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: "Mareona",
+      },
+    ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Mareona — Real Sporting: partidos, juegos y comunidad",
     description:
       "La plataforma de la afición sportinguista: partidos, datos, juegos diarios, colección de cromos y comunidad rojiblanca.",
+    images: ["/logo.png"],
   },
   icons: {
     icon: [
