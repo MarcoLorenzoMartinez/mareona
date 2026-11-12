@@ -16,18 +16,22 @@ interface StarterCardProps {
 export function StarterCard({ player, teamColor }: StarterCardProps) {
   return (
     <div
-      className="flex flex-col items-center justify-between py-1.5 px-1 rounded-xl border shadow-2xs hover:shadow-xs transition-all text-center w-[72px] sm:w-[80px] min-h-[78px] sm:min-h-[84px] shrink-0"
-      style={{ backgroundColor: `${teamColor}0a`, borderColor: `${teamColor}22` }}
+      className="group flex flex-col items-center justify-start text-center w-[72px] sm:w-[80px] py-1 px-0.5 rounded-xl transition-all shrink-0 hover:bg-neutral-100/60 cursor-default"
     >
-      <PlayerPhoto
-        photoUrl={player.photoUrl}
-        playerName={player.name}
-        size="custom"
-        teamColor={teamColor}
-        className="h-10 w-10 sm:h-11 sm:w-11 rounded-full border border-neutral-200/80 object-cover object-top shrink-0 bg-white shadow-2xs"
-      />
+      <div
+        className="relative flex items-center justify-center rounded-full p-0.5 border-2 shadow-xs group-hover:scale-105 transition-transform bg-white shrink-0"
+        style={{ borderColor: teamColor }}
+      >
+        <PlayerPhoto
+          photoUrl={player.photoUrl}
+          playerName={player.name}
+          size="custom"
+          teamColor={teamColor}
+          className="h-11 w-11 sm:h-12 sm:w-12 rounded-full object-cover object-top shrink-0"
+        />
+      </div>
       <span
-        className="font-bold text-[10px] sm:text-[11px] text-[var(--foreground)] truncate max-w-full text-center mt-1 px-0.5 leading-tight block"
+        className="font-bold text-[11px] sm:text-xs text-[var(--foreground)] truncate max-w-full text-center mt-1.5 px-0.5 leading-tight block"
         title={player.name}
       >
         {player.name}

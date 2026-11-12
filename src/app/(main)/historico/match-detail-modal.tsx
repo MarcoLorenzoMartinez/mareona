@@ -17,6 +17,26 @@ interface MatchDetailModalProps {
   readonly onClose: () => void;
 }
 
+function formatHistoricalDate(dateStr: string): string {
+  if (!dateStr) return "";
+  const parts = dateStr.split("/");
+  let d: Date;
+  if (parts.length === 3) {
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const year = parseInt(parts[2], 10);
+    d = new Date(year, month, day);
+  } else {
+    d = new Date(dateStr);
+  }
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 /**
  * Accessible modal displaying full official match report.
  */
@@ -84,12 +104,14 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
           ✕
         </button>
 
-        {/* Header: Competition & Round */}
-        <div className="text-center pr-8 pl-8">
-          <span className="inline-block rounded-full bg-[var(--surface)] border border-[var(--border)] px-3 py-0.5 text-xs font-semibold text-[var(--foreground-muted)]">
-            {match.competition} · {match.round}
-          </span>
-          <div className="text-xs text-[var(--foreground-muted)] mt-1 tabular-nums">{match.date}</div>
+        {/* Header: Editorial Competition & Match Date */}
+        <div className="text-center px-6 sm:px-12 pt-1 pb-0.5">
+          <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[var(--foreground-muted)]">
+            {match.competition} <span className="text-neutral-300 font-normal px-1" aria-hidden="true">·</span> {match.round}
+          </p>
+          <p className="text-xs font-semibold text-neutral-500 mt-1 tabular-nums">
+            {formatHistoricalDate(match.date)}
+          </p>
         </div>
 
         {/* Scoreboard */}

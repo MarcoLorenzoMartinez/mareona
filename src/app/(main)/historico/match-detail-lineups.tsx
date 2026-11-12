@@ -80,15 +80,15 @@ function TeamLineupColumn({
       {groupedStarters.length > 0 ? (
         <div className="space-y-2.5 my-1">
           {groupedStarters.map((group) => (
-            <div key={group.label} className="space-y-1">
-              <div className="flex items-center gap-2">
-                <div className="h-px flex-1 bg-[var(--border)]/60" />
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)] px-2 py-0.5 rounded-full bg-white border border-[var(--border)]/80 shadow-2xs">
+            <div key={group.label} className="space-y-1.5 pt-1">
+              <div className="flex items-center gap-3 px-2">
+                <div className="h-px flex-1 bg-[var(--border)]" />
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400 select-none">
                   {group.label}
                 </span>
-                <div className="h-px flex-1 bg-[var(--border)]/60" />
+                <div className="h-px flex-1 bg-[var(--border)]" />
               </div>
-              <div className="flex justify-center items-center gap-1.5 sm:gap-2 flex-wrap">
+              <div className="flex justify-center items-center gap-1.5 sm:gap-2 flex-wrap py-1">
                 {group.players.map((p) => (
                   <StarterCard key={p.name} player={p} teamColor={teamColor} />
                 ))}
