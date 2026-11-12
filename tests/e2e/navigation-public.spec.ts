@@ -7,8 +7,8 @@ test.describe("Public Navigation & Discovery Suite", () => {
     // Verify document title and page header
     await expect(page).toHaveTitle(/Mareona|Real Sporting/i);
 
-    // Verify main navigation links
-    const nav = page.locator("nav");
+    // Verify presence of navigation
+    const nav = page.getByRole("navigation").first();
     await expect(nav).toBeVisible();
 
     // Verify presence of footer with legal disclaimer
@@ -19,17 +19,20 @@ test.describe("Public Navigation & Discovery Suite", () => {
   });
 
   test("temporada page switches seamlessly between Partidos, Clasificación and Plantilla", async ({ page }) => {
+    // /temporada canonically redirects to /temporada/partidos
     await page.goto("/temporada");
+    await expect(page.locator("main")).toBeVisible();
+    await expect(page).toHaveURL(/\/temporada\/partidos/);
 
-    // Verify page content is loaded
+    // Navigate to Clasificación
+    await page.goto("/temporada/clasificacion");
+    await expect(page).toHaveURL(/\/temporada\/clasificacion/);
     await expect(page.locator("main")).toBeVisible();
 
-    // Check query params view navigation
-    await page.goto("/temporada?view=standings");
-    await expect(page).toHaveURL(/view=standings/);
-
-    await page.goto("/temporada?view=squad");
-    await expect(page).toHaveURL(/view=squad/);
+    // Navigate to Plantilla
+    await page.goto("/temporada/plantilla");
+    await expect(page).toHaveURL(/\/temporada\/plantilla/);
+    await expect(page.locator("main")).toBeVisible();
   });
 
   test("historical archive (/historico) loads without client errors", async ({ page }) => {

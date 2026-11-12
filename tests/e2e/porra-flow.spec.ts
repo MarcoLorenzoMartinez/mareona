@@ -10,8 +10,8 @@ test.describe("Porra & Prediction Flow Suite", () => {
     // Verify Porra header title
     await expect(page.locator("h1")).toContainText(/Porra/i);
 
-    // Verify team names appear
-    await expect(page.locator("text=Real Sporting").first()).toBeVisible();
+    // Verify team names appear within the match card inside main
+    await expect(page.locator("main").getByText("Real Sporting").first()).toBeVisible();
 
     // Verify score increment buttons are interactive
     const plusButtons = page.getByRole("button", { name: /Añadir gol/i });
@@ -19,7 +19,7 @@ test.describe("Porra & Prediction Flow Suite", () => {
       await plusButtons.first().click();
     }
 
-    // Verify leaderboard is present
-    await expect(page.locator("text=Clasificación").first()).toBeVisible();
+    // Verify leaderboard section is present inside main
+    await expect(page.locator("main").getByRole("heading", { name: /clasificación/i })).toBeVisible();
   });
 });

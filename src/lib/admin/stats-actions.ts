@@ -2,7 +2,6 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { assertAdmin } from "./guard";
-import { DEV_PRODUCT_METRICS, DEV_AUDIT_LOGS } from "./dev-seeds";
 import { computePlatformAnalytics } from "@/lib/telemetry/analytics-calculator";
 import type { AdminAuditLog, PlatformAnalytics } from "./types";
 import type { Database } from "@/types/database.types";
@@ -42,11 +41,6 @@ export async function getAdminProductMetrics(): Promise<ProductHealthMetrics> {
     supabase.from("blocked_post_attempts").select("id", { count: "exact", head: true }),
   ]);
 
-  const hasRealData = (postsCountRes.count ?? 0) > 0 || (predictionsCountRes.count ?? 0) > 0;
-  if (!hasRealData) {
-    return DEV_PRODUCT_METRICS;
-  }
-
   return {
     totalUsers: usersCountRes.count ?? 0,
     newUsersToday: newUsersRes.count ?? 0,
@@ -71,7 +65,7 @@ export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAudit
     .limit(limit);
 
   if (error || !data || data.length === 0) {
-    return DEV_AUDIT_LOGS;
+    return [];
   }
 
   type AuditRow = Database["public"]["Tables"]["admin_audit_logs"]["Row"];

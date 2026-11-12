@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { assertAdmin } from "./guard";
 import { banUserSchema, type BanUserInput } from "./schemas";
-import { DEV_ADMIN_USERS } from "./dev-seeds";
 import type { DisciplinaryUser } from "./types";
 import type { Database } from "@/types/database.types";
 
@@ -54,24 +53,6 @@ export async function searchAdminUsers(query?: string): Promise<readonly Discipl
     bannedReason: r.banned_reason,
     createdAt: r.created_at,
   }));
-
-  if (realUsers.length <= 1) {
-    const filteredDevUsers = cleanQuery
-      ? DEV_ADMIN_USERS.filter(
-          (u) =>
-            u.username.toLowerCase().includes(cleanQuery.toLowerCase()) ||
-            (u.displayName?.toLowerCase().includes(cleanQuery.toLowerCase()) ?? false)
-        )
-      : DEV_ADMIN_USERS;
-
-    const combined = [...realUsers];
-    for (const devUser of filteredDevUsers) {
-      if (!combined.some((u) => u.id === devUser.id || u.username === devUser.username)) {
-        combined.push(devUser);
-      }
-    }
-    return combined;
-  }
 
   return realUsers;
 }

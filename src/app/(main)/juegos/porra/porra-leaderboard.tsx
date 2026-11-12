@@ -29,52 +29,58 @@ export function PorraLeaderboard({
         )}
       </div>
 
-      <div className="flex flex-col divide-y divide-neutral-100">
-        {entries.map((entry) => {
-          const isTop3 = entry.rank <= 3;
-          const rankBadgeColor =
-            entry.rank === 1
-              ? 'bg-amber-100 text-amber-800 border-amber-300'
-              : entry.rank === 2
-              ? 'bg-slate-100 text-slate-800 border-slate-300'
-              : entry.rank === 3
-              ? 'bg-amber-50 text-amber-900 border-amber-200'
-              : 'text-neutral-400 bg-neutral-50 border-neutral-200';
+      {entries.length === 0 ? (
+        <p className="text-xs text-neutral-500 text-center py-6">
+          Aún no hay puntuaciones en la porra. ¡Envía tu pronóstico para inaugurar la clasificación!
+        </p>
+      ) : (
+        <div className="flex flex-col divide-y divide-neutral-100">
+          {entries.map((entry) => {
+            const isTop3 = entry.rank <= 3;
+            const rankBadgeColor =
+              entry.rank === 1
+                ? 'bg-amber-100 text-amber-800 border-amber-300'
+                : entry.rank === 2
+                ? 'bg-slate-100 text-slate-800 border-slate-300'
+                : entry.rank === 3
+                ? 'bg-amber-50 text-amber-900 border-amber-200'
+                : 'text-neutral-400 bg-neutral-50 border-neutral-200';
 
-          return (
-            <div
-              key={entry.rank}
-              className={`flex items-center justify-between py-2.5 px-1.5 rounded-lg transition-colors ${
-                entry.isCurrentUser ? 'bg-red-50/60 font-semibold' : 'hover:bg-neutral-50/50'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className={`flex h-6 w-6 items-center justify-center rounded-full border text-xs font-bold tabular-nums ${rankBadgeColor}`}
-                >
-                  {entry.rank}
-                </span>
-                <div className="flex flex-col">
-                  <span className="text-xs font-bold text-neutral-900">
-                    {entry.userName}
-                    {entry.isCurrentUser && ' (Tú)'}
+            return (
+              <div
+                key={entry.rank}
+                className={`flex items-center justify-between py-2.5 px-1.5 rounded-lg transition-colors ${
+                  entry.isCurrentUser ? 'bg-red-50/60 font-semibold' : 'hover:bg-neutral-50/50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`flex h-6 w-6 items-center justify-center rounded-full border text-xs font-bold tabular-nums ${rankBadgeColor}`}
+                  >
+                    {entry.rank}
                   </span>
-                  <span className="text-[10px] text-neutral-400 tabular-nums">
-                    {entry.exactScoresCount} plenos · {entry.outcomesCount} aciertos
+                  <div className="flex flex-col">
+                    <span className="text-xs font-bold text-neutral-900">
+                      {entry.userName}
+                      {entry.isCurrentUser && ' (Tú)'}
+                    </span>
+                    <span className="text-[10px] text-neutral-400 tabular-nums">
+                      {entry.exactScoresCount} plenos · {entry.outcomesCount} aciertos
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <span className={`text-sm font-black tabular-nums ${isTop3 ? 'text-[#e2001a]' : 'text-neutral-800'}`}>
+                    {entry.totalPoints}
                   </span>
+                  <span className="text-[10px] font-semibold text-neutral-400">pts</span>
                 </div>
               </div>
-
-              <div className="flex items-center gap-1">
-                <span className={`text-sm font-black tabular-nums ${isTop3 ? 'text-[#e2001a]' : 'text-neutral-800'}`}>
-                  {entry.totalPoints}
-                </span>
-                <span className="text-[10px] font-semibold text-neutral-400">pts</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }

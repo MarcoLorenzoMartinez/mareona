@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { assertAdmin } from "./guard";
 import { moderatePostActionSchema } from "./schemas";
-import { DEV_FLAGGED_POSTS, DEV_BLOCKED_ATTEMPTS } from "./dev-seeds";
 import { redactAuditBodyForWebPanel } from "@/lib/social/dm-privacy-custody";
 import type { Database } from "@/types/database.types";
 
@@ -62,7 +61,7 @@ export async function getFlaggedPosts(): Promise<readonly FlaggedPostItem[]> {
     .limit(50);
 
   if (error || !data || data.length === 0) {
-    return DEV_FLAGGED_POSTS;
+    return [];
   }
 
   type RawPostWithProfile = Database["public"]["Tables"]["posts"]["Row"] & {
@@ -110,7 +109,7 @@ export async function getBlockedAttempts(): Promise<readonly BlockedAttemptItem[
     .limit(50);
 
   if (error || !data || data.length === 0) {
-    return DEV_BLOCKED_ATTEMPTS;
+    return [];
   }
 
   type RawAttempt = Database["public"]["Tables"]["blocked_post_attempts"]["Row"] & {

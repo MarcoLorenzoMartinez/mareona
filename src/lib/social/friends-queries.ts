@@ -1,12 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { DEMO_SEARCH_AFICIONADOS } from "./seed-posts";
-import { filterFriendsList, normalizeSearchQuery } from "./friends-search-utils";
-import {
-  isTestFriend,
-  TEST_FRIENDSHIP_ID,
-} from "./test-friend-chat";
+import { normalizeSearchQuery } from "./friends-search-utils";
 import type { FriendSummary, FriendshipStatus } from "./friendship-schemas";
 
 /**
@@ -34,10 +29,6 @@ export async function getFriendIdsForUser(userId: string): Promise<readonly stri
 export async function getFriendshipStatusWith(
   targetUserId: string
 ): Promise<{ status: FriendshipStatus; friendshipId?: string }> {
-  if (isTestFriend(targetUserId)) {
-    return { status: "accepted", friendshipId: TEST_FRIENDSHIP_ID };
-  }
-
   try {
     const supabase = await createClient();
     const {
@@ -117,7 +108,7 @@ export async function searchAficionados(query: string): Promise<readonly FriendS
   // When Supabase environment variables are missing (local demo mode / sandbox),
   // immediately resolve using the fallback demo dataset.
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return filterFriendsList(DEMO_SEARCH_AFICIONADOS, cleanQuery);
+    return [];
   }
 
   try {
@@ -133,7 +124,7 @@ export async function searchAficionados(query: string): Promise<readonly FriendS
       .limit(10);
 
     if (error || !profiles || profiles.length === 0) {
-      return filterFriendsList(DEMO_SEARCH_AFICIONADOS, cleanQuery, user?.id);
+      return [];
     }
 
     const filtered = user ? profiles.filter((p) => p.id !== user.id) : profiles;
@@ -146,6 +137,6 @@ export async function searchAficionados(query: string): Promise<readonly FriendS
       avatarUrl: p.avatar_url,
     }));
   } catch {
-    return filterFriendsList(DEMO_SEARCH_AFICIONADOS, cleanQuery);
+    return [];
   }
 }

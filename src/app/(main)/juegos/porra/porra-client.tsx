@@ -8,7 +8,6 @@ import { PorraLeaderboard } from './porra-leaderboard';
 import {
   getStoredPrediction,
   saveStoredPrediction,
-  DEMO_LEADERBOARD,
 } from '@/lib/porra/storage';
 import type { PorraMatch, PorraPrediction } from '@/lib/porra/types';
 
@@ -42,8 +41,8 @@ export function PorraClient({
       />
 
       <PorraLeaderboard
-        entries={DEMO_LEADERBOARD}
-        currentUserScore={prediction ? 28 : undefined}
+        entries={[]}
+        currentUserScore={undefined}
       />
     </div>
   );

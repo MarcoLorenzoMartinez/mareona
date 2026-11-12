@@ -13,7 +13,6 @@ import {
 import { MODERATION_REJECTED_MESSAGE, moderateText } from "./moderation";
 import { logBlockedAttempt } from "./moderation-log";
 import { checkRateLimit } from "@/lib/security/rate-limiter";
-import { INITIAL_TERTULIA_POSTS } from "./seed-posts";
 import type { SocialPost, SocialPoll } from "./types";
 import type { Database } from "@/types/database.types";
 
@@ -237,7 +236,7 @@ export async function getSocialPosts(
     const { data: posts, error } = await query;
 
     if (error || !posts || posts.length === 0) {
-      return filter === "friends" ? [] : INITIAL_TERTULIA_POSTS;
+      return [];
     }
 
     const {
@@ -318,7 +317,7 @@ export async function getSocialPosts(
       };
     });
   } catch {
-    return filter === "friends" ? [] : INITIAL_TERTULIA_POSTS;
+    return [];
   }
 }
 
