@@ -1,27 +1,29 @@
 // Client: Shared calendar archive modal for Mareona daily challenges (Wordle, ¿Quién es?, Pregunta del Día)
-'use client';
+"use client";
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from "react";
+import { useModalA11y } from "@/lib/ui/use-modal-a11y";
+import { GameArchiveGrid, type ArchiveCalendarCell } from "./game-archive-grid";
 
-export type ChallengeDayStatus = 'WON' | 'LOST' | 'UNPLAYED';
+export type ChallengeDayStatus = "WON" | "LOST" | "UNPLAYED";
 
 export interface GameArchiveModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  selectedDate: string;
-  onSelectDate: (date: string) => void;
-  epochDate: string;
-  todayDate: string;
-  getStatusForDate: (dateStr: string) => ChallengeDayStatus;
-  attemptVersion?: number;
+  readonly isOpen: boolean;
+  readonly onClose: () => void;
+  readonly selectedDate: string;
+  readonly onSelectDate: (date: string) => void;
+  readonly epochDate: string;
+  readonly todayDate: string;
+  readonly getStatusForDate: (dateStr: string) => ChallengeDayStatus;
+  readonly attemptVersion?: number;
 }
 
 const MONTH_NAMES = [
-  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
 ];
 
-const WEEKDAY_HEADERS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+const WEEKDAY_HEADERS = ["L", "M", "X", "J", "V", "S", "D"];
 
 export function GameArchiveModal({
   isOpen,
@@ -33,8 +35,10 @@ export function GameArchiveModal({
   getStatusForDate,
   attemptVersion,
 }: GameArchiveModalProps) {
-  const [viewYear, setViewYear] = useState(() => Number(selectedDate.split('-')[0]) || 2026);
-  const [viewMonth, setViewMonth] = useState(() => Number(selectedDate.split('-')[1]) - 1 || 9);
+  const [viewYear, setViewYear] = useState(() => Number(selectedDate.split("-")[0]) || 2026);
+  const [viewMonth, setViewMonth] = useState(() => Number(selectedDate.split("-")[1]) - 1 || 9);
+
+  const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   const handlePrevMonth = () => {
     if (viewMonth === 0) {
@@ -54,16 +58,6 @@ export function GameArchiveModal({
     }
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
-
-  // Recalculate cells whenever view changes, modal opens or attempt updates
   const cells = useMemo(() => {
     if (!isOpen) return [];
 
@@ -71,17 +65,17 @@ export function GameArchiveModal({
     const dayOfWeek = (firstDayOfMonth.getUTCDay() + 6) % 7;
     const totalDays = new Date(Date.UTC(viewYear, viewMonth + 1, 0)).getUTCDate();
 
-    const result = [];
+    const result: (ArchiveCalendarCell | null)[] = [];
     for (let i = 0; i < dayOfWeek; i++) result.push(null);
 
     for (let day = 1; day <= totalDays; day++) {
-      const monthPadded = String(viewMonth + 1).padStart(2, '0');
-      const dayPadded = String(day).padStart(2, '0');
+      const monthPadded = String(viewMonth + 1).padStart(2, "0");
+      const dayPadded = String(day).padStart(2, "0");
       const dateStr = `${viewYear}-${monthPadded}-${dayPadded}`;
       const isFuture = dateStr > todayDate;
       const isPastEpoch = dateStr < epochDate;
 
-      let status: ChallengeDayStatus = 'UNPLAYED';
+      let status: ChallengeDayStatus = "UNPLAYED";
       if (!isFuture && !isPastEpoch) {
         status = getStatusForDate(dateStr);
       }
@@ -106,8 +100,12 @@ export function GameArchiveModal({
       aria-modal="true"
       aria-labelledby="calendar-archive-title"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-2xs animate-in fade-in duration-150"
+      onClick={handleBackdropClick}
     >
-      <div className="flex w-full max-w-sm flex-col rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xl animate-in zoom-in-95 duration-150">
+      <div
+        className="flex w-full max-w-sm flex-col rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xl animate-in zoom-in-95 duration-150"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
           <h2 id="calendar-archive-title" className="text-base font-bold text-[var(--foreground)]">
             Calendario de Retos
@@ -156,64 +154,14 @@ export function GameArchiveModal({
           ))}
         </div>
 
-        {/* Calendar Day Cells */}
-        <div className="grid grid-cols-7 gap-1.5 pt-1">
-          {cells.map((cell, idx) => {
-            if (!cell) {
-              return <div key={`empty-${idx}`} className="aspect-square" />;
-            }
-
-            const { day, dateStr, status, isFuture, isPastEpoch } = cell;
-            const isSelected = dateStr === selectedDate;
-            const isToday = dateStr === todayDate;
-            const isDisabled = isFuture || isPastEpoch;
-
-            let cellBg = 'bg-[var(--surface)] text-[var(--foreground)] hover:border-[#e2001a]';
-            if (isDisabled) {
-              cellBg = 'bg-neutral-50 text-neutral-300 border-neutral-100 cursor-not-allowed';
-            } else if (status === 'WON') {
-              cellBg = 'bg-emerald-500 text-white font-bold border-emerald-500';
-            } else if (status === 'LOST') {
-              cellBg = 'bg-rose-500 text-white font-bold border-rose-500';
-            }
-
-            const selectionRing = isSelected ? 'border-[#e2001a] ring-2 ring-[#e2001a] z-10' : '';
-            const todayIndicator = isToday && !isSelected ? 'font-bold underline decoration-[#e2001a] decoration-2 underline-offset-4' : '';
-
-            return (
-              <button
-                key={dateStr}
-                type="button"
-                disabled={isDisabled}
-                onClick={() => {
-                  onSelectDate(dateStr);
-                  onClose();
-                }}
-                className={`relative flex aspect-square flex-col items-center justify-center rounded-lg border text-xs font-semibold tabular-nums transition-all ${cellBg} ${selectionRing} ${todayIndicator}`}
-                title={isDisabled ? 'No disponible' : `Jugar reto del ${dateStr}`}
-                aria-label={`Día ${day}, ${status}${isSelected ? ', seleccionado' : ''}`}
-              >
-                <span>{day}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Legend */}
-        <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
-          <div className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-            <span>Superado</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
-            <span>Fallado</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface)] border border-[var(--border)]" />
-            <span>Pendiente</span>
-          </div>
-        </div>
+        {/* Calendar Day Cells & Legend */}
+        <GameArchiveGrid
+          cells={cells}
+          selectedDate={selectedDate}
+          todayDate={todayDate}
+          onSelectDate={onSelectDate}
+          onClose={onClose}
+        />
       </div>
     </div>
   );

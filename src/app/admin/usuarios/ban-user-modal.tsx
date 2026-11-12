@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { banUserAction } from "@/lib/admin/user-actions";
 import { toast } from "@/lib/ui/toast";
+import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 import type { DisciplinaryUser } from "@/lib/admin/types";
 
 interface BanUserModalProps {
@@ -26,6 +27,8 @@ export function BanUserModal({ user, isOpen, onClose }: BanUserModalProps) {
   const [duration, setDuration] = useState<number | null>(7);
   const [reason, setReason] = useState("");
   const [isPending, startTransition] = useTransition();
+
+  const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   if (!isOpen) return null;
 
@@ -57,9 +60,13 @@ export function BanUserModal({ user, isOpen, onClose }: BanUserModalProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="ban-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs animate-in fade-in duration-150"
+      onClick={handleBackdropClick}
     >
-      <div className="w-full max-w-md rounded-xl border border-[var(--border)] bg-white p-6 shadow-xl">
+      <div
+        className="w-full max-w-md rounded-xl border border-[var(--border)] bg-white p-6 shadow-xl animate-in zoom-in-95 duration-150"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 id="ban-modal-title" className="text-base font-bold text-[var(--foreground)]">
           Sancionar a @{user.username}
         </h2>
@@ -106,14 +113,14 @@ export function BanUserModal({ user, isOpen, onClose }: BanUserModalProps) {
               type="button"
               onClick={onClose}
               disabled={isPending}
-              className="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] disabled:opacity-50"
+              className="min-h-[44px] rounded-full border border-[var(--border)] px-4 py-2 text-xs font-semibold text-[var(--muted-foreground)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-rose-600 px-5 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-rose-600 px-5 py-2 text-xs font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 cursor-pointer"
             >
               {isPending ? "Aplicando..." : "Confirmar sanción"}
             </button>

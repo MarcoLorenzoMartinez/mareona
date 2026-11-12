@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { customPlayerSchema, type LineupPlayer } from "@/lib/lineup-builder/types";
+import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 
 interface CustomPlayerModalProps {
   readonly isOpen: boolean;
@@ -19,6 +20,8 @@ export function CustomPlayerModal({
   const [shirtNumber, setShirtNumber] = useState<string>("");
   const [position, setPosition] = useState<"POR" | "DEF" | "MED" | "DEL">("MED");
   const [error, setError] = useState<string | null>(null);
+
+  const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   if (!isOpen) return null;
 
@@ -60,9 +63,13 @@ export function CustomPlayerModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="custom-player-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs animate-in fade-in duration-150"
+      onClick={handleBackdropClick}
     >
-      <div className="w-full max-w-sm rounded-2xl border border-[var(--border)] bg-white p-6 shadow-xl">
+      <div
+        className="w-full max-w-sm rounded-2xl border border-[var(--border)] bg-white p-6 shadow-xl animate-in zoom-in-95 duration-150"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 id="custom-player-title" className="text-base font-bold text-neutral-900">
           Añadir canterano / jugador
         </h2>
@@ -88,7 +95,7 @@ export function CustomPlayerModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ej. Pelayo o Mateo"
-              className="mt-1 w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-1 focus:ring-[#e2001a] outline-none"
+              className="mt-1 w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a] outline-none"
             />
           </div>
 
@@ -105,7 +112,7 @@ export function CustomPlayerModal({
                 value={shirtNumber}
                 onChange={(e) => setShirtNumber(e.target.value)}
                 placeholder="Ej. 34"
-                className="mt-1 w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-1 focus:ring-[#e2001a] outline-none tabular-nums"
+                className="mt-1 w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a] outline-none tabular-nums"
               />
             </div>
 
@@ -117,7 +124,7 @@ export function CustomPlayerModal({
                 id="custom-player-pos"
                 value={position}
                 onChange={(e) => setPosition(e.target.value as "POR" | "DEF" | "MED" | "DEL")}
-                className="mt-1 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-1 focus:ring-[#e2001a] outline-none"
+                className="mt-1 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a] outline-none"
               >
                 <option value="POR">Portero</option>
                 <option value="DEF">Defensa</option>
@@ -131,13 +138,13 @@ export function CustomPlayerModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-full px-4 py-2 text-xs font-semibold text-neutral-600 hover:bg-neutral-100"
+              className="min-h-[44px] rounded-full px-4 py-2 text-xs font-semibold text-neutral-600 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="rounded-full bg-[#e2001a] px-4 py-2 text-xs font-bold text-white hover:bg-[#b30015]"
+              className="min-h-[44px] rounded-full bg-[#e2001a] px-5 py-2 text-xs font-bold text-white hover:bg-[#b30015] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
             >
               Añadir a la lista
             </button>

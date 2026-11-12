@@ -4,6 +4,7 @@
 import { useRouter } from "next/navigation";
 import { MessageSquare, Trophy, ChevronRight, X } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 import {
   saveLocalSharedLineup,
   type SharedLineupData,
@@ -26,6 +27,7 @@ export function ShareLineupModal({
 }: ShareLineupModalProps) {
   const router = useRouter();
   const { user, openAuthModal } = useAuth();
+  const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   if (!isOpen) return null;
 
@@ -51,7 +53,7 @@ export function ShareLineupModal({
       aria-modal="true"
       aria-labelledby="share-lineup-title"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
-      onClick={onClose}
+      onClick={handleBackdropClick}
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -70,7 +72,7 @@ export function ShareLineupModal({
             type="button"
             onClick={onClose}
             aria-label="Cerrar modal"
-            className="rounded-full p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors"
+            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2 cursor-pointer"
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -85,7 +87,7 @@ export function ShareLineupModal({
           <button
             type="button"
             onClick={() => handleSelectDestination("social")}
-            className="group flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3.5 text-left transition-all hover:border-[#e2001a]/40 hover:bg-neutral-50/80 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
+            className="group flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3.5 text-left transition-all hover:border-[#e2001a]/40 hover:bg-neutral-50/80 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e2001a]/10 text-[#e2001a]">
@@ -108,7 +110,7 @@ export function ShareLineupModal({
             <button
               type="button"
               onClick={() => handleSelectDestination("match")}
-              className="group flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3.5 text-left transition-all hover:border-[#e2001a]/40 hover:bg-neutral-50/80 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
+              className="group flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3.5 text-left transition-all hover:border-[#e2001a]/40 hover:bg-neutral-50/80 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 group-hover:bg-[#e2001a]/10 group-hover:text-[#e2001a] transition-colors">
@@ -132,7 +134,7 @@ export function ShareLineupModal({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full border border-neutral-300 px-4 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors"
+            className="min-h-[44px] rounded-full border border-neutral-300 px-4 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
           >
             Cancelar
           </button>

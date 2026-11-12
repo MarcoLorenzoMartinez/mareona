@@ -1,13 +1,14 @@
 // Client: Modal de estadísticas de ¿Quién es? idéntico a Wordle
-'use client';
+"use client";
 
-import React from 'react';
-import type { WhoAreYaStats } from '@/lib/who-are-ya/storage';
+import React from "react";
+import type { WhoAreYaStats } from "@/lib/who-are-ya/storage";
+import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 
 interface WhoAreYaStatsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  stats: WhoAreYaStats;
+  readonly isOpen: boolean;
+  readonly onClose: () => void;
+  readonly stats: WhoAreYaStats;
 }
 
 export function WhoAreYaStatsModal({
@@ -15,6 +16,8 @@ export function WhoAreYaStatsModal({
   onClose,
   stats,
 }: WhoAreYaStatsModalProps) {
+  const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
+
   if (!isOpen) return null;
 
   const winRate = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
@@ -26,9 +29,13 @@ export function WhoAreYaStatsModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="who-are-ya-stats-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-2xs"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4 backdrop-blur-2xs animate-in fade-in duration-150"
+      onClick={handleBackdropClick}
     >
-      <div className="flex max-h-[92vh] w-full max-w-sm flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl animate-in fade-in zoom-in-95 duration-150">
+      <div
+        className="flex max-h-[92vh] w-full max-w-sm flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl animate-in zoom-in-95 duration-150"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Cabecera limpia y sutil */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
           <h2 id="who-are-ya-stats-title" className="text-sm font-bold uppercase tracking-wider text-neutral-500">
@@ -37,7 +44,7 @@ export function WhoAreYaStatsModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors"
+            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
             aria-label="Cerrar estadísticas"
           >
             ✕
@@ -82,7 +89,7 @@ export function WhoAreYaStatsModal({
                   <div className="flex-1 overflow-hidden rounded-md bg-neutral-100">
                     <div
                       className={`flex h-5 items-center justify-end px-2 text-[11px] font-bold text-white transition-all duration-300 ${
-                        count > 0 ? 'bg-[#e2001a]' : 'bg-transparent text-neutral-400'
+                        count > 0 ? "bg-[#e2001a]" : "bg-transparent text-neutral-400"
                       }`}
                       style={{ width: `${Math.max(12, pct)}%` }}
                     >
