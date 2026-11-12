@@ -3,6 +3,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { reportClientError } from "@/lib/telemetry/client-error-reporter";
 
 interface ErrorProps {
   readonly error: Error & { digest?: string };
@@ -16,6 +17,7 @@ interface ErrorProps {
 export default function ErrorPage({ error, reset }: ErrorProps) {
   useEffect(() => {
     console.error("Unhandled application error:", error);
+    reportClientError(error);
   }, [error]);
 
   return (

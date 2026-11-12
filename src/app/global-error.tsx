@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { reportClientError } from "@/lib/telemetry/client-error-reporter";
 
 interface GlobalErrorProps {
   readonly error: Error & { digest?: string };
@@ -14,6 +15,7 @@ interface GlobalErrorProps {
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
     console.error("Global critical error:", error);
+    reportClientError(error);
   }, [error]);
 
   return (
