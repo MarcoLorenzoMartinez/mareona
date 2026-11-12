@@ -56,7 +56,7 @@ describe('Trivia Engine Suite', () => {
     const seenIds = new Set<string>();
 
     for (let i = 0; i < total; i++) {
-      const d = new Date(Date.UTC(2026, 9, 1 + i));
+      const d = new Date(Date.UTC(2026, 10, 13 + i));
       const iso = d.toISOString().split('T')[0];
       const challenge = getTriviaForDate(iso);
       seenIds.add(challenge.question.id);

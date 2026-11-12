@@ -36,11 +36,27 @@ export function GameArchiveModal({
   attemptVersion,
 }: GameArchiveModalProps) {
   const [viewYear, setViewYear] = useState(() => Number(selectedDate.split("-")[0]) || 2026);
-  const [viewMonth, setViewMonth] = useState(() => Number(selectedDate.split("-")[1]) - 1 || 9);
+  const [viewMonth, setViewMonth] = useState(() => {
+    const parsed = Number(selectedDate.split("-")[1]) - 1;
+    return isNaN(parsed) ? 10 : parsed;
+  });
 
   const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
+  const [epochYear, epochMonth] = useMemo(
+    () => epochDate.split("-").map(Number),
+    [epochDate]
+  );
+  const [todayYear, todayMonth] = useMemo(
+    () => todayDate.split("-").map(Number),
+    [todayDate]
+  );
+
+  const canPrev = viewYear > epochYear || (viewYear === epochYear && viewMonth > epochMonth - 1);
+  const canNext = viewYear < todayYear || (viewYear === todayYear && viewMonth < todayMonth - 1);
+
   const handlePrevMonth = () => {
+    if (!canPrev) return;
     if (viewMonth === 0) {
       setViewYear((y) => y - 1);
       setViewMonth(11);
@@ -50,6 +66,7 @@ export function GameArchiveModal({
   };
 
   const handleNextMonth = () => {
+    if (!canNext) return;
     if (viewMonth === 11) {
       setViewYear((y) => y + 1);
       setViewMonth(0);
@@ -128,16 +145,26 @@ export function GameArchiveModal({
           <div className="flex items-center gap-1">
             <button
               type="button"
+              disabled={!canPrev}
               onClick={handlePrevMonth}
-              className="flex h-9 w-9 min-h-[40px] min-w-[40px] items-center justify-center rounded-lg border border-[var(--border)] text-sm font-bold hover:bg-[var(--surface)] text-[var(--foreground)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] active:scale-95 cursor-pointer"
+              className={`flex h-9 w-9 min-h-[40px] min-w-[40px] items-center justify-center rounded-lg border text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
+                canPrev
+                  ? "border-[var(--border)] hover:bg-[var(--surface)] text-[var(--foreground)] active:scale-95 cursor-pointer"
+                  : "border-neutral-100 bg-neutral-50 text-neutral-300 opacity-40 cursor-not-allowed"
+              }`}
               aria-label="Mes anterior"
             >
               ‹
             </button>
             <button
               type="button"
+              disabled={!canNext}
               onClick={handleNextMonth}
-              className="flex h-9 w-9 min-h-[40px] min-w-[40px] items-center justify-center rounded-lg border border-[var(--border)] text-sm font-bold hover:bg-[var(--surface)] text-[var(--foreground)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] active:scale-95 cursor-pointer"
+              className={`flex h-9 w-9 min-h-[40px] min-w-[40px] items-center justify-center rounded-lg border text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
+                canNext
+                  ? "border-[var(--border)] hover:bg-[var(--surface)] text-[var(--foreground)] active:scale-95 cursor-pointer"
+                  : "border-neutral-100 bg-neutral-50 text-neutral-300 opacity-40 cursor-not-allowed"
+              }`}
               aria-label="Mes siguiente"
             >
               ›

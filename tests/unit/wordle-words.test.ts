@@ -18,7 +18,7 @@ describe('Sporting Words & Non-repeating Bag Suite', () => {
     const totalWords = SPORTING_WORD_CATALOG.length;
     const seenWords = new Set<string>();
 
-    const [epochYear, epochMonth, epochDay] = [2026, 10, 1];
+    const [epochYear, epochMonth, epochDay] = [2026, 11, 13];
 
     for (let i = 0; i < totalWords; i++) {
       const d = new Date(Date.UTC(epochYear, epochMonth - 1, epochDay + i));
@@ -37,7 +37,7 @@ describe('Sporting Words & Non-repeating Bag Suite', () => {
   });
 
   it('increments appearance counts accurately', () => {
-    const testDate = '2026-10-10';
+    const testDate = '2026-11-20';
     const counts = getWordAppearanceCounts(testDate);
     const days = getDaysSinceEpoch(testDate) + 1; // inclusive
     const totalAppearances = Object.values(counts).reduce((a, b) => a + b, 0);
@@ -50,11 +50,11 @@ describe('Sporting Words & Non-repeating Bag Suite', () => {
   });
 
   it('generates chronological historical challenges up to current date', () => {
-    const history = getHistoricalChallenges('2026-10-05');
-    // Day 0: 2026-10-01, Day 4: 2026-10-05 -> 5 items
+    const history = getHistoricalChallenges('2026-11-17');
+    // Day 0: 2026-11-13, Day 4: 2026-11-17 -> 5 items
     assert.equal(history.length, 5);
-    assert.equal(history[0].id, '2026-10-05'); // newest first
-    assert.equal(history[4].id, '2026-10-01');
+    assert.equal(history[0].id, '2026-11-17'); // newest first
+    assert.equal(history[4].id, '2026-11-13');
   });
 
   describe('isValidWordGuess validation', () => {

@@ -9,7 +9,7 @@ const MOCK_PROFILES: readonly FriendSummary[] = [
     friendshipId: "",
     username: "pelayo_gijon",
     displayName: "Pelayo Álvarez",
-    avatarUrl: "/images/historical/quini-molinon.jpg",
+    avatarUrl: "https://www.bdfutbol.com/i/j/3268f.jpg",
   },
   {
     id: "user-2",

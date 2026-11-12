@@ -591,7 +591,7 @@
     ],
     "explanation": "Mate Bilic anotó 12 dianas, incluyendo un célebre hat-trick en el Ramón Sánchez-Pizjuán ante el Sevilla.",
     "formatHint": "Nombre del delantero",
-    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/2704.jpg"
   },
   {
     "id": "q-bilic-hattrick-stadium",
@@ -606,7 +606,7 @@
     ],
     "explanation": "Bilic anotó los tres goles del Sporting en un vibrante 4-3 ante el Sevilla FC el 21 de septiembre de 2008.",
     "formatHint": "Nombre del estadio",
-    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/2704.jpg"
   },
   {
     "id": "q-puerta-1-el-molinon",
@@ -620,7 +620,7 @@
     ],
     "explanation": "La Puerta 1 de El Molinón homenajea para siempre a Jesús Castro, fallecido heroicamente en 1993 salvando a dos niños en la playa de Pechón.",
     "formatHint": "Nombre del portero",
-    "photoUrl": "/images/historical/quini-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/3665f.jpg"
   },
   {
     "id": "q-stadium-official-name",
@@ -634,7 +634,7 @@
     ],
     "explanation": "Tras el fallecimiento de Quini el 27 de febrero de 2018, el Ayuntamiento aprobó la denominación Estadio El Molinón - Enrique Castro \"Quini\".",
     "formatHint": "Nombre de la leyenda",
-    "photoUrl": "/images/historical/quini-molinon.jpg"
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
   },
   {
     "id": "q-mundial-82-sporting-players",
@@ -802,7 +802,7 @@
     ],
     "explanation": "En 1912 el rey Alfonso XIII aceptó la presidencia de honor y otorgó el título honorífico de Real.",
     "unit": "año",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/sporting-once-historico.jpg"
   },
   {
     "id": "q-consecutive-years-in-primera",
@@ -816,7 +816,7 @@
     ],
     "explanation": "Fueron 21 temporadas ininterrumpidas en la élite del fútbol español compitiendo al máximo nivel nacional y europeo.",
     "unit": "temporadas",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/sporting-subcampeon-1979.jpg"
   },
   {
     "id": "q-most-red-cards-player",
@@ -1035,7 +1035,7 @@
     ],
     "explanation": "En 1970 el equipo de Carriega sentenció el retorno a la máxima categoría.",
     "unit": "año",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/sporting-ascenso-carriega-1970.jpg"
   },
   {
     "id": "q-top-scorer-2011-12",
@@ -1114,7 +1114,8 @@
       "campo de vallecas"
     ],
     "explanation": "El Sporting certificó su pase a semifinales en Vallecas.",
-    "formatHint": "Nombre del estadio madrileño"
+    "formatHint": "Nombre del estadio madrileño",
+    "photoUrl": "/images/historical/copa-final-1981.jpg"
   },
   {
     "id": "q-villa-world-cup-2010",
@@ -1351,7 +1352,7 @@
     ],
     "explanation": "En la primavera de 1985 el Sporting venció 3-1 en El Molinón en la ida de semifinales de la Copa de la Liga.",
     "formatHint": "Temporada (ej. 1984/85)",
-    "photoUrl": "/stadiums/el-molinon.jpg"
+    "photoUrl": "/images/historical/el-molinon-madrid.jpg"
   },
   {
     "id": "q-first-primera-match-el-molinon",
@@ -1465,5 +1466,295 @@
     "explanation": "El Brujo Quini fue el autor de esta histórica cifra redonda en la élite.",
     "formatHint": "Nombre de la leyenda",
     "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
+  },
+  {
+    "id": "q-trofeo-verano-gijon",
+    "question": "¿Cómo se denomina el tradicional torneo veraniego de fútbol que organiza el Real Sporting en su estadio desde 1962?",
+    "type": "text",
+    "canonicalAnswer": "Trofeo Costa Verde",
+    "acceptedAnswers": [
+      "trofeo costa verde",
+      "costa verde",
+      "trofeo villa de gijon",
+      "villa de gijon"
+    ],
+    "explanation": "El torneo es un clásico de la pretemporada española, conocido históricamente como Trofeo Costa Verde y en varias ediciones como Trofeo Villa de Gijón.",
+    "formatHint": "Nombre del torneo de verano",
+    "photoUrl": "/images/historical/el-molinon-uefa.jpg"
+  },
+  {
+    "id": "q-halilovic-cesion-1516",
+    "question": "¿Qué mediapunta croata, llegado en calidad de cedido, deslumbró con su calidad en El Molinón durante la temporada 2015/16?",
+    "type": "player",
+    "canonicalAnswer": "Alen Halilovic",
+    "acceptedAnswers": [
+      "alen halilovic",
+      "halilovic",
+      "alen",
+      "alen halilović"
+    ],
+    "explanation": "Alen Halilovic disputó 36 partidos y anotó 3 goles en su única campaña en el Real Sporting, dejando grandes destellos técnicos en Primera División.",
+    "formatHint": "Nombre y/o apellido del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/20044.jpg"
+  },
+  {
+    "id": "q-derbi-tartiere-2001",
+    "question": "¿Con qué resultado venció el Real Sporting en su visita al Carlos Tartiere en el recordado derbi asturiano de octubre de 2001?",
+    "type": "score",
+    "canonicalAnswer": "0 - 2",
+    "acceptedAnswers": [
+      "0-2",
+      "0 - 2",
+      "0:2",
+      "0 a 2"
+    ],
+    "explanation": "El Real Sporting conquistó el feudo oviedista en la temporada 2001/02 con un inolvidable 0-2 gracias a los tantos de Raúl Lozano y David Villa.",
+    "formatHint": "Marcador (ej. 0 - 2)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/632b.jpg"
+  },
+  {
+    "id": "q-diego-castro-goleador",
+    "question": "¿Qué extremo gallego y especialista indiscutible desde el punto de penalti fue el máximo goleador del Real Sporting en la temporada 2009/10?",
+    "type": "player",
+    "canonicalAnswer": "Diego Castro",
+    "acceptedAnswers": [
+      "diego castro",
+      "castro",
+      "diego castro gimenez"
+    ],
+    "explanation": "Diego Castro lideró la faceta ofensiva del equipo de Manolo Preciado anotando 10 goles vitales para conseguir la permanencia en Primera.",
+    "formatHint": "Nombre y apellido del extremo",
+    "photoUrl": "https://www.bdfutbol.com/i/j/571b.jpg"
+  },
+  {
+    "id": "q-quini-total-pichichis-carrera",
+    "question": "¿Cuántos Trofeos Pichichi conquistó Quini a lo largo de toda su trayectoria deportiva, contando tanto Primera como Segunda División (sumando sus etapas en el Real Sporting y el FC Barcelona)?",
+    "type": "number",
+    "canonicalAnswer": "7",
+    "acceptedAnswers": [
+      "7",
+      "siete",
+      "7 pichichis",
+      "7 trofeos"
+    ],
+    "explanation": "El Brujo acumuló 7 Trofeos Pichichi en total: 5 logrados con el Real Sporting (3 en Primera y 2 en Segunda) y 2 conseguidos con el FC Barcelona.",
+    "unit": "trofeos",
+    "formatHint": "Introduce un número (ej. 3)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3268f.jpg"
+  },
+  {
+    "id": "q-luis-moran-eibar-2008",
+    "question": "¿Qué canterano asturiano anotó el definitivo segundo gol frente a la SD Eibar que certificó el ascenso a Primera División en 2008?",
+    "type": "player",
+    "canonicalAnswer": "Luis Morán",
+    "acceptedAnswers": [
+      "luis moran",
+      "luis moran sanchez",
+      "moran"
+    ],
+    "explanation": "Tras el primer gol de Mate Bilic, Luis Morán desató la locura en El Molinón marcando el 2-0 definitivo que devolvía al equipo a la élite.",
+    "formatHint": "Nombre y apellido del jugador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/6170.jpg"
+  },
+  {
+    "id": "q-sanabria-goles-2015",
+    "question": "¿Cuántos goles marcó el delantero paraguayo Tonny Sanabria en la temporada 2015/16 para ayudar a mantener al Real Sporting en Primera?",
+    "type": "number",
+    "canonicalAnswer": "11",
+    "acceptedAnswers": [
+      "11",
+      "once",
+      "11 goles"
+    ],
+    "explanation": "Tonny Sanabria fue la gran referencia ofensiva de los Guajes en Primera, destacando con sendos hat-tricks ante Las Palmas y Real Sociedad.",
+    "unit": "goles",
+    "formatHint": "Introduce un número (ej. 5)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/98148b.jpg"
+  },
+  {
+    "id": "q-centenario-ano",
+    "question": "¿En qué año natural celebró el Real Sporting el espectacular centenario de su fundación?",
+    "type": "number",
+    "canonicalAnswer": "2005",
+    "acceptedAnswers": [
+      "2005",
+      "dos mil cinco"
+    ],
+    "explanation": "El club conmemoró sus 100 años de historia a lo largo del año 2005 (fundado en agosto de 1905), culminando los actos en la temporada 2005/06.",
+    "unit": "año",
+    "formatHint": "Introduce el año (ej. 1999)",
+    "photoUrl": "/stadiums/el-molinon.jpg"
+  },
+  {
+    "id": "q-julio-salinas-9596",
+    "question": "¿Qué veterano delantero internacional español anotó 18 goles en Primera División con el Real Sporting en la temporada 1995/96?",
+    "type": "player",
+    "canonicalAnswer": "Julio Salinas",
+    "acceptedAnswers": [
+      "julio salinas",
+      "salinas",
+      "julio salinas fernandez"
+    ],
+    "explanation": "Julio Salinas vivió una segunda juventud en Gijón, firmando una temporada arrolladora con 18 dianas ligueras.",
+    "formatHint": "Nombre y apellido del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1711c.jpg"
+  },
+  {
+    "id": "q-club-ensidesa",
+    "question": "¿De qué club avilesino fichó el Real Sporting a los históricos hermanos Enrique y Jesús Castro en 1968?",
+    "type": "text",
+    "canonicalAnswer": "CD Ensidesa",
+    "acceptedAnswers": [
+      "cd ensidesa",
+      "ensidesa",
+      "club deportivo ensidesa"
+    ],
+    "explanation": "Ambas leyendas llegaron a Gijón procedentes del CD Ensidesa (actual Real Avilés tras fusiones posteriores), forjando la historia del club rojiblanco.",
+    "formatHint": "Nombre del club de origen",
+    "photoUrl": "https://www.bdfutbol.com/i/j/3665f.jpg"
+  },
+  {
+    "id": "q-roberto-zamora-0506",
+    "question": "¿Qué guardameta gallego conquistó el Trofeo Zamora de Segunda División defendiendo la meta del Real Sporting en la temporada 2005/06?",
+    "type": "player",
+    "canonicalAnswer": "Roberto Fernández",
+    "acceptedAnswers": [
+      "roberto fernandez",
+      "roberto",
+      "roberto fernandez alvarellos"
+    ],
+    "explanation": "Roberto Fernández se alzó con el galardón al portero menos goleado encajando solo 31 goles en 38 partidos de Liga.",
+    "formatHint": "Nombre del portero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/4695.jpg"
+  },
+  {
+    "id": "q-resultado-final-copa-1981",
+    "question": "¿Cuál fue el resultado exacto de la final de la Copa del Rey de 1981 en la que el Real Sporting cayó ante el FC Barcelona en el Vicente Calderón?",
+    "type": "score",
+    "canonicalAnswer": "3 - 1",
+    "acceptedAnswers": [
+      "3-1",
+      "3 - 1",
+      "1-3",
+      "1 - 3",
+      "3:1",
+      "1:3"
+    ],
+    "explanation": "El FC Barcelona se impuso por 3-1 en un partido donde Maceda anotó el único tanto sportinguista.",
+    "formatHint": "Marcador (ej. 2 - 1)",
+    "photoUrl": "/images/historical/copa-final-1981.jpg"
+  },
+  {
+    "id": "q-debut-marcelino-season",
+    "question": "¿En qué temporada debutó Marcelino García Toral como entrenador del primer equipo del Real Sporting en Segunda División?",
+    "type": "season",
+    "canonicalAnswer": "2003/04",
+    "acceptedAnswers": [
+      "2003/04",
+      "2003-04",
+      "03/04",
+      "03-04"
+    ],
+    "explanation": "Tras destacar en el filial, Marcelino tomó las riendas del primer equipo en la campaña 2003/04, rozando el ascenso a Primera.",
+    "formatHint": "Temporada (ej. 2003/04)",
+    "photoUrl": "https://www.bdfutbol.com/i/j/2974e.jpg"
+  },
+  {
+    "id": "q-milan-luhovy-8990",
+    "question": "¿Qué letal delantero checoslovaco brilló anotando 16 goles con el Real Sporting en la temporada 1989/90?",
+    "type": "player",
+    "canonicalAnswer": "Milan Luhovy",
+    "acceptedAnswers": [
+      "milan luhovy",
+      "luhovy",
+      "milan luhový"
+    ],
+    "explanation": "Milan Luhový fue uno de los grandes goleadores europeos de la época y dejó un recuerdo imborrable en la afición de El Molinón.",
+    "formatHint": "Nombre y apellido del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1888.jpg"
+  },
+  {
+    "id": "q-jony-rodriguez-guajes",
+    "question": "¿Qué veloz extremo zurdo, nacido en Cangas del Narcea, fue una de las grandes figuras del recordado ascenso de los 'Guajes' en 2015?",
+    "type": "player",
+    "canonicalAnswer": "Jony Rodríguez",
+    "acceptedAnswers": [
+      "jony",
+      "jony rodriguez",
+      "jonathan rodriguez",
+      "jonathan rodriguez menendez"
+    ],
+    "explanation": "Jony fue un estilete por la banda izquierda y autor de uno de los tres goles en la decisiva victoria final ante el Betis.",
+    "formatHint": "Nombre o apodo del futbolista",
+    "photoUrl": "https://www.bdfutbol.com/i/j/201014d.jpg"
+  },
+  {
+    "id": "q-luis-hernandez-central",
+    "question": "¿Qué defensa madrileño se consolidó formando una impecable pareja de centrales con Bernardo Espinosa en el épico ascenso de 2015?",
+    "type": "player",
+    "canonicalAnswer": "Luis Hernández",
+    "acceptedAnswers": [
+      "luis hernandez",
+      "luis hernandez rodriguez"
+    ],
+    "explanation": "Luis Hernández fue el cerrojo defensivo junto al colombiano, destacando también por sus letales saques de banda al área.",
+    "formatHint": "Nombre y apellido del central",
+    "photoUrl": "https://www.bdfutbol.com/i/j/200433c.jpg"
+  },
+  {
+    "id": "q-igor-lediakhov",
+    "question": "¿Qué genial centrocampista ruso dirigió el juego del Real Sporting entre 1994 y 2002, dejando una huella imborrable por su inmensa calidad técnica?",
+    "type": "player",
+    "canonicalAnswer": "Igor Lediakhov",
+    "acceptedAnswers": [
+      "igor lediakhov",
+      "lediakhov"
+    ],
+    "explanation": "Lediakhov fue el faro del equipo durante 8 años, combinando una técnica exquisita con una visión de juego privilegiada.",
+    "formatHint": "Nombre y apellido del jugador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/1083b.jpg"
+  },
+  {
+    "id": "q-marcador-ascenso-eibar",
+    "question": "¿Cuál fue el resultado del partido decisivo frente a la SD Eibar en El Molinón que certificó el ansiado regreso a Primera División en 2008?",
+    "type": "score",
+    "canonicalAnswer": "2 - 0",
+    "acceptedAnswers": [
+      "2-0",
+      "2 - 0",
+      "2:0",
+      "2 a 0"
+    ],
+    "explanation": "El Real Sporting de Manolo Preciado superó a los armeros por 2-0 con un estadio a rebosar, poniendo fin a una década en Segunda.",
+    "formatHint": "Marcador (ej. 2 - 0)",
+    "photoUrl": "/images/historical/preciado-ascenso-2008.jpg"
+  },
+  {
+    "id": "q-dejan-lekic-dupla",
+    "question": "¿Qué espigado delantero serbio formó una letal pareja de ataque junto a Stefan Scepovic marcando 12 goles en la temporada 2013/14?",
+    "type": "player",
+    "canonicalAnswer": "Dejan Lekic",
+    "acceptedAnswers": [
+      "dejan lekic",
+      "lekic",
+      "dejan lekić"
+    ],
+    "explanation": "La conexión serbia entre Lekic y Scepovic fue una pesadilla para las defensas rivales durante toda aquella campaña.",
+    "formatHint": "Nombre y apellido del delantero",
+    "photoUrl": "https://www.bdfutbol.com/i/j/12480.jpg"
+  },
+  {
+    "id": "q-carmona-partidos",
+    "question": "¿Qué centrocampista mallorquín disputó cerca de 300 partidos oficiales con el Real Sporting entre 2012 y 2021, siendo clave en el ascenso de 2015?",
+    "type": "player",
+    "canonicalAnswer": "Carlos Carmona",
+    "acceptedAnswers": [
+      "carmona",
+      "carlos carmona",
+      "carlos carmona bonet"
+    ],
+    "explanation": "Carmona es uno de los jugadores con más arraigo de la historia reciente del club, destacando por su entrega y olfato goleador desde segunda línea.",
+    "formatHint": "Nombre y/o apellido del jugador",
+    "photoUrl": "https://www.bdfutbol.com/i/j/354d.jpg"
   }
 ]

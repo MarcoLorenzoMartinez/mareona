@@ -1,11 +1,14 @@
 import type { WhoAreYaPlayer } from './types';
+import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
 
-export const WHO_ARE_YA_EPOCH_DATE = '2026-10-01';
+export const WHO_ARE_YA_EPOCH_DATE = '2026-11-13';
 
 /**
  * Computes the number of days elapsed between the epoch date and a given target date.
  */
 export function getDaysSinceEpoch(dateStr: string): number {
+  if (dateStr < WHO_ARE_YA_EPOCH_DATE) return 0;
+
   const [targetYear, targetMonth, targetDay] = dateStr.split('-').map(Number);
   const [epochYear, epochMonth, epochDay] = WHO_ARE_YA_EPOCH_DATE.split('-').map(Number);
 
@@ -17,39 +20,30 @@ export function getDaysSinceEpoch(dateStr: string): number {
 }
 
 /**
- * Multiplicative congruent permutation (PRNG) guaranteeing non-repetition
- * within a full round of length N.
- */
-function getPermutedIndex(stepIndex: number, totalCount: number, roundNumber: number, salt = 151): number {
-  if (totalCount <= 1) return 0;
-  const primeStep = salt + (roundNumber * 17);
-  return (stepIndex * primeStep + roundNumber * 37) % totalCount;
-}
-
-/**
- * Resolves deterministic daily player for an ISO date string (YYYY-MM-DD).
+ * Resolves deterministic daily player for an ISO date string (YYYY-MM-DD)
+ * using a Fisher-Yates shuffled permutation per round.
  */
 export function getPlayerForDate(dateStr: string, catalog: WhoAreYaPlayer[]): WhoAreYaPlayer {
   const days = getDaysSinceEpoch(dateStr);
   const total = catalog.length;
-  const round = Math.floor(days / total);
-  const step = days % total;
-  const idx = getPermutedIndex(step, total, round, 151);
+  const idx = getDailyPermutedIndex(days, total, 4817, 2);
   return catalog[idx] || catalog[0];
 }
 
 /**
- * Returns today's ISO date string (YYYY-MM-DD).
- * During server-side rendering or static generation, returns the deterministic epoch date
- * to satisfy strict Next.js static prerender checks.
+ * Returns today's ISO date string (YYYY-MM-DD) in Europe/Madrid timezone.
+ * Clamps to WHO_ARE_YA_EPOCH_DATE if current date is prior to launch.
  */
 export function getTodayDateStr(): string {
   if (typeof window === 'undefined') {
     return WHO_ARE_YA_EPOCH_DATE;
   }
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
+  const todayStr = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Madrid',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
+
+  return todayStr < WHO_ARE_YA_EPOCH_DATE ? WHO_ARE_YA_EPOCH_DATE : todayStr;
 }

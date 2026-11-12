@@ -2,6 +2,7 @@ import rawWords from '../../data/wordle/sporting-words.json' with { type: 'json'
 import rawValidDict from '../../data/wordle/valid-dictionary.json' with { type: 'json' };
 import type { WordleDailyWord } from './types';
 import { normalizeWord } from './engine.ts';
+import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
 
 const VALID_DICTIONARY: Record<string, string> = rawValidDict;
 
@@ -19,15 +20,17 @@ const SPORTING_WORDS_SET = new Set(
 );
 
 /**
- * Epoch origin date for Mareona Wordle (Day 0 = 2026-10-01).
+ * Epoch origin date for Mareona Wordle (Day 0 = 2026-11-13).
  * Every day at 00:00 CET increments the game day index.
  */
-export const WORDLE_EPOCH_DATE = '2026-10-01';
+export const WORDLE_EPOCH_DATE = '2026-11-13';
 
 /**
  * Computes the number of days elapsed between the epoch date and a given target date.
  */
 export function getDaysSinceEpoch(dateStr: string): number {
+  if (dateStr < WORDLE_EPOCH_DATE) return 0;
+
   const [targetYear, targetMonth, targetDay] = dateStr.split('-').map(Number);
   const [epochYear, epochMonth, epochDay] = WORDLE_EPOCH_DATE.split('-').map(Number);
 
@@ -39,27 +42,15 @@ export function getDaysSinceEpoch(dateStr: string): number {
 }
 
 /**
- * Multiplicative congruent permutation (PRNG) that guarantees a pseudo-random
- * but strictly bijective 1:1 permutation without duplicates within a round.
- * Coprime step (151) with catalog length ensures full period coverage.
- */
-function getPermutedIndex(stepIndex: number, totalCount: number, roundNumber: number): number {
-  const primeStep = 151 + (roundNumber * 17);
-  return (stepIndex * primeStep + roundNumber * 37) % totalCount;
-}
-
-/**
  * Resolves the challenge for a given ISO date (YYYY-MM-DD).
- * Ensures that no word repeats until all words in the catalog have appeared once.
+ * Ensures that no word repeats until all words in the catalog have appeared once,
+ * using a deterministic pseudorandom Fisher-Yates shuffle per round.
  */
 export function getChallengeForDate(dateStr: string): WordleDailyWord {
   const daysElapsed = getDaysSinceEpoch(dateStr);
   const totalWords = SPORTING_WORD_CATALOG.length;
 
-  const roundNumber = Math.floor(daysElapsed / totalWords);
-  const indexInRound = daysElapsed % totalWords;
-
-  const pickedIndex = getPermutedIndex(indexInRound, totalWords, roundNumber);
+  const pickedIndex = getDailyPermutedIndex(daysElapsed, totalWords, 8431, 0);
   const wordEntry = SPORTING_WORD_CATALOG[pickedIndex] || SPORTING_WORD_CATALOG[0];
 
   return {
@@ -85,7 +76,8 @@ export function getTodayChallenge(customDate?: Date): WordleDailyWord {
     day: '2-digit',
   });
   const todayDateStr = formatter.format(d);
-  return getChallengeForDate(todayDateStr);
+  const effectiveDate = todayDateStr < WORDLE_EPOCH_DATE ? WORDLE_EPOCH_DATE : todayDateStr;
+  return getChallengeForDate(effectiveDate);
 }
 
 /**

@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getTriviaForDate } from '../../../../lib/trivia/engine';
+import { getTriviaForDate, TRIVIA_EPOCH_DATE } from '../../../../lib/trivia/engine';
 import { TriviaClient } from './trivia-client';
 
 export const metadata: Metadata = {
@@ -23,9 +23,11 @@ async function TriviaContent({ searchParams }: PageProps) {
     day: '2-digit',
   }).format(new Date());
 
-  const targetDate = params.date && /^\d{4}-\d{2}-\d{2}$/.test(params.date)
+  const effectiveToday = todayMadrid < TRIVIA_EPOCH_DATE ? TRIVIA_EPOCH_DATE : todayMadrid;
+  const requestedDate = params.date && /^\d{4}-\d{2}-\d{2}$/.test(params.date)
     ? params.date
-    : todayMadrid;
+    : effectiveToday;
+  const targetDate = requestedDate < TRIVIA_EPOCH_DATE ? TRIVIA_EPOCH_DATE : requestedDate;
 
   const challenge = getTriviaForDate(targetDate);
 

@@ -65,8 +65,8 @@ describe('Who Are Ya (¿Quién es?) Engine Suite', () => {
 
   it('guarantees deterministic non-repeating daily challenge resolution', () => {
     const catalog = [dummyPlayerTarget, dummyPlayerGuess];
-    const p1 = getPlayerForDate('2026-10-01', catalog);
-    const p2 = getPlayerForDate('2026-10-02', catalog);
+    const p1 = getPlayerForDate('2026-11-13', catalog);
+    const p2 = getPlayerForDate('2026-11-14', catalog);
     assert.notEqual(p1.bdfId, p2.bdfId);
 
     const days = getDaysSinceEpoch(WHO_ARE_YA_EPOCH_DATE);

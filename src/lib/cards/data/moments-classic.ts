@@ -36,7 +36,7 @@ export const MOMENTS_CLASSIC: readonly Card[] = [
     knownAs: "Ascenso de Carriega",
     decade: "1970s",
     eraLabel: "1970",
-    photoUrl: "/images/historical/quini-molinon.jpg",
+    photoUrl: "/images/historical/sporting-ascenso-carriega-1970.jpg",
     historicalCrestEra: "golden_1980",
     bioSnippet: "Temporada récord en Segunda con Quini como máximo goleador nacional con 24 tantos.",
     year: 1970,

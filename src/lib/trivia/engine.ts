@@ -1,6 +1,7 @@
 import type { TriviaQuestion, TriviaDailyChallenge } from './types';
 import rawQuestions from '../../data/trivia/questions.json' with { type: 'json' };
 import rawHistoricalPlayers from '../../data/historical/club-all-time-players.json' with { type: 'json' };
+import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
 
 export const TRIVIA_QUESTIONS: TriviaQuestion[] = rawQuestions as TriviaQuestion[];
 
@@ -15,10 +16,10 @@ const HISTORICAL_PLAYERS: SimplePlayerRef[] = (rawHistoricalPlayers as SimplePla
 }));
 
 /**
- * Epoch origin date for Mareona Trivia (Day 0 = 2026-10-01).
+ * Epoch origin date for Mareona Trivia (Day 0 = 2026-11-13).
  * Increments each day at 00:00 CET.
  */
-export const TRIVIA_EPOCH_DATE = '2026-10-01';
+export const TRIVIA_EPOCH_DATE = '2026-11-13';
 
 /**
  * Normalizes text for clean matching: removes accents, lowercase, collapses spaces.
@@ -37,6 +38,8 @@ export function normalizeTriviaText(input: string): string {
  * Calculates days elapsed between the epoch date and target ISO date.
  */
 export function getTriviaDaysSinceEpoch(dateStr: string): number {
+  if (dateStr < TRIVIA_EPOCH_DATE) return 0;
+
   const [targetYear, targetMonth, targetDay] = dateStr.split('-').map(Number);
   const [epochYear, epochMonth, epochDay] = TRIVIA_EPOCH_DATE.split('-').map(Number);
 
@@ -48,24 +51,14 @@ export function getTriviaDaysSinceEpoch(dateStr: string): number {
 }
 
 /**
- * Multiplicative congruent permutation (PRNG) guaranteeing a bijective 1:1 permutation.
- * No question repeats until all questions in the catalogue have been used once.
- */
-function getPermutedQuestionIndex(stepIndex: number, totalCount: number, roundNumber: number): number {
-  const primeStep = 97 + (roundNumber * 13);
-  return (stepIndex * primeStep + roundNumber * 29) % totalCount;
-}
-
-/**
- * Returns the question challenge corresponding to a given ISO date (YYYY-MM-DD).
+ * Returns the question challenge corresponding to a given ISO date (YYYY-MM-DD)
+ * using a Fisher-Yates shuffled permutation per round.
  */
 export function getTriviaForDate(dateStr: string): TriviaDailyChallenge {
   const daysElapsed = getTriviaDaysSinceEpoch(dateStr);
   const total = TRIVIA_QUESTIONS.length;
-  const roundNumber = Math.floor(daysElapsed / total);
-  const stepIndex = daysElapsed % total;
 
-  const permutedIndex = getPermutedQuestionIndex(stepIndex, total, roundNumber);
+  const permutedIndex = getDailyPermutedIndex(daysElapsed, total, 6271, 55);
   const question = TRIVIA_QUESTIONS[permutedIndex] ?? TRIVIA_QUESTIONS[0];
 
   return {
@@ -84,12 +77,14 @@ export function getTriviaTodayDateStr(): string {
   if (typeof window === 'undefined') {
     return TRIVIA_EPOCH_DATE;
   }
-  return new Intl.DateTimeFormat('en-CA', {
+  const todayStr = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'Europe/Madrid',
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
   }).format(new Date());
+
+  return todayStr < TRIVIA_EPOCH_DATE ? TRIVIA_EPOCH_DATE : todayStr;
 }
 
 /**

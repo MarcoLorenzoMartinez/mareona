@@ -32,7 +32,7 @@ export const DEMO_CREDENTIALS = {
       id: "00000000-0000-4000-8000-000000000001",
       username: "quini_1905",
       display_name: "Pelayo Sportinguista",
-      avatar_url: "/images/historical/quini-molinon.jpg",
+      avatar_url: "https://www.bdfutbol.com/i/j/3268f.jpg",
       points: 125,
       is_banned: false,
       banned_until: null,
