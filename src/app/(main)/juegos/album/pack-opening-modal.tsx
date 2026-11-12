@@ -89,19 +89,14 @@ export function PackOpeningModal({
     setAnticipatingIndex(null);
   }, [cards.length]);
 
-  const handleSmartDismiss = useCallback(() => {
-    if (!allRevealed) {
-      handleRevealAllNow();
-    } else {
-      onSaveCards();
-      handleClose();
-    }
-  }, [allRevealed, handleRevealAllNow, onSaveCards, handleClose]);
+  const handleDismiss = useCallback(() => {
+    onSaveCards();
+    handleClose();
+  }, [onSaveCards, handleClose]);
 
   const { handleBackdropClick } = useModalA11y({
     isOpen,
-    onClose: handleSmartDismiss,
-    onEscape: handleSmartDismiss,
+    onClose: handleDismiss,
   });
 
   if (!isOpen) return null;
@@ -148,8 +143,8 @@ export function PackOpeningModal({
 
           <button
             type="button"
-            onClick={handleSmartDismiss}
-            aria-label={allRevealed ? "Guardar y cerrar sobre" : "Descubrir todos los cromos"}
+            onClick={handleDismiss}
+            aria-label="Cerrar y guardar sobre"
             className="flex h-9 w-9 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             ✕
@@ -179,10 +174,7 @@ export function PackOpeningModal({
           allRevealed={allRevealed}
           canOpenAnother={canOpenAnother}
           onOpenAnother={handleOpenAnother}
-          onSaveCards={() => {
-            onSaveCards();
-            handleClose();
-          }}
+          onSaveCards={handleDismiss}
         />
       </div>
     </div>

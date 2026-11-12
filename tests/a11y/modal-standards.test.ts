@@ -59,7 +59,7 @@ describe("Accessibility & WCAG 2.2 AA Modal Dialog Standards", () => {
     }
   });
 
-  it("verifies pack opening modal implements smart dismiss to prevent closing without seeing cards", () => {
+  it("verifies pack opening modal auto-saves cards on immediate dismiss", () => {
     const packModalPath = path.resolve(
       process.cwd(),
       "src/app/(main)/juegos/album/pack-opening-modal.tsx"
@@ -67,13 +67,8 @@ describe("Accessibility & WCAG 2.2 AA Modal Dialog Standards", () => {
     const content = fs.readFileSync(packModalPath, "utf-8");
     assert.match(
       content,
-      /handleSmartDismiss/,
-      "Pack opening modal must implement handleSmartDismiss"
-    );
-    assert.match(
-      content,
-      /handleRevealAllNow/,
-      "Pack opening modal must reveal all cards when closed prematurely"
+      /handleDismiss/,
+      "Pack opening modal must implement handleDismiss"
     );
     assert.match(
       content,
