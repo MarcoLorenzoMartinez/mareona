@@ -73,7 +73,7 @@ export function PorraMatchCard({
       className="flex flex-col gap-6 rounded-3xl border border-[var(--border)] bg-white p-6 sm:p-8 shadow-xs"
     >
       <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
-        <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+        <span className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
           {match.roundName}
         </span>
       </div>
@@ -95,7 +95,7 @@ export function PorraMatchCard({
             <button
               type="button"
               onClick={() => handleScoreChange(true, -1)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-neutral-700 hover:bg-neutral-100 active:scale-95 transition-all"
+              className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-base font-bold text-neutral-800 hover:bg-neutral-100 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               aria-label="Restar gol local"
             >
               -
@@ -106,7 +106,7 @@ export function PorraMatchCard({
             <button
               type="button"
               onClick={() => handleScoreChange(true, 1)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-neutral-700 hover:bg-neutral-100 active:scale-95 transition-all"
+              className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-base font-bold text-neutral-800 hover:bg-neutral-100 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               aria-label="Añadir gol local"
             >
               +
@@ -114,7 +114,7 @@ export function PorraMatchCard({
           </div>
         </div>
 
-        <span className="text-sm font-bold text-neutral-300">VS</span>
+        <span className="text-sm font-bold text-neutral-400 select-none" aria-hidden="true">VS</span>
 
         {/* Visitante */}
         <div className="flex flex-col items-center gap-2">
@@ -131,7 +131,7 @@ export function PorraMatchCard({
             <button
               type="button"
               onClick={() => handleScoreChange(false, -1)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-neutral-700 hover:bg-neutral-100 active:scale-95 transition-all"
+              className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-base font-bold text-neutral-800 hover:bg-neutral-100 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               aria-label="Restar gol visitante"
             >
               -
@@ -142,7 +142,7 @@ export function PorraMatchCard({
             <button
               type="button"
               onClick={() => handleScoreChange(false, 1)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-neutral-700 hover:bg-neutral-100 active:scale-95 transition-all"
+              className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-base font-bold text-neutral-800 hover:bg-neutral-100 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               aria-label="Añadir gol visitante"
             >
               +
@@ -163,9 +163,9 @@ export function PorraMatchCard({
       <button
         type="submit"
         disabled={!isOpen}
-        className={`flex h-12 w-full items-center justify-center rounded-xl px-4 text-xs sm:text-sm font-bold shadow-2xs transition-all select-none ${
+        className={`flex h-12 min-h-[48px] w-full items-center justify-center rounded-xl px-4 text-xs sm:text-sm font-bold shadow-2xs transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 ${
           !isOpen
-            ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+            ? 'bg-neutral-200 text-neutral-600 cursor-not-allowed'
             : 'bg-[#e2001a] text-white hover:bg-[#b30015] active:scale-[0.99]'
         }`}
       >

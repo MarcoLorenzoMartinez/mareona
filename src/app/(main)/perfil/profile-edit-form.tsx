@@ -87,7 +87,7 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             placeholder="Ej. Pelayo Álvarez"
-            className="w-full rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+            className="w-full min-h-[44px] rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
           />
         </div>
 
@@ -99,7 +99,7 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
             Apodo de usuario
           </label>
           <div className="relative">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-bold text-neutral-400">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-bold text-neutral-500">
               @
             </span>
             <input
@@ -110,7 +110,7 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="pelayo_rsg"
-              className="w-full rounded-xl border border-[var(--border)] bg-white py-2 pr-3 pl-7 text-sm font-sans text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              className="w-full min-h-[44px] rounded-xl border border-[var(--border)] bg-white py-2 pr-3 pl-7 text-sm font-sans text-neutral-900 placeholder:text-neutral-500 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
           </div>
         </div>
@@ -140,14 +140,14 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
           <button
             type="button"
             onClick={onCancel}
-            className="min-h-9 rounded-full px-3.5 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            className="inline-flex min-h-[44px] sm:min-h-9 items-center justify-center rounded-full px-4 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
           >
             Cancelar
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="min-h-9 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+            className="inline-flex min-h-[44px] sm:min-h-9 items-center justify-center rounded-full bg-[var(--primary)] px-4.5 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 cursor-pointer"
           >
             {isSubmitting ? "Guardando..." : "Guardar cambios"}
           </button>

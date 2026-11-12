@@ -32,7 +32,16 @@ export function PostCard({
   return (
     <article
       onClick={openThread}
-      className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 transition-colors duration-150 hover:bg-[var(--surface)]/60"
+      tabIndex={0}
+      role="button"
+      aria-label={`Publicación de ${post.authorName}`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openThread();
+        }
+      }}
+      className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 transition-colors duration-150 hover:bg-[var(--surface)]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--primary)]"
     >
       <button
         type="button"

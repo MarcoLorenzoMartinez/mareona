@@ -1,7 +1,7 @@
 // Client: Shared calendar archive modal for Mareona daily challenges (Wordle, ¿Quién es?, Pregunta del Día)
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 export type ChallengeDayStatus = 'WON' | 'LOST' | 'UNPLAYED';
 
@@ -53,6 +53,15 @@ export function GameArchiveModal({
       setViewMonth((m) => m + 1);
     }
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   // Recalculate cells whenever view changes, modal opens or attempt updates
   const cells = useMemo(() => {
@@ -106,7 +115,7 @@ export function GameArchiveModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 transition-colors"
+            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer -mr-2"
             aria-label="Cerrar calendario"
           >
             ✕
@@ -122,7 +131,7 @@ export function GameArchiveModal({
             <button
               type="button"
               onClick={handlePrevMonth}
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] text-xs font-bold hover:bg-[var(--surface)] text-[var(--foreground)]"
+              className="flex h-9 w-9 min-h-[40px] min-w-[40px] items-center justify-center rounded-lg border border-[var(--border)] text-sm font-bold hover:bg-[var(--surface)] text-[var(--foreground)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] active:scale-95 cursor-pointer"
               aria-label="Mes anterior"
             >
               ‹
@@ -130,7 +139,7 @@ export function GameArchiveModal({
             <button
               type="button"
               onClick={handleNextMonth}
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] text-xs font-bold hover:bg-[var(--surface)] text-[var(--foreground)]"
+              className="flex h-9 w-9 min-h-[40px] min-w-[40px] items-center justify-center rounded-lg border border-[var(--border)] text-sm font-bold hover:bg-[var(--surface)] text-[var(--foreground)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] active:scale-95 cursor-pointer"
               aria-label="Mes siguiente"
             >
               ›

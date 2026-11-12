@@ -96,7 +96,7 @@ export function DeleteAccountDialog({ isOpen, onClose }: DeleteAccountDialogProp
             type="button"
             disabled={isDeleting}
             onClick={onClose}
-            className="min-h-9 rounded-full border border-[var(--border)] bg-white px-4 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            className="inline-flex min-h-[44px] sm:min-h-9 items-center justify-center rounded-full border border-[var(--border)] bg-white px-4 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
           >
             Cancelar
           </button>
@@ -104,7 +104,7 @@ export function DeleteAccountDialog({ isOpen, onClose }: DeleteAccountDialogProp
             type="button"
             disabled={isDeleting}
             onClick={handleDelete}
-            className="min-h-9 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+            className="inline-flex min-h-[44px] sm:min-h-9 items-center justify-center rounded-full bg-[var(--primary)] px-4.5 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 cursor-pointer"
           >
             {isDeleting ? "Eliminando..." : "Sí, eliminar definitivamente"}
           </button>

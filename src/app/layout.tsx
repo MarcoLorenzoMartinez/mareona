@@ -88,7 +88,9 @@ export default function RootLayout({
             </Suspense>
             <OfflineBanner />
             <OfflineSyncListener />
-            <TelemetryBeacon />
+            <Suspense fallback={null}>
+              <TelemetryBeacon />
+            </Suspense>
             <AuthModal />
             {children}
             <ToastContainer />

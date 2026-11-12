@@ -1,7 +1,7 @@
 // Client: Anonymous, cookieless telemetry client using navigator.sendBeacon
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, Suspense } from "react";
 import { usePathname } from "next/navigation";
 
 const SESSION_KEY = "mareona_telemetry_sid";
@@ -75,7 +75,7 @@ function sendTelemetryPing(payload: Record<string, unknown>) {
 /**
  * Lightweight beacon tracking route changes without cookies, fingerprinting or third-party scripts.
  */
-export function TelemetryBeacon() {
+function TelemetryBeaconInner() {
   const pathname = usePathname();
   const pageStartRef = useRef<number>(0);
   const lastPathnameRef = useRef<string>("");
@@ -145,4 +145,16 @@ export function TelemetryBeacon() {
   }, [pathname]);
 
   return null;
+}
+
+/**
+ * Lightweight beacon tracking route changes without cookies, fingerprinting or third-party scripts.
+ * Wrapped in Suspense boundary to satisfy Next.js 16 static prerendering requirements for usePathname.
+ */
+export function TelemetryBeacon() {
+  return (
+    <Suspense fallback={null}>
+      <TelemetryBeaconInner />
+    </Suspense>
+  );
 }

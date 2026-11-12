@@ -22,7 +22,7 @@ export function FriendsModalHeader({
         <button
           type="button"
           onClick={() => onTabChange("friends")}
-          className={`rounded-full px-3 py-1 text-xs font-semibold transition-all cursor-pointer ${
+          className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
             tab === "friends"
               ? "bg-[var(--primary)] text-white font-bold"
               : "text-neutral-600 hover:text-neutral-900"
@@ -33,7 +33,7 @@ export function FriendsModalHeader({
         <button
           type="button"
           onClick={() => onTabChange("search")}
-          className={`rounded-full px-3 py-1 text-xs font-semibold transition-all cursor-pointer ${
+          className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
             tab === "search"
               ? "bg-[var(--primary)] text-white font-bold"
               : "text-neutral-600 hover:text-neutral-900"
@@ -46,10 +46,10 @@ export function FriendsModalHeader({
       <button
         type="button"
         onClick={onClose}
-        className="rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 cursor-pointer"
+        className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer -mr-2"
         aria-label="Cerrar ventana"
       >
-        <X className="h-4 w-4" />
+        <X className="h-4 w-4" aria-hidden="true" />
       </button>
     </div>
   );

@@ -34,18 +34,19 @@ export function TeamCrest({
   isDecorative = true,
   isSporting = false,
 }: TeamCrestProps) {
-  const [prevCrestUrl, setPrevCrestUrl] = useState(crestUrl);
+  const effectiveCrestUrl = crestUrl ?? (isSporting ? "/crests/historical/sporting-modern.png" : null);
+  const [prevCrestUrl, setPrevCrestUrl] = useState(effectiveCrestUrl);
   const [hasError, setHasError] = useState(false);
   const sizeClass = SIZE_CLASSES[size];
-  const acronym = teamName.slice(0, 3).toUpperCase();
+  const acronym = isSporting ? "RSG" : teamName.slice(0, 3).toUpperCase();
 
   // Reset error state if the URL prop changes between renders
-  if (prevCrestUrl !== crestUrl) {
-    setPrevCrestUrl(crestUrl);
+  if (prevCrestUrl !== effectiveCrestUrl) {
+    setPrevCrestUrl(effectiveCrestUrl);
     setHasError(false);
   }
 
-  if (!crestUrl || hasError) {
+  if (!effectiveCrestUrl || hasError) {
     return (
       <div
         aria-hidden={isDecorative ? "true" : undefined}
@@ -64,7 +65,7 @@ export function TeamCrest({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={crestUrl}
+      src={effectiveCrestUrl}
       alt={isDecorative ? "" : teamName}
       loading="lazy"
       onError={() => setHasError(true)}

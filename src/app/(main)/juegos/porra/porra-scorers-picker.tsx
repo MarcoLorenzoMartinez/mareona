@@ -48,7 +48,7 @@ export function PorraScorersPicker({
               disabled={disabled}
               onChange={(e) => handleSelectScorer(i, e.target.value)}
               aria-label={`Goleador ${i + 1}`}
-              className="flex-1 rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--foreground)] focus:border-[#e2001a] focus:outline-none transition-colors"
+              className="flex-1 min-h-[44px] rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--foreground)] focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a]/20 focus:outline-none transition-colors"
             >
               <option value="">Selecciona un goleador...</option>
               {availablePlayers.map((player) => (

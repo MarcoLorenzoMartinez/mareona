@@ -13,6 +13,30 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "*.espncdn.com",
+      },
+      {
+        protocol: "https",
+        hostname: "a.espncdn.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.fotmob.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.fotmob.com",
+      },
+      {
+        protocol: "https",
+        hostname: "media.api-sports.io",
+      },
+      {
+        protocol: "https",
+        hostname: "flagcdn.com",
+      },
     ],
   },
   cacheComponents: true,

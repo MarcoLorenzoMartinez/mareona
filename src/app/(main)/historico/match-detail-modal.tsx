@@ -79,7 +79,7 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
           type="button"
           onClick={onClose}
           aria-label="Cerrar acta de partido"
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 flex items-center justify-center text-lg font-bold transition-colors cursor-pointer"
+          className="absolute top-3.5 right-3.5 flex h-10 w-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-base font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
         >
           ✕
         </button>

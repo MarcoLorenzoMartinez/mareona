@@ -88,14 +88,14 @@ export function AuthCredentialsForm({
         <button
           type="button"
           onClick={() => { setTab("signin"); setErrorMessage(null); }}
-          className={`rounded-lg py-2 transition-all ${tab === "signin" ? "bg-white text-neutral-900 shadow-2xs font-bold" : "text-neutral-600 hover:text-neutral-900"}`}
+          className={`min-h-[40px] rounded-lg py-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${tab === "signin" ? "bg-white text-neutral-900 shadow-2xs font-bold" : "text-neutral-600 hover:text-neutral-900"}`}
         >
           Iniciar sesión
         </button>
         <button
           type="button"
           onClick={() => { setTab("signup"); setErrorMessage(null); }}
-          className={`rounded-lg py-2 transition-all ${tab === "signup" ? "bg-white text-neutral-900 shadow-2xs font-bold" : "text-neutral-600 hover:text-neutral-900"}`}
+          className={`min-h-[40px] rounded-lg py-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${tab === "signup" ? "bg-white text-neutral-900 shadow-2xs font-bold" : "text-neutral-600 hover:text-neutral-900"}`}
         >
           Crear cuenta
         </button>
@@ -104,7 +104,7 @@ export function AuthCredentialsForm({
       <button
         type="button"
         onClick={handleOAuthGoogle}
-        className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-neutral-200 bg-white py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors shadow-2xs cursor-pointer"
+        className="flex min-h-[44px] w-full items-center justify-center gap-2.5 rounded-lg border border-neutral-200 bg-white py-2 text-xs font-bold text-neutral-800 hover:bg-neutral-50 active:scale-[0.99] transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
       >
         <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -115,7 +115,7 @@ export function AuthCredentialsForm({
         <span>Continuar con Google</span>
       </button>
 
-      <div className="flex items-center gap-2 text-[11px] text-neutral-400">
+      <div className="flex items-center gap-2 text-[11px] font-medium text-neutral-500">
         <span className="h-px flex-1 bg-neutral-200" />
         <span>o con tu correo</span>
         <span className="h-px flex-1 bg-neutral-200" />
@@ -131,7 +131,7 @@ export function AuthCredentialsForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="aficionado@ejemplo.com"
-            className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+            className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
           />
         </div>
 
@@ -145,15 +145,15 @@ export function AuthCredentialsForm({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Mínimo 6 caracteres"
-              className="w-full rounded-lg border border-neutral-200 bg-white py-2 pl-3 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 pl-3 pr-11 text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-400 hover:text-neutral-600 cursor-pointer"
+              className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-neutral-500 hover:text-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-r-lg cursor-pointer"
               aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
             >
-              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPassword ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -167,7 +167,7 @@ export function AuthCredentialsForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-lg bg-[var(--primary)] py-2.5 text-sm font-bold text-white shadow-xs hover:opacity-95 disabled:opacity-50 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          className="flex min-h-[44px] w-full items-center justify-center rounded-lg bg-[var(--primary)] py-2.5 text-sm font-bold text-white shadow-xs hover:opacity-95 active:scale-[0.99] disabled:opacity-50 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
         >
           {isSubmitting ? "Cargando..." : tab === "signin" ? "Entrar" : "Crear mi cuenta"}
         </button>

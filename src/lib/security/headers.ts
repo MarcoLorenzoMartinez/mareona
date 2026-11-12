@@ -10,8 +10,8 @@ export function buildContentSecurityPolicy(): string {
     "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
     // Tailwind and dynamic CSS variables
     "style-src 'self' 'unsafe-inline'",
-    // Trusted media origins (Supabase storage, Google avatars, historical archives)
-    "img-src 'self' blob: data: https://*.supabase.co https://www.bdfutbol.com https://images.fotmob.com https://*.googleusercontent.com",
+    // Trusted media origins (Supabase storage, Google avatars, historical archives, sports CDNs)
+    "img-src 'self' blob: data: https://*.supabase.co https://www.bdfutbol.com https://images.fotmob.com https://*.fotmob.com https://*.espncdn.com https://a.espncdn.com https://media.api-sports.io https://flagcdn.com https://*.googleusercontent.com",
     // Google fonts self-hosted via next/font
     "font-src 'self' data:",
     // API endpoints, Supabase REST & WebSocket Realtime channel
