@@ -23,15 +23,15 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mareona.es";
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
   title: {
-    default: "Mareona — La grada digital del Real Sporting",
+    default: "Mareona — Real Sporting: partidos, juegos y comunidad",
     template: "%s — Mareona",
   },
   description:
-    "Hub comunitario, red social y plataforma de datos para los aficionados del Real Sporting de Gijón.",
+    "La plataforma de la afición sportinguista: partidos, datos, juegos diarios, colección de cromos y comunidad rojiblanca.",
   openGraph: {
-    title: "Mareona — La grada digital del Real Sporting",
+    title: "Mareona — Real Sporting: partidos, juegos y comunidad",
     description:
-      "Partidos en directo, clasificación, porras, juegos diarios y archivo histórico del Real Sporting.",
+      "La plataforma de la afición sportinguista: partidos, datos, juegos diarios, colección de cromos y comunidad rojiblanca.",
     url: "/",
     siteName: "Mareona",
     locale: "es_ES",
@@ -39,9 +39,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mareona — La grada digital del Real Sporting",
+    title: "Mareona — Real Sporting: partidos, juegos y comunidad",
     description:
-      "Partidos en directo, clasificación, porras, juegos diarios y archivo histórico del Real Sporting.",
+      "La plataforma de la afición sportinguista: partidos, datos, juegos diarios, colección de cromos y comunidad rojiblanca.",
   },
   icons: {
     icon: [
