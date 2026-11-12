@@ -38,7 +38,9 @@ La aplicación contará con cuatro áreas verticales de primer nivel en la naveg
 
 - **La Porra de El Molinón:** pronósticos, puntos y ranking.
 - **Trivias semanales.**
-- **Wordle Sportinguista.**
+- **Wordle Sportinguista, ¿Quién es? y ¿Mayor o Menor?.**
+- **Álbum de Cromos (Memoria Rojiblanca):** apertura de sobres diarios, misiones y colección histórica.
+- **Futura Expansión Post-Lanzamiento:** Duelos tácticos 11 vs 11 con los cromos del álbum (ver detalle en `docs/DUELOS_11VS11_SPEC.md`).
 
 **Zona horaria:** `Europe/Madrid` para todos los partidos y juegos diarios.
 
@@ -264,6 +266,15 @@ caché          ↓
   - Accesibilidad: puntuación objetivo de al menos 95.
 - Pruebas con lectores de pantalla.
 - Elaboración del dossier de presentación del proyecto.
+
+### Fase 6 — Expansión Post-Lanzamiento: Duelos 11 vs 11
+
+> Esta fase se acometerá **exclusivamente post-lanzamiento**, una vez consolidada una base activa de usuarios con masa crítica de cartas coleccionadas (≥ 30–40 cartas por usuario). Ver especificación en `docs/DUELOS_11VS11_SPEC.md`.
+
+- Activación previa del teaser en `/juegos` y en el álbum para generar expectación en el momento oportuno.
+- Modo «Retos de Leyenda» (PvE / un jugador) contra plantillas históricas del club (sin depender de concurrencia en directo).
+- Modo asíncrono («Squad Battles») contra alineaciones guardadas de otros aficionados.
+- Desafíos directos 1:1 mediante enlace privado compartible.
 
 ---
 
