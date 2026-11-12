@@ -56,6 +56,9 @@ export const metadata: Metadata = {
     // "default" keeps the status bar opaque: the app headers do not yet pad for the notch.
     statusBarStyle: "default",
   },
+  verification: {
+    google: "nT7CabtgGUuQd1gyEz3DMrrPY_-YJT5-RMtqnJmBE5Q",
+  },
 };
 
 export const viewport: Viewport = {
