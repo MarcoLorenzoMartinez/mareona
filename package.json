@@ -10,6 +10,7 @@
     "test:unit": "node --test tests/unit/**/*.test.ts",
     "test:code": "node --test tests/code/**/*.test.ts",
     "test:integration": "node --test tests/integration/**/*.test.ts",
+    "test:a11y": "node --test tests/a11y/**/*.test.ts",
     "test": "node --test tests/**/*.test.ts",
     "check": "tsc --noEmit && eslint && node --test tests/**/*.test.ts"
   },
