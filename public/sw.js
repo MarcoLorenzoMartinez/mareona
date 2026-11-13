@@ -7,7 +7,7 @@
  * Everything else — live scores, auth, Supabase, API routes, Server Actions — always
  * goes to the network so users never see stale or cross-account data.
  */
-const VERSION = "v2";
+const VERSION = "v3";
 const SHELL_CACHE = `mareona-shell-${VERSION}`;
 const STATIC_CACHE = `mareona-static-${VERSION}`;
 const IMAGE_CACHE = `mareona-images-${VERSION}`;
@@ -19,7 +19,6 @@ const PRECACHE_PATHS = [
   "/offline",
   "/juegos",
   "/juegos/wordle",
-  "/juegos/who-are-ya",
   "/juegos/pregunta-del-dia",
   "/juegos/mayor-menor",
   "/historico",

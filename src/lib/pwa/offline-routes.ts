@@ -6,7 +6,6 @@ export const OFFLINE_PRECACHE_PATHS = [
   "/offline",
   "/juegos",
   "/juegos/wordle",
-  "/juegos/who-are-ya",
   "/juegos/pregunta-del-dia",
   "/juegos/mayor-menor",
   "/historico",
@@ -23,7 +22,6 @@ export interface OfflineLink {
 
 export const OFFLINE_GAME_LINKS: readonly OfflineLink[] = [
   { href: "/juegos/wordle", label: "Wordle" },
-  { href: "/juegos/who-are-ya", label: "¿Quién es?" },
   { href: "/juegos/pregunta-del-dia", label: "Pregunta del día" },
   { href: "/juegos/mayor-menor", label: "Mayor o menor" },
 ];
@@ -44,7 +42,11 @@ export function isOfflineRoute(pathname: string): boolean {
   if (pathname === "/offline") return true;
   if (pathname.startsWith("/historico")) return true;
   if (pathname.startsWith("/juegos")) {
-    if (pathname.startsWith("/juegos/porra") || pathname.startsWith("/juegos/album")) {
+    if (
+      pathname.startsWith("/juegos/porra") ||
+      pathname.startsWith("/juegos/album") ||
+      pathname.startsWith("/juegos/who-are-ya")
+    ) {
       return false;
     }
     return true;

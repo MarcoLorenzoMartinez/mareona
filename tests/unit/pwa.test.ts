@@ -108,7 +108,15 @@ describe("Service worker precache list", () => {
   });
 
   it("never caches live or personal routes", () => {
-    for (const path of ["/juegos/porra", "/juegos/album", "/social", "/perfil", "/temporada", "/api"]) {
+    for (const path of [
+      "/juegos/porra",
+      "/juegos/album",
+      "/juegos/who-are-ya",
+      "/social",
+      "/perfil",
+      "/temporada",
+      "/api",
+    ]) {
       assert.ok(!swSource.includes(`"${path}"`), `sw.js must not precache ${path}`);
     }
   });
@@ -125,7 +133,6 @@ describe("isOfflineRoute evaluation", () => {
   it("recognizes daily offline games as offline-capable", () => {
     assert.equal(isOfflineRoute("/juegos"), true);
     assert.equal(isOfflineRoute("/juegos/wordle"), true);
-    assert.equal(isOfflineRoute("/juegos/who-are-ya"), true);
     assert.equal(isOfflineRoute("/juegos/pregunta-del-dia"), true);
     assert.equal(isOfflineRoute("/juegos/mayor-menor"), true);
   });
@@ -137,5 +144,6 @@ describe("isOfflineRoute evaluation", () => {
     assert.equal(isOfflineRoute("/perfil"), false);
     assert.equal(isOfflineRoute("/juegos/porra"), false);
     assert.equal(isOfflineRoute("/juegos/album"), false);
+    assert.equal(isOfflineRoute("/juegos/who-are-ya"), false);
   });
 });
