@@ -98,7 +98,9 @@ export default function RootLayout({
             </Suspense>
             <OfflineBanner />
             <OfflineSyncListener />
-            <OfflineTransitionListener />
+            <Suspense fallback={null}>
+              <OfflineTransitionListener />
+            </Suspense>
             <Suspense fallback={null}>
               <TelemetryBeacon />
             </Suspense>
