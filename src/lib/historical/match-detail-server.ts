@@ -311,8 +311,10 @@ export async function getHistoricalMatchDetail(
   if (!bdfMatchId || !/^\d+$/.test(bdfMatchId)) return null;
 
   const cacheKey = season ? `${bdfMatchId}-${season}-${isHome ?? "auto"}` : bdfMatchId;
-  const cached = matchDetailCache.get(cacheKey);
-  if (cached) return cached;
+  if (process.env.NODE_ENV === "production") {
+    const cached = matchDetailCache.get(cacheKey);
+    if (cached) return cached;
+  }
 
   // 1. Instant deterministic retrieval from verified bundled offline store
   const bundled = readBundledMatchDetail(bdfMatchId, season);
