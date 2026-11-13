@@ -51,30 +51,30 @@ export function WhoAreYaStatsModal({
           </button>
         </div>
 
-        {/* Resumen Métrico */}
-        <div className="mt-4 grid grid-cols-4 gap-2 text-center">
-          <div className="flex flex-col rounded-xl bg-neutral-50 p-2.5">
-            <span className="text-xl font-black tabular-nums text-neutral-900">{stats.played}</span>
-            <span className="text-[10px] font-semibold text-neutral-500 uppercase">Partidas</span>
+        {/* Resumen Métrico unificado con Wordle y Trivia */}
+        <div className="mt-4 grid grid-cols-4 items-center border-y border-neutral-100 py-3.5 text-center">
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Partidas</span>
+            <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.played}</span>
           </div>
-          <div className="flex flex-col rounded-xl bg-neutral-50 p-2.5">
-            <span className="text-xl font-black tabular-nums text-emerald-600">{winRate}%</span>
-            <span className="text-[10px] font-semibold text-neutral-500 uppercase">% Victoria</span>
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Aciertos</span>
+            <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{winRate}%</span>
           </div>
-          <div className="flex flex-col rounded-xl bg-neutral-50 p-2.5">
-            <span className="text-xl font-black tabular-nums text-neutral-900">{stats.currentStreak}</span>
-            <span className="text-[10px] font-semibold text-neutral-500 uppercase">Racha</span>
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Racha</span>
+            <span className="mt-1 text-2xl font-black tabular-nums text-[#e2001a]">{stats.currentStreak}</span>
           </div>
-          <div className="flex flex-col rounded-xl bg-neutral-50 p-2.5">
-            <span className="text-xl font-black tabular-nums text-neutral-900">{stats.maxStreak}</span>
-            <span className="text-[10px] font-semibold text-neutral-500 uppercase">Máxima</span>
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Máxima</span>
+            <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.maxStreak}</span>
           </div>
         </div>
 
         {/* Distribución de Intentos */}
-        <div className="mt-5 border-t border-neutral-100 pt-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-            Distribución de Intentos
+        <div className="mt-4 pt-1">
+          <h3 className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+            Distribución de intentos
           </h3>
           <div className="mt-3 flex flex-col gap-1.5">
             {attemptsArray.map((attempt) => {

@@ -436,7 +436,11 @@
       "manuel vega-arango",
       "manuel vega arango",
       "vega-arango",
-      "vega arango"
+      "vega arango",
+      "manuel vega-arango alvaré",
+      "manuel vega arango alvare",
+      "alvaré",
+      "alvare"
     ],
     "explanation": "Manuel Vega-Arango Alvaré presidió el club de 1977 a 1986 y posteriormente de 2002 a 2013.",
     "formatHint": "Nombre del presidente",
@@ -771,7 +775,11 @@
     "acceptedAnswers": [
       "carriega",
       "luis cid carriega",
-      "luis cid"
+      "luis cid",
+      "cid",
+      "cid carriega",
+      "luis cid pérez",
+      "luis cid perez"
     ],
     "explanation": "Luis Cid \"Carriega\" dirigió al equipo que arrasó en Segunda marcando 77 goles en 38 partidos.",
     "formatHint": "Nombre del entrenador",
@@ -785,7 +793,11 @@
     "acceptedAnswers": [
       "anselmo lopez",
       "anselmo lopez sánchez",
-      "anselmo lopez sanchez"
+      "anselmo lopez sanchez",
+      "anselmo",
+      "anselmo lópez",
+      "lopez",
+      "lópez"
     ],
     "explanation": "Anselmo López Sánchez fue fundador y primer presidente del Sporting Gijonés en agosto de 1905.",
     "formatHint": "Nombre del primer presidente",
@@ -1440,16 +1452,16 @@
   },
   {
     "id": "q-mate-bilic-or-ruben-2004",
-    "question": "¿Qué canterano asturiano marcó 14 goles en Segunda en la temporada 2003/04 con Marcelino García Toral rozando el ascenso?",
+    "question": "¿Qué mediapunta murciano fue una de las grandes figuras del ascenso de 2007/08 anotando 12 goles en Segunda División con Manolo Preciado?",
     "type": "player",
-    "canonicalAnswer": "Mateo",
+    "canonicalAnswer": "Kike Mateo",
     "acceptedAnswers": [
+      "kike mateo",
       "mateo",
-      "mateo garcia",
-      "mateo areces",
-      "mateo lopez"
+      "enrique mateo",
+      "enrique mateo montoya"
     ],
-    "explanation": "Mateo fue un baluarte ofensivo en la recordada campaña 2003/04.",
+    "explanation": "Kike Mateo (Enrique Mateo Montoya) fue un pilar ofensivo fundamental en el recordado ascenso de la temporada 2007/08 con sus 12 goles ligueros.",
     "formatHint": "Nombre del futbolista",
     "photoUrl": "https://www.bdfutbol.com/i/j/5034b.jpg"
   },

@@ -1,21 +1,8 @@
-// Client: Autocomplete search input for Sporting players and coaches
+// Client: Autocomplete search input for Sporting players, coaches, and club figures
 'use client';
 
 import { useState, useRef, useEffect, useId, useCallback } from 'react';
-import historicalPlayers from '@/data/historical/club-all-time-players.json' with { type: 'json' };
-import { matchesSearchQuery } from '@/lib/utils/search-utils';
-
-interface PlayerRecord {
-  bdfId: number;
-  name: string;
-  fullName: string;
-  position?: string;
-  totalPlayed: number;
-}
-
-const PLAYERS_LIST: PlayerRecord[] = (historicalPlayers as PlayerRecord[]).filter(
-  (p) => p.name && p.totalPlayed > 0
-);
+import { searchClubFigures } from '@/lib/trivia/club-figures';
 
 interface TriviaPlayerInputProps {
   value: string;
@@ -52,21 +39,17 @@ export function TriviaPlayerInput({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const cleanQ = query.trim();
-  const suggestions = cleanQ.length >= 2
-    ? PLAYERS_LIST.filter(
-        (p) =>
-          matchesSearchQuery(p.name, cleanQ) ||
-          matchesSearchQuery(p.fullName, cleanQ)
-      ).slice(0, 5)
-    : [];
+  const suggestions = searchClubFigures(query, 5);
 
-  const handleSelect = useCallback((selectedName: string) => {
-    onChange(selectedName);
-    setQuery(selectedName);
-    setOpen(false);
-    setHighlightedIndex(0);
-  }, [onChange]);
+  const handleSelect = useCallback(
+    (selectedName: string) => {
+      onChange(selectedName);
+      setQuery(selectedName);
+      setOpen(false);
+      setHighlightedIndex(0);
+    },
+    [onChange]
+  );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'ArrowDown') {
@@ -90,13 +73,13 @@ export function TriviaPlayerInput({
 
     if (e.key === 'Enter') {
       e.preventDefault();
-      // Si hay sugerencias desplegadas, SIEMPRE se toma la seleccionada o la primera por defecto
-      if (suggestions.length > 0) {
-        const target = (highlightedIndex >= 0 && highlightedIndex < suggestions.length)
-          ? suggestions[highlightedIndex]
-          : suggestions[0];
-        handleSelect(target.fullName);
-        onSubmit(target.fullName);
+      if (suggestions.length > 0 && open) {
+        const target =
+          highlightedIndex >= 0 && highlightedIndex < suggestions.length
+            ? suggestions[highlightedIndex]
+            : suggestions[0];
+        handleSelect(target.displayName);
+        onSubmit(target.displayName);
         return;
       }
       onSubmit();
@@ -130,7 +113,7 @@ export function TriviaPlayerInput({
           setHighlightedIndex(0);
         }}
         onFocus={() => {
-          if (cleanQ.length >= 2) {
+          if (query.trim().length >= 2) {
             setOpen(true);
             setHighlightedIndex(0);
           }
@@ -153,19 +136,28 @@ export function TriviaPlayerInput({
                 key={p.bdfId}
                 id={`${listboxId}-opt-${idx}`}
                 role="option"
-                aria-selected={isHighlighted || value === p.fullName || value === p.name}
+                aria-selected={
+                  isHighlighted ||
+                  value === p.displayName ||
+                  value === p.fullName ||
+                  value === p.name
+                }
                 onClick={() => {
-                  handleSelect(p.fullName);
-                  onSubmit(p.fullName);
+                  handleSelect(p.displayName);
+                  onSubmit(p.displayName);
                 }}
                 onMouseEnter={() => setHighlightedIndex(idx)}
                 className={`flex cursor-pointer items-center justify-between px-4 py-2.5 text-xs transition-colors ${
-                  isHighlighted ? 'bg-[var(--surface-raised,var(--surface))] text-[#e2001a]' : 'hover:bg-[var(--surface)]'
+                  isHighlighted
+                    ? 'bg-[var(--surface-raised,var(--surface))] text-[#e2001a]'
+                    : 'hover:bg-[var(--surface)]'
                 }`}
               >
-                <div className="py-0.5">
-                  <span className="font-bold text-[var(--foreground)]">{p.name}</span>
-                  <span className="ml-2 text-[var(--foreground-muted)]">({p.fullName})</span>
+                <div className="py-0.5 truncate">
+                  <span className="font-bold text-[var(--foreground)]">{p.displayName}</span>
+                  {p.subLabel && (
+                    <span className="ml-2 text-[var(--foreground-muted)]">({p.subLabel})</span>
+                  )}
                 </div>
               </li>
             );

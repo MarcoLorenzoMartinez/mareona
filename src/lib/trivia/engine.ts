@@ -1,19 +1,10 @@
 import type { TriviaQuestion, TriviaDailyChallenge } from './types';
 import rawQuestions from '../../data/trivia/questions.json' with { type: 'json' };
-import rawHistoricalPlayers from '../../data/historical/club-all-time-players.json' with { type: 'json' };
+import { ALL_CLUB_FIGURES } from './club-figures.ts';
+import { normalizeSearchText } from '../utils/search-utils.ts';
 import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
 
 export const TRIVIA_QUESTIONS: TriviaQuestion[] = rawQuestions as TriviaQuestion[];
-
-interface SimplePlayerRef {
-  name: string;
-  fullName: string;
-}
-
-const HISTORICAL_PLAYERS: SimplePlayerRef[] = (rawHistoricalPlayers as SimplePlayerRef[]).map((p) => ({
-  name: p.name || '',
-  fullName: p.fullName || '',
-}));
 
 /**
  * Epoch origin date for Mareona Trivia (Day 0 = 2026-11-13).
@@ -25,10 +16,7 @@ export const TRIVIA_EPOCH_DATE = '2026-11-13';
  * Normalizes text for clean matching: removes accents, lowercase, collapses spaces.
  */
 export function normalizeTriviaText(input: string): string {
-  return input
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // remove diacritics
+  return normalizeSearchText(input)
     .replace(/[^\w\s\-\/\:\.]/g, '') // strip special punctuation
     .trim()
     .replace(/\s+/g, ' ');
@@ -89,8 +77,8 @@ export function getTriviaTodayDateStr(): string {
 
 /**
  * Evaluates whether a player's answer matches the question's accepted answers.
- * If question is of type 'player', checks both direct accepted answers and matches
- * between the player's football nickname/short name and full legal name from the Sporting catalog.
+ * If question is of type 'player', checks direct accepted answers, canonical display match,
+ * and matches between the figure's nickname/short name, full legal name, and catalog records.
  */
 export function evaluateTriviaAnswer(userAnswer: string, question: TriviaQuestion): boolean {
   if (!userAnswer || !userAnswer.trim()) return false;
@@ -105,25 +93,41 @@ export function evaluateTriviaAnswer(userAnswer: string, question: TriviaQuestio
 
   if (isDirectMatch) return true;
 
-  // 2. If question is 'player', resolve nickname vs full legal name interchangeably
+  // 2. Direct match with canonical answer
+  if (normalizedUser === normalizeTriviaText(question.canonicalAnswer)) {
+    return true;
+  }
+
+  // 3. If question is 'player', resolve nickname vs full legal name across catalog figures
   if (question.type === 'player') {
-    const matchingCatalogPlayer = HISTORICAL_PLAYERS.find(
+    const matchingCatalogFigure = ALL_CLUB_FIGURES.find(
       (p) =>
+        normalizeTriviaText(p.displayName) === normalizedUser ||
         normalizeTriviaText(p.fullName) === normalizedUser ||
         normalizeTriviaText(p.name) === normalizedUser
     );
 
-    if (matchingCatalogPlayer) {
-      const normShort = normalizeTriviaText(matchingCatalogPlayer.name);
-      const normFull = normalizeTriviaText(matchingCatalogPlayer.fullName);
+    if (matchingCatalogFigure) {
+      const normDisplay = normalizeTriviaText(matchingCatalogFigure.displayName);
+      const normShort = normalizeTriviaText(matchingCatalogFigure.name);
+      const normFull = normalizeTriviaText(matchingCatalogFigure.fullName);
       const normCanonical = normalizeTriviaText(question.canonicalAnswer);
 
       return (
+        normDisplay === normCanonical ||
         normShort === normCanonical ||
         normFull === normCanonical ||
+        normFull.includes(normCanonical) ||
+        normCanonical.includes(normShort) ||
         question.acceptedAnswers.some((accepted) => {
           const normAcc = normalizeTriviaText(accepted);
-          return normAcc === normShort || normAcc === normFull;
+          return (
+            normAcc === normDisplay ||
+            normAcc === normShort ||
+            normAcc === normFull ||
+            normFull.includes(normAcc) ||
+            normShort.includes(normAcc)
+          );
         })
       );
     }

@@ -1,7 +1,7 @@
 // Client: Estado interactivo del juego diario ¿Quién es? con archivo por fecha y persistencia
 'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { WhoAreYaHeader } from './who-are-ya-header';
 import { WhoAreYaMysteryPhoto } from './who-are-ya-mystery-photo';
 import { WhoAreYaSelector, type SelectorOption } from './who-are-ya-selector';
@@ -11,6 +11,7 @@ import { WhoAreYaStatsModal } from './who-are-ya-stats-modal';
 import { WhoAreYaArchiveModal } from './who-are-ya-archive-modal';
 import { evaluatePlayerGuess, MAX_ATTEMPTS } from '@/lib/who-are-ya/engine';
 import { getPlayerForDate, getTodayDateStr } from '@/lib/who-are-ya/daily';
+import { formatFigureDisplay } from '@/lib/trivia/club-figures';
 import {
   getStoredPlayerGuesses, savePlayerGuesses, getStoredWhoAreYaStats,
   updateWhoAreYaStatsOnFinish, type WhoAreYaStats,
@@ -68,12 +69,12 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
     const guessedIds = new Set(playerGuesses.map((g) => g.player.bdfId));
     return players
       .filter((p) => !guessedIds.has(p.bdfId))
-      .map((p) => ({
-        id: p.bdfId,
-        label: p.name,
-        sublabel: p.fullName !== p.name ? p.fullName : undefined,
-      }));
+      .map((p) => {
+        const { displayName, subLabel } = formatFigureDisplay(p);
+        return { id: p.bdfId, label: displayName, sublabel: subLabel };
+      });
   }, [players, playerGuesses]);
+  const targetDisplay = useMemo(() => formatFigureDisplay(currentTargetPlayer), [currentTargetPlayer]);
 
   const handleSelectOption = useCallback(
     (option: SelectorOption) => {
@@ -154,8 +155,8 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
         isWon={isWon}
         attemptsCount={guessesCount}
         maxAttempts={MAX_ATTEMPTS}
-        targetName={currentTargetPlayer.name}
-        targetSublabel={currentTargetPlayer.fullName}
+        targetName={targetDisplay.displayName}
+        targetSublabel={targetDisplay.subLabel}
         targetPhotoUrl={currentTargetPlayer.photoUrl}
         stats={stats}
         onOpenArchive={() => setIsArchiveOpen(true)}

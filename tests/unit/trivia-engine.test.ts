@@ -6,6 +6,7 @@ import {
   getTriviaForDate,
   TRIVIA_QUESTIONS,
 } from '../../src/lib/trivia/engine.ts';
+import { searchClubFigures } from '../../src/lib/trivia/club-figures.ts';
 import type { TriviaQuestion } from '../../src/lib/trivia/types.ts';
 
 describe('Trivia Engine Suite', () => {
@@ -45,6 +46,62 @@ describe('Trivia Engine Suite', () => {
     assert.equal(evaluateTriviaAnswer('Sergio Álvarez Díaz', question), true);
     assert.equal(evaluateTriviaAnswer('Sergio Álvarez', question), true);
     assert.equal(evaluateTriviaAnswer('Sergio', question), true);
+  });
+
+  it('evaluates presidents and non-playing historical figures like Anselmo López and Carriega', () => {
+    const anselmoQuestion = TRIVIA_QUESTIONS.find((q) => q.id === 'q-first-president-1905')!;
+    assert.ok(anselmoQuestion, 'Question q-first-president-1905 must exist');
+
+    // Both direct typing and catalog selection must evaluate to true
+    assert.equal(evaluateTriviaAnswer('anselmo', anselmoQuestion), true);
+    assert.equal(evaluateTriviaAnswer('Anselmo López', anselmoQuestion), true);
+    assert.equal(evaluateTriviaAnswer('Anselmo López Sánchez', anselmoQuestion), true);
+    assert.equal(evaluateTriviaAnswer('anselmo lopez', anselmoQuestion), true);
+
+    const carriegaQuestion = TRIVIA_QUESTIONS.find((q) => q.id === 'q-coach-ascenso-1970')!;
+    assert.ok(carriegaQuestion, 'Question q-coach-ascenso-1970 must exist');
+    assert.equal(evaluateTriviaAnswer('Carriega', carriegaQuestion), true);
+    assert.equal(evaluateTriviaAnswer('Luis Cid Carriega', carriegaQuestion), true);
+    assert.equal(evaluateTriviaAnswer('luis cid', carriegaQuestion), true);
+
+    const vegaQuestion = TRIVIA_QUESTIONS.find((q) => q.id === 'q-president-golden-era')!;
+    assert.ok(vegaQuestion, 'Question q-president-golden-era must exist');
+    assert.equal(evaluateTriviaAnswer('Manuel Vega-Arango', vegaQuestion), true);
+    assert.equal(evaluateTriviaAnswer('Manuel Vega-Arango Alvaré', vegaQuestion), true);
+    assert.equal(evaluateTriviaAnswer('vega-arango', vegaQuestion), true);
+  });
+
+  it('searches and ranks club figures autocomplete accurately with natural display names', () => {
+    const anselmoMatches = searchClubFigures('anselmo');
+    assert.ok(anselmoMatches.length > 0);
+    assert.equal(anselmoMatches[0].displayName, 'Anselmo López');
+    assert.equal(anselmoMatches[0].subLabel, undefined);
+
+    const quiniMatches = searchClubFigures('quini');
+    assert.ok(quiniMatches.length > 0);
+    assert.equal(quiniMatches[0].displayName, 'Quini');
+    assert.equal(quiniMatches[0].subLabel, 'Enrique Castro');
+
+    const cundiMatches = searchClubFigures('cundi');
+    assert.ok(cundiMatches.length > 0);
+    assert.equal(cundiMatches[0].displayName, 'Cundi');
+    assert.equal(cundiMatches[0].subLabel, 'Secundino Suárez');
+
+    const villaMatches = searchClubFigures('villa');
+    assert.ok(villaMatches.some((f) => f.displayName === 'David Villa' && !f.subLabel));
+
+    const vegaMatches = searchClubFigures('vega-arango');
+    assert.ok(vegaMatches.length > 0);
+    assert.equal(vegaMatches[0].displayName, 'Manuel Vega-Arango');
+    assert.equal(vegaMatches[0].subLabel, undefined);
+
+    // Role terms like 'presidente' or 'entrenador' must NOT return results (names only)
+    const presidentMatches = searchClubFigures('presidente', 10);
+    assert.equal(presidentMatches.length, 0, 'Role terms must not be searchable');
+
+    // Searching real names matches figures without revealing their roles
+    const fernandoMatches = searchClubFigures('fernando', 5);
+    assert.ok(fernandoMatches.some((f) => f.displayName === 'Fernando Fernández Quirós'));
   });
 
   it('contains at least 100 historical questions in catalog', () => {
