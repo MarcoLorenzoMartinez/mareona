@@ -66,13 +66,14 @@ export const metadata: Metadata = {
   verification: {
     google: "nT7CabtgGUuQd1gyEz3DMrrPY_-YJT5-RMtqnJmBE5Q",
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#e2001a",
+  themeColor: "#d8011b",
 };
 
 export default function RootLayout({
