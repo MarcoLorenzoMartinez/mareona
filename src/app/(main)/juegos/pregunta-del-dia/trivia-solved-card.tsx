@@ -35,10 +35,10 @@ export function TriviaSolvedCard({
         }`}
       >
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
-          {/* Foto con marco blanco limpio para destacar sobre el fondo ambiental */}
-          <div className="relative shrink-0 overflow-hidden rounded-xl border border-white/80 bg-white shadow-2xs p-1">
+          {/* Foto a sangre sin marco blanco de relleno */}
+          <div className="relative shrink-0 overflow-hidden rounded-xl shadow-xs">
             {isLocalImage && photoUrl ? (
-              <div className="relative h-28 w-28 sm:h-32 sm:w-32 overflow-hidden rounded-lg">
+              <div className="relative h-28 w-28 sm:h-32 sm:w-32 overflow-hidden rounded-xl">
                 <Image
                   src={photoUrl}
                   alt={canonicalAnswer}
@@ -47,12 +47,12 @@ export function TriviaSolvedCard({
                 />
               </div>
             ) : (
-              <div className="h-28 w-28 sm:h-32 sm:w-32 flex items-center justify-center overflow-hidden rounded-lg bg-white">
+              <div className="h-28 w-28 sm:h-32 sm:w-32 overflow-hidden rounded-xl">
                 <PlayerPhoto
                   photoUrl={photoUrl}
                   playerName={canonicalAnswer}
-                  size="md"
-                  className="h-26 w-26 object-contain"
+                  size="custom"
+                  className="h-full w-full object-cover object-top"
                 />
               </div>
             )}

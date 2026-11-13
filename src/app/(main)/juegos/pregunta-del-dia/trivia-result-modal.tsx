@@ -70,14 +70,14 @@ export function TriviaResultModal({
             }`}
           >
             {photoUrl && (
-              <div className="relative mb-3 flex items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-white shadow-2xs p-1">
+              <div className="relative mb-3 overflow-hidden rounded-xl shadow-xs">
                 {isLocalImage ? (
                   <div className="relative h-28 w-44 overflow-hidden rounded-xl">
                     <Image src={photoUrl} alt={challenge.question.canonicalAnswer} fill sizes="180px" className="object-cover" />
                   </div>
                 ) : (
-                  <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-xl bg-white">
-                    <PlayerPhoto photoUrl={photoUrl} playerName={challenge.question.canonicalAnswer} size="lg" className="h-26 w-26 object-contain" />
+                  <div className="h-28 w-28 overflow-hidden rounded-xl">
+                    <PlayerPhoto photoUrl={photoUrl} playerName={challenge.question.canonicalAnswer} size="custom" className="h-full w-full object-cover object-top" />
                   </div>
                 )}
               </div>

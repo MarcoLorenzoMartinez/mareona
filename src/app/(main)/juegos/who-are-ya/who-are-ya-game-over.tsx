@@ -74,15 +74,13 @@ export function WhoAreYaResultModal({
           }`}
         >
           {targetPhotoUrl && (
-            <div className="relative mb-3 flex items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-white shadow-2xs p-1">
-              <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl bg-white">
-                <PlayerPhoto
-                  photoUrl={targetPhotoUrl}
-                  playerName={targetName}
-                  size="lg"
-                  className="h-22 w-22 object-contain"
-                />
-              </div>
+            <div className="relative mb-3 h-28 w-28 overflow-hidden rounded-xl shadow-xs">
+              <PlayerPhoto
+                photoUrl={targetPhotoUrl}
+                playerName={targetName}
+                size="custom"
+                className="h-full w-full object-cover object-top"
+              />
             </div>
           )}
 
