@@ -8,6 +8,7 @@ import { NAV_ITEMS } from "./nav-items";
 import { MobileNav, MobileNavFallback } from "./mobile-nav";
 import { UserNav } from "@/components/auth/user-nav";
 import { useSocialNotifications } from "./use-social-notifications";
+import { useOfflineGuard } from "@/lib/pwa/use-offline-guard";
 
 /**
  * Brand logo linking to home/temporada.
@@ -15,10 +16,12 @@ import { useSocialNotifications } from "./use-social-notifications";
  */
 function BrandLogo() {
   const [hasImageError, setHasImageError] = useState(false);
+  const { guardNavigation } = useOfflineGuard();
 
   return (
     <Link
       href="/"
+      onClick={(e) => guardNavigation(e, "/")}
       aria-label="Mareona — Inicio"
       className="flex items-center gap-2.5 rounded-md p-1 text-white transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
     >
@@ -37,15 +40,7 @@ function BrandLogo() {
           className="flex h-8 w-8 items-center justify-center rounded-sm bg-white text-[var(--primary)] shadow-xs select-none"
           aria-hidden="true"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-5 w-5"
-          >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
             <path d="M3 17c3-5 5-8 9-2 4 6 6 3 9-2" />
             <path d="M3 12c3-4 5-6 9-1 4 5 6 2 9-1" opacity="0.6" />
           </svg>
@@ -67,6 +62,8 @@ function DesktopNavList({
   pathname,
   unreadSocialCount = 0,
 }: { readonly pathname: string | null; readonly unreadSocialCount?: number }) {
+  const { isBlocked, guardNavigation } = useOfflineGuard();
+
   return (
     <nav aria-label="Navegación principal">
       <ul className="flex items-center gap-1.5">
@@ -80,7 +77,11 @@ function DesktopNavList({
               <Link
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
+                aria-disabled={isBlocked(item.href) ? "true" : undefined}
+                onClick={(e) => guardNavigation(e, item.href)}
                 className={`relative flex h-10 items-center justify-center rounded-md px-3.5 text-sm font-medium tracking-wide transition-colors duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] ${
+                  isBlocked(item.href) ? "opacity-55 " : ""
+                }${
                   isActive ? "bg-white/18 font-bold text-white shadow-2xs" : "text-white/85 hover:bg-white/10 hover:text-white"
                 }`}
               >

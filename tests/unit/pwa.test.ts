@@ -12,6 +12,7 @@ import {
 } from "../../src/lib/pwa/install-banner.ts";
 import {
   OFFLINE_PRECACHE_PATHS,
+  getOfflineBlockCopy,
   isOfflineRoute,
 } from "../../src/lib/pwa/offline-routes.ts";
 
@@ -145,5 +146,26 @@ describe("isOfflineRoute evaluation", () => {
     assert.equal(isOfflineRoute("/juegos/porra"), false);
     assert.equal(isOfflineRoute("/juegos/album"), false);
     assert.equal(isOfflineRoute("/juegos/who-are-ya"), false);
+  });
+});
+
+describe("getOfflineBlockCopy", () => {
+  it("returns null for routes that work offline", () => {
+    for (const path of ["/offline", "/juegos", "/juegos/wordle", "/historico/legado", "/historico?x=1"]) {
+      assert.equal(getOfflineBlockCopy(path), null, path);
+    }
+  });
+
+  it("explains each blocked section with its own copy", () => {
+    assert.match(getOfflineBlockCopy("/temporada/partidos/12")?.description ?? "", /Temporada/);
+    assert.match(getOfflineBlockCopy("/social")?.description ?? "", /Social/);
+    assert.match(getOfflineBlockCopy("/juegos/porra")?.description ?? "", /Porra/);
+    assert.match(getOfflineBlockCopy("/juegos/album")?.description ?? "", /Memoria Rojiblanca/);
+    assert.match(getOfflineBlockCopy("/juegos/who-are-ya")?.description ?? "", /Quién es/);
+    assert.match(getOfflineBlockCopy("/")?.description ?? "", /Inicio/);
+  });
+
+  it("falls back to a generic explanation for unknown network routes", () => {
+    assert.equal(getOfflineBlockCopy("/admin")?.description, "Esta sección necesita internet.");
   });
 });

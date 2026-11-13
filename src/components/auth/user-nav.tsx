@@ -6,9 +6,11 @@ import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "./auth-avatar";
 import { checkCurrentUserAdminAction } from "@/lib/admin/guard-actions";
+import { useOfflineGuard } from "@/lib/pwa/use-offline-guard";
 
 export function UserNav() {
   const { user, profile, isLoading, openAuthModal, handleSignOut } = useAuth();
+  const { isOnline, guardAction, guardNavigation } = useOfflineGuard();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -56,8 +58,13 @@ export function UserNav() {
     return (
       <button
         type="button"
-        onClick={() => openAuthModal("signin")}
-        className="flex min-h-[44px] sm:min-h-9 items-center gap-1.5 rounded-md bg-white/15 px-3 text-xs font-bold text-white tracking-wide transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        onClick={() => {
+          if (guardAction("Iniciar sesión necesita internet.")) openAuthModal("signin");
+        }}
+        aria-disabled={isOnline ? undefined : "true"}
+        className={`flex min-h-[44px] sm:min-h-9 items-center gap-1.5 rounded-md bg-white/15 px-3 text-xs font-bold text-white tracking-wide transition-[background-color,opacity] hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+          isOnline ? "" : "opacity-60"
+        }`}
         aria-label="Iniciar sesión o unirme a Mareona"
       >
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -113,23 +120,16 @@ export function UserNav() {
             {showAdmin && (
               <Link
                 href="/admin/estadisticas"
-                onClick={() => setIsMenuOpen(false)}
-                className="flex min-h-[40px] items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-bold text-[#e2001a] hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors"
+                onClick={(e) => {
+                  setIsMenuOpen(false);
+                  guardNavigation(e, "/admin/estadisticas");
+                }}
+                aria-disabled={isOnline ? undefined : "true"}
+                className={`flex min-h-[40px] items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-bold text-[#e2001a] hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors ${isOnline ? "" : "opacity-55"}`}
                 role="menuitem"
               >
-                <svg
-                  className="h-4 w-4 shrink-0 text-[#e2001a]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
+                <svg className="h-4 w-4 shrink-0 text-[#e2001a]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
                 <span>Administración</span>
               </Link>
@@ -137,8 +137,12 @@ export function UserNav() {
 
             <Link
               href="/perfil"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex min-h-[40px] items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors"
+              onClick={(e) => {
+                setIsMenuOpen(false);
+                guardNavigation(e, "/perfil");
+              }}
+              aria-disabled={isOnline ? undefined : "true"}
+              className={`flex min-h-[40px] items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors ${isOnline ? "" : "opacity-55"}`}
               role="menuitem"
             >
               <svg className="h-4 w-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

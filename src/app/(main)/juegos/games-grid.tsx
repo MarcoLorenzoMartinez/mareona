@@ -2,15 +2,13 @@
 "use client";
 
 import Link from "next/link";
-import { useOnlineStatus } from "@/lib/pwa/use-online-status";
-import { toast } from "@/lib/ui/toast";
+import { useOfflineGuard } from "@/lib/pwa/use-offline-guard";
 
 interface GameItem {
   readonly id: string;
   readonly title: string;
   readonly tag: string;
   readonly href: string;
-  readonly requiresOnline: boolean;
 }
 
 const GAMES: readonly GameItem[] = [
@@ -19,60 +17,45 @@ const GAMES: readonly GameItem[] = [
     title: "Memoria Rojiblanca",
     tag: "Colección",
     href: "/juegos/album",
-    requiresOnline: true,
   },
   {
     id: "porra",
     title: "La Porra de la Mareona",
     tag: "Jornada",
     href: "/juegos/porra",
-    requiresOnline: true,
   },
   {
     id: "wordle",
     title: "Wordle",
     tag: "Diario",
     href: "/juegos/wordle",
-    requiresOnline: false,
   },
   {
     id: "pregunta-del-dia",
     title: "La Pregunta del Día",
     tag: "Diario",
     href: "/juegos/pregunta-del-dia",
-    requiresOnline: false,
   },
   {
     id: "quien-es",
     title: "¿Quién es?",
     tag: "Diario",
     href: "/juegos/who-are-ya",
-    requiresOnline: true,
   },
   {
     id: "mayor-menor",
     title: "¿Mayor o Menor?",
     tag: "Récord",
     href: "/juegos/mayor-menor",
-    requiresOnline: false,
   },
 ];
 
 /**
  * Grid of games with progressive enhancement for network status:
- * when offline, online-dependent games are dimmed and display a non-blocking toast.
+ * when offline, online-dependent games are dimmed and explain themselves on tap.
  */
 export function GamesGrid() {
-  const isOnline = useOnlineStatus();
-
-  const handleCardClick = (e: React.MouseEvent<HTMLAnchorElement>, game: GameItem) => {
-    if (!isOnline && game.requiresOnline) {
-      e.preventDefault();
-      toast.info("Requiere conexión a internet", {
-        description: `Para acceder a ${game.title} necesitas cobertura para sincronizar datos.`,
-      });
-    }
-  };
+  const { isBlocked, guardNavigation } = useOfflineGuard();
 
   return (
     <section
@@ -80,15 +63,14 @@ export function GamesGrid() {
       className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3"
     >
       {GAMES.map((game) => {
-        const isDisabled = !isOnline && game.requiresOnline;
+        const isDisabled = isBlocked(game.href);
 
         return (
           <Link
             key={game.id}
             href={game.href}
-            onClick={(e) => handleCardClick(e, game)}
+            onClick={(e) => guardNavigation(e, game.href)}
             aria-disabled={isDisabled ? "true" : undefined}
-            tabIndex={isDisabled ? -1 : undefined}
             className={`group relative flex flex-col justify-between rounded-2xl border bg-white p-5 transition-all duration-150 select-none ${
               isDisabled
                 ? "border-neutral-200 opacity-60 grayscale-40 cursor-not-allowed shadow-none"

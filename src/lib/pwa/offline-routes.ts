@@ -36,20 +36,55 @@ export const OFFLINE_ARCHIVE_LINKS: readonly OfflineLink[] = [
 /**
  * Evaluates whether a given pathname is supported offline.
  * Historical archive and daily games operate offline; live screens, porra,
- * album and social require network.
+ * album, who-are-ya and social require network.
  */
 export function isOfflineRoute(pathname: string): boolean {
-  if (pathname === "/offline") return true;
-  if (pathname.startsWith("/historico")) return true;
-  if (pathname.startsWith("/juegos")) {
+  const cleanPath = pathname.split(/[?#]/)[0];
+  if (cleanPath === "/offline") return true;
+  if (cleanPath.startsWith("/historico")) return true;
+  if (cleanPath.startsWith("/juegos")) {
     if (
-      pathname.startsWith("/juegos/porra") ||
-      pathname.startsWith("/juegos/album") ||
-      pathname.startsWith("/juegos/who-are-ya")
+      cleanPath.startsWith("/juegos/porra") ||
+      cleanPath.startsWith("/juegos/album") ||
+      cleanPath.startsWith("/juegos/who-are-ya")
     ) {
       return false;
     }
     return true;
   }
   return false;
+}
+
+/** Ordered most specific first: the first matching prefix provides the explanation. */
+const OFFLINE_BLOCK_REASONS: readonly (readonly [string, string])[] = [
+  ["/juegos/porra", "La Porra necesita internet para guardar tus pronósticos."],
+  ["/juegos/album", "Memoria Rojiblanca necesita internet para sincronizar tus cromos."],
+  ["/juegos/who-are-ya", "¿Quién es? necesita internet para cargar las fotos."],
+  ["/temporada", "Temporada necesita internet para mostrar datos al día."],
+  ["/social", "Social necesita internet para cargar la conversación."],
+  ["/perfil", "Tu perfil necesita internet."],
+];
+
+export interface OfflineBlockCopy {
+  readonly title: string;
+  readonly description: string;
+}
+
+/**
+ * Explains why a destination cannot be opened without connectivity.
+ *
+ * @param pathname Destination path of a link or navigation attempt.
+ * @returns Copy for the user, or `null` when the route works offline.
+ */
+export function getOfflineBlockCopy(pathname: string): OfflineBlockCopy | null {
+  if (isOfflineRoute(pathname)) return null;
+  const path = pathname.split(/[?#]/)[0];
+  const reason = OFFLINE_BLOCK_REASONS.find(
+    ([prefix]) => path === prefix || path.startsWith(`${prefix}/`)
+  );
+  const description =
+    path === "/"
+      ? "Inicio muestra datos en directo y necesita internet."
+      : (reason?.[1] ?? "Esta sección necesita internet.");
+  return { title: "Sin conexión", description };
 }

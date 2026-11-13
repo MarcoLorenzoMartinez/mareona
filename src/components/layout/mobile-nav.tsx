@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
 import { useSocialNotifications } from "./use-social-notifications";
+import { useOfflineGuard } from "@/lib/pwa/use-offline-guard";
 
 function MobileNavList({
   pathname,
@@ -14,6 +15,8 @@ function MobileNavList({
   readonly pathname: string | null;
   readonly unreadSocialCount?: number;
 }) {
+  const { isBlocked, guardNavigation } = useOfflineGuard();
+
   return (
     <nav
       aria-label="Navegación móvil"
@@ -33,7 +36,11 @@ function MobileNavList({
               <Link
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex h-14 min-w-[44px] flex-col items-center justify-center gap-1 transition-transform duration-100 ease-out active:scale-90 select-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+                aria-disabled={isBlocked(item.href) ? "true" : undefined}
+                onClick={(e) => guardNavigation(e, item.href)}
+                className={`flex h-14 min-w-[44px] flex-col items-center justify-center gap-1 transition-[transform,opacity] duration-100 ease-out active:scale-90 select-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+                  isBlocked(item.href) ? "opacity-45 " : ""
+                }${
                   isActive
                     ? "text-[var(--primary)]"
                     : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
