@@ -47,7 +47,8 @@ function TeamLineupColumn({
   const groupedStarters = useMemo(() => {
     const hasKnownPositions = starters.some((p) => p.position);
     if (!hasKnownPositions) {
-      return [{ label: "Once Titular", players: [...starters] }];
+      const fallbackLabel = starters.length === 11 ? "Once Titular" : "Alineación Titular";
+      return [{ label: fallbackLabel, players: [...starters] }];
     }
     const groups: { label: string; players: HistoricalMatchPlayer[] }[] = [];
     for (const line of POSITION_LINES) {
@@ -59,15 +60,24 @@ function TeamLineupColumn({
     return groups;
   }, [starters]);
 
+  const isPartialRoster = starters.length > 0 && starters.length < 11;
+
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-[var(--border)] bg-white p-2.5 sm:p-4 shadow-2xs">
       {/* Header: Crest + Team Name on Left, Coach on Right */}
       <div className="flex items-center justify-between border-b border-[var(--border)] pb-2.5 gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <TeamCrest crestUrl={crestUrl} teamName={teamName} size="sm" isSporting={isSporting} />
-          <h4 className="text-sm sm:text-base font-bold text-[var(--foreground)] truncate tracking-tight">
-            {teamName}
-          </h4>
+          <div className="flex flex-col min-w-0">
+            <h4 className="text-sm sm:text-base font-bold text-[var(--foreground)] truncate tracking-tight">
+              {teamName}
+            </h4>
+            {isPartialRoster && (
+              <span className="text-[10px] font-medium text-neutral-400">
+                Acta parcial ({starters.length} titulares)
+              </span>
+            )}
+          </div>
         </div>
         {coach && (
           <div className="flex items-center gap-2 shrink-0">

@@ -7029,6 +7029,11 @@
         "position": "Portero"
       },
       {
+        "name": "Jakubec",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726786.png",
+        "position": "Defensa"
+      },
+      {
         "name": "Prokeš",
         "photoUrl": "https://www.bdfutbol.com/i/m/702706.png",
         "position": "Defensa"
@@ -7039,20 +7044,40 @@
         "position": "Defensa"
       },
       {
-        "name": "Čermák",
-        "photoUrl": "https://www.bdfutbol.com/i/m/726080.png",
-        "position": "Defensa"
-      },
-      {
         "name": "Levý",
         "photoUrl": "https://www.bdfutbol.com/i/m/724551.png",
         "position": "Defensa"
+      },
+      {
+        "name": "Chaloupka",
+        "photoUrl": "https://www.bdfutbol.com/i/m/91465.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Němec",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726785.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Ondra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726788.png",
+        "position": "Centrocampista"
       },
       {
         "name": "Mičinec",
         "photoUrl": "https://www.bdfutbol.com/i/m/2547.png",
         "position": "Centrocampista",
         "yellowCard": 44
+      },
+      {
+        "name": "Čermák",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726080.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Koukal",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726787.png",
+        "position": "Delantero"
       }
     ],
     "awayStarters": [
@@ -7236,14 +7261,15 @@
         "position": "Portero"
       },
       {
-        "name": "Bičovský",
-        "photoUrl": "https://www.bdfutbol.com/i/m/701638.png",
-        "position": "Centrocampista"
+        "name": "Jakubec",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726786.png",
+        "position": "Defensa"
       },
       {
-        "name": "Čermák",
-        "photoUrl": "https://www.bdfutbol.com/i/m/726080.png",
-        "position": "Delantero"
+        "name": "Prokeš",
+        "photoUrl": "https://www.bdfutbol.com/i/m/702706.png",
+        "position": "Defensa",
+        "yellowCard": 44
       },
       {
         "name": "Chaloupka",
@@ -7257,15 +7283,34 @@
         "subOut": 26
       },
       {
+        "name": "Bičovský",
+        "photoUrl": "https://www.bdfutbol.com/i/m/701638.png",
+        "position": "Centrocampista"
+      },
+      {
         "name": "Němec",
         "photoUrl": "https://www.bdfutbol.com/i/m/726785.png",
         "position": "Centrocampista"
       },
       {
-        "name": "Prokeš",
-        "photoUrl": "https://www.bdfutbol.com/i/m/702706.png",
-        "position": "Defensa",
-        "yellowCard": 44
+        "name": "Ondra",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726788.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Roubíček",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726789.png",
+        "position": "Centrocampista"
+      },
+      {
+        "name": "Čermák",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726080.png",
+        "position": "Delantero"
+      },
+      {
+        "name": "Koukal",
+        "photoUrl": "https://www.bdfutbol.com/i/m/726787.png",
+        "position": "Delantero"
       }
     ],
     "homeBench": [],
