@@ -5,7 +5,7 @@ interface DeviceDonutChartProps {
   readonly accessModes?: readonly AccessModeStat[];
   readonly avgSessionMinutes?: number;
   readonly bounceRatePercentage?: number;
-  readonly matchDayMultiplier?: number;
+  readonly matchDayMultiplier?: number | null;
 }
 
 const DEVICE_STYLES: Record<string, { dot: string; stroke: string }> = {
@@ -30,7 +30,7 @@ export function DeviceDonutChart({
   accessModes = [],
   avgSessionMinutes = 0,
   bounceRatePercentage = 0,
-  matchDayMultiplier = 2.1,
+  matchDayMultiplier = null,
 }: DeviceDonutChartProps) {
   const mobileDevice = devices.find((d) => d.device === "mobile");
   const mobilePercent = mobileDevice?.percentage ?? 0;
@@ -117,7 +117,9 @@ export function DeviceDonutChart({
           <div className="flex items-center gap-1.5">
             <span className="text-[var(--muted-foreground)]">Día de partido:</span>
             <span className="font-bold text-[var(--foreground)] tabular-nums font-sans">
-              +{Math.round((matchDayMultiplier - 1) * 100)}%
+              {matchDayMultiplier !== null && matchDayMultiplier !== undefined
+                ? `+${Math.round((matchDayMultiplier - 1) * 100)}%`
+                : "—"}
             </span>
           </div>
         </div>

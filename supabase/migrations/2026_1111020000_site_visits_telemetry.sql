@@ -40,3 +40,8 @@ CREATE POLICY "site_visits_admin_select_policy"
         AND user_roles.role = 'admin'
     )
   );
+
+-- 3. Grants for PostgREST client roles
+GRANT ALL ON public.site_visits TO postgres;
+GRANT INSERT ON public.site_visits TO anon, authenticated;
+GRANT SELECT ON public.site_visits TO authenticated;

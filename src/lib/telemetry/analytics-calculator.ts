@@ -186,6 +186,7 @@ export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): Platfor
     avgSessionMinutes: avgMinutes,
     bounceRatePercentage: bounceRate,
     pagesPerSession,
-    matchDayMultiplier: 2.1,
+    // Zero mock data: null until match days have recorded traffic for real comparison
+    matchDayMultiplier: null,
   };
 }

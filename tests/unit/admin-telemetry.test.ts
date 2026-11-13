@@ -123,7 +123,8 @@ describe("Telemetry & Cookieless Analytics Suite", () => {
 
       // Pages per session: 3 visits / 2 sessions = 1.5 pages
       assert.equal(analytics.pagesPerSession, 1.5);
-      assert.ok(analytics.matchDayMultiplier >= 1.0);
+      // Match day multiplier is null when no match days have recorded telemetry (zero mock data)
+      assert.equal(analytics.matchDayMultiplier, null);
 
       // Top pages calculation
       assert.ok(analytics.topPages.length > 0);

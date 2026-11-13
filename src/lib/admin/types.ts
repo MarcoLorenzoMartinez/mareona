@@ -122,5 +122,5 @@ export interface PlatformAnalytics {
   readonly avgSessionMinutes: number;
   readonly bounceRatePercentage: number;
   readonly pagesPerSession: number;
-  readonly matchDayMultiplier: number;
+  readonly matchDayMultiplier: number | null;
 }
