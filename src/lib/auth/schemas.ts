@@ -126,6 +126,21 @@ export const signUpSchema = z.object({
 
 export type SignUpInput = z.infer<typeof signUpSchema>;
 
+/**
+ * Credential handed over by Google Identity Services. Validated at the edge because it
+ * originates from a third-party script running in the browser.
+ */
+export const googleCredentialSchema = z.object({
+  credential: z
+    .string()
+    .trim()
+    .max(4096)
+    .regex(/^[\w-]+\.[\w-]+\.[\w-]+$/, { message: "Credencial de Google no válida" }),
+  nonce: z.string().trim().min(16).max(256),
+});
+
+export type GoogleCredentialInput = z.infer<typeof googleCredentialSchema>;
+
 export const profileUpdateSchema = z.object({
   username: z
     .string()

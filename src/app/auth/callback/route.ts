@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { isRecentSignup } from "@/lib/auth/new-user";
 
 /**
  * Handles OAuth callback verification (PKCE flow) for Supabase authentication.
@@ -27,14 +28,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
       if (!error && data?.user) {
-        // Detect newly created user accounts (created in the last 60 seconds)
-        // to present the mandatory name & handle selection screen
-        const createdAtMs = new Date(data.user.created_at).getTime();
-        const isRecentSignup = Math.abs(Date.now() - createdAtMs) < 60_000;
+        // Newly created accounts must pick a name & handle before continuing
+        const isNewUser = isRecentSignup(data.user.created_at);
 
         const isPwa = searchParams.get("pwa") === "1";
         const targetUrl = new URL(safeNext, origin);
-        if (isRecentSignup) {
+        if (isNewUser) {
           targetUrl.searchParams.set("onboarding", "true");
         }
         if (isPwa && !targetUrl.searchParams.has("source")) {

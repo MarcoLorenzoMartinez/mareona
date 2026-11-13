@@ -6,16 +6,19 @@
 export function buildContentSecurityPolicy(): string {
   const directives = [
     "default-src 'self'",
-    // Next.js App Router inline script bootstrapping & Turbopack dev/prod hydration
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
-    // Tailwind and dynamic CSS variables
-    "style-src 'self' 'unsafe-inline'",
+    // Next.js App Router inline script bootstrapping & Turbopack dev/prod hydration;
+    // Google Identity Services client library (in-page "Sign in with Google")
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://accounts.google.com/gsi/client",
+    // Tailwind and dynamic CSS variables; stylesheet injected by Google Identity Services
+    "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style",
     // Trusted media origins (Supabase storage, Google avatars, historical archives, sports CDNs)
     "img-src 'self' blob: data: https://*.supabase.co https://www.bdfutbol.com https://images.fotmob.com https://*.fotmob.com https://*.espncdn.com https://a.espncdn.com https://media.api-sports.io https://flagcdn.com https://*.googleusercontent.com",
     // Google fonts self-hosted via next/font
     "font-src 'self' data:",
-    // API endpoints, Supabase REST & WebSocket Realtime channel
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.fotmob.com",
+    // API endpoints, Supabase REST & WebSocket Realtime channel, Google Identity Services
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.fotmob.com https://accounts.google.com/gsi/",
+    // Google renders its sign-in button inside an iframe; every other embed stays blocked
+    "frame-src https://accounts.google.com/gsi/",
     // Mitigate UI redress / Clickjacking attacks
     "frame-ancestors 'none'",
     // Restrict document base URI to prevent injection attacks

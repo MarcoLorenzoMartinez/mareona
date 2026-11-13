@@ -18,6 +18,21 @@ describe("Security Headers & CSP Suite (OWASP Standard)", () => {
     assert.ok(csp.includes("https://*.googleusercontent.com"));
   });
 
+  it("allows Google Identity Services without opening script or frame sources wider", () => {
+    const directives = new Map(
+      buildContentSecurityPolicy()
+        .split("; ")
+        .map((d) => [d.split(" ")[0], d] as const)
+    );
+
+    assert.ok(directives.get("script-src")?.includes("https://accounts.google.com/gsi/client"));
+    assert.ok(directives.get("style-src")?.includes("https://accounts.google.com/gsi/style"));
+    assert.ok(directives.get("connect-src")?.includes("https://accounts.google.com/gsi/"));
+    assert.equal(directives.get("frame-src"), "frame-src https://accounts.google.com/gsi/");
+    // Whole-host grants would also allow unrelated Google endpoints
+    assert.ok(!directives.get("script-src")?.includes("https://accounts.google.com "));
+  });
+
   it("provides comprehensive HTTP defense-in-depth headers", () => {
     const headers = getSecurityHeaders();
     const map = new Map(headers.map((h) => [h.key.toLowerCase(), h.value]));
