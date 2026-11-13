@@ -6,7 +6,7 @@ import type { HistoricalMatchPlayer, HistoricalMatchCoach } from "@/lib/historic
 import { getTeamPrimaryColor } from "@/lib/sports-api/team-colors";
 import { TeamCrest } from "@/components/media/team-crest";
 import { PlayerPhoto } from "@/components/media/player-photo";
-import { StarterCard, BenchRow } from "./match-lineup-cards";
+import { StarterCard, BenchRow, PartialRosterNotice } from "./match-lineup-cards";
 
 interface MatchDetailLineupsProps {
   readonly homeTeam: string;
@@ -60,24 +60,15 @@ function TeamLineupColumn({
     return groups;
   }, [starters]);
 
-  const isPartialRoster = starters.length > 0 && starters.length < 11;
-
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-[var(--border)] bg-white p-2.5 sm:p-4 shadow-2xs">
       {/* Header: Crest + Team Name on Left, Coach on Right */}
       <div className="flex items-center justify-between border-b border-[var(--border)] pb-2.5 gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <TeamCrest crestUrl={crestUrl} teamName={teamName} size="sm" isSporting={isSporting} />
-          <div className="flex flex-col min-w-0">
-            <h4 className="text-sm sm:text-base font-bold text-[var(--foreground)] truncate tracking-tight">
-              {teamName}
-            </h4>
-            {isPartialRoster && (
-              <span className="text-[10px] font-medium text-neutral-400">
-                Acta parcial ({starters.length} titulares)
-              </span>
-            )}
-          </div>
+          <h4 className="text-sm sm:text-base font-bold text-[var(--foreground)] truncate tracking-tight">
+            {teamName}
+          </h4>
         </div>
         {coach && (
           <div className="flex items-center gap-2 shrink-0">
@@ -158,22 +149,29 @@ export function HistoricalMatchLineups({
   homeCoach,
   awayCoach,
 }: MatchDetailLineupsProps) {
+  const isPartial =
+    (homeStarters.length > 0 && homeStarters.length < 11) ||
+    (awayStarters.length > 0 && awayStarters.length < 11);
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mt-4 pt-3 border-t border-[var(--border)]">
-      <TeamLineupColumn
-        teamName={homeTeam}
-        crestUrl={homeCrestUrl}
-        starters={homeStarters}
-        bench={homeBench}
-        coach={homeCoach}
-      />
-      <TeamLineupColumn
-        teamName={awayTeam}
-        crestUrl={awayCrestUrl}
-        starters={awayStarters}
-        bench={awayBench}
-        coach={awayCoach}
-      />
+    <div className="mt-4 pt-3 border-t border-[var(--border)]">
+      {isPartial && <PartialRosterNotice />}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        <TeamLineupColumn
+          teamName={homeTeam}
+          crestUrl={homeCrestUrl}
+          starters={homeStarters}
+          bench={homeBench}
+          coach={homeCoach}
+        />
+        <TeamLineupColumn
+          teamName={awayTeam}
+          crestUrl={awayCrestUrl}
+          starters={awayStarters}
+          bench={awayBench}
+          coach={awayCoach}
+        />
+      </div>
     </div>
   );
 }

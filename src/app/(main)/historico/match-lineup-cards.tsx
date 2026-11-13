@@ -95,3 +95,22 @@ export function BenchRow({ player, teamColor }: BenchRowProps) {
     </div>
   );
 }
+
+/**
+ * Editorial notice displayed when an archival match sheet has partial starters recorded.
+ */
+export function PartialRosterNotice() {
+  return (
+    <div
+      role="note"
+      className="rounded-xl border border-[var(--border)] bg-neutral-50/90 px-3.5 py-2.5 text-xs text-neutral-600 mb-3"
+    >
+      <strong className="font-semibold text-neutral-800 mr-1.5">
+        Acta con registro parcial:
+      </strong>
+      <span>
+        El archivo documental conservado de este encuentro no recoge la totalidad de los futbolistas de la alineación.
+      </span>
+    </div>
+  );
+}
