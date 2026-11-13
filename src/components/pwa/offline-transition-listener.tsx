@@ -28,7 +28,7 @@ export function OfflineTransitionListener() {
       if (pathname === "/offline") {
         router.replace("/");
       } else {
-        window.location.reload();
+        router.refresh();
       }
     }
   }, [isOnline, pathname, router]);
