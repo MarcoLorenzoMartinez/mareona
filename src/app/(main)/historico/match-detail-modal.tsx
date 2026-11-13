@@ -9,31 +9,13 @@ import { PlayerPhoto } from "@/components/media/player-photo";
 import { MatchScoreboard } from "./match-scoreboard";
 import { HistoricalMatchLineups } from "./match-detail-lineups";
 import { HistoricalMatchEvents } from "./match-detail-events";
+import { MatchDetailOfflineNotice } from "./match-detail-offline-notice";
+import { formatHistoricalDate } from "./match-detail-utils";
 
 interface MatchDetailModalProps {
   readonly match: HistoricalMatch;
   readonly season?: string;
   readonly onClose: () => void;
-}
-
-function formatHistoricalDate(dateStr: string): string {
-  if (!dateStr) return "";
-  const parts = dateStr.split("/");
-  let d: Date;
-  if (parts.length === 3) {
-    const day = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const year = parseInt(parts[2], 10);
-    d = new Date(year, month, day);
-  } else {
-    d = new Date(dateStr);
-  }
-  if (isNaN(d.getTime())) return dateStr;
-  return d.toLocaleDateString("es-ES", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
 }
 
 /**
@@ -42,6 +24,8 @@ function formatHistoricalDate(dateStr: string): string {
 export function HistoricalMatchDetailModal({ match, season: propSeason, onClose }: MatchDetailModalProps) {
   const [detail, setDetail] = useState<HistoricalMatchDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [retryKey, setRetryKey] = useState<number>(0);
   const season = propSeason ?? match.id.split("-").slice(0, 2).join("-");
 
   const stadiumAsset = getStadiumAsset({
@@ -70,17 +54,25 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
         return;
       }
       setLoading(true);
-      const res = await getHistoricalMatchDetail(match.bdfMatchId, season, match.isHome);
-      if (!isCancelled) {
-        setDetail(res);
-        setLoading(false);
+      setHasError(false);
+      try {
+        const res = await getHistoricalMatchDetail(match.bdfMatchId, season, match.isHome);
+        if (!isCancelled) {
+          setDetail(res);
+          setLoading(false);
+        }
+      } catch {
+        if (!isCancelled) {
+          setHasError(true);
+          setLoading(false);
+        }
       }
     }
     loadDetail();
     return () => {
       isCancelled = true;
     };
-  }, [match.bdfMatchId, match.isHome, season]);
+  }, [match.bdfMatchId, match.isHome, season, retryKey]);
 
   return (
     <div
@@ -149,9 +141,11 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
           )}
         </div>
 
-        {/* Loading / Lineups Content */}
+        {/* Loading / Lineups Content / Offline State */}
         {loading ? (
           <div className="py-12 text-center text-xs text-[var(--foreground-muted)]">Cargando acta oficial del encuentro...</div>
+        ) : hasError ? (
+          <MatchDetailOfflineNotice onRetry={() => setRetryKey((k) => k + 1)} />
         ) : detail ? (
           <HistoricalMatchLineups
             homeTeam={match.homeTeam}

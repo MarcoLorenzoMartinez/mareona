@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { PlayerAvatarFallback } from "./player-avatar-fallback";
+import { useOnlineStatus } from "@/lib/pwa/use-online-status";
 
 interface PlayerPhotoProps {
   readonly photoUrl: string | null | undefined;
@@ -43,6 +44,7 @@ export function PlayerPhoto({
   isDecorative = true,
   teamColor = "#e2001a",
 }: PlayerPhotoProps) {
+  const isOnline = useOnlineStatus();
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const sizeClass = SIZE_CLASSES[size];
 
@@ -50,8 +52,11 @@ export function PlayerPhoto({
   const allowOfficialAssets =
     process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS !== "false";
 
+  // Prevent browser broken image icon when offline by suppressing remote un-cached photos
+  const isRemote = Boolean(photoUrl?.startsWith("http"));
+  const isOfflineRemote = !isOnline && isRemote;
   const hasError = Boolean(photoUrl && failedUrl === photoUrl);
-  const showImage = Boolean(photoUrl && allowOfficialAssets && !hasError);
+  const showImage = Boolean(photoUrl && allowOfficialAssets && !hasError && !isOfflineRemote);
 
   if (!showImage) {
     if (size === "card") {

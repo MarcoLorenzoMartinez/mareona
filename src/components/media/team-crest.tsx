@@ -1,6 +1,7 @@
-"use client"; // Client: Fallback automático ante fallos de carga de imágenes externas
+"use client"; // Client: Fallback automático ante fallos de carga de imágenes externas o estado offline
 
 import { useState } from "react";
+import { useOnlineStatus } from "@/lib/pwa/use-online-status";
 
 interface TeamCrestProps {
   readonly crestUrl: string | null | undefined;
@@ -34,6 +35,7 @@ export function TeamCrest({
   isDecorative = true,
   isSporting = false,
 }: TeamCrestProps) {
+  const isOnline = useOnlineStatus();
   const effectiveCrestUrl = crestUrl ?? (isSporting ? "/crests/historical/sporting-modern.png" : null);
   const [prevCrestUrl, setPrevCrestUrl] = useState(effectiveCrestUrl);
   const [hasError, setHasError] = useState(false);
@@ -46,7 +48,11 @@ export function TeamCrest({
     setHasError(false);
   }
 
-  if (!effectiveCrestUrl || hasError) {
+  // Treat remote images as unavailable when offline, preventing browser broken image placeholders
+  const isRemote = Boolean(effectiveCrestUrl?.startsWith("http"));
+  const shouldFallback = !effectiveCrestUrl || hasError || (!isOnline && isRemote);
+
+  if (shouldFallback) {
     return (
       <div
         aria-hidden={isDecorative ? "true" : undefined}
