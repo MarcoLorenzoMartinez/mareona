@@ -1,8 +1,7 @@
-// Client: Elige entre Identity Services (navegador) y redirección OAuth (PWA o sin configuración)
+// Client: Prioriza Google Identity Services en todos los entornos (web y PWA), con fallback a redirección
 "use client";
 
 import { useState } from "react";
-import { isRunningInStandaloneMode } from "@/lib/auth/oauth-redirect";
 import { GoogleIdentityButton } from "./google-identity-button";
 import { GoogleRedirectButton } from "./google-redirect-button";
 
@@ -12,13 +11,13 @@ interface GoogleSignInButtonProps {
 }
 
 /**
- * Prefers the in-page Google popup, which keeps the user on the current route. Falls back to
- * the redirect flow when no client id is configured, inside an installed PWA, or when the
- * Google script is unreachable.
+ * Prefers the in-page Google popup in all contexts (including installed PWAs) so users see
+ * `mareona.vercel.app` instead of the Supabase project host. Gracefully falls back to the
+ * redirect flow if no client ID is configured or if the Google script is blocked/unavailable.
  */
 export function GoogleSignInButton({ onSuccess, onError }: GoogleSignInButtonProps) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  const [mustRedirect, setMustRedirect] = useState(() => !clientId || isRunningInStandaloneMode());
+  const [mustRedirect, setMustRedirect] = useState(() => !clientId);
 
   if (mustRedirect || !clientId) {
     return <GoogleRedirectButton onError={onError} />;
