@@ -9,6 +9,7 @@ import { ToastContainer } from "@/components/ui/toast-container";
 import { PwaInstallProvider } from "@/components/pwa/pwa-install-provider";
 import { OfflineBanner } from "@/components/pwa/offline-banner";
 import { OfflineSyncListener } from "@/components/pwa/offline-sync-listener";
+import { OfflineTransitionListener } from "@/components/pwa/offline-transition-listener";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import { TelemetryBeacon } from "@/components/telemetry/telemetry-beacon";
 import "./globals.css";
@@ -97,6 +98,7 @@ export default function RootLayout({
             </Suspense>
             <OfflineBanner />
             <OfflineSyncListener />
+            <OfflineTransitionListener />
             <Suspense fallback={null}>
               <TelemetryBeacon />
             </Suspense>

@@ -3,8 +3,8 @@
 
 import type { RivalH2HSummary } from "@/lib/historical/rivals-types";
 import { TeamCrest } from "@/components/media/team-crest";
-
 import { formatRivalLocation } from "@/lib/historical/rival-location";
+import { H2HMetricsStrip } from "@/components/sports/h2h-metrics-strip";
 
 interface RivalDetailHeaderProps {
   readonly rival: RivalH2HSummary;
@@ -55,38 +55,14 @@ export function RivalDetailHeader({
       </div>
 
       {/* Big Metrics Strip: Monocromía Editorial con números tabulares */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)] rounded-xl border border-[var(--border)] bg-neutral-50/40 py-3 text-center">
-        <div className="flex flex-col items-center px-2 py-1">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Partidos</span>
-          <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
-            {currentStats.played}
-          </span>
-        </div>
-        <div className="flex flex-col items-center px-2 py-1">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Victorias</span>
-          <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
-            {currentStats.won}
-          </span>
-        </div>
-        <div className="flex flex-col items-center px-2 py-1">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Empates</span>
-          <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
-            {currentStats.drawn}
-          </span>
-        </div>
-        <div className="flex flex-col items-center px-2 py-1">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Derrotas</span>
-          <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
-            {currentStats.lost}
-          </span>
-        </div>
-        <div className="col-span-2 sm:col-span-1 flex flex-col items-center px-2 py-1">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Goles</span>
-          <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
-            {currentStats.goalsFor} : {currentStats.goalsAgainst}
-          </span>
-        </div>
-      </div>
+      <H2HMetricsStrip
+        played={currentStats.played}
+        won={currentStats.won}
+        drawn={currentStats.drawn}
+        lost={currentStats.lost}
+        goalsFor={currentStats.goalsFor}
+        goalsAgainst={currentStats.goalsAgainst}
+      />
     </div>
   );
 }

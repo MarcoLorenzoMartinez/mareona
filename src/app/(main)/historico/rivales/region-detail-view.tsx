@@ -6,6 +6,7 @@ import type { RegionRivalSummary, RivalH2HSummary } from "@/lib/historical/rival
 import spainPaths from "@/data/historical/spain-svg-paths.json";
 import worldPaths from "@/data/historical/world-svg-paths.json";
 import { RivalCard } from "./rival-card";
+import { H2HMetricsStrip } from "@/components/sports/h2h-metrics-strip";
 
 interface RegionDetailViewProps {
   readonly region: RegionRivalSummary;
@@ -117,29 +118,15 @@ export function RegionDetailView({ region, onBack, onSelectRival }: RegionDetail
         </div>
 
         {/* Metrics Strip */}
-        <div className="relative z-10 grid grid-cols-2 sm:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)] rounded-xl border border-[var(--border)] bg-neutral-50/40 py-3 text-center">
-          <div className="flex flex-col items-center px-2 py-1">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Partidos</span>
-            <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">{region.totalMatches}</span>
-          </div>
-          <div className="flex flex-col items-center px-2 py-1">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Victorias</span>
-            <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">{region.won}</span>
-          </div>
-          <div className="flex flex-col items-center px-2 py-1">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Empates</span>
-            <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">{region.drawn}</span>
-          </div>
-          <div className="flex flex-col items-center px-2 py-1">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Derrotas</span>
-            <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">{region.lost}</span>
-          </div>
-          <div className="col-span-2 sm:col-span-1 flex flex-col items-center px-2 py-1">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Goles</span>
-            <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
-              {region.goalsFor} : {region.goalsAgainst}
-            </span>
-          </div>
+        <div className="relative z-10">
+          <H2HMetricsStrip
+            played={region.totalMatches}
+            won={region.won}
+            drawn={region.drawn}
+            lost={region.lost}
+            goalsFor={region.goalsFor}
+            goalsAgainst={region.goalsAgainst}
+          />
         </div>
       </div>
 

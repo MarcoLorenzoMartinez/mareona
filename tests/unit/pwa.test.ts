@@ -10,7 +10,10 @@ import {
   BANNER_DISMISS_MS,
   shouldShowInstallBanner,
 } from "../../src/lib/pwa/install-banner.ts";
-import { OFFLINE_PRECACHE_PATHS } from "../../src/lib/pwa/offline-routes.ts";
+import {
+  OFFLINE_PRECACHE_PATHS,
+  isOfflineRoute,
+} from "../../src/lib/pwa/offline-routes.ts";
 
 const IPHONE_SAFARI =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1";
@@ -108,5 +111,31 @@ describe("Service worker precache list", () => {
     for (const path of ["/juegos/porra", "/juegos/album", "/social", "/perfil", "/temporada", "/api"]) {
       assert.ok(!swSource.includes(`"${path}"`), `sw.js must not precache ${path}`);
     }
+  });
+});
+
+describe("isOfflineRoute evaluation", () => {
+  it("recognizes offline fallback and historical archive routes", () => {
+    assert.equal(isOfflineRoute("/offline"), true);
+    assert.equal(isOfflineRoute("/historico"), true);
+    assert.equal(isOfflineRoute("/historico/efemerides"), true);
+    assert.equal(isOfflineRoute("/historico/rivales/real-oviedo"), true);
+  });
+
+  it("recognizes daily offline games as offline-capable", () => {
+    assert.equal(isOfflineRoute("/juegos"), true);
+    assert.equal(isOfflineRoute("/juegos/wordle"), true);
+    assert.equal(isOfflineRoute("/juegos/who-are-ya"), true);
+    assert.equal(isOfflineRoute("/juegos/pregunta-del-dia"), true);
+    assert.equal(isOfflineRoute("/juegos/mayor-menor"), true);
+  });
+
+  it("marks live network-dependent routes as requiring network", () => {
+    assert.equal(isOfflineRoute("/"), false);
+    assert.equal(isOfflineRoute("/temporada"), false);
+    assert.equal(isOfflineRoute("/social"), false);
+    assert.equal(isOfflineRoute("/perfil"), false);
+    assert.equal(isOfflineRoute("/juegos/porra"), false);
+    assert.equal(isOfflineRoute("/juegos/album"), false);
   });
 });

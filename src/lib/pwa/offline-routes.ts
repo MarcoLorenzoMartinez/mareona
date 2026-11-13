@@ -34,3 +34,20 @@ export const OFFLINE_ARCHIVE_LINKS: readonly OfflineLink[] = [
   { href: "/historico/legado", label: "Legado" },
   { href: "/historico/rivales", label: "Rivales" },
 ];
+
+/**
+ * Evaluates whether a given pathname is supported offline.
+ * Historical archive and daily games operate offline; live screens, porra,
+ * album and social require network.
+ */
+export function isOfflineRoute(pathname: string): boolean {
+  if (pathname === "/offline") return true;
+  if (pathname.startsWith("/historico")) return true;
+  if (pathname.startsWith("/juegos")) {
+    if (pathname.startsWith("/juegos/porra") || pathname.startsWith("/juegos/album")) {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}

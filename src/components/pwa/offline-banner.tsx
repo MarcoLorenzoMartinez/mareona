@@ -29,7 +29,7 @@ export function OfflineBanner() {
       role="status"
       className="w-full bg-[var(--foreground)] px-4 py-2 text-center text-xs font-medium text-white"
     >
-      Sin conexión · Juegos y archivo histórico disponibles; porra y tertulia requieren red
+      Sin conexión · Juegos y archivo histórico disponibles
     </div>
   );
 }

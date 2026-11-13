@@ -43,11 +43,11 @@ export default function OfflinePage() {
           Sin conexión
         </h1>
         <p className="text-sm text-[var(--muted-foreground)]">
-          Esta sección necesita internet. Mientras tanto, puedes seguir con esto:
+          No tienes conexión, mientras tanto puedes visitar las siguientes secciones:
         </p>
       </div>
+      <LinkGroup title="Histórico" links={OFFLINE_ARCHIVE_LINKS} />
       <LinkGroup title="Juegos" links={OFFLINE_GAME_LINKS} />
-      <LinkGroup title="Archivo" links={OFFLINE_ARCHIVE_LINKS} />
     </div>
   );
 }

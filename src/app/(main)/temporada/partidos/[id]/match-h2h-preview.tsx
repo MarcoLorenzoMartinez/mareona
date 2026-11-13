@@ -8,6 +8,7 @@ import type { DayMatchItem } from "@/lib/historical/ephemerides-types";
 import { TeamCrest } from "@/components/media/team-crest";
 import { formatRivalLocation } from "@/lib/historical/rival-location";
 import { getDictionary } from "@/i18n";
+import { H2HMetricsStrip } from "@/components/sports/h2h-metrics-strip";
 import { RivalMatchRow } from "@/app/(main)/historico/rivales/rival-match-row";
 import { HistoricalMatchDetailModal } from "@/app/(main)/historico/match-detail-modal";
 
@@ -63,26 +64,23 @@ export function MatchH2HPreview({
           </div>
         </div>
 
-        {/* Big Metrics Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)] rounded-xl border border-[var(--border)] bg-neutral-50/50 py-3 text-center">
-          {[
-            { label: t.playedShort, val: rival.played, col: "text-neutral-900" },
-            { label: t.wonShort, val: rival.won, col: "text-[var(--primary)]" },
-            { label: t.drawnShort, val: rival.drawn, col: "text-neutral-900" },
-            { label: t.lostShort, val: rival.lost, col: "text-neutral-700" },
-          ].map((s) => (
-            <div key={s.label} className="flex flex-col items-center px-2 py-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">{s.label}</span>
-              <span className={`mt-0.5 text-2xl font-black font-sans tabular-nums sm:text-3xl ${s.col}`}>{s.val}</span>
-            </div>
-          ))}
-          <div className="col-span-2 sm:col-span-1 flex flex-col items-center px-2 py-1">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">{t.goals}</span>
-            <span className="mt-0.5 text-2xl font-black text-neutral-900 font-sans tabular-nums sm:text-3xl">
-              {rival.goalsFor} : {rival.goalsAgainst}
-            </span>
-          </div>
-        </div>
+        {/* Big Metrics Grid: 4 cols on mobile + goals below, 5 cols on desktop */}
+        <H2HMetricsStrip
+          played={rival.played}
+          won={rival.won}
+          drawn={rival.drawn}
+          lost={rival.lost}
+          goalsFor={rival.goalsFor}
+          goalsAgainst={rival.goalsAgainst}
+          highlightWon
+          labels={{
+            played: t.playedShort,
+            won: t.wonShort,
+            drawn: t.drawnShort,
+            lost: t.lostShort,
+            goals: t.goals,
+          }}
+        />
 
         {/* Visual Balance Bar */}
         <div className="flex flex-col gap-1.5 pt-1">

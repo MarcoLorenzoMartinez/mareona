@@ -7,13 +7,14 @@
  * Everything else — live scores, auth, Supabase, API routes, Server Actions — always
  * goes to the network so users never see stale or cross-account data.
  */
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL_CACHE = `mareona-shell-${VERSION}`;
 const STATIC_CACHE = `mareona-static-${VERSION}`;
 const IMAGE_CACHE = `mareona-images-${VERSION}`;
 const ACTIVE_CACHES = [SHELL_CACHE, STATIC_CACHE, IMAGE_CACHE];
 
 const OFFLINE_URL = "/offline";
+const CRITICAL_IMAGES = ["/logo.png"];
 const PRECACHE_PATHS = [
   "/offline",
   "/juegos",
@@ -80,6 +81,19 @@ async function precachePage(path) {
 }
 
 async function precacheAll() {
+  // Precache critical brand assets so they are guaranteed to exist offline.
+  const imageCache = await caches.open(IMAGE_CACHE);
+  await Promise.allSettled(
+    CRITICAL_IMAGES.map(async (img) => {
+      try {
+        const response = await fetch(img, { cache: "reload" });
+        if (response.ok) await imageCache.put(new Request(img), response);
+      } catch {
+        // Non-blocking fallback
+      }
+    })
+  );
+
   // The offline fallback is mandatory: failing here aborts install so it is retried later.
   await precachePage(OFFLINE_URL);
   await Promise.allSettled(PRECACHE_PATHS.filter((p) => p !== OFFLINE_URL).map(precachePage));
@@ -182,7 +196,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (IMAGE_PREFIXES.some((prefix) => url.pathname.startsWith(prefix))) {
+  if (
+    IMAGE_PREFIXES.some((prefix) => url.pathname.startsWith(prefix)) ||
+    CRITICAL_IMAGES.includes(url.pathname)
+  ) {
     event.respondWith(staleWhileRevalidate(event, IMAGE_CACHE, MAX_IMAGE_ENTRIES));
   }
 });
