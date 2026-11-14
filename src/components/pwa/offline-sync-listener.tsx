@@ -2,13 +2,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { processOfflineGameSync } from "@/lib/games/offline-sync-queue";
+import { processOfflineGameSync, getOfflineGameQueue } from "@/lib/games/offline-sync-queue";
 import { syncOfflineGamesAction } from "@/lib/games/offline-sync-action";
 import { toast } from "@/lib/ui/toast";
 
 /**
  * Global background listener that automatically synchronizes offline game results
  * when network connectivity is established or restored.
+ *
+ * UX Policy:
+ * - When playing online: synchronization is completely silent and seamless (no toast).
+ * - When reconnecting after playing offline (without coverage): a toast informs
+ *   the user that their offline progress has been saved.
  */
 export function OfflineSyncListener() {
   const isSyncingRef = useRef(false);
@@ -16,7 +21,7 @@ export function OfflineSyncListener() {
   useEffect(() => {
     let isMounted = true;
 
-    async function triggerSync() {
+    async function triggerSync(notifyUser = false) {
       if (typeof window === "undefined" || !navigator.onLine || isSyncingRef.current) {
         return;
       }
@@ -26,12 +31,13 @@ export function OfflineSyncListener() {
           return await syncOfflineGamesAction({ events: [...events] });
         });
 
-        if (isMounted && result.syncedCount > 0) {
+        // Solo notificar al usuario si la sincronización proviene de una reconexión tras jugar sin cobertura
+        if (isMounted && result.syncedCount > 0 && notifyUser) {
           toast.success(
             result.syncedCount === 1
-              ? "Partida sincronizada con éxito"
-              : `${result.syncedCount} partidas sincronizadas con éxito`,
-            { description: "Tus rachas y recompensas han sido registradas." }
+              ? "Partida sin conexión sincronizada"
+              : `${result.syncedCount} partidas sincronizadas`,
+            { description: "Tus progresos jugados sin cobertura se han guardado con éxito." }
           );
         }
       } catch {
@@ -41,13 +47,21 @@ export function OfflineSyncListener() {
       }
     }
 
-    // Attempt sync on initial mount if already online
-    triggerSync();
+    // Al montar: si hay partidas acumuladas en la cola, significa que se jugaron previamente sin conexión
+    const pendingOnMount = getOfflineGameQueue().length;
+    if (pendingOnMount > 0) {
+      triggerSync(true);
+    } else {
+      triggerSync(false);
+    }
 
-    const handleOnline = () => triggerSync();
+    // Reconexión tras caída o recuperación de red
+    const handleOnline = () => triggerSync(true);
+
+    // Partida finalizada en tiempo real: si hay red, se sincroniza en segundo plano de forma silenciosa
     const handleQueueUpdated = () => {
       if (navigator.onLine) {
-        triggerSync();
+        triggerSync(false);
       }
     };
 
