@@ -43,20 +43,38 @@ export function PorraScorersPicker({
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-[11px] font-bold text-neutral-500 shadow-2xs border border-[var(--border)] tabular-nums shrink-0">
               {i + 1}
             </span>
-            <select
-              value={selectedScorers[i] || ''}
-              disabled={disabled}
-              onChange={(e) => handleSelectScorer(i, e.target.value)}
-              aria-label={`Goleador ${i + 1}`}
-              className="flex-1 min-h-[44px] rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--foreground)] focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a]/20 focus:outline-none transition-colors"
-            >
-              <option value="">Selecciona un goleador...</option>
-              {availablePlayers.map((player) => (
-                <option key={player} value={player}>
-                  {player}
-                </option>
-              ))}
-            </select>
+            <div className="relative flex-1">
+              <select
+                value={selectedScorers[i] || ''}
+                disabled={disabled}
+                onChange={(e) => handleSelectScorer(i, e.target.value)}
+                aria-label={`Goleador ${i + 1}`}
+                className="w-full min-h-[44px] appearance-none rounded-xl border border-[var(--border)] bg-white pl-3.5 pr-10 py-2 text-xs font-semibold text-neutral-900 focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a]/20 focus:outline-none disabled:opacity-100 disabled:bg-white disabled:text-neutral-800 disabled:[-webkit-text-fill-color:#262626] disabled:cursor-default transition-colors"
+              >
+                <option value="">Selecciona un goleador...</option>
+                {availablePlayers.map((player) => (
+                  <option key={player} value={player}>
+                    {player}
+                  </option>
+                ))}
+              </select>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 20 20"
+                fill="none"
+                className={`pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 ${
+                  disabled ? 'text-neutral-300' : 'text-neutral-500'
+                }`}
+              >
+                <path
+                  d="M5.5 7.5L10 12l4.5-4.5"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           </div>
         ))}
       </div>

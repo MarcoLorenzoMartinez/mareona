@@ -5,7 +5,15 @@ import {
   getPorraRewardTier,
   resolveUnclaimedPorraRewards,
 } from '../../src/lib/porra/engine.ts';
-import type { PorraPrediction, PorraMatch } from '../../src/lib/porra/types.ts';
+import {
+  buildUserLeaderboardEntry,
+  filterAndRankLeaderboard,
+} from '../../src/lib/porra/leaderboard.ts';
+import type {
+  PorraPrediction,
+  PorraMatch,
+  PorraLeaderboardEntry,
+} from '../../src/lib/porra/types.ts';
 
 describe('Porra Engine Suite', () => {
   const dummyMatch: PorraMatch = {
@@ -154,5 +162,119 @@ describe('Porra Engine Suite', () => {
     assert.equal(pending[1]?.match.id, 'm1');
     assert.equal(pending[1]?.rewardTier, 'leyenda');
     assert.equal(pending[1]?.evaluation.points, 5);
+  });
+
+  it('computes user leaderboard entry including lastMatchPoints and currentPrediction', () => {
+    const matches: PorraMatch[] = [
+      {
+        ...dummyMatch,
+        id: 'm1',
+        kickoffAt: '2026-10-15T18:00:00Z',
+        actualHomeScore: 1,
+        actualAwayScore: 0,
+        actualSportingScorers: ['Gaspar Campos'],
+      },
+      {
+        ...dummyMatch,
+        id: 'm2',
+        kickoffAt: '2026-11-01T18:00:00Z',
+        actualHomeScore: 2,
+        actualAwayScore: 1,
+        actualSportingScorers: ['Gaspar Campos', 'Juan Otero'],
+      },
+    ];
+
+    const predictions: Record<string, PorraPrediction> = {
+      m1: {
+        matchId: 'm1',
+        homeScore: 1,
+        awayScore: 0,
+        sportingScorers: [],
+        submittedAt: '2026-10-14T10:00:00Z',
+      }, // 5 pts (exact)
+      m2: {
+        matchId: 'm2',
+        homeScore: 1,
+        awayScore: 0,
+        sportingScorers: ['Gaspar Campos'],
+        submittedAt: '2026-10-31T10:00:00Z',
+      }, // 3 pts (outcome + 1 scorer)
+    };
+
+    const currentPred: PorraPrediction = {
+      matchId: 'm3',
+      homeScore: 2,
+      awayScore: 0,
+      sportingScorers: ['Juan Otero'],
+      submittedAt: '2026-11-14T10:00:00Z',
+    };
+
+    const entry = buildUserLeaderboardEntry({
+      userId: 'user-1',
+      userName: 'Marco',
+      finishedMatches: matches,
+      predictionsByMatchId: predictions,
+      currentPrediction: currentPred,
+    });
+
+    assert.ok(entry);
+    assert.equal(entry.totalPoints, 8);
+    assert.equal(entry.exactScoresCount, 1);
+    assert.equal(entry.outcomesCount, 2);
+    assert.equal(entry.lastMatchPoints, 3);
+    assert.deepEqual(entry.currentPrediction, {
+      homeScore: 2,
+      awayScore: 0,
+      sportingScorers: ['Juan Otero'],
+    });
+  });
+
+  it('filters and re-ranks leaderboard entries between all and friends tabs', () => {
+    const rawEntries: PorraLeaderboardEntry[] = [
+      {
+        rank: 0,
+        userId: 'u1',
+        userName: 'Líder Global',
+        avatarSeed: 'u1',
+        totalPoints: 25,
+        exactScoresCount: 4,
+        outcomesCount: 6,
+        isFriend: false,
+      },
+      {
+        rank: 0,
+        userId: 'u2',
+        userName: 'Pelayo',
+        avatarSeed: 'u2',
+        totalPoints: 18,
+        exactScoresCount: 2,
+        outcomesCount: 5,
+        isFriend: true,
+      },
+      {
+        rank: 0,
+        userId: 'u3',
+        userName: 'Marco',
+        avatarSeed: 'u3',
+        totalPoints: 12,
+        exactScoresCount: 1,
+        outcomesCount: 4,
+        isCurrentUser: true,
+      },
+    ];
+
+    const allRanked = filterAndRankLeaderboard(rawEntries, 'all');
+    assert.equal(allRanked.length, 3);
+    assert.equal(allRanked[0]?.userName, 'Líder Global');
+    assert.equal(allRanked[0]?.rank, 1);
+    assert.equal(allRanked[2]?.userName, 'Marco');
+    assert.equal(allRanked[2]?.rank, 3);
+
+    const friendsRanked = filterAndRankLeaderboard(rawEntries, 'friends');
+    assert.equal(friendsRanked.length, 2);
+    assert.equal(friendsRanked[0]?.userName, 'Pelayo');
+    assert.equal(friendsRanked[0]?.rank, 1);
+    assert.equal(friendsRanked[1]?.userName, 'Marco');
+    assert.equal(friendsRanked[1]?.rank, 2);
   });
 });

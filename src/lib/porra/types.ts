@@ -44,12 +44,22 @@ export interface PorraUnclaimedReward {
   readonly rewardTier: PackTier;
 }
 
+export interface PorraCurrentPredictionSummary {
+  readonly homeScore: number;
+  readonly awayScore: number;
+  readonly sportingScorers: readonly string[];
+}
+
 export interface PorraLeaderboardEntry {
   rank: number;
+  userId?: string;
   userName: string;
   avatarSeed: string;
   totalPoints: number;
   exactScoresCount: number;
   outcomesCount: number;
+  lastMatchPoints?: number;
+  currentPrediction?: PorraCurrentPredictionSummary | null;
   isCurrentUser?: boolean;
+  isFriend?: boolean;
 }

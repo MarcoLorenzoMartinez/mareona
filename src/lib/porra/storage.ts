@@ -114,6 +114,28 @@ export function markPorraRewardsClaimed(
 }
 
 /**
+ * Builds a map of stored predictions indexed by match ID for the provided matches.
+ *
+ * @param matches - Matches to look up in localStorage.
+ * @param userId - Optional authenticated user ID.
+ * @returns Map of matchId to PorraPrediction.
+ */
+export function getStoredPredictionsMap(
+  matches: readonly PorraMatch[],
+  userId?: string
+): Record<string, PorraPrediction> {
+  if (typeof window === 'undefined') return {};
+  const predictionsByMatchId: Record<string, PorraPrediction> = {};
+  for (const match of matches) {
+    const pred = getStoredPrediction(match.id, userId);
+    if (pred) {
+      predictionsByMatchId[match.id] = pred;
+    }
+  }
+  return predictionsByMatchId;
+}
+
+/**
  * Evaluates all finished matches against stored predictions and returns any unclaimed pack rewards.
  *
  * @param finishedMatches - Completed matches from the season schedule.
@@ -126,14 +148,7 @@ export function getPendingPorraRewards(
 ): PorraUnclaimedReward[] {
   if (typeof window === 'undefined') return [];
 
-  const predictionsByMatchId: Record<string, PorraPrediction> = {};
-  for (const match of finishedMatches) {
-    const pred = getStoredPrediction(match.id, userId);
-    if (pred) {
-      predictionsByMatchId[match.id] = pred;
-    }
-  }
-
+  const predictionsByMatchId = getStoredPredictionsMap(finishedMatches, userId);
   const claimedIds = getClaimedPorraMatchIds(userId);
   return resolveUnclaimedPorraRewards(finishedMatches, predictionsByMatchId, claimedIds);
 }
