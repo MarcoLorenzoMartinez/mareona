@@ -527,7 +527,7 @@ export interface DomainMatchDetail {
 
 export const espnMatchStatisticItemSchema = z.object({
   name: z.string(),
-  displayValue: z.string(),
+  displayValue: z.union([z.string(), z.number()]).transform(String),
   label: z.string().optional(),
 });
 
@@ -575,27 +575,41 @@ export const espnMatchKeyEventSchema = z.object({
     .default([]),
 });
 
+export const espnRosterSubSchema = z
+  .union([
+    z.boolean(),
+    z.object({
+      didSub: z.boolean().optional(),
+    }),
+  ])
+  .optional()
+  .nullable();
+
 export const espnRosterAthleteSchema = z.object({
   active: z.boolean().optional(),
   starter: z.boolean().optional(),
   jersey: z.string().optional(),
   formationPlace: z.string().optional(),
-  subbedIn: z.boolean().optional(),
-  subbedOut: z.boolean().optional(),
-  athlete: z.object({
-    id: z.string(),
-    displayName: z.string(),
-    fullName: z.string().optional(),
-    shortName: z.string().optional(),
-    headshot: z.object({ href: z.string().optional() }).optional(),
-  }),
+  subbedIn: espnRosterSubSchema,
+  subbedOut: espnRosterSubSchema,
+  athlete: z
+    .object({
+      id: z.union([z.string(), z.number()]).transform(String),
+      displayName: z.string().optional().default(""),
+      fullName: z.string().optional(),
+      shortName: z.string().optional(),
+      headshot: z.object({ href: z.string().optional() }).optional(),
+    })
+    .optional()
+    .nullable(),
   position: z
     .object({
       name: z.string().optional(),
       displayName: z.string().optional(),
       abbreviation: z.string().optional(),
     })
-    .optional(),
+    .optional()
+    .nullable(),
 });
 
 export const espnRosterTeamSchema = z.object({
@@ -614,7 +628,8 @@ export const espnMatchSummaryCompetitorSchema = z.object({
   homeAway: z.enum(["home", "away"]),
   score: z
     .union([z.string(), z.number(), z.object({ value: z.number().optional() })])
-    .optional(),
+    .optional()
+    .nullable(),
   team: z.object({
     id: z.string(),
     displayName: z.string(),
@@ -1207,6 +1222,16 @@ export function transformEspnMatchDetail(
       return { rank: 420, subpos: "DC" };
     };
 
+    const parseSubFlag = (
+      sub: z.infer<typeof espnRosterSubSchema>
+    ): boolean | undefined => {
+      if (typeof sub === "boolean") return sub;
+      if (sub && typeof sub === "object" && "didSub" in sub) {
+        return Boolean(sub.didSub);
+      }
+      return undefined;
+    };
+
     const mapPlayer = (
       p: z.infer<typeof espnRosterAthleteSchema>,
       subposition?: string
@@ -1214,29 +1239,31 @@ export function transformEspnMatchDetail(
       const jerseyNum = p.jersey ? parseInt(p.jersey, 10) : null;
       const placeNum = p.formationPlace ? parseInt(p.formationPlace, 10) : null;
       const pos = mapEspnPosition(p.position?.name ?? p.position?.displayName);
+      const athlete = p.athlete;
+      const athleteId = athlete?.id ?? `unknown-${p.jersey ?? placeNum ?? "player"}`;
       const normalized = normalizeAthleteName({
-        id: p.athlete.id,
-        displayName: p.athlete.displayName,
-        fullName: p.athlete.fullName,
-        shortName: p.athlete.shortName,
+        id: athlete?.id,
+        displayName: athlete?.displayName,
+        fullName: athlete?.fullName,
+        shortName: athlete?.shortName,
       });
       const photoUrl =
         (isSportingTeam && jerseyNum !== null ? `/images/players/${jerseyNum}.png` : null) ??
-        p.athlete.headshot?.href ??
+        athlete?.headshot?.href ??
         null;
 
       return {
-        id: p.athlete.id,
-        name: normalized.name,
-        shortName: normalized.shortName,
+        id: athleteId,
+        name: normalized.name || "Jugador",
+        shortName: normalized.shortName || "Jugador",
         jersey: jerseyNum !== null && !Number.isNaN(jerseyNum) ? jerseyNum : null,
         position: pos,
         positionLabel: mapPositionToLabel(pos),
         subposition: subposition ?? mapPositionToShort(pos),
         formationPlace: placeNum !== null && !Number.isNaN(placeNum) ? placeNum : null,
         isStarter: Boolean(p.starter),
-        subbedIn: p.subbedIn,
-        subbedOut: p.subbedOut,
+        subbedIn: parseSubFlag(p.subbedIn),
+        subbedOut: parseSubFlag(p.subbedOut),
         photoUrl,
       };
     };
