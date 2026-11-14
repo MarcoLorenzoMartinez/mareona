@@ -28,14 +28,9 @@ export function PorraScorersPicker({
 
   return (
     <div className="flex flex-col gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-bold text-[var(--foreground)]">
-          Goleadores del Real Sporting
-        </span>
-        <span className="text-[11px] font-semibold text-[#e2001a] tabular-nums">
-          +1 pto por acierto
-        </span>
-      </div>
+      <span className="text-xs font-bold text-[var(--foreground)]">
+        Goleadores del Real Sporting
+      </span>
 
       <div className="flex flex-col gap-2">
         {Array.from({ length: sportingGoals }).map((_, i) => (
