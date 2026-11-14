@@ -40,7 +40,7 @@ export function HigherLowerControls({
         type="button"
         disabled={disabled}
         onClick={() => onGuess('lower')}
-        className="group relative flex h-9 sm:h-11 items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-neutral-300 bg-white px-2 sm:px-4 text-xs sm:text-sm font-extrabold text-neutral-800 shadow-xs hover:border-[#e2001a] hover:text-[#e2001a] hover:bg-neutral-50 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer"
+        className="group relative flex h-9 sm:h-11 items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-gradient-to-b from-[#e2001a] to-[#c70017] px-2 sm:px-4 text-xs sm:text-sm font-extrabold text-white shadow-xs hover:from-[#c70017] hover:to-[#a80013] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer"
         aria-label={`Votar que ${mysteryPlayerName} tiene menos ${metricName}`}
       >
         <span className="tracking-wide">Menos</span>
