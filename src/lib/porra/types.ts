@@ -1,3 +1,5 @@
+import type { PackTier } from '../cards/types.ts';
+
 export interface PorraMatch {
   id: string;
   roundName: string;
@@ -32,6 +34,14 @@ export interface PorraEvaluation {
   exactScoreMatch: boolean;
   outcomeMatch: boolean;
   scorersMatchCount: number;
+  rewardTier: PackTier | null;
+}
+
+export interface PorraUnclaimedReward {
+  readonly match: PorraMatch;
+  readonly prediction: PorraPrediction;
+  readonly evaluation: PorraEvaluation;
+  readonly rewardTier: PackTier;
 }
 
 export interface PorraLeaderboardEntry {

@@ -1,7 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 
-export function PorraHeader() {
+interface PorraHeaderProps {
+  readonly onOpenRewards: () => void;
+}
+
+export function PorraHeader({ onOpenRewards }: PorraHeaderProps) {
   return (
     <header className="flex items-center justify-between border-b border-[var(--border)] pb-3">
       <div className="flex items-center gap-3">
@@ -22,9 +26,13 @@ export function PorraHeader() {
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="rounded-full bg-[#e2001a] px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">
-          Jornada
-        </span>
+        <button
+          type="button"
+          onClick={onOpenRewards}
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3.5 py-1.5 font-sans text-xs font-bold text-[var(--foreground)] shadow-2xs transition-colors hover:border-[#e2001a] hover:text-[#e2001a] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
+        >
+          <span>Recompensas</span>
+        </button>
       </div>
     </header>
   );

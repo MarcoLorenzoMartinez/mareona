@@ -1,8 +1,31 @@
-import type { PorraPrediction, PorraMatch, PorraEvaluation } from './types';
+import type { PackTier } from '../cards/types.ts';
+import type {
+  PorraPrediction,
+  PorraMatch,
+  PorraEvaluation,
+  PorraUnclaimedReward,
+} from './types.ts';
 
 export const EXACT_SCORE_POINTS = 5;
 export const OUTCOME_POINTS = 2;
 export const SCORER_POINTS = 1;
+
+/**
+ * Resolves the booster pack tier earned for a given matchday points total.
+ * - 0 points: null (no reward)
+ * - 1 to 2 points: 'aficionado'
+ * - 3 to 4 points: 'rojiblanco'
+ * - 5+ points: 'leyenda'
+ *
+ * @param points - Total points earned in the matchday prediction.
+ * @returns Earned PackTier or null if 0 points.
+ */
+export function getPorraRewardTier(points: number): PackTier | null {
+  if (points >= 5) return 'leyenda';
+  if (points >= 3) return 'rojiblanco';
+  if (points >= 1) return 'aficionado';
+  return null;
+}
 
 /**
  * Window before kickoff after which prediction submissions are strictly forbidden.
@@ -57,6 +80,7 @@ export function evaluatePorraPrediction(
       exactScoreMatch: false,
       outcomeMatch: false,
       scorersMatchCount: 0,
+      rewardTier: null,
     };
   }
 
@@ -94,5 +118,46 @@ export function evaluatePorraPrediction(
     exactScoreMatch,
     outcomeMatch,
     scorersMatchCount,
+    rewardTier: getPorraRewardTier(points),
   };
+}
+
+/**
+ * Computes all unclaimed booster pack rewards across finished matches.
+ * Accumulates rewards from any number of past matches that have not yet been claimed.
+ *
+ * @param finishedMatches - Completed matches with official final scores.
+ * @param predictionsByMatchId - User predictions indexed by match ID.
+ * @param claimedMatchIds - Set of match IDs whose rewards were already claimed.
+ * @returns List of unclaimed rewards sorted from most recent match to oldest.
+ */
+export function resolveUnclaimedPorraRewards(
+  finishedMatches: readonly PorraMatch[],
+  predictionsByMatchId: Readonly<Record<string, PorraPrediction>>,
+  claimedMatchIds: ReadonlySet<string>
+): PorraUnclaimedReward[] {
+  const unclaimed: PorraUnclaimedReward[] = [];
+
+  for (const match of finishedMatches) {
+    if (!match.isFinished) continue;
+    if (match.actualHomeScore === undefined || match.actualAwayScore === undefined) continue;
+    if (claimedMatchIds.has(match.id)) continue;
+
+    const prediction = predictionsByMatchId[match.id];
+    if (!prediction) continue;
+
+    const evaluation = evaluatePorraPrediction(prediction, match);
+    if (evaluation.rewardTier !== null) {
+      unclaimed.push({
+        match,
+        prediction,
+        evaluation,
+        rewardTier: evaluation.rewardTier,
+      });
+    }
+  }
+
+  return unclaimed.sort(
+    (a, b) => new Date(b.match.kickoffAt).getTime() - new Date(a.match.kickoffAt).getTime()
+  );
 }
