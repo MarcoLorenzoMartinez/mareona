@@ -53,7 +53,7 @@ const SECTIONS: readonly LegalSection[] = [
           datos que no se envían a ningún tercero:
         </LegalP>
         <LegalList>
-          <li>Progreso y estadísticas de Wordle, ¿Quién es?, Pregunta del día y Mayor/Menor.</li>
+          <li>Progreso y estadísticas de Wordle, ¿Quién es?, Pregunta del día y ¿Más o Menos?.</li>
           <li>Tus votos y valoraciones en partidos, encuestas y porra.</li>
           <li>Sobres y cromos de tu colección.</li>
         </LegalList>

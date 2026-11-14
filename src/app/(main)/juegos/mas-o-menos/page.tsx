@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { HigherLowerClient } from './higher-lower-client';
 
 export const metadata: Metadata = {
-  title: '¿Mayor o Menor?',
+  title: '¿Más o Menos?',
   description: 'Compara futbolistas del Real Sporting por partidos, goles y minutos.',
 };
 

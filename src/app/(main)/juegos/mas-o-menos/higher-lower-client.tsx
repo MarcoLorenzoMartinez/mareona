@@ -1,4 +1,4 @@
-// Client: Orquestador interactivo del juego Mayor o Menor
+// Client: Orquestador interactivo del juego Más o Menor
 'use client';
 
 import React, { useState, useCallback, useTransition } from 'react';

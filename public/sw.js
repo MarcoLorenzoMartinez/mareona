@@ -20,7 +20,7 @@ const PRECACHE_PATHS = [
   "/juegos",
   "/juegos/wordle",
   "/juegos/pregunta-del-dia",
-  "/juegos/mayor-menor",
+  "/juegos/mas-o-menos",
   "/historico",
   "/historico/comparador",
   "/historico/efemerides",

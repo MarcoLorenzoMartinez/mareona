@@ -140,7 +140,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
         attemptVersion={stats.played}
       />
 
-      {/* Unified Results Modal aligned with Wordle and Mayor o Menor */}
+      {/* Unified Results Modal aligned with Wordle and Más o Menos */}
       <TriviaResultModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

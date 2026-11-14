@@ -66,6 +66,11 @@ const nextConfig: NextConfig = {
         destination: "/juegos/quien-es",
         permanent: true,
       },
+      {
+        source: "/juegos/mayor-menor",
+        destination: "/juegos/mas-o-menos",
+        permanent: true,
+      },
     ];
   },
   experimental: {

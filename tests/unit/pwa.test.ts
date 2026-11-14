@@ -136,7 +136,7 @@ describe("isOfflineRoute evaluation", () => {
     assert.equal(isOfflineRoute("/juegos"), true);
     assert.equal(isOfflineRoute("/juegos/wordle"), true);
     assert.equal(isOfflineRoute("/juegos/pregunta-del-dia"), true);
-    assert.equal(isOfflineRoute("/juegos/mayor-menor"), true);
+    assert.equal(isOfflineRoute("/juegos/mas-o-menos"), true);
   });
 
   it("marks live network-dependent routes as requiring network", () => {

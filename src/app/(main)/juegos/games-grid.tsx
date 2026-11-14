@@ -43,10 +43,10 @@ const GAMES: readonly GameItem[] = [
     href: "/juegos/quien-es",
   },
   {
-    id: "mayor-menor",
-    title: "¿Mayor o Menor?",
+    id: "mas-o-menos",
+    title: "¿Más o Menos?",
     tag: "Récord",
-    href: "/juegos/mayor-menor",
+    href: "/juegos/mas-o-menos",
   },
 ];
 

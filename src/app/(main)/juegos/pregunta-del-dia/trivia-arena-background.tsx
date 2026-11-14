@@ -6,7 +6,7 @@ interface TriviaArenaBackgroundProps {
 
 /**
  * Atmospheric background backdrop for "La Pregunta del Día".
- * Mirrors Mareona's design system seen in Wordle and Mayor o Menor,
+ * Mirrors Mareona's design system seen in Wordle and Más o Menos,
  * featuring an authentic El Molinón overlay to banish empty AI-template look.
  */
 export function TriviaArenaBackground({ className = '' }: TriviaArenaBackgroundProps) {

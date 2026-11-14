@@ -38,7 +38,7 @@ La aplicación contará con cuatro áreas verticales de primer nivel en la naveg
 
 - **La Porra de El Molinón:** pronósticos, puntos y ranking.
 - **Trivias semanales.**
-- **Wordle Sportinguista, ¿Quién es? y ¿Mayor o Menor?.**
+- **Wordle Sportinguista, ¿Quién es? y ¿Más o Menos?.**
 - **Álbum de Cromos (Memoria Rojiblanca):** apertura de sobres diarios, misiones y colección histórica.
 - **Futura Expansión Post-Lanzamiento:** Duelos tácticos 11 vs 11 con los cromos del álbum (ver detalle en `docs/DUELOS_11VS11_SPEC.md`).
 

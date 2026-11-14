@@ -7,7 +7,7 @@ export const OFFLINE_PRECACHE_PATHS = [
   "/juegos",
   "/juegos/wordle",
   "/juegos/pregunta-del-dia",
-  "/juegos/mayor-menor",
+  "/juegos/mas-o-menos",
   "/historico",
   "/historico/comparador",
   "/historico/efemerides",
@@ -23,7 +23,7 @@ export interface OfflineLink {
 export const OFFLINE_GAME_LINKS: readonly OfflineLink[] = [
   { href: "/juegos/wordle", label: "Wordle" },
   { href: "/juegos/pregunta-del-dia", label: "Pregunta del día" },
-  { href: "/juegos/mayor-menor", label: "Mayor o menor" },
+  { href: "/juegos/mas-o-menos", label: "Más o menos" },
 ];
 
 export const OFFLINE_ARCHIVE_LINKS: readonly OfflineLink[] = [

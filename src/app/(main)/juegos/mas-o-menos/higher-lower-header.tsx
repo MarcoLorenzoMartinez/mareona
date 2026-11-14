@@ -32,7 +32,7 @@ export function HigherLowerHeader({
         </Link>
         <div>
           <h1 className="text-xl font-bold tracking-tight text-neutral-900">
-            ¿Mayor o Menor?
+            ¿Más o Menos?
           </h1>
         </div>
       </div>

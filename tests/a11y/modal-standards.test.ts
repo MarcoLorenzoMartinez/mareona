@@ -11,7 +11,7 @@ describe("Accessibility & WCAG 2.2 AA Modal Dialog Standards", () => {
     "src/components/lineup-builder/roster-modal.tsx",
     "src/components/lineup-builder/share-lineup-modal.tsx",
     "src/app/(main)/juegos/album/pack-opening-modal.tsx",
-    "src/app/(main)/juegos/mayor-menor/higher-lower-game-over-modal.tsx",
+    "src/app/(main)/juegos/mas-o-menos/higher-lower-game-over-modal.tsx",
     "src/app/(main)/juegos/pregunta-del-dia/trivia-result-modal.tsx",
     "src/app/(main)/juegos/quien-es/who-are-ya-stats-modal.tsx",
     "src/app/(main)/juegos/wordle/wordle-stats-modal.tsx",

@@ -1,4 +1,4 @@
-// Client: Modal de fin de partida accesible para Mayor o Menor con resumen de racha
+// Client: Modal de fin de partida accesible para Más o Menor con resumen de racha
 "use client";
 
 import React from "react";

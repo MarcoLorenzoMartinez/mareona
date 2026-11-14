@@ -173,11 +173,11 @@ Puedes ilustrar cada pantalla con capturas reales cuando lo consideres oportuno:
 -->
 [Describe aquí ¿Quién es?...]
 
-#### ¿Mayor o Menor? (`/juegos/mayor-menor`)
+#### ¿Más o Menos? (`/juegos/mas-o-menos`)
 <!--
 - Minijuego estadístico de comparación de registros y récords de futbolistas rojiblancos.
 -->
-[Describe aquí ¿Mayor o Menor?...]
+[Describe aquí ¿Más o Menos?...]
 
 ---
 
