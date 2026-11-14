@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { fetchNextFixture, fetchSportingSeasonMatches } from "@/lib/sports-api/client";
+import { fetchSpotlightFixture, fetchSportingSeasonMatches } from "@/lib/sports-api/client";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 
 /**
@@ -10,7 +10,7 @@ import type { DomainMatchSummary } from "@/lib/sports-api/types";
  */
 export async function getLiveNextFixtureUpdate(): Promise<DomainMatchSummary | null> {
   const supabase = await createClient();
-  return fetchNextFixture(supabase);
+  return fetchSpotlightFixture(supabase);
 }
 
 /**

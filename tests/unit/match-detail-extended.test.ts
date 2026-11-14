@@ -255,3 +255,81 @@ test("transformEspnMatchDetail maps missed penalty correctly and does not produc
   assert.equal(penaltyEvent.score, undefined);
 });
 
+test("transformEspnMatchDetail maps Penalty - Scored to goal and detects double yellow card correctly", () => {
+  const sampleMatch = {
+    header: {
+      id: "401883134",
+      league: { id: "3921", name: "Spanish LALIGA 2" },
+      season: { year: 2026, name: "2026-27 Spanish LALIGA 2" },
+      competitions: [
+        {
+          id: "401883134",
+          date: "2026-11-14T15:15Z",
+          timeValid: true,
+          status: { type: { state: "post", completed: true, description: "Full Time" } },
+          competitors: [
+            { id: "3742", homeAway: "home", score: "2", team: { id: "3742", displayName: "Real Sociedad B" } },
+            { id: "3788", homeAway: "away", score: "2", team: { id: "3788", displayName: "Sporting Gijón" } },
+          ],
+        },
+      ],
+    },
+    keyEvents: [
+      {
+        id: "ev1",
+        type: { id: "98", text: "Penalty - Scored", type: "penalty---scored" },
+        text: "Àlex Corredera (Sporting Gijón) Penalty - Scored at 7'",
+        clock: { value: 420, displayValue: "7'" },
+        scoringPlay: true,
+        team: { id: "3788", displayName: "Sporting Gijón" },
+        participants: [{ athlete: { id: "261615", displayName: "Àlex Corredera" } }],
+      },
+      {
+        id: "ev2",
+        type: { id: "94", text: "Yellow Card", type: "yellow-card" },
+        text: "Àlex Corredera (Sporting Gijón) Yellow Card at 46'",
+        clock: { value: 2760, displayValue: "46'" },
+        scoringPlay: false,
+        team: { id: "3788", displayName: "Sporting Gijón" },
+        participants: [{ athlete: { id: "261615", displayName: "Àlex Corredera" } }],
+      },
+      {
+        id: "ev3",
+        type: { id: "93", text: "Red Card", type: "red-card" },
+        text: "Àlex Corredera (Sporting Gijón) Red Card at 80'",
+        clock: { value: 4800, displayValue: "80'" },
+        scoringPlay: false,
+        team: { id: "3788", displayName: "Sporting Gijón" },
+        participants: [{ athlete: { id: "261615", displayName: "Àlex Corredera" } }],
+      },
+    ],
+  };
+
+  const parsed = espnMatchSummaryResponseSchema.safeParse(sampleMatch);
+  assert.equal(parsed.success, true);
+  if (!parsed.success) return;
+
+  const detail = transformEspnMatchDetail(parsed.data, 14);
+  assert.ok(detail);
+  assert.equal(detail.events.length, 3);
+
+  // 1. Min 7 Penalty - Scored must be a GOAL, not a red card
+  const goalEvent = detail.events[0];
+  assert.equal(goalEvent.type, "goal");
+  assert.equal(goalEvent.minute, "7'");
+  assert.equal(goalEvent.player.name, "Àlex Corredera");
+  assert.equal(goalEvent.score, "0 - 1");
+  assert.equal(goalEvent.isPenalty, true);
+
+  // 2. Min 46 Yellow Card
+  const yellowEvent = detail.events[1];
+  assert.equal(yellowEvent.type, "yellowCard");
+  assert.equal(yellowEvent.minute, "46'");
+
+  // 3. Min 80 Red Card is flagged as double yellow because Corredera had yellow at 46'
+  const redEvent = detail.events[2];
+  assert.equal(redEvent.type, "redCard");
+  assert.equal(redEvent.minute, "80'");
+  assert.equal(redEvent.isSecondYellow, true);
+});
+

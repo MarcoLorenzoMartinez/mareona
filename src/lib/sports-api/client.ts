@@ -33,6 +33,7 @@ import {
 import { fetchFotMobAdvancedStats } from "./fotmob.ts";
 import { fetchSportingCopaMatches } from "./copa.ts";
 import { fetchFotMobMatchDetail } from "./fotmob-match-detail.ts";
+import { resolveSpotlightFixture } from "./spotlight-fixture.ts";
 import { triggerCardSyncForFinishedMatch } from "../cards/card-catalog-sync.ts";
 import type { createClient } from "@/lib/supabase/server";
 import { createLogger } from "../logger/core.ts";
@@ -301,6 +302,24 @@ export async function fetchNextFixture(
   }
 
   return domainMatch;
+}
+
+/**
+ * Fetches the spotlight match for the home hero card.
+ * Adheres to the 00:00 editorial transition rule:
+ * - Keeps finished weekend match results visible Saturday, Sunday and Monday.
+ * - Flips to the next upcoming match on Tuesday at 00:00 (Europe/Madrid).
+ * - For midweek matches, displays result on matchday and next day, flipping at 00:00 of the 2nd day.
+ * - Live matches always take immediate 100% priority.
+ *
+ * @param supabase Optional scoped Supabase client.
+ * @returns DomainMatchSummary for the spotlight hero card, or null.
+ */
+export async function fetchSpotlightFixture(
+  supabase?: SupabaseServerClient | null
+): Promise<DomainMatchSummary | null> {
+  const matches = await fetchSportingSeasonMatches(supabase);
+  return resolveSpotlightFixture(matches);
 }
 
 /** In-memory cache for season matches to eliminate navigation delays. */

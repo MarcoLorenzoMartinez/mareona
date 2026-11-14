@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { fetchStandings, fetchNextFixture } from "@/lib/sports-api/client";
+import { fetchStandings, fetchSpotlightFixture } from "@/lib/sports-api/client";
 import {
   getSeasonLabel,
   type DomainStandingRow,
@@ -21,7 +21,7 @@ export default async function HomePage() {
   try {
     const [standingsRes, matchRes] = await Promise.allSettled([
       fetchStandings(undefined, undefined, { includeSplits: false }),
-      fetchNextFixture(),
+      fetchSpotlightFixture(),
     ]);
 
     if (standingsRes.status === "fulfilled" && standingsRes.value.length > 0) {

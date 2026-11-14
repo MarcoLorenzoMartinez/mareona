@@ -297,6 +297,8 @@ export interface DomainMatchEvent {
   readonly teamId: string;
   readonly isSporting: boolean;
   readonly isHome: boolean;
+  readonly isSecondYellow?: boolean;
+  readonly isPenalty?: boolean;
   readonly score?: string;
   readonly player: {
     readonly id: string;
@@ -914,18 +916,39 @@ export function transformEspnMatchDetail(
 
     // 1. Determine event type strictly; NEVER default to "goal"
     let type: MatchEventType | null = null;
+    let isSecondYellow = false;
+    let isPenalty = false;
+
+    // Check for red card strictly (avoid substring matching on "red" which falsely matches "scored")
+    const isRedCardExplicit =
+      rawType.includes("red-card") ||
+      rawType.includes("red card") ||
+      rawType === "red" ||
+      rawType.startsWith("red ") ||
+      rawType.endsWith(" red") ||
+      rawType.includes("straight-red") ||
+      rawType.includes("second-yellow") ||
+      rawType.includes("yellow-red") ||
+      rawText.includes("red card") ||
+      rawText.includes("second yellow") ||
+      e.type?.id === "93";
+
+    const isSecondYellowExplicit =
+      rawType.includes("second-yellow") ||
+      rawType.includes("second yellow") ||
+      rawText.includes("second yellow") ||
+      rawType.includes("yellow-red");
+
     if (
       rawType.includes("yellow") &&
       !rawType.includes("second") &&
-      !rawText.includes("second yellow")
+      !rawText.includes("second yellow") &&
+      !isRedCardExplicit
     ) {
       type = "yellowCard";
-    } else if (
-      rawType.includes("red") ||
-      rawType.includes("second-yellow") ||
-      rawText.includes("second yellow")
-    ) {
+    } else if (isRedCardExplicit) {
       type = "redCard";
+      isSecondYellow = isSecondYellowExplicit;
     } else if (rawType.includes("sub")) {
       type = "substitution";
     } else if (
@@ -945,10 +968,21 @@ export function transformEspnMatchDetail(
         rawType === "goal" ||
         rawType === "own-goal" ||
         rawType === "penalty" ||
-        rawType === "penalty---scored" ||
-        rawText.includes("goal"))
+        rawType.includes("penalty - scored") ||
+        rawType.includes("penalty---scored") ||
+        rawText.includes("penalty - scored") ||
+        rawText.includes("goal") ||
+        e.type?.id === "70" ||
+        e.type?.id === "98")
     ) {
       type = "goal";
+      isPenalty =
+        rawType.includes("penalty - scored") ||
+        rawType.includes("penalty---scored") ||
+        rawType === "penalty" ||
+        rawText.includes("penalty - scored") ||
+        rawText.includes("penalti") ||
+        e.type?.id === "98";
     }
 
     // Ignore unhandled/administrative events (e.g. fouls, offsides, VAR reviews without goal)
@@ -986,6 +1020,8 @@ export function transformEspnMatchDetail(
       teamId: e.team?.id ?? "",
       isSporting,
       isHome,
+      isSecondYellow,
+      isPenalty: isPenalty ? true : undefined,
       player: {
         id: p0?.id ?? "",
         name: p0Name,
@@ -1001,8 +1037,32 @@ export function transformEspnMatchDetail(
     return a.minuteSort - b.minuteSort;
   });
 
+  // Track players who already received a yellow card to flag subsequent red cards as double-yellow
+  const seenYellowPlayers = new Set<string>();
+  const eventsWithSecondYellow: DomainMatchEvent[] = parsedEvents.map((ev) => {
+    const playerKey = ev.player.id || ev.player.name.toLowerCase().trim();
+
+    if (ev.type === "yellowCard" && playerKey) {
+      seenYellowPlayers.add(playerKey);
+      return ev;
+    }
+
+    if (ev.type === "redCard") {
+      const isSecondYellow =
+        Boolean(ev.isSecondYellow) ||
+        (playerKey ? seenYellowPlayers.has(playerKey) : false);
+
+      return {
+        ...ev,
+        isSecondYellow,
+      };
+    }
+
+    return ev;
+  });
+
   // Discard any phantom goals if the official finished match score for that team is 0
-  const validatedEvents = parsedEvents.filter((ev) => {
+  const validatedEvents = eventsWithSecondYellow.filter((ev) => {
     if (ev.type === "goal" && isFinished) {
       if (ev.isHome && homeScore === 0) return false;
       if (!ev.isHome && awayScore === 0) return false;

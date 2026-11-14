@@ -38,6 +38,11 @@ function EventDetails({ event, assistLabel, penaltyMissedLabel }: EventDetailsPr
     <div className={`flex flex-col ${event.isHome ? "items-end text-right" : "items-start text-left"}`}>
       <span className={`text-xs sm:text-sm text-[var(--foreground)] ${isGoal ? "font-semibold" : "font-medium"}`}>
         {playerName}
+        {event.isPenalty && (
+          <span className="ml-1 text-[11px] font-medium text-[var(--foreground-muted)]">
+            (pen.)
+          </span>
+        )}
       </span>
       {isGoal && secondaryName && (
         <span className="text-[10px] text-[var(--foreground-muted)]/75 font-normal">
@@ -79,6 +84,8 @@ export function EventRow({ event, assistLabel, penaltyMissedLabel }: EventRowPro
                 type={event.type}
                 isSporting={event.isSporting}
                 score={event.score}
+                isSecondYellow={event.isSecondYellow}
+                isPenalty={event.isPenalty}
               />
             )}
           </>
@@ -109,6 +116,8 @@ export function EventRow({ event, assistLabel, penaltyMissedLabel }: EventRowPro
                 type={event.type}
                 isSporting={event.isSporting}
                 score={event.score}
+                isSecondYellow={event.isSecondYellow}
+                isPenalty={event.isPenalty}
               />
             )}
             <EventDetails

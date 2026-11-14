@@ -125,15 +125,28 @@ export function parseFotMobMatchEvents(
 ): readonly DomainMatchEvent[] {
   const events: DomainMatchEvent[] = [];
 
+  const seenYellowPlayers = new Set<string>();
+
   for (const e of rawEvents) {
     if (!e.type || e.type === "Half") continue;
 
     let type: MatchEventType | null = null;
+    let isSecondYellow = false;
+    let isPenalty = false;
     const t = e.type.toLowerCase();
+    const cardStr = (e.card || "").toLowerCase();
+
     if (t.includes("goal")) {
       type = "goal";
+      if (t.includes("penalty") || (e.card || "").toLowerCase().includes("penalty")) {
+        isPenalty = true;
+      }
     } else if (t.includes("card")) {
-      type = (e.card || "").toLowerCase().includes("red") ? "redCard" : "yellowCard";
+      const isRed = cardStr.includes("red");
+      type = isRed ? "redCard" : "yellowCard";
+      if (isRed && (cardStr.includes("yellowred") || cardStr.includes("second"))) {
+        isSecondYellow = true;
+      }
     } else if (t.includes("sub")) {
       type = "substitution";
     }
@@ -149,6 +162,12 @@ export function parseFotMobMatchEvents(
     const playerName = e.player?.name || "";
     const playerId = String(e.player?.id ?? "");
 
+    if (type === "yellowCard" && playerId) {
+      seenYellowPlayers.add(playerId);
+    } else if (type === "redCard" && playerId && seenYellowPlayers.has(playerId)) {
+      isSecondYellow = true;
+    }
+
     events.push({
       id: String(e.eventId ?? `${minuteSort}_${playerId}`),
       type,
@@ -158,6 +177,8 @@ export function parseFotMobMatchEvents(
       teamId,
       isSporting,
       isHome,
+      isSecondYellow,
+      isPenalty: isPenalty ? true : undefined,
       player: {
         id: playerId,
         name: playerName,

@@ -27,6 +27,7 @@ export const es = {
     },
     match: {
       nextFixture: "Próximo Encuentro",
+      lastFixture: "Último Resultado",
       matchday: "Jornada",
       vs: "vs",
       at: "en",

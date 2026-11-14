@@ -49,6 +49,11 @@ export function HeroScoreboard({
             : timeLabel}
         </span>
       </div>
+      {isFinished && (
+        <span className="text-[10px] sm:text-[11px] font-semibold tracking-wider text-[var(--muted-foreground)] uppercase whitespace-nowrap mt-1 md:mt-0 md:absolute md:-bottom-5 md:left-1/2 md:-translate-x-1/2">
+          Final
+        </span>
+      )}
     </div>
   );
 }
