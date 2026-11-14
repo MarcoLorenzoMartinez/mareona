@@ -12,6 +12,8 @@ import {
   getEligiblePlayers,
   pickRandomPlayer,
   evaluateHigherLower,
+  getMetricValue,
+  formatMetricValue,
 } from '@/lib/higher-lower/engine';
 import {
   getStoredHigherLowerStats,
@@ -112,6 +114,7 @@ export function HigherLowerClient() {
   };
 
   const bestScoreForMode = stats.bestScoreByMode[mode] || 0;
+  const referenceValueFormatted = formatMetricValue(getMetricValue(leftPlayer, mode), mode);
 
   return (
     <div className="flex flex-col gap-3 sm:gap-6 max-w-4xl mx-auto w-full">
@@ -157,13 +160,15 @@ export function HigherLowerClient() {
           </div>
         </div>
 
-        {/* Controles unificados horizontalmente a la altura del pulgar */}
-        <div className="w-full max-w-md mx-auto mt-3 sm:mt-5 z-10">
-          <HigherLowerControls
-            onGuess={handleGuess}
-            disabled={isRevealed}
-          />
-        </div>
+        {/* Controles de juego: pregunta en Columna 1 y botones Más/Menos en Columna 2 */}
+        <HigherLowerControls
+          referenceValue={referenceValueFormatted}
+          mysteryPlayerName={rightPlayer.fullName || rightPlayer.name}
+          mode={mode}
+          outcome={guessOutcome}
+          onGuess={handleGuess}
+          disabled={isRevealed}
+        />
       </section>
 
       <HigherLowerGameOverModal
