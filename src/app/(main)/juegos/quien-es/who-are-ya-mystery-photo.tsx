@@ -1,9 +1,9 @@
-// Client: CSS SVG Pixelated photo for ¿Quién es?
+// Client: Fotografía con pixelado progresivo auténtico (Canvas 2D) para ¿Quién es?
 'use client';
 
-import React from 'react';
-import Image from 'next/image';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { getPixelationFactor } from '@/lib/who-are-ya/engine';
+import { PlayerAvatarFallback } from '@/components/media/player-avatar-fallback';
 
 interface WhoAreYaMysteryPhotoProps {
   imageUrl: string;
@@ -19,42 +19,113 @@ export function WhoAreYaMysteryPhoto({
   attemptsCount,
   isGameOver,
 }: WhoAreYaMysteryPhotoProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const cachedImgRef = useRef<HTMLImageElement | null>(null);
+  const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
+  const [hasError, setHasError] = useState(false);
+
   const factor = getPixelationFactor(attemptsCount, isGameOver);
-  const filterId = `pixelate-filter-${factor}`;
+  const isLoaded = loadedUrl === imageUrl && !hasError;
+
+  // Renderiza el pixelado auténtico redibujando a baja resolución sin suavizado
+  const drawPixelated = useCallback((img: HTMLImageElement, canvas: HTMLCanvasElement) => {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    if (factor <= 1 || isGameOver) {
+      // Resolución nativa nítida
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(img, 0, 0, w, h);
+      return;
+    }
+
+    // Técnica de pixelado: dibujar a escala miniatura y ampliar con interpolación desactivada
+    const scaledW = Math.max(1, Math.floor(w / factor));
+    const scaledH = Math.max(1, Math.floor(h / factor));
+
+    const offscreen = document.createElement('canvas');
+    offscreen.width = scaledW;
+    offscreen.height = scaledH;
+    const offCtx = offscreen.getContext('2d');
+    if (!offCtx) return;
+
+    offCtx.imageSmoothingEnabled = true;
+    offCtx.drawImage(img, 0, 0, scaledW, scaledH);
+
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(offscreen, 0, 0, scaledW, scaledH, 0, 0, w, h);
+  }, [factor, isGameOver]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    // Si la imagen ya está en memoria para esta URL, redibujamos inmediatamente con el nuevo factor
+    if (cachedImgRef.current && loadedUrl === imageUrl) {
+      drawPixelated(cachedImgRef.current, canvas);
+      return;
+    }
+
+    let isMounted = true;
+    const img = new window.Image();
+
+    // No se añade crossOrigin='anonymous' para evitar rechazo CORS de servidores externos
+    img.src = imageUrl;
+
+    img.onload = () => {
+      if (!isMounted) return;
+      cachedImgRef.current = img;
+      setLoadedUrl(imageUrl);
+      setHasError(false);
+      drawPixelated(img, canvas);
+    };
+
+    img.onerror = () => {
+      if (!isMounted) return;
+      setHasError(true);
+      setLoadedUrl(imageUrl);
+    };
+
+    return () => {
+      isMounted = false;
+    };
+  }, [imageUrl, loadedUrl, drawPixelated]);
 
   return (
     <div className="relative mx-auto flex flex-col items-center select-none">
-      {/* SVG Pixelation Filter inline */}
-      {!isGameOver && factor > 1 && (
-        <svg className="sr-only" aria-hidden="true" width="0" height="0">
-          <filter id={filterId} x="0" y="0" width="100%" height="100%">
-            <feFlood x="4" y="4" height="2" width="2" />
-            <feComposite width={factor} height={factor} />
-            <feTile result="a" />
-            <feComposite in="SourceGraphic" in2="a" operator="in" />
-            <feMorphology operator="dilate" radius={factor / 2} />
-          </filter>
-        </svg>
-      )}
-
-      <div className="relative h-48 w-48 overflow-hidden rounded-2xl border-2 border-[var(--border)] bg-[var(--surface)] shadow-md sm:h-56 sm:w-56 flex items-center justify-center">
-        <div
-          className="relative h-full w-full pointer-events-none transition-all duration-500 ease-out"
-          style={{
-            filter: !isGameOver && factor > 1 ? `url(#${filterId})` : 'none',
-          }}
-        >
-          <Image
-            src={imageUrl}
-            alt={isGameOver ? name : 'Jugador misterioso'}
-            fill
-            unoptimized
-            draggable={false}
-            className="object-cover select-none pointer-events-none"
-            sizes="(max-width: 640px) 192px, 224px"
-            priority
+      <div className="relative h-48 w-48 overflow-hidden rounded-2xl border-2 border-[var(--border)] bg-neutral-100 shadow-md sm:h-56 sm:w-56 flex items-center justify-center">
+        {/* Esqueleto de carga mientras se descarga la imagen */}
+        {!isLoaded && !hasError && (
+          <div
+            className="absolute inset-0 bg-neutral-200/80 animate-pulse flex items-center justify-center z-0"
+            aria-hidden="true"
           />
-        </div>
+        )}
+
+        {hasError ? (
+          <div className="flex flex-col items-center justify-center p-4 text-center z-10 w-full h-full">
+            <div className="h-24 w-24 mb-2">
+              <PlayerAvatarFallback teamColor="#e2001a" />
+            </div>
+            <span className="text-[11px] font-semibold text-neutral-500">
+              {isGameOver ? name : 'Foto no disponible'}
+            </span>
+          </div>
+        ) : (
+          <canvas
+            ref={canvasRef}
+            width={448}
+            height={448}
+            className={`h-full w-full object-cover pointer-events-none transition-opacity duration-300 ${
+              isLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            aria-label={isGameOver ? name : 'Jugador misterioso pixelado'}
+          />
+        )}
 
         {/* Capa de protección transparente para evitar arrastre y clic derecho */}
         {!isGameOver && (
