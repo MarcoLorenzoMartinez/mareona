@@ -22,10 +22,10 @@ export function WordleKeyboard({
   const getKeyClasses = (key: string) => {
     const status = letterStatuses[key];
     const base =
-      'flex items-center justify-center rounded-md font-bold text-xs sm:text-sm h-11 sm:h-12 active:scale-95 transition-transform duration-100 select-none';
+      'flex items-center justify-center rounded-md font-bold text-xs sm:text-sm h-9 min-[380px]:h-10 sm:h-12 active:scale-95 transition-transform duration-100 select-none touch-manipulation';
 
     if (key === 'ENTER' || key === 'DEL') {
-      return `${base} px-2 sm:px-3 text-[11px] sm:text-xs bg-zinc-200 hover:bg-zinc-300 text-zinc-800 border border-zinc-300`;
+      return `${base} px-1.5 sm:px-3 text-[10px] sm:text-xs bg-zinc-200 hover:bg-zinc-300 text-zinc-800 border border-zinc-300`;
     }
 
     if (status === 'correct') {
@@ -44,7 +44,7 @@ export function WordleKeyboard({
   return (
     <div
       aria-label="Teclado virtual"
-      className="mx-auto flex flex-col gap-1.5 w-full max-w-[480px] p-1"
+      className="mx-auto flex flex-col gap-1 sm:gap-1.5 w-full max-w-[480px] p-0.5 sm:p-1"
     >
       {KEYBOARD_ROWS.map((row, rowIndex) => (
         <div key={rowIndex} className="flex justify-center gap-1 sm:gap-1.5 w-full">

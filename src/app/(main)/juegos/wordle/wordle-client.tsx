@@ -61,7 +61,7 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4 max-w-xl mx-auto w-full">
+    <div className="flex flex-col gap-2 sm:gap-4 max-w-xl mx-auto w-full">
       <WordleHeader
         onOpenArchive={() => setIsArchiveOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
