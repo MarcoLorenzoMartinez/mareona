@@ -36,7 +36,7 @@ export const OFFLINE_ARCHIVE_LINKS: readonly OfflineLink[] = [
 /**
  * Evaluates whether a given pathname is supported offline.
  * Historical archive and daily games operate offline; live screens, porra,
- * album, who-are-ya and social require network.
+ * album, quien-es and social require network.
  */
 export function isOfflineRoute(pathname: string): boolean {
   const cleanPath = pathname.split(/[?#]/)[0];
@@ -46,6 +46,7 @@ export function isOfflineRoute(pathname: string): boolean {
     if (
       cleanPath.startsWith("/juegos/porra") ||
       cleanPath.startsWith("/juegos/album") ||
+      cleanPath.startsWith("/juegos/quien-es") ||
       cleanPath.startsWith("/juegos/who-are-ya")
     ) {
       return false;
@@ -59,6 +60,7 @@ export function isOfflineRoute(pathname: string): boolean {
 const OFFLINE_BLOCK_REASONS: readonly (readonly [string, string])[] = [
   ["/juegos/porra", "La Porra necesita internet para guardar tus pronósticos."],
   ["/juegos/album", "Memoria Rojiblanca necesita internet para sincronizar tus cromos."],
+  ["/juegos/quien-es", "¿Quién es? necesita internet para cargar las fotos."],
   ["/juegos/who-are-ya", "¿Quién es? necesita internet para cargar las fotos."],
   ["/temporada", "Temporada necesita internet para mostrar datos al día."],
   ["/social", "Social necesita internet para cargar la conversación."],

@@ -13,7 +13,7 @@ describe("Accessibility & WCAG 2.2 AA Modal Dialog Standards", () => {
     "src/app/(main)/juegos/album/pack-opening-modal.tsx",
     "src/app/(main)/juegos/mayor-menor/higher-lower-game-over-modal.tsx",
     "src/app/(main)/juegos/pregunta-del-dia/trivia-result-modal.tsx",
-    "src/app/(main)/juegos/who-are-ya/who-are-ya-stats-modal.tsx",
+    "src/app/(main)/juegos/quien-es/who-are-ya-stats-modal.tsx",
     "src/app/(main)/juegos/wordle/wordle-stats-modal.tsx",
     "src/app/(main)/social/friends-modal.tsx",
     "src/app/(main)/social/user-profile-modal.tsx",

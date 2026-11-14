@@ -40,7 +40,7 @@ const GAMES: readonly GameItem[] = [
     id: "quien-es",
     title: "¿Quién es?",
     tag: "Diario",
-    href: "/juegos/who-are-ya",
+    href: "/juegos/quien-es",
   },
   {
     id: "mayor-menor",

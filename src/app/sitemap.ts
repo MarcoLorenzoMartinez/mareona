@@ -19,7 +19,7 @@ const CANONICAL_PUBLIC_ROUTES: readonly RouteConfig[] = [
   { path: "/juegos", changeFrequency: "daily", priority: 0.8 },
   { path: "/juegos/porra", changeFrequency: "daily", priority: 0.8 },
   { path: "/juegos/wordle", changeFrequency: "daily", priority: 0.7 },
-  { path: "/juegos/who-are-ya", changeFrequency: "daily", priority: 0.7 },
+  { path: "/juegos/quien-es", changeFrequency: "daily", priority: 0.7 },
   { path: "/juegos/pregunta-del-dia", changeFrequency: "daily", priority: 0.7 },
   { path: "/juegos/mayor-menor", changeFrequency: "daily", priority: 0.7 },
   { path: "/juegos/album", changeFrequency: "weekly", priority: 0.7 },

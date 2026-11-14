@@ -112,6 +112,7 @@ describe("Service worker precache list", () => {
     for (const path of [
       "/juegos/porra",
       "/juegos/album",
+      "/juegos/quien-es",
       "/juegos/who-are-ya",
       "/social",
       "/perfil",
@@ -145,6 +146,7 @@ describe("isOfflineRoute evaluation", () => {
     assert.equal(isOfflineRoute("/perfil"), false);
     assert.equal(isOfflineRoute("/juegos/porra"), false);
     assert.equal(isOfflineRoute("/juegos/album"), false);
+    assert.equal(isOfflineRoute("/juegos/quien-es"), false);
     assert.equal(isOfflineRoute("/juegos/who-are-ya"), false);
   });
 });
@@ -161,6 +163,7 @@ describe("getOfflineBlockCopy", () => {
     assert.match(getOfflineBlockCopy("/social")?.description ?? "", /Social/);
     assert.match(getOfflineBlockCopy("/juegos/porra")?.description ?? "", /Porra/);
     assert.match(getOfflineBlockCopy("/juegos/album")?.description ?? "", /Memoria Rojiblanca/);
+    assert.match(getOfflineBlockCopy("/juegos/quien-es")?.description ?? "", /Quién es/);
     assert.match(getOfflineBlockCopy("/juegos/who-are-ya")?.description ?? "", /Quién es/);
     assert.match(getOfflineBlockCopy("/")?.description ?? "", /Inicio/);
   });
