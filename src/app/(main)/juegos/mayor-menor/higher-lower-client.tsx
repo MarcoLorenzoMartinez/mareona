@@ -2,12 +2,7 @@
 'use client';
 
 import React, { useState, useCallback, useTransition } from 'react';
-import type {
-  HigherLowerMode,
-  HigherLowerPlayer,
-  HigherLowerGuess,
-  HigherLowerStats,
-} from '@/lib/higher-lower/types';
+import type { HigherLowerMode, HigherLowerPlayer, HigherLowerGuess, HigherLowerStats } from '@/lib/higher-lower/types';
 import {
   getEligiblePlayers,
   pickRandomPlayer,
@@ -134,13 +129,8 @@ export function HigherLowerClient() {
 
         {/* Tarjetas enfrentadas permanentemente en 2 columnas (móvil y escritorio) */}
         <div className="relative grid grid-cols-2 gap-2 sm:gap-8 items-stretch justify-items-center w-full z-10 max-w-3xl mx-auto">
-          {/* Tarjeta 1 (Izquierda: Jugador de referencia) */}
           <div className="flex flex-col items-center w-full">
-            <HigherLowerCard
-              player={leftPlayer}
-              mode={mode}
-              isRevealed={true}
-            />
+            <HigherLowerCard player={leftPlayer} mode={mode} isRevealed={true} />
           </div>
 
           {/* Insignia Central VS perfectamente centrada entre ambas tarjetas */}
@@ -148,7 +138,6 @@ export function HigherLowerClient() {
             VS
           </div>
 
-          {/* Tarjeta 2 (Derecha: Jugador misterioso) */}
           <div className="flex flex-col items-center w-full">
             <HigherLowerCard
               player={rightPlayer}
@@ -163,7 +152,7 @@ export function HigherLowerClient() {
         {/* Controles de juego: pregunta en Columna 1 y botones Más/Menos en Columna 2 */}
         <HigherLowerControls
           referenceValue={referenceValueFormatted}
-          mysteryPlayerName={rightPlayer.fullName || rightPlayer.name}
+          mysteryPlayerName={rightPlayer.name || rightPlayer.fullName}
           mode={mode}
           outcome={guessOutcome}
           onGuess={handleGuess}

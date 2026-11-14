@@ -52,9 +52,9 @@ export function HigherLowerCard({
           {player.position}
         </span>
 
-        {/* Nombre del jugador */}
+        {/* Nombre conocido/deportivo del jugador */}
         <h2 className="mt-0.5 sm:mt-1 text-xs sm:text-base font-bold text-neutral-900 min-h-[32px] sm:min-h-[46px] flex items-center justify-center line-clamp-2 px-1 leading-snug">
-          {player.fullName || player.name}
+          {player.name || player.fullName}
         </h2>
       </div>
 
