@@ -22,6 +22,7 @@ import {
   TTL_SQUAD_MS,
   resolveMatchDetailTtlMs,
 } from "./cache.ts";
+import { PRE_MATCH_POLL_WINDOW_MS } from "./live-poll.ts";
 import {
   fetchEspnLiveStandings,
   fetchEspnSportingMatch,
@@ -191,12 +192,20 @@ export async function fetchNextFixture(
   if (supabase) {
     const cached = await getCachedPayload<DomainMatchSummary>(supabase, cacheKey);
     if (cached) {
-      memoryCachedNextFixture = {
-        teamId,
-        data: cached,
-        expiresAt: now + TTL_FIXTURES_MS,
-      };
-      return cached;
+      const isNearOrPastKickoff =
+        cached.status === "scheduled" &&
+        new Date(cached.kickoffAt).getTime() - now <= PRE_MATCH_POLL_WINDOW_MS;
+      if (isNearOrPastKickoff) {
+        // Cache is stale! The match should be starting or in progress. Re-fetch fresh.
+      } else {
+        const ttl = resolveMatchDetailTtlMs(cached.status, cached.kickoffAt, now);
+        memoryCachedNextFixture = {
+          teamId,
+          data: cached,
+          expiresAt: now + ttl,
+        };
+        return cached;
+      }
     }
   }
 
@@ -207,8 +216,7 @@ export async function fetchNextFixture(
     const nextChronological = upcoming.length > 0 ? upcoming[0] : null;
 
     if (nextChronological) {
-      const isLive = nextChronological.status === "live";
-      const ttl = isLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+      const ttl = resolveMatchDetailTtlMs(nextChronological.status, nextChronological.kickoffAt, now);
       memoryCachedNextFixture = {
         teamId,
         data: nextChronological,
@@ -228,8 +236,7 @@ export async function fetchNextFixture(
 
     const liveMatch = await fetchEspnSportingMatch();
     if (liveMatch) {
-      const isLive = liveMatch.status === "live";
-      const ttl = isLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+      const ttl = resolveMatchDetailTtlMs(liveMatch.status, liveMatch.kickoffAt, now);
       memoryCachedNextFixture = {
         teamId,
         data: liveMatch,
@@ -326,13 +333,22 @@ export async function fetchSportingSeasonMatches(
   if (supabase) {
     const cached = await getCachedPayload<DomainMatchSummary[]>(supabase, cacheKey);
     if (cached) {
-      const hasLive = cached.some((m) => m.status === "live");
-      const ttl = hasLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
-      memoryCachedSeasonMatches = {
-        data: cached,
-        expiresAt: now + ttl,
-      };
-      return cached;
+      const hasStaleScheduled = cached.some(
+        (m) =>
+          m.status === "scheduled" &&
+          new Date(m.kickoffAt).getTime() - now <= PRE_MATCH_POLL_WINDOW_MS
+      );
+      if (hasStaleScheduled) {
+        // A scheduled match has entered the kickoff window; re-fetch from vendor to detect live kickoff
+      } else {
+        const hasLive = cached.some((m) => m.status === "live");
+        const ttl = hasLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+        memoryCachedSeasonMatches = {
+          data: cached,
+          expiresAt: now + ttl,
+        };
+        return cached;
+      }
     }
   }
 

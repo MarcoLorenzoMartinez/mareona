@@ -3,12 +3,13 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { getLiveNextFixtureUpdate } from "./live-actions";
-import { LIVE_POLL_INTERVAL_MS } from "@/lib/sports-api/live-poll";
+import { LIVE_POLL_INTERVAL_MS, shouldPollMatch } from "@/lib/sports-api/live-poll";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 
 /**
  * React hook that manages live polling for the spotlighted next fixture.
- * Polling triggers only when the match is in progress ('live') and pauses when the tab is hidden.
+ * Polling triggers when the match is in progress ('live') or entering scheduled kickoff window,
+ * and pauses when the tab is hidden or when the match is officially 'finished'.
  *
  * @param initialMatch Pre-rendered match summary state from Server Component.
  * @returns Current match summary state and isLive indicator.
@@ -32,7 +33,13 @@ export function useLiveFixturePoll(initialMatch: DomainMatchSummary | null) {
   }, []);
 
   useEffect(() => {
-    if (!isLive) return;
+    const shouldPoll = shouldPollMatch(match?.status, true, match?.kickoffAt);
+    if (!shouldPoll) return;
+
+    // Immediately fetch upon mount when in polling window to get live status without waiting
+    const initialTimer = setTimeout(() => {
+      void fetchUpdate();
+    }, 0);
 
     const intervalId = setInterval(fetchUpdate, LIVE_POLL_INTERVAL_MS);
 
@@ -45,10 +52,11 @@ export function useLiveFixturePoll(initialMatch: DomainMatchSummary | null) {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      clearTimeout(initialTimer);
       clearInterval(intervalId);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [isLive, fetchUpdate]);
+  }, [match?.status, match?.kickoffAt, fetchUpdate]);
 
   return { match, isLive };
 }

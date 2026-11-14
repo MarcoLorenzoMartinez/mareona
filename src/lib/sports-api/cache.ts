@@ -9,13 +9,33 @@ export const TTL_SQUAD_MS = 24 * 60 * 60 * 1000; // 24 hours
 type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
 /**
- * Resolves the appropriate cache TTL for a match depending on whether it is live in play.
+ * Resolves the appropriate cache TTL for a match depending on whether it is live in play
+ * or close to its scheduled kickoff time.
  *
  * @param status The match status ('scheduled' | 'live' | 'finished').
- * @returns TTL in milliseconds (15s for live, 12h for scheduled/finished).
+ * @param kickoffAt Optional kickoff date string.
+ * @param now Current timestamp in ms.
+ * @returns TTL in milliseconds (15s for live or near-kickoff, 12h for finished/distant).
  */
-export function resolveMatchDetailTtlMs(status: string): number {
-  return status === "live" ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+export function resolveMatchDetailTtlMs(
+  status: string,
+  kickoffAt?: string | null,
+  now: number = Date.now()
+): number {
+  if (status === "live") return TTL_LIVE_MATCH_MS;
+  if (status === "finished") return TTL_FIXTURES_MS;
+  if (status === "scheduled" && kickoffAt) {
+    const kickoffMs = new Date(kickoffAt).getTime();
+    if (!Number.isNaN(kickoffMs)) {
+      const diff = kickoffMs - now;
+      // If within 30 minutes before kickoff or past kickoff, use short TTL to detect kickoff
+      if (diff <= 30 * 60 * 1000) {
+        return TTL_LIVE_MATCH_MS;
+      }
+      return Math.min(TTL_FIXTURES_MS, diff);
+    }
+  }
+  return TTL_FIXTURES_MS;
 }
 
 /**

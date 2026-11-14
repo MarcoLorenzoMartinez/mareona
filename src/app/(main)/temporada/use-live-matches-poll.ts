@@ -3,12 +3,12 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { getLiveSeasonMatchesUpdate } from "./live-actions";
-import { LIVE_POLL_INTERVAL_MS } from "@/lib/sports-api/live-poll";
+import { LIVE_POLL_INTERVAL_MS, shouldPollMatchesList } from "@/lib/sports-api/live-poll";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 
 /**
  * React hook that manages live polling for the season matches list.
- * Automatically activates only when at least one match has status 'live'.
+ * Automatically activates when at least one match is in play or entering kickoff window.
  * Pauses when browser tab is hidden to save mobile battery and bandwidth.
  *
  * @param initialMatches Pre-rendered matches list from Server Component.
@@ -33,7 +33,13 @@ export function useLiveMatchesPoll(initialMatches: readonly DomainMatchSummary[]
   }, []);
 
   useEffect(() => {
-    if (!hasLiveMatch) return;
+    const shouldPoll = shouldPollMatchesList(matches, true);
+    if (!shouldPoll) return;
+
+    // Immediately fetch upon mount when in polling window to get live status without waiting
+    const initialTimer = setTimeout(() => {
+      void fetchUpdate();
+    }, 0);
 
     const intervalId = setInterval(fetchUpdate, LIVE_POLL_INTERVAL_MS);
 
@@ -46,10 +52,11 @@ export function useLiveMatchesPoll(initialMatches: readonly DomainMatchSummary[]
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      clearTimeout(initialTimer);
       clearInterval(intervalId);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [hasLiveMatch, fetchUpdate]);
+  }, [matches, fetchUpdate]);
 
   return { matches, hasLiveMatch };
 }

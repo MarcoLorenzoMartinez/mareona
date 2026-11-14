@@ -3,12 +3,12 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { getLiveMatchUpdate } from "./actions";
-import { LIVE_POLL_INTERVAL_MS } from "@/lib/sports-api/live-poll";
+import { LIVE_POLL_INTERVAL_MS, shouldPollMatch } from "@/lib/sports-api/live-poll";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 
 /**
- * React hook that manages live polling for matches in progress.
- * Silently pauses when the user minimizes or switches browser tabs.
+ * React hook that manages live polling for matches in progress or entering kickoff window.
+ * Silently pauses when the user minimizes or switches browser tabs, or when the match is finished.
  *
  * @param initialMatch Pre-rendered match detail state from Server Component.
  * @returns The current match detail state and isLive flag.
@@ -33,7 +33,13 @@ export function useLiveMatchPoll(initialMatch: DomainMatchDetail) {
   }, [matchId]);
 
   useEffect(() => {
-    if (!isLive) return;
+    const shouldPoll = shouldPollMatch(match.status, true, match.kickoffAt);
+    if (!shouldPoll) return;
+
+    // Immediately fetch upon mount when in polling window to get live status without waiting
+    const initialTimer = setTimeout(() => {
+      void fetchUpdate();
+    }, 0);
 
     const intervalId = setInterval(fetchUpdate, LIVE_POLL_INTERVAL_MS);
 
@@ -46,10 +52,11 @@ export function useLiveMatchPoll(initialMatch: DomainMatchDetail) {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      clearTimeout(initialTimer);
       clearInterval(intervalId);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [isLive, fetchUpdate]);
+  }, [match.status, match.kickoffAt, fetchUpdate]);
 
   return { match, isLive };
 }
