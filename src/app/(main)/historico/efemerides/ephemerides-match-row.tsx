@@ -112,11 +112,11 @@ export function EphemeridesMatchRow({ match, onSelect }: EphemeridesMatchRowProp
           />
         </div>
 
-        {/* 3. Centered Score Badge */}
+        {/* 3. Scoreboard Tile Badge */}
         <div className="flex items-center justify-center shrink-0 px-1">
-          <div className="flex items-center justify-center px-2 py-0.5 rounded-full bg-[var(--surface)] border border-[var(--border)] font-black text-xs sm:text-sm tabular-nums text-[var(--foreground)] shadow-2xs group-hover:border-[var(--primary)]">
+          <span className="inline-flex items-center justify-center rounded-md bg-neutral-100 px-2 py-0.5 font-sans text-xs sm:text-sm font-black tabular-nums text-neutral-900 border border-neutral-200/60 shadow-2xs">
             {match.homeScore} - {match.awayScore}
-          </div>
+          </span>
         </div>
 
         {/* 4. Away Team & Crest */}
