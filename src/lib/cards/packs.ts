@@ -92,7 +92,7 @@ export function generatePackCards(
     const highValuePool = allCards.filter(
       (c) =>
         !pickedSlugs.has(c.slug) &&
-        ((c.ovr ?? 70) >= 76 || c.kind === "crest" || c.kind === "moment")
+        ((c.ovr ?? 70) >= 76 || c.kind === "crest" || c.kind === "moment" || c.kind === "coach")
     );
     const shuffledHigh = shuffle(highValuePool);
     while (packCards.length < targetCount && shuffledHigh.length > 0) {

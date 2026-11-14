@@ -8,6 +8,7 @@ import { CardStadiumBackground } from "./card-stadium-background";
 import { CardStatsHud } from "./card-stats-hud";
 import { CardCommemorativeHud } from "./card-commemorative-hud";
 import { CardBack } from "./card-back";
+import { CardDuplicateBadge } from "./card-duplicate-badge";
 import {
   CardScaleFrame,
   CARD_CANONICAL_WIDTH,
@@ -33,6 +34,7 @@ const POSITION_LABELS = {
 export function HistoricalCard({
   card,
   isOwned = true,
+  quantity = 1,
   isSelected = false,
   onCardClick,
   size = "md",
@@ -87,10 +89,7 @@ export function HistoricalCard({
             onCardClick(card);
           }
         }}
-        style={{
-          width: CARD_CANONICAL_WIDTH,
-          height: CARD_CANONICAL_HEIGHT,
-        }}
+        style={{ width: CARD_CANONICAL_WIDTH, height: CARD_CANONICAL_HEIGHT }}
         className={`group relative flex flex-col justify-between rounded-none p-1.5 transition-all duration-150 select-none ${
           isSelected
             ? "ring-4 ring-amber-400 shadow-2xl -translate-y-1.5"
@@ -148,6 +147,9 @@ export function HistoricalCard({
 
           {/* Filete interior sutil de marco de cuadro */}
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-amber-400/30" />
+
+          {/* Indicador de repetidos en taco si se tiene más de 1 cromo */}
+          {quantity > 1 && <CardDuplicateBadge duplicateCount={quantity - 1} />}
         </div>
 
         {/* 3. Placa Inferior: Conmemorativa o Cuadrícula de 4 Estadísticas */}

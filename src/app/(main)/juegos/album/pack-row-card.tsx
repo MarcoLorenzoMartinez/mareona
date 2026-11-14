@@ -3,10 +3,11 @@
 import type { Card } from "@/lib/cards/types";
 import { HistoricalCard } from "@/components/cards/historical-card";
 import { CardBack } from "@/components/cards/card-back";
+import { CardPackDuplicateTag } from "@/components/cards/card-duplicate-badge";
 
 interface PackRowCardProps {
   readonly card: Card;
-  readonly isNew: boolean;
+  readonly isDuplicate: boolean;
   readonly isRevealed: boolean;
   readonly isAnticipating?: boolean;
   readonly index: number;
@@ -21,7 +22,7 @@ interface PackRowCardProps {
  */
 export function PackRowCard({
   card,
-  isNew,
+  isDuplicate,
   isRevealed,
   isAnticipating = false,
   index,
@@ -141,12 +142,8 @@ export function PackRowCard({
               </div>
             )}
 
-            {/* Micro-etiqueta sutil en la esquina superior derecha */}
-            {isNew && (
-              <span className="absolute top-1.5 right-1.5 z-20 rounded-full bg-[#e2001a] px-1.5 py-0.2 text-[8px] font-black uppercase tracking-wider text-white shadow-xs">
-                Nuevo
-              </span>
-            )}
+            {/* Distintivo sutil de cromo repetido en la esquina superior derecha */}
+            {isRevealed && isDuplicate && <CardPackDuplicateTag />}
           </div>
         </div>
       </div>

@@ -13,9 +13,8 @@ interface PackOpeningModalProps {
   readonly tier: PackTier;
   readonly canOpenAnother?: boolean;
   readonly onClose: () => void;
-  readonly onOpenPackCards: (tier: PackTier) => Card[];
+  readonly onOpenPackCards: (tier: PackTier) => { cards: Card[]; duplicateSlugs: Set<string> };
   readonly onSaveCards: () => void;
-  readonly ownedCardSlugs: ReadonlySet<string>;
 }
 
 export function PackOpeningModal({
@@ -25,9 +24,12 @@ export function PackOpeningModal({
   onClose,
   onOpenPackCards,
   onSaveCards,
-  ownedCardSlugs,
 }: PackOpeningModalProps) {
-  const [cards, setCards] = useState<Card[]>(() => (isOpen ? onOpenPackCards(tier) : []));
+  const [packData, setPackData] = useState<{ cards: Card[]; duplicateSlugs: Set<string> }>(() =>
+    isOpen ? onOpenPackCards(tier) : { cards: [], duplicateSlugs: new Set() }
+  );
+  const cards = packData.cards;
+  const duplicateSlugs = packData.duplicateSlugs;
   const [revealedCount, setRevealedCount] = useState(0);
   const [anticipatingIndex, setAnticipatingIndex] = useState<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -94,10 +96,7 @@ export function PackOpeningModal({
     handleClose();
   }, [onSaveCards, handleClose]);
 
-  const { handleBackdropClick } = useModalA11y({
-    isOpen,
-    onClose: handleDismiss,
-  });
+  const { handleBackdropClick } = useModalA11y({ isOpen, onClose: handleDismiss });
 
   if (!isOpen) return null;
 
@@ -105,9 +104,9 @@ export function PackOpeningModal({
 
   const handleOpenAnother = () => {
     const generated = onOpenPackCards(tier);
-    setCards(generated);
+    setPackData(generated);
     setRevealedCount(0);
-    startRevealSequence(generated);
+    startRevealSequence(generated.cards);
   };
 
   return (
@@ -158,12 +157,11 @@ export function PackOpeningModal({
               <PackRowCard
                 key={`${card.slug}-${idx}`}
                 card={card}
-                isNew={!ownedCardSlugs.has(card.slug)}
+                isDuplicate={duplicateSlugs.has(card.slug)}
                 isRevealed={idx < revealedCount}
                 isAnticipating={idx === anticipatingIndex}
                 index={idx}
                 onReveal={() => idx >= revealedCount && setRevealedCount(idx + 1)}
-                totalCards={cards.length}
               />
             ))}
           </div>

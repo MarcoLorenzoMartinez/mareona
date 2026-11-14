@@ -33,7 +33,7 @@ export function PackMissionsPanel({
     Math.round((duplicateCount / DUPLICATES_RECIPE_COST) * 100)
   );
 
-  const loginTier: PackTier = missionState.isMatchday ? "rojiblanco" : "aficionado";
+  const loginTier: PackTier = "aficionado";
 
   return (
     <section aria-label="Cómo conseguir sobres" className="flex flex-col gap-3">

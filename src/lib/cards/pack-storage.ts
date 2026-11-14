@@ -295,21 +295,17 @@ export function getDailyMissionState(todayOverride?: string, userId?: string): D
   }
   const today = todayOverride ?? getTodayDateString();
   const state = loadStoredMissionState(userId);
-  const now = new Date();
-  // Saturday (6) and Sunday (0) are designated matchdays / weekend bonus
-  const dayOfWeek = now.getDay();
-  const isMatchday = dayOfWeek === 0 || dayOfWeek === 6;
 
   return {
     todayDate: today,
     hasClaimedDailyLogin: state.lastLoginClaimDate === today,
     hasClaimedDailyGame: state.lastGameClaimDate === today,
-    isMatchday,
+    isMatchday: false,
   };
 }
 
 /**
- * Claims the daily login reward.
+ * Claims the daily login reward (1 Sobre Aficionado every day).
  *
  * @param userId - Optional unique user identifier.
  */
@@ -327,9 +323,7 @@ export function claimDailyLoginPack(userId?: string): {
     return { success: false, reason: "already_claimed" };
   }
 
-  const now = new Date();
-  const isMatchday = now.getDay() === 0 || now.getDay() === 6;
-  const tier: PackTier = isMatchday ? "rojiblanco" : "aficionado";
+  const tier: PackTier = "aficionado";
 
   addPacksToInventory(tier, 1, userId);
   saveStoredMissionState({ ...state, lastLoginClaimDate: today }, userId);

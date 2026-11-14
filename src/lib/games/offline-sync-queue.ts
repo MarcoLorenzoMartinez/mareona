@@ -65,6 +65,15 @@ export function enqueueGameResult(
         const nextQueue = [...currentQueue];
         nextQueue[existingIndex] = updatedEvent;
         saveQueue(nextQueue);
+
+        // If improved to a winning streak on a subsequent attempt and user is logged in, award daily pack
+        if (updatedEvent.won && updatedEvent.userId) {
+          try {
+            awardDailyGamePack(updatedEvent.challengeDate, updatedEvent.userId);
+          } catch {
+            // Local pack allocation silent catch
+          }
+        }
         return updatedEvent;
       }
     }

@@ -61,18 +61,29 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     ? packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda
     : 2;
 
-  const handleOpenPackCards = useCallback((tier: PackTier): Card[] => {
-    if (!user?.id) return [];
+  const handleOpenPackCards = useCallback((tier: PackTier): { cards: Card[]; duplicateSlugs: Set<string> } => {
+    if (!user?.id) return { cards: [], duplicateSlugs: new Set() };
     consumeUserPack(tier, user.id);
     setPackInventory(loadUserPackInventory(user.id));
-    const owned = new Set(Object.entries(userInventory).filter(([, q]) => q > 0).map(([s]) => s));
-    const generated = generatePackCards(tier, allCards, owned);
+    const previouslyOwned = new Set(Object.entries(userInventory).filter(([, q]) => q > 0).map(([s]) => s));
+    const generated = generatePackCards(tier, allCards, previouslyOwned);
+
+    // Compute duplicates accurately based on inventory prior to this pack
+    const duplicateSlugs = new Set<string>();
+    const seenInPack = new Set<string>();
+    for (const card of generated) {
+      if (previouslyOwned.has(card.slug) || seenInPack.has(card.slug)) {
+        duplicateSlugs.add(card.slug);
+      }
+      seenInPack.add(card.slug);
+    }
+
     const nextInventory = addCardsToInventory(generated, user.id);
     setUserInventory(nextInventory);
     // Only brand-new unowned cards trigger the album sticking animation
-    const brandNewCards = generated.filter((c) => !owned.has(c.slug));
+    const brandNewCards = generated.filter((c) => !previouslyOwned.has(c.slug));
     setNewlyAcquiredSlugs((prev) => new Set([...prev, ...brandNewCards.map((c) => c.slug)]));
-    return generated;
+    return { cards: generated, duplicateSlugs };
   }, [allCards, user, userInventory, setPackInventory, setUserInventory]);
 
   // Consumes a card's new status once it has been viewed on an album page
@@ -169,7 +180,6 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
           onClose={() => setIsPackModalOpen(false)}
           onOpenPackCards={handleOpenPackCards}
           onSaveCards={() => toast.success("Cromos guardados en tu álbum")}
-          ownedCardSlugs={new Set(Object.keys(userInventory))}
         />
       )}
     </div>
