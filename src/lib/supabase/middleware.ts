@@ -13,6 +13,22 @@ import type { Database } from "@/types/database.types";
 export async function updateSession(
   request: NextRequest
 ): Promise<NextResponse> {
+  const { pathname, searchParams } = request.nextUrl;
+
+  // If Supabase redirects to the root Site URL with an auth code or OTP token_hash,
+  // forward immediately to /auth/callback so the session is properly exchanged.
+  if (
+    pathname !== "/auth/callback" &&
+    (searchParams.has("code") || (searchParams.has("token_hash") && searchParams.has("type")))
+  ) {
+    const callbackUrl = request.nextUrl.clone();
+    callbackUrl.pathname = "/auth/callback";
+    if (!callbackUrl.searchParams.has("next") && pathname !== "/") {
+      callbackUrl.searchParams.set("next", pathname);
+    }
+    return NextResponse.redirect(callbackUrl);
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });

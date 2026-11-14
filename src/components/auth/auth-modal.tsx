@@ -8,7 +8,7 @@ import { AuthCredentialsForm } from "./auth-credentials-form";
 import { OnboardingStep } from "./onboarding-step";
 
 export function AuthModal() {
-  const { isAuthModalOpen, closeAuthModal, authModalMode, handleSignOut } = useAuth();
+  const { user, profile, isLoading, isAuthModalOpen, closeAuthModal, authModalMode, handleSignOut } = useAuth();
   const [prevMode, setPrevMode] = useState(authModalMode);
   const [step, setStep] = useState<"credentials" | "onboarding">(() =>
     authModalMode === "onboarding" ? "onboarding" : "credentials"
@@ -24,8 +24,16 @@ export function AuthModal() {
   const handleClose = useCallback(() => {
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
+      let mutated = false;
       if (url.searchParams.has("onboarding")) {
         url.searchParams.delete("onboarding");
+        mutated = true;
+      }
+      if (url.searchParams.has("email_confirmed")) {
+        url.searchParams.delete("email_confirmed");
+        mutated = true;
+      }
+      if (mutated) {
         window.history.replaceState({}, "", url.pathname + url.search);
       }
     }
@@ -108,8 +116,12 @@ export function AuthModal() {
           </svg>
         </button>
 
-        {step === "onboarding" ? (
-          <OnboardingStep onFinish={handleClose} onCancel={handleAbortRegistration} />
+        {step === "onboarding" && (isLoading || user) ? (
+          <OnboardingStep
+            key={`${user?.id ?? "loading"}-${profile?.username ?? ""}`}
+            onFinish={handleClose}
+            onCancel={handleAbortRegistration}
+          />
         ) : (
           <AuthCredentialsForm
             initialMode={credentialsMode}

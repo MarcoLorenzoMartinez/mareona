@@ -21,7 +21,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(() => {
     if (typeof window === "undefined") return false;
-    return new URLSearchParams(window.location.search).get("onboarding") === "true";
+    const params = new URLSearchParams(window.location.search);
+    return params.get("onboarding") === "true" || params.get("email_confirmed") === "true";
   });
 
   const [authModalMode, setAuthModalMode] = useState<"signin" | "signup" | "onboarding">(() => {

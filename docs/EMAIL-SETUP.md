@@ -1,73 +1,66 @@
-# Guía de Configuración de Correo Transaccional (Resend + Supabase)
+# Guía Definitiva de Correo Transaccional (Brevo + `mareonasportinguista@gmail.com` + Supabase)
 
-Este documento detalla los pasos para conectar un servicio de correo profesional a Mareona, garantizando máxima entregabilidad (evitando la carpeta de spam), diseño corporativo rojiblanco y eliminando los límites estrictos de la capa gratuita por defecto de Supabase.
+Esta arquitectura combina **Supabase Auth** (seguridad, tokens y gestión de sesiones) con el relé SMTP profesional de **Brevo** (300 correos/día gratis, 9.000/mes, sin límite de 2 correos/hora y sin exigir Verificación en 2 pasos de Google).
 
----
-
-## 1. Conectar Resend a Supabase (3 minutos)
-
-Resend ofrece **3.000 correos al mes gratis** (100 al día), sin necesidad de tarjeta de crédito y con reputación de entrega inmediata.
-
-1. **Crear cuenta en Resend:**
-   - Entra en [resend.com](https://resend.com) y pulsa **Get Started** (puedes iniciar sesión con Google o GitHub).
-2. **Generar API Key:**
-   - En el menú lateral de Resend, entra en **API Keys** y pulsa **Create API Key**.
-   - Ponle de nombre `Mareona Supabase` y copia la clave generada (empieza por `re_...`).
-3. **Introducir la configuración SMTP en Supabase:**
-   - Entra en tu panel de Supabase: [Dashboard > Project Settings > Authentication > SMTP Settings](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/settings/auth).
-   - Activa el interruptor **Enable Custom SMTP**.
-   - Rellena exactamente los siguientes campos:
-     - **Sender email:** `onboarding@resend.dev` *(o tu correo con dominio propio si tienes uno configurado en Resend)*.
-     - **Sender name:** `Mareona · Real Sporting`
-     - **Host:** `smtp.resend.com`
-     - **Port:** `465` (con SSL) o `587` (con STARTTLS)
-     - **Minimum time between emails:** `0`
-     - **User:** `resend`
-     - **Password:** *Pega tu API Key de Resend (`re_...`)*
-   - Pulsa **Save**.
+> **Seguridad:** Ninguna clave SMTP se almacena en el código ni en variables de entorno de la web. La credencial vive cifrada exclusivamente dentro del servidor de autenticación de Supabase.
 
 ---
 
-## 2. Aplicar las Plantillas HTML Oficiales de Mareona
+## Paso 1: Crear cuenta gratuita en Brevo y obtener la clave SMTP (2 minutos)
 
-Las plantillas oficiales diseñadas para Mareona se encuentran en la carpeta `supabase/email-templates/`:
+1. Entra en [brevo.com/es](https://www.brevo.com/es/) y pulsa **Regístrate gratis**.
+2. Regístrate usando directamente el correo **`mareonasportinguista@gmail.com`**.
+3. Abre la bandeja de entrada de `mareonasportinguista@gmail.com` en Gmail y pulsa el botón de **Confirmar mi dirección de correo** que te habrá enviado Brevo (al registrarte con ese correo, Brevo ya autoriza `mareonasportinguista@gmail.com` como remitente verificado).
+4. Dentro del panel de Brevo, pulsa arriba a la derecha sobre el nombre de tu cuenta y entra en **SMTP y API** (o directamente en [app.brevo.com/settings/keys/smtp](https://app.brevo.com/settings/keys/smtp)).
+5. Mantente en la pestaña **SMTP**:
+   - Anota el valor que aparece en **Inicio de sesión** (tiene formato `7a8b9c...@smtp-brevo.com`).
+   - Pulsa el botón **Generar una nueva clave SMTP**, ponle de nombre `Mareona Supabase` y **copia la clave generada** (guárdala un momento porque solo se muestra una vez).
 
-1. **Confirmación de registro (`confirm-signup.html`):**
-   - En Supabase: [Dashboard > Authentication > Email Templates > Confirm signup](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/auth/templates).
-   - **Subject:** `¡Te damos la bienvenida a Mareona! Confirma tu cuenta`
-   - **Body:** Copia todo el contenido del archivo [`supabase/email-templates/confirm-signup.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/confirm-signup.html) y pégalo en el editor de código.
+---
+
+## Paso 2: Conectar Brevo en el panel de Supabase (1 minuto)
+
+1. Entra en tu panel de Supabase:
+   [Project Settings > Authentication (SMTP Settings)](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/settings/auth).
+2. Baja hasta la sección **SMTP Settings** y activa el interruptor **Enable Custom SMTP**.
+3. Rellena exactamente estos campos:
+   - **Sender email:** `mareonasportinguista@gmail.com`
+   - **Sender name:** `Mareona`
+   - **Host:** `smtp-relay.brevo.com`
+   - **Port number:** `587`
+   - **Minimum interval per user:** `60` *(protección anti-abuso: impide que un bot pida más de 1 correo por minuto para la misma dirección)*
+   - **Username:** *(Pega el "Inicio de sesión" de Brevo del Paso 1, ej. `xxxxx@smtp-brevo.com`)*
+   - **Password:** *(Pega la Clave SMTP que generaste en Brevo en el Paso 1)*
+4. Pulsa **Save**.
+
+---
+
+## Paso 3: Pegar las plantillas minimalistas de Mareona en Supabase (1 minuto)
+
+1. En el panel de Supabase, entra en:
+   [Authentication > Email Templates](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/auth/templates).
+2. En la pestaña **Confirm signup**:
+   - **Subject heading:** `Confirma tu correo en Mareona`
+   - **Message body (Source / Code):** Borra todo el texto que viene por defecto y pega íntegro el contenido de [`supabase/email-templates/confirm-signup.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/confirm-signup.html).
    - Pulsa **Save**.
-
-2. **Recuperación de contraseña (`reset-password.html`):**
-   - En Supabase: [Dashboard > Authentication > Email Templates > Reset password](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/auth/templates).
-   - **Subject:** `Restablece tu contraseña de Mareona`
-   - **Body:** Copia el contenido de [`supabase/email-templates/reset-password.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/reset-password.html).
+3. En la pestaña **Reset password**:
+   - **Subject heading:** `Restablece tu contraseña en Mareona`
+   - **Message body (Source / Code):** Pega íntegro el contenido de [`supabase/email-templates/reset-password.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/reset-password.html).
    - Pulsa **Save**.
-
-3. **Magic Link (`magic-link.html`):**
-   - En Supabase: [Dashboard > Authentication > Email Templates > Magic Link](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/auth/templates).
-   - **Subject:** `Tu enlace de acceso directo a Mareona`
-   - **Body:** Copia el contenido de [`supabase/email-templates/magic-link.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/magic-link.html).
+4. En la pestaña **Magic Link**:
+   - **Subject heading:** `Acceso a Mareona`
+   - **Message body (Source / Code):** Pega íntegro el contenido de [`supabase/email-templates/magic-link.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/magic-link.html).
    - Pulsa **Save**.
 
 ---
 
-## 3. Opciones Profesionales de Contingencia (Por si se agota Resend o hay problemas)
+## Paso 4: Verificar las URLs de redirección en Supabase (30 segundos)
 
-### Opción A: Registro "Zero-Friction" (Auto-activación inmediata)
-* **Cómo funciona:** El usuario introduce correo y contraseña y **entra de inmediato a Mareona**, sin esperar ningún correo de confirmación.
-* **Cómo se activa:** En [Supabase > Authentication > Providers > Email](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/auth/providers), desmarca la casilla **"Confirm email"** y pulsa Save.
-* **Ventajas:**
-  - Cero dependencias de cuotas de correo: nunca se agota nada.
-  - Cero fricción de registro: el aficionado empieza a usar la app en 3 segundos.
-  - Cero rebotes ni quejas de spam.
-  - El código de la aplicación ya detecta automáticamente si esta opción está activa y permite el acceso directo al onboarding.
-
-### Opción B: Proveedor de Respaldo Gratuito (Brevo / Sendinblue)
-* Si en algún momento Resend se agota por un volumen muy alto de registros y no quieres pagar un plan mensual:
-  - **Brevo:** Ofrece **300 correos al día gratis** (9.000 emails al mes).
-  - Solo tienes que cambiar en Supabase el Host a `smtp-relay.brevo.com` y poner tu clave de Brevo. Tarda 1 minuto.
-
-### Opción C: Acceso con Google (Google OAuth)
-* Mareona ya incluye el botón **"Continuar con Google"**.
-* Al autenticarse con Google, no se envía ningún email (Google ya certifica la identidad del aficionado), por lo que consume 0 cuota de correo.
+1. En el panel de Supabase, entra en:
+   [Authentication > URL Configuration](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/auth/url-configuration).
+2. Asegúrate de tener:
+   - **Site URL:** La dirección principal de tu web en producción (ej. `https://mareona.vercel.app` o tu dominio definitivo, **sin `/` al final**).
+   - **Redirect URLs:** Añade estas dos reglas si no están ya en la lista:
+     - `https://**/auth/callback**`
+     - `http://localhost:3000/**`
+3. Pulsa **Save**.

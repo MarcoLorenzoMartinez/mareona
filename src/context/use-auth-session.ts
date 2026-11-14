@@ -33,8 +33,23 @@ export function useAuthSession() {
   }, []);
 
   const refreshProfile = useCallback(async () => {
-    if (user?.id) {
-      await fetchProfile(user.id);
+    try {
+      const supabase = createClient();
+      const {
+        data: { user: currentUser },
+      } = await supabase.auth.getUser();
+
+      if (currentUser) {
+        clearStoredDemoSession();
+        setUser(currentUser);
+        await fetchProfile(currentUser.id);
+      } else if (user?.id) {
+        await fetchProfile(user.id);
+      }
+    } catch {
+      if (user?.id) {
+        await fetchProfile(user.id);
+      }
     }
   }, [user, fetchProfile]);
 
