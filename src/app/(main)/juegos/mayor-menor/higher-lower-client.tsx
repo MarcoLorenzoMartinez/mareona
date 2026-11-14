@@ -7,8 +7,6 @@ import {
   getEligiblePlayers,
   pickRandomPlayer,
   evaluateHigherLower,
-  getMetricValue,
-  formatMetricValue,
 } from '@/lib/higher-lower/engine';
 import {
   getStoredHigherLowerStats,
@@ -18,7 +16,6 @@ import {
 } from '@/lib/higher-lower/storage';
 import { HigherLowerHeader } from './higher-lower-header';
 import { HigherLowerCard } from './higher-lower-card';
-import { HigherLowerControls } from './higher-lower-controls';
 import { HigherLowerGameOverModal } from './higher-lower-game-over-modal';
 import { HigherLowerArenaBackground } from './higher-lower-arena-background';
 import { useAuth } from '@/context/auth-context';
@@ -109,7 +106,6 @@ export function HigherLowerClient() {
   };
 
   const bestScoreForMode = stats.bestScoreByMode[mode] || 0;
-  const referenceValueFormatted = formatMetricValue(getMetricValue(leftPlayer, mode), mode);
 
   return (
     <div className="flex flex-col gap-3 sm:gap-6 max-w-4xl mx-auto w-full">
@@ -145,19 +141,11 @@ export function HigherLowerClient() {
               isRevealed={isRevealed}
               isMystery={!isRevealed}
               outcome={guessOutcome}
+              onGuess={handleGuess}
+              disabled={isRevealed}
             />
           </div>
         </div>
-
-        {/* Controles de juego: pregunta en Columna 1 y botones Más/Menos en Columna 2 */}
-        <HigherLowerControls
-          referenceValue={referenceValueFormatted}
-          mysteryPlayerName={rightPlayer.name || rightPlayer.fullName}
-          mode={mode}
-          outcome={guessOutcome}
-          onGuess={handleGuess}
-          disabled={isRevealed}
-        />
       </section>
 
       <HigherLowerGameOverModal

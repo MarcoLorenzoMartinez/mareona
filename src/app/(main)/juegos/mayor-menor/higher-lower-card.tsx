@@ -1,7 +1,8 @@
 import React from 'react';
 import { PlayerPhoto } from '@/components/media/player-photo';
-import type { HigherLowerMode, HigherLowerPlayer } from '@/lib/higher-lower/types';
+import type { HigherLowerGuess, HigherLowerMode, HigherLowerPlayer } from '@/lib/higher-lower/types';
 import { formatMetricValue, getMetricValue } from '@/lib/higher-lower/engine';
+import { HigherLowerControls } from './higher-lower-controls';
 
 interface HigherLowerCardProps {
   player: HigherLowerPlayer;
@@ -9,6 +10,8 @@ interface HigherLowerCardProps {
   isRevealed: boolean;
   isMystery?: boolean;
   outcome?: 'correct' | 'wrong' | null;
+  onGuess?: (guess: HigherLowerGuess) => void;
+  disabled?: boolean;
 }
 
 export function HigherLowerCard({
@@ -17,6 +20,8 @@ export function HigherLowerCard({
   isRevealed,
   isMystery = false,
   outcome = null,
+  onGuess,
+  disabled = false,
 }: HigherLowerCardProps) {
   const metricValue = getMetricValue(player, mode);
   const formattedValue = formatMetricValue(metricValue, mode);
@@ -33,7 +38,7 @@ export function HigherLowerCard({
 
   return (
     <article
-      className={`group relative flex flex-col items-center justify-between overflow-hidden rounded-2xl bg-white p-3 sm:p-6 transition-all duration-200 w-full max-w-sm h-full min-h-[220px] sm:min-h-[360px] border ${outcomeCardStyles}`}
+      className={`group relative flex flex-col items-center justify-between overflow-hidden rounded-2xl bg-white p-3 sm:p-5 transition-all duration-200 w-full max-w-sm h-full min-h-[250px] sm:min-h-[360px] border ${outcomeCardStyles}`}
     >
       {/* Header del jugador */}
       <div className="flex flex-col items-center text-center w-full">
@@ -58,23 +63,46 @@ export function HigherLowerCard({
         </h2>
       </div>
 
-      {/* Sección del dato estadístico */}
-      <div className="mt-2 sm:mt-5 w-full border-t border-neutral-100 pt-2 sm:pt-3.5 text-center">
-        <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-neutral-500 block truncate">
+      {/* Sección del dato estadístico / botones de acción con altura simétrica garantizada */}
+      <div className="mt-2 sm:mt-4 w-full border-t border-neutral-100 pt-2 sm:pt-3 text-center">
+        <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-neutral-500 block truncate mb-1">
           {mode === 'goals' ? 'Goles Oficiales' : mode === 'minutes' ? 'Minutos Disputados' : 'Partidos Oficiales'}
         </span>
 
-        <div className="mt-0.5 sm:mt-1 flex items-center justify-center min-h-[32px] sm:min-h-[44px]">
-          {isRevealed ? (
-            <div className="text-xl sm:text-4xl font-black text-[#e2001a] tabular-nums tracking-tight animate-in fade-in zoom-in-95 duration-200">
-              {formattedValue}
-            </div>
-          ) : isMystery ? (
-            <div className="text-xl sm:text-4xl font-black text-neutral-400 tabular-nums animate-pulse">
-              ¿ ?
+        <div className="flex items-center justify-center h-[82px] sm:h-[96px] w-full">
+          {isMystery && !isRevealed && onGuess ? (
+            <HigherLowerControls
+              mysteryPlayerName={player.name || player.fullName}
+              mode={mode}
+              onGuess={onGuess}
+              disabled={disabled}
+            />
+          ) : isRevealed ? (
+            <div className="flex flex-col items-center justify-center animate-in fade-in zoom-in-95 duration-200">
+              <span
+                className={`text-2xl sm:text-4xl font-black tabular-nums tracking-tight ${
+                  outcome === 'correct'
+                    ? 'text-emerald-600'
+                    : outcome === 'wrong'
+                    ? 'text-[#e2001a]'
+                    : 'text-[#e2001a]'
+                }`}
+              >
+                {formattedValue}
+              </span>
+              {outcome === 'correct' && (
+                <span className="mt-0.5 text-[10px] sm:text-xs font-black text-emerald-700">
+                  ¡Acierto! +1
+                </span>
+              )}
+              {outcome === 'wrong' && (
+                <span className="mt-0.5 text-[10px] sm:text-xs font-black text-[#e2001a]">
+                  ¡Fin de racha!
+                </span>
+              )}
             </div>
           ) : (
-            <div className="text-xl sm:text-4xl font-black text-neutral-900 tabular-nums">
+            <div className="text-2xl sm:text-4xl font-black text-neutral-900 tabular-nums">
               {formattedValue}
             </div>
           )}
