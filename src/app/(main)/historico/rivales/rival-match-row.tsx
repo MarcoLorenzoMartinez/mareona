@@ -11,16 +11,27 @@ interface RivalMatchRowProps {
 }
 
 function getOutcomeBadge(outcome: "V" | "E" | "D" | "PENDIENTE") {
-  if (outcome === "V") {
-    return <span className="rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5 text-[10px] font-bold">V</span>;
-  }
-  if (outcome === "E") {
-    return <span className="rounded-full bg-neutral-100 text-neutral-700 px-2 py-0.5 text-[10px] font-bold">E</span>;
-  }
-  if (outcome === "D") {
-    return <span className="rounded-full bg-rose-100 text-rose-800 px-2 py-0.5 text-[10px] font-bold">D</span>;
-  }
-  return null;
+  if (outcome === "PENDIENTE") return null;
+  return (
+    <span
+      className={`w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-xs font-black select-none ${
+        outcome === "V"
+          ? "bg-[#16a34a] text-white"
+          : outcome === "E"
+          ? "bg-neutral-200 text-neutral-800"
+          : "bg-[#dc2626] text-white"
+      }`}
+      aria-label={
+        outcome === "V"
+          ? "Victoria"
+          : outcome === "E"
+          ? "Empate"
+          : "Derrota"
+      }
+    >
+      {outcome}
+    </span>
+  );
 }
 
 /**
@@ -47,6 +58,8 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
     awayCrestUrl: match.awayCrestUrl ?? null,
   };
 
+  const outcomeBadge = getOutcomeBadge(match.outcome);
+
   return (
     <div
       role="button"
@@ -59,22 +72,20 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
         }
       }}
       aria-label={`Ver acta oficial: ${match.homeTeam} ${match.homeScore ?? "-"} - ${match.awayScore ?? "-"} ${match.awayTeam}`}
-      className="flex flex-col sm:grid sm:grid-cols-[160px_1fr_68px_1fr_110px] sm:items-center gap-1.5 sm:gap-2 py-2.5 px-3 cursor-pointer hover:bg-neutral-50 border-b border-[var(--border)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] text-xs"
+      className="flex flex-col sm:grid sm:grid-cols-[160px_1fr_68px_1fr_110px] sm:items-center gap-2 py-3 px-3 cursor-pointer hover:bg-neutral-50 border-b border-[var(--border)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] text-xs"
     >
       {/* Mobile Top Context Row (Date, Competition & Outcome Badge) */}
-      <div className="flex sm:hidden items-center justify-between gap-2 text-[11px] text-[var(--muted-foreground)]">
+      <div className="flex sm:hidden items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-1.5 min-w-0">
           <span className="font-bold text-[var(--foreground)] font-sans tabular-nums shrink-0">
             {match.date}
           </span>
           <span className="text-neutral-300">·</span>
-          <span className="truncate">
+          <span className="text-[var(--muted-foreground)] truncate font-sans tabular-nums">
             {match.competition} ({match.season})
           </span>
         </div>
-        <div className="shrink-0">
-          {getOutcomeBadge(match.outcome)}
-        </div>
+        <div className="shrink-0">{outcomeBadge}</div>
       </div>
 
       {/* Main confrontation row: On mobile flex-1 full width, on desktop sm:contents */}
@@ -92,7 +103,7 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
         {/* 2. Home Team & Crest */}
         <div className="flex-1 sm:flex-initial flex items-center justify-end gap-1.5 min-w-0 text-right">
           <span
-            className={`truncate ${
+            className={`text-xs sm:text-sm truncate ${
               match.homeTeam === "Real Sporting"
                 ? "font-bold text-[var(--primary)]"
                 : "font-medium text-[var(--foreground)]"
@@ -110,9 +121,9 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
 
         {/* 3. Score Badge */}
         <div className="flex items-center justify-center shrink-0 px-1">
-          <span className="inline-flex items-center justify-center rounded-md bg-neutral-100 px-2 py-0.5 font-sans text-xs font-black tabular-nums text-neutral-900 shadow-2xs">
-            {match.homeScore ?? "-"} : {match.awayScore ?? "-"}
-          </span>
+          <div className="flex items-center justify-center px-2 py-0.5 rounded-full bg-[var(--surface)] border border-[var(--border)] font-black text-xs sm:text-sm tabular-nums text-[var(--foreground)] shadow-2xs">
+            {match.homeScore ?? "-"} - {match.awayScore ?? "-"}
+          </div>
         </div>
 
         {/* 4. Away Team & Crest */}
@@ -124,7 +135,7 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
             isSporting={match.awayTeam === "Real Sporting"}
           />
           <span
-            className={`truncate ${
+            className={`text-xs sm:text-sm truncate ${
               match.awayTeam === "Real Sporting"
                 ? "font-bold text-[var(--primary)]"
                 : "font-medium text-[var(--foreground)]"
@@ -139,7 +150,7 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
           <span className="hidden sm:inline-block text-[10px] text-neutral-400 truncate">
             {match.round}
           </span>
-          {getOutcomeBadge(match.outcome)}
+          {outcomeBadge}
         </div>
       </div>
     </div>
