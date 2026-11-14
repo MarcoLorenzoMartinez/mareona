@@ -59,69 +59,88 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
         }
       }}
       aria-label={`Ver acta oficial: ${match.homeTeam} ${match.homeScore ?? "-"} - ${match.awayScore ?? "-"} ${match.awayTeam}`}
-      className="grid grid-cols-[100px_1fr_56px_1fr_40px] sm:grid-cols-[160px_1fr_68px_1fr_110px] items-center gap-2 py-2.5 px-3 cursor-pointer hover:bg-neutral-50 border-b border-[var(--border)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] text-xs"
+      className="flex flex-col sm:grid sm:grid-cols-[160px_1fr_68px_1fr_110px] sm:items-center gap-1.5 sm:gap-2 py-2.5 px-3 cursor-pointer hover:bg-neutral-50 border-b border-[var(--border)]/70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] text-xs"
     >
-      {/* 1. Date, Season & Competition Context */}
-      <div className="flex flex-col min-w-0 pr-1">
-        <span className="font-bold text-[var(--foreground)] truncate font-sans tabular-nums">
-          {match.date}
-        </span>
-        <span className="text-[10px] text-[var(--muted-foreground)] truncate font-sans tabular-nums">
-          {match.competition} ({match.season})
-        </span>
+      {/* Mobile Top Context Row (Date, Competition & Outcome Badge) */}
+      <div className="flex sm:hidden items-center justify-between gap-2 text-[11px] text-[var(--muted-foreground)]">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className="font-bold text-[var(--foreground)] font-sans tabular-nums shrink-0">
+            {match.date}
+          </span>
+          <span className="text-neutral-300">·</span>
+          <span className="truncate">
+            {match.competition} ({match.season})
+          </span>
+        </div>
+        <div className="shrink-0">
+          {getOutcomeBadge(match.outcome)}
+        </div>
       </div>
 
-      {/* 2. Home Team & Crest */}
-      <div className="flex items-center justify-end gap-1.5 min-w-0 text-right">
-        <span
-          className={`truncate ${
-            match.homeTeam === "Real Sporting"
-              ? "font-bold text-[var(--primary)]"
-              : "font-medium text-[var(--foreground)]"
-          }`}
-        >
-          {match.homeTeam}
-        </span>
-        <TeamCrest
-          crestUrl={match.homeCrestUrl}
-          teamName={match.homeTeam}
-          size="sm"
-          isSporting={match.homeTeam === "Real Sporting"}
-        />
-      </div>
+      {/* Main confrontation row: On mobile flex-1 full width, on desktop sm:contents */}
+      <div className="flex sm:contents items-center justify-between gap-1.5 min-w-0">
+        {/* 1. Desktop Date, Season & Competition Context */}
+        <div className="hidden sm:flex flex-col min-w-0 pr-1">
+          <span className="font-bold text-[var(--foreground)] truncate font-sans tabular-nums">
+            {match.date}
+          </span>
+          <span className="text-[10px] text-[var(--muted-foreground)] truncate font-sans tabular-nums">
+            {match.competition} ({match.season})
+          </span>
+        </div>
 
-      {/* 3. Score Badge */}
-      <div className="flex items-center justify-center">
-        <span className="inline-flex items-center justify-center rounded-md bg-neutral-100 px-2 py-0.5 font-sans text-xs font-black tabular-nums text-neutral-900 shadow-2xs">
-          {match.homeScore ?? "-"} : {match.awayScore ?? "-"}
-        </span>
-      </div>
+        {/* 2. Home Team & Crest */}
+        <div className="flex-1 sm:flex-initial flex items-center justify-end gap-1.5 min-w-0 text-right">
+          <span
+            className={`truncate ${
+              match.homeTeam === "Real Sporting"
+                ? "font-bold text-[var(--primary)]"
+                : "font-medium text-[var(--foreground)]"
+            }`}
+          >
+            {match.homeTeam}
+          </span>
+          <TeamCrest
+            crestUrl={match.homeCrestUrl}
+            teamName={match.homeTeam}
+            size="sm"
+            isSporting={match.homeTeam === "Real Sporting"}
+          />
+        </div>
 
-      {/* 4. Away Team & Crest */}
-      <div className="flex items-center justify-start gap-1.5 min-w-0 text-left">
-        <TeamCrest
-          crestUrl={match.awayCrestUrl}
-          teamName={match.awayTeam}
-          size="sm"
-          isSporting={match.awayTeam === "Real Sporting"}
-        />
-        <span
-          className={`truncate ${
-            match.awayTeam === "Real Sporting"
-              ? "font-bold text-[var(--primary)]"
-              : "font-medium text-[var(--foreground)]"
-          }`}
-        >
-          {match.awayTeam}
-        </span>
-      </div>
+        {/* 3. Score Badge */}
+        <div className="flex items-center justify-center shrink-0 px-1">
+          <span className="inline-flex items-center justify-center rounded-md bg-neutral-100 px-2 py-0.5 font-sans text-xs font-black tabular-nums text-neutral-900 shadow-2xs">
+            {match.homeScore ?? "-"} : {match.awayScore ?? "-"}
+          </span>
+        </div>
 
-      {/* 5. Outcome Badge & Round */}
-      <div className="flex items-center justify-end gap-1.5 min-w-0">
-        <span className="hidden sm:inline-block text-[10px] text-neutral-400 truncate">
-          {match.round}
-        </span>
-        {getOutcomeBadge(match.outcome)}
+        {/* 4. Away Team & Crest */}
+        <div className="flex-1 sm:flex-initial flex items-center justify-start gap-1.5 min-w-0 text-left">
+          <TeamCrest
+            crestUrl={match.awayCrestUrl}
+            teamName={match.awayTeam}
+            size="sm"
+            isSporting={match.awayTeam === "Real Sporting"}
+          />
+          <span
+            className={`truncate ${
+              match.awayTeam === "Real Sporting"
+                ? "font-bold text-[var(--primary)]"
+                : "font-medium text-[var(--foreground)]"
+            }`}
+          >
+            {match.awayTeam}
+          </span>
+        </div>
+
+        {/* 5. Desktop Outcome Badge & Round */}
+        <div className="hidden sm:flex items-center justify-end gap-1.5 min-w-0">
+          <span className="hidden sm:inline-block text-[10px] text-neutral-400 truncate">
+            {match.round}
+          </span>
+          {getOutcomeBadge(match.outcome)}
+        </div>
       </div>
     </div>
   );
