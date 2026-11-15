@@ -9,7 +9,6 @@ import { PorraMatchCard } from './porra-match-card';
 import { PorraLeaderboard } from './porra-leaderboard';
 import { PorraPendingRewards } from './porra-pending-rewards';
 import { PorraRewardsModal } from './porra-rewards-modal';
-import { isPorraSubmissionOpen } from '@/lib/porra/engine';
 import { buildUserLeaderboardEntry } from '@/lib/porra/leaderboard';
 import { fetchPorraCommunityData } from '@/lib/porra/queries';
 import {
@@ -43,9 +42,15 @@ export function PorraClient({
   const [communityEntries, setCommunityEntries] = useState<readonly PorraLeaderboardEntry[]>([]);
   const [friendsCount, setFriendsCount] = useState(0);
 
+  const [prevUserId, setPrevUserId] = useState(user?.id);
   const [prediction, setPrediction] = useState<PorraPrediction | null>(() =>
-    getStoredPrediction(currentMatch.id, user?.id)
+    user?.id ? getStoredPrediction(currentMatch.id, user.id) : null
   );
+
+  if (prevUserId !== user?.id) {
+    setPrevUserId(user?.id);
+    setPrediction(user?.id ? getStoredPrediction(currentMatch.id, user.id) : null);
+  }
 
   useEffect(() => {
     let active = true;
@@ -61,13 +66,15 @@ export function PorraClient({
 
   const pendingRewards = useMemo(() => {
     void claimVersion;
-    return getPendingPorraRewards(finishedMatches, user?.id);
+    if (!user?.id) return [];
+    return getPendingPorraRewards(finishedMatches, user.id);
   }, [finishedMatches, user?.id, claimVersion]);
 
   const mergedLeaderboard = useMemo(() => {
-    const predictionsMap = getStoredPredictionsMap(finishedMatches, user?.id);
+    if (!user?.id) return communityEntries;
+    const predictionsMap = getStoredPredictionsMap(finishedMatches, user.id);
     const localUserEntry = buildUserLeaderboardEntry({
-      userId: user?.id,
+      userId: user.id,
       userName: profile?.display_name || profile?.username || 'Aficionado',
       finishedMatches,
       predictionsByMatchId: predictionsMap,
@@ -77,10 +84,10 @@ export function PorraClient({
     if (!localUserEntry) return communityEntries;
 
     const withoutCurrent = communityEntries.filter(
-      (e) => !e.isCurrentUser && (!user?.id || e.userId !== user.id)
+      (e) => !e.isCurrentUser && e.userId !== user.id
     );
     const remoteCurrent = communityEntries.find(
-      (e) => e.isCurrentUser || (user?.id && e.userId === user.id)
+      (e) => e.isCurrentUser || e.userId === user.id
     );
 
     const combinedUserEntry: PorraLeaderboardEntry = remoteCurrent
@@ -107,13 +114,6 @@ export function PorraClient({
     const mine = mergedLeaderboard.find((e) => e.isCurrentUser);
     return mine ? mine.totalPoints : undefined;
   }, [mergedLeaderboard]);
-
-  const canRevealPredictions =
-    prediction !== null ||
-    !isPorraSubmissionOpen(
-      currentMatch.kickoffAt,
-      currentMatch.isFinished ? 'finished' : undefined
-    );
 
   const handleSavePrediction = (newPred: PorraPrediction) => {
     if (!user?.id) {
@@ -164,7 +164,6 @@ export function PorraClient({
       <PorraLeaderboard
         entries={mergedLeaderboard}
         currentUserScore={currentUserScore}
-        canRevealPredictions={canRevealPredictions}
         isAuthenticated={Boolean(user)}
         friendsCount={friendsCount}
         onOpenAuth={() => openAuthModal('signin')}
