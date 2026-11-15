@@ -116,8 +116,12 @@ export function PorraClient({
     );
 
   const handleSavePrediction = (newPred: PorraPrediction) => {
+    if (!user?.id) {
+      openAuthModal('signin');
+      return;
+    }
     setPrediction(newPred);
-    saveStoredPrediction(newPred, user?.id);
+    saveStoredPrediction(newPred, user.id);
     toast.success('Pronóstico confirmado para esta jornada.');
   };
 
@@ -153,6 +157,8 @@ export function PorraClient({
         existingPrediction={prediction}
         onSavePrediction={handleSavePrediction}
         availablePlayers={availablePlayers}
+        isAuthenticated={Boolean(user)}
+        onRequireAuth={() => openAuthModal('signin')}
       />
 
       <PorraLeaderboard

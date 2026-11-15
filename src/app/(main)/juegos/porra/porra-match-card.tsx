@@ -12,6 +12,8 @@ interface PorraMatchCardProps {
   readonly existingPrediction: PorraPrediction | null;
   readonly onSavePrediction: (pred: PorraPrediction) => void;
   readonly availablePlayers: string[];
+  readonly isAuthenticated?: boolean;
+  readonly onRequireAuth?: () => void;
 }
 
 export function PorraMatchCard({
@@ -19,6 +21,8 @@ export function PorraMatchCard({
   existingPrediction,
   onSavePrediction,
   availablePlayers,
+  isAuthenticated = false,
+  onRequireAuth,
 }: PorraMatchCardProps) {
   const [homeScore, setHomeScore] = useState<number>(() => existingPrediction?.homeScore ?? 0);
   const [awayScore, setAwayScore] = useState<number>(() => existingPrediction?.awayScore ?? 0);
@@ -59,6 +63,10 @@ export function PorraMatchCard({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAuthenticated) {
+      onRequireAuth?.();
+      return;
+    }
     if (isLocked) return;
     onSavePrediction({
       matchId: match.id,
@@ -118,16 +126,20 @@ export function PorraMatchCard({
 
       <button
         type="submit"
-        disabled={isLocked}
+        disabled={isAuthenticated && isLocked}
         className={`flex h-12 min-h-[48px] w-full items-center justify-center rounded-xl px-4 text-xs sm:text-sm font-bold transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 ${
-          isSubmitted
+          !isAuthenticated
+            ? 'bg-[#e2001a] text-white shadow-2xs hover:bg-[#b30015] active:scale-[0.99] cursor-pointer'
+            : isSubmitted
             ? 'border border-[var(--border)] bg-[var(--surface)] text-neutral-700 cursor-default'
             : !isOpen
             ? 'bg-neutral-200 text-neutral-600 cursor-not-allowed'
             : 'bg-[#e2001a] text-white shadow-2xs hover:bg-[#b30015] active:scale-[0.99] cursor-pointer'
         }`}
       >
-        {isSubmitted
+        {!isAuthenticated
+          ? 'Iniciar sesión para pronosticar'
+          : isSubmitted
           ? 'Pronóstico registrado'
           : !isOpen
           ? 'Plazo de pronóstico cerrado'
