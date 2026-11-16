@@ -10,6 +10,18 @@ export const es = {
     upcoming: "Próx.",
     viewAll: "Ver completa",
   },
+  home: {
+    today: {
+      title: "Juegos del día",
+      viewAll: "Ver todos",
+      porra: { title: "La Porra", action: "Pronosticar" },
+      pack: { title: "Sobre diario", action: "Abrir sobre" },
+    },
+    history: {
+      title: "Tal día como hoy",
+      link: "Efemérides",
+    },
+  },
   season: {
     title: "Temporada — Mareona",
     description: "Partidos, clasificación y actualidad del Real Sporting de Gijón.",
@@ -239,7 +251,6 @@ export const es = {
     description: "Archivo histórico, efemérides y leyendas del Real Sporting de Gijón.",
     tabs: {
       trajectory: "Trayectoria",
-      comparison: "Comparador",
       ephemerides: "Efemérides",
       rivals: "Rivales",
       legacy: "Legado",

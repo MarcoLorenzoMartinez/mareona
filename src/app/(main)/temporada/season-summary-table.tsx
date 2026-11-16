@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { TeamCrest } from "@/components/media/team-crest";
+import { selectStandingsWindow, resolveStandingZone } from "@/lib/sports-api/standings-window";
 import type { DomainStandingRow } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
+import { SummaryStandingRow, ZONE_BAR_CLASS } from "./summary-standing-row";
 
 interface SeasonSummaryTableProps {
   readonly standings: readonly DomainStandingRow[];
@@ -9,19 +10,29 @@ interface SeasonSummaryTableProps {
 }
 
 /**
- * Compact 4-column overview standings table displayed on the season hub page,
- * highlighting Real Sporting and linking to the comprehensive standings view.
+ * Compact standings card for the home page: a contiguous slice of the table
+ * centred on Real Sporting, linking to the full table.
  */
-export function SeasonSummaryTable({
-  standings,
-  seasonLabel,
-}: SeasonSummaryTableProps) {
+export function SeasonSummaryTable({ standings, seasonLabel }: SeasonSummaryTableProps) {
   const dict = getDictionary();
+  const zoneLabels = {
+    promotion: dict.season.standings.zones.promotion,
+    playoff: dict.season.standings.zones.playoff,
+    relegation: dict.season.standings.zones.relegation,
+    none: "",
+  } as const;
+  const rows = selectStandingsWindow(standings);
+  const visibleZones = new Set(
+    rows.map((row) => resolveStandingZone(row.position, standings.length))
+  );
+  const legendZones = (["promotion", "playoff", "relegation"] as const).filter((zone) =>
+    visibleZones.has(zone)
+  );
 
   return (
-    <section aria-label="Clasificación" className="w-full">
-      <div className="rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
-        <div className="mb-4 flex items-center justify-between border-b border-[var(--border)] pb-3">
+    <section aria-label="Clasificación" className="h-full w-full">
+      <div className="h-full rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
+        <div className="mb-3 flex items-center justify-between border-b border-[var(--border)] pb-3">
           <div>
             <h2 className="text-base font-bold text-[var(--foreground)]">
               {dict.season.standings.title}
@@ -32,140 +43,74 @@ export function SeasonSummaryTable({
           </div>
           <Link
             href="/temporada/clasificacion"
-            className="text-xs font-semibold text-[var(--primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] rounded-xs"
+            className="rounded-xs text-xs font-semibold text-[var(--primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)]"
           >
             {dict.common.viewAll} &rarr;
           </Link>
         </div>
 
-        {standings.length > 0 ? (
+        {rows.length > 0 ? (
           <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <caption className="sr-only">
-                  {dict.season.standings.title} de {dict.season.competitionName} {seasonLabel}
-                </caption>
-                <thead>
-                  <tr className="border-b border-[var(--border)] text-xs font-semibold text-[var(--foreground-muted)] uppercase">
-                    <th scope="col" className="w-10 sm:w-12 py-2.5 pl-3 text-center">
-                      {dict.season.standings.columns.pos}
-                    </th>
-                    <th scope="col" className="py-2.5 pl-1.5 sm:pl-2 pr-2 text-left">
-                      {dict.season.standings.columns.team}
-                    </th>
-                    <th scope="col" className="w-14 sm:w-16 py-2.5 text-center" title={dict.season.standings.columnTitles.played}>
-                      {dict.season.standings.columns.played}
-                    </th>
-                    <th scope="col" className="w-14 sm:w-16 py-2.5 pr-3 text-right" title={dict.season.standings.columnTitles.points}>
-                      {dict.season.standings.columns.points}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[var(--border)]">
-                  {standings.map((row) => {
-                    const isDirectPromotion = row.position <= 2;
-                    const isPlayoff = row.position >= 3 && row.position <= 6;
-                    const isRelegation =
-                      standings.length > 4 ? row.position > standings.length - 4 : false;
-                    const barClass = isDirectPromotion
-                      ? "bg-[#16a34a]"
-                      : isPlayoff
-                        ? "bg-[#2563eb]"
-                        : isRelegation
-                          ? "bg-[#dc2626]"
-                          : "";
-
-                    return (
-                      <tr
-                        key={row.teamExternalId}
-                        className={`transition-colors text-sm ${
-                          row.isSporting
-                            ? "bg-red-50/70 font-semibold text-[var(--foreground)]"
-                            : "hover:bg-[var(--surface)] text-[var(--foreground)]"
-                        }`}
-                      >
-                        {/* Posición con barra vertical de acento */}
-                        <td
-                          className="relative py-2.5 pl-3 pr-2 text-center"
-                          aria-label={`Posición ${row.position}${
-                            isDirectPromotion
-                              ? ", Ascenso directo"
-                              : isPlayoff
-                                ? ", Playoff de ascenso"
-                                : isRelegation
-                                  ? ", Descenso"
-                                  : ""
-                          }`}
-                        >
-                          {barClass && (
-                            <span
-                              className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full ${barClass}`}
-                              aria-hidden="true"
-                            />
-                          )}
-                          <span className="text-xs font-bold text-neutral-800 tabular-nums">
-                            {row.position}
-                          </span>
-                        </td>
-
-                        {/* Equipo */}
-                        <td className="py-2.5 pl-1.5 sm:pl-2 pr-2">
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <TeamCrest
-                              crestUrl={row.crestUrl}
-                              teamName={row.teamName}
-                              size="sm"
-                              isSporting={row.isSporting}
-                            />
-                            <span
-                              className={`truncate ${
-                                row.isSporting ? "font-bold text-[var(--primary)]" : "font-medium"
-                              }`}
-                            >
-                              {row.teamName}
-                            </span>
-                          </div>
-                        </td>
-
-                        {/* PJ */}
-                        <td className="py-2.5 text-center tabular-nums text-[var(--foreground-muted)]">
-                          {row.played}
-                        </td>
-
-                        {/* Pts */}
-                        <td className="py-2.5 pr-3 text-right font-black tabular-nums text-[var(--foreground)]">
-                          {row.points}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
-              <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1.5">
-                  <span className="h-3 w-[3px] rounded-full bg-[#16a34a]" aria-hidden="true" />
-                  {dict.season.standings.zones.promotion}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="h-3 w-[3px] rounded-full bg-[#2563eb]" aria-hidden="true" />
-                  {dict.season.standings.zones.playoff}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="h-3 w-[3px] rounded-full bg-[#dc2626]" aria-hidden="true" />
-                  {dict.season.standings.zones.relegation}
-                </span>
-              </div>
-            </div>
+            <table className="w-full text-left text-sm">
+              <caption className="sr-only">
+                {dict.season.standings.title} de {dict.season.competitionName} {seasonLabel}
+              </caption>
+              <thead>
+                <tr className="border-b border-[var(--border)] text-xs font-semibold uppercase text-[var(--foreground-muted)]">
+                  <th scope="col" className="w-10 py-2 pl-3 text-center sm:w-12">
+                    {dict.season.standings.columns.pos}
+                  </th>
+                  <th scope="col" className="py-2 pl-1.5 pr-2 text-left sm:pl-2">
+                    {dict.season.standings.columns.team}
+                  </th>
+                  <th
+                    scope="col"
+                    className="w-12 py-2 text-center sm:w-16"
+                    title={dict.season.standings.columnTitles.played}
+                  >
+                    {dict.season.standings.columns.played}
+                  </th>
+                  <th
+                    scope="col"
+                    className="w-12 py-2 pr-3 text-right sm:w-16"
+                    title={dict.season.standings.columnTitles.points}
+                  >
+                    {dict.season.standings.columns.points}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--border)]">
+                {rows.map((row) => {
+                  const zone = resolveStandingZone(row.position, standings.length);
+                  return (
+                    <SummaryStandingRow
+                      key={row.teamExternalId}
+                      row={row}
+                      zone={zone}
+                      zoneLabel={zoneLabels[zone]}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
+            {legendZones.length > 0 && (
+              <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
+                {legendZones.map((zone) => (
+                  <li key={zone} className="flex items-center gap-1.5">
+                    <span
+                      className={`h-3 w-[3px] rounded-full ${ZONE_BAR_CLASS[zone]}`}
+                      aria-hidden="true"
+                    />
+                    {zoneLabels[zone]}
+                  </li>
+                ))}
+              </ul>
+            )}
           </>
         ) : (
-          <div className="py-12 text-center">
-            <p className="text-sm text-[var(--foreground-muted)]">
-              {dict.season.standings.noData}
-            </p>
-          </div>
+          <p className="py-12 text-center text-sm text-[var(--foreground-muted)]">
+            {dict.season.standings.noData}
+          </p>
         )}
       </div>
     </section>

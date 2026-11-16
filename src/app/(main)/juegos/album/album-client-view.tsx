@@ -1,6 +1,7 @@
 "use client"; // Client: Gestión interactiva de colección, filtros, inventario de sobres y pegado
 
 import { useState, useMemo, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import { toast } from "@/lib/ui/toast";
 import type { Card, PackTier } from "@/lib/cards/types";
 import { useAuth } from "@/context/auth-context";
@@ -38,12 +39,26 @@ interface AlbumClientViewProps {
 
 export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   const { user, openAuthModal } = useAuth();
+  const searchParams = useSearchParams();
   const isDemo = isDemoEmail(user?.email);
   const [demoViewMode, setDemoViewMode] = useState<AlbumDemoViewMode>("starter");
   const [gridFilterState, setGridFilterState] = useState<GridFilterState>(DEFAULT_GRID_FILTER_STATE);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
   const [selectedPackTier, setSelectedPackTier] = useState<PackTier>("aficionado");
-  const [viewMode, setViewMode] = useState<AlbumViewMode>("album");
+
+  const requestedTab = searchParams.get("tab") ?? searchParams.get("view");
+  const [prevRequestedTab, setPrevRequestedTab] = useState(requestedTab);
+  const [viewMode, setViewMode] = useState<AlbumViewMode>(() =>
+    requestedTab === "packs" ? "packs" : requestedTab === "grid" ? "grid" : "album"
+  );
+
+  if (prevRequestedTab !== requestedTab) {
+    setPrevRequestedTab(requestedTab);
+    if (requestedTab === "packs" || requestedTab === "grid" || requestedTab === "album") {
+      setViewMode(requestedTab);
+    }
+  }
+
   const [newlyAcquiredSlugs, setNewlyAcquiredSlugs] = useState<Set<string>>(new Set());
 
   const {
@@ -59,7 +74,7 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
 
   const totalPacks = user
     ? packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda
-    : 2;
+    : 0;
 
   const handleOpenPackCards = useCallback((tier: PackTier): { cards: Card[]; duplicateSlugs: Set<string> } => {
     if (!user?.id) return { cards: [], duplicateSlugs: new Set() };

@@ -38,7 +38,6 @@ test("getDictionary returns required historico translations and tabs", () => {
   assert.ok(dict.historico);
   assert.equal(dict.historico.title, "Histórico — Mareona");
   assert.equal(dict.historico.tabs.trajectory, "Trayectoria");
-  assert.equal(dict.historico.tabs.comparison, "Comparador");
   assert.equal(dict.historico.tabs.ephemerides, "Efemérides");
   assert.equal(dict.historico.tabs.rivals, "Rivales");
   assert.equal(dict.historico.tabs.legacy, "Legado");

@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
-import { fetchStandings, fetchSpotlightFixture } from "@/lib/sports-api/client";
+import {
+  fetchNextFixture,
+  fetchSpotlightFixture,
+  fetchStandings,
+} from "@/lib/sports-api/client";
+import { formatMatchDate, formatMatchTime } from "@/lib/sports-api/dates";
 import {
   getSeasonLabel,
   type DomainStandingRow,
   type DomainMatchSummary,
 } from "@/lib/sports-api/types";
+import { getEphemeridesForDay } from "@/lib/historical/ephemerides-service";
+import { getMadridMonthDay, pickFeaturedEphemeris } from "@/lib/historical/featured-ephemeris";
 import { NextFixtureHero } from "./temporada/next-fixture-hero";
 import { SeasonSummaryTable } from "./temporada/season-summary-table";
+import { DailyActionsCard } from "./_home/daily-actions-card";
+import { TodayInHistoryCard } from "./_home/today-in-history-card";
 
 export const metadata: Metadata = {
   title: "Inicio",
@@ -17,11 +26,13 @@ export default async function HomePage() {
   "use cache";
   let standings: readonly DomainStandingRow[] = [];
   let match: DomainMatchSummary | null = null;
+  let nextFixture: DomainMatchSummary | null = null;
 
   try {
-    const [standingsRes, matchRes] = await Promise.allSettled([
+    const [standingsRes, matchRes, nextRes] = await Promise.allSettled([
       fetchStandings(undefined, undefined, { includeSplits: false }),
       fetchSpotlightFixture(),
+      fetchNextFixture(),
     ]);
 
     if (standingsRes.status === "fulfilled" && standingsRes.value.length > 0) {
@@ -31,17 +42,47 @@ export default async function HomePage() {
     if (matchRes.status === "fulfilled") {
       match = matchRes.value;
     }
+
+    if (nextRes.status === "fulfilled") {
+      nextFixture = nextRes.value;
+    }
   } catch {
     // Falls back to transparent empty state without fake data
   }
 
   const seasonLabel = getSeasonLabel();
+  const { month, day } = getMadridMonthDay();
+  const featured = pickFeaturedEphemeris(getEphemeridesForDay(month, day));
+
+  const porra = nextFixture
+    ? {
+        matchId: nextFixture.externalId,
+        kickoffAt: nextFixture.kickoffAt,
+        opponentName: (nextFixture.homeTeam.isSporting ? nextFixture.awayTeam : nextFixture.homeTeam).name,
+        kickoffLabel: `${formatMatchDate(nextFixture.kickoffAt, nextFixture.isTimeConfirmed ?? true, false)} · ${formatMatchTime(nextFixture.kickoffAt)}`,
+      }
+    : null;
 
   return (
     <div className="flex flex-col gap-6">
       <NextFixtureHero match={match} />
-      <SeasonSummaryTable standings={standings} seasonLabel={seasonLabel} />
+
+      {/* Mobile prioritizes daily actions, then standings; desktop splits 7/5 with right column flex-stacked */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+        <div className="order-2 lg:order-1 lg:col-span-7">
+          <SeasonSummaryTable standings={standings} seasonLabel={seasonLabel} />
+        </div>
+        <div className="contents lg:flex lg:flex-col lg:gap-5 lg:order-2 lg:col-span-5">
+          <div className="order-1 lg:order-none">
+            <DailyActionsCard porra={porra} />
+          </div>
+          {featured && (
+            <div className="order-3 lg:order-none">
+              <TodayInHistoryCard featured={featured} />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
-

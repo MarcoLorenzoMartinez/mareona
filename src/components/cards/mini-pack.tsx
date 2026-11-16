@@ -7,26 +7,32 @@ import { PACK_CARD_THEMES } from "./pack-card-theme";
 interface MiniPackProps {
   readonly tier: PackTier;
   readonly className?: string;
+  readonly size?: "sm" | "md";
 }
 
 /**
  * Renders an exact 1:1 miniaturized reproduction of the official booster pack.
  * Uses uniform CSS scaling to guarantee 100% identical visual fidelity to the full-size pack.
  */
-export function MiniPack({ tier, className = "" }: MiniPackProps) {
+export function MiniPack({ tier, className = "", size = "sm" }: MiniPackProps) {
   const config = PACK_TIERS[tier];
   const theme = PACK_CARD_THEMES[tier];
+
+  const dimensions =
+    size === "md"
+      ? { container: "h-[68px] w-[44px]", scale: 0.22 }
+      : { container: "h-[41px] w-[26px]", scale: 0.13 };
 
   return (
     <div
       title={config.name}
       aria-label={config.name}
-      className={`relative h-[41px] w-[26px] shrink-0 overflow-hidden rounded-xs shadow-2xs select-none ${className}`}
+      className={`relative ${dimensions.container} shrink-0 overflow-hidden rounded-xs shadow-2xs select-none ${className}`}
     >
       {/* Exact PackCard layout scaled down uniformly to miniature size */}
       <div
         className="pointer-events-none absolute left-0 top-0 h-[310px] w-[200px] origin-top-left"
-        style={{ transform: "scale(0.13)" }}
+        style={{ transform: `scale(${dimensions.scale})` }}
       >
         <div
           className={`relative flex h-full w-full flex-col overflow-hidden rounded-xs border-2 bg-gradient-to-br ${theme.foilBg} ${theme.bevelHighlight}`}

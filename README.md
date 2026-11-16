@@ -2,7 +2,7 @@
 
 # Mareona
 
-**Plataforma web deportiva y comunitaria de alto rendimiento para el Real Sporting**
+**Plataforma web y PWA para la afición del Real Sporting de Gijón**
 
 [![Despliegue en Producción](https://img.shields.io/badge/Producción-mareona.vercel.app-000000?style=flat-square&logo=vercel&logoColor=white)](https://mareona.vercel.app)
 [![Next.js](https://img.shields.io/badge/Next.js-15%20App%20Router-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org)
@@ -138,6 +138,19 @@ Puedes ilustrar cada pantalla con capturas reales cuando lo consideres oportuno:
 -->
 [Describe aquí la Mensajería Directa...]
 
+#### Red de Amistades
+<!--
+- Búsqueda de aficionados, solicitudes de amistad y seguimiento mutuo.
+- Integración transversal del círculo de amigos en los filtros de la tertulia y en las clasificaciones de la porra.
+-->
+[Describe aquí la Red de Amistades...]
+
+#### Moderación y Convivencia Comunitaria
+<!--
+- Sistema de reporte y denuncia ciudadana de publicaciones inapropiadas para garantizar un espacio de debate respetuoso y seguro.
+-->
+[Describe aquí la Moderación Comunitaria...]
+
 ---
 
 ### 2.5. Juegos (`/juegos`)
@@ -206,12 +219,14 @@ Detalla los estándares técnicos y de diseño aplicados en el proyecto.
 -->
 [Describe aquí los criterios de identidad visual y diseño de interfaz...]
 
-### Experiencia Móvil (PWA)
+### Experiencia Móvil, PWA y Resiliencia Offline
 <!--
 - Aplicación Web Progresiva instalable con comportamiento y rendimiento equivalentes a una aplicación nativa.
+- Pantalla guiada de instalación paso a paso (/instalar) adaptada dinámicamente a iOS, Android y escritorio.
+- Resiliencia ante caídas de red mediante Service Worker con página de cortesía offline nativa (/offline).
 - Ergonomía adaptada a interacción con una sola mano y áreas táctiles que respetan el estándar de 44px.
 -->
-[Describe aquí la implementación móvil y PWA...]
+[Describe aquí la implementación móvil, PWA y resiliencia offline...]
 
 ### Accesibilidad (WCAG 2.2 AA)
 <!--
@@ -250,7 +265,16 @@ Consulte la memoria técnica completa:
 
 ---
 
-## 6. Autor
+## 6. Aviso Legal y Atribución Deportiva
+
+Mareona es un proyecto formativo y comunitario independiente, desarrollado sin ánimo de lucro con fines divulgativos y deportivos. No existe vinculación societaria ni patrocinio comercial con el Real Sporting de Gijón, S.A.D. ni con los organismos rectores de las competiciones oficiales.
+
+Todos los escudos, logotipos, imágenes históricas y marcas comerciales referenciadas pertenecen exclusivamente a sus respectivos titulares legales y se emplean bajo amparo de uso legítimo e ilustrativo.
+
+
+---
+
+## 7. Autor
 
 **Marco Lorenzo Martínez**  
 Ingeniero Informático  
