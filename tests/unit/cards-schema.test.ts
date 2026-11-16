@@ -15,8 +15,8 @@ describe("Cards Domain & Seed Suite", () => {
   it("validates all historical seed cards against Zod cardSchema", () => {
     assert.strictEqual(
       HISTORICAL_CARDS_SEED.length,
-      522,
-      `Expected exactly 522 cards, got ${HISTORICAL_CARDS_SEED.length}`
+      558,
+      `Expected exactly 558 cards, got ${HISTORICAL_CARDS_SEED.length}`
     );
 
     const players = HISTORICAL_CARDS_SEED.filter((c) => !c.kind || c.kind === "player");
@@ -229,7 +229,7 @@ describe("Cards Domain & Seed Suite", () => {
     }
 
     const playerCards = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "player");
-    assert.strictEqual(playerCards.length, 486);
+    assert.strictEqual(playerCards.length, 522);
 
     for (const card of playerCards) {
       const match = card.photoUrl.match(/\/images\/cards\/historical\/bdf-(\d+)\.jpg$/);

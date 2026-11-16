@@ -77,4 +77,22 @@ describe("Accessibility & WCAG 2.2 AA Modal Dialog Standards", () => {
       "Pack opening modal must ensure cards are saved on dismiss"
     );
   });
+
+  it("verifies pack opening modal prevents unwanted vertical scrollbars on cards row", () => {
+    const packModalPath = path.resolve(
+      process.cwd(),
+      "src/app/(main)/juegos/album/pack-opening-modal.tsx"
+    );
+    const content = fs.readFileSync(packModalPath, "utf-8");
+    assert.match(
+      content,
+      /overflow-y-hidden/,
+      "Cards container must enforce overflow-y-hidden to prevent parasitic vertical scrollbars"
+    );
+    assert.match(
+      content,
+      /scrollbar-none/,
+      "Cards container must apply scrollbar-none to suppress browser scrollbars"
+    );
+  });
 });

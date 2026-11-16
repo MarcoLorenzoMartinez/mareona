@@ -179,6 +179,37 @@ export function consumeUserPack(tier: PackTier, userId?: string): boolean {
   return true;
 }
 
+const LEGACY_REPLACED_CARD_SLUGS: Readonly<Record<string, string>> = {
+  "marcos-2022": "mario-gonzalez-2024",
+  "trabanco-2020": "pol-valentin-2022",
+  "arguelles-2020": "perrin-2025",
+};
+
+/**
+ * Migrates retired card slugs in a user inventory to their canonical replacements
+ * so users never lose owned card progress or duplicate counts across catalog updates.
+ */
+export function migrateCardInventorySlugs(
+  inventory: Readonly<Record<string, number>>
+): { inventory: Record<string, number>; migrated: boolean } {
+  const next: Record<string, number> = { ...inventory };
+  let migrated = false;
+
+  for (const [oldSlug, newSlug] of Object.entries(LEGACY_REPLACED_CARD_SLUGS)) {
+    const qty = next[oldSlug];
+    if (typeof qty === "number" && qty > 0) {
+      next[newSlug] = (next[newSlug] ?? 0) + qty;
+      delete next[oldSlug];
+      migrated = true;
+    } else if (oldSlug in next) {
+      delete next[oldSlug];
+      migrated = true;
+    }
+  }
+
+  return { inventory: next, migrated };
+}
+
 /**
  * Reads user card inventory (slug -> quantity).
  * Unauthenticated guests start with 0 cards in their collection until signing in and opening packs.
@@ -200,13 +231,20 @@ export function loadUserCardInventory(userId?: string): Record<string, number> {
       // Check legacy unkeyed card inventory to migrate
       const legacyRaw = window.localStorage.getItem(CARD_INVENTORY_STORAGE_KEY);
       if (legacyRaw) {
-        window.localStorage.setItem(key, legacyRaw);
+        const parsedLegacy = JSON.parse(legacyRaw) as Record<string, number>;
+        const { inventory } = migrateCardInventorySlugs(parsedLegacy);
+        window.localStorage.setItem(key, JSON.stringify(inventory));
         window.localStorage.removeItem(CARD_INVENTORY_STORAGE_KEY);
-        return JSON.parse(legacyRaw) as Record<string, number>;
+        return inventory;
       }
       return {};
     }
-    return JSON.parse(raw) as Record<string, number>;
+    const parsed = JSON.parse(raw) as Record<string, number>;
+    const { inventory, migrated } = migrateCardInventorySlugs(parsed);
+    if (migrated) {
+      window.localStorage.setItem(key, JSON.stringify(inventory));
+    }
+    return inventory;
   } catch {
     return {};
   }

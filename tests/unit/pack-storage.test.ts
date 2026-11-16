@@ -7,6 +7,7 @@ import {
   loadUserPackInventory,
   loadUserCardInventory,
   claimDailyLoginPack,
+  migrateCardInventorySlugs,
 } from "../../src/lib/cards/pack-storage.ts";
 
 describe("Pack Storage & Missions Logic", () => {
@@ -49,5 +50,23 @@ describe("Pack Storage & Missions Logic", () => {
     assert.equal(userInventory.aficionado, 1);
     assert.equal(userInventory.rojiblanco, 1);
     assert.equal(userInventory.leyenda, 0);
+  });
+
+  it("migrates retired youth card slugs to their canonical replacement slugs preserving quantities", () => {
+    const legacy = {
+      "quini-1979": 2,
+      "marcos-2022": 3,
+      "trabanco-2020": 1,
+      "arguelles-2020": 2,
+    };
+    const { inventory, migrated } = migrateCardInventorySlugs(legacy);
+    assert.equal(migrated, true);
+    assert.equal(inventory["quini-1979"], 2);
+    assert.equal(inventory["mario-gonzalez-2024"], 3);
+    assert.equal(inventory["pol-valentin-2022"], 1);
+    assert.equal(inventory["perrin-2025"], 2);
+    assert.equal("marcos-2022" in inventory, false);
+    assert.equal("trabanco-2020" in inventory, false);
+    assert.equal("arguelles-2020" in inventory, false);
   });
 });

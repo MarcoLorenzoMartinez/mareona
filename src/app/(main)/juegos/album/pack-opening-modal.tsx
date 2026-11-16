@@ -118,7 +118,7 @@ export function PackOpeningModal({
       onClick={handleBackdropClick}
     >
       <div
-        className="relative flex w-full max-w-5xl max-h-[92vh] overflow-y-auto flex-col items-center rounded-2xl border border-[var(--border)] bg-white p-3.5 sm:p-7 shadow-xl"
+        className="relative flex w-full max-w-5xl max-h-[92vh] overflow-y-auto flex-col items-center rounded-2xl border border-[var(--border)] bg-white p-3.5 sm:p-7 shadow-xl custom-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Cabecera limpia y deportiva */}
@@ -150,9 +150,9 @@ export function PackOpeningModal({
           </button>
         </div>
 
-        {/* Fila de cromos adaptativa y centrada */}
-        <div className="my-auto flex w-full flex-1 items-center justify-center py-4 sm:py-8">
-          <div className="flex flex-nowrap items-center justify-center gap-2 sm:gap-3 overflow-x-auto p-1 max-w-full">
+        {/* Fila de cromos adaptativa y centrada sin scroll vertical parásito */}
+        <div className="my-auto flex w-full flex-1 items-center justify-center py-3 sm:py-6 overflow-hidden">
+          <div className="flex flex-nowrap items-center justify-center gap-2 sm:gap-3 overflow-x-auto overflow-y-hidden scrollbar-none py-2 px-1 max-w-full">
             {cards.map((card, idx) => (
               <PackRowCard
                 key={`${card.slug}-${idx}`}

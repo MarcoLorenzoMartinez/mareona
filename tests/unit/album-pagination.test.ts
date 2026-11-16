@@ -26,7 +26,7 @@ describe("Album Pagination & Chronological Suite", () => {
 
   it("sorts historical cards chronologically from origins through recent eras", () => {
     const sorted = sortCardsChronologically(HISTORICAL_CARDS_SEED);
-    assert.strictEqual(sorted.length, 522);
+    assert.strictEqual(sorted.length, 558);
 
     // Escudos and identity at the front
     assert.strictEqual(sorted[0].kind, "crest");
@@ -92,6 +92,12 @@ describe("Album Pagination & Chronological Suite", () => {
     for (let i = 0; i < chapters.length; i++) {
       const ch = chapters[i];
       assert.ok(ch.startPage <= ch.endPage);
+      const pageCount = ch.endPage - ch.startPage + 1;
+      assert.strictEqual(
+        pageCount % 2,
+        0,
+        `Chapter ${ch.label} must span an even number of pages (complete 2-page spreads), got ${pageCount}`
+      );
       if (i > 0) {
         assert.strictEqual(ch.startPage, chapters[i - 1].endPage + 1);
       }
