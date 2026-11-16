@@ -32,13 +32,26 @@ export function useAlbumInventory(userId?: string) {
     const onPackSync = () => setPackInventory(loadUserPackInventory(userId));
     const onCardSync = () => setUserInventory(loadUserCardInventory(userId));
     const onMissionSync = () => setMissionState(getDailyMissionState(undefined, userId));
+    const onFullSync = () => {
+      onPackSync();
+      onCardSync();
+      onMissionSync();
+    };
+
+    // Refresh state immediately when view mounts or resumes from Next.js <Activity> cache
+    queueMicrotask(onFullSync);
+
     window.addEventListener("mareona_pack_inventory_changed", onPackSync);
     window.addEventListener("mareona_card_inventory_changed", onCardSync);
     window.addEventListener("mareona_missions_state_changed", onMissionSync);
+    window.addEventListener("focus", onFullSync);
+    window.addEventListener("storage", onFullSync);
     return () => {
       window.removeEventListener("mareona_pack_inventory_changed", onPackSync);
       window.removeEventListener("mareona_card_inventory_changed", onCardSync);
       window.removeEventListener("mareona_missions_state_changed", onMissionSync);
+      window.removeEventListener("focus", onFullSync);
+      window.removeEventListener("storage", onFullSync);
     };
   }, [userId]);
 

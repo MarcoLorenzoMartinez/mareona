@@ -121,6 +121,8 @@ export interface UserPackInventory {
 export interface DailyMissionState {
   readonly todayDate: string;
   readonly hasClaimedDailyLogin: boolean;
+  readonly hasCompletedDailyGame: boolean;
   readonly hasClaimedDailyGame: boolean;
   readonly isMatchday: boolean;
+  readonly gameStreak: number;
 }

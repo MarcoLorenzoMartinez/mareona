@@ -13,6 +13,7 @@ interface MyPacksViewProps {
   readonly duplicateCount: number;
   readonly onOpenPack: (tier: PackTier) => void;
   readonly onClaimLogin: () => void;
+  readonly onClaimDailyGame?: () => void;
   readonly onRecycleDuplicates: () => void;
   readonly isOpening?: boolean;
 }
@@ -29,6 +30,7 @@ export function MyPacksView({
   duplicateCount,
   onOpenPack,
   onClaimLogin,
+  onClaimDailyGame,
   onRecycleDuplicates,
   isOpening = false,
 }: MyPacksViewProps) {
@@ -92,6 +94,7 @@ export function MyPacksView({
         missionState={missionState}
         duplicateCount={duplicateCount}
         onClaimLogin={onClaimLogin}
+        onClaimDailyGame={onClaimDailyGame}
         onRecycleDuplicates={onRecycleDuplicates}
       />
     </div>

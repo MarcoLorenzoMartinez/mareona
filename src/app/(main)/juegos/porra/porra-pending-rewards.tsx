@@ -35,7 +35,7 @@ export function PorraPendingRewards({
             : `${justClaimedCount} sobres reclamados y guardados en tu inventario.`}
         </span>
         <Link
-          href="/juegos/album"
+          href="/juegos/album?tab=packs"
           className="inline-flex shrink-0 items-center justify-center rounded-full border border-[var(--border)] bg-white px-3.5 py-1.5 font-sans text-xs font-bold text-[#e2001a] transition-colors hover:border-[#e2001a] active:scale-95"
         >
           Abrir en el Álbum →

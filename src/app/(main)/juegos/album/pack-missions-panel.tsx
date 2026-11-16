@@ -2,38 +2,40 @@
 
 import Link from "next/link";
 import type { DailyMissionState, PackTier } from "@/lib/cards/types";
-import { DUPLICATES_RECIPE_COST } from "@/lib/cards/pack-storage";
+import { DUPLICATES_RECIPE_COST, WEEKLY_STREAK_CYCLE, resolveStreakRewardTier } from "@/lib/cards/pack-storage";
 import { MiniPack } from "@/components/cards/mini-pack";
 
 interface PackMissionsPanelProps {
   readonly missionState: DailyMissionState;
   readonly duplicateCount: number;
   readonly onClaimLogin: () => void;
+  readonly onClaimDailyGame?: () => void;
   readonly onRecycleDuplicates: () => void;
   readonly isClaimingLogin?: boolean;
   readonly isRecycling?: boolean;
 }
 
 /**
- * Editorial list of daily pack rewards.
- * Replaces generic AI text badges with genuine mini FUT foil pack previews next to action buttons.
- * Uses adaptive wrapping for the duplicate exchange bar to preserve vertical pack alignment on mobile.
+ * Editorial list of daily pack rewards with 7-day game streak tracking and duplicate recycling.
  */
 export function PackMissionsPanel({
   missionState,
   duplicateCount,
   onClaimLogin,
+  onClaimDailyGame,
   onRecycleDuplicates,
   isClaimingLogin = false,
   isRecycling = false,
 }: PackMissionsPanelProps) {
   const canRecycle = duplicateCount >= DUPLICATES_RECIPE_COST;
-  const recycleProgressPct = Math.min(
-    100,
-    Math.round((duplicateCount / DUPLICATES_RECIPE_COST) * 100)
-  );
+  const recycleProgressPct = Math.min(100, Math.round((duplicateCount / DUPLICATES_RECIPE_COST) * 100));
 
-  const loginTier: PackTier = "aficionado";
+  const targetStreak = missionState.hasCompletedDailyGame ? Math.max(1, missionState.gameStreak) : missionState.gameStreak + 1;
+  const dailyGameTier: PackTier = resolveStreakRewardTier(targetStreak);
+  const isCycleCompletedToday =
+    missionState.gameStreak > 0 && missionState.gameStreak % WEEKLY_STREAK_CYCLE === 0 && missionState.hasCompletedDailyGame;
+  const streakInCycle = isCycleCompletedToday ? WEEKLY_STREAK_CYCLE : missionState.gameStreak % WEEKLY_STREAK_CYCLE;
+  const streakProgressPct = Math.round((streakInCycle / WEEKLY_STREAK_CYCLE) * 100);
 
   return (
     <section aria-label="Cómo conseguir sobres" className="flex flex-col gap-3">
@@ -61,21 +63,46 @@ export function PackMissionsPanel({
             >
               {missionState.hasClaimedDailyLogin ? "Reclamado" : "Reclamar"}
             </button>
-            <MiniPack tier={loginTier} />
+            <MiniPack tier="aficionado" />
           </div>
         </div>
 
-        {/* Fila 2: Reto Diario de Juegos */}
+        {/* Fila 2: Reto Diario de Juegos (con racha semanal de 7 días para Sobre Leyenda) */}
         <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5">
-          <span className="text-xs sm:text-sm font-bold text-[var(--foreground)] min-w-0 pr-2">
-            Reto diario de juegos
-          </span>
+          <div className="min-w-0 pr-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-3">
+              <span className="text-xs sm:text-sm font-bold text-[var(--foreground)] whitespace-nowrap">
+                Reto diario de juegos
+              </span>
+              <div className="flex items-center gap-1.5" title="Completa 7 días seguidos para ganar un Sobre Leyenda">
+                <span className="font-sans text-[11px] sm:text-xs font-bold tabular-nums text-neutral-500">
+                  {streakInCycle}/{WEEKLY_STREAK_CYCLE}d
+                </span>
+                <div className="h-1.5 w-14 sm:w-20 overflow-hidden rounded-full bg-neutral-100">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      dailyGameTier === "leyenda" ? "bg-amber-500" : "bg-[#e2001a]"
+                    }`}
+                    style={{ width: `${streakProgressPct}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             {missionState.hasClaimedDailyGame ? (
-              <span className="rounded-full bg-neutral-100 px-3.5 py-1 font-sans text-xs font-bold text-neutral-400">
-                Conseguido
+              <span className="rounded-full bg-neutral-100 px-3.5 py-1 font-sans text-xs font-bold text-neutral-400 cursor-not-allowed">
+                Reclamado
               </span>
+            ) : missionState.hasCompletedDailyGame ? (
+              <button
+                type="button"
+                onClick={onClaimDailyGame}
+                className="rounded-full bg-[#e2001a] px-3.5 py-1 text-xs font-bold text-white transition-all hover:bg-[#b30015] active:scale-95 shadow-2xs cursor-pointer"
+              >
+                Reclamar
+              </button>
             ) : (
               <Link
                 href="/juegos"
@@ -84,7 +111,7 @@ export function PackMissionsPanel({
                 Jugar hoy →
               </Link>
             )}
-            <MiniPack tier="rojiblanco" />
+            <MiniPack tier={dailyGameTier} />
           </div>
         </div>
 

@@ -20,12 +20,15 @@ export const CANONICAL_STARTER_SLUGS: readonly string[] = [
 ];
 
 export const DUPLICATES_RECIPE_COST = 10;
+export const WEEKLY_STREAK_CYCLE = 7;
 
 export const DEFAULT_MISSION_STATE: DailyMissionState = {
   todayDate: "",
   hasClaimedDailyLogin: false,
+  hasCompletedDailyGame: false,
   hasClaimedDailyGame: false,
   isMatchday: false,
+  gameStreak: 0,
 };
 
 /**
@@ -37,6 +40,60 @@ export function getTodayDateString(overrideDate?: Date): string {
   const month = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+/**
+ * Returns the previous calendar date in YYYY-MM-DD format given an ISO date string.
+ *
+ * @param dateStr - Reference date in YYYY-MM-DD format.
+ * @returns Previous day in YYYY-MM-DD format.
+ */
+export function getPreviousDateString(dateStr: string): string {
+  const parts = dateStr.split("-").map(Number);
+  const year = parts[0] ?? 1970;
+  const month = parts[1] ?? 1;
+  const day = parts[2] ?? 1;
+  const d = new Date(year, month - 1, day - 1);
+  const prevYear = d.getFullYear();
+  const prevMonth = String(d.getMonth() + 1).padStart(2, "0");
+  const prevDay = String(d.getDate()).padStart(2, "0");
+  return `${prevYear}-${prevMonth}-${prevDay}`;
+}
+
+/**
+ * Computes the active consecutive daily game streak for a user on a given date.
+ * Preserves streak if the last claim was today or yesterday; resets to 0 if a day was missed.
+ *
+ * @param lastGameClaimDate - Last YYYY-MM-DD date when the user won a daily challenge.
+ * @param storedStreak - Persisted streak counter.
+ * @param today - Current YYYY-MM-DD reference date.
+ * @returns Active consecutive streak count.
+ */
+export function computeActiveGameStreak(
+  lastGameClaimDate: string | undefined,
+  storedStreak: number | undefined,
+  today: string
+): number {
+  if (!lastGameClaimDate) return 0;
+  const effectiveStreak = storedStreak && storedStreak > 0 ? storedStreak : 1;
+  if (lastGameClaimDate === today) {
+    return effectiveStreak;
+  }
+  if (lastGameClaimDate === getPreviousDateString(today)) {
+    return effectiveStreak;
+  }
+  return 0;
+}
+
+/**
+ * Resolves the pack tier earned for reaching a given consecutive daily game streak.
+ * Every 7th consecutive day upgrades the standard Sobre Rojiblanco to a Sobre Leyenda.
+ *
+ * @param streak - Consecutive daily game streak count (1-based).
+ * @returns PackTier awarded for this milestone.
+ */
+export function resolveStreakRewardTier(streak: number): PackTier {
+  return streak > 0 && streak % WEEKLY_STREAK_CYCLE === 0 ? "leyenda" : "rojiblanco";
 }
 
 /**
@@ -289,7 +346,10 @@ export function addCardsToInventory(
 
 interface StoredMissionState {
   lastLoginClaimDate?: string;
+  lastGameWinDate?: string;
   lastGameClaimDate?: string;
+  gameStreak?: number;
+  pendingGameRewardTier?: PackTier;
 }
 
 function loadStoredMissionState(userId?: string): StoredMissionState {
@@ -333,12 +393,16 @@ export function getDailyMissionState(todayOverride?: string, userId?: string): D
   }
   const today = todayOverride ?? getTodayDateString();
   const state = loadStoredMissionState(userId);
+  const effectiveWinDate = state.lastGameWinDate ?? state.lastGameClaimDate;
+  const gameStreak = computeActiveGameStreak(effectiveWinDate, state.gameStreak, today);
 
   return {
     todayDate: today,
     hasClaimedDailyLogin: state.lastLoginClaimDate === today,
+    hasCompletedDailyGame: effectiveWinDate === today,
     hasClaimedDailyGame: state.lastGameClaimDate === today,
     isMatchday: false,
+    gameStreak,
   };
 }
 
@@ -369,24 +433,28 @@ export function claimDailyLoginPack(userId?: string): {
 }
 
 /**
- * Awards the daily game pack when an authenticated user solves a daily minigame.
+ * Records a daily minigame win, advancing the user's consecutive 7-day streak immediately
+ * and unlocking the "Reclamar" button in the Album missions panel.
  * Strictly prevents awards from historical/archive challenges or unauthenticated guests.
  *
  * @param challengeDateStr - Optional date of the played challenge.
  * @param userId - Optional unique user identifier.
+ * @param todayOverride - Optional reference date override for deterministic tests.
  */
 export function awardDailyGamePack(
   challengeDateStr?: string,
-  userId?: string
+  userId?: string,
+  todayOverride?: string
 ): {
   awarded: boolean;
   tier?: PackTier;
+  streak?: number;
   reason?: "historic_archive" | "already_claimed_today" | "auth_required";
 } {
   if (!userId) {
     return { awarded: false, reason: "auth_required" };
   }
-  const today = getTodayDateString();
+  const today = todayOverride ?? getTodayDateString();
 
   // Strict check: if playing past dates from the archive modal, no pack awarded
   if (challengeDateStr && challengeDateStr !== today) {
@@ -394,13 +462,85 @@ export function awardDailyGamePack(
   }
 
   const state = loadStoredMissionState(userId);
-  if (state.lastGameClaimDate === today) {
+  const effectiveWinDate = state.lastGameWinDate ?? state.lastGameClaimDate;
+  if (effectiveWinDate === today) {
     return { awarded: false, reason: "already_claimed_today" };
   }
 
-  addPacksToInventory("rojiblanco", 1, userId);
-  saveStoredMissionState({ ...state, lastGameClaimDate: today }, userId);
-  return { awarded: true, tier: "rojiblanco" };
+  // Safety net: if the user had an unclaimed reward from a previous day, auto-deposit it so it is never lost
+  if (
+    state.pendingGameRewardTier &&
+    state.lastGameWinDate &&
+    state.lastGameClaimDate !== state.lastGameWinDate
+  ) {
+    addPacksToInventory(state.pendingGameRewardTier, 1, userId);
+  }
+
+  const activeStreak = computeActiveGameStreak(
+    effectiveWinDate,
+    state.gameStreak,
+    today
+  );
+  const nextStreak = activeStreak + 1;
+  const tier = resolveStreakRewardTier(nextStreak);
+
+  saveStoredMissionState(
+    {
+      ...state,
+      lastGameWinDate: today,
+      gameStreak: nextStreak,
+      pendingGameRewardTier: tier,
+    },
+    userId
+  );
+  return { awarded: true, tier, streak: nextStreak };
+}
+
+/**
+ * Claims the pending booster pack unlocked by winning today's daily minigame.
+ * Delivers 1 Sobre Rojiblanco on days 1-6 and upgrades to 1 Sobre Leyenda every 7th day.
+ *
+ * @param userId - Optional unique user identifier.
+ * @param todayOverride - Optional reference date override for deterministic tests.
+ */
+export function claimDailyGamePack(
+  userId?: string,
+  todayOverride?: string
+): {
+  success: boolean;
+  tier?: PackTier;
+  streak?: number;
+  reason?: "auth_required" | "already_claimed" | "game_not_completed";
+} {
+  if (!userId) {
+    return { success: false, reason: "auth_required" };
+  }
+  const today = todayOverride ?? getTodayDateString();
+  const state = loadStoredMissionState(userId);
+
+  if (state.lastGameClaimDate === today) {
+    return { success: false, reason: "already_claimed" };
+  }
+
+  const effectiveWinDate = state.lastGameWinDate ?? state.lastGameClaimDate;
+  if (effectiveWinDate !== today) {
+    return { success: false, reason: "game_not_completed" };
+  }
+
+  const streak = computeActiveGameStreak(effectiveWinDate, state.gameStreak, today);
+  const tier = state.pendingGameRewardTier ?? resolveStreakRewardTier(streak);
+
+  addPacksToInventory(tier, 1, userId);
+  saveStoredMissionState(
+    {
+      ...state,
+      lastGameWinDate: today,
+      lastGameClaimDate: today,
+      pendingGameRewardTier: undefined,
+    },
+    userId
+  );
+  return { success: true, tier, streak };
 }
 
 /**
