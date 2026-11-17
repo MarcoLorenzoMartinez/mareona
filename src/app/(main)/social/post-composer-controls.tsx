@@ -1,7 +1,8 @@
 // Client: Barra de controles y botones de acción del compositor de publicaciones
 "use client";
 
-import { BarChart2, Shield } from "lucide-react";
+import { BarChart2 } from "lucide-react";
+import { FootballPitchIcon } from "@/components/icons/football-pitch-icon";
 
 interface PostComposerControlsProps {
   readonly parentId?: string;
@@ -53,7 +54,7 @@ export function PostComposerControls({
             aria-label="Adjuntar alineación de Mi Once"
             className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            <Shield className="h-3.5 w-3.5" aria-hidden="true" />
+            <FootballPitchIcon className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Mi Once</span>
           </button>
         )}

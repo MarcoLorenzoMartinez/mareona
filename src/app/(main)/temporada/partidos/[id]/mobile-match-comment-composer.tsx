@@ -2,7 +2,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, Shield, Send } from "lucide-react";
+import { X, Send } from "lucide-react";
+import { FootballPitchIcon } from "@/components/icons/football-pitch-icon";
 import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
@@ -149,7 +150,7 @@ export function MobileMatchCommentModal({
                 onClick={handleToggleLineup}
                 className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-[var(--primary)]"
               >
-                <Shield className="h-3.5 w-3.5" aria-hidden="true" />
+                <FootballPitchIcon className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Mi Once</span>
               </button>
             ) : <div />}

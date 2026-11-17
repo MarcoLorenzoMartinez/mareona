@@ -78,20 +78,22 @@ Se incluyen diferentes formas de visualización de la clasificación:
 - Estadísticas colectivas e individuales de la temporada.
 - Goleadores, asistentes, tarjetas y datos avanzados de rendimiento.
 -->
-[Describe aquí las Estadísticas...]
+Se muestran estadísticas colectivas detalladas de la temporada del equipo. Cada estadística tiene asignada la posición actual del equipo respecto a los demás equipos de la liga para esa estadística en concreto. Se incluye en esas posiciones una paleta de colores que varía para mostrar de forma visual si el equipo está en la parte alta, media o baja de la clasificación para esa estadística.
+También se muestran estadísticas más visuales, como mapas de las posiciones que ocupa el equipo en el campo, dónde se producen más pases, por dónde se ataca más, y la ubicación de los disparos que terminaron en gol.
+El objetivo de esta sección es ofrecer a los aficionados una visión completa y comprensible del rendimiento del equipo y de sus jugadores, permitiendo un análisis profundo de la temporada al alcance de todos los públicos.
 
 #### Plantilla (`/temporada/plantilla` y `/temporada/plantilla/[id]`)
 <!--
 - Directorio de la plantilla oficial del primer equipo clasificada por demarcaciones (porteros, defensas, medios, delanteros).
 - Ficha individual de jugador: dorsal, estadísticas de temporada, minutos jugados y trayectoria.
 -->
-[Describe aquí la Plantilla...]
+Lista de todos los jugadores de la plantilla. Cada jugador tiene su propia ficha de detalle con información completa sobre el mismo, incluyendo datos básicos de su perfil y estadísticas detalladas de la temporada, que complementan la información de la sección de estadísticas, proporcionando datos de los rendimientos individuales de cada jugador.
 
 #### Mi Once (`/temporada/pizarra`)
 <!--
 - Pizarra táctica interactiva para configurar y analizar formaciones y sistemas de juego.
 -->
-[Describe aquí Mi Once...]
+Pizarra táctica interactiva que permite a los aficionados confeccionar su propio once inicial, con varios sistemas de juego predefinidos, pero dando total libertad al usuario para colocar y mover a los jugadores en el campo. Incluye a todos los jugadores del primer equipo, y también a otros jugadores del Sporting Atlético y del Juvenil División de Honor. Permite descargar en el dispositivo como una imagen el once creado, y también compartirlo en las secciones sociales de la aplicación (Social o Grada del siguiente partido), para que otros aficionados puedan ver y comentar el once creado por el usuario.
 
 ---
 
@@ -101,25 +103,31 @@ Se incluyen diferentes formas de visualización de la clasificación:
 <!--
 - Archivo histórico de la trayectoria temporada a temporada del Real Sporting en las distintas categorías.
 -->
-[Describe aquí la Trayectoria...]
+Gráfico de la trayectoria histórica del Real Sporting de Gijón, mostrando la posición del equipo en cada temporada desde que hay registros de las competiciones hasta la actualidad. Permite a los aficionados ver cómo ha evolucionado el equipo a lo largo de los años y cómo se ha desempeñado en las distintas categorías del fútbol español. Al seleccionar una temporada concreta, se muestran los detalles de la misma, incluyendo la clasificación final de la liga, los partidos jugados y la plantilla del equipo durante esa temporada.
 
 #### Efemérides (`/historico/efemerides`)
 <!--
 - Efemérides, acontecimientos y fechas destacadas de la historia del club día a día.
 -->
-[Describe aquí las Efemérides...]
+Calendario que muestra efemérides, acontecimientos históricos y partidos jugados por el Real Sporting de Gijón el día del año seleccionado. Inicialmente se muestra el día actual, y el usuario puede navegar por los días del año para ver qué acontecimientos ocurrieron en cualquier fecha. El objetivo es ofrecer a los aficionados una forma de conocer la historia del club y recordar momentos importantes de su trayectoria, conociendo además estadísticas y resultados de los partidos jugados en cada una de las fechas.
 
 #### Rivales (`/historico/rivales`)
 <!--
 - Balance histórico de enfrentamientos frente a cada club rival (victorias, empates, derrotas y goles).
 -->
-[Describe aquí los Rivales...]
+Balance histórico de enfrentamientos frente a cada club al que se enfrentó el Real Sporting de Gijón durante toda su historia. Se pueden filtrar los rivales por categoría, ordenarlos por diversos criterios y mostrarlos en forma de cuadrícula o de lista. Al seleccionar un rival concreto, se muestran los detalles de los enfrentamientos entre ambos equipos, pudiendo entrar en cada partido para ver la ficha completa del mismo. Se muestran también estadísticas generales de los enfrentamientos.
+
+Por otra parte, se incluyen un mapa de España y un mapa del mundo, ambos interactivos, que permiten observar de una forma más visual los rivales del Sporting, haciendo un resumen de las estadísticas conjuntas de los enfrentamientos del club contra los equipos de cada zona, y permitiendo filtrar los equipos por dichas zonas geográficas. 
 
 #### Legado (`/historico/legado`)
 <!--
 - Hitos, ascensos, temporadas célebres, trofeos y memoria histórica rojiblanca.
 -->
-[Describe aquí el Legado...]
+Tablas que muestran los datos históricos más relevantes del club, para dar el reconocimiento que merecen los jugadores y entrenadores que han formado parte de la historia del Real Sporting de Gijón. Se incluyen las siguientes tablas, todas ellas contando los datosde partidos oficiales de todas las competiciones en las que ha participado el primer equipo del Sporting:
+** Más partidos: jugadores con más partidos oficiales disputados con el primer equipo.
+** Máximos goleadores: jugadores con más goles oficiales marcados con el primer equipo.
+** Más temporadas: jugadores con más temporadas oficiales disputadas con el primer equipo.
+** Entrenadores: entrenadores con más partidos oficiales dirigiendo al primer equipo.
 
 ---
 
