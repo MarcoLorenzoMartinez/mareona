@@ -32,32 +32,32 @@ export function SharedLineupPlayerToken({ starter }: SharedLineupPlayerTokenProp
     >
       <div className="flex flex-col items-center">
         {/* Token Circular Avatar Container */}
-        <div className="relative flex h-8 w-8 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/95 bg-[#f3f4f3] shadow-md">
+        <div className="relative flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-white/95 bg-[#f3f4f3] shadow-xs">
           <div className="relative h-full w-full overflow-hidden rounded-full">
             <SafePlayerAvatar
               photoUrl={photoUrl}
               displayName={displayName}
-              sizes="(max-width: 640px) 32px, 44px"
+              sizes="(max-width: 640px) 28px, 32px"
               isToken
             />
           </div>
         </div>
 
         {/* Modern Pure White Player Name Capsule */}
-        <div className="mt-0.5 flex flex-col items-center max-w-[76px] sm:max-w-[95px]">
+        <div className="mt-0.5 flex flex-col items-center max-w-[64px] sm:max-w-[72px]">
           <div
-            className={`flex items-center overflow-hidden rounded-full shadow-sm border border-neutral-200/90 bg-white text-neutral-900 ${
+            className={`flex items-center overflow-hidden rounded-full shadow-2xs border border-neutral-200/90 bg-white text-neutral-900 ${
               shirtNumber !== null && shirtNumber > 0
-                ? "pl-0.5 pr-1.5 py-0.2 sm:pl-1 sm:pr-2 sm:py-0.5 gap-1"
-                : "px-1.5 py-0.2 sm:px-2 sm:py-0.5"
+                ? "pl-0.5 pr-1 py-0 sm:pl-0.5 sm:pr-1.5 sm:py-0.2 gap-0.5"
+                : "px-1 py-0 sm:px-1.5 sm:py-0.2"
             }`}
           >
             {shirtNumber !== null && shirtNumber > 0 ? (
               <span
-                className={`flex h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 items-center justify-center rounded-full bg-[#e2001a] font-bold text-white tabular-nums leading-none shadow-2xs ${
+                className={`flex h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0 items-center justify-center rounded-full bg-[#e2001a] font-bold text-white tabular-nums leading-none shadow-2xs ${
                   shirtNumber >= 10
-                    ? "text-[6.5px] sm:text-[7.5px] tracking-tight"
-                    : "text-[7.5px] sm:text-[8.5px]"
+                    ? "text-[5.5px] sm:text-[6.5px] tracking-tight"
+                    : "text-[6.5px] sm:text-[7.5px]"
                 }`}
               >
                 <span className="leading-none -translate-y-[0.5px]">
@@ -65,7 +65,7 @@ export function SharedLineupPlayerToken({ starter }: SharedLineupPlayerTokenProp
                 </span>
               </span>
             ) : null}
-            <span className="text-[8px] sm:text-[9.5px] font-bold truncate text-neutral-900">
+            <span className="text-[7px] sm:text-[8px] font-bold truncate text-neutral-900">
               {shortName}
             </span>
           </div>

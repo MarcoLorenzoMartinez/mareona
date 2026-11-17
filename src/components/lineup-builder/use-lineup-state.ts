@@ -3,6 +3,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { TACTICAL_FORMATIONS, inferRoleFromHeight } from "@/lib/lineup-builder/formations";
+import { remapSlotsForNewFormation } from "@/lib/lineup-builder/formation-transition";
 import { buildSharedLineupFromSlots } from "@/lib/lineup-builder/shared-lineup-codec";
 import { useLineupPersistence } from "./use-lineup-persistence";
 import type {
@@ -23,12 +24,11 @@ export function useLineupState(initialRoster: readonly LineupPlayer[]) {
 
   const [assignedSlots, setAssignedSlots] = useState<readonly PitchAssignedPlayer[]>(() => {
     const defaultFormation = TACTICAL_FORMATIONS["4-2-3-1"];
-    const defaultGk = initialRoster.find((p) => p.defaultPosition === "POR") ?? null;
     return defaultFormation.slots.map((slot) => ({
       slotId: slot.id,
       role: slot.defaultRole,
       coord: slot.defaultCoord,
-      player: slot.defaultRole === "POR" ? defaultGk : null,
+      player: null,
     }));
   });
 
@@ -42,11 +42,16 @@ export function useLineupState(initialRoster: readonly LineupPlayer[]) {
     setSelectedSlotId(null);
     setStagedPlayer(null);
     setIsMobileRosterOpen(false);
-    setAssignedSlots((prevSlots) =>
-      TACTICAL_FORMATIONS[newKey].slots.map((s, i) => ({
-        slotId: s.id, role: s.defaultRole, coord: s.defaultCoord, player: prevSlots[i]?.player ?? null,
-      }))
+    setAssignedSlots((prevSlots) => remapSlotsForNewFormation(prevSlots, newKey));
+  }, []);
+
+  const handleClearSlot = useCallback((slotId: string) => {
+    setAssignedSlots((prev) =>
+      prev.map((s) => (s.slotId === slotId ? { ...s, player: null } : s))
     );
+    setSelectedSlotId(null);
+    setStagedPlayer(null);
+    setIsMobileRosterOpen(false);
   }, []);
 
   const handleResetLineup = useCallback(() => {
@@ -156,6 +161,7 @@ export function useLineupState(initialRoster: readonly LineupPlayer[]) {
     handleCloseMobileRoster: () => { setIsMobileRosterOpen(false); setSelectedSlotId(null); },
     handleCancelStaging: () => setStagedPlayer(null),
     handleAssignPlayer,
+    handleClearSlot,
     handleAddCustomPlayer,
   };
 }

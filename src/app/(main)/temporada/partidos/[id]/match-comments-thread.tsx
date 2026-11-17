@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { MatchCommentComposer } from "./match-comment-composer";
 import { MobileMatchCommentFab } from "./mobile-match-comment-fab";
@@ -26,13 +27,20 @@ export function MatchCommentsThread({
   initialComments,
 }: MatchCommentsThreadProps) {
   const { user, openAuthModal } = useAuth();
+  const searchParams = useSearchParams();
+  const isLineupParam = searchParams?.get("adjuntarOnce") === "1";
   const [comments, setComments] = useState<readonly MatchComment[]>(initialComments);
   const [navigationStack, setNavigationStack] = useState<readonly string[]>([]);
   const [viewingProfileId, setViewingProfileId] = useState<string | null>(null);
-  const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1";
-  });
+  const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(() => Boolean(isLineupParam));
+  const [prevLineupParam, setPrevLineupParam] = useState(isLineupParam);
+
+  if (isLineupParam && !prevLineupParam) {
+    setPrevLineupParam(true);
+    setIsMobileComposerOpen(true);
+  } else if (!isLineupParam && prevLineupParam) {
+    setPrevLineupParam(false);
+  }
 
   const handlePushThread = (commentId: string) => {
     setNavigationStack((prev) => [...prev, commentId]);

@@ -11,8 +11,8 @@ export function getTargetPositionFromRole(
   if (!role) return null;
   if (role === "POR") return "POR";
   if (["LI", "LD", "DFC", "CAD", "CAI"].includes(role)) return "DEF";
-  if (["MCD", "MC", "MCO"].includes(role)) return "MED";
-  if (["EI", "ED", "DC"].includes(role)) return "DEL";
+  if (["MCD", "MC", "MCO", "MI", "MD", "EI", "ED"].includes(role)) return "MED";
+  if (role === "DC") return "DEL";
   return null;
 }
 

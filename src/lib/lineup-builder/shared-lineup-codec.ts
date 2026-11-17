@@ -20,11 +20,16 @@ const LOCAL_STORAGE_KEY = "mareona_shared_once_draft";
 function extractPhotoId(photoUrl: string | null): string {
   if (!photoUrl) return "";
   const match = photoUrl.match(/\/playerimages\/(\d+)\.png/);
-  return match ? match[1] : photoUrl.startsWith("http") ? "" : photoUrl;
+  if (match) return match[1];
+  if (photoUrl.startsWith("/images/players/")) return "L";
+  return photoUrl.startsWith("http") ? "" : photoUrl;
 }
 
-function reconstitutePhotoUrl(compact: string): string | null {
+function reconstitutePhotoUrl(compact: string, shirtNumber?: number | null): string | null {
   if (!compact) return null;
+  if (compact === "L" && shirtNumber) {
+    return `/images/players/${shirtNumber}.png`;
+  }
   if (/^\d+$/.test(compact)) {
     return `https://images.fotmob.com/image_resources/playerimages/${compact}.png`;
   }
@@ -84,7 +89,7 @@ export function decodeSharedLineup(rawPayload: string): SharedLineupData | null 
     starters.push({
       displayName: displayName || (defaultSlot?.label ?? "Jugador"),
       shirtNumber,
-      photoUrl: reconstitutePhotoUrl(photoId),
+      photoUrl: reconstitutePhotoUrl(photoId, shirtNumber),
       role: (roleStr as TacticalRole) || defaultSlot?.defaultRole || "MC",
       coord,
     });

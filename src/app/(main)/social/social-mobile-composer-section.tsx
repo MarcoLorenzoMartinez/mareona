@@ -21,14 +21,18 @@ export function SocialMobileComposerSection({
   const searchParams = useSearchParams();
   const isLineupParam = searchParams?.get("adjuntarOnce") === "1";
   const [isOpen, setIsOpen] = useState(() => Boolean(isAuthenticated && isLineupParam));
+  const [prevLineupParam, setPrevLineupParam] = useState(isLineupParam);
+
+  if (isLineupParam && !prevLineupParam) {
+    setPrevLineupParam(true);
+    if (isAuthenticated) setIsOpen(true);
+  } else if (!isLineupParam && prevLineupParam) {
+    setPrevLineupParam(false);
+  }
 
   useEffect(() => {
-    if (isLineupParam) {
-      if (!isAuthenticated) {
-        onOpenAuth();
-      } else if (typeof window !== "undefined") {
-        window.history.replaceState({}, "", window.location.pathname);
-      }
+    if (isLineupParam && !isAuthenticated) {
+      onOpenAuth();
     }
   }, [isLineupParam, isAuthenticated, onOpenAuth]);
 

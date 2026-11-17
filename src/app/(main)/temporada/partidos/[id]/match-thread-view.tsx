@@ -3,6 +3,8 @@
 
 import { ArrowLeft } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "@/app/(main)/social/post-actions";
 import { MatchCommentComposer } from "./match-comment-composer";
 import { MatchReplyItem } from "./match-reply-item";
@@ -32,6 +34,7 @@ export function MatchThreadView({
   const openProfile = () => {
     if (comment.authorId) onOpenProfile?.(comment.authorId);
   };
+  const { cleanBody, lineup } = parsePostLineup(comment.body);
 
   return (
     <div>
@@ -78,15 +81,25 @@ export function MatchThreadView({
           </div>
         </div>
 
-        <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
-          {comment.body}
-        </p>
+        {cleanBody && (
+          <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
+            {cleanBody}
+          </p>
+        )}
+
+        {lineup && <SharedLineupPitchCard lineup={lineup} />}
+
         <time dateTime={comment.createdAt} className="mt-3 block text-sm text-neutral-500">
           {formatRelativeTime(comment.createdAt)}
         </time>
 
         <div className="mt-2 border-t border-[var(--border)] pt-1">
-          <PostActions likesCount={comment.likesCount} repliesCount={replies.length} />
+          <PostActions
+            likesCount={comment.likesCount}
+            repliesCount={replies.length}
+            postId={comment.id}
+            postBody={cleanBody || comment.body}
+          />
         </div>
       </article>
 

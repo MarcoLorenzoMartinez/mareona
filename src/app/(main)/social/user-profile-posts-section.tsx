@@ -2,6 +2,8 @@
 "use client";
 
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { formatRelativeTime } from "@/lib/social/format";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
 import type { SocialPost } from "@/lib/social/types";
@@ -35,40 +37,46 @@ export function UserProfilePostsSection({
           Aún no ha publicado en la tertulia
         </p>
       ) : (
-        posts.map((post) => (
-          <article
-            key={post.id}
-            onClick={() => {
-              onClose();
-              onOpenThread(post.id);
-            }}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
+        posts.map((post) => {
+          const { cleanBody, lineup } = parsePostLineup(post.body);
+          return (
+            <article
+              key={post.id}
+              onClick={() => {
                 onClose();
                 onOpenThread(post.id);
-              }
-            }}
-            className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60 sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--primary)]"
-          >
-            <AuthAvatar src={profile.avatarUrl} alt={displayName} size="md" />
-            <div className="min-w-0 flex-1">
-              <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
-                <span className="truncate font-bold text-neutral-900">{displayName}</span>
-                <span className="truncate text-neutral-500">@{profile.username}</span>
-                <span aria-hidden="true" className="text-neutral-400">·</span>
-                <time dateTime={post.createdAt} className="shrink-0 text-xs text-neutral-500">
-                  {formatRelativeTime(post.createdAt)}
-                </time>
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onClose();
+                  onOpenThread(post.id);
+                }
+              }}
+              className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60 sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--primary)]"
+            >
+              <AuthAvatar src={profile.avatarUrl} alt={displayName} size="md" />
+              <div className="min-w-0 flex-1">
+                <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
+                  <span className="truncate font-bold text-neutral-900">{displayName}</span>
+                  <span className="truncate text-neutral-500">@{profile.username}</span>
+                  <span aria-hidden="true" className="text-neutral-400">·</span>
+                  <time dateTime={post.createdAt} className="shrink-0 text-xs text-neutral-500">
+                    {formatRelativeTime(post.createdAt)}
+                  </time>
+                </div>
+                {cleanBody && (
+                  <p className="mt-0.5 whitespace-pre-line break-words text-sm leading-snug text-neutral-900">
+                    {cleanBody}
+                  </p>
+                )}
+                {lineup && <SharedLineupPitchCard lineup={lineup} />}
               </div>
-              <p className="mt-0.5 whitespace-pre-line break-words text-sm leading-snug text-neutral-900">
-                {post.body}
-              </p>
-            </div>
-          </article>
-        ))
+            </article>
+          );
+        })
       )}
     </div>
   );

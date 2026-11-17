@@ -15,12 +15,14 @@ interface LineupBuilderClientProps {
   readonly initialRoster: readonly LineupPlayer[];
   readonly nextMatchId?: string | null;
   readonly nextMatchOpponent?: string | null;
+  readonly nextMatchOpponentCrestUrl?: string | null;
 }
 
 export function LineupBuilderClient({
   initialRoster,
   nextMatchId,
   nextMatchOpponent,
+  nextMatchOpponentCrestUrl,
 }: LineupBuilderClientProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -42,6 +44,7 @@ export function LineupBuilderClient({
     handleCloseMobileRoster,
     handleCancelStaging,
     handleAssignPlayer,
+    handleClearSlot,
     handleAddCustomPlayer,
   } = useLineupState(initialRoster);
 
@@ -75,6 +78,7 @@ export function LineupBuilderClient({
             hasStagedPlayer={Boolean(stagedPlayer)}
             onSelectSlot={handleSelectSlot}
             onMoveSlot={handleMoveSlot}
+            onClearSlot={handleClearSlot}
             onCancelStaging={handleCancelStaging}
           />
         </div>
@@ -84,8 +88,10 @@ export function LineupBuilderClient({
             players={allPlayers}
             assignedPlayerIds={assignedPlayerIds}
             activeSlotRole={activeSlot ? activeSlot.role : null}
+            activePlayer={activeSlot?.player ?? null}
             stagedPlayerId={stagedPlayer?.id ?? null}
             onAssignPlayer={handleAssignPlayer}
+            onClearSlot={() => selectedSlotId && handleClearSlot(selectedSlotId)}
             onAddCustomPlayer={handleAddCustomPlayer}
           />
         </div>
@@ -97,8 +103,10 @@ export function LineupBuilderClient({
         players={allPlayers}
         assignedPlayerIds={assignedPlayerIds}
         activeSlotRole={activeSlot ? activeSlot.role : null}
+        activePlayer={activeSlot?.player ?? null}
         stagedPlayerId={stagedPlayer?.id ?? null}
         onAssignPlayer={handleAssignPlayer}
+        onClearSlot={() => selectedSlotId && handleClearSlot(selectedSlotId)}
         onAddCustomPlayer={handleAddCustomPlayer}
       />
 
@@ -108,6 +116,7 @@ export function LineupBuilderClient({
         lineup={currentSharedLineup}
         nextMatchId={nextMatchId}
         nextMatchOpponent={nextMatchOpponent}
+        nextMatchOpponentCrestUrl={nextMatchOpponentCrestUrl}
       />
     </div>
   );

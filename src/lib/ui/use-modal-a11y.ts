@@ -11,10 +11,28 @@ export interface ModalA11yOptions {
   readonly lockScroll?: boolean;
 }
 
+let modalLockCount = 0;
+
+function lockBodyScroll() {
+  if (typeof document === "undefined") return;
+  modalLockCount++;
+  if (modalLockCount === 1) {
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function unlockBodyScroll() {
+  if (typeof document === "undefined") return;
+  modalLockCount = Math.max(0, modalLockCount - 1);
+  if (modalLockCount === 0) {
+    document.body.style.overflow = "";
+  }
+}
+
 /**
  * Custom hook providing robust WCAG 2.2 AA compliant modal behavior:
  * - Listens for Escape key to safely close or trigger custom escape actions.
- * - Prevents background scrolling by managing document.body overflow cleanly.
+ * - Prevents background scrolling with reference-counted body overflow lock.
  * - Provides intentional backdrop click handler (ignores child event propagation).
  */
 export function useModalA11y({
@@ -37,18 +55,16 @@ export function useModalA11y({
       }
     };
 
-    let originalOverflow = "";
-    if (lockScroll && typeof document !== "undefined") {
-      originalOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
+    if (lockScroll) {
+      lockBodyScroll();
     }
 
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      if (lockScroll && typeof document !== "undefined") {
-        document.body.style.overflow = originalOverflow;
+      if (lockScroll) {
+        unlockBodyScroll();
       }
     };
   }, [isOpen, onClose, onEscape, closeOnEscape, lockScroll]);

@@ -148,8 +148,6 @@ export function ProfileModalHeader({
 
       <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500">
         <div className="flex items-center gap-x-2">
-          <span><strong className="font-sans font-bold tabular-nums text-neutral-900">{profile.points}</strong> puntos</span>
-          <span aria-hidden="true" className="text-neutral-300">·</span>
           <span>Desde {memberSince}</span>
         </div>
 

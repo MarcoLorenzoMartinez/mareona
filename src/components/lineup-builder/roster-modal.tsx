@@ -1,7 +1,7 @@
 // Client: Modal popup / bottom-sheet táctil para seleccionar jugadores en móvil
 "use client";
 
-import { useEffect } from "react";
+import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 import { RosterDrawer } from "./roster-drawer";
 import type { LineupPlayer } from "@/lib/lineup-builder/types";
 
@@ -11,8 +11,10 @@ interface RosterModalProps {
   readonly players: readonly LineupPlayer[];
   readonly assignedPlayerIds: ReadonlySet<string>;
   readonly activeSlotRole: string | null;
+  readonly activePlayer?: LineupPlayer | null;
   readonly stagedPlayerId?: string | null;
   readonly onAssignPlayer: (player: LineupPlayer) => void;
+  readonly onClearSlot?: () => void;
   readonly onAddCustomPlayer: (player: LineupPlayer) => void;
 }
 
@@ -26,26 +28,13 @@ export function RosterModal({
   players,
   assignedPlayerIds,
   activeSlotRole,
+  activePlayer,
   stagedPlayerId,
   onAssignPlayer,
+  onClearSlot,
   onAddCustomPlayer,
 }: RosterModalProps) {
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, onClose]);
+  const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   if (!isOpen) return null;
 
@@ -55,7 +44,7 @@ export function RosterModal({
       aria-modal="true"
       aria-label="Selección de jugador para la alineación"
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150 lg:hidden"
-      onClick={onClose}
+      onClick={handleBackdropClick}
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -70,8 +59,10 @@ export function RosterModal({
           players={players}
           assignedPlayerIds={assignedPlayerIds}
           activeSlotRole={activeSlotRole}
+          activePlayer={activePlayer}
           stagedPlayerId={stagedPlayerId}
           onAssignPlayer={onAssignPlayer}
+          onClearSlot={onClearSlot}
           onAddCustomPlayer={onAddCustomPlayer}
           onClose={onClose}
           isModal

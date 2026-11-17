@@ -35,6 +35,14 @@ function TopProgressBarInner() {
 
   // Whenever the path or search params change, navigation has successfully resolved.
   useEffect(() => {
+    // Safety check: ensure body overflow is cleanly unlocked if no modal dialog exists after navigation
+    if (typeof document !== "undefined" && document.body.style.overflow === "hidden") {
+      const hasVisibleModal = Boolean(document.querySelector("div[role='dialog']"));
+      if (!hasVisibleModal) {
+        document.body.style.overflow = "";
+      }
+    }
+
     if (!isVisible) return;
 
     const frameId = requestAnimationFrame(() => {

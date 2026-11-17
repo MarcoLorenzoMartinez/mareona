@@ -12,6 +12,7 @@ interface PitchBoardProps {
   readonly selectedSlotId: string | null;
   readonly onSelectSlot: (slotId: string) => void;
   readonly onMoveSlot: (slotId: string, newCoord: PitchCoordinate) => void;
+  readonly onClearSlot?: (slotId: string) => void;
   readonly hasStagedPlayer?: boolean;
   readonly onCancelStaging?: () => void;
 }
@@ -25,6 +26,7 @@ export function PitchBoard({
   selectedSlotId,
   onSelectSlot,
   onMoveSlot,
+  onClearSlot,
   hasStagedPlayer = false,
   onCancelStaging,
 }: PitchBoardProps) {
@@ -39,19 +41,15 @@ export function PitchBoard({
 
   useEffect(() => {
     return () => {
-      if (dragTimeoutRef.current) {
-        clearTimeout(dragTimeoutRef.current);
-      }
+      if (dragTimeoutRef.current) clearTimeout(dragTimeoutRef.current);
     };
   }, []);
 
   const dragRef = useRef<{
     slotId: string;
-    startX: number;
-    startY: number;
+    startX: number; startY: number;
     initialCoord: PitchCoordinate;
-    isDragging: boolean;
-    pointerId: number;
+    isDragging: boolean; pointerId: number;
     target: HTMLElement;
   } | null>(null);
 
@@ -171,6 +169,7 @@ export function PitchBoard({
             isCandidate={hasStagedPlayer && !assigned.player}
             onSelect={handleTokenSelect}
             onPointerDown={handlePointerDown}
+            onClear={onClearSlot}
           />
         ))}
       </div>

@@ -56,7 +56,11 @@ export function PostCard({
       </button>
 
       <div className="min-w-0 flex-1">
-        <PostAuthorLine post={post} onOpenProfile={onOpenProfile} />
+        <PostAuthorLine
+          post={post}
+          onOpenProfile={onOpenProfile}
+          onDelete={isOwner && onDelete ? () => onDelete(post.id) : undefined}
+        />
         {cleanBody && (
           <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
             {cleanBody}
@@ -73,7 +77,6 @@ export function PostCard({
           onOpenThread={openThread}
           postId={post.id}
           postBody={cleanBody || post.body}
-          onDelete={isOwner && onDelete ? () => onDelete(post.id) : undefined}
         />
       </div>
     </article>

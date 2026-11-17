@@ -4,6 +4,8 @@
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PollDisplay } from "@/components/social/poll-display";
+import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "./post-actions";
 import { PostAuthorLine } from "./post-author-line";
 import type { SocialPost } from "@/lib/social/types";
@@ -25,6 +27,7 @@ export function ThreadReplyItem({
   const count = reply.repliesCount ?? reply.replies?.length ?? 0;
   const drillDown = () => onDrillDown(reply.id);
   const isOwner = Boolean(user && user.id === reply.userId);
+  const { cleanBody, lineup } = parsePostLineup(reply.body);
 
   return (
     <article
@@ -44,10 +47,18 @@ export function ThreadReplyItem({
       </button>
 
       <div className="min-w-0 flex-1">
-        <PostAuthorLine post={reply} onOpenProfile={onOpenProfile} />
-        <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
-          {reply.body}
-        </p>
+        <PostAuthorLine
+          post={reply}
+          onOpenProfile={onOpenProfile}
+          onDelete={isOwner && onDelete ? () => onDelete(reply.id) : undefined}
+        />
+        {cleanBody && (
+          <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
+            {cleanBody}
+          </p>
+        )}
+
+        {lineup && <SharedLineupPitchCard lineup={lineup} />}
 
         {reply.poll && <PollDisplay poll={reply.poll} />}
 
@@ -56,8 +67,7 @@ export function ThreadReplyItem({
           repliesCount={count}
           onOpenThread={drillDown}
           postId={reply.id}
-          postBody={reply.body}
-          onDelete={isOwner && onDelete ? () => onDelete(reply.id) : undefined}
+          postBody={cleanBody || reply.body}
         />
       </div>
     </article>

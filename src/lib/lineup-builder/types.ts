@@ -71,6 +71,8 @@ export interface LineupPlayer {
   readonly fullName: string;
   readonly shirtNumber: number | null;
   readonly defaultPosition: "POR" | "DEF" | "MED" | "DEL";
+  readonly naturalRole?: TacticalRole;
+  readonly secondaryRoles?: readonly TacticalRole[];
   readonly category: PlayerCategory;
   readonly photoUrl: string | null;
   readonly isCustom?: boolean;

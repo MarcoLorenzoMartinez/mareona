@@ -133,13 +133,9 @@ export function clampPitchCoordinate(coord: PitchCoordinate): PitchCoordinate {
 
 /**
  * Infers tactical role from vertical coordinate (y) when a slot is moved:
- * - y < 38: Attacking line (DC / Delantera)
- * - 38 <= y < 62: Midfield line (MC / Mediocampo)
+ * - y < 28: Attacking line (DC / Delantera)
+ * - 28 <= y < 62: Midfield line (MC, MCO / Mediocampo)
  * - y >= 62: Defensive line (DFC / Defensa)
- *
- * Preserves specific roles (e.g. LI, LD, MCD, EI, ED) if the token remains inside
- * its natural line; updates to the line's standard role when dragged to a different line.
- * The designated goalkeeper slot (s-por) always remains POR.
  */
 export function inferRoleFromHeight(
   coordY: number,
@@ -148,34 +144,19 @@ export function inferRoleFromHeight(
 ): TacticalRole {
   if (slotId === "s-por") return "POR";
 
-  let targetZone: "DEL" | "MED" | "DEF";
-  if (coordY < 38) {
-    targetZone = "DEL";
-  } else if (coordY < 62) {
-    targetZone = "MED";
-  } else {
-    targetZone = "DEF";
-  }
+  const targetZone: "DEL" | "MED" | "DEF" =
+    coordY < 28 ? "DEL" : coordY < 62 ? "MED" : "DEF";
 
   const isDel = defaultRole === "DC" || defaultRole === "EI" || defaultRole === "ED";
   const isMed = defaultRole === "MC" || defaultRole === "MCD" || defaultRole === "MCO";
-  const isDef =
-    defaultRole === "DFC" ||
-    defaultRole === "LI" ||
-    defaultRole === "LD" ||
-    defaultRole === "CAD" ||
-    defaultRole === "CAI";
+  const isDef = ["DFC", "LI", "LD", "CAD", "CAI"].includes(defaultRole);
 
   if (targetZone === "DEL" && isDel) return defaultRole;
   if (targetZone === "MED" && isMed) return defaultRole;
   if (targetZone === "DEF" && isDef) return defaultRole;
-
-  switch (targetZone) {
-    case "DEL":
-      return "DC";
-    case "MED":
-      return "MC";
-    case "DEF":
-      return "DFC";
+  if (targetZone === "MED" && (defaultRole === "EI" || defaultRole === "ED") && coordY < 42) {
+    return defaultRole;
   }
+
+  return targetZone === "DEL" ? "DC" : targetZone === "MED" ? "MC" : "DFC";
 }

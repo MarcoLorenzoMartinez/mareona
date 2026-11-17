@@ -36,10 +36,10 @@ describe("Lineup Builder Domain Suite", () => {
     assert.equal(inferRoleFromHeight(88, "s-por", "POR"), "POR");
     assert.equal(inferRoleFromHeight(30, "s-por", "POR"), "POR");
 
-    // Striker (defaultRole DC) stays DC in attack (y < 38)
+    // Striker (defaultRole DC) stays DC in attack (y < 28)
     assert.equal(inferRoleFromHeight(18, "s-dc", "DC"), "DC");
 
-    // Striker dragged down into midfield (38 <= y < 62) becomes MC
+    // Striker dragged down into midfield (28 <= y < 62) becomes MC
     assert.equal(inferRoleFromHeight(50, "s-dc", "DC"), "MC");
 
     // Striker dragged down into defensive line (y >= 62) becomes DFC
@@ -47,6 +47,12 @@ describe("Lineup Builder Domain Suite", () => {
 
     // Striker moved back up restores original DC
     assert.equal(inferRoleFromHeight(22, "s-dc", "DC"), "DC");
+
+    // Attacking midfielder (MCO) at y=36 preserves MCO within midfield zone
+    assert.equal(inferRoleFromHeight(36, "s-mco", "MCO"), "MCO");
+
+    // Winger (EI) in 3-quarter line (y=34) preserves EI
+    assert.equal(inferRoleFromHeight(34, "s-ei", "EI"), "EI");
 
     // Specific defender (e.g. LI) preserves role while in defence
     assert.equal(inferRoleFromHeight(68, "s-li", "LI"), "LI");

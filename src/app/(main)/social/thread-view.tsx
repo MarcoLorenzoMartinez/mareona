@@ -1,10 +1,12 @@
 // Client: Vista de conversación enfocada (modelo muñeca rusa) con encuesta, acciones y borrado
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PollDisplay } from "@/components/social/poll-display";
+import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "./post-actions";
 import { PostComposer } from "./post-composer";
 import { ThreadReplyItem } from "./thread-reply-item";
@@ -36,6 +38,7 @@ export function ThreadView({
     if (post.userId) onOpenProfile?.(post.userId);
   };
   const isOwner = Boolean(user && user.id === post.userId);
+  const { cleanBody, lineup } = parsePostLineup(post.body);
 
   return (
     <div>
@@ -59,30 +62,47 @@ export function ThreadView({
       </div>
 
       <article className="border-b border-[var(--border)] px-4 pt-4 pb-1">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={openProfile}
-            aria-label={`Ver perfil de ${post.authorName}`}
-            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-          >
-            <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />
-          </button>
-          <div className="min-w-0 flex-1 leading-tight">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               type="button"
               onClick={openProfile}
-              className="block max-w-full truncate text-left text-sm font-bold text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              aria-label={`Ver perfil de ${post.authorName}`}
+              className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              {post.authorName}
+              <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />
             </button>
-            <span className="block truncate text-sm text-neutral-500">@{post.authorUsername}</span>
+            <div className="min-w-0 flex-1 leading-tight">
+              <button
+                type="button"
+                onClick={openProfile}
+                className="block max-w-full truncate text-left text-sm font-bold text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              >
+                {post.authorName}
+              </button>
+              <span className="block truncate text-sm text-neutral-500">@{post.authorUsername}</span>
+            </div>
           </div>
+
+          {isOwner && onDeletePost && (
+            <button
+              type="button"
+              onClick={() => onDeletePost(post.id)}
+              aria-label="Borrar publicación"
+              className="shrink-0 p-2 text-neutral-400 hover:bg-red-50 hover:text-[#e2001a] rounded-full transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
+            >
+              <Trash2 className="h-4 w-4" aria-hidden="true" />
+            </button>
+          )}
         </div>
 
-        <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
-          {post.body}
-        </p>
+        {cleanBody && (
+          <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
+            {cleanBody}
+          </p>
+        )}
+
+        {lineup && <SharedLineupPitchCard lineup={lineup} />}
 
         {post.poll && <PollDisplay poll={post.poll} />}
 
@@ -95,8 +115,7 @@ export function ThreadView({
             likesCount={post.likesCount}
             repliesCount={replies.length}
             postId={post.id}
-            postBody={post.body}
-            onDelete={isOwner && onDeletePost ? () => onDeletePost(post.id) : undefined}
+            postBody={cleanBody || post.body}
           />
         </div>
       </article>

@@ -90,8 +90,8 @@ export async function createSocialPost(
       .select("id, body, created_at, user_id, parent_id")
       .single();
 
-    if (error) {
-      return { success: false, error: error.message };
+    if (error || !createdPost) {
+      return { success: false, error: error?.message ?? "Error al crear la publicación" };
     }
 
     let createdPoll: SocialPoll | null = null;

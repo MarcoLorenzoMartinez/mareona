@@ -1,10 +1,11 @@
-// Client: Modal selector de destino para compartir la alineación en Tertulia o Grada
+// Client: Modal selector de destino para compartir la alineación en Social o Partido
 "use client";
 
 import { useRouter } from "next/navigation";
-import { MessageSquare, Trophy, ChevronRight, X } from "lucide-react";
+import { X, MessageSquare } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
+import { TeamCrest } from "@/components/media/team-crest";
 import {
   saveLocalSharedLineup,
   type SharedLineupData,
@@ -16,6 +17,7 @@ interface ShareLineupModalProps {
   readonly lineup: SharedLineupData;
   readonly nextMatchId?: string | null;
   readonly nextMatchOpponent?: string | null;
+  readonly nextMatchOpponentCrestUrl?: string | null;
 }
 
 export function ShareLineupModal({
@@ -24,6 +26,7 @@ export function ShareLineupModal({
   lineup,
   nextMatchId,
   nextMatchOpponent,
+  nextMatchOpponentCrestUrl,
 }: ShareLineupModalProps) {
   const router = useRouter();
   const { user, openAuthModal } = useAuth();
@@ -47,6 +50,10 @@ export function ShareLineupModal({
     }
   };
 
+  const matchLabel = nextMatchOpponent
+    ? `Partido vs ${nextMatchOpponent}`
+    : "Próximo partido";
+
   return (
     <div
       role="dialog"
@@ -57,87 +64,82 @@ export function ShareLineupModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-sm rounded-2xl border border-[var(--border)] bg-white p-5 shadow-2xl animate-in fade-in zoom-in-95 duration-150"
+        className="w-full max-w-sm rounded-2xl border border-[var(--border)] bg-white p-5 shadow-xl animate-in fade-in zoom-in-95 duration-150"
       >
-        <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
-          <div>
-            <h2 id="share-lineup-title" className="text-base font-bold text-neutral-900">
-              Compartir Mi Once
-            </h2>
-            <p className="text-xs text-neutral-500 mt-0.5">
-              Esquema {lineup.formationKey}
-            </p>
-          </div>
+        {/* Cabecera limpia */}
+        <div className="flex items-center justify-between">
+          <h2 id="share-lineup-title" className="text-base font-bold text-neutral-900">
+            Compartir Once
+          </h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="Cerrar modal"
-            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2 cursor-pointer"
+            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer -mr-2"
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
 
+        {/* Destinos directos con iconos identificativos */}
         <div className="mt-4 flex flex-col gap-2.5">
-          <p className="text-xs font-semibold text-neutral-600 mb-1">
-            ¿Dónde quieres debatir tu alineación?
-          </p>
-
-          {/* Opción 1: Tertulia Rojiblanca */}
+          {/* Opción 1: Social con icono de conversación */}
           <button
             type="button"
             onClick={() => handleSelectDestination("social")}
-            className="group flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3.5 text-left transition-all hover:border-[#e2001a]/40 hover:bg-neutral-50/80 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer"
+            className="group flex items-center justify-between gap-3 rounded-xl border border-neutral-200/90 bg-white p-3.5 text-left transition-all duration-150 hover:border-[#e2001a]/50 hover:bg-neutral-50/60 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e2001a]/10 text-[#e2001a]">
-                <MessageSquare className="h-5 w-5" aria-hidden="true" />
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="flex h-8 w-11 shrink-0 items-center justify-center">
+                <div className="flex h-7.5 w-7.5 items-center justify-center rounded-full bg-neutral-100 text-neutral-600 group-hover:bg-red-50 group-hover:text-[#e2001a] transition-colors">
+                  <MessageSquare className="h-4 w-4" aria-hidden="true" />
+                </div>
               </div>
-              <div>
-                <span className="block text-sm font-bold text-neutral-900 group-hover:text-[#e2001a] transition-colors">
-                  Tertulia Rojiblanca
-                </span>
-                <span className="block text-xs text-neutral-500">
-                  Publicar en el feed de aficionados
-                </span>
-              </div>
+              <span className="text-sm font-bold text-neutral-900 group-hover:text-[#e2001a] transition-colors truncate">
+                Social
+              </span>
             </div>
-            <ChevronRight className="h-4 w-4 shrink-0 text-neutral-400 group-hover:text-[#e2001a] group-hover:translate-x-0.5 transition-all" aria-hidden="true" />
+            <span className="shrink-0 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-semibold text-neutral-700 group-hover:border-[#e2001a] group-hover:bg-[#e2001a] group-hover:text-white transition-all">
+              Compartir
+            </span>
           </button>
 
-          {/* Opción 2: Grada de Partido (si hay partido próximo) */}
+          {/* Opción 2: Partido con emparejamiento de escudos (Sporting vs Rival) */}
           {nextMatchId && (
             <button
               type="button"
               onClick={() => handleSelectDestination("match")}
-              className="group flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3.5 text-left transition-all hover:border-[#e2001a]/40 hover:bg-neutral-50/80 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer"
+              className="group flex items-center justify-between gap-3 rounded-xl border border-neutral-200/90 bg-white p-3.5 text-left transition-all duration-150 hover:border-[#e2001a]/50 hover:bg-neutral-50/60 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-700 group-hover:bg-[#e2001a]/10 group-hover:text-[#e2001a] transition-colors">
-                  <Trophy className="h-5 w-5" aria-hidden="true" />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="flex h-8 w-11 shrink-0 items-center justify-center">
+                  <div className="flex items-center -space-x-1.5">
+                    <div className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full border border-white bg-white shadow-2xs overflow-hidden">
+                      <TeamCrest
+                        crestUrl={null}
+                        teamName="Real Sporting"
+                        size="sm"
+                        isSporting
+                      />
+                    </div>
+                    <div className="relative z-0 flex h-6 w-6 items-center justify-center rounded-full border border-white bg-white shadow-2xs overflow-hidden">
+                      <TeamCrest
+                        crestUrl={nextMatchOpponentCrestUrl}
+                        teamName={nextMatchOpponent ?? "Rival"}
+                        size="sm"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="block text-sm font-bold text-neutral-900 group-hover:text-[#e2001a] transition-colors">
-                    Grada vs {nextMatchOpponent ?? "Rival"}
-                  </span>
-                  <span className="block text-xs text-neutral-500">
-                    Comentar en el hilo del partido
-                  </span>
-                </div>
+                <span className="text-sm font-bold text-neutral-900 group-hover:text-[#e2001a] transition-colors truncate">
+                  {matchLabel}
+                </span>
               </div>
-              <ChevronRight className="h-4 w-4 shrink-0 text-neutral-400 group-hover:text-[#e2001a] group-hover:translate-x-0.5 transition-all" aria-hidden="true" />
+              <span className="shrink-0 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-semibold text-neutral-700 group-hover:border-[#e2001a] group-hover:bg-[#e2001a] group-hover:text-white transition-all">
+                Compartir
+              </span>
             </button>
           )}
-        </div>
-
-        <div className="mt-5 pt-3 border-t border-[var(--border)] flex justify-end">
-          <button
-            type="button"
-            onClick={onClose}
-            className="min-h-[44px] rounded-full border border-neutral-300 px-4 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
-          >
-            Cancelar
-          </button>
         </div>
       </div>
     </div>

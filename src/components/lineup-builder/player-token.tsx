@@ -2,6 +2,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { X } from "lucide-react";
 import { SafePlayerAvatar } from "./safe-player-avatar";
 import { getConcisePlayerName } from "@/lib/lineup-builder/player-name-formatter";
 import type { PitchAssignedPlayer } from "@/lib/lineup-builder/types";
@@ -12,6 +13,7 @@ interface PlayerTokenProps {
   readonly isCandidate?: boolean;
   readonly onSelect: (slotId: string) => void;
   readonly onPointerDown?: (e: React.PointerEvent<HTMLDivElement>, slotId: string) => void;
+  readonly onClear?: (slotId: string) => void;
 }
 
 /**
@@ -24,6 +26,7 @@ export function PlayerToken({
   isCandidate = false,
   onSelect,
   onPointerDown,
+  onClear,
 }: PlayerTokenProps) {
   const { player, role, coord, slotId } = assigned;
 
@@ -94,6 +97,21 @@ export function PlayerToken({
             >
               +
             </span>
+          )}
+
+          {player && isSelected && onClear && (
+            <button
+              type="button"
+              aria-label={`Quitar a ${shortName} de la alineación`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClear(slotId);
+              }}
+              onPointerDown={(e) => e.stopPropagation()}
+              className="absolute -top-1 -right-1 z-40 flex h-5 w-5 sm:h-5.5 sm:w-5.5 items-center justify-center rounded-full bg-neutral-900 text-white border-2 border-white shadow-md hover:bg-[#e2001a] transition-all hover:scale-110 active:scale-95 cursor-pointer"
+            >
+              <X className="h-3 w-3 stroke-[2.5]" />
+            </button>
           )}
         </div>
 

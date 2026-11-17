@@ -16,8 +16,7 @@ import {
 import { createMatchComment } from "@/lib/match-community/actions";
 import type { MatchComment } from "@/lib/match-community/types";
 
-const MAX_USER_BODY_LENGTH = 500;
-const COUNTER_THRESHOLD = 380;
+const MAX_USER_BODY_LENGTH = 500, COUNTER_THRESHOLD = 380;
 
 interface MatchCommentComposerProps {
   readonly matchId: string;
@@ -41,10 +40,19 @@ export function MatchCommentComposer({
   const isLineupParam = !parentId && searchParams?.get("adjuntarOnce") === "1";
 
   const [body, setBody] = useState("");
-  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => {
-    return isLineupParam ? loadLocalSharedLineup() : null;
-  });
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => (
+    isLineupParam ? loadLocalSharedLineup() : null
+  ));
   const [isExpanded, setIsExpanded] = useState(() => Boolean(parentId) || isLineupParam);
+  const [prevLineupParam, setPrevLineupParam] = useState(isLineupParam);
+
+  if (isLineupParam && !prevLineupParam) {
+    setPrevLineupParam(true);
+    const draft = loadLocalSharedLineup();
+    if (draft) { setAttachedLineup(draft); setIsExpanded(true); }
+  } else if (!isLineupParam && prevLineupParam) {
+    setPrevLineupParam(false);
+  }
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -54,12 +62,9 @@ export function MatchCommentComposer({
   const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
   useEffect(() => {
-    if (isLineupParam) {
-      if (typeof window !== "undefined") {
-        window.history.replaceState({}, "", window.location.pathname);
-      }
-      setTimeout(() => textareaRef.current?.focus(), 50);
-    }
+    if (!isLineupParam) return;
+    if (typeof window !== "undefined") window.history.replaceState({}, "", window.location.pathname);
+    setTimeout(() => textareaRef.current?.focus(), 50);
   }, [isLineupParam]);
 
   const autoGrow = (el: HTMLTextAreaElement) => {
@@ -115,8 +120,7 @@ export function MatchCommentComposer({
       authorAvatar: profile?.avatar_url || null,
       replies: [],
     });
-    setBody("");
-    setAttachedLineup(null);
+    setBody(""); setAttachedLineup(null);
     if (!parentId) setIsExpanded(false);
     if (textareaRef.current) textareaRef.current.style.height = "auto";
   };
@@ -161,8 +165,7 @@ export function MatchCommentComposer({
             parentId={parentId}
             hasAttachedLineup={Boolean(attachedLineup)}
             onToggleLineup={handleToggleLineup}
-            onCancel={() => setIsExpanded(false)}
-            canCancel={!parentId && !body && !attachedLineup}
+            onCancel={() => setIsExpanded(false)} canCancel={!parentId && !body && !attachedLineup}
             showCounter={body.length >= COUNTER_THRESHOLD}
             remaining={remaining}
             canSubmit={canSubmit}

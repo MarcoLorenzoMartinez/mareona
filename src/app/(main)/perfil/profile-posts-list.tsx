@@ -4,6 +4,8 @@
 import { useEffect, useState } from "react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PostActions } from "@/app/(main)/social/post-actions";
+import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { formatRelativeTime } from "@/lib/social/format";
 import { getUserSocialProfile } from "@/lib/social/user-profile-actions";
 import type { SocialPost } from "@/lib/social/types";
@@ -60,36 +62,44 @@ export function ProfilePostsList({
           </p>
         </div>
       ) : (
-        posts.map((post) => (
-          <article
-            key={post.id}
-            className="flex gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60 sm:px-5"
-          >
-            <AuthAvatar src={avatarUrl} alt={displayName} size="md" />
-            <div className="min-w-0 flex-1">
-              <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
-                <span className="truncate font-bold text-neutral-900">
-                  {displayName}
-                </span>
-                <span className="truncate text-neutral-500">@{username}</span>
-                <span aria-hidden="true" className="text-neutral-400">·</span>
-                <time
-                  dateTime={post.createdAt}
-                  className="shrink-0 text-xs text-neutral-500"
-                >
-                  {formatRelativeTime(post.createdAt)}
-                </time>
+        posts.map((post) => {
+          const { cleanBody, lineup } = parsePostLineup(post.body);
+          return (
+            <article
+              key={post.id}
+              className="flex gap-3 border-b border-[var(--border)] px-4 py-3 last:border-b-0 transition-colors duration-150 hover:bg-[var(--surface)]/60 sm:px-5"
+            >
+              <AuthAvatar src={avatarUrl} alt={displayName} size="md" />
+              <div className="min-w-0 flex-1">
+                <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
+                  <span className="truncate font-bold text-neutral-900">
+                    {displayName}
+                  </span>
+                  <span className="truncate text-neutral-500">@{username}</span>
+                  <span aria-hidden="true" className="text-neutral-400">·</span>
+                  <time
+                    dateTime={post.createdAt}
+                    className="shrink-0 text-xs text-neutral-500"
+                  >
+                    {formatRelativeTime(post.createdAt)}
+                  </time>
+                </div>
+                {cleanBody && (
+                  <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
+                    {cleanBody}
+                  </p>
+                )}
+                {lineup && <SharedLineupPitchCard lineup={lineup} />}
+                <PostActions
+                  likesCount={post.likesCount}
+                  repliesCount={post.repliesCount ?? 0}
+                  postId={post.id}
+                  postBody={cleanBody || post.body}
+                />
               </div>
-              <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
-                {post.body}
-              </p>
-              <PostActions
-                likesCount={post.likesCount}
-                repliesCount={post.repliesCount ?? 0}
-              />
-            </div>
-          </article>
-        ))
+            </article>
+          );
+        })
       )}
     </section>
   );

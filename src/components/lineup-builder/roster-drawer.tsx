@@ -17,8 +17,10 @@ interface RosterDrawerProps {
   readonly players: readonly LineupPlayer[];
   readonly assignedPlayerIds: ReadonlySet<string>;
   readonly activeSlotRole: string | null;
+  readonly activePlayer?: LineupPlayer | null;
   readonly stagedPlayerId?: string | null;
   readonly onAssignPlayer: (player: LineupPlayer) => void;
+  readonly onClearSlot?: () => void;
   readonly onAddCustomPlayer: (player: LineupPlayer) => void;
   readonly onClose?: () => void;
   readonly isModal?: boolean;
@@ -28,8 +30,10 @@ export function RosterDrawer({
   players,
   assignedPlayerIds,
   activeSlotRole,
+  activePlayer,
   stagedPlayerId,
   onAssignPlayer,
+  onClearSlot,
   onAddCustomPlayer,
   onClose,
   isModal = false,
@@ -70,16 +74,9 @@ export function RosterDrawer({
       }`}
     >
       <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-        <div>
-          <h2 className="text-sm font-bold text-neutral-900">
-            {activeSlotRole ? `Plantilla (${activeSlotRole})` : "Plantilla"}
-          </h2>
-          {isModal && (
-            <p className="text-[11px] text-neutral-500">
-              Toca un futbolista para asignarlo a esta demarcación
-            </p>
-          )}
-        </div>
+        <h2 className="text-sm font-bold text-neutral-900">
+          Plantilla
+        </h2>
         {onClose && (
           <button
             type="button"
@@ -133,8 +130,10 @@ export function RosterDrawer({
               <PlayerRowItem
                 player={player}
                 isAssigned={assignedPlayerIds.has(player.id)}
+                isCurrentSlotPlayer={activePlayer?.id === player.id}
                 isStaged={player.id === stagedPlayerId}
                 onAssign={onAssignPlayer}
+                onUnassign={onClearSlot}
               />
             </React.Fragment>
           ))

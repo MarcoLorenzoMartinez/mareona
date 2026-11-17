@@ -38,6 +38,7 @@ export function useLineupPersistence({
   setAssignedSlots,
 }: UseLineupPersistenceOptions) {
   const isHydratedRef = useRef(false);
+  const isInitialMountRef = useRef(true);
 
   // Restore persisted lineup on initial client mount
   useEffect(() => {
@@ -55,9 +56,15 @@ export function useLineupPersistence({
     isHydratedRef.current = true;
   }, [initialRoster, setCustomPlayers, setFormationKey, setAssignedSlots]);
 
-  // Auto-save changes once initial hydration has completed
+  // Auto-save changes strictly AFTER initial hydration has completed and state has settled
   useEffect(() => {
+    // Avoid saving on initial mount to prevent overwriting stored lineup with blank initial state
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false;
+      return;
+    }
     if (!isHydratedRef.current) return;
+
     savePersistedLineup(formationKey, customPlayers, assignedSlots);
   }, [formationKey, customPlayers, assignedSlots]);
 

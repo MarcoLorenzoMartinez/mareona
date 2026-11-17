@@ -107,8 +107,8 @@ export async function createMatchComment(
       .select("id, body, created_at, user_id, parent_id")
       .single();
 
-    if (error) {
-      return { success: false, error: error.message };
+    if (error || !createdPost) {
+      return { success: false, error: error?.message ?? "Error al publicar el comentario" };
     }
 
     revalidatePath(`/temporada/partidos/${parsed.data.matchId}`);

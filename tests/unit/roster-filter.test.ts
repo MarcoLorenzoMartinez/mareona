@@ -53,6 +53,10 @@ describe("Roster Filter & Prioritization Engine", () => {
     assert.equal(getTargetPositionFromRole("DFC"), "DEF");
     assert.equal(getTargetPositionFromRole("MCD"), "MED");
     assert.equal(getTargetPositionFromRole("MCO"), "MED");
+    assert.equal(getTargetPositionFromRole("EI"), "MED");
+    assert.equal(getTargetPositionFromRole("ED"), "MED");
+    assert.equal(getTargetPositionFromRole("MI"), "MED");
+    assert.equal(getTargetPositionFromRole("MD"), "MED");
     assert.equal(getTargetPositionFromRole("DC"), "DEL");
     assert.equal(getTargetPositionFromRole(null), null);
   });

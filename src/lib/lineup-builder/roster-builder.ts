@@ -2,6 +2,7 @@ import type { DomainPlayer } from "../sports-api/types.ts";
 import { normalizePlayerSearchKey } from "../sports-api/player-stats-matcher.ts";
 import type { LineupPlayer } from "./types.ts";
 import { ACADEMY_SPORTING_PLAYERS } from "./academy-players.ts";
+import { resolvePlayerTacticalProfile } from "./player-roles.ts";
 
 /**
  * Maps a canonical DomainPlayer from the first team into a unified LineupPlayer.
@@ -16,12 +17,20 @@ export function mapDomainPlayerToLineupPlayer(player: DomainPlayer): LineupPlaye
   else if (player.position === "midfielder") mappedPosition = "MED";
   else if (player.position === "forward") mappedPosition = "DEL";
 
+  const tacticalProfile = resolvePlayerTacticalProfile({
+    displayName: player.displayName,
+    fullName: player.fullName,
+    defaultPosition: mappedPosition,
+  });
+
   return {
     id: `first-team-${player.id}`,
     displayName: player.displayName || player.fullName,
     fullName: player.fullName,
     shirtNumber: player.shirtNumber,
     defaultPosition: mappedPosition,
+    naturalRole: tacticalProfile.naturalRole,
+    secondaryRoles: tacticalProfile.secondaryRoles,
     category: "first_team",
     photoUrl: player.photoUrl,
     isCustom: false,
@@ -63,6 +72,14 @@ export function buildUnifiedRoster(firstTeamSquad: readonly DomainPlayer[]): rea
       matchesName;
 
     return !matchesName && !matchesDorsalAndName;
+  }).map((academyPlayer) => {
+    if (academyPlayer.naturalRole) return academyPlayer;
+    const profile = resolvePlayerTacticalProfile(academyPlayer);
+    return {
+      ...academyPlayer,
+      naturalRole: profile.naturalRole,
+      secondaryRoles: profile.secondaryRoles,
+    };
   });
 
   return [...firstTeamLineup, ...filteredAcademy];

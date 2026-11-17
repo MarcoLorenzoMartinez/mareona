@@ -18,8 +18,7 @@ import {
 import { createSocialPost } from "@/lib/social/actions";
 import type { SocialPost } from "@/lib/social/types";
 
-const MAX_USER_BODY_LENGTH = 500;
-const COUNTER_THRESHOLD = 380;
+const MAX_USER_BODY_LENGTH = 500, COUNTER_THRESHOLD = 380;
 
 interface PostComposerProps {
   readonly onPosted: (post: SocialPost) => void;
@@ -41,26 +40,32 @@ export function PostComposer({
   const isLineupParam = !parentId && searchParams?.get("adjuntarOnce") === "1";
 
   const [body, setBody] = useState("");
-  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => {
-    return isLineupParam ? loadLocalSharedLineup() : null;
-  });
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => (
+    isLineupParam ? loadLocalSharedLineup() : null
+  ));
   const [isExpanded, setIsExpanded] = useState(() => Boolean(parentId) || isLineupParam);
+  const [prevLineupParam, setPrevLineupParam] = useState(isLineupParam);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const poll = usePollDraft();
+
+  if (isLineupParam && !prevLineupParam) {
+    setPrevLineupParam(true);
+    const draft = loadLocalSharedLineup();
+    if (draft) { setAttachedLineup(draft); setIsExpanded(true); }
+  } else if (!isLineupParam && prevLineupParam) {
+    setPrevLineupParam(false);
+  }
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
   const remaining = MAX_USER_BODY_LENGTH - body.length;
   const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
   useEffect(() => {
-    if (isLineupParam) {
-      if (typeof window !== "undefined") {
-        window.history.replaceState({}, "", window.location.pathname);
-      }
-      setTimeout(() => textareaRef.current?.focus(), 50);
-    }
+    if (!isLineupParam) return;
+    if (typeof window !== "undefined") window.history.replaceState({}, "", window.location.pathname);
+    setTimeout(() => textareaRef.current?.focus(), 50);
   }, [isLineupParam]);
 
   const autoGrow = (el: HTMLTextAreaElement) => {
@@ -114,9 +119,7 @@ export function PostComposer({
       authorUsername: profile?.username || "aficionado",
       authorAvatar: profile?.avatar_url || null,
     });
-    setBody("");
-    setAttachedLineup(null);
-    poll.resetPoll();
+    setBody(""); setAttachedLineup(null); poll.resetPoll();
     if (!parentId) setIsExpanded(false);
     if (textareaRef.current) textareaRef.current.style.height = "auto";
   };

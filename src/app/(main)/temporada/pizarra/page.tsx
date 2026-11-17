@@ -17,10 +17,10 @@ export default async function PizarraPage() {
   ]);
   const unifiedRoster = buildUnifiedRoster(firstTeamSquad);
 
-  const opponentName = nextFixture
+  const opponent = nextFixture
     ? nextFixture.homeTeam.isSporting
-      ? nextFixture.awayTeam.name
-      : nextFixture.homeTeam.name
+      ? nextFixture.awayTeam
+      : nextFixture.homeTeam
     : null;
 
   return (
@@ -29,7 +29,8 @@ export default async function PizarraPage() {
       <LineupBuilderClient
         initialRoster={unifiedRoster}
         nextMatchId={nextFixture?.externalId ?? null}
-        nextMatchOpponent={opponentName}
+        nextMatchOpponent={opponent?.name ?? null}
+        nextMatchOpponentCrestUrl={opponent?.crestUrl ?? null}
       />
     </div>
   );

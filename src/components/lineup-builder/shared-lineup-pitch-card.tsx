@@ -22,10 +22,10 @@ export function SharedLineupPitchCard({
   const { starters } = lineup;
 
   return (
-    <div className={`my-2.5 w-full max-w-[380px] sm:max-w-[420px] mx-auto select-none ${className}`}>
+    <div className={`my-2 w-full max-w-[250px] sm:max-w-[275px] mx-auto select-none ${className}`}>
       {/* Outer Pitch Frame mimicking a live screenshot */}
       <div
-        className="relative w-full aspect-[68/105] overflow-hidden rounded-2xl border-2 sm:border-[3px] border-neutral-800 bg-[#256e36] shadow-md select-none"
+        className="relative w-full aspect-[68/105] overflow-hidden rounded-xl border-2 border-neutral-800 bg-[#256e36] shadow-sm select-none"
         role="region"
         aria-label="Alineación táctica en Mareona"
       >
@@ -33,8 +33,8 @@ export function SharedLineupPitchCard({
         <TacticalGrassMarkings />
 
         {/* Subtle Watermark Branding in the bottom-right grass margin */}
-        <div className="absolute inset-x-3 bottom-0.5 z-10 flex items-center justify-end pointer-events-none select-none">
-          <span className="text-[9px] sm:text-[10px] font-extrabold tracking-widest text-white/45 uppercase leading-none">
+        <div className="absolute inset-x-2.5 bottom-0.5 z-10 flex items-center justify-end pointer-events-none select-none">
+          <span className="text-[8px] sm:text-[9px] font-extrabold tracking-widest text-white/45 uppercase leading-none">
             mareona
           </span>
         </div>

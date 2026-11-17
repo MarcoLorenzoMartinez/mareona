@@ -1,6 +1,8 @@
-// Client: Chip indicador de alineación táctica adjunta al compositor
+// Client: Previsualización fiel de la alineación táctica adjunta al compositor
 "use client";
 
+import { X } from "lucide-react";
+import { SharedLineupPitchCard } from "./shared-lineup-pitch-card";
 import type { SharedLineupData } from "@/lib/lineup-builder/shared-lineup-codec";
 
 interface LineupAttachmentChipProps {
@@ -13,20 +15,19 @@ export function LineupAttachmentChip({
   onRemove,
 }: LineupAttachmentChipProps) {
   return (
-    <div className="mt-2 flex items-center gap-2 rounded-full bg-neutral-100 border border-neutral-200 px-3 py-1 text-xs font-semibold text-neutral-800 w-fit animate-in fade-in zoom-in-95 duration-100">
-      <span className="text-[#e2001a]">📋</span>
-      <span>Mi Once</span>
-      <span className="rounded-full bg-neutral-200 px-1.5 py-0.2 text-[10px] font-bold text-neutral-700 tabular-nums">
-        {lineup.formationKey}
-      </span>
+    <div className="relative my-3 w-full max-w-[300px] sm:max-w-[340px] select-none animate-in fade-in zoom-in-95 duration-150">
+      {/* Botón flotante para retirar la alineación adjunta */}
       <button
         type="button"
         onClick={onRemove}
         aria-label="Quitar alineación adjunta"
-        className="ml-1 rounded-full p-0.5 text-neutral-400 hover:bg-neutral-200 hover:text-[#e2001a] transition-colors"
+        className="absolute top-2.5 right-2.5 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-black/75 text-white hover:bg-black transition-all active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer shadow-md"
       >
-        ✕
+        <X className="h-4 w-4" aria-hidden="true" />
       </button>
+
+      {/* Previsualización real de la pizarra (idéntica a como saldrá publicada) */}
+      <SharedLineupPitchCard lineup={lineup} className="my-0 w-full" />
     </div>
   );
 }

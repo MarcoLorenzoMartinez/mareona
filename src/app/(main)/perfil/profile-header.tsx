@@ -13,7 +13,6 @@ export function ProfileHeader({ onEdit }: ProfileHeaderProps) {
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
   const username = profile?.username || "aficionado";
-  const points = profile?.points ?? 0;
 
   const createdAtFormatted = profile?.created_at
     ? new Date(profile.created_at).toLocaleDateString("es-ES", {
@@ -59,13 +58,6 @@ export function ProfileHeader({ onEdit }: ProfileHeaderProps) {
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-neutral-500">
-        <span>
-          <strong className="font-sans font-bold tabular-nums text-neutral-900">
-            {points}
-          </strong>{" "}
-          puntos
-        </span>
-        <span aria-hidden="true" className="text-neutral-300">·</span>
         <span>Desde {createdAtFormatted}</span>
         {user?.email && (
           <>
