@@ -2,6 +2,7 @@
 // Client: Match detail tabs navigation and view switching
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 import type { RivalH2HSummary } from "@/lib/historical/rivals-types";
 import { getDictionary } from "@/i18n";
@@ -21,11 +22,31 @@ type TabKey = "h2h" | "events" | "stats" | "lineups" | "grada";
 export function MatchTabs({ match, rivalH2H = null }: MatchTabsProps) {
   const dict = getDictionary();
   const t = dict.season.matchDetail.tabs;
+  const searchParams = useSearchParams();
 
   const isScheduled = match.status === "scheduled";
-  // For scheduled matches, start on H2H preview. For live/finished, start on events.
-  const initialTab: TabKey = isScheduled ? "h2h" : "events";
-  const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
+  const isLineupParam = searchParams?.get("adjuntarOnce") === "1";
+  const requestedTab = searchParams?.get("tab") as TabKey | null;
+
+  // Prioritize "grada" when sharing a lineup or when explicitly requested via URL
+  const resolveInitialTab = (): TabKey => {
+    if (isLineupParam || requestedTab === "grada") return "grada";
+    if (requestedTab && ["h2h", "events", "stats", "lineups", "grada"].includes(requestedTab)) {
+      return requestedTab;
+    }
+    return isScheduled ? "h2h" : "events";
+  };
+
+  const [activeTab, setActiveTab] = useState<TabKey>(resolveInitialTab);
+  const [prevLineupParam, setPrevLineupParam] = useState(isLineupParam);
+
+  // Synchronously switch to "grada" if navigating with ?adjuntarOnce=1 when already mounted
+  if (isLineupParam && !prevLineupParam) {
+    setPrevLineupParam(true);
+    setActiveTab("grada");
+  } else if (!isLineupParam && prevLineupParam) {
+    setPrevLineupParam(false);
+  }
 
   const tabs: Array<{ key: TabKey; label: string }> = isScheduled
     ? [

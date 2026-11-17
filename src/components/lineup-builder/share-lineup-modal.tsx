@@ -46,7 +46,7 @@ export function ShareLineupModal({
     if (destination === "social") {
       router.push("/social?adjuntarOnce=1");
     } else if (destination === "match" && nextMatchId) {
-      router.push(`/temporada/partidos/${nextMatchId}?adjuntarOnce=1`);
+      router.push(`/temporada/partidos/${nextMatchId}?tab=grada&adjuntarOnce=1`);
     }
   };
 
