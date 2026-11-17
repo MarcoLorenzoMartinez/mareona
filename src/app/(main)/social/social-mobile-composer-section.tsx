@@ -20,12 +20,13 @@ export function SocialMobileComposerSection({
 }: SocialMobileComposerSectionProps) {
   const searchParams = useSearchParams();
   const isLineupParam = searchParams?.get("adjuntarOnce") === "1";
-  const [isOpen, setIsOpen] = useState(() => Boolean(isAuthenticated && isLineupParam));
+  const isMobileViewport = () => typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches;
+  const [isOpen, setIsOpen] = useState(() => Boolean(isAuthenticated && isLineupParam && isMobileViewport()));
   const [prevLineupParam, setPrevLineupParam] = useState(isLineupParam);
 
   if (isLineupParam && !prevLineupParam) {
     setPrevLineupParam(true);
-    if (isAuthenticated) setIsOpen(true);
+    if (isAuthenticated && isMobileViewport()) setIsOpen(true);
   } else if (!isLineupParam && prevLineupParam) {
     setPrevLineupParam(false);
   }

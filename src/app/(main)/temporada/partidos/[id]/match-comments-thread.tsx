@@ -35,12 +35,13 @@ export function MatchCommentsThread({
   const [comments, setComments] = useState<readonly MatchComment[]>(initialComments);
   const [navigationStack, setNavigationStack] = useState<readonly string[]>([]);
   const [viewingProfileId, setViewingProfileId] = useState<string | null>(null);
-  const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(() => Boolean(isLineupParam));
+  const isMobileViewport = () => typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches;
+  const [isMobileComposerOpen, setIsMobileComposerOpen] = useState(() => Boolean(isLineupParam && isMobileViewport()));
   const [prevLineupParam, setPrevLineupParam] = useState(isLineupParam);
 
   if (isLineupParam && !prevLineupParam) {
     setPrevLineupParam(true);
-    setIsMobileComposerOpen(true);
+    if (isMobileViewport()) setIsMobileComposerOpen(true);
   } else if (!isLineupParam && prevLineupParam) {
     setPrevLineupParam(false);
   }

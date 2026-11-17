@@ -44,13 +44,17 @@ export function MobileMatchCommentModal({
 
   useEffect(() => {
     if (!isOpen) return;
+    if (window.matchMedia("(min-width: 640px)").matches) { onClose(); return; }
     const timer = setTimeout(() => textareaRef.current?.focus(), 80);
     const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const handleResize = () => { if (window.matchMedia("(min-width: 640px)").matches) onClose(); };
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
     document.body.style.overflow = "hidden";
     return () => {
       clearTimeout(timer);
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
       document.body.style.overflow = "";
     };
   }, [isOpen, onClose]);
