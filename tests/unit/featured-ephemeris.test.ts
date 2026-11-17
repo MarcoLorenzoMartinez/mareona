@@ -75,7 +75,39 @@ describe("pickFeaturedEphemeris", () => {
       photoUrl: null,
       figure: undefined,
       categoryLabel: "Gesta",
+      isMatch: false,
     });
+  });
+
+  it("prioritizes prestigious first-division win over blowout early round in cup", () => {
+    const featured = pickFeaturedEphemeris(
+      buildResult(
+        [
+          buildMatch({
+            id: "cup-blowout",
+            competition: "Copa del Rey",
+            round: "Ronda 1",
+            homeScore: 5,
+            awayScore: 0,
+            opponent: "UP Langreo",
+            year: 1983,
+          }),
+          buildMatch({
+            id: "laliga-classic",
+            competition: "LaLiga",
+            round: "Jornada 4",
+            homeScore: 2,
+            awayScore: 1,
+            opponent: "FC Barcelona",
+            year: 1991,
+          }),
+        ],
+        []
+      )
+    );
+    assert.equal(featured?.title, "Real Sporting 2–1 Rival");
+    assert.equal(featured?.year, 1991);
+    assert.equal(featured?.isMatch, true);
   });
 
   it("falls back to the widest Sporting win, counting away fixtures correctly", () => {
