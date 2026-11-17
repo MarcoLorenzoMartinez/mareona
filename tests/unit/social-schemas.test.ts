@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { createPostSchema } from "../../src/lib/social/schemas.ts";
+import { createPostSchema, updatePostSchema } from "../../src/lib/social/schemas.ts";
 
 describe("Social Schemas", () => {
   const sampleLineupTag = "<!--once:4-3-3|Yáñez*1*1145322*POR*50*88,Cote*3*189211*LI*12*72,Rober Pier*4*534120*DFC*38*72,Diego Sánchez*24*409211*DFC*62*72,Guille Rosas*2*1105432*LD*88*72,Nacho Martín*6*854312*MC*35*50,Lander*14*743219*MCD*50*58,Gelabert*25*998124*MC*65*50,Queipo*9*1142109*EI*18*28,Otero*18*674391*DC*50*22,Dubasin*19*1094321*ED*82*28-->";
@@ -59,5 +59,39 @@ describe("Social Schemas", () => {
     };
     const res = createPostSchema.safeParse(reply);
     assert.equal(res.success, true);
+  });
+
+  describe("updatePostSchema", () => {
+    it("accepts valid update within character limit", () => {
+      const res = updatePostSchema.safeParse({
+        postId: "post-123",
+        body: "Texto corregido",
+      });
+      assert.equal(res.success, true);
+    });
+
+    it("rejects empty body update", () => {
+      const res = updatePostSchema.safeParse({
+        postId: "post-123",
+        body: "   ",
+      });
+      assert.equal(res.success, false);
+    });
+
+    it("rejects missing postId", () => {
+      const res = updatePostSchema.safeParse({
+        postId: "",
+        body: "Texto válido",
+      });
+      assert.equal(res.success, false);
+    });
+
+    it("accepts update with preserved lineup tag", () => {
+      const res = updatePostSchema.safeParse({
+        postId: "post-123",
+        body: `Texto corregido\n\n${sampleLineupTag}`,
+      });
+      assert.equal(res.success, true);
+    });
   });
 });

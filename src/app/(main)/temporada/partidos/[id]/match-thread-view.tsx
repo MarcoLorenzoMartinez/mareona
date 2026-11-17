@@ -1,14 +1,18 @@
-// Client: Vista de conversación de partido enfocada (muñeca rusa idéntica a Social)
+// Client: Vista de conversación de partido enfocada con edición en 15 min y borrado
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { InlinePostEditor } from "@/components/social/inline-post-editor";
+import { ThreadHeaderBar } from "@/components/social/thread-header-bar";
 import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "@/app/(main)/social/post-actions";
 import { MatchCommentComposer } from "./match-comment-composer";
 import { MatchReplyItem } from "./match-reply-item";
-import { formatRelativeTime } from "@/lib/social/format";
+import { formatRelativeTime, canEditPost } from "@/lib/social/format";
 import type { MatchComment } from "@/lib/match-community/types";
 
 interface MatchThreadViewProps {
@@ -19,6 +23,8 @@ interface MatchThreadViewProps {
   readonly onDrillDown: (commentId: string) => void;
   readonly onAddReply: (parentId: string, reply: MatchComment) => void;
   readonly onOpenProfile?: (userId: string) => void;
+  readonly onDeleteComment?: (commentId: string) => void;
+  readonly onUpdateComment?: (commentId: string, newBody: string) => Promise<void> | void;
 }
 
 export function MatchThreadView({
@@ -29,78 +35,115 @@ export function MatchThreadView({
   onDrillDown,
   onAddReply,
   onOpenProfile,
+  onDeleteComment,
+  onUpdateComment,
 }: MatchThreadViewProps) {
+  const { user } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
   const replies = comment.replies ?? [];
-  const openProfile = () => {
-    if (comment.authorId) onOpenProfile?.(comment.authorId);
-  };
+  const openProfile = () => { if (comment.authorId) onOpenProfile?.(comment.authorId); };
+  const isOwner = Boolean(user && user.id === comment.authorId);
+  const canEdit = Boolean(isOwner && onUpdateComment && canEditPost(comment.createdAt));
   const { cleanBody, lineup } = parsePostLineup(comment.body);
+
+  const handleSaveEdit = async (newBody: string) => {
+    if (onUpdateComment) await onUpdateComment(comment.id, newBody);
+    setIsEditing(false);
+  };
 
   return (
     <div>
-      <div className="flex items-center gap-3 border-b border-[var(--border)] bg-white px-3 py-2">
-        <button
-          type="button"
-          onClick={onBack}
-          aria-label="Volver a la conversación anterior"
-          className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 transition-colors duration-150 hover:bg-[var(--surface)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-        >
-          <ArrowLeft className="h-5 w-5" aria-hidden="true" />
-        </button>
-        <div className="min-w-0">
-          <h2 className="text-base font-bold text-neutral-900">Conversación</h2>
-          {parentComment && (
-            <p className="truncate text-xs text-neutral-500">
-              En respuesta a @{parentComment.authorUsername}
-            </p>
-          )}
-        </div>
-      </div>
+      <ThreadHeaderBar
+        onBack={onBack}
+        parentUsername={parentComment?.authorUsername}
+      />
 
       <article className="border-b border-[var(--border)] px-4 pt-4 pb-1">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={openProfile}
-            aria-label={`Ver perfil de ${comment.authorName}`}
-            className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-          >
-            <AuthAvatar src={comment.authorAvatar} alt={comment.authorName} size="md" />
-          </button>
-          <div className="min-w-0 flex-1 leading-tight">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               type="button"
               onClick={openProfile}
-              className="block max-w-full truncate text-left text-sm font-bold text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              aria-label={`Ver perfil de ${comment.authorName}`}
+              className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              {comment.authorName}
+              <AuthAvatar src={comment.authorAvatar} alt={comment.authorName} size="md" />
             </button>
-            <span className="block truncate text-sm text-neutral-500">
-              @{comment.authorUsername}
-            </span>
+            <div className="min-w-0 flex-1 leading-tight">
+              <button
+                type="button"
+                onClick={openProfile}
+                className="block max-w-full truncate text-left text-sm font-bold text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              >
+                {comment.authorName}
+              </button>
+              <span className="block truncate text-sm text-neutral-500">
+                @{comment.authorUsername}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1 shrink-0">
+            {canEdit && (
+              <button
+                type="button"
+                onClick={() => setIsEditing((prev) => !prev)}
+                aria-label="Editar comentario"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              >
+                <Pencil className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
+
+            {isOwner && onDeleteComment && (
+              <button
+                type="button"
+                onClick={() => onDeleteComment(comment.id)}
+                aria-label="Borrar comentario"
+                className="flex h-8 w-8 items-center justify-center text-neutral-400 hover:bg-red-50 hover:text-[#e2001a] rounded-full transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
+              >
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
           </div>
         </div>
 
-        {cleanBody && (
-          <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
-            {cleanBody}
-          </p>
+        {isEditing ? (
+          <InlinePostEditor
+            initialBody={comment.body}
+            onSave={handleSaveEdit}
+            onCancel={() => setIsEditing(false)}
+          />
+        ) : (
+          cleanBody && (
+            <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
+              {cleanBody}
+            </p>
+          )
         )}
 
         {lineup && <SharedLineupPitchCard lineup={lineup} />}
 
-        <time dateTime={comment.createdAt} className="mt-3 block text-sm text-neutral-500">
-          {formatRelativeTime(comment.createdAt)}
-        </time>
-
-        <div className="mt-2 border-t border-[var(--border)] pt-1">
-          <PostActions
-            likesCount={comment.likesCount}
-            repliesCount={replies.length}
-            postId={comment.id}
-            postBody={cleanBody || comment.body}
-          />
+        <div className="mt-3 flex items-center gap-1.5 text-sm text-neutral-500">
+          <time dateTime={comment.createdAt}>{formatRelativeTime(comment.createdAt)}</time>
+          {comment.isEdited && (
+            <>
+              <span aria-hidden="true" className="text-neutral-400">·</span>
+              <span className="text-neutral-400 text-xs">editado</span>
+            </>
+          )}
         </div>
+
+        {!isEditing && (
+          <div className="mt-2 border-t border-[var(--border)] pt-1">
+            <PostActions
+              likesCount={comment.likesCount}
+              repliesCount={replies.length}
+              postId={comment.id}
+              postBody={cleanBody || comment.body}
+            />
+          </div>
+        )}
       </article>
 
       <MatchCommentComposer
@@ -113,9 +156,7 @@ export function MatchThreadView({
 
       <section aria-label="Respuestas al comentario">
         {replies.length === 0 ? (
-          <p className="px-4 py-10 text-center text-sm text-neutral-500">
-            Aún no hay respuestas
-          </p>
+          <p className="px-4 py-10 text-center text-sm text-neutral-500">Aún no hay respuestas</p>
         ) : (
           replies.map((reply) => (
             <MatchReplyItem
@@ -123,6 +164,8 @@ export function MatchThreadView({
               reply={reply}
               onDrillDown={onDrillDown}
               onOpenProfile={onOpenProfile}
+              onDelete={onDeleteComment}
+              onUpdate={onUpdateComment}
             />
           ))
         )}

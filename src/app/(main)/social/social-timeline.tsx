@@ -14,6 +14,7 @@ interface SocialTimelineProps {
   readonly onPushThread: (postId: string) => void;
   readonly onOpenProfile: (userId: string) => void;
   readonly onDeletePost: (postId: string) => void;
+  readonly onUpdatePost?: (postId: string, newBody: string) => Promise<void> | void;
 }
 
 export function SocialTimeline({
@@ -24,6 +25,7 @@ export function SocialTimeline({
   onPushThread,
   onOpenProfile,
   onDeletePost,
+  onUpdatePost,
 }: SocialTimelineProps) {
   return (
     <>
@@ -50,6 +52,7 @@ export function SocialTimeline({
               onOpenThread={onPushThread}
               onOpenProfile={onOpenProfile}
               onDelete={onDeletePost}
+              onUpdate={onUpdatePost}
             />
           ))
         )}

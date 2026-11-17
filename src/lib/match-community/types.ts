@@ -8,6 +8,8 @@ export interface MatchComment {
   readonly authorAvatar?: string | null;
   readonly body: string;
   readonly createdAt: string;
+  readonly updatedAt?: string | null;
+  readonly isEdited?: boolean;
   readonly likesCount: number;
   readonly hasLiked?: boolean;
   readonly replies?: readonly MatchComment[];

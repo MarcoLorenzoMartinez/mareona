@@ -4,6 +4,7 @@ interface RawPostRow {
   readonly id: string;
   readonly body: string;
   readonly created_at: string;
+  readonly updated_at?: string | null;
   readonly user_id: string;
   readonly parent_id: string | null;
   readonly profiles?:
@@ -29,6 +30,8 @@ interface MutableComment {
   authorAvatar: string | null;
   body: string;
   createdAt: string;
+  updatedAt?: string | null;
+  isEdited?: boolean;
   parentId: string | null;
   likesCount: number;
   replies: MutableComment[];
@@ -55,6 +58,11 @@ export function buildMatchCommentTree(
       authorAvatar: profile?.avatar_url || null,
       body: post.body,
       createdAt: post.created_at,
+      updatedAt: post.updated_at ?? null,
+      isEdited: Boolean(
+        post.updated_at &&
+          new Date(post.updated_at).getTime() - new Date(post.created_at).getTime() > 1000
+      ),
       parentId: post.parent_id,
       likesCount: 0,
       replies: [],

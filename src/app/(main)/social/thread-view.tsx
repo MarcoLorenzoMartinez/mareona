@@ -1,16 +1,19 @@
-// Client: Vista de conversación enfocada (modelo muñeca rusa) con encuesta, acciones y borrado
+// Client: Vista de conversación enfocada (modelo muñeca rusa) con encuesta, edición, acciones y borrado
 "use client";
 
-import { ArrowLeft, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Trash2, Pencil } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PollDisplay } from "@/components/social/poll-display";
 import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { InlinePostEditor } from "@/components/social/inline-post-editor";
+import { ThreadHeaderBar } from "@/components/social/thread-header-bar";
 import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "./post-actions";
 import { PostComposer } from "./post-composer";
 import { ThreadReplyItem } from "./thread-reply-item";
-import { formatRelativeTime } from "@/lib/social/format";
+import { formatRelativeTime, canEditPost } from "@/lib/social/format";
 import type { SocialPost } from "@/lib/social/types";
 
 interface ThreadViewProps {
@@ -21,6 +24,7 @@ interface ThreadViewProps {
   readonly onAddReply: (parentId: string, newReply: SocialPost) => void;
   readonly onOpenProfile?: (userId: string) => void;
   readonly onDeletePost?: (postId: string) => void;
+  readonly onUpdatePost?: (postId: string, newBody: string) => Promise<void> | void;
 }
 
 export function ThreadView({
@@ -31,35 +35,31 @@ export function ThreadView({
   onAddReply,
   onOpenProfile,
   onDeletePost,
+  onUpdatePost,
 }: ThreadViewProps) {
   const { user } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
   const replies = post.replies ?? [];
   const openProfile = () => {
     if (post.userId) onOpenProfile?.(post.userId);
   };
   const isOwner = Boolean(user && user.id === post.userId);
+  const canEdit = Boolean(isOwner && onUpdatePost && canEditPost(post.createdAt));
   const { cleanBody, lineup } = parsePostLineup(post.body);
+
+  const handleSaveEdit = async (newBody: string) => {
+    if (onUpdatePost) {
+      await onUpdatePost(post.id, newBody);
+    }
+    setIsEditing(false);
+  };
 
   return (
     <div>
-      <div className="flex items-center gap-3 border-b border-[var(--border)] bg-white px-3 py-2">
-        <button
-          type="button"
-          onClick={onBack}
-          aria-label="Volver a la conversación anterior"
-          className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 transition-colors duration-150 hover:bg-[var(--surface)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-        >
-          <ArrowLeft className="h-5 w-5" aria-hidden="true" />
-        </button>
-        <div className="min-w-0">
-          <h2 className="text-base font-bold text-neutral-900">Conversación</h2>
-          {parentPost && (
-            <p className="truncate text-xs text-neutral-500">
-              En respuesta a @{parentPost.authorUsername}
-            </p>
-          )}
-        </div>
-      </div>
+      <ThreadHeaderBar
+        onBack={onBack}
+        parentUsername={parentPost?.authorUsername}
+      />
 
       <article className="border-b border-[var(--border)] px-4 pt-4 pb-1">
         <div className="flex items-center justify-between gap-3">
@@ -84,40 +84,69 @@ export function ThreadView({
             </div>
           </div>
 
-          {isOwner && onDeletePost && (
-            <button
-              type="button"
-              onClick={() => onDeletePost(post.id)}
-              aria-label="Borrar publicación"
-              className="shrink-0 p-2 text-neutral-400 hover:bg-red-50 hover:text-[#e2001a] rounded-full transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
-            >
-              <Trash2 className="h-4 w-4" aria-hidden="true" />
-            </button>
-          )}
+          <div className="flex items-center gap-1 shrink-0">
+            {canEdit && (
+              <button
+                type="button"
+                onClick={() => setIsEditing((prev) => !prev)}
+                aria-label="Editar publicación"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+              >
+                <Pencil className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
+
+            {isOwner && onDeletePost && (
+              <button
+                type="button"
+                onClick={() => onDeletePost(post.id)}
+                aria-label="Borrar publicación"
+                className="flex h-8 w-8 items-center justify-center text-neutral-400 hover:bg-red-50 hover:text-[#e2001a] rounded-full transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
+              >
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
+          </div>
         </div>
 
-        {cleanBody && (
-          <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
-            {cleanBody}
-          </p>
+        {isEditing ? (
+          <InlinePostEditor
+            initialBody={post.body}
+            onSave={handleSaveEdit}
+            onCancel={() => setIsEditing(false)}
+          />
+        ) : (
+          cleanBody && (
+            <p className="mt-3 whitespace-pre-line break-words text-[19px] leading-snug text-neutral-900">
+              {cleanBody}
+            </p>
+          )
         )}
 
         {lineup && <SharedLineupPitchCard lineup={lineup} />}
 
         {post.poll && <PollDisplay poll={post.poll} />}
 
-        <time dateTime={post.createdAt} className="mt-3 block text-sm text-neutral-500">
-          {formatRelativeTime(post.createdAt)}
-        </time>
-
-        <div className="mt-2 border-t border-[var(--border)] pt-1">
-          <PostActions
-            likesCount={post.likesCount}
-            repliesCount={replies.length}
-            postId={post.id}
-            postBody={cleanBody || post.body}
-          />
+        <div className="mt-3 flex items-center gap-1.5 text-sm text-neutral-500">
+          <time dateTime={post.createdAt}>{formatRelativeTime(post.createdAt)}</time>
+          {post.isEdited && (
+            <>
+              <span aria-hidden="true" className="text-neutral-400">·</span>
+              <span className="text-neutral-400 text-xs">editado</span>
+            </>
+          )}
         </div>
+
+        {!isEditing && (
+          <div className="mt-2 border-t border-[var(--border)] pt-1">
+            <PostActions
+              likesCount={post.likesCount}
+              repliesCount={replies.length}
+              postId={post.id}
+              postBody={cleanBody || post.body}
+            />
+          </div>
+        )}
       </article>
 
       <PostComposer
@@ -138,6 +167,7 @@ export function ThreadView({
               onDrillDown={onDrillDown}
               onOpenProfile={onOpenProfile}
               onDelete={onDeletePost}
+              onUpdate={onUpdatePost}
             />
           ))
         )}

@@ -59,3 +59,45 @@ export function addReplyToCommentTree(
     return c;
   });
 }
+
+/**
+ * Immutably updates a comment or reply by ID anywhere in the tree.
+ */
+export function updateCommentInTree(
+  comments: readonly MatchComment[],
+  targetId: string,
+  updatedFields: Partial<MatchComment>
+): readonly MatchComment[] {
+  return comments.map((c) => {
+    if (c.id === targetId) {
+      return { ...c, ...updatedFields };
+    }
+    if (c.replies && c.replies.length > 0) {
+      return {
+        ...c,
+        replies: updateCommentInTree(c.replies, targetId, updatedFields),
+      };
+    }
+    return c;
+  });
+}
+
+/**
+ * Immutably removes a comment or reply by ID anywhere in the tree.
+ */
+export function removeCommentFromTree(
+  comments: readonly MatchComment[],
+  targetId: string
+): readonly MatchComment[] {
+  return comments
+    .filter((c) => c.id !== targetId)
+    .map((c) => {
+      if (c.replies && c.replies.length > 0) {
+        return {
+          ...c,
+          replies: removeCommentFromTree(c.replies, targetId),
+        };
+      }
+      return c;
+    });
+}

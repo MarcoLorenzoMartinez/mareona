@@ -26,7 +26,7 @@ export async function getMatchComments(
     const supabase = await createClient();
     const { data: posts, error } = await supabase
       .from("posts")
-      .select("id, body, created_at, user_id, parent_id, profiles(display_name, username, avatar_url)")
+      .select("id, body, created_at, updated_at, user_id, parent_id, profiles(display_name, username, avatar_url)")
       .eq("match_id", matchId)
       .is("deleted_at", null)
       .order("created_at", { ascending: true });

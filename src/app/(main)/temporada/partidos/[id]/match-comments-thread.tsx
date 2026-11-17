@@ -10,10 +10,13 @@ import { MobileMatchCommentModal } from "./mobile-match-comment-composer";
 import { MatchCommentCard } from "./match-comment-card";
 import { MatchThreadView } from "./match-thread-view";
 import { UserProfileModal } from "@/app/(main)/social/user-profile-modal";
+import { deleteSocialPost, updateSocialPost } from "@/lib/social/actions";
 import {
   findCommentInTree,
   findParentInCommentTree,
   addReplyToCommentTree,
+  updateCommentInTree,
+  removeCommentFromTree,
 } from "@/lib/match-community/comment-tree-nav";
 import type { MatchComment } from "@/lib/match-community/types";
 
@@ -58,6 +61,25 @@ export function MatchCommentsThread({
     setComments((prev) => addReplyToCommentTree(prev, parentId, reply));
   };
 
+  const handleDeleteComment = async (commentId: string) => {
+    setComments((prev) => removeCommentFromTree(prev, commentId));
+    if (navigationStack.includes(commentId)) {
+      setNavigationStack((prev) => prev.filter((id) => id !== commentId));
+    }
+    await deleteSocialPost({ postId: commentId });
+  };
+
+  const handleUpdateComment = async (commentId: string, newBody: string) => {
+    setComments((prev) =>
+      updateCommentInTree(prev, commentId, {
+        body: newBody,
+        isEdited: true,
+        updatedAt: new Date().toISOString(),
+      })
+    );
+    await updateSocialPost({ postId: commentId, body: newBody });
+  };
+
   useEffect(() => {
     if (navigationStack.length === 0) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -83,6 +105,8 @@ export function MatchCommentsThread({
             onDrillDown={handlePushThread}
             onAddReply={handleAddReply}
             onOpenProfile={(id) => setViewingProfileId(id)}
+            onDeleteComment={handleDeleteComment}
+            onUpdateComment={handleUpdateComment}
           />
         ) : (
           <>
@@ -104,6 +128,8 @@ export function MatchCommentsThread({
                     comment={comment}
                     onOpenThread={handlePushThread}
                     onOpenProfile={(id) => setViewingProfileId(id)}
+                    onDelete={handleDeleteComment}
+                    onUpdate={handleUpdateComment}
                   />
                 ))
               )}

@@ -20,6 +20,8 @@ export interface SocialPost {
   readonly authorAvatar: string | null;
   readonly body: string;
   readonly createdAt: string;
+  readonly updatedAt?: string | null;
+  readonly isEdited?: boolean;
   readonly parentId?: string | null;
   readonly likesCount: number;
   readonly repliesCount: number;

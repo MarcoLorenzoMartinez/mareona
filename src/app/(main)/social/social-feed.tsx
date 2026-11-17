@@ -11,13 +11,13 @@ import { DirectMessagesInbox } from "./direct-messages-inbox";
 import { DirectChatView } from "./direct-chat-view";
 import { SocialMobileComposerSection } from "./social-mobile-composer-section";
 import { useSocialThreadNavigation } from "./use-social-thread-navigation";
-import { getSocialPosts, deleteSocialPost } from "@/lib/social/actions";
+import { getSocialPosts, deleteSocialPost, updateSocialPost } from "@/lib/social/actions";
 import { getOrCreateConversationWithFriend } from "@/lib/social/direct-messages-actions";
 import {
   useSocialNotifications,
   refreshSocialNotifications,
 } from "@/components/layout/use-social-notifications";
-import { addReplyToTree, removePostFromTree } from "@/lib/social/post-tree";
+import { addReplyToTree, removePostFromTree, updatePostInTree } from "@/lib/social/post-tree";
 import type { SocialFeedTab } from "./feed-tab-selector";
 import type { SocialPost } from "@/lib/social/types";
 
@@ -90,6 +90,11 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
     removePostFromStack(postId);
     await deleteSocialPost({ postId });
   };
+  const handleUpdatePost = async (postId: string, newBody: string) => {
+    const updatedAt = new Date().toISOString();
+    setPosts((prev) => updatePostInTree(prev, postId, { body: newBody, isEdited: true, updatedAt }));
+    await updateSocialPost({ postId, body: newBody });
+  };
 
   return (
     <div className="w-full rounded-2xl border border-[var(--border)] bg-white overflow-hidden shadow-2xs">
@@ -102,6 +107,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
           onAddReply={(parentId, reply) => setPosts((prev) => addReplyToTree(prev, parentId, reply))}
           onOpenProfile={(id) => setViewingProfileId(id)}
           onDeletePost={handleDeletePost}
+          onUpdatePost={handleUpdatePost}
         />
       ) : (
         <>
@@ -143,6 +149,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
               onPushThread={handlePushThread}
               onOpenProfile={(id) => setViewingProfileId(id)}
               onDeletePost={handleDeletePost}
+              onUpdatePost={handleUpdatePost}
             />
           )}
         </>

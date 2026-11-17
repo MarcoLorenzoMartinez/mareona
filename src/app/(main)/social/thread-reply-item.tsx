@@ -1,10 +1,12 @@
 // Client: Respuesta del hilo con la misma anatomía que una publicación del timeline
 "use client";
 
+import { useState } from "react";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PollDisplay } from "@/components/social/poll-display";
 import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
+import { InlinePostEditor } from "@/components/social/inline-post-editor";
 import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "./post-actions";
 import { PostAuthorLine } from "./post-author-line";
@@ -15,6 +17,7 @@ interface ThreadReplyItemProps {
   readonly onDrillDown: (postId: string) => void;
   readonly onOpenProfile?: (userId: string) => void;
   readonly onDelete?: (postId: string) => void;
+  readonly onUpdate?: (postId: string, newBody: string) => Promise<void> | void;
 }
 
 export function ThreadReplyItem({
@@ -22,17 +25,28 @@ export function ThreadReplyItem({
   onDrillDown,
   onOpenProfile,
   onDelete,
+  onUpdate,
 }: ThreadReplyItemProps) {
   const { user } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
   const count = reply.repliesCount ?? reply.replies?.length ?? 0;
   const drillDown = () => onDrillDown(reply.id);
   const isOwner = Boolean(user && user.id === reply.userId);
   const { cleanBody, lineup } = parsePostLineup(reply.body);
 
+  const handleSaveEdit = async (newBody: string) => {
+    if (onUpdate) {
+      await onUpdate(reply.id, newBody);
+    }
+    setIsEditing(false);
+  };
+
   return (
     <article
-      onClick={drillDown}
-      className="flex cursor-pointer gap-3 border-b border-[var(--border)] px-4 py-3 transition-colors duration-150 hover:bg-[var(--surface)]/60"
+      onClick={isEditing ? undefined : drillDown}
+      className={`flex gap-3 border-b border-[var(--border)] px-4 py-3 transition-colors duration-150 ${
+        isEditing ? "bg-neutral-50/50" : "cursor-pointer hover:bg-[var(--surface)]/60"
+      }`}
     >
       <button
         type="button"
@@ -50,25 +64,37 @@ export function ThreadReplyItem({
         <PostAuthorLine
           post={reply}
           onOpenProfile={onOpenProfile}
+          onEdit={isOwner && onUpdate ? () => setIsEditing((prev) => !prev) : undefined}
           onDelete={isOwner && onDelete ? () => onDelete(reply.id) : undefined}
         />
-        {cleanBody && (
-          <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
-            {cleanBody}
-          </p>
+
+        {isEditing ? (
+          <InlinePostEditor
+            initialBody={reply.body}
+            onSave={handleSaveEdit}
+            onCancel={() => setIsEditing(false)}
+          />
+        ) : (
+          cleanBody && (
+            <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">
+              {cleanBody}
+            </p>
+          )
         )}
 
         {lineup && <SharedLineupPitchCard lineup={lineup} />}
 
         {reply.poll && <PollDisplay poll={reply.poll} />}
 
-        <PostActions
-          likesCount={reply.likesCount}
-          repliesCount={count}
-          onOpenThread={drillDown}
-          postId={reply.id}
-          postBody={cleanBody || reply.body}
-        />
+        {!isEditing && (
+          <PostActions
+            likesCount={reply.likesCount}
+            repliesCount={count}
+            onOpenThread={drillDown}
+            postId={reply.id}
+            postBody={cleanBody || reply.body}
+          />
+        )}
       </div>
     </article>
   );

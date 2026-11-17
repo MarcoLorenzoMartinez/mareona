@@ -17,3 +17,15 @@ export function formatRelativeTime(dateStr: string): string {
   if (diffDays === 1) return "ayer";
   return `hace ${diffDays} d`;
 }
+
+/** 15-minute edit window threshold (in milliseconds). */
+export const POST_EDIT_WINDOW_MS = 15 * 60 * 1000;
+
+/**
+ * Checks whether a post or comment is within the allowed 15-minute edit window.
+ */
+export function canEditPost(dateStr: string): boolean {
+  const time = new Date(dateStr).getTime();
+  if (Number.isNaN(time)) return false;
+  return Date.now() - time <= POST_EDIT_WINDOW_MS;
+}

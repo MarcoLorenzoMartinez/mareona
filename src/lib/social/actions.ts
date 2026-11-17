@@ -5,14 +5,18 @@ import { createClient } from "@/lib/supabase/server";
 import {
   createPostSchema,
   deletePostSchema,
+  updatePostSchema,
   votePollSchema,
   type CreatePostInput,
   type DeletePostInput,
+  type UpdatePostInput,
   type VotePollInput,
 } from "./schemas";
 import { MODERATION_REJECTED_MESSAGE, moderateText } from "./moderation";
 import { logBlockedAttempt } from "./moderation-log";
 import { checkRateLimit } from "@/lib/security/rate-limiter";
+import { canEditPost } from "./format";
+import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import type { SocialPost, SocialPoll } from "./types";
 import type { Database } from "@/types/database.types";
 
@@ -216,7 +220,7 @@ export async function getSocialPosts(
     let query = supabase
       .from("posts")
       .select(
-        `id, body, created_at, parent_id, user_id,
+        `id, body, created_at, updated_at, parent_id, user_id,
          profiles (username, display_name, avatar_url),
          polls (
            id,
@@ -262,6 +266,10 @@ export async function getSocialPosts(
             display_name: string | null;
             avatar_url: string | null;
           } | null;
+          const replyIsEdited = Boolean(
+            r.updated_at &&
+              new Date(r.updated_at).getTime() - new Date(r.created_at).getTime() > 1000
+          );
           return {
             id: r.id,
             userId: r.user_id,
@@ -270,6 +278,8 @@ export async function getSocialPosts(
             authorAvatar: replyAuthor?.avatar_url || null,
             body: r.body,
             createdAt: r.created_at,
+            updatedAt: r.updated_at ?? null,
+            isEdited: replyIsEdited,
             parentId: p.id,
             likesCount: 0,
             repliesCount: 0,
@@ -301,6 +311,11 @@ export async function getSocialPosts(
         };
       }
 
+      const rootIsEdited = Boolean(
+        p.updated_at &&
+          new Date(p.updated_at).getTime() - new Date(p.created_at).getTime() > 1000
+      );
+
       return {
         id: p.id,
         userId: p.user_id,
@@ -309,6 +324,8 @@ export async function getSocialPosts(
         authorAvatar: author?.avatar_url || null,
         body: p.body,
         createdAt: p.created_at,
+        updatedAt: p.updated_at ?? null,
+        isEdited: rootIsEdited,
         parentId: null,
         likesCount: 0,
         repliesCount: postReplies.length,
@@ -348,6 +365,12 @@ export async function deleteSocialPost(
       };
     }
 
+    const { data: targetPost } = await supabase
+      .from("posts")
+      .select("match_id")
+      .eq("id", parsed.data.postId)
+      .maybeSingle();
+
     const { error } = await supabase
       .from("posts")
       .update({ deleted_at: new Date().toISOString() })
@@ -359,9 +382,125 @@ export async function deleteSocialPost(
     }
 
     revalidatePath("/social");
+    if (targetPost?.match_id) {
+      revalidatePath(`/temporada/partidos/${targetPost.match_id}`);
+    }
     return { success: true, data: { deletedId: parsed.data.postId } };
   } catch {
     return { success: true, data: { deletedId: parsed.data.postId } };
+  }
+}
+
+/**
+ * Updates a post or match comment created by the authenticated user within the 15-minute window.
+ */
+export async function updateSocialPost(
+  input: UpdatePostInput
+): Promise<ActionResult<{ postId: string; body: string; updatedAt: string }>> {
+  const parsed = updatePostSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message ?? "Mensaje inválido",
+    };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return {
+        success: false,
+        error: "Debes iniciar sesión para editar tu mensaje",
+      };
+    }
+
+    const rateLimit = checkRateLimit({
+      key: `social_edit_${user.id}`,
+      limit: 10,
+      windowMs: 60_000,
+    });
+    if (!rateLimit.allowed) {
+      return { success: false, error: rateLimit.error };
+    }
+
+    const { data: existingPost, error: fetchError } = await supabase
+      .from("posts")
+      .select("id, user_id, created_at, match_id")
+      .eq("id", parsed.data.postId)
+      .is("deleted_at", null)
+      .maybeSingle();
+
+    if (fetchError || !existingPost) {
+      return { success: false, error: "Publicación no encontrada" };
+    }
+
+    if (existingPost.user_id !== user.id) {
+      return {
+        success: false,
+        error: "No tienes permiso para editar esta publicación",
+      };
+    }
+
+    if (!canEditPost(existingPost.created_at)) {
+      return {
+        success: false,
+        error: "El tiempo para editar este mensaje ha expirado (límite: 15 minutos)",
+      };
+    }
+
+    const { cleanBody } = parsePostLineup(parsed.data.body);
+    const moderation = await moderateText(cleanBody);
+    if (moderation.verdict === "block") {
+      await logBlockedAttempt(supabase, {
+        userId: user.id,
+        body: parsed.data.body,
+        reason: moderation.reason,
+      });
+      return { success: false, error: MODERATION_REJECTED_MESSAGE };
+    }
+
+    const nowIso = new Date().toISOString();
+    const { error: updateError } = await supabase
+      .from("posts")
+      .update({
+        body: parsed.data.body,
+        updated_at: nowIso,
+        moderation_status: moderation.verdict === "flag" ? "flagged" : "approved",
+        moderation_reason: moderation.verdict === "flag" ? moderation.reason : null,
+      })
+      .eq("id", parsed.data.postId)
+      .eq("user_id", user.id);
+
+    if (updateError) {
+      return { success: false, error: updateError.message };
+    }
+
+    revalidatePath("/social");
+    if (existingPost.match_id) {
+      revalidatePath(`/temporada/partidos/${existingPost.match_id}`);
+    }
+
+    return {
+      success: true,
+      data: {
+        postId: parsed.data.postId,
+        body: parsed.data.body,
+        updatedAt: nowIso,
+      },
+    };
+  } catch {
+    return {
+      success: true,
+      data: {
+        postId: parsed.data.postId,
+        body: parsed.data.body,
+        updatedAt: new Date().toISOString(),
+      },
+    };
   }
 }
 

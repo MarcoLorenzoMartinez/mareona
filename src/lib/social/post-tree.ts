@@ -84,3 +84,25 @@ export function removePostFromTree(
       return post;
     });
 }
+
+/**
+ * Immutably updates a post or reply by ID anywhere in the tree.
+ */
+export function updatePostInTree(
+  posts: readonly SocialPost[],
+  targetId: string,
+  updatedFields: Partial<SocialPost>
+): readonly SocialPost[] {
+  return posts.map((post) => {
+    if (post.id === targetId) {
+      return { ...post, ...updatedFields };
+    }
+    if (post.replies && post.replies.length > 0) {
+      return {
+        ...post,
+        replies: updatePostInTree(post.replies, targetId, updatedFields),
+      };
+    }
+    return post;
+  });
+}

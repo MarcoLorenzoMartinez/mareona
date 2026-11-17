@@ -5,6 +5,7 @@ import {
   findParentInTree,
   addReplyToTree,
   removePostFromTree,
+  updatePostInTree,
 } from "../../src/lib/social/post-tree.ts";
 import type { SocialPost } from "../../src/lib/social/types.ts";
 
@@ -110,5 +111,20 @@ describe("Social Post Tree Helper Functions", () => {
   it("removes top-level post completely", () => {
     const updated = removePostFromTree(MOCK_TREE, "p1");
     assert.equal(updated.length, 0);
+  });
+
+  it("updates post body and isEdited immutably", () => {
+    const updated = updatePostInTree(MOCK_TREE, "p1-r1-sub1", {
+      body: "Texto editado",
+      isEdited: true,
+    });
+    const target = findPostInTree(updated, "p1-r1-sub1");
+    assert.ok(target);
+    assert.equal(target.body, "Texto editado");
+    assert.equal(target.isEdited, true);
+    assert.equal(
+      findPostInTree(MOCK_TREE, "p1-r1-sub1")?.body,
+      "Respuesta nivel 2 (muñeca rusa)"
+    );
   });
 });

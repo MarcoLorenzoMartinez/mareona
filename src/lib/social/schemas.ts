@@ -36,6 +36,24 @@ export const deletePostSchema = z.object({
 
 export type DeletePostInput = z.infer<typeof deletePostSchema>;
 
+export const updatePostSchema = z.object({
+  postId: z.string().min(1, { message: "Identificador de publicación inválido" }),
+  body: z
+    .string()
+    .trim()
+    .min(1, { message: "El mensaje no puede estar vacío" })
+    .max(2000, { message: "El mensaje no puede superar los 2000 caracteres" })
+    .refine(
+      (val) => {
+        const { cleanBody, lineup } = parsePostLineup(val);
+        return (lineup ? cleanBody.length : val.length) <= 500;
+      },
+      { message: "El mensaje no puede superar los 500 caracteres" }
+    ),
+});
+
+export type UpdatePostInput = z.infer<typeof updatePostSchema>;
+
 export const votePollSchema = z.object({
   pollId: z.string().min(1, { message: "Identificador de encuesta inválido" }),
   optionId: z.string().min(1, { message: "Opción de encuesta inválida" }),

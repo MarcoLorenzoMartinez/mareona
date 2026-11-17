@@ -32,7 +32,7 @@ export async function getUserSocialProfile(
       getFriendshipStatusWith(userId),
       supabase
         .from("posts")
-        .select("id, body, created_at, parent_id, user_id")
+        .select("id, body, created_at, updated_at, parent_id, user_id")
         .eq("user_id", userId)
         .is("deleted_at", null)
         .order("created_at", { ascending: false })
@@ -70,6 +70,11 @@ export async function getUserSocialProfile(
       authorAvatar: profile.avatarUrl,
       body: p.body,
       createdAt: p.created_at,
+      updatedAt: p.updated_at ?? null,
+      isEdited: Boolean(
+        p.updated_at &&
+          new Date(p.updated_at).getTime() - new Date(p.created_at).getTime() > 1000
+      ),
       parentId: p.parent_id,
       likesCount: 0,
       repliesCount: 0,
