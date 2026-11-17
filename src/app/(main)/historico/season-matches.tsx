@@ -54,43 +54,57 @@ export function HistoricalSeasonMatches({ matches, seasonLabel }: SeasonMatchesP
       {/* Controls Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
         {/* Competitions */}
-        <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Filtrar por competición">
-          {competitions.map((comp) => (
-            <button
-              key={comp}
-              type="button"
-              role="tab"
-              aria-selected={compFilter === comp}
-              onClick={() => setCompFilter(comp)}
-              className={`rounded-full px-3 py-1 text-xs cursor-pointer transition-colors ${
-                compFilter === comp
-                  ? "bg-[var(--primary)] text-white font-bold"
-                  : "bg-[var(--surface)] text-[var(--foreground-muted)] border border-[var(--border)]"
-              }`}
-            >
-              {comp === "all" ? "Todas" : comp}
-            </button>
-          ))}
+        <div
+          role="tablist"
+          aria-label="Filtrar por competición"
+          className="inline-flex flex-wrap items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 self-start sm:self-auto"
+        >
+          {competitions.map((comp) => {
+            const isSelected = compFilter === comp;
+            return (
+              <button
+                key={comp}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => setCompFilter(comp)}
+                className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
+                  isSelected
+                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+                }`}
+              >
+                {comp === "all" ? "Todas" : comp}
+              </button>
+            );
+          })}
         </div>
 
         {/* Venue (Casa / Fuera) */}
-        <div className="flex items-center gap-1.5" role="tablist" aria-label="Filtrar por sede">
-          {VENUE_OPTIONS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              role="tab"
-              aria-selected={venueFilter === item.id}
-              onClick={() => setVenueFilter(item.id)}
-              className={`rounded-full px-3 py-1 text-xs cursor-pointer transition-colors ${
-                venueFilter === item.id
-                  ? "bg-[var(--primary)] text-white font-bold"
-                  : "bg-[var(--surface)] text-[var(--foreground-muted)] border border-[var(--border)]"
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
+        <div
+          role="tablist"
+          aria-label="Filtrar por sede"
+          className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 self-start sm:self-auto"
+        >
+          {VENUE_OPTIONS.map((item) => {
+            const isSelected = venueFilter === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => setVenueFilter(item.id)}
+                className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
+                  isSelected
+                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 

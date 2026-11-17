@@ -18,25 +18,34 @@ export function FriendsModalHeader({
 }: FriendsModalHeaderProps) {
   return (
     <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
-      <div className="flex items-center gap-2">
+      <div
+        role="tablist"
+        aria-label="Secciones de amigos"
+        className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
+      >
         <button
           type="button"
+          role="tab"
+          aria-selected={tab === "friends"}
           onClick={() => onTabChange("friends")}
-          className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
+          className={`inline-flex min-h-[34px] items-center justify-center gap-1 rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
             tab === "friends"
-              ? "bg-[var(--primary)] text-white font-bold"
-              : "text-neutral-600 hover:text-neutral-900"
+              ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+              : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
           }`}
         >
-          Mis Amigos ({friendsCount})
+          <span>Mis Amigos</span>
+          <span className="tabular-nums opacity-90">({friendsCount})</span>
         </button>
         <button
           type="button"
+          role="tab"
+          aria-selected={tab === "search"}
           onClick={() => onTabChange("search")}
-          className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
+          className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
             tab === "search"
-              ? "bg-[var(--primary)] text-white font-bold"
-              : "text-neutral-600 hover:text-neutral-900"
+              ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+              : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
           }`}
         >
           Buscar Aficionados

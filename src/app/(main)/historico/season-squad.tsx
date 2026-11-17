@@ -75,21 +75,30 @@ export function HistoricalSeasonSquadTable({ players, seasonLabel }: SeasonSquad
     <section aria-label={`Plantilla oficial del Real Sporting ${seasonLabel}`} className="w-full rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
         <h3 className="text-base font-bold text-[var(--foreground)]">Plantilla Oficial</h3>
-        <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Filtrar por posición">
-          {FILTERS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              role="tab"
-              aria-selected={filter === item.id}
-              onClick={() => setFilter(item.id)}
-              className={`rounded-full px-3 py-1 text-xs cursor-pointer transition-colors ${
-                filter === item.id ? "bg-[var(--primary)] text-white font-bold" : "bg-[var(--surface)] text-[var(--foreground-muted)] border border-[var(--border)]"
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
+        <div
+          role="tablist"
+          aria-label="Filtrar por posición"
+          className="inline-flex flex-wrap items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 self-start sm:self-auto"
+        >
+          {FILTERS.map((item) => {
+            const isSelected = filter === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => setFilter(item.id)}
+                className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
+                  isSelected
+                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 

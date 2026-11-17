@@ -42,25 +42,33 @@ export function LegacyRankingsView({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Subcategory Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-        {CATEGORIES.map((cat) => {
-          const isSelected = activeCategory === cat.id;
-          return (
-            <button
-              key={cat.id}
-              type="button"
-              onClick={() => setActiveCategory(cat.id)}
-              className={`shrink-0 rounded-full px-3.5 py-1 text-xs font-sans transition-all active:scale-95 ${
-                isSelected
-                  ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
-                  : "border border-[var(--border)] bg-white text-[var(--muted-foreground)] font-semibold hover:border-neutral-300 hover:text-[var(--foreground)]"
-              }`}
-            >
-              {cat.label}
-            </button>
-          );
-        })}
+      {/* Subcategory Segmented Control */}
+      <div className="flex items-center overflow-x-auto pb-1 scrollbar-none">
+        <div
+          role="tablist"
+          aria-label="Categorías de récords históricos"
+          className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
+        >
+          {CATEGORIES.map((cat) => {
+            const isSelected = activeCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`inline-flex min-h-[36px] shrink-0 items-center justify-center rounded-full px-3.5 py-1 text-xs font-sans transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] cursor-pointer ${
+                  isSelected
+                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Mode A: Coaches Ranking */}

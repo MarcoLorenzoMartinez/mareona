@@ -38,7 +38,6 @@ export function AuthCredentialsForm({
     setIsSubmitting(true);
     setErrorMessage(null);
 
-    // Development demo bypass
     const demo = evaluateDemoAuth(email, password, tab);
     if (demo.isDemo) {
       setIsSubmitting(false);
@@ -54,10 +53,7 @@ export function AuthCredentialsForm({
       const res = await signInWithPassword({ email, password });
       if (!res.success) {
         setIsSubmitting(false);
-        if (res.data?.requiresEmailConfirmation) {
-          setPendingConfirmationEmail(email);
-          return;
-        }
+        if (res.data?.requiresEmailConfirmation) return setPendingConfirmationEmail(email);
         return setErrorMessage(res.error ?? "No se pudo iniciar sesión");
       }
       await refreshProfile();
@@ -82,40 +78,35 @@ export function AuthCredentialsForm({
   };
 
   if (pendingConfirmationEmail) {
-    return (
-      <AuthConfirmationNotice
-        email={pendingConfirmationEmail}
-        onBack={() => setPendingConfirmationEmail(null)}
-      />
-    );
+    return <AuthConfirmationNotice email={pendingConfirmationEmail} onBack={() => setPendingConfirmationEmail(null)} />;
   }
 
   return (
     <div className="space-y-4">
       {isEmailJustConfirmed && tab === "signin" && (
-        <div
-          role="status"
-          className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-xs font-medium text-neutral-800"
-        >
+        <div role="status" className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-xs font-medium text-neutral-800">
           Correo confirmado. Inicia sesión con tu contraseña para continuar.
         </div>
       )}
 
-      <div className="grid grid-cols-2 rounded-xl bg-neutral-100 p-1 text-xs font-semibold">
-        <button
-          type="button"
-          onClick={() => { setTab("signin"); setErrorMessage(null); }}
-          className={`min-h-[40px] rounded-lg py-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${tab === "signin" ? "bg-white text-neutral-900 shadow-2xs font-bold" : "text-neutral-600 hover:text-neutral-900"}`}
-        >
-          Iniciar sesión
-        </button>
-        <button
-          type="button"
-          onClick={() => { setTab("signup"); setErrorMessage(null); }}
-          className={`min-h-[40px] rounded-lg py-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${tab === "signup" ? "bg-white text-neutral-900 shadow-2xs font-bold" : "text-neutral-600 hover:text-neutral-900"}`}
-        >
-          Crear cuenta
-        </button>
+      <div role="tablist" aria-label="Modo de acceso" className="grid grid-cols-2 rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 text-xs font-semibold">
+        {(["signin", "signup"] as const).map((mode) => {
+          const isSelected = tab === mode;
+          return (
+            <button
+              key={mode}
+              type="button"
+              role="tab"
+              aria-selected={isSelected}
+              onClick={() => { setTab(mode); setErrorMessage(null); }}
+              className={`min-h-[38px] rounded-full py-1.5 transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
+                isSelected ? "bg-[var(--primary)] text-white shadow-2xs font-bold" : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              {mode === "signin" ? "Iniciar sesión" : "Crear cuenta"}
+            </button>
+          );
+        })}
       </div>
 
       <GoogleSignInButton onSuccess={onSuccess} onError={setErrorMessage} />

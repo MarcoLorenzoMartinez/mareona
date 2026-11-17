@@ -86,23 +86,32 @@ export function HistoricalTrayectoriaHub({
       />
 
       {/* 3. Segmented Control Tabs (Clasificación / Partidos / Plantilla) */}
-      <div className="flex items-center justify-center gap-2" role="tablist" aria-label="Secciones de la temporada">
-        {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`rounded-full px-5 py-2 text-sm cursor-pointer transition-colors ${
-              activeTab === tab.id
-                ? "bg-[var(--primary)] text-white font-bold shadow-xs"
-                : "bg-[var(--surface)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border)] font-medium"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+      <div className="flex items-center justify-center">
+        <div
+          role="tablist"
+          aria-label="Secciones de la temporada"
+          className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 shadow-2xs"
+        >
+          {TABS.map((tab) => {
+            const isSelected = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => setActiveTab(tab.id)}
+                className={`inline-flex min-h-[38px] items-center justify-center rounded-full px-5 py-1.5 text-xs sm:text-sm transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] cursor-pointer ${
+                  isSelected
+                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* 4. Active Tab Content */}

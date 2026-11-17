@@ -39,17 +39,17 @@ export function RivalsFilterBar({
         <div
           role="tablist"
           aria-label="Modo de exploración de rivales"
-          className="inline-flex rounded-full border border-[var(--border)] bg-neutral-100 p-1"
+          className="inline-flex rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
         >
           <button
             type="button"
             role="tab"
             aria-selected={activeTab === "list"}
             onClick={() => onTabChange("list")}
-            className={`min-h-[36px] rounded-full px-3.5 text-xs font-bold transition-all active:scale-95 cursor-pointer ${
+            className={`min-h-[36px] rounded-full px-3.5 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
               activeTab === "list"
-                ? "bg-[var(--primary)] text-white shadow-xs"
-                : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
             }`}
           >
             Lista de Rivales
@@ -60,10 +60,10 @@ export function RivalsFilterBar({
             role="tab"
             aria-selected={activeTab === "spain-map"}
             onClick={() => onTabChange("spain-map")}
-            className={`min-h-[36px] rounded-full px-3.5 text-xs font-bold transition-all active:scale-95 cursor-pointer ${
+            className={`min-h-[36px] rounded-full px-3.5 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
               activeTab === "spain-map"
-                ? "bg-[var(--primary)] text-white shadow-xs"
-                : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
             }`}
           >
             Mapa de España
@@ -74,10 +74,10 @@ export function RivalsFilterBar({
             role="tab"
             aria-selected={activeTab === "world-map"}
             onClick={() => onTabChange("world-map")}
-            className={`min-h-[36px] rounded-full px-3.5 text-xs font-bold transition-all active:scale-95 cursor-pointer ${
+            className={`min-h-[36px] rounded-full px-3.5 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
               activeTab === "world-map"
-                ? "bg-[var(--primary)] text-white shadow-xs"
-                : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
             }`}
           >
             Mapa del Mundo

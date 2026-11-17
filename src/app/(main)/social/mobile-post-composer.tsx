@@ -18,7 +18,7 @@ import {
 import { createSocialPost } from "@/lib/social/actions";
 import type { SocialPost } from "@/lib/social/types";
 
-const MAX_TOTAL_LENGTH = 500;
+const MAX_USER_BODY_LENGTH = 500;
 const COUNTER_THRESHOLD = 380;
 
 interface MobilePostComposerModalProps {
@@ -34,27 +34,24 @@ export function MobilePostComposerModal({
 }: MobilePostComposerModalProps) {
   const { profile } = useAuth();
   const [body, setBody] = useState("");
-  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => {
-    if (typeof window === "undefined") return null;
-    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1" ? loadLocalSharedLineup() : null;
-  });
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(loadLocalSharedLineup);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const poll = usePollDraft();
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
-  const lineupTagLen = attachedLineup ? encodeSharedLineup(attachedLineup).length + 2 : 0;
-  const maxBodyLength = Math.max(50, MAX_TOTAL_LENGTH - lineupTagLen);
-  const remaining = maxBodyLength - body.length;
+  const remaining = MAX_USER_BODY_LENGTH - body.length;
   const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
   useEffect(() => {
     if (!isOpen) return;
+    const timer = setTimeout(() => textareaRef.current?.focus(), 80);
     const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
     return () => {
+      clearTimeout(timer);
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
@@ -140,7 +137,7 @@ export function MobilePostComposerModal({
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="¿Qué opinas hoy sobre el Sporting?"
-            maxLength={maxBodyLength}
+            maxLength={MAX_USER_BODY_LENGTH}
             className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />
 

@@ -50,10 +50,10 @@ export function StandingsViewControls({
               role="radio"
               aria-checked={isSelected}
               onClick={() => onSelectMode(opt.id)}
-              className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+              className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] cursor-pointer ${
                 isSelected
-                  ? "bg-white text-[var(--foreground)] shadow-xs font-bold"
-                  : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                  ? "bg-[var(--primary)] text-white shadow-2xs font-bold"
+                  : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
               }`}
             >
               {opt.label}
@@ -67,7 +67,7 @@ export function StandingsViewControls({
         <div
           role="radiogroup"
           aria-label="Series de evolución"
-          className="inline-flex self-start rounded-full border border-red-200 bg-red-50/50 p-1 sm:self-auto"
+          className="inline-flex self-start rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto"
         >
           {evolutionModeOptions.map((opt) => {
             const isSelected = evolutionMode === opt.id;
@@ -78,10 +78,10 @@ export function StandingsViewControls({
                 role="radio"
                 aria-checked={isSelected}
                 onClick={() => onSelectEvolutionMode(opt.id)}
-                className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+                className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] cursor-pointer ${
                   isSelected
-                    ? "bg-[var(--primary)] text-white shadow-xs font-bold"
-                    : "text-neutral-700 hover:text-[var(--primary)] hover:bg-red-100/50"
+                    ? "bg-[var(--primary)] text-white shadow-2xs font-bold"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
                 }`}
               >
                 {opt.label}
@@ -93,7 +93,7 @@ export function StandingsViewControls({
         <div
           role="radiogroup"
           aria-label="Filtro de ámbito"
-          className="inline-flex self-start rounded-full border border-red-200 bg-red-50/50 p-1 sm:self-auto"
+          className="inline-flex self-start rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 sm:self-auto"
         >
           {scopeOptions.map((opt) => {
             const isSelected = scope === opt.id;
@@ -104,10 +104,10 @@ export function StandingsViewControls({
                 role="radio"
                 aria-checked={isSelected}
                 onClick={() => onSelectScope(opt.id)}
-                className={`inline-flex min-h-[34px] items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
+                className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] cursor-pointer ${
                   isSelected
-                    ? "bg-[var(--primary)] text-white shadow-xs font-bold"
-                    : "text-neutral-700 hover:text-[var(--primary)] hover:bg-red-100/50"
+                    ? "bg-[var(--primary)] text-white shadow-2xs font-bold"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
                 }`}
               >
                 {opt.label}

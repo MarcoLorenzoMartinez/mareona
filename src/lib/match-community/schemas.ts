@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { parsePostLineup } from "../lineup-builder/shared-lineup-codec.ts";
 
 export const createMatchCommentSchema = z.object({
   matchId: z.string().min(1, "El identificador del partido es obligatorio"),
@@ -6,7 +7,14 @@ export const createMatchCommentSchema = z.object({
     .string()
     .trim()
     .min(1, "El comentario no puede estar vacío")
-    .max(500, "El comentario no puede superar los 500 caracteres"),
+    .max(2000, "El comentario no puede superar los 2000 caracteres")
+    .refine(
+      (val) => {
+        const { cleanBody, lineup } = parsePostLineup(val);
+        return (lineup ? cleanBody.length : val.length) <= 500;
+      },
+      { message: "El comentario no puede superar los 500 caracteres" }
+    ),
   parentId: z.string().optional().nullable(),
 });
 

@@ -48,8 +48,7 @@ export function PorraLeaderboard({
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
     e.preventDefault();
     const idx = FILTER_TABS.findIndex((t) => t.id === activeFilter);
-    const nextIdx = (idx + 1) % 2;
-    handleTabChange(FILTER_TABS[nextIdx]!.id);
+    handleTabChange(FILTER_TABS[(idx + 1) % 2]!.id);
   };
 
   const visibleEntries = filterAndRankLeaderboard(entries, activeFilter);
@@ -101,7 +100,7 @@ export function PorraLeaderboard({
             role="tablist"
             aria-label="Filtro de clasificación"
             onKeyDown={handleKeyDown}
-            className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-white p-1"
+            className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
           >
             {FILTER_TABS.map((tab) => {
               const isActive = activeFilter === tab.id;
@@ -113,10 +112,10 @@ export function PorraLeaderboard({
                   aria-selected={isActive}
                   tabIndex={isActive ? 0 : -1}
                   onClick={() => handleTabChange(tab.id)}
-                  className={`min-h-8 rounded-full px-3.5 sm:px-4 text-xs sm:text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
+                  className={`min-h-[34px] rounded-full px-3.5 sm:px-4 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
                     isActive
                       ? 'bg-[var(--primary)] font-bold text-white shadow-2xs'
-                      : 'font-semibold text-neutral-700 hover:bg-[var(--surface)]'
+                      : 'font-semibold text-[var(--foreground-muted)] hover:text-[var(--foreground)]'
                   }`}
                 >
                   {tab.label}

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { parsePostLineup } from "../lineup-builder/shared-lineup-codec.ts";
 
 export const pollOptionSchema = z
   .string()
@@ -11,7 +12,14 @@ export const createPostSchema = z.object({
     .string()
     .trim()
     .min(1, { message: "El mensaje no puede estar vacío" })
-    .max(500, { message: "El mensaje no puede superar los 500 caracteres" }),
+    .max(2000, { message: "El mensaje no puede superar los 2000 caracteres" })
+    .refine(
+      (val) => {
+        const { cleanBody, lineup } = parsePostLineup(val);
+        return (lineup ? cleanBody.length : val.length) <= 500;
+      },
+      { message: "El mensaje no puede superar los 500 caracteres" }
+    ),
   parentId: z.string().uuid().optional().nullable(),
   pollOptions: z
     .array(pollOptionSchema)

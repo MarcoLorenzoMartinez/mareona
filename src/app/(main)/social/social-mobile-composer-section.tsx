@@ -1,7 +1,8 @@
 // Client: Botón flotante y modal de compositor para móvil en la tertulia
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { MobilePostComposerFab } from "./mobile-post-composer-fab";
 import { MobilePostComposerModal } from "./mobile-post-composer";
 import type { SocialPost } from "@/lib/social/types";
@@ -17,10 +18,19 @@ export function SocialMobileComposerSection({
   onOpenAuth,
   isAuthenticated,
 }: SocialMobileComposerSectionProps) {
-  const [isOpen, setIsOpen] = useState(() => {
-    if (typeof window === "undefined" || !isAuthenticated) return false;
-    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1";
-  });
+  const searchParams = useSearchParams();
+  const isLineupParam = searchParams?.get("adjuntarOnce") === "1";
+  const [isOpen, setIsOpen] = useState(() => Boolean(isAuthenticated && isLineupParam));
+
+  useEffect(() => {
+    if (isLineupParam) {
+      if (!isAuthenticated) {
+        onOpenAuth();
+      } else if (typeof window !== "undefined") {
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+    }
+  }, [isLineupParam, isAuthenticated, onOpenAuth]);
 
   return (
     <>

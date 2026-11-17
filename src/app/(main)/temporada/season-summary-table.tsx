@@ -33,14 +33,9 @@ export function SeasonSummaryTable({ standings, seasonLabel }: SeasonSummaryTabl
     <section aria-label="Clasificación" className="h-full w-full">
       <div className="h-full rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs">
         <div className="mb-3 flex items-center justify-between border-b border-[var(--border)] pb-3">
-          <div>
-            <h2 className="text-base font-bold text-[var(--foreground)]">
-              {dict.season.standings.title}
-            </h2>
-            <span className="text-xs text-[var(--foreground-muted)]">
-              {dict.season.competitionName} {seasonLabel}
-            </span>
-          </div>
+          <h2 className="text-base font-bold text-[var(--foreground)]">
+            {dict.season.standings.title}
+          </h2>
           <Link
             href="/temporada/clasificacion"
             className="rounded-xs text-xs font-semibold text-[var(--primary)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)]"

@@ -27,9 +27,9 @@ GUÍA DE REDACCIÓN:
 - Define el valor diferencial: arquitectura Server-First, datos deportivos reales sincronizados sin datos ficticios de relleno, estética corporativa sobria y diseño centrado en el usuario.
 -->
 
-[Redacta aquí la visión general, contexto y propuesta de valor de la plataforma...]
+Este proyecto ofrece a la afición del Real Sporting de Gijón una plataforma en la que encontrar datos actuales e históricos, socializar con otros aficionados y divertirse con juegos sobre la historia del club.
 
-
+El producto tiene como objetivo convertirse en un punto de encuentro digital para la comunidad sportinguista, ofreciendo una experiencia de usuario ágil, segura y centrada en el contenido relevante, manteniendo una buena identidad visual para facilitar la navegación y la comprensión de la información por parte de todos los usuarios. 
 ---
 
 ## 2. Módulos y Funcionalidades del Sistema
@@ -41,13 +41,15 @@ Puedes ilustrar cada pantalla con capturas reales cuando lo consideres oportuno:
 ![Vista de la pantalla](docs/assets/nombre-captura.png)
 -->
 
+
+
 ### 2.1. Inicio (`/`)
 <!--
 - Punto de entrada principal a la experiencia Mareona.
 - Hero card con el próximo partido o resultado en directo del Real Sporting.
 - Accesos rápidos a las áreas más activas (clasificación, porra de la jornada, debates destacados).
 -->
-[Describe aquí la pantalla de Inicio...]
+Punto de entrada principal a la aplicación, con un resumen de la actualidad del club y accesos rápidos a algunas de las secciones más relevantes en el día a día del usuario.
 
 ---
 
@@ -58,14 +60,18 @@ Puedes ilustrar cada pantalla con capturas reales cuando lo consideres oportuno:
 - Calendario completo de partidos oficiales de la temporada (LaLiga Hypermotion y Copa del Rey).
 - Ficha de detalle de partido: cronología, eventos en directo, alineaciones, estadísticas y cara a cara (H2H).
 -->
-[Describe aquí la sección de Partidos...]
+Lista de todos los partidos oficiales de la temporada, incluyendo resultados, fechas y horarios. Cada partido tiene su propia ficha de detalle con información completa sobre el encuentro, la cual cuenta con previa, alineaciones, eventos en directo, estadísticas y un apartado social para que los aficionados puedan hablar sobre el partido antes, durante y después del mismo.
 
 #### Clasificación (`/temporada/clasificacion`)
 <!--
 - Tabla de clasificación oficial y dinámica de LaLiga Hypermotion con puestos de ascenso directo, playoff y descenso.
 - Métricas: puntos, partidos jugados, diferencia de goles y racha de resultados.
 -->
-[Describe aquí la Clasificación...]
+Tabla de clasificación oficial de La Liga, que se actualiza automáticamente con los resultados de los partidos y permite a los usuarios ver la posición del Real Sporting y sus rivales en tiempo real. 
+Se incluyen diferentes formas de visualización de la clasificación:
+** Tabla: clasificación tradicional, mostrando todos los equipos ordenados por posición y facilitando los datos de la temporada de cada uno de ellos.
+** Distancia real: muestra a los equipos de forma escalonada, con un escalón para cantidad de puntos, pudiendo observar visualmente de forma rápida la distancia en cuanto a puntos entre todos los equipos de la liga.
+** Evolución: gráfico de evolución de la posición y puntos del Real Sporting a lo largo de la temporada. Muestra una línea roja que representa la posición del equipo en cada jornada, y una línea discontinua gris que enseña la cantidad de puntos que tenía el equipo en cada jornada.
 
 #### Estadísticas (`/temporada/estadisticas`)
 <!--

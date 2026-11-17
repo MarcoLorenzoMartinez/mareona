@@ -32,24 +32,35 @@ export function LineupBuilderToolbar({
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-[var(--border)] bg-white p-4 shadow-2xs">
       {/* Selector de esquema táctico tipo píldora */}
-      <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1">
+      <div className="flex items-center gap-2.5 overflow-x-auto scrollbar-none py-1">
         <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider shrink-0">
           Esquema:
         </span>
-        {FORMATIONS.map((key) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => onFormationChange(key)}
-            className={`rounded-full px-3 py-1 text-xs font-bold transition-all shrink-0 ${
-              formationKey === key
-                ? "bg-[#e2001a] text-white shadow-xs"
-                : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-            }`}
-          >
-            {key}
-          </button>
-        ))}
+        <div
+          role="radiogroup"
+          aria-label="Esquema táctico"
+          className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 shrink-0"
+        >
+          {FORMATIONS.map((key) => {
+            const isSelected = formationKey === key;
+            return (
+              <button
+                key={key}
+                type="button"
+                role="radio"
+                aria-checked={isSelected}
+                onClick={() => onFormationChange(key)}
+                className={`rounded-full px-3 py-1 text-xs tabular-nums transition-all duration-150 ease-out active:scale-[0.98] shrink-0 cursor-pointer ${
+                  isSelected
+                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+                }`}
+              >
+                {key}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Acciones principales: Reiniciar, Descargar y Compartir en Tertulia/Grada */}

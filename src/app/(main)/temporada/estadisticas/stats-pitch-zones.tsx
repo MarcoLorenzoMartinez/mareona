@@ -31,21 +31,21 @@ export function StatsPitchZones({ stats }: StatsPitchZonesProps) {
             Ocupación del Campo
           </h2>
 
-          {/* Selector estilo píldora idéntico al de RivalsFilterBar */}
+          {/* Selector estilo píldora unificado */}
           <div
             role="tablist"
             aria-label="Selector de visualización táctica"
-            className="inline-flex rounded-full border border-[var(--border)] bg-neutral-100 p-0.5"
+            className="inline-flex rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
           >
             <button
               type="button"
               role="tab"
               aria-selected={activeMode === "heatmap"}
               onClick={() => setActiveMode("heatmap")}
-              className={`rounded-full px-3 py-1 text-xs font-bold transition-all active:scale-95 cursor-pointer ${
+              className={`rounded-full px-3 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
                 activeMode === "heatmap"
-                  ? "bg-[var(--primary)] text-white shadow-xs"
-                  : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                  ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                  : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
               }`}
             >
               Mapa de Calor
@@ -56,10 +56,10 @@ export function StatsPitchZones({ stats }: StatsPitchZonesProps) {
               role="tab"
               aria-selected={activeMode === "passes"}
               onClick={() => setActiveMode("passes")}
-              className={`rounded-full px-3 py-1 text-xs font-bold transition-all active:scale-95 cursor-pointer ${
+              className={`rounded-full px-3 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
                 activeMode === "passes"
-                  ? "bg-[var(--primary)] text-white shadow-xs"
-                  : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                  ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                  : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
               }`}
             >
               Territorio del Pase
@@ -70,10 +70,10 @@ export function StatsPitchZones({ stats }: StatsPitchZonesProps) {
               role="tab"
               aria-selected={activeMode === "attack"}
               onClick={() => setActiveMode("attack")}
-              className={`rounded-full px-3 py-1 text-xs font-bold transition-all active:scale-95 cursor-pointer ${
+              className={`rounded-full px-3 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
                 activeMode === "attack"
-                  ? "bg-[var(--primary)] text-white shadow-xs"
-                  : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+                  ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                  : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
               }`}
             >
               Carriles de Ataque

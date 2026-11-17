@@ -38,67 +38,83 @@ export function RivalsSortControls({
 }: RivalsSortControlsProps) {
   return (
     <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 pt-1 border-t border-[var(--border)]/60">
-      {/* Competition Scope Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-        {SCOPE_ITEMS.map((item) => {
-          const isSelected = activeScope === item.id;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onScopeChange(item.id)}
-              className={`shrink-0 rounded-full px-3 py-1 text-xs font-sans transition-all active:scale-95 cursor-pointer ${
-                isSelected
-                  ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
-                  : "border border-[var(--border)] bg-white text-[var(--muted-foreground)] font-semibold hover:border-neutral-300 hover:text-[var(--foreground)]"
-              }`}
-            >
-              {item.label}
-            </button>
-          );
-        })}
+      {/* Competition Scope Segmented Control */}
+      <div className="flex items-center overflow-x-auto pb-1 scrollbar-none">
+        <div
+          role="radiogroup"
+          aria-label="Filtrar rivales por competición"
+          className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
+        >
+          {SCOPE_ITEMS.map((item) => {
+            const isSelected = activeScope === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                role="radio"
+                aria-checked={isSelected}
+                onClick={() => onScopeChange(item.id)}
+                className={`shrink-0 rounded-full px-3 py-1 text-xs font-sans transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
+                  isSelected
+                    ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                    : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Sort Selector & Layout Switcher */}
       <div className="flex items-center justify-between lg:justify-end gap-2.5 shrink-0">
-        <div className="flex items-center gap-1 overflow-x-auto scrollbar-none">
-          <span className="text-[11px] font-medium text-[var(--muted-foreground)] mr-1 hidden sm:inline">
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+          <span className="text-[11px] font-medium text-[var(--muted-foreground)] hidden sm:inline">
             Orden:
           </span>
-          {SORT_ITEMS.map((s) => {
-            const isSelected = activeSort === s.id;
-            return (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => onSortChange(s.id)}
-                className={`rounded-full px-2.5 py-0.5 text-[11px] font-sans transition-all cursor-pointer ${
-                  isSelected
-                    ? "bg-neutral-900 text-white font-bold"
-                    : "bg-[var(--surface)] border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-                }`}
-              >
-                {s.label}
-              </button>
-            );
-          })}
+          <div
+            role="radiogroup"
+            aria-label="Criterio de ordenación"
+            className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-0.5"
+          >
+            {SORT_ITEMS.map((s) => {
+              const isSelected = activeSort === s.id;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  onClick={() => onSortChange(s.id)}
+                  className={`rounded-full px-2.5 py-1 text-[11px] font-sans transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
+                    isSelected
+                      ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                      : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Layout Toggle: Grid vs Table */}
         <div
           role="group"
           aria-label="Selector de formato de visualización"
-          className="inline-flex rounded-lg border border-[var(--border)] bg-neutral-100 p-0.5"
+          className="inline-flex rounded-full border border-[var(--border)] bg-[var(--surface)] p-0.5"
         >
           <button
             type="button"
             aria-label="Ver como cuadrícula de tarjetas"
             aria-pressed={layoutMode === "grid"}
             onClick={() => onLayoutModeChange("grid")}
-            className={`p-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
+            className={`p-1.5 rounded-full text-xs font-bold transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
               layoutMode === "grid"
-                ? "bg-white text-[var(--primary)] shadow-2xs"
-                : "text-neutral-500 hover:text-neutral-800"
+                ? "bg-[var(--primary)] text-white shadow-2xs"
+                : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
             }`}
             title="Vista cuadrícula"
           >
@@ -111,10 +127,10 @@ export function RivalsSortControls({
             aria-label="Ver como tabla compacta"
             aria-pressed={layoutMode === "table"}
             onClick={() => onLayoutModeChange("table")}
-            className={`p-1.5 rounded-md text-xs font-bold transition-all cursor-pointer ${
+            className={`p-1.5 rounded-full text-xs font-bold transition-all duration-150 ease-out active:scale-[0.98] cursor-pointer ${
               layoutMode === "table"
-                ? "bg-white text-[var(--primary)] shadow-2xs"
-                : "text-neutral-500 hover:text-neutral-800"
+                ? "bg-[var(--primary)] text-white shadow-2xs"
+                : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
             }`}
             title="Vista tabla compacta"
           >

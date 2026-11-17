@@ -15,6 +15,7 @@ import { getMadridMonthDay, pickFeaturedEphemeris } from "@/lib/historical/featu
 import { NextFixtureHero } from "./temporada/next-fixture-hero";
 import { SeasonSummaryTable } from "./temporada/season-summary-table";
 import { DailyActionsCard } from "./_home/daily-actions-card";
+import { DailyGlanceStrip } from "./_home/daily-glance-strip";
 import { TodayInHistoryCard } from "./_home/today-in-history-card";
 
 export const metadata: Metadata = {
@@ -67,19 +68,20 @@ export default async function HomePage() {
     <div className="flex flex-col gap-6">
       <NextFixtureHero match={match} />
 
-      {/* Mobile prioritizes daily actions, then standings; desktop splits 7/5 with right column flex-stacked */}
+      {/* Mobile-only compact glance strip: keeps games visible without pushing table down */}
+      <DailyGlanceStrip porra={porra} />
+
+      {/* Main layout: Table leads on mobile, 2 columns (7/5) on desktop */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
-        <div className="order-2 lg:order-1 lg:col-span-7">
+        <div className="lg:col-span-7">
           <SeasonSummaryTable standings={standings} seasonLabel={seasonLabel} />
         </div>
-        <div className="contents lg:flex lg:flex-col lg:gap-5 lg:order-2 lg:col-span-5">
-          <div className="order-1 lg:order-none">
+        <div className="flex flex-col gap-5 lg:col-span-5">
+          <div className="hidden lg:block">
             <DailyActionsCard porra={porra} />
           </div>
           {featured && (
-            <div className="order-3 lg:order-none">
-              <TodayInHistoryCard featured={featured} />
-            </div>
+            <TodayInHistoryCard featured={featured} />
           )}
         </div>
       </div>

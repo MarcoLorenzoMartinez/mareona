@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
@@ -15,7 +16,7 @@ import {
 import { createMatchComment } from "@/lib/match-community/actions";
 import type { MatchComment } from "@/lib/match-community/types";
 
-const MAX_TOTAL_LENGTH = 500;
+const MAX_USER_BODY_LENGTH = 500;
 const COUNTER_THRESHOLD = 380;
 
 interface MatchCommentComposerProps {
@@ -36,33 +37,30 @@ export function MatchCommentComposer({
   className = "",
 }: MatchCommentComposerProps) {
   const { user, profile, openAuthModal } = useAuth();
+  const searchParams = useSearchParams();
+  const isLineupParam = !parentId && searchParams?.get("adjuntarOnce") === "1";
+
   const [body, setBody] = useState("");
   const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => {
-    if (typeof window === "undefined" || parentId) return null;
-    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1" ? loadLocalSharedLineup() : null;
+    return isLineupParam ? loadLocalSharedLineup() : null;
   });
-  const [isExpanded, setIsExpanded] = useState(() => {
-    if (Boolean(parentId)) return true;
-    return typeof window !== "undefined" && new URLSearchParams(window.location.search).get("adjuntarOnce") === "1";
-  });
+  const [isExpanded, setIsExpanded] = useState(() => Boolean(parentId) || isLineupParam);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
-  const lineupTagLen = attachedLineup ? encodeSharedLineup(attachedLineup).length + 2 : 0;
-  const maxBodyLength = Math.max(50, MAX_TOTAL_LENGTH - lineupTagLen);
-  const remaining = maxBodyLength - body.length;
+  const remaining = MAX_USER_BODY_LENGTH - body.length;
   const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
   useEffect(() => {
-    if (attachedLineup && typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("adjuntarOnce") === "1") {
-        textareaRef.current?.focus();
+    if (isLineupParam) {
+      if (typeof window !== "undefined") {
+        window.history.replaceState({}, "", window.location.pathname);
       }
+      setTimeout(() => textareaRef.current?.focus(), 50);
     }
-  }, [attachedLineup]);
+  }, [isLineupParam]);
 
   const autoGrow = (el: HTMLTextAreaElement) => {
     el.style.height = "auto";
@@ -129,7 +127,6 @@ export function MatchCommentComposer({
       className={`flex gap-3 border-b border-[var(--border)] px-4 py-3 transition-colors duration-150 ${className}`}
     >
       <AuthAvatar src={profile?.avatar_url} alt={displayName} size="md" className="shrink-0" />
-
       <div className="min-w-0 flex-1">
         <label htmlFor={`match-composer-${parentId ?? "root"}`} className="sr-only">
           {placeholder}
@@ -145,7 +142,7 @@ export function MatchCommentComposer({
             autoGrow(e.target);
           }}
           placeholder={placeholder}
-          maxLength={maxBodyLength}
+          maxLength={MAX_USER_BODY_LENGTH}
           className="block w-full resize-none bg-transparent py-1.5 text-[15px] sm:text-base leading-snug text-neutral-900 placeholder:text-neutral-400 focus:outline-none transition-all"
         />
 
@@ -153,7 +150,11 @@ export function MatchCommentComposer({
           <LineupAttachmentChip lineup={attachedLineup} onRemove={() => setAttachedLineup(null)} />
         )}
 
-        {error && <p role="alert" className="mt-1 text-xs font-semibold text-[var(--primary)]">{error}</p>}
+        {error && (
+          <p role="alert" className="mt-1 text-xs font-semibold text-[var(--primary)]">
+            {error}
+          </p>
+        )}
 
         {isExpanded && (
           <MatchComposerControls

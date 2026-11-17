@@ -40,50 +40,55 @@ export function MatchesList({ matches: initialMatches }: MatchesListProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Filtros de partidos */}
-      <div
-        role="tablist"
-        aria-label={t.title}
-        className="flex items-center gap-2 border-b border-[var(--border)] pb-3"
-      >
-        <button
-          type="button"
-          role="tab"
-          aria-selected={filter === "all"}
-          onClick={() => setFilter("all")}
-          className={`inline-flex min-h-[44px] items-center rounded-md px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-            filter === "all"
-              ? "bg-[var(--primary)] text-white"
-              : "bg-neutral-100 text-[var(--foreground-muted)] hover:bg-neutral-200 hover:text-[var(--foreground)]"
-          }`}
+      <div className="flex items-center">
+        <div
+          role="tablist"
+          aria-label={t.title}
+          className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
         >
-          {t.filters.all} ({matches.length})
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={filter === "finished"}
-          onClick={() => setFilter("finished")}
-          className={`inline-flex min-h-[44px] items-center rounded-md px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-            filter === "finished"
-              ? "bg-[var(--primary)] text-white"
-              : "bg-neutral-100 text-[var(--foreground-muted)] hover:bg-neutral-200 hover:text-[var(--foreground)]"
-          }`}
-        >
-          {t.filters.played} ({finishedCount})
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={filter === "upcoming"}
-          onClick={() => setFilter("upcoming")}
-          className={`inline-flex min-h-[44px] items-center rounded-md px-3.5 py-2 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] ${
-            filter === "upcoming"
-              ? "bg-[var(--primary)] text-white"
-              : "bg-neutral-100 text-[var(--foreground-muted)] hover:bg-neutral-200 hover:text-[var(--foreground)]"
-          }`}
-        >
-          {t.filters.upcoming} ({upcomingCount})
-        </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={filter === "all"}
+            onClick={() => setFilter("all")}
+            className={`inline-flex min-h-[36px] items-center justify-center gap-1 rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] cursor-pointer ${
+              filter === "all"
+                ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+            }`}
+          >
+            <span>{t.filters.all}</span>
+            <span className="tabular-nums opacity-90">({matches.length})</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={filter === "finished"}
+            onClick={() => setFilter("finished")}
+            className={`inline-flex min-h-[36px] items-center justify-center gap-1 rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] cursor-pointer ${
+              filter === "finished"
+                ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+            }`}
+          >
+            <span>{t.filters.played}</span>
+            <span className="tabular-nums opacity-90">({finishedCount})</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={filter === "upcoming"}
+            onClick={() => setFilter("upcoming")}
+            className={`inline-flex min-h-[36px] items-center justify-center gap-1 rounded-full px-3.5 py-1 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] cursor-pointer ${
+              filter === "upcoming"
+                ? "bg-[var(--primary)] text-white font-bold shadow-2xs"
+                : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
+            }`}
+          >
+            <span>{t.filters.upcoming}</span>
+            <span className="tabular-nums opacity-90">({upcomingCount})</span>
+          </button>
+        </div>
       </div>
 
       {/* Listado de partidos */}

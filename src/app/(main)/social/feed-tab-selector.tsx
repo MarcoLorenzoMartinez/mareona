@@ -33,7 +33,7 @@ export function FeedTabSelector({
       role="tablist"
       aria-label="Filtro de publicaciones de la tertulia"
       onKeyDown={handleKeyDown}
-      className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-white p-1"
+      className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
     >
       {TABS.map((tab) => {
         const isActive = activeTab === tab.id;
@@ -46,10 +46,10 @@ export function FeedTabSelector({
             aria-selected={isActive}
             tabIndex={isActive ? 0 : -1}
             onClick={() => onTabChange(tab.id)}
-            className={`min-h-8 rounded-full px-3.5 sm:px-4 text-xs sm:text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
+            className={`min-h-[34px] rounded-full px-3.5 sm:px-4 text-xs transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer ${
               isActive
                 ? "bg-[var(--primary)] font-bold text-white shadow-2xs"
-                : "font-semibold text-neutral-700 hover:bg-[var(--surface)]"
+                : "font-semibold text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
             }`}
           >
             <span>{tab.label}</span>

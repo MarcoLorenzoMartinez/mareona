@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, Shield } from "lucide-react";
+import { X, Shield, Send } from "lucide-react";
 import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
@@ -15,44 +15,41 @@ import {
 import { createMatchComment } from "@/lib/match-community/actions";
 import type { MatchComment } from "@/lib/match-community/types";
 
-const MAX_TOTAL_LENGTH = 500;
+const MAX_USER_BODY_LENGTH = 500;
 const COUNTER_THRESHOLD = 380;
 
 interface MobileMatchCommentModalProps {
-  readonly matchId: string;
   readonly isOpen: boolean;
   readonly onClose: () => void;
+  readonly matchId: string;
   readonly onCommented: (comment: MatchComment) => void;
 }
 
 export function MobileMatchCommentModal({
-  matchId,
   isOpen,
   onClose,
+  matchId,
   onCommented,
 }: MobileMatchCommentModalProps) {
   const { profile } = useAuth();
   const [body, setBody] = useState("");
-  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(() => {
-    if (typeof window === "undefined") return null;
-    return new URLSearchParams(window.location.search).get("adjuntarOnce") === "1" ? loadLocalSharedLineup() : null;
-  });
+  const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(loadLocalSharedLineup);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const displayName = profile?.display_name || profile?.username || "Aficionado";
-  const lineupTagLen = attachedLineup ? encodeSharedLineup(attachedLineup).length + 2 : 0;
-  const maxBodyLength = Math.max(50, MAX_TOTAL_LENGTH - lineupTagLen);
-  const remaining = maxBodyLength - body.length;
+  const remaining = MAX_USER_BODY_LENGTH - body.length;
   const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
   useEffect(() => {
     if (!isOpen) return;
+    const timer = setTimeout(() => textareaRef.current?.focus(), 80);
     const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
     return () => {
+      clearTimeout(timer);
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
@@ -131,7 +128,7 @@ export function MobileMatchCommentModal({
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="¿Cómo ves el partido?"
-            maxLength={maxBodyLength}
+            maxLength={MAX_USER_BODY_LENGTH}
             className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />
 
@@ -162,9 +159,10 @@ export function MobileMatchCommentModal({
               <button
                 type="submit"
                 disabled={!canSubmit}
-                className="rounded-full bg-[var(--primary)] px-5 py-2 text-xs font-bold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-50"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[var(--primary)] px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-95 active:scale-95 disabled:opacity-40"
               >
-                {isSubmitting ? "Publicando…" : "Publicar"}
+                <Send className="h-4 w-4" aria-hidden="true" />
+                <span>{isSubmitting ? "Publicando…" : "Publicar"}</span>
               </button>
             </div>
           </div>
