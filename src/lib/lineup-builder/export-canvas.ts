@@ -2,7 +2,7 @@ import type { PitchAssignedPlayer, LineupPlayer } from "./types";
 import { getConcisePlayerName } from "./player-name-formatter";
 
 interface ExportLineupOptions {
-  readonly formationLabel: string;
+  readonly formationLabel?: string;
   readonly teamTitle?: string;
   readonly starters: readonly PitchAssignedPlayer[];
   readonly substitutes?: readonly LineupPlayer[];
@@ -55,8 +55,6 @@ function roundRect(
  */
 export async function exportLineupToBlob(options: ExportLineupOptions): Promise<Blob> {
   const {
-    formationLabel,
-    teamTitle = "Real Sporting",
     starters,
   } = options;
 
@@ -117,28 +115,7 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
   // Área propia (abajo)
   ctx.strokeRect(areaX, height - pad - areaH, areaW, areaH);
 
-  // 3. Etiqueta superior integrada (píldora translúcida sobria, sin bordes negros molestos)
-  const headerText = `${teamTitle.toUpperCase()} · ${formationLabel}`;
-  ctx.font = "bold 24px sans-serif";
-  const headW = ctx.measureText(headerText).width + 36;
-  const headX = 36;
-  const headY = 32;
-
-  ctx.save();
-  ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
-  roundRect(ctx, headX, headY, headW, 40, 20);
-  ctx.fill();
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
-  ctx.lineWidth = 1;
-  ctx.stroke();
-
-  ctx.fillStyle = "#ffffff";
-  ctx.textAlign = "left";
-  ctx.textBaseline = "middle";
-  ctx.fillText(headerText, headX + 18, headY + 20);
-  ctx.restore();
-
-  // 4. Dibujar jugadores titulares con fotos ampliadas y diseño minimalista
+  // 3. Dibujar jugadores titulares con fotos ampliadas y diseño minimalista
   for (const starter of starters) {
     const px = pad + (starter.coord.x / 100) * pW;
     const py = pad + (starter.coord.y / 100) * pH;
@@ -177,40 +154,74 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
       drawFallbackSilhouette(ctx, px, py, radius);
     }
 
-    // Etiqueta del nombre (conciso, solo apellido/nombre de juego, sin rol ni número)
+    // Etiqueta del nombre (estilo cápsula blanca con círculo rojo para el dorsal)
     const rawName = starter.player ? starter.player.displayName : "Vacante";
     const displayName = starter.player ? getConcisePlayerName(rawName) : "Vacante";
+    const shirtNum = starter.player?.shirtNumber;
+    const hasNum = shirtNum !== null && shirtNum !== undefined && shirtNum > 0;
 
-    ctx.font = "bold 26px sans-serif";
-    const nameWidth = ctx.measureText(displayName).width + 30;
-    const pillH = 40;
+    ctx.font = "bold 22px sans-serif";
+    const nameTextWidth = ctx.measureText(displayName).width;
+    const numText = hasNum ? String(shirtNum) : "";
+    const numCircleDiameter = 24;
+    const numGap = 8;
+    const leftPad = hasNum ? 6 : 14;
+    const rightPad = 14;
+    const totalPillWidth = (hasNum ? leftPad + numCircleDiameter + numGap : leftPad) + nameTextWidth + rightPad;
+    const pillH = 36;
+    const pillX = px - totalPillWidth / 2;
+    const pillY = py + radius + 10;
 
     ctx.save();
-    ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
+    ctx.shadowColor = "rgba(0, 0, 0, 0.22)";
     ctx.shadowBlur = 8;
-    ctx.shadowOffsetY = 3;
+    ctx.shadowOffsetY = 2;
 
-    ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
-    roundRect(ctx, px - nameWidth / 2, py + radius + 10, nameWidth, pillH, 17);
+    // Fondo blanco puro
+    ctx.fillStyle = "#ffffff";
+    roundRect(ctx, pillX, pillY, totalPillWidth, pillH, pillH / 2);
     ctx.fill();
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+
+    // Borde fino suave
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.12)";
     ctx.lineWidth = 1;
+    roundRect(ctx, pillX, pillY, totalPillWidth, pillH, pillH / 2);
     ctx.stroke();
     ctx.restore();
 
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
+    let textStartX = pillX + leftPad;
+    if (hasNum) {
+      const circleCenterX = pillX + leftPad + numCircleDiameter / 2;
+      const circleCenterY = pillY + pillH / 2;
+      ctx.save();
+      ctx.fillStyle = "#e2001a";
+      ctx.beginPath();
+      ctx.arc(circleCenterX, circleCenterY, numCircleDiameter / 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = shirtNum >= 10 ? "bold 13px sans-serif" : "bold 15px sans-serif";
+      ctx.fillText(numText, circleCenterX, circleCenterY);
+      ctx.restore();
+
+      textStartX += numCircleDiameter + numGap;
+    }
+
+    ctx.fillStyle = "#171717";
+    ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.font = "bold 24px sans-serif";
-    ctx.fillText(displayName, px, py + radius + 10 + pillH / 2);
+    ctx.font = "bold 22px sans-serif";
+    ctx.fillText(displayName, textStartX, pillY + pillH / 2 + 1);
   }
 
-  // 5. Marca de agua discreta en esquina inferior
+  // 4. Marca sutil en el margen de césped inferior derecho
   ctx.save();
-  ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
-  ctx.font = "bold 18px sans-serif";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+  ctx.font = "900 20px sans-serif";
   ctx.textAlign = "right";
-  ctx.fillText("MAREONA", width - pad - 12, height - pad - 16);
+  ctx.textBaseline = "middle";
+  ctx.fillText("MAREONA", width - pad - 4, height - pad / 2);
   ctx.restore();
 
   return new Promise((resolve, reject) => {

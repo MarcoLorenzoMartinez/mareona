@@ -1,4 +1,4 @@
-// Client: Token táctico minimalista y moderno con fotos ampliadas y nombre conciso
+// Client: Token táctico minimalista y moderno con fotos ampliadas y cápsula blanca corporativa
 "use client";
 
 import { useMemo } from "react";
@@ -9,17 +9,19 @@ import type { PitchAssignedPlayer } from "@/lib/lineup-builder/types";
 interface PlayerTokenProps {
   readonly assigned: PitchAssignedPlayer;
   readonly isSelected: boolean;
+  readonly isCandidate?: boolean;
   readonly onSelect: (slotId: string) => void;
   readonly onPointerDown?: (e: React.PointerEvent<HTMLDivElement>, slotId: string) => void;
 }
 
 /**
  * Modern minimalist player token node placed on the tactical grass pitch.
- * Focuses on prominent footballer photo cutouts with clean typography (no clutter).
+ * Uses a crisp circular photo container and a unified white name capsule with red circular dorsal.
  */
 export function PlayerToken({
   assigned,
   isSelected,
+  isCandidate = false,
   onSelect,
   onPointerDown,
 }: PlayerTokenProps) {
@@ -55,7 +57,7 @@ export function PlayerToken({
         top: `${coord.y}%`,
       }}
       className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer touch-none select-none transition-transform duration-150 focus:outline-none ${
-        isSelected ? "scale-105 z-30" : "hover:scale-105 z-20"
+        isSelected ? "scale-105 z-30" : isCandidate ? "scale-105 z-25" : "hover:scale-105 z-20"
       }`}
     >
       <div className="flex flex-col items-center">
@@ -70,6 +72,8 @@ export function PlayerToken({
                 }`
               : isSelected
               ? "border-2 border-white ring-2 ring-[#e2001a]/85 bg-black/45 shadow-[0_0_14px_rgba(226,0,26,0.35)] backdrop-blur-xs"
+              : isCandidate
+              ? "border-2 border-white ring-2 ring-[#e2001a] bg-[#e2001a]/30 shadow-[0_0_14px_rgba(226,0,26,0.5)] cursor-pointer"
               : "border-2 border-dashed border-white/50 bg-black/30 hover:border-white/80 hover:bg-black/40"
           }`}
         >
@@ -85,7 +89,7 @@ export function PlayerToken({
           ) : (
             <span
               className={`text-xl leading-none transition-colors ${
-                isSelected ? "text-white font-medium" : "text-white/60 font-light"
+                isSelected || isCandidate ? "text-white font-bold" : "text-white/60 font-light"
               }`}
             >
               +
@@ -93,18 +97,43 @@ export function PlayerToken({
           )}
         </div>
 
-        {/* Minimalist Player Name Label */}
-        <div className="mt-1 flex flex-col items-center max-w-[90px] sm:max-w-[105px]">
-          <span
-            className={`rounded-full px-2.5 py-0.5 text-center text-[10px] sm:text-[11px] font-bold shadow-xs truncate w-full border backdrop-blur-xs transition-colors ${
-              isSelected
-                ? "bg-[#e2001a] text-white border-white/30 shadow-[0_0_8px_rgba(226,0,26,0.4)]"
-                : "bg-black/80 text-white border-white/10"
-            }`}
-          >
-            {shortName}
-          </span>
-        </div>
+        {/* Modern Pure White Player Name Capsule (only shown when player is assigned) */}
+        {player && (
+          <div className="mt-1 flex flex-col items-center max-w-[110px] sm:max-w-[125px]">
+            <div
+              className={`flex items-center overflow-hidden rounded-full shadow-sm border transition-all ${
+                isSelected
+                  ? "bg-[#e2001a] border-white/40 ring-2 ring-[#e2001a] text-white shadow-[0_0_10px_rgba(226,0,26,0.5)]"
+                  : "bg-white text-neutral-900 border-neutral-200/90 shadow-[0_1px_4px_rgba(0,0,0,0.18)]"
+              } ${
+                player.shirtNumber !== null && player.shirtNumber > 0
+                  ? "pl-1 pr-2.5 py-0.5 gap-1.5"
+                  : "px-2.5 py-0.5"
+              }`}
+            >
+              {player.shirtNumber !== null && player.shirtNumber > 0 && (
+                <span
+                  className={`flex h-[18px] w-[18px] sm:h-[19px] sm:w-[19px] shrink-0 items-center justify-center rounded-full font-bold tabular-nums transition-colors shadow-2xs ${
+                    player.shirtNumber >= 10
+                      ? "text-[8.5px] sm:text-[9px] tracking-tight"
+                      : "text-[9.5px] sm:text-[10px]"
+                  } ${isSelected ? "bg-white text-[#e2001a]" : "bg-[#e2001a] text-white"}`}
+                >
+                  <span className="leading-none -translate-y-[1px]">
+                    {player.shirtNumber}
+                  </span>
+                </span>
+              )}
+              <span
+                className={`text-[10px] sm:text-[11px] font-bold truncate tracking-tight ${
+                  isSelected ? "text-white" : "text-neutral-900"
+                }`}
+              >
+                {shortName}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

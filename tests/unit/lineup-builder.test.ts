@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { TACTICAL_FORMATIONS, clampPitchCoordinate } from "../../src/lib/lineup-builder/formations.ts";
+import { TACTICAL_FORMATIONS, clampPitchCoordinate, inferRoleFromHeight } from "../../src/lib/lineup-builder/formations.ts";
 import { customPlayerSchema } from "../../src/lib/lineup-builder/types.ts";
 import { ACADEMY_SPORTING_PLAYERS } from "../../src/lib/lineup-builder/academy-players.ts";
 import { buildUnifiedRoster, mapDomainPlayerToLineupPlayer } from "../../src/lib/lineup-builder/roster-builder.ts";
@@ -29,6 +29,33 @@ describe("Lineup Builder Domain Suite", () => {
 
     const clampedOutMax = clampPitchCoordinate({ x: 150, y: 120 });
     assert.deepEqual(clampedOutMax, { x: 90, y: 90 });
+  });
+
+  it("infers tactical line and role accurately based on pitch height coordinates", () => {
+    // Goalkeeper slot is immutable
+    assert.equal(inferRoleFromHeight(88, "s-por", "POR"), "POR");
+    assert.equal(inferRoleFromHeight(30, "s-por", "POR"), "POR");
+
+    // Striker (defaultRole DC) stays DC in attack (y < 38)
+    assert.equal(inferRoleFromHeight(18, "s-dc", "DC"), "DC");
+
+    // Striker dragged down into midfield (38 <= y < 62) becomes MC
+    assert.equal(inferRoleFromHeight(50, "s-dc", "DC"), "MC");
+
+    // Striker dragged down into defensive line (y >= 62) becomes DFC
+    assert.equal(inferRoleFromHeight(70, "s-dc", "DC"), "DFC");
+
+    // Striker moved back up restores original DC
+    assert.equal(inferRoleFromHeight(22, "s-dc", "DC"), "DC");
+
+    // Specific defender (e.g. LI) preserves role while in defence
+    assert.equal(inferRoleFromHeight(68, "s-li", "LI"), "LI");
+
+    // Defender pushed up into midfield becomes MC
+    assert.equal(inferRoleFromHeight(52, "s-li", "LI"), "MC");
+
+    // Defender pushed all the way to attack becomes DC
+    assert.equal(inferRoleFromHeight(20, "s-li", "LI"), "DC");
   });
 
   it("validates custom player input with Zod schema", () => {

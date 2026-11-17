@@ -17,6 +17,7 @@ interface RosterDrawerProps {
   readonly players: readonly LineupPlayer[];
   readonly assignedPlayerIds: ReadonlySet<string>;
   readonly activeSlotRole: string | null;
+  readonly stagedPlayerId?: string | null;
   readonly onAssignPlayer: (player: LineupPlayer) => void;
   readonly onAddCustomPlayer: (player: LineupPlayer) => void;
   readonly onClose?: () => void;
@@ -27,6 +28,7 @@ export function RosterDrawer({
   players,
   assignedPlayerIds,
   activeSlotRole,
+  stagedPlayerId,
   onAssignPlayer,
   onAddCustomPlayer,
   onClose,
@@ -131,6 +133,7 @@ export function RosterDrawer({
               <PlayerRowItem
                 player={player}
                 isAssigned={assignedPlayerIds.has(player.id)}
+                isStaged={player.id === stagedPlayerId}
                 onAssign={onAssignPlayer}
               />
             </React.Fragment>

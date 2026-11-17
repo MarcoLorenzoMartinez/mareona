@@ -12,8 +12,8 @@ interface PitchBoardProps {
   readonly selectedSlotId: string | null;
   readonly onSelectSlot: (slotId: string) => void;
   readonly onMoveSlot: (slotId: string, newCoord: PitchCoordinate) => void;
-  readonly pitchTitle?: string;
-  readonly formationLabel?: string;
+  readonly hasStagedPlayer?: boolean;
+  readonly onCancelStaging?: () => void;
 }
 
 /**
@@ -25,14 +25,25 @@ export function PitchBoard({
   selectedSlotId,
   onSelectSlot,
   onMoveSlot,
-  pitchTitle = "Real Sporting",
-  formationLabel = "4-2-3-1",
+  hasStagedPlayer = false,
+  onCancelStaging,
 }: PitchBoardProps) {
   const pitchRef = useRef<HTMLDivElement>(null);
   const startersRef = useRef(starters);
+  const didDragRef = useRef(false);
+  const dragTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     startersRef.current = starters;
   }, [starters]);
+
+  useEffect(() => {
+    return () => {
+      if (dragTimeoutRef.current) {
+        clearTimeout(dragTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const dragRef = useRef<{
     slotId: string;
@@ -50,6 +61,12 @@ export function PitchBoard({
       if (e.button !== 0 && e.pointerType === "mouse") return;
       const starter = startersRef.current.find((s) => s.slotId === slotId);
       if (!starter) return;
+
+      if (dragTimeoutRef.current) {
+        clearTimeout(dragTimeoutRef.current);
+        dragTimeoutRef.current = null;
+      }
+      didDragRef.current = false;
 
       dragRef.current = {
         slotId,
@@ -78,6 +95,7 @@ export function PitchBoard({
           return;
         }
         drag.isDragging = true;
+        didDragRef.current = true;
         drag.target.setPointerCapture?.(drag.pointerId);
       }
 
@@ -102,16 +120,33 @@ export function PitchBoard({
     if (drag) {
       if (drag.isDragging) {
         drag.target.releasePointerCapture?.(drag.pointerId);
+        // Suprimir el evento 'click' subsiguiente tras un arrastre intencionado
+        if (dragTimeoutRef.current) clearTimeout(dragTimeoutRef.current);
+        dragTimeoutRef.current = setTimeout(() => {
+          didDragRef.current = false;
+        }, 120);
       }
       dragRef.current = null;
     }
   }, []);
+
+  const handleTokenSelect = useCallback(
+    (slotId: string) => {
+      // Ignorar selección si acabamos de soltar un movimiento de arrastre
+      if (didDragRef.current) return;
+      onSelectSlot(slotId);
+    },
+    [onSelectSlot]
+  );
 
   return (
     <div className="flex flex-col items-center w-full">
       {/* Outer Pitch Card */}
       <div
         ref={pitchRef}
+        onClick={(e) => {
+          if (e.target === pitchRef.current) onCancelStaging?.();
+        }}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
@@ -120,13 +155,10 @@ export function PitchBoard({
         {/* SVG Markings and Grass Striping */}
         <TacticalGrassMarkings />
 
-        {/* Pitch Watermark Header */}
-        <div className="absolute top-4 left-4 z-10 flex items-center gap-2 rounded-full bg-black/60 px-3 py-1 backdrop-blur-xs border border-white/10">
-          <span className="text-[11px] font-bold tracking-wider text-white uppercase">
-            {pitchTitle}
-          </span>
-          <span className="text-[10px] font-medium text-white/70">
-            ({formationLabel})
+        {/* Subtle Watermark in the bottom-right grass margin */}
+        <div className="absolute inset-x-3.5 bottom-0.5 z-10 flex items-center justify-end pointer-events-none select-none">
+          <span className="text-[10px] sm:text-[11px] font-extrabold tracking-widest text-white/45 uppercase leading-none">
+            mareona
           </span>
         </div>
 
@@ -136,7 +168,8 @@ export function PitchBoard({
             key={assigned.slotId}
             assigned={assigned}
             isSelected={assigned.slotId === selectedSlotId}
-            onSelect={onSelectSlot}
+            isCandidate={hasStagedPlayer && !assigned.player}
+            onSelect={handleTokenSelect}
             onPointerDown={handlePointerDown}
           />
         ))}

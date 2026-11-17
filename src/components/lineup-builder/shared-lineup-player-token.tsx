@@ -12,7 +12,7 @@ interface SharedLineupPlayerTokenProps {
 
 /**
  * Renders a crisp read-only player token placed on the tactical grass pitch card.
- * Maintains the exact hand-adjusted coordinate (x, y) with responsive avatar sizing.
+ * Maintains the exact hand-adjusted coordinate (x, y) with a pure white name capsule and red circular dorsal.
  */
 export function SharedLineupPlayerToken({ starter }: SharedLineupPlayerTokenProps) {
   const { displayName, photoUrl, coord, role, shirtNumber } = starter;
@@ -41,20 +41,34 @@ export function SharedLineupPlayerToken({ starter }: SharedLineupPlayerTokenProp
               isToken
             />
           </div>
-
-          {/* Dorsal badge if available */}
-          {shirtNumber !== null && shirtNumber > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 sm:h-4 sm:w-4 items-center justify-center rounded-full bg-[#e2001a] text-[8px] sm:text-[9px] font-bold text-white shadow-xs tabular-nums">
-              {shirtNumber}
-            </span>
-          )}
         </div>
 
-        {/* Minimalist Player Name Label */}
-        <div className="mt-0.5 flex flex-col items-center max-w-[62px] sm:max-w-[78px]">
-          <span className="rounded-full px-1.5 py-0.2 sm:px-2 sm:py-0.5 text-center text-[8px] sm:text-[9.5px] font-bold shadow-xs truncate w-full border border-white/15 bg-black/85 text-white backdrop-blur-xs">
-            {shortName}
-          </span>
+        {/* Modern Pure White Player Name Capsule */}
+        <div className="mt-0.5 flex flex-col items-center max-w-[76px] sm:max-w-[95px]">
+          <div
+            className={`flex items-center overflow-hidden rounded-full shadow-sm border border-neutral-200/90 bg-white text-neutral-900 ${
+              shirtNumber !== null && shirtNumber > 0
+                ? "pl-0.5 pr-1.5 py-0.2 sm:pl-1 sm:pr-2 sm:py-0.5 gap-1"
+                : "px-1.5 py-0.2 sm:px-2 sm:py-0.5"
+            }`}
+          >
+            {shirtNumber !== null && shirtNumber > 0 ? (
+              <span
+                className={`flex h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 items-center justify-center rounded-full bg-[#e2001a] font-bold text-white tabular-nums leading-none shadow-2xs ${
+                  shirtNumber >= 10
+                    ? "text-[6.5px] sm:text-[7.5px] tracking-tight"
+                    : "text-[7.5px] sm:text-[8.5px]"
+                }`}
+              >
+                <span className="leading-none -translate-y-[0.5px]">
+                  {shirtNumber}
+                </span>
+              </span>
+            ) : null}
+            <span className="text-[8px] sm:text-[9.5px] font-bold truncate text-neutral-900">
+              {shortName}
+            </span>
+          </div>
         </div>
       </div>
     </div>

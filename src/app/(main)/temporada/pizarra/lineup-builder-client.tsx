@@ -33,12 +33,14 @@ export function LineupBuilderClient({
     activeSlot,
     selectedSlotId,
     isMobileRosterOpen,
+    stagedPlayer,
     currentSharedLineup,
     handleFormationChange,
     handleResetLineup,
     handleMoveSlot,
     handleSelectSlot,
     handleCloseMobileRoster,
+    handleCancelStaging,
     handleAssignPlayer,
     handleAddCustomPlayer,
   } = useLineupState(initialRoster);
@@ -70,10 +72,10 @@ export function LineupBuilderClient({
           <PitchBoard
             starters={assignedSlots}
             selectedSlotId={selectedSlotId}
+            hasStagedPlayer={Boolean(stagedPlayer)}
             onSelectSlot={handleSelectSlot}
             onMoveSlot={handleMoveSlot}
-            pitchTitle="Real Sporting"
-            formationLabel={formationKey}
+            onCancelStaging={handleCancelStaging}
           />
         </div>
 
@@ -82,6 +84,7 @@ export function LineupBuilderClient({
             players={allPlayers}
             assignedPlayerIds={assignedPlayerIds}
             activeSlotRole={activeSlot ? activeSlot.role : null}
+            stagedPlayerId={stagedPlayer?.id ?? null}
             onAssignPlayer={handleAssignPlayer}
             onAddCustomPlayer={handleAddCustomPlayer}
           />
@@ -94,6 +97,7 @@ export function LineupBuilderClient({
         players={allPlayers}
         assignedPlayerIds={assignedPlayerIds}
         activeSlotRole={activeSlot ? activeSlot.role : null}
+        stagedPlayerId={stagedPlayer?.id ?? null}
         onAssignPlayer={handleAssignPlayer}
         onAddCustomPlayer={handleAddCustomPlayer}
       />

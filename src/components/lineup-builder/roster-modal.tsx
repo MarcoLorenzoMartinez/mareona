@@ -11,6 +11,7 @@ interface RosterModalProps {
   readonly players: readonly LineupPlayer[];
   readonly assignedPlayerIds: ReadonlySet<string>;
   readonly activeSlotRole: string | null;
+  readonly stagedPlayerId?: string | null;
   readonly onAssignPlayer: (player: LineupPlayer) => void;
   readonly onAddCustomPlayer: (player: LineupPlayer) => void;
 }
@@ -25,6 +26,7 @@ export function RosterModal({
   players,
   assignedPlayerIds,
   activeSlotRole,
+  stagedPlayerId,
   onAssignPlayer,
   onAddCustomPlayer,
 }: RosterModalProps) {
@@ -52,7 +54,7 @@ export function RosterModal({
       role="dialog"
       aria-modal="true"
       aria-label="Selección de jugador para la alineación"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150 lg:hidden"
       onClick={onClose}
     >
       <div
@@ -68,6 +70,7 @@ export function RosterModal({
           players={players}
           assignedPlayerIds={assignedPlayerIds}
           activeSlotRole={activeSlotRole}
+          stagedPlayerId={stagedPlayerId}
           onAssignPlayer={onAssignPlayer}
           onAddCustomPlayer={onAddCustomPlayer}
           onClose={onClose}
