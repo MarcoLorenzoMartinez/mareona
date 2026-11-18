@@ -105,17 +105,13 @@ Sistema de moderación automático y manual para garantizar que los mensajes pub
 ### 2.5. Juegos (`/juegos`)
 
 #### Memoria Rojiblanca (`/juegos/album`)
-Colección de cromos del Real Sporting de Gijón. Incluye cromos de jugadores, entrenadores, escudos y eventos de la historia del club. El objetivo inicial es completar la colección, y también se irán incluyendo juegos en los que se podrán utilizar los cromos para competir con otros usuarios.
+Colección digital de cromos del Real Sporting de Gijón que reúne a futbolistas de la plantilla actual y a grandes leyendas de la historia del club, además de entrenadores, escudos históricos y momentos importantes. Cada cromo cuenta con una rareza según su importancia histórica: básica, especial, histórica y legendaria. El álbum se puede consultar tanto en vista de libro interactivo para pasar las páginas como en una cuadrícula completa con filtros por décadas y posiciones.
 
-Los usuarios pueden desbloquear sobres de cromos mediante diversas vías de participación activa:
-- **Bienvenida a nuevos usuarios:** Al registrarse por primera vez con su cuenta, el aficionado recibe un lote inicial de bienvenida compuesto por 1 Sobre Aficionado y 1 Sobre Rojiblanco.
-- **Visita diaria:** 1 Sobre Aficionado gratuito disponible cada día simplemente por iniciar sesión en la plataforma.
-- **Reto diario de juegos:** Al acertar cualquiera de los pasatiempos diarios del día (Pregunta del Día, Wordle o ¿Quién es?), el usuario obtiene 1 Sobre Rojiblanco (máximo un sobre por día). Además, mantener una racha semanal de 7 días consecutivos superando el reto diario mejora la recompensa del séptimo día, otorgando 1 Sobre Leyenda.
-- **La Porra de la jornada:** Pronosticar el partido oficial del Real Sporting premia el acierto según el baremo de puntuación (+5 pts por marcador exacto, +2 pts por signo 1X2 y +1 pt por cada goleador acertado):
-  - *1 a 2 puntos:* Otorga 1 Sobre Aficionado.
-  - *3 a 4 puntos:* Otorga 1 Sobre Rojiblanco.
-  - *5 o más puntos (pleno o marcador exacto):* Otorga 1 Sobre Leyenda.
-- **Taco de repetidos (Reciclaje):** Permite canjear los cromos duplicados que el usuario vaya acumulando al abrir sobres. Al reunir 10 cromos repetidos en el taco, el usuario puede reciclarlos para forjar directamente 1 Sobre Rojiblanco nuevo y seguir avanzando en su colección.
+Los cromos se obtienen abriendo tres tipos de sobres (Sobre Aficionado, Sobre Rojiblanco y Sobre Leyenda), que se pueden conseguir de las siguientes formas:
+- **Bienvenida y visita diaria:** al registrarse se regalan 1 Sobre Aficionado y 1 Sobre Rojiblanco, y después se puede reclamar gratis 1 Sobre Aficionado cada día al iniciar sesión.
+- **Reto diario de juegos:** acertar cualquiera de los pasatiempos diarios de la sección de juegos otorga 1 Sobre Rojiblanco al día, y mantener una racha de 7 días seguidos premia con 1 Sobre Leyenda.
+- **La Porra de la jornada:** pronosticar el partido oficial del Sporting otorga sobres de distinta categoría según la puntuación obtenida al acertar resultado o goleadores.
+- **Taco de repetidos:** los cromos repetidos que salgan al abrir sobres se van acumulando en el taco, pudiendo reciclar 10 repetidos para cambiarlos por 1 Sobre Rojiblanco nuevo.
 
 #### La Porra de la Mareona (`/juegos/porra`)
 Espacio donde los aficionados pronostican el resultado exacto y los goleadores rojiblancos del próximo partido oficial del Real Sporting antes del pitido inicial. El sistema calcula automáticamente la puntuación al término del encuentro en función de los aciertos (signo 1X2, marcador exacto y goleadores), alimentando una tabla clasificatoria que puede filtrarse también por el círculo de amigos.
@@ -138,7 +134,7 @@ Minijuego de comparativa estadística que enfrenta de manera consecutiva a dos f
 
 Espacio personal y centro de control del usuario en la plataforma:
 - **Autenticación sin contraseñas:** Acceso seguro mediante Google OAuth 2.0 y enlaces mágicos (*Magic Link*) por correo electrónico, gestionado íntegramente en servidor con Supabase Auth.
-- **Identidad en la comunidad:** Personalización de nombre de usuario, biografía y selector de avatar, con la posibilidad exclusiva de lucir como imagen de perfil cualquiera de los cromos históricos conseguidos en el álbum.
+- **Identidad en la comunidad:** personalización de nombre de usuario, biografía y foto de perfil (subida directamente desde la cámara o galería del dispositivo).
 - **Historial y actividad:** Muro con el histórico de publicaciones y réplicas en La Tertulia, registro de pronósticos y puntos en La Porra, estado de avance de la colección de cromos y gestión de la red de amistades.
 
 ---
