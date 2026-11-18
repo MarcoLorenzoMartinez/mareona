@@ -138,33 +138,33 @@ Tablas que muestran los datos históricos más relevantes del club, para dar el 
 - Muro de publicaciones y debate con filtros de vista ("Todos" y "Amigos").
 - Publicación de opiniones, contenido de actualidad y seguimiento de la afición.
 -->
-[Describe aquí La Tertulia...]
+Red social para que los aficionados interactúen entre si y hablen sobre todos los temas relacionados con el Real Sporting. Cada mensaje publicado tiene un límite de 500 caracteres, y se puede adjuntar una encuesta o una plantilla creada en la sección de Mi Once. Los usuarios pueden dar "me gusta" a los mensajes, responder a los mismos y compartirlos en aplicaciones externas. También pueden seguir a otros usuarios y ver sus publicaciones en la subsección de "Amigos". De esta manera, se pueden ver los mensajes de todos los usuarios o solo los de aquellos que se siguen, para tener una experiencia más personalizada.  
+La sección "social" tiene un sistema de moderación para garantizar que los mensajes publicados sean respetuosos y no tengan contenido inapropiado.
 
 #### Hilos de Conversación
 <!--
 - Vista de hilo para respuestas anidadas, réplicas y debates ordenados por publicación.
 -->
-[Describe aquí los Hilos de conversación...]
+Los mensajes publicados en la sección "social" se muestran en hilos, permitiendo una visualización clara de las respuestas anidadas, réplicas y debates ordenados por fecha de publicación. Para ver las respuestas a un mensaje, se puede hacer clic en el mismo y se abrirá una vista de hilo donde se muestran todas las respuestas y réplicas relacionadas con ese mensaje. Esto permite a los usuarios seguir la conversación de manera más organizada y entender mejor el contexto de cada mensaje.
 
 #### Mensajería Directa
 <!--
 - Mensajería privada y directa entre aficionados registrados.
 -->
-[Describe aquí la Mensajería Directa...]
+Sistema de mensajería privada y directa entre los usuarios registrados en la plataforma. Se trata de un chat en el que los usuarios pueden intercambiar mensajes de forma individual y bidireccional, sin que el resto de usuarios puedan verlos. Se garantiza la privacidad de los mensajes, manteniendo también mecanismos para denunciar cualquier tipo de comportamiento inapropiado, manteniendo un espacio seguro y respetuoso para todos los usuarios.
 
 #### Red de Amistades
 <!--
 - Búsqueda de aficionados, solicitudes de amistad y seguimiento mutuo.
 - Integración transversal del círculo de amigos en los filtros de la tertulia y en las clasificaciones de la porra.
 -->
-[Describe aquí la Red de Amistades...]
+En el apartado de social, puedes hacer amigos con otros usuarios de la plataforma, enviando solicitudes de amistad y aceptándolas. Una vez que se ha establecido una amistad, los usuarios pueden ver las publicaciones de sus amigos en la sección de "Amigos" y también pueden interactuar con ellos a través de la mensajería directa. Además, el círculo de amigos se integra en las clasificaciones de la porra, permitiendo a los usuarios ver cómo se comparan con sus amigos en cuanto a predicciones y resultados.
 
 #### Moderación y Convivencia Comunitaria
 <!--
 - Sistema de reporte y denuncia ciudadana de publicaciones inapropiadas para garantizar un espacio de debate respetuoso y seguro.
 -->
-[Describe aquí la Moderación Comunitaria...]
-
+Sistema de moderación automático y manual para garantizar que los mensajes publicados en la sección de social sean respetuosos y no tienen contenido inapropiado. Se ha integrado una Inteligencia Artificial que analiza los mensajes publicados y detecta aquellos que puedan ser inapropiados, bloqueando la publicación de los que sean claramente ofensivos y enviando una alerta a los administradores para que revisen los mensajes dudosos.
 ---
 
 ### 2.5. Juegos (`/juegos`)
@@ -173,7 +173,10 @@ Tablas que muestran los datos históricos más relevantes del club, para dar el 
 <!--
 - Álbum de cromos digital y coleccionables históricos para desbloquear por participación y aciertos.
 -->
-[Describe aquí Memoria Rojiblanca...]
+Colección de cromos del Real Sporting de Gijón. Incluye cromos de jugadores, entrenadores, escudos y eventos de la historia del club. El objetivo inicial es completar la colección, y también se irán incluyendo juegos en los que se podrán utilizar los cromos para competir con otros usuarios.
+Los usuarios pueden desbloquear los cromos de diversas formas:
+- Juego diario: acertando la pregunta del día, el wordle o el ¿Quién es?, se obtiene un sobre aficionado diario. Solamente se puede obtener un sobre diario por usuario, no un sobre por cada juego.
+- Acierto en la porra: 
 
 #### La Porra de la Mareona (`/juegos/porra`)
 <!--
@@ -291,9 +294,9 @@ Todos los escudos, logotipos, imágenes históricas y marcas comerciales referen
 ## 7. Autor
 
 **Marco Lorenzo Martínez**  
-Ingeniero Informático  
+Ingeniero Informático del Software 
 
 - **Despliegue:** [mareona.vercel.app](https://mareona.vercel.app)
 - **GitHub:** [@MarcoLorenzoMartinez](https://github.com/MarcoLorenzoMartinez)
-- **LinkedIn:** [Enlace a perfil profesional]
-- **Contacto:** [Correo electrónico profesional]
+- **LinkedIn:** [Marco Lorenzo Martínez](https://www.linkedin.com/in/marco-lorenzo-mart%C3%ADnez/)
+- **Contacto:** [marcolorenzomart@gmail.com]
