@@ -57,14 +57,14 @@ export const HISTORICAL_CRESTS: readonly Card[] = [
   }),
   c({
     id: "00000000-0000-4000-8000-000000000005",
-    slug: "escudo-republicano-1931",
-    fullName: "Escudo Circular Republicano con Corona Mural",
-    knownAs: "Escudo Republicano",
+    slug: "escudo-corona-mural-1931",
+    fullName: "Escudo Circular con Corona Mural",
+    knownAs: "Corona Mural",
     decade: "1930s",
     eraLabel: "1931 – 1939",
     photoUrl: "/crests/historical/sporting-republic.png",
     historicalCrestEra: "republic",
-    bioSnippet: "Emblema circular adoptado durante la II República con corona mural y siglas entrelazadas tras suprimirse atributos reales.",
+    bioSnippet: "Emblema circular adoptado en 1931 con corona mural y siglas entrelazadas tras adaptarse a la normativa de la época.",
     year: 1931,
   }),
   c({
