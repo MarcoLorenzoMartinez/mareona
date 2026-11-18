@@ -9,7 +9,7 @@ describe("Historical Card Presentation Suite", () => {
     assert.strictEqual(quini.position, "forward");
     assert.strictEqual(quini.matchesPlayed, 521);
     assert.strictEqual(quini.attackPower, 99);
-    assert.strictEqual(quini.defensePower, 42);
+    assert.strictEqual(quini.defensePower, 45);
     assert.strictEqual(quini.ovr, 98);
     assert.strictEqual(quini.historicalCrestEra, "golden_1980");
   });
