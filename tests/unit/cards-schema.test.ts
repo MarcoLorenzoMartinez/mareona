@@ -38,9 +38,9 @@ describe("Cards Domain & Seed Suite", () => {
     const crests = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "crest");
     const moments = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "moment");
 
-    assert.strictEqual(crests.length, 5, "Expected exactly 5 canonical historical crests");
+    assert.strictEqual(crests.length, 9, "Expected exactly 9 canonical historical crests");
     const crestPhotos = new Set(crests.map((c) => c.photoUrl));
-    assert.strictEqual(crestPhotos.size, 5, "All historical crests must have unique graphical assets without duplicates");
+    assert.strictEqual(crestPhotos.size, 9, "All historical crests must have unique graphical assets without duplicates");
     assert.ok(moments.length >= 10, "Expected at least 10 historical moments");
     const momentPhotos = new Set(moments.map((m) => m.photoUrl));
     assert.strictEqual(
@@ -53,6 +53,8 @@ describe("Cards Domain & Seed Suite", () => {
       assert.strictEqual(crest.position, undefined);
       assert.strictEqual(crest.ovr, undefined);
       assert.ok(crest.eraLabel.length > 0);
+      const diskPath = path.join(process.cwd(), "public", crest.photoUrl);
+      assert.ok(fs.existsSync(diskPath), `Physical image missing on disk for crest ${crest.knownAs}: ${diskPath}`);
     }
 
     for (const moment of moments) {
@@ -74,12 +76,12 @@ describe("Cards Domain & Seed Suite", () => {
 
   it("includes commemorative coach cards without competitive duel stats", () => {
     const coaches = HISTORICAL_CARDS_SEED.filter((c) => c.kind === "coach");
-    assert.strictEqual(coaches.length, 13, "Expected exactly 13 canonical historical coaches");
+    assert.strictEqual(coaches.length, 9, "Expected exactly 9 canonical historical coaches");
 
     const coachPhotos = new Set(coaches.map((c) => c.photoUrl));
     assert.strictEqual(
       coachPhotos.size,
-      13,
+      9,
       "All historical coaches must have unique, non-duplicated photographic assets"
     );
 

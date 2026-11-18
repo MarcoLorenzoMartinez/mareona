@@ -3,8 +3,8 @@ import { c } from "./builder.ts";
 
 /**
  * Commemorative historical crest cards collection.
- * Conforms strictly to the 5 genuine canonical design eras of Real Sporting de Gijón.
- * Zero duplicate graphics or artificial decade replicas.
+ * Conforms strictly to the canonical design eras and milestone emblems of Real Sporting de Gijón,
+ * matching the historic display at El Molinón and official club archives.
  */
 export const HISTORICAL_CRESTS: readonly Card[] = [
   c({
@@ -13,7 +13,7 @@ export const HISTORICAL_CRESTS: readonly Card[] = [
     fullName: "Escudo Fundacional con Corona Real",
     knownAs: "Escudo Fundacional",
     decade: "1920s",
-    eraLabel: "1912 – 1931",
+    eraLabel: "1912 – 1920",
     photoUrl: "/crests/historical/sporting-1905.png",
     historicalCrestEra: "1905",
     bioSnippet: "El primer emblema oficial diseñado por Anselmo López tras la concesión del título Real por Alfonso XIII.",
@@ -21,6 +21,42 @@ export const HISTORICAL_CRESTS: readonly Card[] = [
   }),
   c({
     id: "00000000-0000-4000-8000-000000000002",
+    slug: "insignia-homenaje-1920",
+    fullName: "Insignia de Homenaje Fernando Villaverde",
+    knownAs: "Insignia de Homenaje",
+    decade: "1920s",
+    eraLabel: "1920",
+    photoUrl: "/crests/historical/sporting-1920.png",
+    historicalCrestEra: "1905",
+    bioSnippet: "Insignia de oro con banderín y balón entregada a Fernando Villaverde bajo la presidencia de Enrique Guisasola.",
+    year: 1920,
+  }),
+  c({
+    id: "00000000-0000-4000-8000-000000000003",
+    slug: "escudo-don-pelayo-1921",
+    fullName: "Escudo de Don Pelayo en Casulla",
+    knownAs: "Escudo Don Pelayo",
+    decade: "1920s",
+    eraLabel: "1921 – 1924",
+    photoUrl: "/crests/historical/sporting-1921.png",
+    historicalCrestEra: "1905",
+    bioSnippet: "Primer escudo bordado en la camiseta rojiblanca bajo Ismael Figaredo, con la efigie de Don Pelayo de la villa gijonesa.",
+    year: 1921,
+  }),
+  c({
+    id: "00000000-0000-4000-8000-000000000004",
+    slug: "escudo-triangulo-molinon-1929",
+    fullName: "Primer Escudo Puntiagudo de El Molinón",
+    knownAs: "Primer Triángulo",
+    decade: "1920s",
+    eraLabel: "1924 – 1931",
+    photoUrl: "/crests/historical/sporting-1929.png",
+    historicalCrestEra: "1905",
+    bioSnippet: "Germen del escudo actual: blasón triangular palado que presidió la puerta de El Molinón y debutó en Liga en 1929.",
+    year: 1929,
+  }),
+  c({
+    id: "00000000-0000-4000-8000-000000000005",
     slug: "escudo-republicano-1931",
     fullName: "Escudo Circular Republicano con Corona Mural",
     knownAs: "Escudo Republicano",
@@ -28,11 +64,11 @@ export const HISTORICAL_CRESTS: readonly Card[] = [
     eraLabel: "1931 – 1939",
     photoUrl: "/crests/historical/sporting-republic.png",
     historicalCrestEra: "republic",
-    bioSnippet: "Emblema circular adoptado durante la II República con corona mural y siglas entrelazadas.",
+    bioSnippet: "Emblema circular adoptado durante la II República con corona mural y siglas entrelazadas tras suprimirse atributos reales.",
     year: 1931,
   }),
   c({
-    id: "00000000-0000-4000-8000-000000000003",
+    id: "00000000-0000-4000-8000-000000000006",
     slug: "escudo-real-gijon-1941",
     fullName: "Escudo Real Gijón C.F.",
     knownAs: "Real Gijón C.F.",
@@ -44,7 +80,7 @@ export const HISTORICAL_CRESTS: readonly Card[] = [
     year: 1941,
   }),
   c({
-    id: "00000000-0000-4000-8000-000000000004",
+    id: "00000000-0000-4000-8000-000000000007",
     slug: "escudo-eurosporting-1970",
     fullName: "Escudo Clásico EuroSporting",
     knownAs: "EuroSporting",
@@ -56,7 +92,7 @@ export const HISTORICAL_CRESTS: readonly Card[] = [
     year: 1970,
   }),
   c({
-    id: "00000000-0000-4000-8000-000000000005",
+    id: "00000000-0000-4000-8000-000000000008",
     slug: "escudo-oficial-1997",
     fullName: "Escudo Oficial Real Sporting de Gijón",
     knownAs: "Escudo Oficial",
@@ -64,7 +100,19 @@ export const HISTORICAL_CRESTS: readonly Card[] = [
     eraLabel: "1997 – Presente",
     photoUrl: "/crests/historical/sporting-modern.png",
     historicalCrestEra: "modern",
-    bioSnippet: "Blasón corporativo canónico rojiblanco con corona real timbrada que defiende el club hoy en día.",
+    bioSnippet: "Digitalización vectorial registrada en 1997 por CYAN (Juan Jareño) con corona real timbrada que defiende el club hoy en día.",
     year: 1997,
+  }),
+  c({
+    id: "00000000-0000-4000-8000-000000000009",
+    slug: "emblema-centenario-2005",
+    fullName: "Emblema Oficial del Centenario (1905–2005)",
+    knownAs: "Centenario 2005",
+    decade: "2000s",
+    eraLabel: "2005",
+    photoUrl: "/crests/historical/sporting-centenario-2005.png",
+    historicalCrestEra: "modern",
+    bioSnippet: "Emblema conmemorativo de los 100 años del club timbrado con Corona Real, lucido en las equipaciones de la temporada 2005-06.",
+    year: 2005,
   }),
 ] as const;
