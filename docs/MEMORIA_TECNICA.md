@@ -43,7 +43,7 @@
 4. [Diseño del sistema](#4-diseño-del-sistema)
 5. [Implementación](#5-implementación)
 6. [Pruebas](#6-pruebas)
-7. [Manuales](#7-manuales)
+7. [Manual de usuario](#7-manual-de-usuario)
 8. [Conclusiones y ampliaciones](#8-conclusiones-y-ampliaciones)
 9. [Referencias](#9-referencias)
 10. [Apéndices](#10-apéndices)
@@ -213,26 +213,23 @@ Los diagramas de cada subsistema anterior se numeran aquí de forma conjunta, co
 **Diagrama:** pirámide de pruebas.
 **Fuentes:** carpeta `tests/`, `package.json`, `scripts/audit-performance.mjs`.
 
-## 7. Manuales
+## 7. Manual de usuario
 
-*Equivale al capítulo 9 del TFG, centrado en el manual de usuario.*
+*Equivale al apartado 9.3 del TFG. Es un manual solo de uso: el proyecto es privado y no se documenta instalación ni desarrollo.*
 
-- **7.1 Manual de usuario.** Con capturas reales, siguiendo el recorrido de un aficionado:
-  - Registro e inicio de sesión (email y Google)
-  - Inicio
-  - Temporada: partidos, clasificación, estadísticas
-  - Histórico
-  - Juegos y álbum de cartas
-  - Social: muro, amigos, mensajes
-  - Perfil y borrado de cuenta
-  - Instalación como app
-  - Funciones de administrador y moderador
-- **7.2 Manual del programador (breve).**
-  - Requisitos, variables de entorno (`.env.example`) y puesta en marcha en local
-  - Comandos principales (`dev`, `build`, `test`, `check`)
-  - Cómo añadir una migración, un juego o una fuente de datos
+Se sigue el recorrido de un aficionado, con capturas reales de la aplicación:
 
-**Fuentes:** `docs/screenshots/`, `EMAIL-SETUP.md`, `GOOGLE-LOGIN-SETUP.md`, `README.md`.
+- Registro e inicio de sesión (email y Google)
+- Inicio
+- Temporada: partidos, clasificación, estadísticas
+- Histórico
+- Juegos y álbum de cartas
+- Social: muro, amigos, mensajes
+- Perfil y borrado de cuenta
+- Instalación como app en móvil
+- Funciones de administrador y moderador
+
+**Fuentes:** `docs/screenshots/`, `README.md`.
 
 ## 8. Conclusiones y ampliaciones
 
@@ -243,7 +240,18 @@ Los diagramas de cada subsistema anterior se numeran aquí de forma conjunta, co
 
 ## 9. Referencias
 
-Documentación oficial de Next.js, React, Supabase, WCAG 2.2, RGPD y las APIs o fuentes de datos usadas.
+Lista corta y numerada, citada en el texto con `[n]` como en el TFG. Solo incluye lo que se cite de verdad:
+
+- Estándares: WCAG 2.2, RGPD.
+- Documentación oficial: Next.js, React, Supabase, PostgreSQL, Playwright.
+- Fuentes de datos deportivos usadas.
+
+## 10. Apéndices
+
+- **10.1 Glosario.** RSC, RLS, PWA, Service Worker, caché, polling, WCAG, etc.
+- **10.2 Propiedad intelectual y licencias.** Escudos, fotografías y datos de terceros (a partir de `LEGAL-ASSETS.md`).
+
+---
 
 ---
 
@@ -271,7 +279,8 @@ Documentación oficial de Next.js, React, Supabase, WCAG 2.2, RGPD y las APIs o 
 
 ## Pendiente de confirmar con el autor
 
-1. ¿Se incluye una sección de problemas encontrados (5.6)? Necesito que aportes los que recuerdes, además de lo que saque del historial de git.
-2. ¿Las ampliaciones futuras (8.2) las defines tú o propongo una lista?
-3. ¿Quieres que los diagramas sean Mermaid (editables y visibles en GitHub) o imágenes exportadas como en el TFG?
-4. ¿Se menciona el uso de herramientas de IA en el desarrollo en el capítulo 5?
+1. **Problemas encontrados (5.6):** ¿los aportas tú? Los complemento con el historial de git.
+2. **Ampliaciones futuras (8.2):** ¿las defines tú o propongo una lista?
+3. **Diagramas:** ¿Mermaid (recomendado) o imágenes exportadas?
+4. **Herramientas de IA:** ¿se mencionan en el capítulo 5?
+5. **Usabilidad:** ¿has hecho o harás pruebas con usuarios reales? Si no, se elimina el apartado 6.7 bis.
