@@ -22,26 +22,28 @@ function AlbumPreview() {
 }
 
 /**
- * Visual preview for La Porra: general football pool prediction design
- * combining a clean vector ball emblem with the 1-X-2 segmented selector.
- */
-/**
- * Visual preview for La Porra: vibrant rojiblanco match prediction selector (1-X-2)
- * featuring Sporting red branding and polished gaming pill aesthetics.
+ * Visual preview for La Porra: miniature rojiblanco match prediction ticket
+ * with a neutral team matchup header and symmetric 1-X-2 outcome tiles.
  */
 function PorraPreview() {
   return (
     <div className="flex items-center justify-center select-none">
-      <div className="flex items-center gap-1.5 rounded-full border border-red-100 bg-red-50/50 p-1.5 shadow-2xs">
-        <span className="flex h-7 w-8 items-center justify-center rounded-full bg-[var(--primary)] text-xs font-black text-white shadow-xs">
-          1
-        </span>
-        <span className="flex h-7 w-8 items-center justify-center rounded-full border border-neutral-200/80 bg-white text-xs font-black text-neutral-700 shadow-2xs">
-          X
-        </span>
-        <span className="flex h-7 w-8 items-center justify-center rounded-full border border-neutral-200/80 bg-white text-xs font-black text-neutral-700 shadow-2xs">
-          2
-        </span>
+      <div className="flex flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-2xs">
+        <div className="flex items-center justify-center gap-2 bg-[var(--primary)] px-3 py-1">
+          <span className="h-1.5 w-7 rounded-full bg-white/90" />
+          <span className="text-[7px] font-black tracking-widest text-white/85">VS</span>
+          <span className="h-1.5 w-7 rounded-full bg-white/90" />
+        </div>
+        <div className="flex items-center justify-center gap-1.5 bg-neutral-50/70 px-2.5 py-1.5">
+          {["1", "X", "2"].map((symbol) => (
+            <span
+              key={symbol}
+              className="flex h-6 w-8 items-center justify-center rounded-md border border-neutral-200/90 bg-white text-[11px] font-black text-neutral-800 shadow-2xs"
+            >
+              {symbol}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -96,24 +98,24 @@ function PreguntaPreview() {
 }
 
 /**
- * Visual preview for ¿Quién es?: 5 authentic deduction clue tiles
- * matching the game's actual columns and exact feedback color logic.
+ * Visual preview for ¿Quién es?: 5 authentic deduction clue tiles of identical size
+ * using uniform 3-4 letter sports abbreviations, directional arrows, and legible typography.
  */
 function QuienEsPreview() {
   const clues = [
     { label: "PAÍS", state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
     { label: "POS", state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
-    { label: "PARTIDOS ▲", state: "border-neutral-300 bg-neutral-100 text-neutral-700" },
-    { label: "GOLES ▼", state: "border-neutral-300 bg-neutral-100 text-neutral-700" },
-    { label: "DEBUT", state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
+    { label: "PART ▲", state: "border-neutral-300 bg-neutral-100 text-neutral-700" },
+    { label: "GOL ▼", state: "border-neutral-300 bg-neutral-100 text-neutral-700" },
+    { label: "DEB", state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
   ];
 
   return (
-    <div className="flex items-center justify-center gap-1 select-none">
+    <div className="flex items-center justify-center gap-1.5 select-none">
       {clues.map((c, i) => (
         <span
           key={i}
-          className={`flex h-7 min-w-7 sm:min-w-8 items-center justify-center rounded-md border px-1 text-[9px] font-black uppercase tracking-tight shadow-2xs ${c.state}`}
+          className={`flex h-7.5 w-11 items-center justify-center rounded-md border text-[9px] font-black uppercase tracking-tight whitespace-nowrap shadow-2xs ${c.state}`}
         >
           {c.label}
         </span>
