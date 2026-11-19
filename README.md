@@ -34,6 +34,12 @@ El producto tiene como objetivo convertirse en un punto de encuentro digital par
 ### 2.1. Inicio (`/`)
 Punto de entrada principal a la aplicación, con un resumen de la actualidad del club y accesos rápidos a algunas de las secciones más relevantes en el día a día del usuario.
 
+<div align="center">
+
+![Pantalla de Inicio de Mareona](docs/screenshots/inicio.png)
+
+</div>
+
 ---
 
 ### 2.2. Temporada (`/temporada`)
@@ -53,6 +59,12 @@ Se muestran estadísticas colectivas detalladas de la temporada del equipo. Cada
 También se muestran estadísticas más visuales, como mapas de las posiciones que ocupa el equipo en el campo, dónde se producen más pases, por dónde se ataca más, y la ubicación de los disparos que terminaron en gol.
 El objetivo de esta sección es ofrecer a los aficionados una visión completa y comprensible del rendimiento del equipo y de sus jugadores, permitiendo un análisis profundo de la temporada al alcance de todos los públicos.
 
+<div align="center">
+
+![Estadísticas de la temporada y mapas tácticos](docs/screenshots/temporada-estadisticas.png)
+
+</div>
+
 #### Plantilla (`/temporada/plantilla` y `/temporada/plantilla/[id]`)
 Lista de todos los jugadores de la plantilla. Cada jugador tiene su propia ficha de detalle con información completa sobre el mismo, incluyendo datos básicos de su perfil y estadísticas detalladas de la temporada, que complementan la información de la sección de estadísticas, proporcionando datos de los rendimientos individuales de cada jugador.
 
@@ -65,6 +77,12 @@ Pizarra táctica interactiva que permite a los aficionados confeccionar su propi
 
 #### Trayectoria (`/historico`)
 Gráfico de la trayectoria histórica del Real Sporting de Gijón, mostrando la posición del equipo en cada temporada desde que hay registros de las competiciones hasta la actualidad. Permite a los aficionados ver cómo ha evolucionado el equipo a lo largo de los años y cómo se ha desempeñado en las distintas categorías del fútbol español. Al seleccionar una temporada concreta, se muestran los detalles de la misma, incluyendo la clasificación final de la liga, los partidos jugados y la plantilla del equipo durante esa temporada.
+
+<div align="center">
+
+![Gráfico de trayectoria histórica y temporadas](docs/screenshots/historico-trayectoria.png)
+
+</div>
 
 #### Efemérides (`/historico/efemerides`)
 Calendario que muestra efemérides, acontecimientos históricos y partidos jugados por el Real Sporting de Gijón el día del año seleccionado. Inicialmente se muestra el día actual, y el usuario puede navegar por los días del año para ver qué acontecimientos ocurrieron en cualquier fecha. El objetivo es ofrecer a los aficionados una forma de conocer la historia del club y recordar momentos importantes de su trayectoria, conociendo además estadísticas y resultados de los partidos jugados en cada una de las fechas.
@@ -108,6 +126,12 @@ Sistema de moderación automático y manual para garantizar que los mensajes pub
 #### Memoria Rojiblanca (`/juegos/album`)
 Colección digital de cromos del Real Sporting de Gijón que reúne a futbolistas de la plantilla actual y a grandes leyendas de la historia del club, además de entrenadores, escudos históricos y momentos importantes. Cada cromo cuenta con una rareza según su importancia histórica: básica, especial, histórica y legendaria. El álbum se puede consultar tanto en vista de libro interactivo para pasar las páginas como en una cuadrícula completa con filtros por décadas y posiciones.
 
+<div align="center">
+
+![Álbum digital de cromos Memoria Rojiblanca](docs/screenshots/juegos-album.png)
+
+</div>
+
 Los cromos se obtienen abriendo tres tipos de sobres (Sobre Aficionado, Sobre Rojiblanco y Sobre Leyenda), que se pueden conseguir de las siguientes formas:
 - **Bienvenida y visita diaria:** al registrarse se regalan 1 Sobre Aficionado y 1 Sobre Rojiblanco, y después se puede reclamar gratis 1 Sobre Aficionado cada día al iniciar sesión.
 - **Reto diario de juegos:** acertar cualquiera de los pasatiempos diarios de la sección de juegos otorga 1 Sobre Rojiblanco al día, y mantener una racha de 7 días seguidos premia con 1 Sobre Leyenda.
@@ -118,16 +142,40 @@ Los cromos se obtienen abriendo tres tipos de sobres (Sobre Aficionado, Sobre Ro
 Espacio donde los aficionados pronostican el resultado exacto y los goleadores rojiblancos del próximo partido oficial del Real Sporting antes del pitido inicial. El sistema calcula automáticamente la puntuación al término del encuentro en función de los aciertos (signo 1X2, marcador exacto y goleadores), alimentando una tabla clasificatoria que puede filtrarse también por el círculo de amigos.
 
 #### Wordle (`/juegos/wordle`)
-Adaptación sportinguista del popular reto de palabras. El usuario dispone de 6 intentos para descubrir un término oculto de 5 o 6 letras relacionado con el Real Sporting (apellidos de futbolistas históricos, rivales clásicos o expresiones rojiblancas). Incorpora teclado interactivo, código de color para las pistas (verde para posición correcta, amarillo para letra existente en otra posición y gris para descarte), estadísticas de rachas y archivo para jugar retos de fechas anteriores.
+Adaptación sportinguista del popular reto de palabras. El usuario dispone de 6 intentos (o 7 en palabras de 7 o más letras) para descubrir un término oculto de entre 4 y 10 letras relacionado con el Real Sporting (apellidos de futbolistas históricos, rivales clásicos o expresiones rojiblancas). Incorpora teclado interactivo, código de color para las pistas (verde para posición correcta, amarillo para letra existente en otra posición y gris para descarte), estadísticas de rachas y archivo para jugar retos de fechas anteriores.
+
+<div align="center">
+
+![Wordle del Real Sporting](docs/screenshots/juegos-wordle.png)
+
+</div>
 
 #### La Pregunta del Día (`/juegos/pregunta-del-dia`)
 Trivia diario con preguntas de dificultad variable sobre hitos, anécdotas, récords y fechas célebres del club. Permite responder mediante un buscador predictivo o selección guiada, ofreciendo al resolver una reseña histórica explicativa que aporta contexto y valor divulgativo. Incluye estadísticas personales y archivo cronológico de preguntas.
 
+<div align="center">
+
+![La Pregunta del Día](docs/screenshots/juegos-pregunta.png)
+
+</div>
+
 #### ¿Quién es? (`/juegos/quien-es`)
 Juego diario de deducción donde el aficionado debe adivinar el futbolista rojiblanco misterioso a partir de pistas progresivas. La imagen del jugador comienza muy pixelada y gana nitidez con cada intento. En cada ensayo, el sistema evalúa atributos clave (nacionalidad, posición, década de actividad y dorsal) indicando aciertos y aproximaciones para orientar la respuesta dentro de un límite de intentos.
 
+<div align="center">
+
+![Juego de deducción ¿Quién es?](docs/screenshots/juegos-quien-es.png)
+
+</div>
+
 #### ¿Más o Menos? (`/juegos/mas-o-menos`)
 Minijuego de comparativa estadística que enfrenta de manera consecutiva a dos futbolistas de la historia del club bajo una métrica concreta (partidos jugados, goles anotados o temporadas en el club). El usuario debe acertar si el segundo jugador supera o no las cifras del primero, buscando encadenar la mayor racha de aciertos consecutivos posible.
+
+<div align="center">
+
+![Minijuego ¿Más o Menos?](docs/screenshots/juegos-mas-o-menos.png)
+
+</div>
 
 ---
 
@@ -185,6 +233,8 @@ Para garantizar una comunidad sana y un funcionamiento técnico fiable, la plata
 | **Autenticación** | Supabase Auth (`@supabase/ssr`) | Credenciales, Google OAuth 2.0 y enlaces mágicos gestionados en servidor |
 | **Estilos y UI** | Tailwind CSS 4 & Radix UI | Sistema de diseño accesible basado en tokens corporativos |
 | **Validación** | Zod 4 | Validación de esquemas y contratos de datos en el borde de entrada |
+| **Datos Deportivos** | ESPN API, FotMob, API-Football & BDFutbol | Ingesta multifuente con caché en servidor y archivo histórico compilado |
+| **Moderación IA** | Groq API (`Llama 3.1 8B`) | Análisis contextual de baja latencia sobre publicaciones comunitarias |
 | **Testing y QA** | Node Test Runner, Playwright & Lighthouse | Tests unitarios, integración, arquitectura, accesibilidad, carga y E2E |
 | **Despliegue** | Vercel | Infraestructura cloud edge con despliegue continuo (CI/CD) |
 
@@ -204,6 +254,8 @@ Consulte la memoria técnica completa:
 Mareona es un proyecto formativo y comunitario independiente, desarrollado sin ánimo de lucro con fines divulgativos y deportivos. No existe vinculación societaria ni patrocinio comercial con el Real Sporting de Gijón, S.A.D. ni con los organismos rectores de las competiciones oficiales.
 
 Todos los escudos, logotipos, imágenes históricas y marcas comerciales referenciadas pertenecen exclusivamente a sus respectivos titulares legales y se emplean bajo amparo de uso legítimo e ilustrativo.
+
+La plataforma incluye documentación legal y de cumplimiento normativo (RGPD/LSSI) accesible en `/aviso-legal`, `/privacidad`, `/cookies` y `/terminos`.
 
 ---
 

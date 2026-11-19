@@ -319,7 +319,24 @@ export async function fetchSpotlightFixture(
   supabase?: SupabaseServerClient | null
 ): Promise<DomainMatchSummary | null> {
   const matches = await fetchSportingSeasonMatches(supabase);
-  return resolveSpotlightFixture(matches);
+  const spotlight = resolveSpotlightFixture(matches);
+
+  // Safeguard: If spotlight resolved to a finished match but the season is in progress
+  // and no upcoming matches were present in the season match list (e.g. transient vendor API glitch),
+  // fallback to fetchNextFixture to ensure we spotlight the upcoming match if available.
+  const hasUpcomingInList = matches.some((m) => m.status !== "finished");
+  if (!hasUpcomingInList && spotlight?.status === "finished") {
+    try {
+      const nextFixture = await fetchNextFixture(supabase);
+      if (nextFixture && nextFixture.status !== "finished") {
+        return resolveSpotlightFixture([...matches, nextFixture]);
+      }
+    } catch {
+      // Fallback gracefully to the already resolved spotlight match
+    }
+  }
+
+  return spotlight;
 }
 
 /** In-memory cache for season matches to eliminate navigation delays. */
@@ -384,13 +401,24 @@ export async function fetchSportingSeasonMatches(
 
     if (matches.length > 0) {
       const hasLive = matches.some((m) => m.status === "live");
-      const ttl = hasLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+      const hasUpcoming = matches.some((m) => m.status !== "finished");
+      // Mid-season schedule must contain upcoming fixtures. If none are present and total matches < 38,
+      // it indicates an incomplete vendor fetch (e.g. rate limit on fixture=true).
+      // Use a short 15s TTL instead of 12h so subsequent requests can recover promptly.
+      const isSuspiciousPartial = !hasUpcoming && matches.length < 38;
+      if (isSuspiciousPartial) {
+        sportsLog.warn(
+          "Sporting season matches schedule missing upcoming fixtures mid-season; using short TTL fallback",
+          { totalMatches: matches.length }
+        );
+      }
+      const ttl = hasLive || isSuspiciousPartial ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
       memoryCachedSeasonMatches = {
         data: matches,
         expiresAt: now + ttl,
       };
 
-      if (supabase) {
+      if (supabase && !isSuspiciousPartial) {
         await setCachedPayload(
           supabase,
           cacheKey,
