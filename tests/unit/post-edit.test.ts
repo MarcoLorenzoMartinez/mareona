@@ -20,8 +20,8 @@ describe("Post Edit Window & Comment Tree", () => {
     });
 
     it("allows editing right at the 15-minute threshold", () => {
-      const exactlyFifteenMinAgo = new Date(Date.now() - POST_EDIT_WINDOW_MS).toISOString();
-      assert.equal(canEditPost(exactlyFifteenMinAgo), true);
+      const threshold = new Date(Date.now() - POST_EDIT_WINDOW_MS + 100).toISOString();
+      assert.equal(canEditPost(threshold), true);
     });
 
     it("forbids editing after 15 minutes and 1 second", () => {

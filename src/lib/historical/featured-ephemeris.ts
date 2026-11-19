@@ -3,6 +3,11 @@ import path from "node:path";
 import type { DayEphemeridesResult, DayMatchItem, EphemerisCategory } from "./ephemerides-types.ts";
 import type { HistoricalMatchDetail } from "./types.ts";
 
+export interface FeaturedMatchScorer {
+  readonly name: string;
+  readonly minutes: string;
+}
+
 export interface FeaturedEphemeris {
   readonly year: number | null;
   readonly title: string;
@@ -14,6 +19,17 @@ export interface FeaturedEphemeris {
   readonly venue?: string;
   readonly sportingScorers?: readonly string[];
   readonly opponentScorers?: readonly string[];
+  readonly homeScorersList?: readonly FeaturedMatchScorer[];
+  readonly awayScorersList?: readonly FeaturedMatchScorer[];
+  readonly homeTeam?: string;
+  readonly awayTeam?: string;
+  readonly homeScore?: number;
+  readonly awayScore?: number;
+  readonly homeCrestUrl?: string | null;
+  readonly awayCrestUrl?: string | null;
+  readonly competition?: string;
+  readonly round?: string;
+  readonly isHome?: boolean;
 }
 
 const CATEGORY_PRIORITY: Readonly<Record<EphemerisCategory, number>> = {
@@ -89,41 +105,54 @@ function loadMatchScorers(match: DayMatchItem): {
   venue?: string;
   sportingScorers: string[];
   opponentScorers: string[];
+  homeScorersList: FeaturedMatchScorer[];
+  awayScorersList: FeaturedMatchScorer[];
 } {
+  const cleanVenue = (match.venue || "").replace(/\s*\(Gij[oó]n\)/i, "").trim();
   if (!match.bdfMatchId || !match.season) {
-    return { venue: match.venue, sportingScorers: [], opponentScorers: [] };
+    return { venue: cleanVenue || undefined, sportingScorers: [], opponentScorers: [], homeScorersList: [], awayScorersList: [] };
   }
 
   try {
     const detailsPath = path.join(process.cwd(), "src", "data", "historical", "match-details", `${match.season}.json`);
-    if (!fs.existsSync(detailsPath)) return { venue: match.venue, sportingScorers: [], opponentScorers: [] };
+    if (!fs.existsSync(detailsPath)) return { venue: cleanVenue || undefined, sportingScorers: [], opponentScorers: [], homeScorersList: [], awayScorersList: [] };
 
     const seasonRecord = JSON.parse(fs.readFileSync(detailsPath, "utf8")) as Record<string, HistoricalMatchDetail>;
     const detail = seasonRecord[match.bdfMatchId];
-    if (!detail) return { venue: match.venue, sportingScorers: [], opponentScorers: [] };
+    if (!detail) return { venue: cleanVenue || undefined, sportingScorers: [], opponentScorers: [], homeScorersList: [], awayScorersList: [] };
 
-    const groupScorers = (list: typeof detail.goals) => {
+    const resolvedVenue = (detail.venue || match.venue || "").replace(/\s*\(Gij[oó]n\)/i, "").trim();
+
+    const groupScorersList = (list: typeof detail.goals): FeaturedMatchScorer[] => {
       const byScorer = new Map<string, string[]>();
       for (const g of list) {
         const mins = byScorer.get(g.scorer) ?? [];
         mins.push(`${g.minuteDisplay || g.minute}'`);
         byScorer.set(g.scorer, mins);
       }
-      return Array.from(byScorer.entries()).map(([name, mins]) => `${name} (${mins.join(", ")})`);
+      return Array.from(byScorer.entries()).map(([name, mins]) => ({
+        name,
+        minutes: mins.join(", "),
+      }));
     };
 
+    const homeList = groupScorersList(detail.goals.filter((g) => g.isHome));
+    const awayList = groupScorersList(detail.goals.filter((g) => !g.isHome));
+
     return {
-      venue: detail.venue || match.venue,
-      sportingScorers: groupScorers(detail.goals.filter((g) => (match.isHome ? g.isHome : !g.isHome))),
-      opponentScorers: groupScorers(detail.goals.filter((g) => (match.isHome ? !g.isHome : g.isHome))),
+      venue: resolvedVenue || undefined,
+      sportingScorers: (match.isHome ? homeList : awayList).map((s) => `${s.name} (${s.minutes})`),
+      opponentScorers: (match.isHome ? awayList : homeList).map((s) => `${s.name} (${s.minutes})`),
+      homeScorersList: homeList,
+      awayScorersList: awayList,
     };
   } catch {
-    return { venue: match.venue, sportingScorers: [], opponentScorers: [] };
+    return { venue: cleanVenue || undefined, sportingScorers: [], opponentScorers: [], homeScorersList: [], awayScorersList: [] };
   }
 }
 
 function describeMatch(match: DayMatchItem): FeaturedEphemeris {
-  const { venue, sportingScorers, opponentScorers } = loadMatchScorers(match);
+  const { venue, sportingScorers, opponentScorers, homeScorersList, awayScorersList } = loadMatchScorers(match);
 
   return {
     year: match.year,
@@ -136,6 +165,17 @@ function describeMatch(match: DayMatchItem): FeaturedEphemeris {
     venue,
     sportingScorers,
     opponentScorers,
+    homeScorersList,
+    awayScorersList,
+    homeTeam: match.homeTeam,
+    awayTeam: match.awayTeam,
+    homeScore: match.homeScore,
+    awayScore: match.awayScore,
+    homeCrestUrl: match.homeCrestUrl,
+    awayCrestUrl: match.awayCrestUrl,
+    competition: match.competition,
+    round: match.round,
+    isHome: match.isHome,
   };
 }
 

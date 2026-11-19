@@ -7,8 +7,9 @@
 **Plataforma web y PWA para la afición del Real Sporting de Gijón**
 
 [![Despliegue en Producción](https://img.shields.io/badge/Producción-mareona.vercel.app-000000?style=flat-square&logo=vercel&logoColor=white)](https://mareona.vercel.app)
-[![Next.js](https://img.shields.io/badge/Next.js-15%20App%20Router-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20Mode-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Next.js](https://img.shields.io/badge/Next.js-16%20App%20Router-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19-149ECA?style=flat-square&logo=react&logoColor=white)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5%20Strict-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL%20%7C%20Auth%20%7C%20RLS-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
 [![WCAG](https://img.shields.io/badge/WCAG-2.2%20AA%20Compliant-E2001A?style=flat-square)](https://www.w3.org/WAI/standards-guidelines/wcag/)
 
@@ -38,7 +39,7 @@ Punto de entrada principal a la aplicación, con un resumen de la actualidad del
 ### 2.2. Temporada (`/temporada`)
 
 #### Partidos (`/temporada/partidos` y `/temporada/partidos/[id]`)
-Lista de todos los partidos oficiales de la temporada, incluyendo resultados, fechas y horarios. Cada partido tiene su propia ficha de detalle con información completa sobre el encuentro, la cual cuenta con previa, alineaciones, eventos en directo, estadísticas y un apartado social para que los aficionados puedan hablar sobre el partido antes, durante y después del mismo.
+Lista de todos los partidos oficiales de la temporada (LaLiga Hypermotion y Copa del Rey), incluyendo resultados, fechas y horarios. Cada partido tiene su propia ficha de detalle con información completa sobre el encuentro: previa, alineaciones tácticas sobre el césped, cronología de eventos en directo, estadísticas avanzadas comparadas, gráfico de *momentum* minuto a minuto, mapa interactivo de disparos (*shotmap*) y **La Grada**, un espacio comunitario donde los aficionados debaten antes, durante y después del encuentro y votan al **MVP del partido**.
 
 #### Clasificación (`/temporada/clasificacion`)
 Tabla de clasificación oficial de La Liga, que se actualiza automáticamente con los resultados de los partidos y permite a los usuarios ver la posición del Real Sporting y sus rivales en tiempo real. 
@@ -133,9 +134,18 @@ Minijuego de comparativa estadística que enfrenta de manera consecutiva a dos f
 ### 2.6. Perfil (`/perfil`)
 
 Espacio personal y centro de control del usuario en la plataforma:
-- **Autenticación sin contraseñas:** Acceso seguro mediante Google OAuth 2.0 y enlaces mágicos (*Magic Link*) por correo electrónico, gestionado íntegramente en servidor con Supabase Auth.
-- **Identidad en la comunidad:** personalización de nombre de usuario, biografía y foto de perfil (subida directamente desde la cámara o galería del dispositivo).
-- **Historial y actividad:** Muro con el histórico de publicaciones y réplicas en La Tertulia, registro de pronósticos y puntos en La Porra, estado de avance de la colección de cromos y gestión de la red de amistades.
+- **Autenticación versátil y segura:** Acceso mediante correo electrónico y contraseña, Google OAuth 2.0 (con soporte para inicio rápido e integración nativa en PWA) y enlaces mágicos (*Magic Link*), gestionado íntegramente en servidor con Supabase Auth.
+- **Identidad en la comunidad:** Personalización de nombre de usuario, biografía y foto de perfil (mediante avatares rojiblancos predefinidos o subida de imagen propia con compresión y optimización automática en cliente).
+- **Historial, actividad y privacidad:** Muro con el histórico de publicaciones y réplicas en La Tertulia, registro de pronósticos y puntos en La Porra, estado de avance de la colección de cromos, gestión de la red de amistades y control total sobre la cuenta conforme al RGPD (incluyendo eliminación inmediata en cascada).
+
+---
+
+### 2.7. Gobernanza, Moderación y Observabilidad
+
+Para garantizar una comunidad sana y un funcionamiento técnico fiable, la plataforma cuenta con un subsistema interno de gestión y telemetría protegido mediante control de acceso basado en roles (RBAC) y políticas de seguridad a nivel de fila (RLS):
+- **Moderación comunitaria asistida:** Gestión de reportes de usuarios, bloqueo mutuo preventivo entre cuentas, revisión de mensajes retenidos por el filtro heurístico y de Inteligencia Artificial, y registro de auditoría inmutable de acciones de moderación.
+- **Comunicación en tiempo real:** Emisión de avisos globales y notificaciones de sistema en la cabecera de la aplicación para informar a la comunidad sobre eventos importantes o jornadas en directo.
+- **Analítica y telemetría propia sin cookies de terceros:** Sistema interno de observabilidad que registra métricas agregadas de tráfico, uso por secciones, dispositivos, distribución geográfica y captura automática de errores de cliente respetando íntegramente la privacidad del usuario.
 
 ---
 
@@ -147,15 +157,21 @@ Espacio personal y centro de control del usuario en la plataforma:
 - **Cero ruido:** Diseño directo orientado al dato deportivo y a la interacción comunitaria, sin elementos de distracción que generen ruido visual ni una sobrecarga de información.
 
 ### Experiencia Móvil, PWA y Resiliencia Offline
-- **PWA instalable:** Aplicación Web Progresiva con manifiesto y Service Worker que ofrece un comportamiento, fluidez y respuesta equivalentes a una aplicación nativa instalada.
+- **PWA instalable:** Aplicación Web Progresiva con manifiesto y Service Worker propio que ofrece un comportamiento, fluidez y respuesta equivalentes a una aplicación nativa instalada.
 - **Instalador guiado (`/instalar`):** Asistente dinámico paso a paso que detecta el entorno del usuario (iOS Safari, Android Chrome o escritorio) y explica cómo añadir Mareona a la pantalla de inicio.
-- **Resiliencia sin conexión (`/offline`):** Página de cortesía nativa que informa con transparencia al usuario en caso de pérdida o interrupción de la conectividad de red.
+- **Juego sin conexión y sincronización diferida:** Los pasatiempos diarios y el álbum de cromos funcionan incluso sin cobertura (pensado para momentos de saturación de red como los días de partido en El Molinón). Una cola de sincronización local almacena los retos superados sin conexión y reclama automáticamente los sobres de recompensa al servidor en cuanto el dispositivo recupera el acceso a Internet.
+- **Resiliencia sin conexión (`/offline`):** Página de cortesía nativa y guardas de interfaz que informan con transparencia al usuario en caso de pérdida o interrupción de la conectividad de red.
 - **Ergonomía táctil:** Áreas de pulsación optimizadas (≥44px) para uso ergonómico con una sola mano y barra de navegación inferior adaptada a pulgar en terminales móviles.
 
 ### Accesibilidad (WCAG 2.2 AA)
-- **Navegación total por teclado:** Foco visible contrastado (`--ring` corporativo) en todos los elementos interactivos, diálogos modales y formularios.
-- **Contraste de color certificado:** Ratios de contraste superiores a 4.5:1 en todos los textos y controles sobre el fondo claro.
-- **Semántica web rigurosa:** Estructura HTML accesible, etiquetas ARIA semánticas y compatibilidad garantizada con lectores de pantalla.
+- **Navegación total por teclado:** Foco visible contrastado (`--ring` corporativo) en todos los elementos interactivos, diálogos modales con trampa de foco (*focus trap*) y formularios.
+- **Contraste de color certificado:** Ratios de contraste superiores a 4.5:1 en todos los textos y controles sobre el fondo claro, verificados mediante pruebas automatizadas.
+- **Independencia cromática y semántica rigurosa:** Estructura HTML semántica, etiquetas ARIA, tablas equivalentes para lectores de pantalla en gráficos SVG y diferenciación de estados mediante iconos y patrones además del color.
+
+### Calidad del Software, Seguridad y Verificación
+- **Arquitectura modular y tipado estricto:** Separación limpia entre presentación, casos de uso y dominio, con validación de esquemas en el borde mediante Zod y ausencia total de tipos `any`.
+- **Seguridad defensiva y RGPD:** Políticas *Row Level Security* (RLS) activas en todas las tablas de PostgreSQL, cabeceras HTTP de seguridad estrictas (CSP, HSTS), limitación de tasa de peticiones (*rate limiting*) en servidor y custodia segura de comunicaciones.
+- **Suite de pruebas multinivel (597 tests automatizados en 137 suites):** Verificación continua que abarca pruebas unitarias de dominio, pruebas de integración de Server Actions, auditorías estáticas de reglas de arquitectura, tests matemáticos de contraste WCAG, pruebas de concurrencia/carga y pruebas de extremo a extremo (E2E) con Playwright.
 
 ---
 
@@ -163,13 +179,13 @@ Espacio personal y centro de control del usuario en la plataforma:
 
 | Ámbito | Tecnología / Herramienta | Rol en la Arquitectura |
 | :--- | :--- | :--- |
-| **Framework Base** | Next.js 15 (App Router) | Renderizado del lado del servidor (RSC), Server Actions y rutas API |
-| **Lenguaje** | TypeScript | Tipado estático estricto en la totalidad de la base de código |
-| **Base de Datos** | PostgreSQL (Supabase) | Modelo relacional, funciones almacenadas y políticas Row Level Security |
-| **Autenticación** | Supabase Auth | Flujo de credenciales mediante OAuth 2.0 y enlaces mágicos |
-| **Estilos** | Tailwind CSS | Sistema de diseño basado en tokens de diseño corporativos |
-| **Validación** | Zod | Validación de esquemas y tipos en el borde de entrada |
-| **Testing** | Node Test Runner / Playwright | Pruebas unitarias, de integración, accesibilidad y extremo a extremo |
+| **Framework Base** | Next.js 16 (App Router) & React 19 | Renderizado del lado del servidor (RSC), Server Actions y rutas API |
+| **Lenguaje** | TypeScript 5 (`strict: true`) | Tipado estático estricto en la totalidad de la base de código |
+| **Base de Datos** | PostgreSQL (Supabase) | Modelo relacional, funciones RPC, triggers y políticas Row Level Security |
+| **Autenticación** | Supabase Auth (`@supabase/ssr`) | Credenciales, Google OAuth 2.0 y enlaces mágicos gestionados en servidor |
+| **Estilos y UI** | Tailwind CSS 4 & Radix UI | Sistema de diseño accesible basado en tokens corporativos |
+| **Validación** | Zod 4 | Validación de esquemas y contratos de datos en el borde de entrada |
+| **Testing y QA** | Node Test Runner, Playwright & Lighthouse | Tests unitarios, integración, arquitectura, accesibilidad, carga y E2E |
 | **Despliegue** | Vercel | Infraestructura cloud edge con despliegue continuo (CI/CD) |
 
 ---
@@ -199,4 +215,4 @@ Ingeniero Informático del Software
 - **Despliegue:** [mareona.vercel.app](https://mareona.vercel.app)
 - **GitHub:** [@MarcoLorenzoMartinez](https://github.com/MarcoLorenzoMartinez)
 - **LinkedIn:** [Marco Lorenzo Martínez](https://www.linkedin.com/in/marco-lorenzo-mart%C3%ADnez/)
-- **Contacto:** [marcolorenzomart@gmail.com]
+- **Contacto:** [marcolorenzomart@gmail.com](mailto:marcolorenzomart@gmail.com)

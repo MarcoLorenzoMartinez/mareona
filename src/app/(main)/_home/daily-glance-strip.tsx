@@ -11,8 +11,7 @@ interface DailyGlanceStripProps {
 
 /**
  * Mobile-only glance card placed between the Hero and Standings.
- * Organizes the daily pack and minigames into two clean rows so text never truncates
- * while preserving high visual density.
+ * Compact white recuadros without gray backgrounds.
  */
 export function DailyGlanceStrip({ porra }: DailyGlanceStripProps) {
   const actions = useDailyActions(porra);
@@ -22,50 +21,60 @@ export function DailyGlanceStrip({ porra }: DailyGlanceStripProps) {
       aria-label="Juegos del día"
       className="flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-white p-3 shadow-2xs lg:hidden select-none"
     >
-      {/* Fila 1: Sobre diario (con espacio holgado para no truncar texto) */}
+      {/* Fila 1: Sobre diario */}
       {actions?.packReady && (
-        <div className="flex items-center justify-between gap-3 rounded-lg bg-[var(--surface)] p-2">
-          <div className="flex items-center gap-2.5 min-w-0">
+        <Link
+          href="/juegos/album?tab=packs"
+          className="group flex min-h-10 items-center justify-between gap-2.5 rounded-lg border border-[var(--border)] bg-white px-2.5 py-1.5 transition-colors active:scale-[0.99]"
+        >
+          <div className="flex items-center gap-2 min-w-0">
             <MiniPack tier="aficionado" size="sm" />
             <span className="text-xs font-bold text-[var(--foreground)] truncate">
-              Sobre diario
+              Sobre diario disponible
             </span>
           </div>
-          <Link
-            href="/juegos/album?tab=packs"
-            className="shrink-0 rounded-full bg-[var(--primary)] px-3 py-1 text-xs font-bold text-white transition-colors duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-          >
-            Abrir sobre
-          </Link>
-        </div>
+          <span className="shrink-0 rounded-full bg-[var(--primary)] px-2.5 py-0.5 text-xs font-bold text-white">
+            Abrir
+          </span>
+        </Link>
       )}
 
-      {/* Fila alternativa: La Porra si está abierta y no has votado */}
-      {actions?.porraPending && porra && (
-        <div className="flex items-center justify-between gap-3 rounded-lg bg-[var(--surface)] px-2.5 py-1.5">
+      {/* Fila 2: La Porra si está activa */}
+      {porra && (actions?.porraPending || actions?.porraVoted) && (
+        <Link
+          href="/juegos/porra"
+          className={`flex min-h-10 items-center justify-between gap-2 rounded-lg border px-2.5 py-1.5 transition-colors active:scale-[0.99] ${
+            actions.porraVoted
+              ? "border-neutral-200/80 bg-neutral-50/70 text-[var(--foreground)]"
+              : "border-[var(--border)] bg-white"
+          }`}
+        >
           <div className="min-w-0">
             <span className="block text-xs font-bold text-[var(--foreground)] truncate">
-              La Porra · vs {porra.opponentName}
+              La Porra vs {porra.opponentName}
             </span>
           </div>
-          <Link
-            href="/juegos/porra"
-            className="shrink-0 rounded-full border border-[var(--primary)] px-2.5 py-0.5 text-xs font-bold text-[var(--primary)] active:scale-95"
-          >
-            Pronosticar
-          </Link>
-        </div>
+          {actions.porraVoted ? (
+            <span className="shrink-0 text-xs font-bold text-emerald-600">
+              ✓ Listo
+            </span>
+          ) : (
+            <span className="shrink-0 rounded-full border border-[var(--primary)] px-2 py-0.5 text-xs font-bold text-[var(--primary)]">
+              Pronosticar
+            </span>
+          )}
+        </Link>
       )}
 
-      {/* Fila 2: Grid equilibrado de los tres retos diarios */}
+      {/* Fila 3: Grid de los tres retos diarios */}
       <div className="grid grid-cols-3 gap-1.5">
         <Link
           href="/juegos/wordle"
           aria-label={actions?.wordleDone ? "Wordle (completado)" : "Wordle"}
-          className={`flex min-h-10 items-center justify-center gap-1 rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors ${
+          className={`flex min-h-9 items-center justify-center gap-1 rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors ${
             actions?.wordleDone
-              ? "border-neutral-200 bg-neutral-50 text-[var(--foreground)]"
-              : "border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[var(--primary)]"
+              ? "border-neutral-200/80 bg-neutral-50 text-[var(--foreground)]"
+              : "border-[var(--border)] bg-white text-[var(--foreground)] active:bg-neutral-50"
           }`}
         >
           <span>Wordle</span>
@@ -79,10 +88,10 @@ export function DailyGlanceStrip({ porra }: DailyGlanceStripProps) {
         <Link
           href="/juegos/pregunta-del-dia"
           aria-label={actions?.triviaDone ? "Trivia (completado)" : "Trivia"}
-          className={`flex min-h-10 items-center justify-center gap-1 rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors ${
+          className={`flex min-h-9 items-center justify-center gap-1 rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors ${
             actions?.triviaDone
-              ? "border-neutral-200 bg-neutral-50 text-[var(--foreground)]"
-              : "border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[var(--primary)]"
+              ? "border-neutral-200/80 bg-neutral-50 text-[var(--foreground)]"
+              : "border-[var(--border)] bg-white text-[var(--foreground)] active:bg-neutral-50"
           }`}
         >
           <span>Trivia</span>
@@ -96,10 +105,10 @@ export function DailyGlanceStrip({ porra }: DailyGlanceStripProps) {
         <Link
           href="/juegos/quien-es"
           aria-label={actions?.whoAreYaDone ? "¿Quién es? (completado)" : "¿Quién es?"}
-          className={`flex min-h-10 items-center justify-center gap-1 rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors ${
+          className={`flex min-h-9 items-center justify-center gap-1 rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors ${
             actions?.whoAreYaDone
-              ? "border-neutral-200 bg-neutral-50 text-[var(--foreground)]"
-              : "border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[var(--primary)]"
+              ? "border-neutral-200/80 bg-neutral-50 text-[var(--foreground)]"
+              : "border-[var(--border)] bg-white text-[var(--foreground)] active:bg-neutral-50"
           }`}
         >
           <span>¿Quién es?</span>

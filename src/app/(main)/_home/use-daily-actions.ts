@@ -13,6 +13,7 @@ export interface PorraOpening {
 
 export interface DailyActions {
   readonly porraPending: boolean;
+  readonly porraVoted: boolean;
   readonly packReady: boolean;
   readonly wordleDone: boolean;
   readonly triviaDone: boolean;
@@ -85,12 +86,13 @@ export function useDailyActions(porra: PorraOpening | null): DailyActions | null
       const today = getTodayDateString();
       const isOpen = porra !== null && Date.parse(porra.kickoffAt) > Date.now();
       const porraPending = isOpen && getStoredPrediction(porra.matchId, userId) === null;
+      const porraVoted = isOpen && !porraPending;
       const packReady = !getDailyMissionState(undefined, userId).hasClaimedDailyLogin;
       const wordleDone = checkWordleCompletedToday(today);
       const triviaDone = checkTriviaCompletedToday(today);
       const whoAreYaDone = checkWhoAreYaCompletedToday(today);
 
-      return `${porraPending ? 1 : 0}${packReady ? 1 : 0}${wordleDone ? 1 : 0}${triviaDone ? 1 : 0}${whoAreYaDone ? 1 : 0}`;
+      return `${porraPending ? 1 : 0}${porraVoted ? 1 : 0}${packReady ? 1 : 0}${wordleDone ? 1 : 0}${triviaDone ? 1 : 0}${whoAreYaDone ? 1 : 0}`;
     },
     () => null
   );
@@ -98,9 +100,10 @@ export function useDailyActions(porra: PorraOpening | null): DailyActions | null
   if (snapshot === null) return null;
   return {
     porraPending: snapshot[0] === "1",
-    packReady: snapshot[1] === "1",
-    wordleDone: snapshot[2] === "1",
-    triviaDone: snapshot[3] === "1",
-    whoAreYaDone: snapshot[4] === "1",
+    porraVoted: snapshot[1] === "1",
+    packReady: snapshot[2] === "1",
+    wordleDone: snapshot[3] === "1",
+    triviaDone: snapshot[4] === "1",
+    whoAreYaDone: snapshot[5] === "1",
   };
 }

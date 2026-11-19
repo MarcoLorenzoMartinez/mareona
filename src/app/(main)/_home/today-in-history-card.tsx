@@ -9,19 +9,20 @@ interface TodayInHistoryCardProps {
 }
 
 /**
- * Historical spotlight for the current day, styled like the Efemérides hub:
- * year capsule, title, photograph/crest and factual context with match scorers.
+ * Historical spotlight for the current day:
+ * Context header with format 'Liga, Jornada 11' and a clean confrontation card.
  */
 export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
   const dict = getDictionary().home.history;
-  const isMatch = Boolean(featured.isMatch);
+  const isMatch = Boolean(featured.isMatch && featured.homeTeam && featured.awayTeam);
+  const isSportingHome = featured.homeTeam === "Real Sporting";
 
   return (
     <section
       aria-label={dict.title}
-      className="flex flex-col rounded-xl border border-[var(--border)] bg-white p-5 shadow-2xs"
+      className="flex flex-col rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs"
     >
-      <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2.5">
         <h2 className="text-base font-bold text-[var(--foreground)]">{dict.title}</h2>
         <Link
           href="/historico/efemerides"
@@ -31,64 +32,94 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
         </Link>
       </div>
 
-      <div className="mt-4 flex flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-2.5">
+      <div className="mt-3.5 flex flex-col gap-3">
+        {/* Cabecera contextual: Año en cápsula y 'Competición, Jornada' sin punto separador */}
+        <div className="flex flex-wrap items-center gap-2 text-xs">
           {featured.year !== null && (
             <span className="shrink-0 rounded-full bg-[var(--primary)] px-2.5 py-0.5 text-xs font-bold tabular-nums text-white">
               {featured.year}
             </span>
           )}
-          <h3 className="text-sm font-bold leading-snug text-[var(--foreground)] sm:text-base">
-            {featured.title}
-          </h3>
+          <span className="font-semibold text-[var(--foreground)]">
+            {featured.competition || featured.detail}
+            {featured.round ? `, ${featured.round}` : ""}
+          </span>
         </div>
 
-        <div className="flex items-start gap-3.5">
-          {featured.photoUrl && (
-            <div className="shrink-0 overflow-hidden rounded-xl border border-[var(--border)] bg-neutral-50 flex items-center justify-center p-2">
-              {isMatch ? (
+        {isMatch ? (
+          <Link
+            href="/historico/efemerides"
+            className="group flex flex-col justify-center rounded-xl border border-[var(--border)] bg-neutral-50/60 p-4 transition-all duration-150 hover:border-[var(--primary)]/50 hover:bg-white hover:shadow-2xs active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+          >
+            {/* Marcador central limpio y proporcionado */}
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+              {/* Equipo Local */}
+              <div className="flex items-center justify-end gap-2 text-right min-w-0">
+                <span
+                  className={`truncate text-xs sm:text-sm ${
+                    isSportingHome
+                      ? "font-bold text-[var(--foreground)]"
+                      : "font-medium text-[var(--foreground-muted)]"
+                  }`}
+                >
+                  {featured.homeTeam}
+                </span>
                 <TeamCrest
-                  crestUrl={featured.photoUrl}
-                  teamName={featured.figure ?? "Rival"}
-                  size="lg"
+                  crestUrl={featured.homeCrestUrl}
+                  teamName={featured.homeTeam ?? "Local"}
+                  size="md"
+                  isSporting={isSportingHome}
                 />
-              ) : (
+              </div>
+
+              {/* Cápsula del tanteo */}
+              <div className="shrink-0 rounded-full border border-[var(--border)] bg-white px-3.5 py-1 text-center text-sm sm:text-base font-black font-sans tabular-nums text-[var(--foreground)] shadow-2xs">
+                {featured.homeScore ?? 0} – {featured.awayScore ?? 0}
+              </div>
+
+              {/* Equipo Visitante */}
+              <div className="flex items-center justify-start gap-2 text-left min-w-0">
+                <TeamCrest
+                  crestUrl={featured.awayCrestUrl}
+                  teamName={featured.awayTeam ?? "Visitante"}
+                  size="md"
+                  isSporting={!isSportingHome}
+                />
+                <span
+                  className={`truncate text-xs sm:text-sm ${
+                    !isSportingHome
+                      ? "font-bold text-[var(--foreground)]"
+                      : "font-medium text-[var(--foreground-muted)]"
+                  }`}
+                >
+                  {featured.awayTeam}
+                </span>
+              </div>
+            </div>
+          </Link>
+        ) : (
+          /* Hito o efeméride no partido (personaje / leyenda) */
+          <div className="flex items-start gap-3 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-3.5">
+            {featured.photoUrl && (
+              <div className="shrink-0 overflow-hidden rounded-lg border border-[var(--border)] bg-white">
                 <PlayerPhoto
                   photoUrl={featured.photoUrl}
                   playerName={featured.figure ?? featured.title}
-                  size="lg"
-                  className="h-20 w-20 object-cover object-top sm:h-24 sm:w-24 rounded-lg"
+                  size="md"
+                  className="h-16 w-16 object-cover object-top rounded-lg"
                 />
-              )}
-            </div>
-          )}
-
-          <div className="flex-1 flex flex-col gap-1 min-w-0">
-            <p className="text-xs leading-relaxed text-[var(--foreground-muted)] sm:text-sm font-medium">
-              {featured.detail}
-              {featured.venue ? ` · ${featured.venue}` : ""}
-            </p>
-
-            {isMatch && featured.sportingScorers && featured.sportingScorers.length > 0 && (
-              <div className="mt-1 flex flex-col gap-1 text-xs">
-                <div className="flex items-start gap-1.5 leading-snug">
-                  <span className="font-bold text-[var(--foreground)] shrink-0">Goles RSG:</span>
-                  <span className="text-[var(--foreground-muted)] font-sans tabular-nums">
-                    {featured.sportingScorers.join(", ")}
-                  </span>
-                </div>
-                {featured.opponentScorers && featured.opponentScorers.length > 0 && (
-                  <div className="flex items-start gap-1.5 leading-snug">
-                    <span className="font-semibold text-neutral-500 shrink-0">Rival:</span>
-                    <span className="text-neutral-500 font-sans tabular-nums">
-                      {featured.opponentScorers.join(", ")}
-                    </span>
-                  </div>
-                )}
               </div>
             )}
+            <div className="flex-1 flex flex-col gap-1 min-w-0">
+              <h3 className="text-sm font-bold text-[var(--foreground)] leading-snug truncate">
+                {featured.title}
+              </h3>
+              <p className="text-xs leading-relaxed text-[var(--foreground-muted)] font-medium">
+                {featured.detail}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
