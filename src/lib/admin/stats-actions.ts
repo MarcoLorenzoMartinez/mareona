@@ -1,10 +1,14 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { assertAdmin } from "./guard";
 import { computePlatformAnalytics } from "@/lib/telemetry/analytics-calculator";
+import { logger } from "@/lib/logger";
 import type { AdminAuditLog, PlatformAnalytics } from "./types";
 import type { Database } from "@/types/database.types";
+
+const log = logger.child("admin-stats");
 
 export interface ProductHealthMetrics {
   readonly totalUsers: number;
@@ -21,7 +25,7 @@ export interface ProductHealthMetrics {
  */
 export async function getAdminProductMetrics(): Promise<ProductHealthMetrics> {
   await assertAdmin();
-  const supabase = await createClient();
+  const supabase = createAdminClient() ?? (await createClient());
 
   const todayIso = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
@@ -56,7 +60,7 @@ export async function getAdminProductMetrics(): Promise<ProductHealthMetrics> {
  */
 export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAuditLog[]> {
   await assertAdmin();
-  const supabase = await createClient();
+  const supabase = createAdminClient() ?? (await createClient());
 
   const { data, error } = await supabase
     .from("admin_audit_logs")
@@ -64,7 +68,11 @@ export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAudit
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  if (error || !data || data.length === 0) {
+  if (error) {
+    log.error("Failed to fetch admin_audit_logs", error);
+    return [];
+  }
+  if (!data || data.length === 0) {
     return [];
   }
 
@@ -89,18 +97,22 @@ export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAudit
  */
 export async function getAdminPlatformAnalytics(): Promise<PlatformAnalytics> {
   await assertAdmin();
-  const supabase = await createClient();
+  const supabase = createAdminClient() ?? (await createClient());
 
-  const thirtyDaysAgoIso = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const oneYearAgoIso = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
 
   const { data, error } = await supabase
     .from("site_visits")
     .select("*")
-    .gte("created_at", thirtyDaysAgoIso)
+    .gte("created_at", oneYearAgoIso)
     .order("created_at", { ascending: true })
-    .limit(5000);
+    .limit(10000);
 
-  if (error || !data || data.length === 0) {
+  if (error) {
+    log.error("Failed to fetch site_visits for admin analytics", error);
+    return computePlatformAnalytics([]);
+  }
+  if (!data || data.length === 0) {
     return computePlatformAnalytics([]);
   }
 

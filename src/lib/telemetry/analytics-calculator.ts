@@ -48,15 +48,17 @@ function categorizeSection(pathname: string): { key: string; label: string } {
 }
 
 export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): PlatformAnalytics {
-  const total = rows.length;
   const now = new Date();
 
-  // Daily map
+  // 14-day window map (oldest -> newest)
   const dailyMap = new Map<string, { visits: number; sessions: Set<string> }>();
   for (let i = 13; i >= 0; i--) {
     const d = new Date(now.getTime() - i * 86400000);
     dailyMap.set(d.toISOString().split("T")[0], { visits: 0, sessions: new Set() });
   }
+
+  // Full historical daily map for 30d / 6m / 1y / custom date range views
+  const allDailyMap = new Map<string, { visits: number; sessions: Set<string> }>();
 
   const hourlyCounts = new Array(24).fill(0);
   const sectionCounts = new Map<string, number>(DEFAULT_SECTIONS.map((s) => [s.key, 0]));
@@ -65,12 +67,22 @@ export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): Platfor
   const countryMap = new Map<string, number>([["España", 0]]);
   const sessionPageCounts = new Map<string, number>();
 
+  let total = 0;
   let mobileCount = 0;
   let pwaCount = 0;
   let totalDurationSeconds = 0;
   let durationEntriesCount = 0;
 
   for (const r of rows) {
+    // Rows with duration_seconds > 0 are exit/visibility flush pings carrying time-on-page.
+    // Only duration_seconds === 0 represents a pageview entry ping; skipping > 0 prevents 2x counting.
+    if (r.duration_seconds > 0) {
+      totalDurationSeconds += r.duration_seconds;
+      durationEntriesCount++;
+      continue;
+    }
+
+    total++;
     const visitDate = new Date(r.created_at);
     const isoDate = r.created_at.split("T")[0];
 
@@ -79,6 +91,14 @@ export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): Platfor
       dailyEntry.visits++;
       if (r.session_id) dailyEntry.sessions.add(r.session_id);
     }
+
+    let histEntry = allDailyMap.get(isoDate);
+    if (!histEntry) {
+      histEntry = { visits: 0, sessions: new Set() };
+      allDailyMap.set(isoDate, histEntry);
+    }
+    histEntry.visits++;
+    if (r.session_id) histEntry.sessions.add(r.session_id);
 
     const hour = visitDate.getHours();
     if (hour >= 0 && hour < 24) hourlyCounts[hour]++;
@@ -97,10 +117,6 @@ export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): Platfor
     if (r.session_id) {
       sessionPageCounts.set(r.session_id, (sessionPageCounts.get(r.session_id) || 0) + 1);
     }
-    if (r.duration_seconds > 0) {
-      totalDurationSeconds += r.duration_seconds;
-      durationEntriesCount++;
-    }
   }
 
   const dailyTraffic: DailyTrafficPoint[] = Array.from(dailyMap.entries()).map(([date, data]) => {
@@ -109,9 +125,21 @@ export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): Platfor
       date,
       label: `${d.getDate()} ${SPANISH_MONTHS[d.getMonth()]}`,
       visits: data.visits,
-      uniqueVisitors: data.sessions.size > 0 ? data.sessions.size : Math.round(data.visits * 0.7),
+      uniqueVisitors: data.sessions.size,
     };
   });
+
+  const allDailyTraffic: DailyTrafficPoint[] = Array.from(allDailyMap.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, data]) => {
+      const d = new Date(date + "T12:00:00Z");
+      return {
+        date,
+        label: `${d.getDate()} ${SPANISH_MONTHS[d.getMonth()]}`,
+        visits: data.visits,
+        uniqueVisitors: data.sessions.size,
+      };
+    });
 
   const maxHourCount = Math.max(...hourlyCounts, 1);
   const hourlyTraffic: HourlyTrafficPoint[] = hourlyCounts.map((count, hour) => ({
@@ -173,10 +201,11 @@ export function computePlatformAnalytics(rows: readonly SiteVisitRow[]): Platfor
     if (pageCount === 1) singlePageSessions++;
   }
   const bounceRate = sessionPageCounts.size > 0 ? Number(((singlePageSessions / sessionPageCounts.size) * 100).toFixed(1)) : 0;
-  const pagesPerSession = sessionPageCounts.size > 0 ? Number((total / sessionPageCounts.size).toFixed(1)) : 1.0;
+  const pagesPerSession = sessionPageCounts.size > 0 ? Number((total / sessionPageCounts.size).toFixed(1)) : 0;
 
   return {
     dailyTraffic,
+    allDailyTraffic,
     hourlyTraffic,
     sectionUsage,
     deviceUsage,

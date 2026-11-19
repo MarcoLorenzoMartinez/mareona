@@ -40,7 +40,10 @@ export default async function StatsAdminPage() {
 
       {/* Main Traffic Area Chart */}
       <div>
-        <TrafficAreaChart points={analytics.dailyTraffic} />
+        <TrafficAreaChart
+          points={analytics.dailyTraffic}
+          allDailyPoints={analytics.allDailyTraffic}
+        />
       </div>
 
       {/* Visual Analytics Grid: 2x2 Balanced Cards (4 core modules) */}

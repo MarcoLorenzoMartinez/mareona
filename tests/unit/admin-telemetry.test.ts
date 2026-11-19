@@ -45,7 +45,7 @@ describe("Telemetry & Cookieless Analytics Suite", () => {
       assert.ok(analytics.hourlyTraffic.every((h) => h.count === 0 && h.percentage === 0));
     });
 
-    it("aggregates visits, unique sessions, devices, and sections accurately", () => {
+    it("aggregates visits, unique sessions, devices, and sections accurately without double-counting duration pings", () => {
       const todayIso = new Date().toISOString();
       const mockRows: SiteVisitRow[] = [
         {
@@ -54,24 +54,57 @@ describe("Telemetry & Cookieless Analytics Suite", () => {
           device_type: "mobile",
           is_pwa: true,
           session_id: "session-1",
-          duration_seconds: 120,
+          duration_seconds: 0,
           country: "España",
           province: "Asturias",
           created_at: todayIso,
         },
         {
           id: 2,
-          pathname: "/temporada/clasificacion",
+          pathname: "/temporada",
           device_type: "mobile",
           is_pwa: true,
-          session_id: "session-1", // Same session
-          duration_seconds: 180,
+          session_id: "session-1",
+          duration_seconds: 120, // exit flush ping: contributes duration only, not a second visit
           country: "España",
           province: "Asturias",
           created_at: todayIso,
         },
         {
           id: 3,
+          pathname: "/temporada/clasificacion",
+          device_type: "mobile",
+          is_pwa: true,
+          session_id: "session-1", // Same session
+          duration_seconds: 0,
+          country: "España",
+          province: "Asturias",
+          created_at: todayIso,
+        },
+        {
+          id: 4,
+          pathname: "/temporada/clasificacion",
+          device_type: "mobile",
+          is_pwa: true,
+          session_id: "session-1",
+          duration_seconds: 180,
+          country: "España",
+          province: "Asturias",
+          created_at: todayIso,
+        },
+        {
+          id: 5,
+          pathname: "/juegos/porra",
+          device_type: "desktop",
+          is_pwa: false,
+          session_id: "session-2",
+          duration_seconds: 0,
+          country: "España",
+          province: "Madrid",
+          created_at: todayIso,
+        },
+        {
+          id: 6,
           pathname: "/juegos/porra",
           device_type: "desktop",
           is_pwa: false,

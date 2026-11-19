@@ -112,6 +112,7 @@ export interface TopPageStat {
 
 export interface PlatformAnalytics {
   readonly dailyTraffic: readonly DailyTrafficPoint[];
+  readonly allDailyTraffic?: readonly DailyTrafficPoint[];
   readonly hourlyTraffic: readonly HourlyTrafficPoint[];
   readonly sectionUsage: readonly SectionUsageStat[];
   readonly deviceUsage: readonly DeviceUsageStat[];

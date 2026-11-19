@@ -44,6 +44,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true, ignored: "admin_route" });
     }
 
+    // Ignore automated bots, crawlers, and headless audit runners
+    const userAgent = request.headers.get("user-agent") || "";
+    if (/bot|crawler|spider|headless|lighthouse|vercel-screenshot|curl|wget|python-requests/i.test(userAgent)) {
+      return NextResponse.json({ ok: true, ignored: "bot_user_agent" });
+    }
+
     // Ignore local development requests unless explicitly forced
     const host = request.headers.get("host") || "";
     const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1");

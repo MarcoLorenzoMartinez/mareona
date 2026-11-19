@@ -11,19 +11,22 @@ import { TrafficRangeSelector } from "./traffic-range-selector";
 
 interface TrafficAreaChartProps {
   readonly points: readonly DailyTrafficPoint[];
+  readonly allDailyPoints?: readonly DailyTrafficPoint[];
 }
 
 /**
  * Responsive SVG area chart showing daily/monthly traffic with explicit point markers,
  * refined match-day subtle accents, and calendar date range selection.
  */
-export function TrafficAreaChart({ points }: TrafficAreaChartProps) {
+export function TrafficAreaChart({ points, allDailyPoints }: TrafficAreaChartProps) {
+  const defaultStart = points[0]?.date ?? new Date().toISOString().split("T")[0];
+  const defaultEnd = points[points.length - 1]?.date ?? new Date().toISOString().split("T")[0];
   const [period, setPeriod] = useState<TrafficPeriod>("14d");
-  const [startDate, setStartDate] = useState("2026-10-27");
-  const [endDate, setEndDate] = useState("2026-11-09");
+  const [startDate, setStartDate] = useState(defaultStart);
+  const [endDate, setEndDate] = useState(defaultEnd);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const currentPoints = getPointsForPeriod(points, period, startDate, endDate);
+  const currentPoints = getPointsForPeriod(points, period, startDate, endDate, allDailyPoints);
   if (currentPoints.length === 0) return null;
 
   const totalVisits = currentPoints.reduce((acc, p) => acc + p.visits, 0);

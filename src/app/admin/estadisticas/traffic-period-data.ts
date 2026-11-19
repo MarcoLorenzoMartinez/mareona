@@ -18,120 +18,114 @@ export const TRAFFIC_PERIODS: readonly PeriodConfig[] = [
 const SPANISH_MONTHS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
 /**
- * Generates deterministic realistic trend data for 30 days based on 14-day sample.
+ * Builds a contiguous daily series for the last `days` calendar days using strictly real data.
+ * Days without recorded visits are filled with 0 (zero mock data).
  */
-function generate30DaysData(base14: readonly DailyTrafficPoint[]): readonly DailyTrafficPoint[] {
+function buildTrailingDaysData(
+  source: readonly DailyTrafficPoint[],
+  days: number
+): readonly DailyTrafficPoint[] {
+  const byDate = new Map(source.map((p) => [p.date, p]));
+  const anchorIso = source[source.length - 1]?.date;
+  const endDate = anchorIso ? new Date(`${anchorIso}T12:00:00Z`) : new Date();
   const result: DailyTrafficPoint[] = [];
-  const startDay = 11; // Oct 11 to Nov 9
 
-  for (let i = 0; i < 30; i++) {
-    const day = startDay + i;
-    const isOct = day <= 31;
-    const displayDay = isOct ? day : day - 31;
-    const month = isOct ? "Oct" : "Nov";
-    const dateStr = `2026-${isOct ? "10" : "11"}-${String(displayDay).padStart(2, "0")}`;
-    const label = `${displayDay} ${month}`;
-
-    // Existing point in base 14 days
-    const existing = base14.find((p) => p.date === dateStr);
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(endDate.getTime() - i * 86400000);
+    const iso = d.toISOString().split("T")[0];
+    const existing = byDate.get(iso);
     if (existing) {
       result.push(existing);
-      continue;
+    } else {
+      result.push({
+        date: iso,
+        label: `${d.getUTCDate()} ${SPANISH_MONTHS[d.getUTCMonth()]}`,
+        visits: 0,
+        uniqueVisitors: 0,
+      });
     }
+  }
 
-    // Previous days simulation
-    const isMatch = i % 7 === 3;
-    const visits = isMatch ? 115 + (i % 3) * 8 : 52 + ((i * 17) % 32);
-    const uniqueVisitors = Math.round(visits * 0.7);
+  return result;
+}
 
+/**
+ * Aggregates real daily points into monthly buckets for the last `months` calendar months.
+ */
+function buildMonthlyData(
+  source: readonly DailyTrafficPoint[],
+  months: number
+): readonly DailyTrafficPoint[] {
+  const monthlyTotals = new Map<string, { visits: number; uniqueVisitors: number }>();
+
+  for (const p of source) {
+    const monthKey = p.date.slice(0, 7); // YYYY-MM
+    const current = monthlyTotals.get(monthKey) ?? { visits: 0, uniqueVisitors: 0 };
+    monthlyTotals.set(monthKey, {
+      visits: current.visits + p.visits,
+      uniqueVisitors: current.uniqueVisitors + p.uniqueVisitors,
+    });
+  }
+
+  const anchorIso = source[source.length - 1]?.date;
+  const anchor = anchorIso ? new Date(`${anchorIso}T12:00:00Z`) : new Date();
+  const result: DailyTrafficPoint[] = [];
+
+  for (let i = months - 1; i >= 0; i--) {
+    const d = new Date(Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth() - i, 1));
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+    const totals = monthlyTotals.get(key) ?? { visits: 0, uniqueVisitors: 0 };
     result.push({
-      date: dateStr,
-      label,
-      visits,
-      uniqueVisitors,
-      isMatchDay: isMatch,
+      date: key,
+      label: SPANISH_MONTHS[d.getUTCMonth()],
+      visits: totals.visits,
+      uniqueVisitors: totals.uniqueVisitors,
     });
   }
 
   return result;
 }
 
-const SIX_MONTHS_DATA: readonly DailyTrafficPoint[] = [
-  { date: "2026-06", label: "Jun", visits: 1120, uniqueVisitors: 780, isMatchDay: false },
-  { date: "2026-07", label: "Jul", visits: 890, uniqueVisitors: 620, isMatchDay: false },
-  { date: "2026-08", label: "Ago", visits: 1650, uniqueVisitors: 1120, isMatchDay: true },
-  { date: "2026-09", label: "Sep", visits: 1980, uniqueVisitors: 1350, isMatchDay: true },
-  { date: "2026-10", label: "Oct", visits: 2150, uniqueVisitors: 1480, isMatchDay: true },
-  { date: "2026-11", label: "Nov", visits: 1054, uniqueVisitors: 748, isMatchDay: true },
-];
-
-const ONE_YEAR_DATA: readonly DailyTrafficPoint[] = [
-  { date: "2025-12", label: "Dic", visits: 1240, uniqueVisitors: 840, isMatchDay: true },
-  { date: "2026-01", label: "Ene", visits: 1380, uniqueVisitors: 920, isMatchDay: true },
-  { date: "2026-02", label: "Feb", visits: 1450, uniqueVisitors: 980, isMatchDay: true },
-  { date: "2026-03", label: "Mar", visits: 1620, uniqueVisitors: 1100, isMatchDay: true },
-  { date: "2026-04", label: "Abr", visits: 1850, uniqueVisitors: 1250, isMatchDay: true },
-  { date: "2026-05", label: "May", visits: 2050, uniqueVisitors: 1390, isMatchDay: true },
-  { date: "2026-06", label: "Jun", visits: 1120, uniqueVisitors: 780, isMatchDay: false },
-  { date: "2026-07", label: "Jul", visits: 890, uniqueVisitors: 620, isMatchDay: false },
-  { date: "2026-08", label: "Ago", visits: 1650, uniqueVisitors: 1120, isMatchDay: true },
-  { date: "2026-09", label: "Sep", visits: 1980, uniqueVisitors: 1350, isMatchDay: true },
-  { date: "2026-10", label: "Oct", visits: 2150, uniqueVisitors: 1480, isMatchDay: true },
-  { date: "2026-11", label: "Nov", visits: 1054, uniqueVisitors: 748, isMatchDay: true },
-];
-
 /**
- * Generates contiguous daily points between two ISO dates (YYYY-MM-DD).
- * Reuses base points where available, simulating deterministic values for historical dates.
+ * Generates contiguous daily points between two ISO dates (YYYY-MM-DD) using strictly real data.
+ * Days without recorded visits default to 0.
  */
 export function getPointsForDateRange(
-  base14: readonly DailyTrafficPoint[],
+  source: readonly DailyTrafficPoint[],
   startDate: string,
   endDate: string
 ): readonly DailyTrafficPoint[] {
-  let [start, end] = [new Date(startDate), new Date(endDate)];
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) return base14;
+  let [start, end] = [new Date(`${startDate}T12:00:00Z`), new Date(`${endDate}T12:00:00Z`)];
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) return source;
   if (start > end) [start, end] = [end, start];
 
+  const byDate = new Map(source.map((p) => [p.date, p]));
   const points: DailyTrafficPoint[] = [];
   const current = new Date(start);
   const maxDays = 120; // Bound queries to prevent performance degradation
 
   let count = 0;
   while (current <= end && count < maxDays) {
-    const y = current.getFullYear();
-    const m = current.getMonth();
-    const d = current.getDate();
+    const y = current.getUTCFullYear();
+    const m = current.getUTCMonth();
+    const d = current.getUTCDate();
     const isoDate = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-    const label = `${d} ${SPANISH_MONTHS[m]}`;
+    const existing = byDate.get(isoDate);
 
-    const existing = base14.find((p) => p.date === isoDate);
-    if (existing) {
-      points.push(existing);
-    } else {
-      const dayOfWeek = current.getDay();
-      const isMatch = dayOfWeek === 0 && d % 2 === 0;
-      const seed = Math.abs(current.getTime() / 86400000) % 50;
-      const visits = isMatch
-        ? 118 + Math.round((seed % 6) * 4)
-        : dayOfWeek === 0 || dayOfWeek === 6
-        ? 75 + Math.round((seed % 8) * 2)
-        : 52 + Math.round((seed % 10) * 2);
-
-      points.push({
+    points.push(
+      existing ?? {
         date: isoDate,
-        label,
-        visits,
-        uniqueVisitors: Math.round(visits * 0.68),
-        isMatchDay: isMatch,
-      });
-    }
+        label: `${d} ${SPANISH_MONTHS[m]}`,
+        visits: 0,
+        uniqueVisitors: 0,
+      }
+    );
 
-    current.setDate(current.getDate() + 1);
+    current.setUTCDate(current.getUTCDate() + 1);
     count++;
   }
 
-  return points.length > 0 ? points : base14;
+  return points.length > 0 ? points : source;
 }
 
 /**
@@ -141,22 +135,25 @@ export function getPointsForPeriod(
   base14: readonly DailyTrafficPoint[],
   period: TrafficPeriod,
   customStart?: string,
-  customEnd?: string
+  customEnd?: string,
+  allDaily?: readonly DailyTrafficPoint[]
 ): readonly DailyTrafficPoint[] {
+  const realSource = allDaily && allDaily.length > 0 ? allDaily : base14;
+
   switch (period) {
     case "14d":
       return base14;
     case "30d":
-      return generate30DaysData(base14);
+      return buildTrailingDaysData(realSource, 30);
     case "6m":
-      return SIX_MONTHS_DATA;
+      return buildMonthlyData(realSource, 6);
     case "1y":
-      return ONE_YEAR_DATA;
+      return buildMonthlyData(realSource, 12);
     case "custom":
       return getPointsForDateRange(
-        base14,
-        customStart ?? "2026-10-27",
-        customEnd ?? "2026-11-09"
+        realSource,
+        customStart ?? base14[0]?.date ?? new Date().toISOString().split("T")[0],
+        customEnd ?? base14[base14.length - 1]?.date ?? new Date().toISOString().split("T")[0]
       );
   }
 }

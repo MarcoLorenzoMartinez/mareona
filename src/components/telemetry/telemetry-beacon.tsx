@@ -4,17 +4,22 @@
 import { useEffect, useRef, Suspense } from "react";
 import { usePathname } from "next/navigation";
 
-const SESSION_KEY = "mareona_telemetry_sid";
+const DAILY_VISITOR_KEY = "mareona_telemetry_vid";
 
 function getOrCreateSessionId(): string {
   try {
-    let sid = window.sessionStorage.getItem(SESSION_KEY);
-    if (!sid) {
-      sid = typeof crypto !== "undefined" && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `s_${Math.random().toString(36).slice(2)}_${Date.now()}`;
-      window.sessionStorage.setItem(SESSION_KEY, sid);
+    const today = new Date().toISOString().split("T")[0];
+    const raw = window.localStorage.getItem(DAILY_VISITOR_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as { date?: string; id?: string };
+      if (parsed.date === today && typeof parsed.id === "string" && parsed.id.length > 0) {
+        return parsed.id;
+      }
     }
+    const sid = typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `v_${Math.random().toString(36).slice(2)}_${Date.now()}`;
+    window.localStorage.setItem(DAILY_VISITOR_KEY, JSON.stringify({ date: today, id: sid }));
     return sid;
   } catch {
     return "session_fallback";
