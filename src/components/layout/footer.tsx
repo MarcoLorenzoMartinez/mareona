@@ -47,8 +47,8 @@ export function Footer() {
         </div>
 
         <p className="border-t border-[var(--border)] pt-3 text-xs leading-relaxed text-[var(--muted-foreground)] md:pt-4">
-          <span className="tabular-nums">© {COPYRIGHT_YEAR}</span> Mareona. Proyecto independiente de
-          aficionados, sin vinculación con el Real Sporting de Gijón, S.A.D.
+          <span className="tabular-nums">© {COPYRIGHT_YEAR}</span> Mareona. Proyecto independiente
+          creado por aficionados, sin vinculación oficial con el Real Sporting de Gijón, S.A.D.
         </p>
       </div>
     </footer>
