@@ -12,6 +12,7 @@ import { OfflineSyncListener } from "@/components/pwa/offline-sync-listener";
 import { OfflineTransitionListener } from "@/components/pwa/offline-transition-listener";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import { TelemetryBeacon } from "@/components/telemetry/telemetry-beacon";
+import { VercelAnalytics } from "@/components/telemetry/vercel-analytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -110,6 +111,7 @@ export default function RootLayout({
             <ToastContainer />
           </AuthProvider>
           <ServiceWorkerRegister />
+          <VercelAnalytics />
         </PwaInstallProvider>
       </body>
     </html>
