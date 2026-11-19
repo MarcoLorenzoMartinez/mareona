@@ -25,15 +25,18 @@
 | 6. Diseño | **Se adapta** (es el núcleo) | Arquitectura, base de datos, interacción e interfaz |
 | 7. Implementación | **Se adapta** | Estándares, herramientas y problemas encontrados |
 | 8. Pruebas | **Se adapta** (reducido) | Unitarias, integración, E2E, accesibilidad, carga y código |
-| 9. Manuales | **Solo manual de usuario** y un manual del programador corto | Instalación y ejecución se resumen en el programador |
+| 9. Manuales | **Solo manual de usuario** | El proyecto es privado: no hay manual de instalación, ejecución ni del programador |
 | 10. Conclusiones y ampliaciones | **Se adapta** | Valoración y líneas futuras |
 | 11. Planificación y presupuesto finales | **Se descarta** | Igual que el 4 |
-| 12. Referencias | **Se adapta** | Lista corta de fuentes y documentación oficial |
+| 12. Referencias | **Se adapta** | Lista corta de fuentes citadas (estándares y documentación oficial) |
+| Resumen, palabras clave y abstract | **Se añade** | Presenta el documento antes del índice |
+| 13. Apéndices | **Se adapta** | Glosario y licencias de activos de terceros |
 
 ---
 
 ## Índice propuesto
 
+0. Resumen y palabras clave (en español e inglés, media página)
 1. [Memoria del proyecto](#1-memoria-del-proyecto)
 2. [Introducción](#2-introducción)
 3. [Análisis](#3-análisis)
@@ -43,6 +46,7 @@
 7. [Manuales](#7-manuales)
 8. [Conclusiones y ampliaciones](#8-conclusiones-y-ampliaciones)
 9. [Referencias](#9-referencias)
+10. [Apéndices](#10-apéndices)
 
 ---
 
@@ -97,6 +101,9 @@
 - **3.6 Modelo de dominio.** Entidades principales y relaciones, antes de entrar en la base de datos.
 - **3.7 Navegabilidad.** Mapa de rutas de la aplicación.
 - **3.8 Relación requisitos - casos de uso.** Tabla de trazabilidad.
+- **3.9 Plan de pruebas.** Como en el TFG, los casos de prueba se definen aquí con identificador (por ejemplo `PU-PORRA-01`) y se enlazan con los requisitos. Los resultados se explican en el capítulo 6.
+
+> En el TFG los requisitos están jerarquizados con identificadores (`USR1.1.2`) y cada caso de uso tiene una tabla con precondiciones, poscondiciones, escenario principal, alternativos y excepciones. Aquí se mantiene esa idea pero solo para los casos clave, para no alargar el documento.
 
 **Diagramas:** casos de uso por módulo, subsistemas con sus dependencias, modelo de dominio, mapa de navegación.
 **Fuentes:** `PROJECT_SPEC.md` §1.2 y §3, `DUELOS_11VS11_SPEC.md`, estructura de `src/app`.
@@ -141,6 +148,10 @@ Un apartado corto por subsistema, con el mismo formato: **problema → diseño �
 - **4.3.9 Administración, auditoría y telemetría.** Roles, registro de acciones, visitas y errores del cliente.
 - **4.3.10 PWA y offline.** Service Worker, cola de sincronización, instalación por plataforma. *Diagrama de secuencia de una acción sin conexión.*
 
+### 4.3.11 Diagramas de interacción, estados y actividad
+
+Los diagramas de cada subsistema anterior se numeran aquí de forma conjunta, como en los apartados 6.3 y 6.4 del TFG. Sirven de guía para el capítulo de implementación.
+
 ### 4.4 Seguridad y privacidad
 
 - Cabeceras HTTP y límite de peticiones.
@@ -167,7 +178,12 @@ Un apartado corto por subsistema, con el mismo formato: **problema → diseño �
 
 *Equivale al capítulo 7 del TFG.*
 
-- **5.1 Estándares y normas seguidos.** WCAG 2.2 AA, RGPD/LOPDGDD, Conventional Commits, TSDoc, reglas de `AGENTS.md`.
+- **5.1 Estándares y normas seguidos.** Agrupados como en el TFG (7.1):
+  - *Codificación y arquitectura:* Clean Code, separación por capas, organización del código por funcionalidad (`lib/<módulo>`), Server Components por defecto.
+  - *Comunicación y datos:* Zod en el borde, migraciones versionadas, tipos de BD generados.
+  - *Seguridad y privacidad:* RLS, RGPD/LOPDGDD, cabeceras HTTP.
+  - *Accesibilidad y proceso:* WCAG 2.2 AA, Conventional Commits, TSDoc.
+  - *Validación del cumplimiento:* cómo se comprueba cada estándar (tests, lint, auditoría).
 - **5.2 Lenguajes y tecnologías.** TypeScript estricto, SQL (PostgreSQL), CSS con Tailwind. Versiones usadas.
 - **5.3 Herramientas.** Editor, Node, ESLint, Playwright, Lighthouse, Supabase CLI, Vercel. Tabla con propósito de cada una.
 - **5.4 Estructura del código.** Árbol de carpetas comentado.
@@ -190,8 +206,9 @@ Un apartado corto por subsistema, con el mismo formato: **problema → diseño �
 - **6.4 Extremo a extremo (Playwright).** Navegación pública, porra, muro social, seguridad de administración y offline.
 - **6.5 Accesibilidad.** Contraste WCAG, estándares de modales, revisión manual.
 - **6.6 Carga y resiliencia.** Pruebas de concurrencia y auditoría de rendimiento (Lighthouse).
-- **6.7 Pruebas de código.** Reglas de arquitectura y límites de tamaño.
-- **6.8 Defectos detectados y mejoras aplicadas.**
+- **6.7 Pruebas de código.** Reglas de arquitectura, límite de 180 líneas, ESLint, TypeScript estricto y control de complejidad. Tabla de criterios con su resultado, como en el 8.7 del TFG.
+- **6.7 bis Pruebas de usabilidad.** Solo si se hacen pruebas con usuarios reales (ver preguntas al final).
+- **6.8 Defectos detectados y mejoras aplicadas.** Una tabla por nivel de prueba (prueba, defecto, solución), igual que en el TFG. Se rellenará con el historial de git.
 
 **Diagrama:** pirámide de pruebas.
 **Fuentes:** carpeta `tests/`, `package.json`, `scripts/audit-performance.mjs`.
