@@ -18,8 +18,8 @@ const LINK_CLASS =
  */
 export function Footer() {
   return (
-    <footer className="mt-8 border-t border-[var(--border)] bg-[var(--background)] pb-24 md:pb-0">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-4 md:gap-3 md:px-6 md:py-6">
+    <footer className="border-t border-[var(--border)] bg-[var(--background)] pb-24 md:pb-0">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-4 md:gap-2 md:px-6 md:py-4">
         <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between md:gap-6">
           <span className="text-sm font-black tracking-wider text-[var(--primary)] uppercase">
             Mareona
@@ -46,7 +46,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <p className="border-t border-[var(--border)] pt-3 text-xs leading-relaxed text-[var(--muted-foreground)] md:pt-4">
+        <p className="border-t border-[var(--border)] pt-3 text-xs leading-relaxed text-[var(--muted-foreground)]">
           <span className="tabular-nums">© {COPYRIGHT_YEAR}</span> Mareona. Proyecto independiente
           creado por aficionados, sin vinculación oficial con el Real Sporting de Gijón, S.A.D.
         </p>

@@ -29,7 +29,7 @@ export default function MainLayout({
       <main
         id="main-content"
         tabIndex={-1}
-        className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-4 pb-12 md:px-6 md:py-8 focus:outline-none"
+        className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pt-4 pb-12 md:px-6 md:py-6 focus:outline-none"
       >
         {children}
       </main>
