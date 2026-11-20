@@ -90,7 +90,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
       />
 
       {/* Main Question Arena Card with El Molinón Backdrop */}
-      <main className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200/90 bg-white/90 p-7 sm:p-9 shadow-xs backdrop-blur-xs">
+      <main className="relative flex flex-col justify-between rounded-3xl border border-neutral-200/90 bg-white/90 p-7 sm:p-9 shadow-xs backdrop-blur-xs">
         <TriviaArenaBackground />
 
         <div>

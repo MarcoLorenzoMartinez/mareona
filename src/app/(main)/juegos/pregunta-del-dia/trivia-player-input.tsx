@@ -32,13 +32,13 @@ export function TriviaPlayerInput({
   }
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    function handleClickOutside(e: PointerEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => document.removeEventListener('pointerdown', handleClickOutside);
   }, []);
 
   const suggestions = searchClubFigures(query, 5);
@@ -129,7 +129,7 @@ export function TriviaPlayerInput({
         <ul
           id={listboxId}
           role="listbox"
-          className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-[var(--border)] bg-white py-1 shadow-lg"
+          className="absolute z-20 mt-1 max-h-48 sm:max-h-56 w-full overflow-y-auto overscroll-contain touch-pan-y rounded-xl border border-[var(--border)] bg-white py-1 shadow-lg"
         >
           {suggestions.map((p, idx) => {
             const isHighlighted = idx === highlightedIndex;
@@ -149,7 +149,7 @@ export function TriviaPlayerInput({
                   onSubmit(p.displayName);
                 }}
                 onMouseEnter={() => setHighlightedIndex(idx)}
-                className={`flex cursor-pointer items-center justify-between px-4 py-2.5 text-xs transition-colors ${
+                className={`flex min-h-[44px] cursor-pointer select-none items-center justify-between px-4 py-2.5 text-xs transition-colors ${
                   isHighlighted
                     ? 'bg-[var(--surface-raised,var(--surface))] text-[#e2001a]'
                     : 'hover:bg-[var(--surface)]'
