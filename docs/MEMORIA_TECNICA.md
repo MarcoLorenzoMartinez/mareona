@@ -1412,21 +1412,23 @@ El usuario puede entrar de dos maneras:
 - Con su cuenta de Google mediante el botón *Continuar con Google*.
 - Con correo electrónico y contraseña (*o con tu correo*), recibiendo un mensaje de confirmación en el alta inicial.
 
-Al registrarse por primera vez aparece un paso opcional de bienvenida para elegir el nombre de usuario público con el que se mostrará en Social y en *La Porra*. Si ya se tiene sesión iniciada, el avatar de la cabecera permite acceder al perfil o cerrar sesión.
+Al registrarse por primera vez aparece un paso opcional de bienvenida para elegir el nombre de usuario público con el que se mostrará en Social y en *La Porra*. Si ya se tiene sesión iniciada, el avatar de la cabecera permite acceder al perfil o cerrar sesión (Ilustración 36).
 
-<!-- PENDIENTE CAPTURA: ventana de inicio de sesión y registro -->
+![Ventana de registro e inicio de sesión](screenshots/auth-login.png)
+
+*Ilustración 36. Ventana de registro e inicio de sesión.*
 
 ## 6.2 Inicio
 
-La portada (`Inicio`) reúne en una sola pantalla el resumen del día para el aficionado (Ilustración 36):
+La portada (`Inicio`) reúne en una sola pantalla el resumen del día para el aficionado (Ilustración 37):
 
 - El próximo partido oficial del Real Sporting (fecha, hora, rival y competición) o el marcador en directo si el encuentro está en juego, con enlace directo a su ficha.
 - El bloque *Juegos del día*, con accesos directos a *La Porra*, al *Sobre diario* de bienvenida o visita y a los pasatiempos.
 - El bloque *Tal día como hoy*, que muestra la efeméride destacada de la fecha actual y enlaza con la sección de *Efemérides*.
 
-![Pantalla de Inicio de Mareona](screenshots/inicio.png)
+![Pantalla de Inicio de Mareona](screenshots/manual-inicio.png)
 
-*Ilustración 36. Pantalla de Inicio.*
+*Ilustración 37. Pantalla de Inicio.*
 
 ## 6.3 Temporada
 
@@ -1434,9 +1436,9 @@ Al entrar en *Temporada* desde la barra de navegación aparece una barra secunda
 
 ### 6.3.1 Partidos
 
-Muestra el calendario oficial del Real Sporting en LaLiga Hypermotion y Copa del Rey, con filtros superiores en píldora para ver *Todos*, *Disputados* o *Próximos*. El siguiente encuentro aparece destacado con la etiqueta *Próximo*.
+Muestra el calendario oficial del Real Sporting en LaLiga Hypermotion y Copa del Rey, con filtros superiores en píldora para ver *Todos*, *Disputados* o *Próximos* (Ilustración 38). El siguiente encuentro aparece destacado con la etiqueta *Próximo*.
 
-Al pulsar en cualquier partido se abre la *Ficha del Partido*, organizada en seis pestañas:
+Al pulsar en cualquier partido se abre la *Ficha del Partido*, organizada en seis pestañas (que se muestran u ocultan dependiendo de si se ha disputado o no el encuentro):
 
 - *Eventos*: cronología de goles, penaltis, tarjetas y sustituciones dividida en 1.ª y 2.ª parte.
 - *Estadísticas*: comparativa entre ambos equipos agrupada en *Control y Posesión*, *Ataque y Remates*, *Defensa y Portería* y *Disciplina e Infracciones*.
@@ -1447,109 +1449,64 @@ Al pulsar en cualquier partido se abre la *Ficha del Partido*, organizada en sei
 
 Si un encuentro aún no ha comenzado o las fuentes no disponen todavía de alineaciones o estadísticas, la ficha indica que el dato está pendiente sin mostrar información inventada.
 
-<!-- PENDIENTE CAPTURA: ficha de partido con alineaciones o eventos y pestaña Grada -->
+![Calendario y ficha de partido](screenshots/temporada-partidos.png)
+
+*Ilustración 38. Calendario de partidos y acceso a la ficha del encuentro.*
 
 ### 6.3.2 Clasificación
 
-Presenta la tabla de LaLiga Hypermotion con filtros de ámbito (*General*, *En Casa* y *A Domicilio*) a la derecha y tres modos de visualización a la izquierda:
+Presenta la tabla de LaLiga Hypermotion con filtros de ámbito (*General*, *En Casa* y *A Domicilio*) a la derecha y tres modos de visualización a la izquierda (Ilustración 39):
 
 - *Tabla*: clasificación tradicional con posición, equipo, partidos jugados, ganados, empatados, perdidos, goles a favor, en contra, diferencia y puntos, diferenciando las zonas de *Ascenso directo*, *Playoff* y *Descenso*.
 - *Distancia Real*: coloca a los equipos en peldaños verticales de un punto cada uno, dejando huecos vacíos para ver de un vistazo la distancia real en puntos entre rivales.
 - *Evolución*: gráfico por jornadas de la trayectoria del Real Sporting con tres selectores (*Ambas Líneas*, *Puntos Acumulados* y *Posición en la Tabla*).
 
-<!-- PENDIENTE CAPTURA: pantalla de Clasificación (vista Tabla o Distancia Real) -->
+![Clasificación de LaLiga Hypermotion](screenshots/temporada-clasificacion.png)
+
+*Ilustración 39. Vista de clasificación de la temporada.*
 
 ### 6.3.3 Estadísticas
 
-Muestra las métricas colectivas del Real Sporting en la temporada junto con su puesto respecto al resto de equipos de la liga en cada apartado (Ilustración 37). Se acompaña de mapas tácticos que indican las zonas de mayor presencia en el campo, distribución de pases, bandas de ataque y ubicación de los disparos que terminaron en gol.
+Muestra las métricas colectivas del Real Sporting en la temporada junto con su puesto respecto al resto de equipos de la liga en cada apartado (Ilustración 40). Se acompaña de mapas tácticos que indican las zonas de mayor presencia en el campo, distribución de pases, bandas de ataque y ubicación de los disparos que terminaron en gol.
 
-![Estadísticas colectivas y mapas tácticos](screenshots/temporada-estadisticas.png)
+![Estadísticas colectivas y mapas tácticos](screenshots/manual-temporada-estadisticas.png)
 
-*Ilustración 37. Estadísticas de la temporada y mapas tácticos.*
+*Ilustración 40. Estadísticas de la temporada y mapas tácticos.*
 
 ### 6.3.4 Plantilla
 
-Lista todos los futbolistas del primer equipo agrupados por demarcación (*Porteros*, *Defensas*, *Centrocampistas* y *Delanteros*). Al pulsar sobre cualquier jugador se abre su ficha individual con sus datos de perfil y estadísticas acumuladas de la temporada.
+Lista todos los futbolistas del primer equipo agrupados por demarcación (*Porteros*, *Defensas*, *Centrocampistas* y *Delanteros*) (Ilustración 41). Al pulsar sobre cualquier jugador se abre su ficha individual con sus datos de perfil y estadísticas acumuladas de la temporada.
 
-<!-- PENDIENTE CAPTURA: pantalla de Plantilla o ficha individual de un jugador -->
+![Plantilla del primer equipo](screenshots/temporada-plantilla.png)
+
+*Ilustración 41. Plantilla del primer equipo.*
 
 ### 6.3.5 Mi Once
 
-Es una pizarra táctica interactiva para confeccionar alineaciones propias. El usuario elige un sistema de juego (por ejemplo `4-3-3` o `4-2-3-1`) y añade jugadores desde el selector lateral o modal, donde puede filtrar entre primer equipo, Sporting Atlético, Juvenil División de Honor o crear un jugador personalizado.
+Es una pizarra táctica interactiva para confeccionar alineaciones propias (Ilustración 42). El usuario elige un sistema de juego (por ejemplo `4-3-3` o `4-2-3-1`) y añade jugadores desde el selector lateral o modal, donde puede filtrar entre primer equipo, Sporting Atlético, Juvenil División de Honor o crear un jugador personalizado.
 
 Las fichas se mueven libremente arrastrando con el ratón o el dedo y actualizan su etiqueta de demarcación según la zona del campo donde se suelten. Si se cambia de formación, los jugadores ya colocados se recolocan automáticamente en las posiciones más cercanas del nuevo sistema. Desde la barra superior se puede descargar la pizarra como imagen PNG o, teniendo sesión iniciada, compartirla directamente en Social o en la *Grada* del próximo partido.
 
-<!-- PENDIENTE CAPTURA: pizarra táctica Mi Once con jugadores colocados -->
+![Pizarra táctica Mi Once](screenshots/temporada-mi-once.png)
+
+*Ilustración 42. Pizarra táctica Mi Once.*
 
 ## 6.4 Histórico
 
 La sección *Histórico* se divide en cuatro pestañas:
 
-- *Trayectoria*: gráfico con la posición del Real Sporting en cada temporada desde los primeros registros oficiales (Ilustración 38). Al seleccionar una temporada concreta se muestran su clasificación final, los partidos disputados y la plantilla de aquel año.
+- *Trayectoria*: gráfico con la posición del Real Sporting en cada temporada desde los primeros registros oficiales (Ilustración 43). Al seleccionar una temporada concreta se muestran su clasificación final, los partidos disputados y la plantilla de aquel año.
 - *Efemérides*: calendario histórico que abre por defecto el día actual y permite navegar por cualquier fecha del año para leer acontecimientos y resultados de partidos jugados en ese día.
 - *Rivales*: balance histórico contra cada club al que se ha enfrentado el Sporting, con filtros por categoría, búsqueda, vista en cuadrícula o lista, detalle de cada enfrentamiento y dos mapas interactivos (España y el mundo) que resumen las cifras por territorio al pulsar cada zona.
 - *Legado*: cuatro tablas históricas oficiales con los jugadores con más partidos, máximos goleadores, más temporadas y entrenadores con más encuentros dirigidos.
 
-![Gráfico de trayectoria histórica y temporadas](screenshots/historico-trayectoria.png)
+![Gráfico de trayectoria histórica y temporadas](screenshots/manual-historico-trayectoria.png)
 
-*Ilustración 38. Trayectoria histórica del Real Sporting.*
+*Ilustración 43. Trayectoria histórica del Real Sporting.*
 
-## 6.5 Juegos
+## 6.5 Social
 
-### 6.5.1 La Porra
-
-Permite pronosticar el marcador exacto y los goleadores rojiblancos del próximo partido oficial antes de que empiece (el plazo se cierra un minuto antes del pitido inicial). Al terminar el partido, el sistema calcula automáticamente los puntos:
-
-- 5 puntos por acertar el marcador exacto.
-- 2 puntos por acertar el signo (1X2) sin el marcador exacto.
-- 1 punto adicional por cada goleador rojiblanco acertado.
-
-Según los puntos obtenidos en la jornada se entrega un sobre para el álbum (Aficionado, Rojiblanco o Leyenda). Debajo del pronóstico se consulta la clasificación general, que también puede filtrarse para comparar resultados solo con los amigos.
-
-<!-- PENDIENTE CAPTURA: pantalla de La Porra con marcador, goleadores y clasificación -->
-
-### 6.5.2 Memoria Rojiblanca (Álbum de Cartas)
-
-Colección de cromos digitales de jugadores actuales, leyendas, entrenadores, escudos y momentos del club, divididos en cuatro rarezas: básica, especial, histórica y legendaria. En la cabecera se alterna entre tres vistas (Ilustración 39):
-
-- *Álbum*: formato libro con paso de páginas por capítulos y décadas.
-- *Cuadrícula*: todos los cromos en mosaico con filtros por década y demarcación.
-- *Mis Sobres*: inventario de sobres pendientes de abrir, panel de misiones para conseguir sobres (bienvenida, visita diaria, reto diario, racha de 7 días y *La Porra*) y opción de reciclar 10 cromos repetidos del taco para obtener un Sobre Rojiblanco.
-
-![Álbum digital de cromos Memoria Rojiblanca](screenshots/juegos-album.png)
-
-*Ilustración 39. Álbum digital Memoria Rojiblanca.*
-
-### 6.5.3 Wordle, Pregunta del Día, ¿Quién es? y ¿Más o Menos?
-
-Los tres primeros proponen un reto nuevo cada día a las 00:00 (hora peninsular española) e incluyen un botón de archivo para jugar fechas anteriores:
-
-- *Wordle* (Ilustración 40): adivinar una palabra relacionada con el club en 6 intentos (o 7 en palabras de 7 o más letras). Además del color, cada casilla muestra un símbolo para distinguir letra en posición correcta (✓), letra presente en otra posición (▲) o ausente (×).
-- *La Pregunta del Día* (Ilustración 41): responder a una cuestión sobre la historia del club, mostrando una explicación tras el intento.
-- *¿Quién es?* (Ilustración 42): identificar a un futbolista histórico o actual a partir de una fotografía pixelada que se aclara con cada intento y pistas comparativas de nacionalidad, demarcación, década de debut y dorsal.
-- *¿Más o Menos?* (Ilustración 43): juego continuo sin límite diario en el que se elige qué jugador tiene una cifra mayor en uno de tres modos (*Partidos*, *Goles* o *Minutos*) para encadenar la racha más larga posible.
-
-Al acertar cualquiera de los tres retos diarios teniendo sesión iniciada se consigue un Sobre Rojiblanco (una vez al día), y al mantener una racha de 7 días seguidos se obtiene un Sobre Leyenda.
-
-![Wordle Sportinguista](screenshots/juegos-wordle.png)
-
-*Ilustración 40. Wordle del Real Sporting.*
-
-![La Pregunta del Día](screenshots/juegos-pregunta.png)
-
-*Ilustración 41. La Pregunta del Día.*
-
-![¿Quién es?](screenshots/juegos-quien-es.png)
-
-*Ilustración 42. Juego ¿Quién es?.*
-
-![¿Más o Menos?](screenshots/juegos-mas-o-menos.png)
-
-*Ilustración 43. Juego ¿Más o Menos?.*
-
-## 6.6 Social
-
-En *Social* se reúnen las publicaciones de la comunidad. La parte superior permite alternar entre las pestañas *Todos* (muro general) y *Amigos* (solo publicaciones de usuarios con amistad aceptada), además de acceder a las solicitudes de amistad y a la bandeja de mensajes directos.
+En *Social* se reúnen las publicaciones de la comunidad (Ilustración 44). La parte superior permite alternar entre las pestañas *Todos* (muro general) y *Amigos* (solo publicaciones de usuarios con amistad aceptada), además de acceder a las solicitudes de amistad y a la bandeja de mensajes directos.
 
 Con sesión iniciada se puede:
 
@@ -1559,37 +1516,94 @@ Con sesión iniciada se puede:
 - Enviar solicitudes de amistad desde el buscador o el perfil público de otro usuario, y mantener conversaciones privadas uno a uno por mensajería directa (donde también es posible borrar mensajes propios).
 - Reportar publicaciones, mensajes o usuarios que incumplan las normas de convivencia, así como bloquear a un usuario para impedir el contacto directo.
 
-<!-- PENDIENTE CAPTURA: muro social con publicaciones, filtro Todos/Amigos o ventana de mensajes directos -->
+![Muro social de Mareona](screenshots/social-muro.png)
+
+*Ilustración 44. Muro social y opciones de comunidad.*
+
+## 6.6 Juegos
+
+La sección *Juegos* reúne la colección de cromos, los pronósticos de cada partido, tres retos diarios con cambio a medianoche (hora peninsular española) y un modo continuo de racha.
+
+### 6.6.1 Memoria Rojiblanca (Álbum de Cartas)
+
+Colección de cromos digitales de jugadores actuales, leyendas, entrenadores, escudos y momentos del club, divididos en cuatro rarezas: básica, especial, histórica y legendaria. En la cabecera se alterna entre tres vistas (Ilustración 45):
+
+- *Álbum*: formato libro con paso de páginas por capítulos y décadas.
+- *Cuadrícula*: todos los cromos en mosaico con filtros por década y demarcación.
+- *Mis Sobres*: inventario de sobres pendientes de abrir, panel de misiones para conseguir sobres (bienvenida, visita diaria, reto diario, racha de 7 días y *La Porra*) y opción de reciclar 10 cromos repetidos del taco para obtener un Sobre Rojiblanco.
+
+![Álbum digital de cromos Memoria Rojiblanca](screenshots/juegos-album.png)
+
+*Ilustración 45. Álbum digital Memoria Rojiblanca.*
+
+### 6.6.2 La Porra
+
+Permite pronosticar el marcador exacto y los goleadores rojiblancos del próximo partido oficial antes de que empiece (el plazo se cierra un minuto antes del pitido inicial) (Ilustración 46). Al terminar el partido, el sistema calcula automáticamente los puntos:
+
+- 5 puntos por acertar el marcador exacto.
+- 2 puntos por acertar el signo (1X2) sin el marcador exacto.
+- 1 punto adicional por cada goleador rojiblanco acertado.
+
+Según los puntos obtenidos en la jornada se entrega un sobre para el álbum (Aficionado, Rojiblanco o Leyenda). Debajo del pronóstico se consulta la clasificación general, que también puede filtrarse para comparar resultados solo con los amigos.
+
+![Pantalla de La Porra](screenshots/juegos-porra.png)
+
+*Ilustración 46. La Porra de la Mareona.*
+
+### 6.6.3 Wordle
+
+Reto diario para adivinar una palabra relacionada con el club en 6 intentos (o 7 en palabras de 7 o más letras), con cambio cada día a las 00:00 y un botón de archivo para jugar fechas anteriores (Ilustración 47). Además del color, cada casilla muestra un símbolo para distinguir letra en posición correcta (✓), letra presente en otra posición (▲) o ausente (×). Al acertar el reto del día con sesión iniciada se obtiene un Sobre Rojiblanco (una vez al día entre los retos diarios), y con una racha de 7 días seguidos se recibe un Sobre Leyenda.
+
+![Wordle Sportinguista](screenshots/juegos-wordle.png)
+
+*Ilustración 47. Wordle del Real Sporting.*
+
+### 6.6.4 La Pregunta del Día
+
+Reto diario consistente en responder a una cuestión sobre la historia del Real Sporting (Ilustración 48). Tras responder, la pantalla muestra la respuesta correcta junto con una breve explicación histórica. Incluye archivo para consultar y jugar preguntas de días anteriores y aporta progreso para las recompensas diarias y la racha de sobres.
+
+![La Pregunta del Día](screenshots/juegos-pregunta.png)
+
+*Ilustración 48. La Pregunta del Día.*
+
+### 6.6.5 ¿Quién es?
+
+Reto diario en el que hay que identificar a un futbolista histórico o actual del club a partir de una fotografía inicialmente pixelada que se aclara conforme avanzan los intentos (Ilustración 49). Cada fallo ofrece pistas comparativas frente al jugador buscado (nacionalidad, demarcación, década de debut y dorsal). También dispone de archivo de fechas pasadas y cuenta para el sobre diario y la racha semanal.
+
+![¿Quién es?](screenshots/juegos-quien-es.png)
+
+*Ilustración 49. Juego ¿Quién es?.*
+
+### 6.6.6 ¿Más o Menos?
+
+Juego continuo sin límite diario en el que se comparan dos futbolistas del club y el usuario elige cuál tiene una cifra mayor en el modo seleccionado: *Partidos*, *Goles* o *Minutos* (Ilustración 50). El objetivo es encadenar la racha más larga posible de aciertos consecutivos sin fallar.
+
+![¿Más o Menos?](screenshots/juegos-mas-o-menos.png)
+
+*Ilustración 50. Juego ¿Más o Menos?.*
 
 ## 6.7 Perfil
 
-Desde el icono de usuario en la cabecera se accede a *Perfil*, donde se pueden consultar el nombre público, los puntos acumulados en *La Porra*, el historial de publicaciones propias y la gestión de amigos.
+Desde el icono de usuario en la cabecera se accede a *Perfil*, donde se pueden consultar el nombre público, los puntos acumulados en *La Porra*, el historial de publicaciones propias y la gestión de amigos (Ilustración 51).
 
 Pulsando en editar perfil se puede cambiar el nombre visible, el nombre de usuario y subir una fotografía de avatar (la imagen se ajusta automáticamente antes de guardarse). Al final de la página se encuentra la opción para eliminar la cuenta de forma definitiva tras confirmar la acción, lo que borra todos los datos personales asociados.
 
-<!-- PENDIENTE CAPTURA: página de Perfil del usuario -->
+![Página de Perfil del usuario](screenshots/perfil-usuario.png)
+
+*Ilustración 51. Página de Perfil del usuario.*
 
 ## 6.8 Instalación como Aplicación
 
-Mareona puede instalarse en el teléfono o en el ordenador como aplicación independiente sin pasar por tiendas de aplicaciones. La página `/instalar` detecta automáticamente el dispositivo y muestra las instrucciones concretas:
+Mareona puede instalarse en el teléfono o en el ordenador como aplicación independiente sin pasar por tiendas de aplicaciones. La página `/instalar` detecta automáticamente el dispositivo y muestra las instrucciones concretas (Ilustración 52):
 
 - En Android y navegadores de escritorio compatibles (Chrome o Edge), aparece un botón directo para instalar la aplicación.
 - En iPhone y iPad (Safari), se indican los pasos mediante el menú *Compartir* y la opción *Añadir a la pantalla de inicio*.
 
 Una vez instalada, la aplicación permite consultar todo el archivo de *Histórico* y jugar a los retos de *Juegos* aunque se pierda la cobertura en el estadio o durante un viaje; las partidas completadas con sesión iniciada se guardan en el dispositivo y se envían automáticamente a la cuenta al recuperar la conexión.
 
-<!-- PENDIENTE CAPTURA: pantalla de instalación (/instalar) -->
+![Pantalla de instalación como aplicación](screenshots/instalar-pwa.png)
 
-## 6.9 Funciones de Moderación y Administración
-
-Las cuentas con permisos asignados de moderación o administración cuentan con un panel interno de gestión organizado en cuatro secciones:
-
-- *Moderación*: lista los mensajes retenidos por el filtro automático y los reportes enviados por usuarios, permitiendo aprobar o retirar contenido.
-- *Usuarios*: buscador de cuentas para consultar su estado y aplicar o levantar suspensiones temporales o indefinidas.
-- *Comunicados*: formulario para publicar o desactivar avisos globales visibles en la parte superior de la aplicación y activar el modo de solo lectura en el muro social si fuese necesario, además de utilidades de refresco de datos deportivos.
-- *Métricas*: resumen de visitas, dispositivos, uso de la aplicación instalada, secciones más visitadas y registro histórico de acciones de moderación y administración.
-
-<!-- PENDIENTE CAPTURA: panel interno de moderación o métricas (censurando datos sensibles si es necesario) -->
+*Ilustración 52. Pantalla de instalación como aplicación.*
 
 ---
 
