@@ -221,6 +221,25 @@ describe("Architecture & Code Quality Suite (AGENTS.md & Industry Standards)", (
     assert.ok(sql.includes("external_api_cache_select_all"), "Must define RLS policies on external_api_cache");
   });
 
+  it("verifies v1.0 security, RLS, aggregation RPCs, and post_likes migration", () => {
+    const migrationPath = path.resolve(
+      process.cwd(),
+      "supabase/migrations/20261121000000_v1_security_rls_rpcs_and_post_likes.sql"
+    );
+    assert.strictEqual(fs.existsSync(migrationPath), true, "v1.0 hardening migration must exist");
+
+    const sql = fs.readFileSync(migrationPath, "utf-8");
+    assert.ok(sql.includes("protect_prediction_settlement"), "Must lock prediction points_awarded and kickoff");
+    assert.ok(sql.includes("external_api_cache_write_service_role"), "Must restrict external_api_cache writes to service_role");
+    assert.ok(sql.includes("open_card_pack"), "Must enforce auth.uid() in open_card_pack");
+    assert.ok(sql.includes("poll_options_insert_own_post"), "Must restrict poll_options inserts to poll owner");
+    assert.ok(sql.includes("soft_delete_direct_message"), "Must provide RPC for DM soft-delete");
+    assert.ok(sql.includes("create table if not exists public.post_likes"), "Must define post_likes table");
+    assert.ok(sql.includes("cast_match_mvp_vote"), "Must define cast_match_mvp_vote RPC");
+    assert.ok(sql.includes("get_porra_leaderboard_stats"), "Must define get_porra_leaderboard_stats RPC");
+    assert.ok(sql.includes("get_admin_telemetry_summary"), "Must define get_admin_telemetry_summary RPC");
+  });
+
   it("verifies LEGAL-ASSETS.md killswitch (NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS) across all asset components", () => {
     const prev = process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS;
     try {

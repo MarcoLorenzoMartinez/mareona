@@ -18,8 +18,6 @@ DECLARE
     'messages',
     'conversation_members',
     'conversations',
-    'direct_messages',
-    'direct_conversations',
     'friendships',
     'poll_votes',
     'poll_options',
@@ -29,9 +27,9 @@ DECLARE
     'post_likes',
     'posts',
     'predictions',
+    'card_duels',
     'user_cards',
-    'user_packs',
-    'card_packs'
+    'user_packs'
   ];
 BEGIN 
   -- 1. Vaciar dinámicamente solo las tablas que existan en el esquema public

@@ -6,6 +6,7 @@
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
 const { HISTORICAL_SEASONS } = require("../src/lib/historical/seasons-data.ts");
 
@@ -295,12 +296,17 @@ async function parseSeasonPage(season) {
   }
 
   const js = match[0].replace("</script>", "");
-  let SE = [], SP = [];
+  const sandbox = vm.createContext(
+    { SE: [], SP: [] },
+    { codeGeneration: { strings: false, wasm: false } }
+  );
   try {
-    eval(js);
+    vm.runInContext(js, sandbox, { timeout: 1000 });
   } catch {
     return null;
   }
+  const SE = Array.isArray(sandbox.SE) ? sandbox.SE : [];
+  const SP = sandbox.SP && typeof sandbox.SP === "object" ? sandbox.SP : {};
 
   const teams = {};
   for (const s of SE) {

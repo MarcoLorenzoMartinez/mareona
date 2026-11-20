@@ -104,7 +104,7 @@ export async function sendDirectMessage(
       data: {
         id: inserted.id,
         conversationId: inserted.conversation_id,
-        senderId: inserted.sender_id,
+        senderId: inserted.sender_id ?? user.id,
         senderName: profile?.display_name || profile?.username || "Aficionado",
         senderUsername: profile?.username || "aficionado",
         senderAvatar: profile?.avatar_url || null,

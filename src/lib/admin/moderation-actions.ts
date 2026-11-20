@@ -120,7 +120,7 @@ export async function getBlockedAttempts(): Promise<readonly BlockedAttemptItem[
 
   return rawAttempts.map((attempt) => ({
     id: attempt.id,
-    userId: attempt.user_id,
+    userId: attempt.user_id ?? "",
     body: redactAuditBodyForWebPanel(attempt.body, attempt.reason),
     reason: attempt.reason,
     createdAt: attempt.created_at,

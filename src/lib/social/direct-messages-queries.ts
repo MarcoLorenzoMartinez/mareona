@@ -164,7 +164,7 @@ export async function getDirectMessages(
       return {
         id: m.id,
         conversationId: m.conversation_id,
-        senderId: m.sender_id,
+        senderId: m.sender_id ?? "",
         senderName: profile?.display_name || profile?.username || "Aficionado",
         senderUsername: profile?.username || "aficionado",
         senderAvatar: profile?.avatar_url || null,

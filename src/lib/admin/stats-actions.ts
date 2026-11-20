@@ -81,7 +81,7 @@ export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAudit
 
   return rows.map((r) => ({
     id: r.id,
-    adminId: r.admin_id,
+    adminId: r.admin_id ?? "deleted-admin",
     action: r.action as AdminAuditLog["action"],
     targetType: r.target_type,
     targetId: r.target_id,

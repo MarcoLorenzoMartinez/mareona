@@ -13,6 +13,25 @@ export type MatchStatus =
   | 'postponed'
   | 'cancelled';
 
+export type CardPosition = 'goalkeeper' | 'defender' | 'midfielder' | 'forward';
+
+export type CardDecade =
+  | '1920s'
+  | '1930s'
+  | '1940s'
+  | '1950s'
+  | '1960s'
+  | '1970s'
+  | '1980s'
+  | '1990s'
+  | '2000s'
+  | '2010s'
+  | '2020s';
+
+export type CardDuelMode = 'quick_3' | 'lineup_11';
+
+export type CardDuelStatus = 'waiting' | 'in_progress' | 'finished' | 'abandoned';
+
 export interface Database {
   public: {
     Tables: {
@@ -452,7 +471,7 @@ export interface Database {
         Row: {
           id: string;
           conversation_id: string;
-          sender_id: string;
+          sender_id: string | null;
           body: string;
           created_at: string;
           deleted_at: string | null;
@@ -460,7 +479,7 @@ export interface Database {
         Insert: {
           id?: string;
           conversation_id: string;
-          sender_id: string;
+          sender_id?: string | null;
           body: string;
           created_at?: string;
           deleted_at?: string | null;
@@ -468,7 +487,7 @@ export interface Database {
         Update: {
           id?: string;
           conversation_id?: string;
-          sender_id?: string;
+          sender_id?: string | null;
           body?: string;
           created_at?: string;
           deleted_at?: string | null;
@@ -526,7 +545,7 @@ export interface Database {
       blocked_post_attempts: {
         Row: {
           id: string;
-          user_id: string;
+          user_id: string | null;
           body: string;
           parent_id: string | null;
           match_id: string | null;
@@ -535,7 +554,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
-          user_id: string;
+          user_id?: string | null;
           body: string;
           parent_id?: string | null;
           match_id?: string | null;
@@ -544,7 +563,7 @@ export interface Database {
         };
         Update: {
           id?: string;
-          user_id?: string;
+          user_id?: string | null;
           body?: string;
           parent_id?: string | null;
           match_id?: string | null;
@@ -703,7 +722,7 @@ export interface Database {
       admin_audit_logs: {
         Row: {
           id: string;
-          admin_id: string;
+          admin_id: string | null;
           action: string;
           target_type: 'user' | 'post' | 'cache' | 'banner' | 'system' | 'poll';
           target_id: string;
@@ -712,7 +731,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
-          admin_id: string;
+          admin_id?: string | null;
           action: string;
           target_type: 'user' | 'post' | 'cache' | 'banner' | 'system' | 'poll';
           target_id: string;
@@ -721,7 +740,7 @@ export interface Database {
         };
         Update: {
           id?: string;
-          admin_id?: string;
+          admin_id?: string | null;
           action?: string;
           target_type?: 'user' | 'post' | 'cache' | 'banner' | 'system' | 'poll';
           target_id?: string;
@@ -829,8 +848,8 @@ export interface Database {
       user_reports: {
         Row: {
           id: string;
-          reporter_id: string;
-          reported_id: string;
+          reporter_id: string | null;
+          reported_id: string | null;
           conversation_id: string | null;
           category: 'harassment' | 'threats' | 'spam_scam' | 'impersonation' | 'other';
           details: string | null;
@@ -840,8 +859,8 @@ export interface Database {
         };
         Insert: {
           id?: string;
-          reporter_id: string;
-          reported_id: string;
+          reporter_id?: string | null;
+          reported_id?: string | null;
           conversation_id?: string | null;
           category: 'harassment' | 'threats' | 'spam_scam' | 'impersonation' | 'other';
           details?: string | null;
@@ -851,8 +870,8 @@ export interface Database {
         };
         Update: {
           id?: string;
-          reporter_id?: string;
-          reported_id?: string;
+          reporter_id?: string | null;
+          reported_id?: string | null;
           conversation_id?: string | null;
           category?: 'harassment' | 'threats' | 'spam_scam' | 'impersonation' | 'other';
           details?: string | null;
@@ -957,6 +976,236 @@ export interface Database {
           },
         ];
       };
+      cards: {
+        Row: {
+          id: string;
+          slug: string;
+          full_name: string;
+          known_as: string;
+          decade: CardDecade;
+          era_label: string;
+          position: CardPosition;
+          matches_played: number;
+          attack_power: number;
+          defense_power: number;
+          ovr: number;
+          photo_url: string;
+          historical_crest_url: string | null;
+          historical_crest_era: string;
+          bio_snippet: string | null;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          full_name: string;
+          known_as: string;
+          decade: CardDecade;
+          era_label: string;
+          position: CardPosition;
+          matches_played: number;
+          attack_power: number;
+          defense_power: number;
+          ovr: number;
+          photo_url: string;
+          historical_crest_url?: string | null;
+          historical_crest_era?: string;
+          bio_snippet?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          full_name?: string;
+          known_as?: string;
+          decade?: CardDecade;
+          era_label?: string;
+          position?: CardPosition;
+          matches_played?: number;
+          attack_power?: number;
+          defense_power?: number;
+          ovr?: number;
+          photo_url?: string;
+          historical_crest_url?: string | null;
+          historical_crest_era?: string;
+          bio_snippet?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      user_cards: {
+        Row: {
+          id: string;
+          user_id: string;
+          card_id: string;
+          quantity: number;
+          acquired_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          card_id: string;
+          quantity?: number;
+          acquired_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          card_id?: string;
+          quantity?: number;
+          acquired_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_cards_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_cards_card_id_fkey";
+            columns: ["card_id"];
+            isOneToOne: false;
+            referencedRelation: "cards";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      user_packs: {
+        Row: {
+          id: string;
+          user_id: string;
+          pack_type: string;
+          card_count: number;
+          is_opened: boolean;
+          opened_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          pack_type?: string;
+          card_count?: number;
+          is_opened?: boolean;
+          opened_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          pack_type?: string;
+          card_count?: number;
+          is_opened?: boolean;
+          opened_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_packs_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      card_duels: {
+        Row: {
+          id: string;
+          host_user_id: string;
+          guest_user_id: string | null;
+          mode: CardDuelMode;
+          status: CardDuelStatus;
+          formation_host: string | null;
+          formation_guest: string | null;
+          current_round: number;
+          rounds_total: number;
+          host_score: number;
+          guest_score: number;
+          winner_user_id: string | null;
+          state: Json;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          host_user_id: string;
+          guest_user_id?: string | null;
+          mode?: CardDuelMode;
+          status?: CardDuelStatus;
+          formation_host?: string | null;
+          formation_guest?: string | null;
+          current_round?: number;
+          rounds_total?: number;
+          host_score?: number;
+          guest_score?: number;
+          winner_user_id?: string | null;
+          state?: Json;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          host_user_id?: string;
+          guest_user_id?: string | null;
+          mode?: CardDuelMode;
+          status?: CardDuelStatus;
+          formation_host?: string | null;
+          formation_guest?: string | null;
+          current_round?: number;
+          rounds_total?: number;
+          host_score?: number;
+          guest_score?: number;
+          winner_user_id?: string | null;
+          state?: Json;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      post_likes: {
+        Row: {
+          post_id: string;
+          user_id: string;
+          created_at: string;
+        };
+        Insert: {
+          post_id: string;
+          user_id: string;
+          created_at?: string;
+        };
+        Update: {
+          post_id?: string;
+          user_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "post_likes_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -971,6 +1220,10 @@ export interface Database {
       get_or_create_direct_conversation: {
         Args: { p_other_user: string };
         Returns: string;
+      };
+      soft_delete_direct_message: {
+        Args: { p_message_id: string };
+        Returns: boolean;
       };
       delete_current_user: {
         Args: Record<PropertyKey, never>;
@@ -992,9 +1245,57 @@ export interface Database {
         Args: { p_prediction_id: string; p_points: number };
         Returns: void;
       };
+      open_card_pack: {
+        Args: { p_pack_id: string; p_user_id: string };
+        Returns: {
+          card_id: string;
+          slug: string;
+          known_as: string;
+          position: CardPosition;
+          decade: CardDecade;
+          photo_url: string;
+          ovr: number;
+          is_new: boolean;
+        }[];
+      };
+      cast_match_mvp_vote: {
+        Args: { p_match_id: string; p_player_id: string };
+        Returns: void;
+      };
+      upsert_match_player_rating: {
+        Args: { p_match_id: string; p_target_id: string; p_rating: number };
+        Returns: void;
+      };
+      get_match_mvp_summary: {
+        Args: { p_match_id: string };
+        Returns: { player_id: string; votes: number }[];
+      };
+      get_match_player_ratings_summary: {
+        Args: { p_match_id: string };
+        Returns: { target_id: string; avg_rating: number; votes: number }[];
+      };
+      get_porra_leaderboard_stats: {
+        Args: { p_limit?: number };
+        Returns: {
+          user_id: string;
+          username: string;
+          display_name: string | null;
+          points: number;
+          predictions_count: number;
+          exact_hits: number;
+        }[];
+      };
+      get_admin_telemetry_summary: {
+        Args: { p_days?: number };
+        Returns: Json;
+      };
     };
     Enums: {
       match_status: MatchStatus;
+      card_position: CardPosition;
+      card_decade: CardDecade;
+      card_duel_mode: CardDuelMode;
+      card_duel_status: CardDuelStatus;
     };
     CompositeTypes: Record<string, never>;
   };

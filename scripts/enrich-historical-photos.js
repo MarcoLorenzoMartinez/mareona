@@ -15,7 +15,7 @@ const agent = new https.Agent({ keepAlive: true, maxSockets: 10 });
 
 function fetchPlayerPage(id) {
   return new Promise((resolve) => {
-    https.get(`https://www.bdfutbol.com/es/j/j${id}.html`, { agent, rejectUnauthorized: false }, (res) => {
+    https.get(`https://www.bdfutbol.com/es/j/j${id}.html`, { agent }, (res) => {
       if (res.statusCode !== 200) return resolve(null);
       let data = "";
       res.on("data", (c) => (data += c));
