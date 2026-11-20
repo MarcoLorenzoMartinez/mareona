@@ -103,7 +103,7 @@ Tablas que muestran los datos históricos más relevantes del club, para dar el 
 
 ### 2.4. Social (`/social`)
 
-#### La Tertulia (`/social`)
+#### Muro Social (`/social`)
 Red social para que los aficionados interactúen entre si y hablen sobre todos los temas relacionados con el Real Sporting. Cada mensaje publicado tiene un límite de 500 caracteres, y se puede adjuntar una encuesta o una plantilla creada en la sección de Mi Once. Los usuarios pueden dar "me gusta" a los mensajes, responder a los mismos y compartirlos en aplicaciones externas. También pueden seguir a otros usuarios y ver sus publicaciones en la subsección de "Amigos". De esta manera, se pueden ver los mensajes de todos los usuarios o solo los de aquellos que se siguen, para tener una experiencia más personalizada.  
 La sección "social" tiene un sistema de moderación para garantizar que los mensajes publicados sean respetuosos y no tengan contenido inapropiado.
 
@@ -184,7 +184,7 @@ Minijuego de comparativa estadística que enfrenta de manera consecutiva a dos f
 Espacio personal y centro de control del usuario en la plataforma:
 - **Autenticación versátil y segura:** Acceso mediante correo electrónico y contraseña, Google OAuth 2.0 (con soporte para inicio rápido e integración nativa en PWA) y enlaces mágicos (*Magic Link*), gestionado íntegramente en servidor con Supabase Auth.
 - **Identidad en la comunidad:** Personalización de nombre de usuario, biografía y foto de perfil (mediante avatares rojiblancos predefinidos o subida de imagen propia con compresión y optimización automática en cliente).
-- **Historial, actividad y privacidad:** Muro con el histórico de publicaciones y réplicas en La Tertulia, registro de pronósticos y puntos en La Porra, estado de avance de la colección de cromos, gestión de la red de amistades y control total sobre la cuenta conforme al RGPD (incluyendo eliminación inmediata en cascada).
+- **Historial, actividad y privacidad:** Muro con el histórico de publicaciones y réplicas en el muro social, registro de pronósticos y puntos en La Porra, estado de avance de la colección de cromos, gestión de la red de amistades y control total sobre la cuenta conforme al RGPD (incluyendo eliminación inmediata en cascada).
 
 ---
 
