@@ -1,3 +1,4 @@
+// Client: Renderiza avatar de usuario con estado de error en carga de imagen
 "use client";
 
 import { useState } from "react";

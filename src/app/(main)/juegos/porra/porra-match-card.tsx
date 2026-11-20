@@ -14,6 +14,7 @@ interface PorraMatchCardProps {
   readonly onSavePrediction: (pred: PorraPrediction) => void;
   readonly availablePlayers: string[];
   readonly isAuthenticated?: boolean;
+  readonly isSubmitting?: boolean;
   readonly onRequireAuth?: () => void;
 }
 
@@ -23,6 +24,7 @@ export function PorraMatchCard({
   onSavePrediction,
   availablePlayers,
   isAuthenticated = false,
+  isSubmitting = false,
   onRequireAuth,
 }: PorraMatchCardProps) {
   const dict = getDictionary();
@@ -38,7 +40,7 @@ export function PorraMatchCard({
   });
 
   const isSubmitted = existingPrediction !== null;
-  const isLocked = !isOpen || isSubmitted;
+  const isLocked = !isOpen || isSubmitted || isSubmitting;
   const displayedHome = existingPrediction ? existingPrediction.homeScore : homeScore;
   const displayedAway = existingPrediction ? existingPrediction.awayScore : awayScore;
   const displayedScorers = existingPrediction ? existingPrediction.sportingScorers : scorers;
@@ -145,6 +147,8 @@ export function PorraMatchCard({
           ? dict.games.porra.matchCard.predictionSaved
           : !isOpen
           ? dict.games.porra.matchCard.predictionClosed
+          : isSubmitting
+          ? 'Confirmando pronóstico...'
           : dict.games.porra.matchCard.confirmPrediction}
       </button>
     </form>

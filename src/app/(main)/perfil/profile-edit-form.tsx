@@ -33,7 +33,10 @@ export function ProfileEditForm({ onCancel, onSaved }: ProfileEditFormProps) {
     setIsSubmitting(true);
     setStatusMessage(null);
 
-    if (profile?.id.startsWith("00000000-0000-4000-8000")) {
+    if (
+      process.env.NODE_ENV !== "production" &&
+      profile?.id.startsWith("00000000-0000-4000-8000")
+    ) {
       updateLocalProfile({
         display_name: displayName.trim() || null,
         username: username.trim() || profile.username,

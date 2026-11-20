@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { PlayerAvatarFallback } from "@/components/media/player-avatar-fallback";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 
 interface SafePlayerAvatarProps {
   readonly photoUrl: string | null | undefined;
@@ -19,7 +20,7 @@ export function SafePlayerAvatar({
 }: SafePlayerAvatarProps) {
   const [hasError, setHasError] = useState(false);
 
-  if (photoUrl && !hasError) {
+  if (photoUrl && areOfficialAssetsEnabled() && !hasError) {
     return (
       <div className="relative h-full w-full bg-[#f3f4f3] pointer-events-none select-none">
         <Image

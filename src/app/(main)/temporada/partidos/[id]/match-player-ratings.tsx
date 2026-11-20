@@ -1,61 +1,36 @@
 // Client: Calificaciones y notas a jugadores y entrenador con selector express de MVP integrado
 "use client";
 
-import { useState, useMemo } from "react";
-import { useAuth } from "@/context/auth-context";
-import { submitPlayerRating, submitMvpVote } from "@/lib/match-community/actions";
-import { applyMvpVoteTransition } from "@/lib/match-community/mvp";
-import { useLocalVote } from "@/lib/match-community/use-local-vote";
 import { MatchRatingsSubmitBar } from "./match-ratings-submit-bar";
 import { MatchMvpExpressBar } from "./match-mvp-express-bar";
 import { MatchRatingsSectionList } from "./match-ratings-section-list";
-import { buildMatchRatingTargets } from "./rating-targets";
+import { useMatchRatings } from "./use-match-ratings";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 
 interface MatchPlayerRatingsProps {
   readonly match: DomainMatchDetail;
 }
 
-function parseRatingsJson(raw: string | null): Record<string, number> {
-  if (!raw) return {};
-  try {
-    const p = JSON.parse(raw);
-    return typeof p === "object" && p !== null ? p : {};
-  } catch {
-    return {};
-  }
-}
-
 export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
-  const { user, openAuthModal } = useAuth();
-  const storedRatingsRaw = useLocalVote(`mareona_ratings_${match.externalId}`);
-  const storedMvpId = useLocalVote(`mareona_mvp_${match.externalId}`);
-
-  const [draftRatings, setDraftRatings] = useState<Record<string, number>>({});
-  const [draftMvpId, setDraftMvpId] = useState<string | null>(null);
-  const [localSubmittedMvp, setLocalSubmittedMvp] = useState(false);
-  const [localSubmittedRatings, setLocalSubmittedRatings] = useState(false);
-  const [isSubmittingMvp, setIsSubmittingMvp] = useState(false);
-  const [isSubmittingRatings, setIsSubmittingRatings] = useState(false);
-
-  const storedRatings = useMemo(() => parseRatingsJson(storedRatingsRaw), [storedRatingsRaw]);
-  const hasSubmittedMvp = localSubmittedMvp || Boolean(storedMvpId);
-  const hasSubmittedRatings = localSubmittedRatings || Boolean(storedRatingsRaw);
-
-  const effectiveRatings = hasSubmittedRatings && Object.keys(storedRatings).length > 0
-    ? storedRatings
-    : draftRatings;
-  const effectiveMvpId = storedMvpId ?? draftMvpId;
-
-  const { starters, substitutes, coach } = buildMatchRatingTargets(match);
-  const candidates = [...starters, ...substitutes];
-
-  const [mvpVotes, setMvpVotes] = useState<Record<string, number>>(() => ({
-    ...(starters[0] ? { [starters[0].id]: 14 } : {}),
-    ...(starters[1] ? { [starters[1].id]: 9 } : {}),
-  }));
-
-  const totalMvpVotes = Object.values(mvpVotes).reduce((sum, count) => sum + count, 0);
+  const {
+    starters,
+    substitutes,
+    coach,
+    candidates,
+    hasSubmittedMvp,
+    hasSubmittedRatings,
+    effectiveRatings,
+    effectiveMvpId,
+    mvpVotes,
+    totalMvpVotes,
+    ratedCount,
+    isSubmittingMvp,
+    isSubmittingRatings,
+    handleScoreChange,
+    handleSelectMvp,
+    handleSubmitMvp,
+    handleSubmitRatings,
+  } = useMatchRatings(match);
 
   if (match.status !== "finished") {
     return (
@@ -72,58 +47,6 @@ export function MatchPlayerRatings({ match }: MatchPlayerRatingsProps) {
       </div>
     );
   }
-
-  const handleScoreChange = (targetId: string, score: number) => {
-    if (hasSubmittedRatings) return;
-    setDraftRatings((prev) => ({ ...prev, [targetId]: score }));
-  };
-
-  const handleSelectMvp = (playerId: string) => {
-    if (hasSubmittedMvp) return;
-    setDraftMvpId((prev) => (prev === playerId ? null : playerId));
-  };
-
-  const ratedCount = Object.keys(effectiveRatings).length;
-
-  const commitMvpVote = async (playerId: string) => {
-    setMvpVotes((prev) => applyMvpVoteTransition(prev, playerId, null));
-    setLocalSubmittedMvp(true);
-    try {
-      localStorage.setItem(`mareona_mvp_${match.externalId}`, playerId);
-    } catch {}
-    await submitMvpVote({ matchId: match.externalId, playerId });
-  };
-
-  const handleSubmitMvp = async () => {
-    if (!user) return openAuthModal("signin");
-    if (!draftMvpId || hasSubmittedMvp || isSubmittingMvp) return;
-    setIsSubmittingMvp(true);
-    try {
-      await commitMvpVote(draftMvpId);
-    } finally {
-      setIsSubmittingMvp(false);
-    }
-  };
-
-  const handleSubmitRatings = async () => {
-    if (!user) return openAuthModal("signin");
-    if (ratedCount === 0 || hasSubmittedRatings || isSubmittingRatings) return;
-
-    setIsSubmittingRatings(true);
-    try {
-      setLocalSubmittedRatings(true);
-      try {
-        localStorage.setItem(`mareona_ratings_${match.externalId}`, JSON.stringify(draftRatings));
-      } catch {}
-      await Promise.all(
-        Object.entries(draftRatings).map(([targetId, rating]) =>
-          submitPlayerRating({ matchId: match.externalId, targetId, rating })
-        )
-      );
-    } finally {
-      setIsSubmittingRatings(false);
-    }
-  };
 
   return (
     <div className="space-y-6">

@@ -2,6 +2,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Image from "next/image";
 import type { RegionRivalSummary, RivalH2HSummary } from "@/lib/historical/rivals-types";
 import spainPaths from "@/data/historical/spain-svg-paths.json";
 import worldPaths from "@/data/historical/world-svg-paths.json";
@@ -95,11 +96,13 @@ export function RegionDetailView({ region, onBack, onSelectRival }: RegionDetail
         <div className="relative z-10 flex items-center justify-between pb-1">
           <div className="flex items-center gap-3 min-w-0">
             <div className="relative h-6 w-9 sm:h-7 sm:w-10 shrink-0 overflow-hidden rounded-md border border-[var(--border)] shadow-2xs bg-neutral-100">
-              <img
+              <Image
                 src={flagUrl}
                 alt={`Bandera de ${region.regionName}`}
-                className="h-full w-full object-cover"
-                loading="lazy"
+                fill
+                sizes="40px"
+                className="object-cover"
+                unoptimized
               />
             </div>
             <h2 className="text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl truncate">

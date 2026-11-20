@@ -35,6 +35,7 @@ describe("SEO Metadata Suite (robots & sitemap)", () => {
     // Core home and season
     assert.ok(urls.some((u) => u.endsWith("mareona.es") || u.endsWith("mareona.es/")));
     assert.ok(urls.some((u) => u.includes("/temporada")));
+    assert.ok(urls.some((u) => u.includes("/temporada/partidos")));
     assert.ok(urls.some((u) => u.includes("/temporada/clasificacion")));
 
     // Games
@@ -43,7 +44,11 @@ describe("SEO Metadata Suite (robots & sitemap)", () => {
 
     // Historical
     assert.ok(urls.some((u) => u.includes("/historico")));
-    assert.ok(urls.some((u) => u.includes("/historico/leyendas")));
+    assert.ok(urls.some((u) => u.includes("/historico/legado")));
+
+    // Guard against obsolete non-existent routes
+    assert.equal(urls.some((u) => u.includes("/temporada/calendario")), false);
+    assert.equal(urls.some((u) => u.includes("/historico/leyendas")), false);
 
     // Legal
     assert.ok(urls.some((u) => u.includes("/aviso-legal")));

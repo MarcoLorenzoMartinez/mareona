@@ -2,7 +2,6 @@ import { parseFotMobPlayerProfile } from "./fotmob-player-profile-parser.ts";
 import type { DomainPlayerProfile, FotMobRawPlayerData } from "./fotmob-player-profile-types.ts";
 import { parseFotMobPlayerStats, type FotMobRawPlayerStatItem } from "./fotmob-player-parser.ts";
 import type { DomainPlayerMatchStats } from "./types.ts";
-import { normalizePlayerSearchKey } from "./player-stats-matcher.ts";
 import {
   mergePlayerSeasonMatches,
   type SportingTeamFixtureItem,

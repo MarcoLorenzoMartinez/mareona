@@ -1,7 +1,7 @@
 // Client: Modal de gestión de amigos y buscador en tiempo real
 "use client";
 
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect, useTransition, useCallback } from "react";
 import { Users } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { FriendsModalHeader } from "./friends-modal-header";
@@ -31,10 +31,13 @@ export function FriendsModal({
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
 
-  const setIsOpen = (open: boolean) => {
-    setInternalIsOpen(open);
-    onOpenChange?.(open);
-  };
+  const setIsOpen = useCallback(
+    (open: boolean) => {
+      setInternalIsOpen(open);
+      onOpenChange?.(open);
+    },
+    [onOpenChange]
+  );
 
   const [tab, setTab] = useState<"friends" | "search">(defaultTab);
   const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
@@ -70,7 +73,7 @@ export function FriendsModal({
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isOpen, setIsOpen]);
 
   const handleOpen = () => {
     if (!user) {

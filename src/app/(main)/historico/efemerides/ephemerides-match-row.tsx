@@ -10,7 +10,7 @@ interface EphemeridesMatchRowProps {
 }
 
 function getCompetitionBg(comp: string): string {
-  if (comp === "Copa UEFA") return "bg-indigo-50/30 hover:bg-indigo-100/40";
+  if (comp === "Copa UEFA") return "bg-red-50/35 hover:bg-red-100/45";
   if (comp === "Copa del Rey") return "bg-stone-50/80 hover:bg-stone-100/80";
   if (comp === "Promoción") return "bg-amber-50/40 hover:bg-amber-100/50";
   return "bg-white hover:bg-[var(--surface)]";

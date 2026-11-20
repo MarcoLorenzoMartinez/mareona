@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useOnlineStatus } from "@/lib/pwa/use-online-status";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 
 interface TeamCrestProps {
   readonly crestUrl: string | null | undefined;
@@ -48,9 +49,11 @@ export function TeamCrest({
     setHasError(false);
   }
 
-  // Treat remote images as unavailable when offline, preventing browser broken image placeholders
+  // Treat remote images as unavailable when offline, and honor legal killswitch
+  const allowOfficialAssets = areOfficialAssetsEnabled();
   const isRemote = Boolean(effectiveCrestUrl?.startsWith("http"));
-  const shouldFallback = !effectiveCrestUrl || hasError || (!isOnline && isRemote);
+  const shouldFallback =
+    !allowOfficialAssets || !effectiveCrestUrl || hasError || (!isOnline && isRemote);
 
   if (shouldFallback) {
     return (

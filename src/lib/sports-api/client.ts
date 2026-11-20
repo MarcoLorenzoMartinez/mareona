@@ -732,4 +732,15 @@ export async function fetchSportingSquad(
   return [];
 }
 
+/**
+ * Clears all L1 in-memory sports caches so subsequent requests reload fresh data from L2/external APIs.
+ */
+export function clearSportsMemoryCache(): void {
+  memoryCachedStandings.clear();
+  memoryCachedNextFixture = null;
+  memoryCachedSeasonMatches = null;
+  memoryCachedMatchDetails.clear();
+  memoryCachedSquad = null;
+}
+
 

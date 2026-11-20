@@ -12,7 +12,13 @@ import {
   type UpdatePostInput,
   type VotePollInput,
 } from "./schemas";
-import { MODERATION_REJECTED_MESSAGE, moderateText } from "./moderation";
+import {
+  MODERATION_REJECTED_MESSAGE,
+  BANNED_USER_POST_MESSAGE,
+  READ_ONLY_WALL_MESSAGE,
+  isProfileActivelyBanned,
+  moderateText,
+} from "./moderation";
 import { logBlockedAttempt } from "./moderation-log";
 import { checkRateLimit } from "@/lib/security/rate-limiter";
 import { canEditPost } from "./format";
@@ -62,7 +68,27 @@ export async function createSocialPost(
       return { success: false, error: rateLimit.error };
     }
 
-    const moderation = await moderateText(parsed.data.body);
+    const [{ data: profile }, { data: activeAnnouncement }] = await Promise.all([
+      supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+      supabase
+        .from("system_announcements")
+        .select("read_only_wall")
+        .eq("is_active", true)
+        .eq("read_only_wall", true)
+        .limit(1)
+        .maybeSingle(),
+    ]);
+
+    if (isProfileActivelyBanned(profile)) {
+      return { success: false, error: BANNED_USER_POST_MESSAGE };
+    }
+
+    if (activeAnnouncement?.read_only_wall) {
+      return { success: false, error: READ_ONLY_WALL_MESSAGE };
+    }
+
+    const { cleanBody } = parsePostLineup(parsed.data.body);
+    const moderation = await moderateText(cleanBody);
     if (moderation.verdict === "block") {
       await logBlockedAttempt(supabase, {
         userId: user.id,
@@ -72,12 +98,6 @@ export async function createSocialPost(
       });
       return { success: false, error: MODERATION_REJECTED_MESSAGE };
     }
-
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .maybeSingle();
 
     const insertPayload: Database["public"]["Tables"]["posts"]["Insert"] = {
       user_id: user.id,
@@ -433,12 +453,38 @@ export async function updateSocialPost(
       return { success: false, error: rateLimit.error };
     }
 
-    const { data: existingPost, error: fetchError } = await supabase
-      .from("posts")
-      .select("id, user_id, created_at, match_id")
-      .eq("id", parsed.data.postId)
-      .is("deleted_at", null)
-      .maybeSingle();
+    const [
+      { data: existingPost, error: fetchError },
+      { data: profile },
+      { data: activeAnnouncement },
+    ] = await Promise.all([
+      supabase
+        .from("posts")
+        .select("id, user_id, created_at, match_id")
+        .eq("id", parsed.data.postId)
+        .is("deleted_at", null)
+        .maybeSingle(),
+      supabase
+        .from("profiles")
+        .select("is_banned, banned_until")
+        .eq("id", user.id)
+        .maybeSingle(),
+      supabase
+        .from("system_announcements")
+        .select("read_only_wall")
+        .eq("is_active", true)
+        .eq("read_only_wall", true)
+        .limit(1)
+        .maybeSingle(),
+    ]);
+
+    if (isProfileActivelyBanned(profile)) {
+      return { success: false, error: BANNED_USER_POST_MESSAGE };
+    }
+
+    if (activeAnnouncement?.read_only_wall) {
+      return { success: false, error: READ_ONLY_WALL_MESSAGE };
+    }
 
     if (fetchError || !existingPost) {
       return { success: false, error: "Publicación no encontrada" };

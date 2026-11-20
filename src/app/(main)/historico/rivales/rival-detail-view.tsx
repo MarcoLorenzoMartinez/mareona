@@ -1,7 +1,7 @@
 // Client: Vista detallada del cara a cara con un rival (estadísticas, desglose y partidos)
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import type { RivalH2HSummary, RivalScopeFilter } from "@/lib/historical/rivals-types";
 import type { DayMatchItem } from "@/lib/historical/ephemerides-types";
 import { RivalDetailHeader } from "./rival-detail-header";

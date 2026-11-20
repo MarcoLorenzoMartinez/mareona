@@ -10,10 +10,11 @@ const CANONICAL_PUBLIC_ROUTES: readonly RouteConfig[] = [
   // Core & Matchday
   { path: "", changeFrequency: "daily", priority: 1.0 },
   { path: "/temporada", changeFrequency: "daily", priority: 0.9 },
-  { path: "/temporada/calendario", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/temporada/partidos", changeFrequency: "weekly", priority: 0.8 },
   { path: "/temporada/clasificacion", changeFrequency: "daily", priority: 0.8 },
   { path: "/temporada/plantilla", changeFrequency: "weekly", priority: 0.7 },
   { path: "/temporada/estadisticas", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/temporada/pizarra", changeFrequency: "weekly", priority: 0.6 },
 
   // Games & Trivia
   { path: "/juegos", changeFrequency: "daily", priority: 0.8 },
@@ -26,11 +27,9 @@ const CANONICAL_PUBLIC_ROUTES: readonly RouteConfig[] = [
 
   // Historical Archive
   { path: "/historico", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/historico/temporadas", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/historico/partidos", changeFrequency: "monthly", priority: 0.7 },
   { path: "/historico/rivales", changeFrequency: "monthly", priority: 0.7 },
   { path: "/historico/efemerides", changeFrequency: "weekly", priority: 0.7 },
-  { path: "/historico/leyendas", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/historico/legado", changeFrequency: "monthly", priority: 0.7 },
 
   // Social & PWA Install
   { path: "/social", changeFrequency: "daily", priority: 0.7 },

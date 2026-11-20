@@ -9,6 +9,7 @@ import { CardStatsHud } from "./card-stats-hud";
 import { CardCommemorativeHud } from "./card-commemorative-hud";
 import { CardBack } from "./card-back";
 import { CardDuplicateBadge } from "./card-duplicate-badge";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 import {
   CardScaleFrame,
   CARD_CANONICAL_WIDTH,
@@ -113,7 +114,7 @@ export function HistoricalCard({
         >
           {card.kind !== "crest" && <CardStadiumBackground isOwned={true} />}
 
-          {!imgError ? (
+          {areOfficialAssetsEnabled() && !imgError ? (
             <Image
               src={card.photoUrl}
               alt={`${dict.cards.cardImageAltPrefix} ${card.knownAs}`}

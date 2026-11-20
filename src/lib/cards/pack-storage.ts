@@ -32,14 +32,16 @@ export const DEFAULT_MISSION_STATE: DailyMissionState = {
 };
 
 /**
- * Returns the current date in YYYY-MM-DD local format.
+ * Returns the current date in YYYY-MM-DD format anchored to Europe/Madrid timezone.
  */
 export function getTodayDateString(overrideDate?: Date): string {
   const d = overrideDate ?? new Date();
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Madrid",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
 }
 
 /**

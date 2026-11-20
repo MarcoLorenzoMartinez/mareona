@@ -51,8 +51,10 @@ export function ProfileAvatarPicker({
       const previewUrl = URL.createObjectURL(optimized);
       onSelect(previewUrl);
 
-      const isDemo = !user || user.id.startsWith("00000000-0000-4000-8000");
-      if (isDemo) {
+      const isDemo =
+        process.env.NODE_ENV !== "production" &&
+        (!user || user.id.startsWith("00000000-0000-4000-8000"));
+      if (isDemo || !user) {
         setIsUploading(false);
         return;
       }

@@ -60,16 +60,23 @@ export const DEMO_CREDENTIALS = {
 } as const;
 
 /**
- * Checks whether an email belongs to an official demo account or sandbox profile.
+ * Demo credentials and sandbox shortcuts are strictly restricted to non-production
+ * environments so production builds never expose fake logins or test toolbars.
+ */
+export function isDemoEnvironmentEnabled(): boolean {
+  return process.env.NODE_ENV !== "production";
+}
+
+/**
+ * Checks whether an email belongs to an official demo sandbox account.
+ * Always returns false in production and never matches real admin or user emails.
  */
 export function isDemoEmail(email?: string | null): boolean {
-  if (!email) return false;
+  if (!isDemoEnvironmentEnabled() || !email) return false;
   const clean = email.trim().toLowerCase();
   return (
     clean === DEMO_CREDENTIALS.login.email ||
-    clean === DEMO_CREDENTIALS.register.email ||
-    clean === "mareonasportinguista@gmail.com" ||
-    clean.includes("demo")
+    clean === DEMO_CREDENTIALS.register.email
   );
 }
 
@@ -83,12 +90,17 @@ export interface DemoAuthCheckResult {
 
 /**
  * Evaluates whether submitted credentials belong to permanent demo test accounts.
+ * Disabled unconditionally in production.
  */
 export function evaluateDemoAuth(
   email: string,
   pass: string,
   tab: "signin" | "signup"
 ): DemoAuthCheckResult {
+  if (!isDemoEnvironmentEnabled()) {
+    return { isDemo: false };
+  }
+
   const cleanEmail = email.trim().toLowerCase();
 
   if (cleanEmail === DEMO_CREDENTIALS.login.email) {

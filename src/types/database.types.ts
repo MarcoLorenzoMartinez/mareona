@@ -303,6 +303,7 @@ export interface Database {
           match_id: string;
           home_score: number;
           away_score: number;
+          sporting_scorers: string[];
           points_awarded: number | null;
           created_at: string;
           updated_at: string;
@@ -313,6 +314,7 @@ export interface Database {
           match_id: string;
           home_score: number;
           away_score: number;
+          sporting_scorers?: string[];
           points_awarded?: number | null;
           created_at?: string;
           updated_at?: string;
@@ -323,6 +325,7 @@ export interface Database {
           match_id?: string;
           home_score?: number;
           away_score?: number;
+          sporting_scorers?: string[];
           points_awarded?: number | null;
           created_at?: string;
           updated_at?: string;
@@ -333,13 +336,6 @@ export interface Database {
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "predictions_match_id_fkey";
-            columns: ["match_id"];
-            isOneToOne: false;
-            referencedRelation: "matches";
             referencedColumns: ["id"];
           },
         ];
@@ -387,13 +383,6 @@ export interface Database {
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "posts_match_id_fkey";
-            columns: ["match_id"];
-            isOneToOne: false;
-            referencedRelation: "matches";
             referencedColumns: ["id"];
           },
           {
@@ -837,6 +826,137 @@ export interface Database {
         };
         Relationships: [];
       };
+      user_reports: {
+        Row: {
+          id: string;
+          reporter_id: string;
+          reported_id: string;
+          conversation_id: string | null;
+          category: 'harassment' | 'threats' | 'spam_scam' | 'impersonation' | 'other';
+          details: string | null;
+          evidence_snapshot: string | null;
+          status: 'pending' | 'reviewed' | 'dismissed';
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          reporter_id: string;
+          reported_id: string;
+          conversation_id?: string | null;
+          category: 'harassment' | 'threats' | 'spam_scam' | 'impersonation' | 'other';
+          details?: string | null;
+          evidence_snapshot?: string | null;
+          status?: 'pending' | 'reviewed' | 'dismissed';
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          reporter_id?: string;
+          reported_id?: string;
+          conversation_id?: string | null;
+          category?: 'harassment' | 'threats' | 'spam_scam' | 'impersonation' | 'other';
+          details?: string | null;
+          evidence_snapshot?: string | null;
+          status?: 'pending' | 'reviewed' | 'dismissed';
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_reports_reporter_id_fkey";
+            columns: ["reporter_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_reports_reported_id_fkey";
+            columns: ["reported_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_reports_conversation_id_fkey";
+            columns: ["conversation_id"];
+            isOneToOne: false;
+            referencedRelation: "conversations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      match_mvp_votes: {
+        Row: {
+          id: string;
+          match_id: string;
+          user_id: string;
+          player_id: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          match_id: string;
+          user_id: string;
+          player_id: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          match_id?: string;
+          user_id?: string;
+          player_id?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "match_mvp_votes_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      match_player_ratings: {
+        Row: {
+          id: string;
+          match_id: string;
+          user_id: string;
+          target_id: string;
+          rating: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          match_id: string;
+          user_id: string;
+          target_id: string;
+          rating: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          match_id?: string;
+          user_id?: string;
+          target_id?: string;
+          rating?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "match_player_ratings_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -858,6 +978,14 @@ export interface Database {
       };
       is_admin: {
         Args: { user_uuid?: string };
+        Returns: boolean;
+      };
+      is_user_banned: {
+        Args: { user_uuid?: string };
+        Returns: boolean;
+      };
+      is_wall_read_only: {
+        Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
       apply_prediction_points: {

@@ -74,7 +74,7 @@ export function MatchMvpExpressBar({
         </div>
 
         <div className="flex items-center gap-3 self-end sm:self-auto">
-          {leader.averageRating && (
+          {leader.averageRating > 0 && (
             <div className="text-right">
               <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-semibold block">
                 Media

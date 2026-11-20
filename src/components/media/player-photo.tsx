@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { PlayerAvatarFallback } from "./player-avatar-fallback";
 import { useOnlineStatus } from "@/lib/pwa/use-online-status";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 
 interface PlayerPhotoProps {
   readonly photoUrl: string | null | undefined;
@@ -38,7 +39,6 @@ const SIZE_CLASSES = {
 export function PlayerPhoto({
   photoUrl,
   playerName,
-  shirtNumber: _shirtNumber,
   size = "card",
   className = "",
   isDecorative = true,
@@ -49,8 +49,7 @@ export function PlayerPhoto({
   const sizeClass = SIZE_CLASSES[size];
 
   // Global legal killswitch from docs/LEGAL-ASSETS.md
-  const allowOfficialAssets =
-    process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS !== "false";
+  const allowOfficialAssets = areOfficialAssetsEnabled();
 
   // Prevent browser broken image icon when offline by suppressing remote un-cached photos
   const isRemote = Boolean(photoUrl?.startsWith("http"));

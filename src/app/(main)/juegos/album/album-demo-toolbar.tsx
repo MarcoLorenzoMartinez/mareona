@@ -30,6 +30,7 @@ export function AlbumDemoToolbar({
   onClearPacks,
 }: AlbumDemoToolbarProps) {
   const dict = getDictionary();
+  if (process.env.NODE_ENV === "production") return null;
   return (
     <aside
       aria-label={dict.games.album.demoToolbar.aria}

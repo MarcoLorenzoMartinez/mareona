@@ -9,7 +9,6 @@ export const OFFLINE_PRECACHE_PATHS = [
   "/juegos/pregunta-del-dia",
   "/juegos/mas-o-menos",
   "/historico",
-  "/historico/comparador",
   "/historico/efemerides",
   "/historico/legado",
   "/historico/rivales",

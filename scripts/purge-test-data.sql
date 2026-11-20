@@ -15,16 +15,22 @@ DECLARE
     'system_announcements',
     'user_reports',
     'user_blocks',
+    'messages',
+    'conversation_members',
+    'conversations',
     'direct_messages',
     'direct_conversations',
     'friendships',
     'poll_votes',
     'poll_options',
     'polls',
+    'match_mvp_votes',
+    'match_player_ratings',
     'post_likes',
     'posts',
     'predictions',
     'user_cards',
+    'user_packs',
     'card_packs'
   ];
 BEGIN 

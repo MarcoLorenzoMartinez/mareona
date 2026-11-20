@@ -19,7 +19,7 @@ interface WordleClientProps {
 
 export function WordleClient({ initialChallenge }: WordleClientProps) {
   const { user } = useAuth();
-  const isDemo = isDemoEmail(user?.email);
+  const isDemo = process.env.NODE_ENV !== 'production' && isDemoEmail(user?.email);
 
   const [challenge, setChallenge] = useState<WordleDailyWord>(() => {
     return (typeof window === 'undefined' ? initialChallenge : getTodayChallenge()) || getTodayChallenge();

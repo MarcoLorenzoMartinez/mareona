@@ -4,6 +4,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { getPixelationFactor } from '@/lib/who-are-ya/engine';
 import { PlayerAvatarFallback } from '@/components/media/player-avatar-fallback';
+import { areOfficialAssetsEnabled } from '@/lib/legal/official-assets';
 import { getDictionary } from '@/i18n';
 
 interface WhoAreYaMysteryPhotoProps {
@@ -26,8 +27,10 @@ export function WhoAreYaMysteryPhoto({
   const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
   const [hasError, setHasError] = useState(false);
 
+  const assetsEnabled = areOfficialAssetsEnabled();
   const factor = getPixelationFactor(attemptsCount, isGameOver);
   const isLoaded = loadedUrl === imageUrl && !hasError;
+  const showUnavailable = !assetsEnabled || hasError;
 
   // Renderiza el pixelado auténtico redibujando a baja resolución sin suavizado
   const drawPixelated = useCallback((img: HTMLImageElement, canvas: HTMLCanvasElement) => {
@@ -63,6 +66,7 @@ export function WhoAreYaMysteryPhoto({
   }, [factor, isGameOver]);
 
   useEffect(() => {
+    if (!assetsEnabled) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -95,20 +99,20 @@ export function WhoAreYaMysteryPhoto({
     return () => {
       isMounted = false;
     };
-  }, [imageUrl, loadedUrl, drawPixelated]);
+  }, [assetsEnabled, imageUrl, loadedUrl, drawPixelated]);
 
   return (
     <div className="relative mx-auto flex flex-col items-center select-none">
       <div className="relative h-48 w-48 overflow-hidden rounded-2xl border-2 border-[var(--border)] bg-neutral-100 shadow-md sm:h-56 sm:w-56 flex items-center justify-center">
         {/* Esqueleto de carga mientras se descarga la imagen */}
-        {!isLoaded && !hasError && (
+        {!showUnavailable && !isLoaded && (
           <div
             className="absolute inset-0 bg-neutral-200/80 animate-pulse flex items-center justify-center z-0"
             aria-hidden="true"
           />
         )}
 
-        {hasError ? (
+        {showUnavailable ? (
           <div className="flex flex-col items-center justify-center p-4 text-center z-10 w-full h-full">
             <div className="h-24 w-24 mb-2">
               <PlayerAvatarFallback teamColor="#e2001a" />

@@ -49,8 +49,11 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
     const finalDisplayName = displayName.trim() || defaultDisplayName;
     const finalUsername = username.trim() || defaultUsername;
 
-    // Instant local state update for demo accounts
-    if (profile?.id.startsWith("00000000-0000-4000-8000")) {
+    // Instant local state update for demo accounts in non-production environments
+    if (
+      process.env.NODE_ENV !== "production" &&
+      profile?.id.startsWith("00000000-0000-4000-8000")
+    ) {
       updateLocalProfile({
         display_name: finalDisplayName,
         username: finalUsername,

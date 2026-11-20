@@ -11,7 +11,7 @@ export function useAlbumTesterSeed(
   setPackInventory: (inv: UserPackInventory) => void
 ) {
   useEffect(() => {
-    if (userId && isDemo) {
+    if (process.env.NODE_ENV !== "production" && userId && isDemo) {
       const seededKey = `mareona_tester_packs_seeded_${userId}`;
       if (!window.localStorage.getItem(seededKey)) {
         addPacksToInventory("aficionado", 3, userId);

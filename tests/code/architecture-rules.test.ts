@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { transformStandingRow, transformFixture } from "../../src/lib/sports-api/types.ts";
 import { getSecurityHeaders, buildContentSecurityPolicy } from "../../src/lib/security/headers.ts";
+import { areOfficialAssetsEnabled } from "../../src/lib/legal/official-assets.ts";
 
 /**
  * Recursively retrieves all files matching given extensions within a directory.
@@ -197,5 +198,66 @@ describe("Architecture & Code Quality Suite (AGENTS.md & Industry Standards)", (
       "Referrer-Policy must be strict-origin-when-cross-origin"
     );
     assert.ok(headersMap.has("Strict-Transport-Security"), "HSTS header required");
+  });
+
+  it("verifies unified database hardening migration for RLS privilege guards and external match_id schemas", () => {
+    const migrationPath = path.resolve(
+      process.cwd(),
+      "supabase/migrations/2026_1120010000_production_security_and_match_schemas.sql"
+    );
+    assert.strictEqual(
+      fs.existsSync(migrationPath),
+      true,
+      "Unified production security migration must exist"
+    );
+
+    const sql = fs.readFileSync(migrationPath, "utf-8");
+    assert.ok(sql.includes("protect_profile_privileged_columns"), "Must guard profile disciplinary/points columns");
+    assert.ok(sql.includes("protect_post_moderation_columns"), "Must prevent self-approving flagged posts");
+    assert.ok(sql.includes("is_user_banned"), "Must enforce ban status at RLS level");
+    assert.ok(sql.includes("is_wall_read_only"), "Must enforce read_only_wall at RLS level");
+    assert.ok(sql.includes("match_mvp_votes"), "Must define match_mvp_votes table");
+    assert.ok(sql.includes("match_player_ratings"), "Must define match_player_ratings table");
+    assert.ok(sql.includes("external_api_cache_select_all"), "Must define RLS policies on external_api_cache");
+  });
+
+  it("verifies LEGAL-ASSETS.md killswitch (NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS) across all asset components", () => {
+    const prev = process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS;
+    try {
+      delete process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS;
+      assert.strictEqual(areOfficialAssetsEnabled(), true, "Enabled by default");
+
+      process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS = "true";
+      assert.strictEqual(areOfficialAssetsEnabled(), true);
+
+      process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS = "false";
+      assert.strictEqual(areOfficialAssetsEnabled(), false, "Disabled when explicitly 'false'");
+    } finally {
+      if (prev === undefined) delete process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS;
+      else process.env.NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS = prev;
+    }
+
+    const guardedFiles = [
+      "src/components/media/team-crest.tsx",
+      "src/components/media/player-photo.tsx",
+      "src/components/cards/historical-card.tsx",
+      "src/components/cards/historical-crest-badge.tsx",
+      "src/components/lineup-builder/safe-player-avatar.tsx",
+      "src/lib/lineup-builder/export-canvas.ts",
+      "src/app/(main)/temporada/partidos/[id]/tactical-player-card.tsx",
+      "src/app/(main)/temporada/partidos/[id]/pitch-player-node.tsx",
+      "src/app/(main)/temporada/partidos/[id]/player-modal-header.tsx",
+      "src/app/(main)/juegos/quien-es/who-are-ya-mystery-photo.tsx",
+      "src/app/(main)/juegos/pregunta-del-dia/trivia-result-modal.tsx",
+      "src/app/(main)/juegos/pregunta-del-dia/trivia-solved-card.tsx",
+    ];
+
+    for (const relPath of guardedFiles) {
+      const content = fs.readFileSync(path.resolve(process.cwd(), relPath), "utf-8");
+      assert.ok(
+        content.includes("areOfficialAssetsEnabled"),
+        `${relPath} must check areOfficialAssetsEnabled() per LEGAL-ASSETS.md`
+      );
+    }
   });
 });

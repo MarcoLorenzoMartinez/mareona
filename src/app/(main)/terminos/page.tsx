@@ -19,7 +19,7 @@ const SECTIONS: readonly LegalSection[] = [
       <>
         <LegalP>
           Al crear una cuenta o usar Mareona aceptas estos términos. El acceso se realiza con tu
-          cuenta de Google; debes tener al menos 14 años.
+          cuenta de Google o mediante correo electrónico y contraseña; debes tener al menos 14 años.
         </LegalP>
         <LegalP>
           Cada persona puede tener una cuenta y es responsable de la actividad realizada con ella.

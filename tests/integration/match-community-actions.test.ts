@@ -4,6 +4,7 @@ import {
   createMatchCommentSchema,
   submitMvpVoteSchema,
   submitPlayerRatingSchema,
+  submitMatchPlayerRatingsSchema,
 } from "../../src/lib/match-community/schemas.ts";
 import { buildMatchCommentTree } from "../../src/lib/match-community/comment-tree.ts";
 import { checkRateLimit } from "../../src/lib/security/rate-limiter.ts";
@@ -190,6 +191,29 @@ describe("Match Community & Comment Actions Integration Suite", () => {
         rating: -1,
       });
       assert.strictEqual(negativeRating.success, false);
+    });
+
+    it("validates batch player ratings submissions", () => {
+      const validBatch = submitMatchPlayerRatingsSchema.safeParse({
+        matchId: "12345",
+        ratings: [
+          { targetId: "player-1-yanez", rating: 8 },
+          { targetId: "coach-sporting", rating: 0 },
+        ],
+      });
+      assert.strictEqual(validBatch.success, true);
+
+      const emptyBatch = submitMatchPlayerRatingsSchema.safeParse({
+        matchId: "12345",
+        ratings: [],
+      });
+      assert.strictEqual(emptyBatch.success, false);
+
+      const invalidItemBatch = submitMatchPlayerRatingsSchema.safeParse({
+        matchId: "12345",
+        ratings: [{ targetId: "player-1-yanez", rating: 11 }],
+      });
+      assert.strictEqual(invalidItemBatch.success, false);
     });
   });
 });

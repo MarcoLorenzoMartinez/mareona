@@ -63,11 +63,13 @@ export function useAuthSession() {
         setUser(sessionUser);
         await fetchProfile(sessionUser.id);
       } else {
-        const stored = getStoredDemoSession();
+        const stored =
+          process.env.NODE_ENV !== "production" ? getStoredDemoSession() : null;
         if (stored) {
           setUser(stored.user);
           setProfile(stored.profile);
         } else {
+          if (process.env.NODE_ENV === "production") clearStoredDemoSession();
           setUser(null);
           setProfile(null);
         }
@@ -83,7 +85,8 @@ export function useAuthSession() {
         } = await supabase.auth.getSession();
         await syncSession(session?.user ?? null);
       } catch {
-        const stored = getStoredDemoSession();
+        const stored =
+          process.env.NODE_ENV !== "production" ? getStoredDemoSession() : null;
         if (stored && mounted) {
           setUser(stored.user);
           setProfile(stored.profile);
@@ -122,6 +125,7 @@ export function useAuthSession() {
   }, [fetchProfile]);
 
   const setDemoSession = useCallback((demoUser: User, demoProfile: UserProfile) => {
+    if (process.env.NODE_ENV === "production") return;
     saveDemoSession(demoUser, demoProfile);
     setUser(demoUser);
     setProfile(demoProfile);

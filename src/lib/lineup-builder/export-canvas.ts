@@ -1,5 +1,6 @@
 import type { PitchAssignedPlayer, LineupPlayer } from "./types";
 import { getConcisePlayerName } from "./player-name-formatter";
+import { areOfficialAssetsEnabled } from "../legal/official-assets";
 
 interface ExportLineupOptions {
   readonly formationLabel?: string;
@@ -138,7 +139,7 @@ export async function exportLineupToBlob(options: ExportLineupOptions): Promise<
     ctx.restore();
 
     // Foto o silueta atlética
-    if (starter.player?.photoUrl) {
+    if (starter.player?.photoUrl && areOfficialAssetsEnabled()) {
       try {
         const pImg = await loadImage(starter.player.photoUrl);
         ctx.save();

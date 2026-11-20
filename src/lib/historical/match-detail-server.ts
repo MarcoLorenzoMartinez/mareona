@@ -34,7 +34,6 @@ export async function clearHistoricalMatchDetailCache(): Promise<void> {
 function parsePlayerTable(
   tableHtml: string | undefined,
   season?: string,
-  _isStarter = false,
   isSporting = false
 ): HistoricalMatchPlayer[] {
   if (!tableHtml) return [];
@@ -212,10 +211,10 @@ export async function parseHistoricalMatchDetail(
 
   goals.sort((a, b) => a.minute - b.minute);
 
-  const homeStarters = parsePlayerTable(tables[0], season, true, isHomeSporting);
-  const awayStarters = parsePlayerTable(tables[1], season, true, !isHomeSporting);
-  const homeBench = parsePlayerTable(tables[2], season, false, isHomeSporting);
-  const awayBench = parsePlayerTable(tables[3], season, false, !isHomeSporting);
+  const homeStarters = parsePlayerTable(tables[0], season, isHomeSporting);
+  const awayStarters = parsePlayerTable(tables[1], season, !isHomeSporting);
+  const homeBench = parsePlayerTable(tables[2], season, isHomeSporting);
+  const awayBench = parsePlayerTable(tables[3], season, !isHomeSporting);
 
   const startYear = season ? parseInt(season.split("-")[0], 10) : undefined;
   const rivalStarters = isHomeSporting ? awayStarters : homeStarters;

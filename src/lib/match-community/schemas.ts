@@ -38,3 +38,23 @@ export const submitPlayerRatingSchema = z.object({
 });
 
 export type SubmitPlayerRatingInput = z.infer<typeof submitPlayerRatingSchema>;
+
+export const submitMatchPlayerRatingsSchema = z.object({
+  matchId: z.string().min(1, "El identificador del partido es obligatorio"),
+  ratings: z
+    .array(
+      z.object({
+        targetId: z.string().min(1, "El identificador del destinatario es obligatorio"),
+        rating: z
+          .number()
+          .min(0, "La nota mínima es 0 (No calificable)")
+          .max(10, "La nota máxima es 10"),
+      })
+    )
+    .min(1, "Debes puntuar al menos a un jugador o técnico")
+    .max(40, "Demasiadas calificaciones en un solo envío"),
+});
+
+export type SubmitMatchPlayerRatingsInput = z.infer<
+  typeof submitMatchPlayerRatingsSchema
+>;

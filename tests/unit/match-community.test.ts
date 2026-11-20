@@ -5,7 +5,11 @@ import {
   submitMvpVoteSchema,
   submitPlayerRatingSchema,
 } from "../../src/lib/match-community/schemas.ts";
-import { applyMvpVoteTransition } from "../../src/lib/match-community/mvp.ts";
+import {
+  applyMvpVoteTransition,
+  aggregateMvpVotes,
+  aggregatePlayerRatings,
+} from "../../src/lib/match-community/mvp.ts";
 import { buildMatchRatingTargets } from "../../src/app/(main)/temporada/partidos/[id]/rating-targets.ts";
 import type { DomainMatchDetail } from "../../src/lib/sports-api/types.ts";
 
@@ -215,6 +219,34 @@ describe("Match Community Schemas", () => {
         "Diego Sánchez", // 4. Lateral izquierdo (x = 0.85)
         "Otero", // 5. Delantero (y = 0.85)
       ]);
+    });
+  });
+
+  describe("aggregateMvpVotes & aggregatePlayerRatings", () => {
+    it("counts persisted MVP vote rows accurately by player_id", () => {
+      const counts = aggregateMvpVotes([
+        { player_id: "p1" },
+        { player_id: "p9" },
+        { player_id: "p1" },
+      ]);
+      assert.deepEqual(counts, { p1: 2, p9: 1 });
+      assert.deepEqual(aggregateMvpVotes([]), {});
+    });
+
+    it("computes 1-decimal rating averages while excluding 0 (N/C) votes", () => {
+      const averages = aggregatePlayerRatings([
+        { target_id: "p1", rating: 8 },
+        { target_id: "p1", rating: 7 },
+        { target_id: "p1", rating: 0 }, // N/C ignored
+        { target_id: "p2", rating: 0 }, // Only N/C -> omitted
+        { target_id: "coach-sporting", rating: 6 },
+        { target_id: "coach-sporting", rating: 7 },
+        { target_id: "coach-sporting", rating: 7 },
+      ]);
+
+      assert.equal(averages["p1"], 7.5);
+      assert.equal(averages["p2"], undefined);
+      assert.equal(averages["coach-sporting"], 6.7);
     });
   });
 });

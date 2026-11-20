@@ -190,12 +190,23 @@ export async function reportUserAction(
       transcriptLines,
     });
 
-    await logBlockedAttempt(supabase, {
-      userId: user.id,
-      body: formatted.body,
-      reason: formatted.reason,
-      channel: "user_report",
-    });
+    await Promise.allSettled([
+      supabase.from("user_reports").insert({
+        reporter_id: user.id,
+        reported_id: parsed.data.targetUserId,
+        conversation_id: parsed.data.conversationId ?? null,
+        category: parsed.data.category,
+        details: parsed.data.details?.trim() || null,
+        evidence_snapshot:
+          transcriptLines.length > 0 ? transcriptLines.join("\n") : null,
+      }),
+      logBlockedAttempt(supabase, {
+        userId: user.id,
+        body: formatted.body,
+        reason: formatted.reason,
+        channel: "user_report",
+      }),
+    ]);
 
     if (parsed.data.alsoBlock) {
       await blockUserAction({ targetUserId: parsed.data.targetUserId });

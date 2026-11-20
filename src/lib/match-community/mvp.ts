@@ -1,5 +1,5 @@
 /**
- * Logic for Sporting match MVP voting and vote transition calculations.
+ * Logic for Sporting match MVP voting and community rating aggregations.
  */
 
 /**
@@ -27,4 +27,50 @@ export function applyMvpVoteTransition(
 
   next[newPlayerId] = (next[newPlayerId] ?? 0) + 1;
   return next;
+}
+
+/**
+ * Aggregates raw MVP vote rows from Supabase into a count map indexed by playerId.
+ *
+ * @param rows - Array of persisted MVP vote rows containing `player_id`.
+ * @returns Vote count map indexed by `player_id`.
+ */
+export function aggregateMvpVotes(
+  rows: ReadonlyArray<{ readonly player_id: string }>
+): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const row of rows) {
+    if (!row.player_id) continue;
+    counts[row.player_id] = (counts[row.player_id] ?? 0) + 1;
+  }
+  return counts;
+}
+
+/**
+ * Aggregates raw player/coach rating rows from Supabase into 1-decimal averages per targetId.
+ * Rating `0` represents "N/C" (not ratable) and is excluded from the numeric average.
+ *
+ * @param rows - Array of persisted rating rows containing `target_id` and numeric `rating`.
+ * @returns Average rating (1..10, 1 decimal) map indexed by `target_id`.
+ */
+export function aggregatePlayerRatings(
+  rows: ReadonlyArray<{ readonly target_id: string; readonly rating: number }>
+): Record<string, number> {
+  const totals = new Map<string, { sum: number; count: number }>();
+
+  for (const row of rows) {
+    if (!row.target_id || row.rating <= 0 || row.rating > 10) continue;
+    const entry = totals.get(row.target_id) ?? { sum: 0, count: 0 };
+    entry.sum += row.rating;
+    entry.count += 1;
+    totals.set(row.target_id, entry);
+  }
+
+  const averages: Record<string, number> = {};
+  for (const [targetId, { sum, count }] of totals.entries()) {
+    if (count > 0) {
+      averages[targetId] = Math.round((sum / count) * 10) / 10;
+    }
+  }
+  return averages;
 }

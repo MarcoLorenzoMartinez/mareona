@@ -29,7 +29,7 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   const { user, openAuthModal } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isDemo = isDemoEmail(user?.email);
+  const isDemo = process.env.NODE_ENV !== "production" && isDemoEmail(user?.email);
   const [demoViewMode, setDemoViewMode] = useState<AlbumDemoViewMode>("starter");
   const [gridFilterState, setGridFilterState] = useState<GridFilterState>(DEFAULT_GRID_FILTER_STATE);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);

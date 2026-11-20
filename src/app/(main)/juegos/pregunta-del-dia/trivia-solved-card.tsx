@@ -4,6 +4,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { PlayerPhoto } from '@/components/media/player-photo';
+import { areOfficialAssetsEnabled } from '@/lib/legal/official-assets';
 import { getDictionary } from '@/i18n';
 
 interface TriviaSolvedCardProps {
@@ -24,7 +25,8 @@ export function TriviaSolvedCard({
   onOpenStats,
 }: TriviaSolvedCardProps) {
   const dict = getDictionary();
-  const isLocalImage = photoUrl?.startsWith('/') || photoUrl?.startsWith('/images') || photoUrl?.startsWith('/stadiums');
+  const isLocalImage = Boolean(photoUrl?.startsWith('/'));
+  const showLocalImage = isLocalImage && areOfficialAssetsEnabled();
 
   return (
     <div className="mt-8 flex flex-col gap-4 animate-in fade-in zoom-in-98 duration-200">
@@ -39,7 +41,7 @@ export function TriviaSolvedCard({
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
           {/* Foto a sangre sin marco blanco de relleno */}
           <div className="relative shrink-0 overflow-hidden rounded-xl shadow-xs">
-            {isLocalImage && photoUrl ? (
+            {showLocalImage && photoUrl ? (
               <div className="relative h-28 w-28 sm:h-32 sm:w-32 overflow-hidden rounded-xl">
                 <Image
                   src={photoUrl}

@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { DomainPlayerMatchStats, DomainLineupPlayer } from "@/lib/sports-api/types";
 import { TeamCrest } from "@/components/media/team-crest";
 import { PlayerAvatarFallback } from "@/components/media/player-avatar-fallback";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 import { getRatingBadgeStyle } from "./rating-color";
 
 interface PlayerModalHeaderProps {
@@ -36,7 +37,7 @@ export function PlayerModalHeader({
   const [imgError, setImgError] = useState(false);
   const rating = stats?.rating ?? null;
   const ratingStyle = rating ? getRatingBadgeStyle(rating) : null;
-  const showPhoto = Boolean(player.photoUrl && !imgError);
+  const showPhoto = Boolean(player.photoUrl && areOfficialAssetsEnabled() && !imgError);
 
   return (
     <div className="flex items-start justify-between gap-3 border-b border-[var(--border)] pb-4">

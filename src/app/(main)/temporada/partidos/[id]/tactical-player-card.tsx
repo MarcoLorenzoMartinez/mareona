@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 import type {
   DomainLineupPlayer,
   DomainPlayerMatchStats,
@@ -25,7 +26,7 @@ export function TacticalPlayerCard({
   onSelect,
 }: TacticalPlayerCardProps) {
   const [hasError, setHasError] = useState(false);
-  const showPhoto = Boolean(player.photoUrl && !hasError);
+  const showPhoto = Boolean(player.photoUrl && areOfficialAssetsEnabled() && !hasError);
 
   const accessibleLabel = `${player.name}, dorsal ${player.jersey ?? "sin dorsal"}, ${
     player.subposition ?? player.positionLabel

@@ -37,15 +37,17 @@ export function AuthCredentialsForm({ initialMode, onSuccess }: AuthCredentialsF
     setIsSubmitting(true);
     setErrorMessage(null);
 
-    const demo = evaluateDemoAuth(email, password, tab);
-    if (demo.isDemo) {
-      setIsSubmitting(false);
-      if (demo.error) setErrorMessage(demo.error);
-      else if (demo.user && demo.profile) {
-        setDemoSession(demo.user, demo.profile);
-        onSuccess(Boolean(demo.isNewUser));
+    if (process.env.NODE_ENV !== "production") {
+      const demo = evaluateDemoAuth(email, password, tab);
+      if (demo.isDemo) {
+        setIsSubmitting(false);
+        if (demo.error) setErrorMessage(demo.error);
+        else if (demo.user && demo.profile) {
+          setDemoSession(demo.user, demo.profile);
+          onSuccess(Boolean(demo.isNewUser));
+        }
+        return;
       }
-      return;
     }
 
     if (tab === "signin") {

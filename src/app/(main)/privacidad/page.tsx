@@ -40,7 +40,7 @@ const SECTIONS: readonly LegalSection[] = [
           rows={[
             [
               "Nombre, correo y avatar",
-              "Tu cuenta de Google al iniciar sesión",
+              "Tu cuenta de Google o registro con correo electrónico",
               "Crear y mantener tu cuenta y tu perfil.",
             ],
             [
@@ -103,7 +103,7 @@ const SECTIONS: readonly LegalSection[] = [
         <LegalList>
           <li><LegalStrong>Supabase:</LegalStrong> base de datos, autenticación y almacenamiento de avatares.</li>
           <li><LegalStrong>Vercel:</LegalStrong> alojamiento de la web.</li>
-          <li><LegalStrong>Google:</LegalStrong> inicio de sesión mediante Google OAuth.</li>
+          <li><LegalStrong>Google:</LegalStrong> inicio de sesión mediante Google OAuth (si eliges ese método).</li>
         </LegalList>
         <LegalP>
           Tu nombre visible, apodo, avatar, puntos y publicaciones son públicos. En cambio,{" "}

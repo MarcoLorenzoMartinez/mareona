@@ -3,6 +3,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/security/rate-limiter";
 import {
+  BANNED_USER_POST_MESSAGE,
+  isProfileActivelyBanned,
+} from "./moderation-ai";
+import {
   sendDirectMessageSchema,
   openDirectConversationSchema,
   deleteDirectMessageSchema,
@@ -54,10 +58,24 @@ export async function sendDirectMessage(
       };
     }
 
-    // Verify membership and absence of mutual block via RPC
-    const { data: canMessage } = await supabase.rpc("can_message_conversation", {
-      p_conversation_id: parsed.data.conversationId,
-    });
+    // Verify membership, ban status, and absence of mutual block
+    const [{ data: canMessage }, { data: profile }] = await Promise.all([
+      supabase.rpc("can_message_conversation", {
+        p_conversation_id: parsed.data.conversationId,
+      }),
+      supabase
+        .from("profiles")
+        .select("username, display_name, avatar_url, is_banned, banned_until")
+        .eq("id", user.id)
+        .maybeSingle(),
+    ]);
+
+    if (isProfileActivelyBanned(profile)) {
+      return {
+        success: false,
+        error: BANNED_USER_POST_MESSAGE,
+      };
+    }
 
     if (!canMessage) {
       return {
@@ -80,13 +98,6 @@ export async function sendDirectMessage(
     if (insertErr || !inserted) {
       return { success: false, error: "No se pudo enviar el mensaje" };
     }
-
-    // Fetch user profile for instant local rendering
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("username, display_name, avatar_url")
-      .eq("id", user.id)
-      .single();
 
     return {
       success: true,

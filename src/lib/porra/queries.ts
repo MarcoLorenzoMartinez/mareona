@@ -10,6 +10,7 @@ export interface PorraCommunityData {
 
 /**
  * Fetches real global and friends leaderboard data from Supabase.
+ * Uses external canonical match IDs stored directly in public.predictions.match_id.
  * Never returns mock or synthetic data.
  *
  * @param currentMatchExternalId - External ID of the active matchday fixture.
@@ -67,6 +68,14 @@ export async function fetchPorraCommunityData(
             .in('id', friendIds)
         : { data: [] };
 
+    const currentUserProfileResult = user
+      ? await supabase
+          .from('profiles')
+          .select('id, username, display_name, points')
+          .eq('id', user.id)
+          .maybeSingle()
+      : { data: null };
+
     const profileMap = new Map<
       string,
       {
@@ -83,6 +92,12 @@ export async function fetchPorraCommunityData(
     for (const p of friendProfiles ?? []) {
       profileMap.set(p.id, p);
     }
+    if (currentUserProfileResult.data) {
+      profileMap.set(
+        currentUserProfileResult.data.id,
+        currentUserProfileResult.data
+      );
+    }
 
     if (profileMap.size === 0) {
       return { entries: [], friendsCount: friendIdSet.size };
@@ -90,16 +105,11 @@ export async function fetchPorraCommunityData(
 
     const allProfileIds = Array.from(profileMap.keys());
 
-    // Resolve internal match UUID for the current external match ID if synced
-    const { data: matchRow } = await supabase
-      .from('matches')
-      .select('id')
-      .eq('external_id', currentMatchExternalId)
-      .maybeSingle();
-
     const { data: predictionRows } = await supabase
       .from('predictions')
-      .select('user_id, match_id, home_score, away_score, points_awarded, created_at')
+      .select(
+        'user_id, match_id, home_score, away_score, sporting_scorers, points_awarded, created_at'
+      )
       .in('user_id', allProfileIds)
       .order('created_at', { ascending: false });
 
@@ -130,9 +140,9 @@ export async function fetchPorraCommunityData(
         }
       }
 
-      const activePred = matchRow
-        ? userPreds.find((pr) => pr.match_id === matchRow.id)
-        : undefined;
+      const activePred = userPreds.find(
+        (pr) => pr.match_id === currentMatchExternalId
+      );
 
       const totalPoints = Math.max(profile.points, computedPoints);
       const isFriend = friendIdSet.has(profile.id);
@@ -152,7 +162,9 @@ export async function fetchPorraCommunityData(
             ? {
                 homeScore: activePred.home_score,
                 awayScore: activePred.away_score,
-                sportingScorers: [],
+                sportingScorers: Array.isArray(activePred.sporting_scorers)
+                  ? activePred.sporting_scorers
+                  : [],
               }
             : null,
           isCurrentUser,

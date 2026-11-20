@@ -54,14 +54,14 @@ La aplicación contará con cuatro áreas verticales de primer nivel en la naveg
 | Componentes UI | shadcn/ui (Radix UI) | Componentes accesibles |
 | Backend / Base de datos | Supabase | PostgreSQL, Auth, Row Level Security (RLS) y Storage |
 | Despliegue | Vercel | CI/CD continuo desde GitHub |
-| PWA | `@serwist/next` (preferido) o `next-pwa` | Instalación y funcionamiento como PWA |
-| Datos deportivos | API-Football o Football-Data.org | Datos de partidos y competiciones |
+| PWA | Service Worker propio (`public/sw.js`) + Manifest Web | Instalación y funcionamiento offline compatible con Turbopack |
+| Datos deportivos | ESPN + FotMob (adaptadores en servidor con caché L1/L2) | Datos de partidos, clasificaciones y estadísticas |
 | Validación | Zod | Validación de datos |
-| Tests unitarios | Vitest + Testing Library | Pruebas unitarias y de componentes |
+| Tests unitarios e integración | Node.js Test Runner (`node --test`) | Pruebas unitarias, de integración, arquitectura, carga y a11y |
 | Tests E2E | Playwright | Pruebas de extremo a extremo |
-| Accesibilidad automatizada | `@axe-core/playwright` | Detección de problemas de accesibilidad |
+| Accesibilidad automatizada | Suite `tests/a11y/` + revisión manual WCAG 2.2 AA | Detección de problemas de contraste y accesibilidad |
 | Calidad de código | ESLint | Análisis estático |
-| Formato | Prettier | Formato consistente |
+| Auditoría integral | `npm run check` | Ejecución conjunta de tipado, lint y pruebas |
 | Tipado | `tsc --noEmit` | Comprobación de tipos |
 | Hooks de Git | Husky + lint-staged | Validaciones previas a los commits |
 | Commits | commitlint | Validación de mensajes de commit |

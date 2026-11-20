@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { clearSportsMemoryCache } from "@/lib/sports-api/client";
 import { assertAdmin } from "./guard";
 import { systemAnnouncementSchema, type SystemAnnouncementInput } from "./schemas";
 import type { SystemAnnouncement } from "./types";
@@ -145,23 +147,43 @@ export async function toggleAnnouncementActiveAction(
 }
 
 /**
- * Purges and invalidates cached football data paths (temporada, historico, home).
+ * Purges L1 in-memory and L2 Supabase sports caches and invalidates cached routes.
  */
 export async function purgeSportsCacheAction(): Promise<{ success: boolean; error?: string }> {
   const { user } = await assertAdmin();
   const supabase = await createClient();
+  const adminClient = createAdminClient();
+  const cacheDb = adminClient ?? supabase;
+
+  clearSportsMemoryCache();
+  const { error: cacheDeleteError } = await cacheDb
+    .from("external_api_cache")
+    .delete()
+    .neq("cache_key", "");
 
   await supabase.from("admin_audit_logs").insert({
     admin_id: user.id,
     action: "purge_sports_cache",
     target_type: "cache",
     target_id: "sports_apis",
-    metadata: { reason: "Purga manual de rutas deportivas en servidor" },
+    metadata: {
+      reason: "Purga manual de cachés deportivas L1/L2 en servidor",
+      l2Cleared: !cacheDeleteError,
+    },
   });
 
   revalidatePath("/temporada");
+  revalidatePath("/temporada/partidos");
+  revalidatePath("/temporada/clasificacion");
+  revalidatePath("/temporada/estadisticas");
+  revalidatePath("/temporada/plantilla");
+  revalidatePath("/juegos/porra");
   revalidatePath("/historico");
   revalidatePath("/");
   revalidatePath("/admin/anuncios");
+
+  if (cacheDeleteError) {
+    return { success: false, error: cacheDeleteError.message };
+  }
   return { success: true };
 }

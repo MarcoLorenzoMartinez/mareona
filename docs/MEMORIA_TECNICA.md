@@ -681,10 +681,9 @@ erDiagram
     TEAMS ||--o{ PLAYERS : "plantilla"
     TEAMS ||--o{ STANDINGS : "clasifica"
 
-    MATCHES ||--o{ PREDICTIONS : "recibe"
-    MATCHES ||--o{ POSTS : "La Grada"
-
     PROFILES ||--o{ PREDICTIONS : "pronostica"
+    PROFILES ||--o{ MATCH_MVP_VOTES : "vota MVP"
+    PROFILES ||--o{ MATCH_PLAYER_RATINGS : "puntúa"
     PROFILES ||--o{ USER_CARDS : "colecciona"
     PROFILES ||--o{ USER_PACKS : "posee"
     CARDS ||--o{ USER_CARDS : "instancia"
@@ -703,10 +702,26 @@ erDiagram
     PREDICTIONS {
         uuid id PK
         uuid user_id FK
-        uuid match_id FK
+        text match_id
         smallint home_score
         smallint away_score
+        text[] sporting_scorers
         integer points_awarded
+    }
+
+    MATCH_MVP_VOTES {
+        uuid id PK
+        text match_id
+        uuid user_id FK
+        text player_id
+    }
+
+    MATCH_PLAYER_RATINGS {
+        uuid id PK
+        text match_id
+        uuid user_id FK
+        text target_id
+        smallint rating
     }
 
     CARDS {
@@ -751,7 +766,8 @@ Las tablas del esquema `public` se agrupan por dominio en la Tabla 2, indicando 
 | Social y moderación | `friendships` | Relaciones entre usuarios (`pending`, `accepted`, `declined`) con comprobación `requester_id <> addressee_id`. |
 | Social y moderación | `conversations`, `conversation_members`, `messages` | Mensajería directa 1:1 identificada por `direct_key` canónica; `messages` usa borrado lógico (`deleted_at`) y `REPLICA IDENTITY FULL` para Realtime. |
 | Social y moderación | `user_blocks`, `user_reports`, `blocked_post_attempts` | Bloqueos entre usuarios, denuncias con `evidence_snapshot` inmutable y registro de textos rechazados por la IA. |
-| Juegos y cromos | `predictions` | Pronósticos de La Porra con clave única `(user_id, match_id)`, goles (`0..20`) y `points_awarded`. |
+| Juegos y cromos | `predictions` | Pronósticos de La Porra vinculados por `match_id` (`text` externo), clave única `(user_id, match_id)`, goles (`0..20`), `sporting_scorers` (`text[]`) y `points_awarded` sincronizado automáticamente con `profiles.points`. |
+| Juegos y cromos | `match_mvp_votes`, `match_player_ratings` | Votos al MVP del partido (único por usuario y partido) y calificaciones individuales (`0..10`) en *La Grada* vinculados por `match_id` externo en texto. |
 | Juegos y cromos | `cards`, `user_cards`, `user_packs` | Catálogo de cromos (década, demarcación, `ovr`, `matches_played`), inventario por usuario (`quantity >= 1`) y sobres pendientes o abiertos (`aficionado`, `rojiblanco`, `leyenda`). |
 
 *Tabla 2. Diccionario de datos resumido por dominios.*
@@ -762,9 +778,10 @@ Todas las tablas de `public` tienen activado `ENABLE ROW LEVEL SECURITY`, reforz
 
 | Tabla(s) | Política de lectura (`SELECT`) | Política de escritura (`INSERT` / `UPDATE` / `DELETE`) | Garantía destacada |
 | :--- | :--- | :--- | :--- |
-| `profiles` | Pública (`anon`, `authenticated`). | Solo el propietario (`auth.uid() = id`). | Solo permite actualizar `username`, `display_name` y `avatar_url`; impide alterar `points` o `is_banned`. |
-| `predictions` | El autor siempre; el resto solo cuando `kickoff_at <= now()`. | `INSERT` y `UPDATE` solo si `status = 'scheduled'`, `kickoff_at > now()` y `points_awarded IS NULL`. | Impide copiar pronósticos antes del partido o modificar `points_awarded` desde el cliente. |
-| `posts` | Pública para filas activas (`deleted_at IS NULL`). | `INSERT` autenticado y `UPDATE` solo del autor sobre `body` y `deleted_at`. | El autor no puede cambiar `moderation_status` para aprobar un mensaje retenido. |
+| `profiles` | Pública (`anon`, `authenticated`). | Solo el propietario (`auth.uid() = id`). | Solo permite actualizar `username`, `display_name` y `avatar_url`; trigger `BEFORE UPDATE` (`protect_profile_privileged_columns`) impide alterar `points` o `is_banned`. |
+| `predictions` | Pública (`anon`, `authenticated`) para consultar la clasificación. | `INSERT` y `UPDATE` del propio usuario no sancionado (`not is_user_banned`), con cierre de plazo validado en servidor. | Trigger `sync_profile_porra_points` sincroniza `profiles.points` al liquidar `points_awarded`. |
+| `match_mvp_votes`, `match_player_ratings` | Pública (`anon`, `authenticated`) para calcular totales y medias reales. | `INSERT` y `UPDATE` exclusivos del usuario autenticado no sancionado (`auth.uid() = user_id`). | Unicidad por `(match_id, user_id)` en MVP y `(match_id, user_id, target_id)` en notas. |
+| `posts` | Pública para filas activas (`deleted_at IS NULL`). | `INSERT` condicionado a no estar sancionado ni activo `is_wall_read_only()`; `UPDATE` del autor sobre `body` y `deleted_at`. | Trigger `protect_post_moderation_columns` impide autoaprobar un mensaje retenido (`flagged`). |
 | `messages` | Miembros de la conversación con `deleted_at IS NULL`. | `INSERT` condicionado a `can_message_conversation` (membresía y ausencia de bloqueo). | El remitente solo puede actualizar `deleted_at` (borrado lógico); el texto original se conserva intacto ante denuncias. |
 | `blocked_post_attempts` | Solo `is_admin()`. | `INSERT` del propio `user_id` desde servidor. | El usuario no puede consultar ni borrar su historial de intentos bloqueados. |
 | `user_roles`, `admin_audit_logs` | Solo `is_admin()`. | `user_roles` solo `service_role`; `admin_audit_logs` solo `INSERT` de administradores. | Impide autoasignarse roles o borrar el rastro de auditoría. |
@@ -1214,7 +1231,7 @@ Cada pantalla responde a una pregunta principal sin párrafos explicativos ni de
 
 ### 3.6.3 Componentes Reutilizables
 
-Los elementos comunes de interfaz se agrupan en `src/components/ui/` y componentes de dominio compartidos: botones y píldoras segmentadas (`rounded-full`), tablas nativas con encabezados semánticos para clasificaciones y registros históricos, tarjetas de borde fino (`--border`) sobre fondo blanco, diálogos modales accesibles apoyados en `use-modal-a11y.ts` y notificaciones emergentes (`toast-container.tsx`) para confirmar acciones de servidor. Como pauta de modularidad, los componentes de interfaz se mantienen alrededor de 180 líneas, extrayendo subcomponentes y hooks dedicados cuando una vista crece.
+Los elementos comunes de interfaz se agrupan en `src/components/ui/` y componentes de dominio compartidos: botones y píldoras segmentadas (`rounded-full`), tablas nativas con encabezados semánticos para clasificaciones y registros históricos, tarjetas de borde fino (`--border`) sobre fondo blanco, diálogos modales accesibles apoyados en `use-modal-a11y.ts` y notificaciones emergentes (`toast-container.tsx`) para confirmar acciones de servidor. Ningún archivo de componente (`.tsx`) en `src/` supera las 180 líneas, extrayendo subcomponentes y hooks dedicados cuando una vista crece.
 
 ### 3.6.4 Versión Móvil
 
@@ -1304,7 +1321,7 @@ mareona/
 El desarrollo sigue reglas verificables automáticamente mediante `npm run check` (`tsc --noEmit && eslint && node --test tests/**/*.test.ts`):
 
 - Tipado estricto en TypeScript: `strict: true` en `tsconfig.json`, prohibición de `any`, `as any`, `@ts-ignore` y `@ts-expect-error`. Toda entrada externa se valida con Zod en el borde, y los tipos de base de datos proceden de `src/types/database.types.ts` generado desde el esquema real.
-- Modularidad de componentes: la guía del proyecto fija un umbral de 180 líneas por archivo de componente en `src/`, dividiendo las vistas complejas en subcomponentes y hooks dedicados (con contadas excepciones en torno a 182-232 líneas en componentes de pizarra, selectores o manejo de entrada).
+- Modularidad de componentes: ningún archivo de componente (`.tsx`) en `src/` supera las 180 líneas; cuando una vista o diálogo crece, se divide en subcomponentes y hooks dedicados (separando la lógica extensa, los adaptadores externos y las definiciones de tipos en módulos `.ts`).
 - Documentación interna y commits: las funciones de dominio, adaptadores y Server Actions incorporan comentarios TSDoc (`@param`, `@returns`, `@throws`) y comentarios en inglés centrados en el porqué de las decisiones. El historial sigue el formato *Conventional Commits* (`type(scope): imperative description`).
 - Estándares integrados: el cumplimiento de accesibilidad (WCAG 2.2 AA [1]), privacidad (RGPD [2] / LOPDGDD [3]) y seguridad (OWASP ASVS nivel 2 [5], RLS y cabeceras HTTP) forma parte de los criterios de aceptación descritos en los apartados 3.5 y 3.6 y se verifica en la batería de pruebas del Capítulo 5.
 
@@ -1335,7 +1352,7 @@ La verificación del sistema se organiza en seis niveles automatizados ejecutado
 
 ```mermaid
 flowchart BT
-    L1["Base: Unitarias (96 archivos en tests/unit/)\nMotores de juegos, parsers deportivos, Porra, códec táctico, esquemas Zod"]
+    L1["Base: Unitarias (98 archivos en tests/unit/)\nMotores de juegos, parsers deportivos, Porra, códec táctico, esquemas Zod"]
     L2["Integración (2 archivos en tests/integration/)\nServer Actions sociales, encuestas, comentarios y votos al MVP"]
     L3["Código y arquitectura (1 archivo en tests/code/)\nReglas estáticas sobre src/: sin font-mono, sin @ts-ignore, cabeceras OWASP"]
     L4["Accesibilidad (2 archivos en tests/a11y/)\nContraste WCAG 2.2 AA sobre globals.css y estándares ARIA en modales"]
@@ -1349,7 +1366,7 @@ flowchart BT
 
 | Comando | Alcance |
 | :--- | :--- |
-| `npm run test:unit` | Ejecuta los 96 archivos de pruebas unitarias de dominio. |
+| `npm run test:unit` | Ejecuta los 98 archivos de pruebas unitarias de dominio. |
 | `npm run test:integration` | Ejecuta las pruebas de Server Actions sociales y de *La Grada*. |
 | `npm run test:a11y` | Verifica contraste WCAG 2.2 AA y atributos ARIA en modales. |
 | `npm run test:code` | Comprueba reglas de arquitectura, seguridad y limpieza sobre `src/`. |
@@ -1362,7 +1379,7 @@ flowchart BT
 
 ## 5.2 Pruebas Unitarias
 
-Las 96 suites de `tests/unit/` validan la lógica pura de dominio aislada de la red y de React:
+Las 98 suites de `tests/unit/` validan la lógica pura de dominio aislada de la red y de React:
 
 - Motores de juego: evaluación en dos pasadas de *Wordle* (`wordle-engine.test.ts`), ausencia de repeticiones en la permutación diaria Mulberry32 + Fisher-Yates (`daily-permutation.test.ts`, `wordle-words.test.ts`), cálculo de fechas en `Europe/Madrid` (`game-daily-date.test.ts`), comparación de atributos en *¿Quién es?* y *¿Más o Menos?*, y liquidación de puntos y cortes horarios en *La Porra* (`porra-engine.test.ts`, `porra-cutoff.test.ts`).
 - Coleccionismo: probabilidades y garantías por tipo de sobre en `card-packs.test.ts`, paginación del álbum y sincronización de partidos disputados en `cards-match-sync.test.ts`.
@@ -1409,6 +1426,7 @@ La suite `tests/code/architecture-rules.test.ts` audita de forma estática todo 
 - Valida que `normalizeTeamName` convierte variantes externas del club en `"Real Sporting"`.
 - Inspecciona `.env.example` con expresiones regulares para asegurar que no contiene tokens JWT, claves privadas ni credenciales reales.
 - Comprueba que `getSecurityHeaders()` y `buildContentSecurityPolicy()` incluyen `frame-ancestors 'none'`, `default-src 'self'`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff` y `Strict-Transport-Security`.
+- Verifica la existencia de la migración de endurecimiento de BD (guards anti-escalado y tablas de *La Grada*/*La Porra*) y la conexión del interruptor legal `NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS` en todos los componentes de activos oficiales.
 
 Junto con `tsc --noEmit` y ESLint, esta suite impide integrar código que vulnere las reglas de arquitectura y seguridad definidas para el repositorio.
 

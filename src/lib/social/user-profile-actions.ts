@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { fetchSportingSeasonMatches } from "@/lib/sports-api/client";
 import { getFriendshipStatusWith } from "./friends-queries";
 import { formatMatchOriginLabel } from "./format";
 import type { UserSocialProfile } from "./friendship-schemas";
@@ -70,23 +71,19 @@ export async function getUserSocialProfile(
 
     const matchLabels = new Map<string, string>();
     if (matchIds.length > 0) {
-      const { data: matchRows } = await supabase
-        .from("matches")
-        .select(
-          "id, home_team:teams!matches_home_team_id_fkey(name, short_name), away_team:teams!matches_away_team_id_fkey(name, short_name)"
-        )
-        .in("id", matchIds);
-
-      for (const row of matchRows ?? []) {
-        const home = Array.isArray(row.home_team) ? row.home_team[0] : row.home_team;
-        const away = Array.isArray(row.away_team) ? row.away_team[0] : row.away_team;
-        const label = formatMatchOriginLabel(
-          home?.short_name || home?.name,
-          away?.short_name || away?.name
-        );
-        if (label) {
-          matchLabels.set(row.id, label);
+      try {
+        const seasonMatches = await fetchSportingSeasonMatches();
+        for (const m of seasonMatches) {
+          const label = formatMatchOriginLabel(
+            m.homeTeam.name,
+            m.awayTeam.name
+          );
+          if (label) {
+            matchLabels.set(m.externalId, label);
+          }
         }
+      } catch {
+        // Non-blocking fallback if external schedule cache is unavailable
       }
     }
 

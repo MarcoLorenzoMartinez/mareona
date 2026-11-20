@@ -30,7 +30,6 @@ export function RivalsFilterBar({
   onSortChange,
   layoutMode,
   onLayoutModeChange,
-  filteredRivalsCount,
 }: RivalsFilterBarProps) {
   return (
     <div className="flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-white p-3.5 shadow-2xs sm:p-4">

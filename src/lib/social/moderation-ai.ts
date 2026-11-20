@@ -10,6 +10,37 @@ export interface ModerationDecision {
 export const MODERATION_REJECTED_MESSAGE =
   "Tu mensaje no cumple las normas de convivencia por contener expresiones ofensivas";
 
+export const BANNED_USER_POST_MESSAGE =
+  "Tu cuenta se encuentra suspendida y no puede publicar ni editar mensajes";
+
+export const READ_ONLY_WALL_MESSAGE =
+  "El muro comunitario se encuentra temporalmente en modo de solo lectura";
+
+export interface BanCheckProfile {
+  readonly is_banned?: boolean | null;
+  readonly banned_until?: string | null;
+}
+
+/**
+ * Evaluates whether a user profile has an active disciplinary suspension.
+ * A ban is active when `is_banned` is true and `banned_until` is either null (permanent)
+ * or a future timestamp.
+ *
+ * @param profile - Profile disciplinary attributes.
+ * @param nowMs - Reference timestamp in milliseconds.
+ * @returns True if the user is currently suspended from writing.
+ */
+export function isProfileActivelyBanned(
+  profile: BanCheckProfile | null | undefined,
+  nowMs: number = Date.now()
+): boolean {
+  if (!profile?.is_banned) return false;
+  if (!profile.banned_until) return true;
+  const untilMs = new Date(profile.banned_until).getTime();
+  if (Number.isNaN(untilMs)) return true;
+  return untilMs > nowMs;
+}
+
 const aiResponseSchema = z.object({
   verdict: z.enum(["allow", "flag", "block"]),
   reason: z.string().max(200).optional(),

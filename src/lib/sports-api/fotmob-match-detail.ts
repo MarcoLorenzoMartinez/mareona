@@ -3,7 +3,6 @@ import {
   getSeasonLabel,
   type DomainMatchDetail,
   type MatchStatus,
-  type DomainAdvancedStats,
 } from "./types.ts";
 import { formatCopaRound } from "./copa.ts";
 import { parseFotMobTacticalLineups } from "./fotmob-lineup-parser.ts";

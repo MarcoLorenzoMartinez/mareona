@@ -3,11 +3,19 @@ import "server-only";
 import {
   MODERATION_SYSTEM_PROMPT,
   MODERATION_REJECTED_MESSAGE,
+  BANNED_USER_POST_MESSAGE,
+  READ_ONLY_WALL_MESSAGE,
+  isProfileActivelyBanned,
   parseModerationResponse,
   type ModerationDecision,
 } from "./moderation-ai";
 
-export { MODERATION_REJECTED_MESSAGE };
+export {
+  MODERATION_REJECTED_MESSAGE,
+  BANNED_USER_POST_MESSAGE,
+  READ_ONLY_WALL_MESSAGE,
+  isProfileActivelyBanned,
+};
 
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 // Gemma 2 was retired on Groq; Llama 3.1 8B is the fastest supported model. Override via env.
@@ -52,12 +60,16 @@ async function classifyWithGroq(text: string, apiKey: string): Promise<Moderatio
  * @returns `block` to reject, `flag` to publish for review, `allow` to publish normally.
  */
 export async function moderateText(text: string): Promise<ModerationDecision> {
+  if (!text.trim()) {
+    return { verdict: "allow", reason: "lineup_only" };
+  }
+
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) return { verdict: "allow", reason: "ai_unconfigured" };
 
   try {
     return await classifyWithGroq(text, apiKey);
   } catch {
-    return { verdict: "allow", reason: "ai_unavailable" };
+    return { verdict: "flag", reason: "ai_unavailable" };
   }
 }

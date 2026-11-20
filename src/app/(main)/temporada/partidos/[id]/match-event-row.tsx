@@ -11,7 +11,7 @@ interface EventDetailsProps {
   readonly penaltyMissedLabel: string;
 }
 
-function EventDetails({ event, assistLabel, penaltyMissedLabel }: EventDetailsProps) {
+function EventDetails({ event, penaltyMissedLabel }: EventDetailsProps) {
   const playerName = cleanName(event.player.name);
   const secondaryName = event.secondaryPlayer ? cleanName(event.secondaryPlayer.name) : "";
   const isGoal = event.type === "goal";

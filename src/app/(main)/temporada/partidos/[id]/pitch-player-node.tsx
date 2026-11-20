@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import type { DomainTacticalStarter } from "@/lib/sports-api/types";
 import { PlayerAvatarFallback } from "@/components/media/player-avatar-fallback";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 import { getRatingBadgeStyle } from "./rating-color";
 
 interface PitchPlayerNodeProps {
@@ -37,7 +38,6 @@ export function PitchPlayerNode({
   starter,
   teamColor,
   textColor,
-  isSporting,
   pitchX,
   pitchY,
   size = "compact",
@@ -47,7 +47,7 @@ export function PitchPlayerNode({
   const rating = starter.rating;
   const ratingStyle = rating ? getRatingBadgeStyle(rating) : null;
   const displayName = getPlayerLastName(starter.name);
-  const showPhoto = Boolean(starter.photoUrl && !hasImgError);
+  const showPhoto = Boolean(starter.photoUrl && areOfficialAssetsEnabled() && !hasImgError);
 
   const isComfortable = size === "normal";
 

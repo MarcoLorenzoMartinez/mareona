@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { TriviaDailyChallenge, TriviaPlayerAttempt, TriviaStats } from "@/lib/trivia/types";
 import { PlayerPhoto } from "@/components/media/player-photo";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 import { getDictionary } from "@/i18n";
 
@@ -36,6 +37,7 @@ export function TriviaResultModal({
   const isCorrect = isAnswered && attempt.isCorrect;
   const photoUrl = challenge.question.photoUrl;
   const isLocalImage = Boolean(photoUrl && photoUrl.startsWith("/"));
+  const showLocalImage = isLocalImage && areOfficialAssetsEnabled();
 
   return (
     <div
@@ -73,7 +75,7 @@ export function TriviaResultModal({
           >
             {photoUrl && (
               <div className="relative mb-3 overflow-hidden rounded-xl shadow-xs">
-                {isLocalImage ? (
+                {showLocalImage ? (
                   <div className="relative h-28 w-44 overflow-hidden rounded-xl">
                     <Image src={photoUrl} alt={challenge.question.canonicalAnswer} fill sizes="180px" className="object-cover" />
                   </div>

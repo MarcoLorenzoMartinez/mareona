@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { HistoricalCrestEra } from "@/lib/cards/types";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 
 interface HistoricalCrestBadgeProps {
   readonly era: HistoricalCrestEra;
@@ -37,6 +38,18 @@ export function HistoricalCrestBadge({
   const crestPath = CREST_IMAGE_BY_ERA[era] ?? "/crests/historical/sporting-modern.png";
   const sizePx = isSm ? 32 : 40;
   const dimensionClass = isSm ? "h-8 w-8" : "h-10 w-10";
+
+  if (!areOfficialAssetsEnabled()) {
+    return (
+      <div
+        aria-label={`Escudo histórico: ${label}`}
+        title={label}
+        className={`relative inline-flex shrink-0 items-center justify-center rounded-full border border-amber-300 bg-[#e2001a] text-[9px] font-black tracking-tight text-white ${dimensionClass} ${className}`}
+      >
+        RSG
+      </div>
+    );
+  }
 
   return (
     <div
