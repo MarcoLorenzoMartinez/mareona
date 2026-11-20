@@ -52,7 +52,7 @@ La aplicación utiliza como paleta principal el **rojo y blanco**, manteniendo u
 La accesibilidad es un **requisito bloqueante** en todas las fases.
 
 ### Percepción
-- **Contraste:** Texto normal ≥ 4.5:1; texto grande o componentes interactivos ≥ 3:1. Registrar pares verificados en `docs/design-tokens-contrast.md`.
+- **Contraste:** Texto normal ≥ 4.5:1; texto grande o componentes interactivos ≥ 3:1, verificado automáticamente en `tests/a11y/wcag-contrast.test.ts`.
 - **Nunca solo color:** Marcadores en vivo, victorias/derrotas, errores y clasificaciones deben incluir iconos, texto o patrones. En gráficos de evolución, la trayectoria de puntos y la de posiciones se diferencian por trazo sólido vs. discontinuo y marcadores circulares vs. cuadrados.
 - **Texto alternativo:** Escudos/fotos junto al nombre llevan `alt=""` (decorativo). Si van solos, `alt="Nombre"`.
 - **Reflow y Zoom:** Totalmente utilizable a 320 px de ancho sin scroll horizontal y hasta 200% de zoom.

@@ -15,7 +15,7 @@
 
 <br />
 
-[Aplicación en Directo](https://mareona.vercel.app) &nbsp;&bull;&nbsp; [Memoria Técnica de Ingeniería](docs/TECHNICAL_DOCS.md) &nbsp;&bull;&nbsp; [Contacto](#autor)
+[Aplicación en Directo](https://mareona.vercel.app) &nbsp;&bull;&nbsp; [Memoria Técnica de Ingeniería](docs/MEMORIA_TECNICA.md) &nbsp;&bull;&nbsp; [Contacto](#autor)
 
 </div>
 
@@ -169,7 +169,7 @@ Juego diario de deducción donde el aficionado debe adivinar el futbolista rojib
 </div>
 
 #### ¿Más o Menos? (`/juegos/mas-o-menos`)
-Minijuego de comparativa estadística que enfrenta de manera consecutiva a dos futbolistas de la historia del club bajo una métrica concreta (partidos jugados, goles anotados o temporadas en el club). El usuario debe acertar si el segundo jugador supera o no las cifras del primero, buscando encadenar la mayor racha de aciertos consecutivos posible.
+Minijuego de comparativa estadística que enfrenta de manera consecutiva a dos futbolistas de la historia del club bajo una métrica concreta (partidos jugados, goles anotados o minutos disputados). El usuario debe acertar si el segundo jugador supera o no las cifras del primero, buscando encadenar la mayor racha de aciertos consecutivos posible.
 
 <div align="center">
 
@@ -182,8 +182,8 @@ Minijuego de comparativa estadística que enfrenta de manera consecutiva a dos f
 ### 2.6. Perfil (`/perfil`)
 
 Espacio personal y centro de control del usuario en la plataforma:
-- **Autenticación versátil y segura:** Acceso mediante correo electrónico y contraseña, Google OAuth 2.0 (con soporte para inicio rápido e integración nativa en PWA) y enlaces mágicos (*Magic Link*), gestionado íntegramente en servidor con Supabase Auth.
-- **Identidad en la comunidad:** Personalización de nombre de usuario, biografía y foto de perfil (mediante avatares rojiblancos predefinidos o subida de imagen propia con compresión y optimización automática en cliente).
+- **Autenticación versátil y segura:** Acceso mediante correo electrónico y contraseña o Google OAuth 2.0 (con soporte para inicio rápido e integración nativa en PWA), gestionado íntegramente en servidor con Supabase Auth.
+- **Identidad en la comunidad:** Personalización de nombre visible, nombre de usuario y foto de perfil (mediante avatares rojiblancos predefinidos o subida de imagen propia con compresión y optimización automática en cliente).
 - **Historial, actividad y privacidad:** Muro con el histórico de publicaciones y réplicas en el muro social, registro de pronósticos y puntos en La Porra, estado de avance de la colección de cromos, gestión de la red de amistades y control total sobre la cuenta conforme al RGPD (incluyendo eliminación inmediata en cascada).
 
 ---
@@ -219,7 +219,7 @@ Para garantizar una comunidad sana y un funcionamiento técnico fiable, la plata
 ### Calidad del Software, Seguridad y Verificación
 - **Arquitectura modular y tipado estricto:** Separación limpia entre presentación, casos de uso y dominio, con validación de esquemas en el borde mediante Zod y ausencia total de tipos `any`.
 - **Seguridad defensiva y RGPD:** Políticas *Row Level Security* (RLS) activas en todas las tablas de PostgreSQL, cabeceras HTTP de seguridad estrictas (CSP, HSTS), limitación de tasa de peticiones (*rate limiting*) en servidor y custodia segura de comunicaciones.
-- **Suite de pruebas multinivel (597 tests automatizados en 137 suites):** Verificación continua que abarca pruebas unitarias de dominio, pruebas de integración de Server Actions, auditorías estáticas de reglas de arquitectura, tests matemáticos de contraste WCAG, pruebas de concurrencia/carga y pruebas de extremo a extremo (E2E) con Playwright.
+- **Suite de pruebas multinivel (604 tests automatizados en 140 suites):** Verificación continua que abarca pruebas unitarias de dominio, pruebas de integración de Server Actions, auditorías estáticas de reglas de arquitectura, tests matemáticos de contraste WCAG, pruebas de concurrencia/carga y pruebas de extremo a extremo (E2E) con Playwright.
 
 ---
 
@@ -230,7 +230,7 @@ Para garantizar una comunidad sana y un funcionamiento técnico fiable, la plata
 | **Framework Base** | Next.js 16 (App Router) & React 19 | Renderizado del lado del servidor (RSC), Server Actions y rutas API |
 | **Lenguaje** | TypeScript 5 (`strict: true`) | Tipado estático estricto en la totalidad de la base de código |
 | **Base de Datos** | PostgreSQL (Supabase) | Modelo relacional, funciones RPC, triggers y políticas Row Level Security |
-| **Autenticación** | Supabase Auth (`@supabase/ssr`) | Credenciales, Google OAuth 2.0 y enlaces mágicos gestionados en servidor |
+| **Autenticación** | Supabase Auth (`@supabase/ssr`) | Credenciales y Google OAuth 2.0 gestionados en servidor |
 | **Estilos y UI** | Tailwind CSS 4 & Radix UI | Sistema de diseño accesible basado en tokens corporativos |
 | **Validación** | Zod 4 | Validación de esquemas y contratos de datos en el borde de entrada |
 | **Datos Deportivos** | ESPN API, FotMob, API-Football & BDFutbol | Ingesta multifuente con caché en servidor y archivo histórico compilado |
@@ -245,7 +245,7 @@ Para garantizar una comunidad sana y un funcionamiento técnico fiable, la plata
 Para una revisión técnica exhaustiva que cubre todos los aspectos más técnicos y profesionales del sistema:
 
 Consulte la memoria técnica completa:  
-**[Documentación Técnica de Ingeniería &rarr;](docs/TECHNICAL_DOCS.md)**
+**[Memoria Técnica de Ingeniería &rarr;](docs/MEMORIA_TECNICA.md)**
 
 ---
 

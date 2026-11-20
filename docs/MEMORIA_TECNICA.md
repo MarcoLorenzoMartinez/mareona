@@ -1,57 +1,70 @@
 # Mareona - Memoria Técnica
 
-<!--
-PLANTILLA. Cómo usarla:
-- Cada sección tiene un comentario como este con lo que debe contener.
-- Al redactar una sección, se borra su comentario y se escribe el texto final.
-- Los comentarios indican: CONTENIDO (qué se cuenta), DIAGRAMA/IMAGEN (qué se muestra), FUENTES (dónde está la información) y EXTENSIÓN aproximada.
-
-Criterios de redacción:
-- Frases cortas y directas, en español, con el estilo de la memoria del TFG.
-- Cada decisión se explica con: problema, alternativas y motivo de la elección.
-- Sin adjetivos grandilocuentes ni relleno. Si algo se entiende con un diagrama, se pone el diagrama.
-- Términos técnicos explicados la primera vez que aparecen.
-- Diagramas en Mermaid. Capturas reales de la aplicación en docs/screenshots/.
-- Cada figura lleva pie numerado ("Ilustración N. ...") y se cita en el texto.
-- Enfoque: cómo es y cómo funciona el proyecto. Sin problemas encontrados, planificación ni presupuesto.
-- Extensión total objetivo: 40-50 páginas.
-
-Material de apoyo (no se copia tal cual): docs/TECHNICAL_DOCS.md, docs/PROJECT_SPEC.md, docs/DESIGN.md, docs/LEGAL-ASSETS.md, README.md.
--->
-
 ## Índice
 
-<!-- Se genera al final, cuando todas las secciones estén redactadas. Incluye también el índice de ilustraciones. -->
+- [Capítulo 1. Introducción](#capítulo-1-introducción)
+  - [1.1 Motivación y Justificación](#11-motivación-y-justificación)
+  - [1.2 Objetivos del Proyecto](#12-objetivos-del-proyecto)
+  - [1.3 Alcance del Proyecto](#13-alcance-del-proyecto)
+  - [1.4 Alternativas Tecnológicas](#14-alternativas-tecnológicas)
+- [Capítulo 2. Análisis](#capítulo-2-análisis)
+  - [2.1 Funcionalidades del Sistema](#21-funcionalidades-del-sistema)
+  - [2.2 Actores del Sistema](#22-actores-del-sistema)
+  - [2.3 Requisitos del Sistema](#23-requisitos-del-sistema)
+  - [2.4 Casos de Uso](#24-casos-de-uso)
+  - [2.5 Subsistemas](#25-subsistemas)
+  - [2.6 Mapa de Navegación](#26-mapa-de-navegación)
+- [Capítulo 3. Diseño del Sistema](#capítulo-3-diseño-del-sistema)
+  - [3.1 Arquitectura](#31-arquitectura)
+  - [3.2 Base de Datos](#32-base-de-datos)
+  - [3.3 Diseño de los Subsistemas](#33-diseño-de-los-subsistemas)
+  - [3.4 Funcionamiento Global de la Aplicación](#34-funcionamiento-global-de-la-aplicación)
+  - [3.5 Seguridad y Privacidad](#35-seguridad-y-privacidad)
+  - [3.6 Diseño de la Interfaz](#36-diseño-de-la-interfaz)
+- [Capítulo 4. Implementación](#capítulo-4-implementación)
+  - [4.1 Tecnologías y Lenguajes](#41-tecnologías-y-lenguajes)
+  - [4.2 Herramientas](#42-herramientas)
+  - [4.3 Estructura del Código](#43-estructura-del-código)
+  - [4.4 Calidad del Código](#44-calidad-del-código)
+  - [4.5 Internacionalización](#45-internacionalización)
+  - [4.6 Uso de Herramientas de IA en el Desarrollo](#46-uso-de-herramientas-de-ia-en-el-desarrollo)
+- [Capítulo 5. Pruebas](#capítulo-5-pruebas)
+  - [5.1 Estrategia de Pruebas](#51-estrategia-de-pruebas)
+  - [5.2 Pruebas Unitarias](#52-pruebas-unitarias)
+  - [5.3 Pruebas de Integración](#53-pruebas-de-integración)
+  - [5.4 Pruebas Extremo a Extremo](#54-pruebas-extremo-a-extremo)
+  - [5.5 Pruebas de Accesibilidad](#55-pruebas-de-accesibilidad)
+  - [5.6 Pruebas de Carga y Rendimiento](#56-pruebas-de-carga-y-rendimiento)
+  - [5.7 Reglas de Código Automatizadas](#57-reglas-de-código-automatizadas)
+- [Capítulo 6. Manual de Usuario](#capítulo-6-manual-de-usuario)
+  - [6.1 Registro e Inicio de Sesión](#61-registro-e-inicio-de-sesión)
+  - [6.2 Inicio](#62-inicio)
+  - [6.3 Temporada](#63-temporada)
+  - [6.4 Histórico](#64-histórico)
+  - [6.5 Social](#65-social)
+  - [6.6 Juegos](#66-juegos)
+  - [6.7 Perfil](#67-perfil)
+  - [6.8 Instalación como Aplicación](#68-instalación-como-aplicación)
+- [Capítulo 7. Conclusiones y Ampliaciones](#capítulo-7-conclusiones-y-ampliaciones)
+  - [7.1 Conclusiones](#71-conclusiones)
+  - [7.2 Ampliaciones](#72-ampliaciones)
+- [Capítulo 8. Referencias](#capítulo-8-referencias)
+- [Capítulo 9. Apéndices](#capítulo-9-apéndices)
+  - [9.1 Glosario](#91-glosario)
+  - [9.2 Propiedad Intelectual y Licencias](#92-propiedad-intelectual-y-licencias)
 
 ---
 
 # Capítulo 1. Introducción
 
-<!--
-EXTENSIÓN: 4-5 páginas. Es el capítulo de entrada: debe poder leerse solo y dar una idea completa del proyecto, de por qué existe y de las decisiones tecnológicas de partida. Sin resumen capítulo a capítulo ni tabla de cifras.
--->
-
 ## 1.1 Motivación y Justificación
 
-<!--
-CONTENIDO: tres párrafos cortos.
-1. Qué es Mareona: plataforma web y PWA para la afición del Real Sporting (datos, comunidad, histórico y juegos).
-2. Qué carencias hay hoy: datos repartidos en muchas webs, falta de un espacio propio de comunidad, histórico del club difícil de consultar, ausencia de juegos temáticos.
-3. Qué hueco cubre Mareona y por qué se hace.
-FUENTES: README.md §1, PROJECT_SPEC.md §1.1.
--->
 Mareona es una plataforma web y PWA (Progressive Web App) diseñada para la afición del Real Sporting de Gijón, que ofrece datos actuales e históricos, un espacio de comunidad para los aficionados y una serie de juegos temáticos relacionados con el club. La aplicación centraliza información que actualmente se encuentra dispersa en diversas fuentes, proporcionando un acceso más fácil y organizado a los seguidores del equipo, y fomenta la creación de una comunidad sana, activa y participativa alrededor del Real Sporting.
 Actualmente, los aficionados enfrentan dificultades para acceder a datos de la temporada actualizados, consultar datos históricos del club y encontrar un espacio de interacción tranquilo con otros seguidores del club. Las redes sociales y foros existentes a menudo carecen de moderación efectiva, lo que puede llevar a discusiones poco constructivas y a la propagación de información incorrecta. Además, no existen juegos temáticos que permitan a los aficionados interactuar de manera lúdica con la historia y actualidad del club, ni que fomenten el aprendizaje de la historia del Real Sporting de manera entretenida, y la fidelización de la afición, especialmente entre los más jóvenes.
 Mareona busca cubrir estas posibilidades, ofreciendo una plataforma que combina información, interacción y entretenimiento, para que la afición pueda disfrutar a diario de una experiencia que refuerce su vínculo con el club. La aplicación se desarrolla con un enfoque de coste cero para los usuarios, accesibilidad según los estándares WCAG 2.2 AA, y con funcionalidades que permiten su uso incluso sin conexión a internet, garantizando así que todos los aficionados puedan acceder a la información y participar en la comunidad sin barreras.
 
 ## 1.2 Objetivos del Proyecto
 
-<!--
-CONTENIDO: objetivo principal en una frase y lista numerada de objetivos específicos, cada uno con una línea de explicación.
-- Funcionales: datos de temporada al día, histórico, comunidad con moderación, juegos y coleccionismo.
-- Técnicos: coste cero, accesibilidad WCAG 2.2 AA, PWA con modo offline, seguridad y privacidad de los datos.
-FUENTES: PROJECT_SPEC.md §1.
--->
 El objetivo principal del proyecto es reunir en una sola aplicación la actualidad deportiva, el archivo histórico, la comunidad y los juegos temáticos para la afición del Real Sporting de Gijón. Para lograrlo se han definido los siguientes objetivos específicos:
 
 1. Mostrar datos de la temporada actualizados y fiables, incluyendo calendario, resultados, clasificaciones, estadísticas colectivas e individuales y fichas de partido.
@@ -212,8 +225,8 @@ flowchart BT
 | :--- | :--- | :--- |
 | Visitante sin cuenta | Consulta Inicio, Temporada, Histórico, páginas legales y puede probar los juegos diarios en local. | No puede publicar en Social ni en La Grada, votar MVP, enviar mensajes, participar en La Porra ni guardar sobres en el álbum. |
 | Usuario registrado | Hereda la consulta pública y añade publicación en Social y La Grada, encuestas, amistades, mensajería directa, pronósticos en La Porra, guardado de progreso y sobres en Juegos, reportes, bloqueos y gestión o borrado de su perfil. | Solo edita o borra sus propios contenidos dentro de las reglas de moderación; no accede a `/admin`. |
-| Moderador | Hereda las capacidades del usuario registrado y revisa mensajes retenidos por la IA o reportados por la comunidad, pudiendo aprobarlos u ocultarlos. | No gestiona roles de administración, sanciones globales ni configuración del sistema. |
-| Administrador | Hereda las capacidades anteriores y accede a `/admin` para suspender o reactivar usuarios, gestionar anuncios globales, limpiar caché deportiva y consultar telemetría de visitas, errores y registros de auditoría. | Todas sus acciones de gestión quedan registradas de forma inmutable en `admin_audit_logs`. |
+| Moderador | Hereda las capacidades del usuario registrado y está modelado en `user_roles` para tareas de revisión de contenido retenido o reportado. | En la versión actual, el acceso a `/admin` exige rol `admin` (`assertAdmin()`), por lo que la moderación operativa recae en el administrador hasta habilitar vistas dedicadas. |
+| Administrador | Hereda las capacidades anteriores y accede a `/admin` para revisar moderación, suspender o reactivar usuarios, gestionar anuncios globales, limpiar caché deportiva y consultar telemetría de visitas, errores y registros de auditoría. | Todas sus acciones de gestión quedan registradas de forma inmutable en `admin_audit_logs`. |
 
 *Tabla 1. Actores del sistema y permisos asociados.*
 
@@ -228,7 +241,7 @@ Los requisitos funcionales se agrupan por área de negocio y describen las opera
 Cuenta y sesión:
 - Permitir el registro y el inicio de sesión mediante correo electrónico y contraseña o mediante OAuth con Google.
 - Mantener la sesión del usuario mediante cookies seguras renovadas en el servidor en cada petición.
-- Permitir al usuario editar su nombre de usuario, biografía y avatar en `/perfil`, así como solicitar el borrado definitivo de su cuenta y datos personales.
+- Permitir al usuario editar su nombre visible, nombre de usuario y avatar en `/perfil`, así como solicitar el borrado definitivo de su cuenta y datos personales.
 - Impedir el acceso a acciones de escritura a usuarios suspendidos (`is_banned`).
 
 Temporada:
@@ -577,7 +590,7 @@ flowchart LR
 
 La sesión se gestiona con `@supabase/ssr` mediante cookies HTTP firmadas, evitando guardar tokens en `localStorage` donde quedarían expuestos a scripts. Antes de cada petición de página (excluyendo estáticos e imágenes en `config.matcher`), el proxy `src/proxy.ts` invoca `updateSession()` para leer las cookies, validar el JWT contra Supabase Auth y renovarlo con el *refresh token* si ha caducado. En las Server Actions y rutas protegidas, la identidad del usuario se obtiene siempre en servidor con `supabase.auth.getUser()`.
 
-El sistema admite acceso con correo electrónico y contraseña (validados con Zod), enlace mágico y Google. Para el acceso con Google se distingue si el usuario navega en pestaña normal o en una PWA instalada en modo `standalone`: en PWA instalada, especialmente en iOS y Android, se evita abrir ventanas emergentes que rompen el contexto aislado y se utiliza el flujo OAuth con PKCE redirigiendo a `/auth/callback`, donde el código se intercambia por la sesión (Ilustración 14). Al crearse una cuenta en `auth.users`, el trigger `on_auth_user_created` genera automáticamente su registro en `public.profiles` con un `username` único derivado del correo.
+El sistema admite acceso con correo electrónico y contraseña (validados con Zod [11]) y con Google. Para el acceso con Google se distingue si el usuario navega en pestaña normal o en una PWA instalada en modo `standalone`: en PWA instalada, especialmente en iOS y Android, se evita abrir ventanas emergentes que rompen el contexto aislado y se utiliza el flujo OAuth con PKCE redirigiendo a `/auth/callback`, donde el código se intercambia por la sesión (Ilustración 14). Al crearse una cuenta en `auth.users`, el trigger `on_auth_user_created` genera automáticamente su registro en `public.profiles` con un `username` único derivado del correo.
 
 ```mermaid
 sequenceDiagram
@@ -778,7 +791,7 @@ La lógica que exige atomicidad, bloqueo de filas o ejecución privilegiada resi
 
 ### 3.2.6 Migraciones
 
-Toda la estructura de la base de datos se define en `supabase/migrations/` mediante **16 archivos SQL** ordenados cronológicamente con prefijo de fecha (`YYYY_MMDDHHMMSS_nombre.sql`). Ninguna migración ya aplicada se modifica: cualquier cambio posterior de esquema o de políticas RLS se añade como una nueva migración incremental (Tabla 5).
+Toda la estructura de la base de datos se define en `supabase/migrations/` mediante **19 archivos SQL** ordenados cronológicamente con prefijo de fecha (`YYYY_MMDDHHMMSS_nombre.sql`). Ninguna migración ya aplicada se modifica: cualquier cambio posterior de esquema o de políticas RLS se añade como una nueva migración incremental (Tabla 5).
 
 | Migración | Cambio principal |
 | :--- | :--- |
@@ -798,6 +811,9 @@ Toda la estructura de la base de datos se define en `supabase/migrations/` media
 | `2026_1111010000_user_reports_and_mutual_block_guard.sql` | Denuncias (`user_reports`), `user_blocks` y bloqueo mutuo en chats directos. |
 | `2026_1111020000_site_visits_telemetry.sql` | Tabla `site_visits` para telemetría anónima sin cookies. |
 | `2026_1117000000_widen_post_body_length.sql` | Ampliación del límite de `posts.body` a 4.000 caracteres para admitir alineaciones serializadas. |
+| `2026_1119000000_fix_admin_table_grants_and_rls.sql` | Ajuste de permisos (`GRANT`) y políticas RLS de las tablas administrativas. |
+| `2026_1120000000_grant_anon_profiles_select.sql` | Lectura pública de perfiles básicos para usuarios no autenticados. |
+| `2026_1120000100_posts_select_own_for_soft_delete.sql` | Permite al autor consultar su propia publicación durante el borrado lógico. |
 
 *Tabla 5. Historial cronológico de migraciones en Supabase.*
 
@@ -1198,7 +1214,7 @@ Cada pantalla responde a una pregunta principal sin párrafos explicativos ni de
 
 ### 3.6.3 Componentes Reutilizables
 
-Los elementos comunes de interfaz se agrupan en `src/components/ui/` y componentes de dominio compartidos: botones y píldoras segmentadas (`rounded-full`), tablas nativas con encabezados semánticos para clasificaciones y registros históricos, tarjetas de borde fino (`--border`) sobre fondo blanco, diálogos modales accesibles apoyados en `use-modal-a11y.ts` y notificaciones emergentes (`toast-container.tsx`) para confirmar acciones de servidor. Todo componente en `src/` se mantiene en un máximo de 180 líneas, extrayendo subcomponentes y hooks antes de superar ese umbral.
+Los elementos comunes de interfaz se agrupan en `src/components/ui/` y componentes de dominio compartidos: botones y píldoras segmentadas (`rounded-full`), tablas nativas con encabezados semánticos para clasificaciones y registros históricos, tarjetas de borde fino (`--border`) sobre fondo blanco, diálogos modales accesibles apoyados en `use-modal-a11y.ts` y notificaciones emergentes (`toast-container.tsx`) para confirmar acciones de servidor. Como pauta de modularidad, los componentes de interfaz se mantienen alrededor de 180 líneas, extrayendo subcomponentes y hooks dedicados cuando una vista crece.
 
 ### 3.6.4 Versión Móvil
 
@@ -1288,15 +1304,15 @@ mareona/
 El desarrollo sigue reglas verificables automáticamente mediante `npm run check` (`tsc --noEmit && eslint && node --test tests/**/*.test.ts`):
 
 - Tipado estricto en TypeScript: `strict: true` en `tsconfig.json`, prohibición de `any`, `as any`, `@ts-ignore` y `@ts-expect-error`. Toda entrada externa se valida con Zod en el borde, y los tipos de base de datos proceden de `src/types/database.types.ts` generado desde el esquema real.
-- Modularidad de componentes: ningún archivo de componente en `src/` supera las 180 líneas. Cuando una vista o diálogo crece, se divide en subcomponentes y hooks dedicados.
+- Modularidad de componentes: la guía del proyecto fija un umbral de 180 líneas por archivo de componente en `src/`, dividiendo las vistas complejas en subcomponentes y hooks dedicados (con contadas excepciones en torno a 182-232 líneas en componentes de pizarra, selectores o manejo de entrada).
 - Documentación interna y commits: las funciones de dominio, adaptadores y Server Actions incorporan comentarios TSDoc (`@param`, `@returns`, `@throws`) y comentarios en inglés centrados en el porqué de las decisiones. El historial sigue el formato *Conventional Commits* (`type(scope): imperative description`).
-- Estándares integrados: el cumplimiento de accesibilidad (WCAG 2.2 AA), privacidad (RGPD/LOPDGDD) y seguridad (OWASP ASVS nivel 2, RLS y cabeceras HTTP) forma parte de los criterios de aceptación descritos en los apartados 3.5 y 3.6 y se verifica en la batería de pruebas del Capítulo 5.
+- Estándares integrados: el cumplimiento de accesibilidad (WCAG 2.2 AA [1]), privacidad (RGPD [2] / LOPDGDD [3]) y seguridad (OWASP ASVS nivel 2 [5], RLS y cabeceras HTTP) forma parte de los criterios de aceptación descritos en los apartados 3.5 y 3.6 y se verifica en la batería de pruebas del Capítulo 5.
 
 ## 4.5 Internacionalización
 
-La interfaz se presenta en español, pero todos los textos visibles se centralizan en un sistema de diccionarios tipados bajo `src/i18n/` para evitar cadenas dispersas en los componentes y facilitar la incorporación futura de nuevos idiomas.
+La interfaz se presenta en español. Para evitar cadenas dispersas en las vistas de datos y facilitar una traducción futura, los módulos de Inicio, Temporada e Histórico consumen un diccionario tipado bajo `src/i18n/`, mientras que el resto de secciones mantienen por ahora sus literales en español dentro de los componentes.
 
-El archivo `src/i18n/index.ts` expone `getDictionary(locale)`, que devuelve en tiempo de ejecución el objeto tipado `Dictionary` a partir de `src/i18n/dictionaries/es.ts` sin latencia de red ni dependencias externas. Para añadir o modificar un texto de interfaz basta editar la clave correspondiente en `es.ts`; TypeScript comprueba en compilación que todos los componentes consuman claves existentes.
+El archivo `src/i18n/index.ts` expone `getDictionary(locale)`, que devuelve en tiempo de ejecución el objeto tipado `Dictionary` a partir de `src/i18n/dictionaries/es.ts` sin latencia de red ni dependencias externas. Para añadir o modificar un texto cubierto por el diccionario basta editar `es.ts`; TypeScript comprueba en compilación que las claves consumidas existen.
 
 ## 4.6 Uso de Herramientas de IA en el Desarrollo
 
@@ -1315,7 +1331,7 @@ Todo el código generado, las migraciones SQL, las políticas RLS y la lógica d
 
 ## 5.1 Estrategia de Pruebas
 
-La verificación del sistema se organiza en seis niveles automatizados ejecutados mediante el corredor nativo de Node.js (`node --test`) y Playwright. La suite de Node agrupa **102 archivos** (138 suites y **599 tests**) que se ejecutan en unos 4,8 segundos, complementados por **5 suites extremo a extremo** en navegador Chromium y un script de auditoría Lighthouse. En la Ilustración 35 se muestra la pirámide de pruebas y en la Tabla 9 los comandos disponibles en `package.json`.
+La verificación del sistema se organiza en seis niveles automatizados ejecutados mediante el corredor nativo de Node.js (`node --test`) [14] y Playwright. La suite de Node agrupa **102 archivos** (140 suites y **604 tests**) que se ejecutan en unos segundos, complementados por **5 suites extremo a extremo** en navegador Chromium y un script de auditoría Lighthouse [15]. En la Ilustración 35 se muestra la pirámide de pruebas y en la Tabla 9 los comandos disponibles en `package.json`.
 
 ```mermaid
 flowchart BT
@@ -1618,7 +1634,7 @@ Desde el punto de vista técnico, las decisiones de arquitectura responden a la 
 - La combinación de fuentes deportivas detrás de adaptadores de servidor con caché en dos niveles (memoria con deduplicación `inFlightRequests` y `external_api_cache` en PostgreSQL) y la compilación del archivo histórico en ficheros JSON permiten servir vistas densas sin agotar cuotas ni exponer claves externas.
 - El Service Worker propio (`public/sw.js`), con límite de espera de 3 segundos en navegación y cola de sincronización en `localStorage`, mantiene disponibles el archivo histórico y los juegos diarios cuando falla la cobertura en el estadio.
 - La seguridad y el cumplimiento legal recaen en la propia base de datos mediante *Row Level Security* y permisos por columna en todas las tablas, validaciones con Zod en cada Server Action, moderación automática con Groq acompañada de revisión manual, borrado completo de cuenta (`delete_current_user`) y borrado lógico con custodia en mensajería directa.
-- El diseño visual en rojo y blanco cumple WCAG 2.2 AA de forma verificable (contraste comprobado sobre los tokens CSS, tablas `sr-only` para gráficos SVG y gestión de foco en modales), respaldado por una batería de 599 tests en Node.js y 5 suites extremo a extremo en Playwright.
+- El diseño visual en rojo y blanco cumple WCAG 2.2 AA [1] de forma verificable (contraste comprobado sobre los tokens CSS, tablas `sr-only` para gráficos SVG y gestión de foco en modales), respaldado por una batería de 604 tests en Node.js y 5 suites extremo a extremo en Playwright [14].
 
 El proyecto también deja claras sus contrapartidas. Depender de fuentes deportivas gratuitas o no oficiales obliga a mantener parsers defensivos y a mostrar avisos explícitos cuando falta un dato en lugar de recurrir a valores simulados; del mismo modo, los límites de ejecución y conexiones de los planes gratuitos exigen vigilar el tamaño de las consultas y el tiempo de vida de las cachés.
 
@@ -1627,14 +1643,13 @@ Mareona ha permitido aplicar y unificar conocimientos de arquitectura en capas c
 
 ## 7.2 Ampliaciones
 
-<!-- CONTENIDO: lista de ampliaciones futuras, que aporta el autor. Una por apartado con qué es y qué aportaría. -->
 Hay múltiples posibilidades de ampliación de Mareona, las cuales se podrían implementar en futuras versiones del producto:
 - Duelos 11vs11: modo de juego integrado en Memoria Rojiblanca, que permitiría a los usuarios crear alineaciones propias y enfrentarlas a las de otros aficionados, con un estilo de juego similar al de los cromos tradicionales, en el que se jugaría por rondas, enfrentando las características de un jugador de cada equipo en cada ronda. Se podría incluir un sistema de ligas y de recompensas que funcionase con matchmaking, y que permitiera a los usuarios ir subiendo de rango a medida que obtienen victorias, consiguiendo a su vez sobres para completar la colección. Se ha decidido esperar a incluir esta ampliación para no sobresaturar con demasiados juegos al inicio, y para formar una buena base de usuarios que dispongan de cromos suficientes para competir entre sí una vez se integren los duelos en la aplicación.
-- Intercambio de cromos repetidos: se podría incluir un sistema mediante el que los usuarios podrían intercambiar aquellos cromos de Memoria Rojiblanca que tuviesen repetidos con otros usuarios. De esta forma, ambos saldrían beneficiados, ayudándose mutuamente a completar la colección, lo que fomentaría la interacción entre usuarios y el entretenmiento en la aplicación.
+- Intercambio de cromos repetidos: se podría incluir un sistema mediante el que los usuarios podrían intercambiar aquellos cromos de Memoria Rojiblanca que tuviesen repetidos con otros usuarios. De esta forma, ambos saldrían beneficiados, ayudándose mutuamente a completar la colección, lo que fomentaría la interacción entre usuarios y el entretenimiento en la aplicación.
 - Más juegos: se dispone de múltiples ideas de nuevos juegos que podrían ser incluidos en el sistema para el entretenimiento de los usuarios y fomentar la ampliación de sus conocimientos, pero se ha decidido reservarlos para un futuro para no sobresaturar la aplicación en un inicio, y para poder ofrecer novedades en un futuro a los usuarios.
 - Internacionalización a varios idiomas: la aplicación actualmente solamente se muestra en español, pero se podría ampliar para incluir otros idiomas (como el asturiano o el inglés), lo que permitiría llegar a una audiencia más amplia y mejorar la accesibilidad para usuarios de diferentes regiones.
 - Notificaciones push: enviar avisos al móvil cuando falte poco para el cierre de La Porra, al inicio del partido, los goles en directo, o al recibir mensajes privados o menciones. Esto aportaría retención sin depender necesariamente de abrir la aplicación.
-- Seguimiento del Real Sporting Femenino y el Sporting Atlético: inicialmente, se ha desarrollado la aplicación para mostrar datos del primer equipo masculino, pero podría ser interesante para el futuro incluir cobertura del primer equipo femenino y el filial, para que los usuarios puedan realizar un seguimiento de los principales equipos de la institución en una sola plataforma, sirviendo como nexo de unión para los seguidores de todos los equipos, y como proovedor de toda la información que cualquier aficionado del club puede querer visualizar durante la temporada.
+- Seguimiento del Real Sporting Femenino y el Sporting Atlético: inicialmente, se ha desarrollado la aplicación para mostrar datos del primer equipo masculino, pero podría ser interesante para el futuro incluir cobertura del primer equipo femenino y el filial, para que los usuarios puedan realizar un seguimiento de los principales equipos de la institución en una sola plataforma, sirviendo como nexo de unión para los seguidores de todos los equipos, y como proveedor de toda la información que cualquier aficionado del club puede querer visualizar durante la temporada.
 - Ligas privadas en los juegos: permitir crear competiciones entre amigos para comparar el rendimiento en los juegos, especialmente en la porra, de forma que se potencie el entretenimiento proporcionado por los juegos, al poder realizar comparaciones reales con tu grupo de amigos, y comentar los resultados entre todos.
 
 ---
@@ -1716,36 +1731,4 @@ El tratamiento de escudos, fotografías de futbolistas y marcas de terceros sigu
 - Alternativas neutras y retirada inmediata: si falla una carga externa se muestra una silueta o monograma vectorial; además, la variable `NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS` permite sustituir al instante todos los escudos y fotografías oficiales por marcadores neutros, y cualquier solicitud de retirada por parte de titulares de derechos se atiende en un plazo máximo de 48 horas.
 - Identidad propia: el logotipo de Mareona, los iconos de la aplicación instalada (PWA), el favicon y la iconografía propia pertenecen al proyecto.
 
-Las estadísticas actuales y las clasificaciones proceden de las fuentes deportivas integradas en servidor, mientras que los datos históricos compilados se utilizan con fines informativos, divulgativos y culturales dentro de la comunidad sportinguista.
-
----
-
-<!--
-LISTA DE DIAGRAMAS (marcar al hacerlos):
-[x] Mapa de módulos (1.3)
-[x] Jerarquía de actores (2.2)
-[x] Casos de uso por módulo (2.4)
-[x] Subsistemas y dependencias (2.5)
-[x] Mapa de navegación (2.6)
-[x] Arquitectura general (3.1.1)
-[x] Capas (3.1.2)
-[x] Renderizado servidor/cliente (3.1.3)
-[x] Despliegue (3.1.4)
-[x] Login con Google (3.1.5)
-[x] Entidad-relación por bloques (3.2.2)
-[x] Datos deportivos (3.3.1)
-[x] Ficha de partido (3.3.2)
-[x] Social (3.3.4)
-[x] Flujo de moderación (3.3.5)
-[x] Sobre de cartas y partida diaria (3.3.6)
-[x] Porra (3.3.7)
-[x] Acción sin conexión (3.3.9)
-[x] Petición de página (3.4.1)
-[x] Dato deportivo extremo a extremo (3.4.2)
-[x] Escritura de usuario (3.4.3)
-[x] Ciclo de vida de usuario (3.4.4)
-[x] Estados de entidades (3.4.5)
-[x] Funcionamiento sin conexión (3.4.6)
-[x] Cadena de seguridad (3.5.1)
-[x] Pirámide de pruebas (5.1)
--->
+Las estadísticas actuales y las clasificaciones proceden de las fuentes deportivas integradas en servidor [17], mientras que los datos históricos compilados se utilizan con fines informativos, divulgativos y culturales dentro de la comunidad sportinguista.
