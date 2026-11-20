@@ -2,11 +2,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "@/lib/ui/toast";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { PostActions } from "@/app/(main)/social/post-actions";
+import { PostDeleteButton } from "@/app/(main)/social/post-delete-button";
 import { PostOriginBadge } from "@/app/(main)/social/post-origin-badge";
 import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
 import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
+import { deleteSocialPost } from "@/lib/social/actions";
 import {
   filterPostsByOrigin,
   formatRelativeTime,
@@ -49,6 +52,18 @@ export function ProfilePostsList({
       cancelled = true;
     };
   }, [userId]);
+
+  const handleDeletePost = async (postId: string) => {
+    const previous = posts;
+    setPosts((prev) => prev.filter((p) => p.id !== postId));
+    const res = await deleteSocialPost({ postId });
+    if (!res.success) {
+      setPosts(previous);
+      toast.error(res.error ?? "No se pudo borrar la publicación");
+      return;
+    }
+    toast.success("Publicación eliminada");
+  };
 
   const filteredPosts = filterPostsByOrigin(posts, originFilter);
   const emptyMessage =
@@ -128,10 +143,13 @@ export function ProfilePostsList({
                       {formatRelativeTime(post.createdAt)}
                     </time>
                   </div>
-                  <PostOriginBadge
-                    matchId={post.matchId}
-                    matchLabel={post.matchLabel}
-                  />
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    <PostOriginBadge
+                      matchId={post.matchId}
+                      matchLabel={post.matchLabel}
+                    />
+                    <PostDeleteButton onConfirm={() => handleDeletePost(post.id)} />
+                  </div>
                 </div>
                 {cleanBody && (
                   <p className="mt-0.5 whitespace-pre-line break-words text-[15px] leading-snug text-neutral-900">

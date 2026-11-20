@@ -2,8 +2,9 @@
 "use client";
 
 import { useState } from "react";
-import { Trash2, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { formatRelativeTime, canEditPost } from "@/lib/social/format";
+import { PostDeleteButton } from "./post-delete-button";
 
 interface PostAuthorLineProps {
   readonly post?: {
@@ -50,16 +51,6 @@ export function PostAuthorLine({
     if (!effectiveUserId || !onOpenProfile) return;
     e.stopPropagation();
     onOpenProfile(effectiveUserId);
-  };
-
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onDelete?.();
-  };
-
-  const handleToggleConfirm = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsConfirming((prev) => !prev);
   };
 
   const handleEdit = (e: React.MouseEvent) => {
@@ -109,36 +100,10 @@ export function PostAuthorLine({
         )}
 
         {onDelete && (
-          <div>
-            {isConfirming ? (
-              <div className="flex items-center gap-1 animate-in fade-in duration-100">
-                <span className="text-[11px] font-semibold text-red-600">¿Borrar?</span>
-                <button
-                  type="button"
-                  onClick={handleDelete}
-                  className="rounded-full bg-[#e2001a] px-2 py-0.5 text-[11px] font-bold text-white hover:bg-red-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
-                >
-                  Sí
-                </button>
-                <button
-                  type="button"
-                  onClick={handleToggleConfirm}
-                  className="rounded-full px-2 py-0.5 text-[11px] font-semibold text-neutral-500 hover:bg-neutral-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
-                >
-                  No
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={handleToggleConfirm}
-                aria-label="Borrar publicación"
-                className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-red-50 hover:text-[#e2001a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
-              >
-                <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
-              </button>
-            )}
-          </div>
+          <PostDeleteButton
+            onConfirm={onDelete}
+            onConfirmingChange={setIsConfirming}
+          />
         )}
       </div>
     </div>
