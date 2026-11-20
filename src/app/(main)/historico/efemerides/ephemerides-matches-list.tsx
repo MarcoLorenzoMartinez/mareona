@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { DayMatchItem } from "@/lib/historical/ephemerides-types";
 import type { HistoricalMatch } from "@/lib/historical/types";
 import { EphemeridesMatchRow } from "./ephemerides-match-row";
@@ -17,26 +18,39 @@ interface EphemeridesMatchesListProps {
  */
 export function EphemeridesMatchesList({ matches }: EphemeridesMatchesListProps) {
   const [selectedMatch, setSelectedMatch] = useState<DayMatchItem | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   if (matches.length === 0) return null;
 
-  const matchForModal: HistoricalMatch | null = selectedMatch
+  const partidoParam = searchParams.get("partido");
+  const activeMatch =
+    selectedMatch ?? (partidoParam ? matches.find((m) => m.id === partidoParam) ?? null : null);
+
+  const handleCloseModal = () => {
+    setSelectedMatch(null);
+    if (partidoParam) {
+      router.replace("/historico/efemerides", { scroll: false });
+    }
+  };
+
+  const matchForModal: HistoricalMatch | null = activeMatch
     ? {
-        id: selectedMatch.id,
-        date: selectedMatch.date,
-        competition: selectedMatch.competition,
-        round: selectedMatch.round,
-        homeTeam: selectedMatch.homeTeam,
-        homeCrestUrl: selectedMatch.homeCrestUrl,
-        awayTeam: selectedMatch.awayTeam,
-        awayCrestUrl: selectedMatch.awayCrestUrl,
-        homeScore: selectedMatch.homeScore,
-        awayScore: selectedMatch.awayScore,
-        isHome: selectedMatch.isHome,
-        outcome: selectedMatch.outcome,
-        opponent: selectedMatch.opponent,
-        venue: selectedMatch.venue,
-        bdfMatchId: selectedMatch.bdfMatchId,
+        id: activeMatch.id,
+        date: activeMatch.date,
+        competition: activeMatch.competition,
+        round: activeMatch.round,
+        homeTeam: activeMatch.homeTeam,
+        homeCrestUrl: activeMatch.homeCrestUrl,
+        awayTeam: activeMatch.awayTeam,
+        awayCrestUrl: activeMatch.awayCrestUrl,
+        homeScore: activeMatch.homeScore,
+        awayScore: activeMatch.awayScore,
+        isHome: activeMatch.isHome,
+        outcome: activeMatch.outcome,
+        opponent: activeMatch.opponent,
+        venue: activeMatch.venue,
+        bdfMatchId: activeMatch.bdfMatchId,
       }
     : null;
 
@@ -53,11 +67,11 @@ export function EphemeridesMatchesList({ matches }: EphemeridesMatchesListProps)
       </div>
 
       {/* Official Match Sheet Modal */}
-      {matchForModal && selectedMatch && (
+      {matchForModal && activeMatch && (
         <HistoricalMatchDetailModal
           match={matchForModal}
-          season={selectedMatch.season}
-          onClose={() => setSelectedMatch(null)}
+          season={activeMatch.season}
+          onClose={handleCloseModal}
         />
       )}
     </section>

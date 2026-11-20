@@ -1,7 +1,7 @@
 // Client: Orquesta la navegación interactiva de fechas, caché local y filtros de efemérides
 "use client";
 
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { formatDayMonthLabel, type DayEphemeridesResult } from "@/lib/historical/ephemerides-types";
 import { fetchEphemeridesForDayAction } from "./ephemerides-action";
 import { EphemeridesCalendar } from "./ephemerides-calendar";
@@ -90,7 +90,9 @@ export function EphemeridesHub({
 
       {/* Matches section */}
       {!isLoading && activeData && (
-        <EphemeridesMatchesList matches={activeData.matches} />
+        <Suspense fallback={null}>
+          <EphemeridesMatchesList matches={activeData.matches} />
+        </Suspense>
       )}
     </div>
   );

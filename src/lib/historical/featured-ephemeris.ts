@@ -16,6 +16,7 @@ export interface FeaturedEphemeris {
   readonly figure?: string;
   readonly categoryLabel?: string;
   readonly isMatch?: boolean;
+  readonly matchId?: string;
   readonly venue?: string;
   readonly sportingScorers?: readonly string[];
   readonly opponentScorers?: readonly string[];
@@ -162,6 +163,7 @@ function describeMatch(match: DayMatchItem): FeaturedEphemeris {
     figure: match.opponent,
     categoryLabel: match.competition,
     isMatch: true,
+    matchId: match.id,
     venue,
     sportingScorers,
     opponentScorers,

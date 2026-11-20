@@ -131,6 +131,7 @@ describe("pickFeaturedEphemeris", () => {
       )
     );
     assert.equal(featured?.title, "Rival 0–4 Real Sporting");
+    assert.equal(featured?.matchId, "b");
     assert.equal(featured?.year, 1985);
     assert.equal(featured?.photoUrl, "https://example.com/crest.png");
   });

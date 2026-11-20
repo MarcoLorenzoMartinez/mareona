@@ -16,6 +16,9 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
   const dict = getDictionary().home.history;
   const isMatch = Boolean(featured.isMatch && featured.homeTeam && featured.awayTeam);
   const isSportingHome = featured.homeTeam === "Real Sporting";
+  const matchHref = featured.matchId
+    ? `/historico/efemerides?partido=${encodeURIComponent(featured.matchId)}`
+    : "/historico/efemerides";
 
   return (
     <section
@@ -33,14 +36,14 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
       </div>
 
       <div className="mt-3.5 flex flex-col gap-3">
-        {/* Cabecera contextual: Año en cápsula y 'Competición, Jornada' sin punto separador */}
-        <div className="flex flex-wrap items-center gap-2 text-xs">
+        {/* Cabecera contextual: Año en rojo tipográfico y 'Competición, Jornada' separados solo por contraste y espacio */}
+        <div className="flex flex-wrap items-baseline gap-2 text-xs">
           {featured.year !== null && (
-            <span className="shrink-0 rounded-full bg-[var(--primary)] px-2.5 py-0.5 text-xs font-bold tabular-nums text-white">
+            <span className="shrink-0 text-sm font-bold tabular-nums text-[var(--primary)]">
               {featured.year}
             </span>
           )}
-          <span className="font-semibold text-[var(--foreground)]">
+          <span className="font-medium text-[var(--foreground-muted)]">
             {featured.competition || featured.detail}
             {featured.round ? `, ${featured.round}` : ""}
           </span>
@@ -48,7 +51,7 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
 
         {isMatch ? (
           <Link
-            href="/historico/efemerides"
+            href={matchHref}
             className="group flex flex-col justify-center rounded-xl border border-[var(--border)] bg-neutral-50/60 p-4 transition-all duration-150 hover:border-[var(--primary)]/50 hover:bg-white hover:shadow-2xs active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             {/* Marcador central limpio y proporcionado */}
