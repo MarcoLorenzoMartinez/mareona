@@ -140,7 +140,7 @@ export function MobilePostComposerModal({
             rows={3}
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            placeholder="¿Qué opinas hoy sobre el Sporting?"
+            placeholder="Escribe en Mareona..."
             maxLength={MAX_USER_BODY_LENGTH}
             className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />

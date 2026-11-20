@@ -31,7 +31,7 @@ interface PostComposerProps {
 export function PostComposer({
   onPosted,
   parentId,
-  placeholder = "¿Qué opinas del Sporting?",
+  placeholder = "Escribe en Mareona...",
   submitLabel = "Publicar",
   className = "",
 }: PostComposerProps) {
