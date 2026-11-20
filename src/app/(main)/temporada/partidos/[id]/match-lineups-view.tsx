@@ -8,10 +8,7 @@ import type {
   DomainPlayerMatchStats,
 } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
-import { TacticalPitchBoard } from "./tactical-pitch-board";
-import { TacticalVerticalPitch } from "./tactical-vertical-pitch";
-import { LineupsMobileSelector } from "./lineups-mobile-selector";
-import { LineupsDesktopHeader } from "./lineups-desktop-header";
+import { MatchLineupsTacticalCard } from "./match-lineups-tactical-card";
 import { LineupBenchCard } from "./lineup-bench-card";
 import { LineupTeamColumn } from "./lineup-team-column";
 import { PlayerMatchStatsModal } from "./player-match-stats-modal";
@@ -80,11 +77,6 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
       match.awayLineup
   );
 
-  const activeMobileTactical = activeMobileTeam === "home" ? homeTactical : awayTactical;
-  const activeMobileTeamMeta = activeMobileTeam === "home" ? match.homeTeam : match.awayTeam;
-  const activeMobileStarters =
-    activeMobileTeam === "home" ? match.homeLineup?.starters : match.awayLineup?.starters;
-
   const handleSelectPlayer = (
     player: DomainLineupPlayer,
     stats: DomainPlayerMatchStats | null,
@@ -96,52 +88,15 @@ export function MatchLineupsView({ match }: MatchLineupsViewProps) {
   return (
     <div className="flex flex-col gap-6">
       {hasUnifiedTactical && match.homeLineup && match.awayLineup && homeTactical && awayTactical ? (
-        <div className="rounded-2xl border border-[var(--border)] bg-white p-3.5 sm:p-5 shadow-2xs">
-          {/* Mobile View (< md): Team Selector + Dedicated Vertical Tactical Pitch */}
-          <div className="flex flex-col gap-3 md:hidden">
-            <LineupsMobileSelector
-              homeTeam={{
-                name: match.homeTeam.name,
-                crestUrl: match.homeTeam.crestUrl,
-                isSporting: match.homeTeam.isSporting,
-                formation: homeTactical.formation,
-              }}
-              awayTeam={{
-                name: match.awayTeam.name,
-                crestUrl: match.awayTeam.crestUrl,
-                isSporting: match.awayTeam.isSporting,
-                formation: awayTactical.formation,
-              }}
-              activeTeam={activeMobileTeam}
-              onSelectTeam={setActiveMobileTeam}
-            />
-
-            {activeMobileTactical && activeMobileStarters && (
-              <TacticalVerticalPitch
-                tactical={activeMobileTactical}
-                team={activeMobileTeamMeta}
-                starters={activeMobileStarters}
-                playerStats={playerStats}
-                onSelectPlayer={handleSelectPlayer}
-              />
-            )}
-          </div>
-
-          {/* Desktop View (>= md): Unified 11 vs 11 Horizontal Pitch Board */}
-          <div className="hidden md:flex md:flex-col">
-            <LineupsDesktopHeader homeTeam={match.homeTeam} awayTeam={match.awayTeam} />
-            <TacticalPitchBoard
-              homeTactical={homeTactical}
-              awayTactical={awayTactical}
-              homeTeam={match.homeTeam}
-              awayTeam={match.awayTeam}
-              homeStarters={match.homeLineup.starters}
-              awayStarters={match.awayLineup.starters}
-              playerStats={playerStats}
-              onSelectPlayer={handleSelectPlayer}
-            />
-          </div>
-        </div>
+        <MatchLineupsTacticalCard
+          match={match}
+          homeTactical={homeTactical}
+          awayTactical={awayTactical}
+          activeMobileTeam={activeMobileTeam}
+          onSelectMobileTeam={setActiveMobileTeam}
+          playerStats={playerStats}
+          onSelectPlayer={handleSelectPlayer}
+        />
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 items-start">
           <LineupTeamColumn

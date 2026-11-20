@@ -8,8 +8,7 @@ import { ThreadView } from "./thread-view";
 import { SocialFeedHeader } from "./social-feed-header";
 import { UserProfileModal } from "./user-profile-modal";
 import { SocialTimeline } from "./social-timeline";
-import { DirectMessagesInbox } from "./direct-messages-inbox";
-import { DirectChatView } from "./direct-chat-view";
+import { SocialMessagesSection, type ChatUserPreview } from "./social-messages-section";
 import { SocialMobileComposerSection } from "./social-mobile-composer-section";
 import { useSocialThreadNavigation } from "./use-social-thread-navigation";
 import { getSocialPosts, deleteSocialPost, updateSocialPost } from "@/lib/social/actions";
@@ -37,12 +36,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
   const [isPendingFilter, startTransition] = useTransition();
 
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
-  const [activeChatUser, setActiveChatUser] = useState<{
-    readonly id: string;
-    readonly name: string;
-    readonly username: string;
-    readonly avatarUrl: string | null;
-  } | null>(null);
+  const [activeChatUser, setActiveChatUser] = useState<ChatUserPreview | null>(null);
   const [isFriendsOpen, setIsFriendsOpen] = useState(false);
   const [friendsModalTab, setFriendsModalTab] = useState<"friends" | "search">("friends");
 
@@ -69,12 +63,7 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
     }
   };
 
-  const handleStartChatWithUser = async (targetUser: {
-    readonly id: string;
-    readonly name: string;
-    readonly username: string;
-    readonly avatarUrl: string | null;
-  }) => {
+  const handleStartChatWithUser = async (targetUser: ChatUserPreview) => {
     if (!user) {
       openAuthModal("signin");
       return;
@@ -133,23 +122,25 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
           />
 
           {activeTab === "messages" ? (
-            activeConversationId && activeChatUser ? (
-              <DirectChatView
-                conversationId={activeConversationId}
-                otherUser={activeChatUser}
-                onBack={() => { setActiveConversationId(null); setActiveChatUser(null); void refreshSocialNotifications(); }}
-                onOpenProfile={(id) => setViewingProfileId(id)}
-              />
-            ) : (
-              <DirectMessagesInbox
-                onOpenConversation={(convId, other) => { setActiveConversationId(convId); setActiveChatUser(other); }}
-                onOpenFriends={() => {
-                  if (!user) { openAuthModal("signin"); return; }
-                  setFriendsModalTab("friends");
-                  setIsFriendsOpen(true);
-                }}
-              />
-            )
+            <SocialMessagesSection
+              activeConversationId={activeConversationId}
+              activeChatUser={activeChatUser}
+              onBackFromChat={() => {
+                setActiveConversationId(null);
+                setActiveChatUser(null);
+                void refreshSocialNotifications();
+              }}
+              onOpenConversation={(convId, other) => {
+                setActiveConversationId(convId);
+                setActiveChatUser(other);
+              }}
+              onOpenProfile={(id) => setViewingProfileId(id)}
+              onOpenFriends={() => {
+                if (!user) { openAuthModal("signin"); return; }
+                setFriendsModalTab("friends");
+                setIsFriendsOpen(true);
+              }}
+            />
           ) : (
             <SocialTimeline
               posts={posts}

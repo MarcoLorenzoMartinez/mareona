@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect, useId, useCallback } from 'react';
 import { matchesSearchQuery } from '@/lib/utils/search-utils';
 import { getDictionary } from '@/i18n';
+import { WhoAreYaSelectorList } from './who-are-ya-selector-list';
 
 export interface SelectorOption {
   id: string | number;
@@ -146,46 +147,14 @@ export function WhoAreYaSelector({
       </div>
 
       {open && filtered.length > 0 && (
-        <ul
-          ref={listRef}
-          id={listboxId}
-          role="listbox"
-          className="absolute z-30 mt-2 max-h-60 w-full overflow-auto rounded-2xl border border-[var(--border)] bg-white py-1.5 shadow-lg animate-in fade-in-50 duration-150"
-        >
-          {filtered.map((item, idx) => {
-            const isHighlighted = idx === highlightedIndex;
-            return (
-              <li
-                key={item.id}
-                id={`${listboxId}-opt-${idx}`}
-                role="option"
-                aria-selected={isHighlighted}
-                onClick={() => handleSelectOption(item)}
-                onMouseEnter={() => setHighlightedIndex(idx)}
-                className={`flex cursor-pointer flex-col px-4 py-2 transition-colors ${
-                  isHighlighted ? 'bg-red-50 text-[#e2001a]' : 'hover:bg-[var(--surface)]'
-                }`}
-              >
-                <span
-                  className={`text-sm font-semibold ${
-                    isHighlighted ? 'text-[#e2001a]' : 'text-[var(--foreground)]'
-                  }`}
-                >
-                  {item.label}
-                </span>
-                {item.sublabel && (
-                  <span
-                    className={`text-xs ${
-                      isHighlighted ? 'text-[#e2001a]/80' : 'text-[var(--foreground-muted)]'
-                    }`}
-                  >
-                    {item.sublabel}
-                  </span>
-                )}
-              </li>
-            );
-          })}
-        </ul>
+        <WhoAreYaSelectorList
+          listRef={listRef}
+          listboxId={listboxId}
+          options={filtered}
+          highlightedIndex={highlightedIndex}
+          onSelect={handleSelectOption}
+          onHighlight={setHighlightedIndex}
+        />
       )}
     </div>
   );

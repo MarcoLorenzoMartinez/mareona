@@ -3,11 +3,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { Card, PackTier } from "@/lib/cards/types";
 import { PACK_TIERS } from "@/lib/cards/packs";
-import { MiniPack } from "@/components/cards/mini-pack";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 import { PackRowCard } from "./pack-row-card";
+import { PackModalHeader } from "./pack-modal-header";
 import { PackModalActionsBar } from "./pack-modal-actions-bar";
-import { getDictionary } from "@/i18n";
 
 interface PackOpeningModalProps {
   readonly isOpen: boolean;
@@ -26,7 +25,6 @@ export function PackOpeningModal({
   onOpenPackCards,
   onSaveCards,
 }: PackOpeningModalProps) {
-  const dict = getDictionary();
   const [packData, setPackData] = useState<{ cards: Card[]; duplicateSlugs: Set<string> }>(() =>
     isOpen ? onOpenPackCards(tier) : { cards: [], duplicateSlugs: new Set() }
   );
@@ -123,34 +121,13 @@ export function PackOpeningModal({
         className="relative flex w-full max-w-5xl max-h-[92vh] overflow-y-auto flex-col items-center rounded-2xl border border-[var(--border)] bg-white p-3.5 sm:p-7 shadow-xl custom-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Cabecera limpia y deportiva */}
-        <div className="flex w-full items-center justify-between border-b border-[var(--border)] pb-2.5 sm:pb-3">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <MiniPack tier={tier} />
-            <h2 id="pack-modal-title" className="font-sans text-xs sm:text-base font-bold text-neutral-900 uppercase tracking-wide truncate">
-              {config.name}
-            </h2>
-            {!allRevealed && (
-              <button
-                type="button"
-                onClick={handleRevealAllNow}
-                className="shrink-0 rounded-full border border-[var(--border)] bg-neutral-50 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-neutral-600 hover:border-[#e2001a] hover:text-[#e2001a] hover:bg-red-50/50 active:scale-95 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-                title={dict.games.album.packs.modalSkipTitle}
-              >
-                {dict.games.album.packs.modalSkipButton}
-              </button>
-            )}
-          </div>
-
-          <button
-            type="button"
-            onClick={handleDismiss}
-            aria-label={dict.games.album.packs.modalCloseAria}
-            className="flex h-9 w-9 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-          >
-            ✕
-          </button>
-        </div>
+        <PackModalHeader
+          tier={tier}
+          tierName={config.name}
+          allRevealed={allRevealed}
+          onRevealAllNow={handleRevealAllNow}
+          onDismiss={handleDismiss}
+        />
 
         {/* Fila de cromos adaptativa y centrada sin scroll vertical parásito */}
         <div className="my-auto flex w-full flex-1 items-center justify-center py-3 sm:py-6 overflow-hidden">

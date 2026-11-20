@@ -8,6 +8,7 @@ import {
   type PorraLeaderboardFilter,
 } from '@/lib/porra/leaderboard';
 import { PorraLeaderboardRow } from './porra-leaderboard-row';
+import { PorraLeaderboardPagination } from './porra-leaderboard-pagination';
 import type { PorraLeaderboardEntry } from '@/lib/porra/types';
 import { getDictionary } from '@/i18n';
 
@@ -154,29 +155,12 @@ export function PorraLeaderboard({
             ))}
           </div>
 
-          {totalPages > 1 && (
-            <div className="mt-2 flex items-center justify-between border-t border-neutral-100 pt-3">
-              <button
-                type="button"
-                onClick={() => setPage((p) => Math.max(1, Math.min(p, totalPages) - 1))}
-                disabled={safePage <= 1}
-                className="min-h-8 rounded-full border border-[var(--border)] bg-white px-3.5 py-1 text-xs font-bold text-neutral-700 transition-colors hover:bg-[var(--surface)] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-              >
-                {dict.games.porra.leaderboard.prevPage}
-              </button>
-              <span className="font-sans text-xs font-semibold tabular-nums text-neutral-500">
-                {dict.games.porra.leaderboard.pagePrefix} {safePage} {dict.games.porra.leaderboard.pageOf} {totalPages}
-              </span>
-              <button
-                type="button"
-                onClick={() => setPage((p) => Math.min(totalPages, Math.min(p, totalPages) + 1))}
-                disabled={safePage >= totalPages}
-                className="min-h-8 rounded-full border border-[var(--border)] bg-white px-3.5 py-1 text-xs font-bold text-neutral-700 transition-colors hover:bg-[var(--surface)] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-              >
-                {dict.games.porra.leaderboard.nextPage}
-              </button>
-            </div>
-          )}
+          <PorraLeaderboardPagination
+            safePage={safePage}
+            totalPages={totalPages}
+            onPrev={() => setPage((p) => Math.max(1, Math.min(p, totalPages) - 1))}
+            onNext={() => setPage((p) => Math.min(totalPages, Math.min(p, totalPages) + 1))}
+          />
         </>
       )}
     </section>

@@ -3,7 +3,8 @@
 
 import React, { useState, useMemo } from "react";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
-import { GameArchiveGrid, type ArchiveCalendarCell } from "./game-archive-grid";
+import { GameArchiveGrid } from "./game-archive-grid";
+import { buildArchiveCalendarCells } from "./game-archive-utils";
 import { getDictionary } from "@/i18n";
 
 export type ChallengeDayStatus = "WON" | "LOST" | "UNPLAYED";
@@ -72,36 +73,14 @@ export function GameArchiveModal({
 
   const cells = useMemo(() => {
     if (!isOpen) return [];
-
-    const firstDayOfMonth = new Date(Date.UTC(viewYear, viewMonth, 1));
-    const dayOfWeek = (firstDayOfMonth.getUTCDay() + 6) % 7;
-    const totalDays = new Date(Date.UTC(viewYear, viewMonth + 1, 0)).getUTCDate();
-
-    const result: (ArchiveCalendarCell | null)[] = [];
-    for (let i = 0; i < dayOfWeek; i++) result.push(null);
-
-    for (let day = 1; day <= totalDays; day++) {
-      const monthPadded = String(viewMonth + 1).padStart(2, "0");
-      const dayPadded = String(day).padStart(2, "0");
-      const dateStr = `${viewYear}-${monthPadded}-${dayPadded}`;
-      const isFuture = dateStr > todayDate;
-      const isPastEpoch = dateStr < epochDate;
-
-      let status: ChallengeDayStatus = "UNPLAYED";
-      if (!isFuture && !isPastEpoch) {
-        status = getStatusForDate(dateStr);
-      }
-
-      result.push({
-        day,
-        dateStr,
-        status,
-        isFuture,
-        isPastEpoch,
-      });
-    }
-
-    return result;
+    void attemptVersion;
+    return buildArchiveCalendarCells({
+      viewYear,
+      viewMonth,
+      todayDate,
+      epochDate,
+      getStatusForDate,
+    });
   }, [isOpen, viewYear, viewMonth, todayDate, epochDate, getStatusForDate, attemptVersion]);
 
   if (!isOpen) return null;
