@@ -2,6 +2,7 @@
 "use client";
 
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { PostOriginBadge } from "./post-origin-badge";
 import { SharedLineupPitchCard } from "@/components/lineup-builder/shared-lineup-pitch-card";
 import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { formatRelativeTime } from "@/lib/social/format";
@@ -59,13 +60,19 @@ export function UserProfilePostsSection({
             >
               <AuthAvatar src={profile.avatarUrl} alt={displayName} size="md" />
               <div className="min-w-0 flex-1">
-                <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
-                  <span className="truncate font-bold text-neutral-900">{displayName}</span>
-                  <span className="truncate text-neutral-500">@{profile.username}</span>
-                  <span aria-hidden="true" className="text-neutral-400">·</span>
-                  <time dateTime={post.createdAt} className="shrink-0 text-xs text-neutral-500">
-                    {formatRelativeTime(post.createdAt)}
-                  </time>
+                <div className="flex items-baseline justify-between gap-2">
+                  <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
+                    <span className="truncate font-bold text-neutral-900">{displayName}</span>
+                    <span className="truncate text-neutral-500">@{profile.username}</span>
+                    <span aria-hidden="true" className="text-neutral-400">·</span>
+                    <time dateTime={post.createdAt} className="shrink-0 text-xs text-neutral-500">
+                      {formatRelativeTime(post.createdAt)}
+                    </time>
+                  </div>
+                  <PostOriginBadge
+                    matchId={post.matchId}
+                    matchLabel={post.matchLabel}
+                  />
                 </div>
                 {cleanBody && (
                   <p className="mt-0.5 whitespace-pre-line break-words text-sm leading-snug text-neutral-900">

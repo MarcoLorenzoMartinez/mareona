@@ -23,6 +23,8 @@ export interface SocialPost {
   readonly updatedAt?: string | null;
   readonly isEdited?: boolean;
   readonly parentId?: string | null;
+  readonly matchId?: string | null;
+  readonly matchLabel?: string | null;
   readonly likesCount: number;
   readonly repliesCount: number;
   readonly replies?: readonly SocialPost[];

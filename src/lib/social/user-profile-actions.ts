@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getFriendshipStatusWith } from "./friends-queries";
+import { formatMatchOriginLabel } from "./format";
 import type { UserSocialProfile } from "./friendship-schemas";
 import type { SocialPost } from "./types";
 
@@ -32,7 +33,7 @@ export async function getUserSocialProfile(
       getFriendshipStatusWith(userId),
       supabase
         .from("posts")
-        .select("id, body, created_at, updated_at, parent_id, user_id")
+        .select("id, body, created_at, updated_at, parent_id, user_id, match_id")
         .eq("user_id", userId)
         .is("deleted_at", null)
         .order("created_at", { ascending: false })
@@ -62,7 +63,34 @@ export async function getUserSocialProfile(
       isBlockedByMe: Boolean(blockRes.data),
     };
 
-    const posts: readonly SocialPost[] = (postsRes.data ?? []).map((p) => ({
+    const rawPosts = postsRes.data ?? [];
+    const matchIds = Array.from(
+      new Set(rawPosts.map((p) => p.match_id).filter((id): id is string => Boolean(id)))
+    );
+
+    const matchLabels = new Map<string, string>();
+    if (matchIds.length > 0) {
+      const { data: matchRows } = await supabase
+        .from("matches")
+        .select(
+          "id, home_team:teams!matches_home_team_id_fkey(name, short_name), away_team:teams!matches_away_team_id_fkey(name, short_name)"
+        )
+        .in("id", matchIds);
+
+      for (const row of matchRows ?? []) {
+        const home = Array.isArray(row.home_team) ? row.home_team[0] : row.home_team;
+        const away = Array.isArray(row.away_team) ? row.away_team[0] : row.away_team;
+        const label = formatMatchOriginLabel(
+          home?.short_name || home?.name,
+          away?.short_name || away?.name
+        );
+        if (label) {
+          matchLabels.set(row.id, label);
+        }
+      }
+    }
+
+    const posts: readonly SocialPost[] = rawPosts.map((p) => ({
       id: p.id,
       userId: p.user_id,
       authorName: profile.displayName || profile.username,
@@ -76,6 +104,8 @@ export async function getUserSocialProfile(
           new Date(p.updated_at).getTime() - new Date(p.created_at).getTime() > 1000
       ),
       parentId: p.parent_id,
+      matchId: p.match_id ?? null,
+      matchLabel: p.match_id ? (matchLabels.get(p.match_id) ?? null) : null,
       likesCount: 0,
       repliesCount: 0,
     }));

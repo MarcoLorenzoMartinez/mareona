@@ -29,3 +29,38 @@ export function canEditPost(dateStr: string): boolean {
   if (Number.isNaN(time)) return false;
   return Date.now() - time <= POST_EDIT_WINDOW_MS;
 }
+
+export type PostOriginFilter = "all" | "social" | "grada";
+
+/**
+ * Formats a concise match label for Grada origin badges.
+ *
+ * @param homeTeam - Home team short or full name.
+ * @param awayTeam - Away team short or full name.
+ * @returns Formatted "Home vs Away" label, or null when either team is missing.
+ */
+export function formatMatchOriginLabel(
+  homeTeam: string | null | undefined,
+  awayTeam: string | null | undefined
+): string | null {
+  const home = homeTeam?.trim();
+  const away = awayTeam?.trim();
+  if (!home || !away) return null;
+  return `${home} vs ${away}`;
+}
+
+/**
+ * Filters a list of posts by publication origin (all, general social, or match grada).
+ *
+ * @param posts - List of posts with optional matchId.
+ * @param origin - Selected origin filter.
+ * @returns Filtered posts preserving original order.
+ */
+export function filterPostsByOrigin<T extends { readonly matchId?: string | null }>(
+  posts: readonly T[],
+  origin: PostOriginFilter
+): readonly T[] {
+  if (origin === "social") return posts.filter((p) => !p.matchId);
+  if (origin === "grada") return posts.filter((p) => Boolean(p.matchId));
+  return posts;
+}
