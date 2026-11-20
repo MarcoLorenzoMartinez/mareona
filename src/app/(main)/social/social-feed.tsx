@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
 import { ThreadView } from "./thread-view";
 import { SocialFeedHeader } from "./social-feed-header";
@@ -86,9 +87,16 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
 
   const handlePostCreated = (newPost: SocialPost) => setPosts((prev) => [newPost, ...prev]);
   const handleDeletePost = async (postId: string) => {
+    const previousPosts = posts;
     setPosts((prev) => removePostFromTree(prev, postId));
+    const res = await deleteSocialPost({ postId });
+    if (!res.success) {
+      setPosts(previousPosts);
+      toast.error(res.error ?? "No se pudo borrar la publicación");
+      return;
+    }
     removePostFromStack(postId);
-    await deleteSocialPost({ postId });
+    toast.success("Publicación eliminada");
   };
   const handleUpdatePost = async (postId: string, newBody: string) => {
     const updatedAt = new Date().toISOString();
