@@ -221,12 +221,7 @@ export async function getSocialPosts(
       .from("posts")
       .select(
         `id, body, created_at, updated_at, parent_id, user_id,
-         profiles (username, display_name, avatar_url),
-         polls (
-           id,
-           poll_options (id, label, position),
-           poll_votes (id, option_id, user_id)
-         )`
+         profiles (username, display_name, avatar_url)`
       )
       .is("match_id", null)
       .is("deleted_at", null)
@@ -250,6 +245,40 @@ export async function getSocialPosts(
     // Map database posts into typed SocialPost structures
     const rootPosts = posts.filter((p) => !p.parent_id);
     const replyPosts = posts.filter((p) => Boolean(p.parent_id));
+
+    const pollsByPostId = new Map<string, SocialPoll>();
+    if (rootPosts.length > 0) {
+      const { data: pollRows } = await supabase
+        .from("polls")
+        .select(
+          `id, post_id,
+           poll_options (id, label, position),
+           poll_votes (id, option_id, user_id)`
+        )
+        .in(
+          "post_id",
+          rootPosts.map((p) => p.id)
+        );
+
+      for (const pollRaw of pollRows ?? []) {
+        const sortedOptions = [...(pollRaw.poll_options ?? [])].sort(
+          (a, b) => a.position - b.position
+        );
+        const votes = pollRaw.poll_votes ?? [];
+        const userVote = currentUser ? votes.find((v) => v.user_id === currentUser.id) : null;
+        pollsByPostId.set(pollRaw.post_id, {
+          id: pollRaw.id,
+          postId: pollRaw.post_id,
+          options: sortedOptions.map((opt) => ({
+            id: opt.id,
+            label: opt.label,
+            votesCount: votes.filter((v) => v.option_id === opt.id).length,
+          })),
+          totalVotes: votes.length,
+          userVotedOptionId: userVote?.option_id ?? null,
+        });
+      }
+    }
 
     return rootPosts.map((p) => {
       const author = p.profiles as {
@@ -286,30 +315,7 @@ export async function getSocialPosts(
           };
         });
 
-      const pollList = p.polls as unknown as Array<{
-        id: string;
-        poll_options: Array<{ id: string; label: string; position: number }>;
-        poll_votes: Array<{ id: string; option_id: string; user_id: string }>;
-      }> | null;
-      const pollRaw = pollList?.[0];
-
-      let postPoll: SocialPoll | null = null;
-      if (pollRaw) {
-        const sortedOptions = (pollRaw.poll_options ?? []).sort((a, b) => a.position - b.position);
-        const votes = pollRaw.poll_votes ?? [];
-        const userVote = currentUser ? votes.find((v) => v.user_id === currentUser.id) : null;
-        postPoll = {
-          id: pollRaw.id,
-          postId: p.id,
-          options: sortedOptions.map((opt) => ({
-            id: opt.id,
-            label: opt.label,
-            votesCount: votes.filter((v) => v.option_id === opt.id).length,
-          })),
-          totalVotes: votes.length,
-          userVotedOptionId: userVote?.option_id ?? null,
-        };
-      }
+      const postPoll = pollsByPostId.get(p.id) ?? null;
 
       const rootIsEdited = Boolean(
         p.updated_at &&
