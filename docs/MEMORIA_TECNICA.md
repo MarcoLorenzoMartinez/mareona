@@ -1611,17 +1611,71 @@ Una vez instalada, la aplicación permite consultar todo el archivo de *Históri
 
 ## 7.1 Conclusiones
 
-<!-- CONTENIDO: qué se ha conseguido frente a los objetivos del apartado 1.2 y qué conocimientos aplicados se ven en el proyecto. 1-2 páginas. -->
+El desarrollo de Mareona cumple los objetivos planteados en el [apartado 1.2](#12-objetivos-del-proyecto): la aplicación reúne en un único sitio el seguimiento de la temporada del Real Sporting, su archivo histórico, un espacio de comunidad moderado y una colección de juegos diarios y cromos digitales, funcionando como PWA instalable y sin coste para el usuario.
+
+Desde el punto de vista técnico, las decisiones de arquitectura responden a la restricción de operar dentro de los planes gratuitos de Vercel y Supabase sin degradar la experiencia en móvil:
+
+- La combinación de fuentes deportivas detrás de adaptadores de servidor con caché en dos niveles (memoria con deduplicación `inFlightRequests` y `external_api_cache` en PostgreSQL) y la compilación del archivo histórico en ficheros JSON permiten servir vistas densas sin agotar cuotas ni exponer claves externas.
+- El Service Worker propio (`public/sw.js`), con límite de espera de 3 segundos en navegación y cola de sincronización en `localStorage`, mantiene disponibles el archivo histórico y los juegos diarios cuando falla la cobertura en el estadio.
+- La seguridad y el cumplimiento legal recaen en la propia base de datos mediante *Row Level Security* y permisos por columna en todas las tablas, validaciones con Zod en cada Server Action, moderación automática con Groq acompañada de revisión manual, borrado completo de cuenta (`delete_current_user`) y borrado lógico con custodia en mensajería directa.
+- El diseño visual en rojo y blanco cumple WCAG 2.2 AA de forma verificable (contraste comprobado sobre los tokens CSS, tablas `sr-only` para gráficos SVG y gestión de foco en modales), respaldado por una batería de 599 tests en Node.js y 5 suites extremo a extremo en Playwright.
+
+El proyecto también deja claras sus contrapartidas. Depender de fuentes deportivas gratuitas o no oficiales obliga a mantener parsers defensivos y a mostrar avisos explícitos cuando falta un dato en lugar de recurrir a valores simulados; del mismo modo, los límites de ejecución y conexiones de los planes gratuitos exigen vigilar el tamaño de las consultas y el tiempo de vida de las cachés.
+
+Mareona ha permitido aplicar y unificar conocimientos de arquitectura en capas con Next.js App Router y Server Components, diseño relacional y seguridad en PostgreSQL, procesamiento de datos deportivos, accesibilidad web y pruebas automatizadas en un producto pensado para un uso real por parte de la afición.
+
 
 ## 7.2 Ampliaciones
 
 <!-- CONTENIDO: lista de ampliaciones futuras, que aporta el autor. Una por apartado con qué es y qué aportaría. -->
+Hay múltiples posibilidades de ampliación de Mareona, las cuales se podrían implementar en futuras versiones del producto:
+- Duelos 11vs11: modo de juego integrado en Memoria Rojiblanca, que permitiría a los usuarios crear alineaciones propias y enfrentarlas a las de otros aficionados, con un estilo de juego similar al de los cromos tradicionales, en el que se jugaría por rondas, enfrentando las características de un jugador de cada equipo en cada ronda. Se podría incluir un sistema de ligas y de recompensas que funcionase con matchmaking, y que permitiera a los usuarios ir subiendo de rango a medida que obtienen victorias, consiguiendo a su vez sobres para completar la colección. Se ha decidido esperar a incluir esta ampliación para no sobresaturar con demasiados juegos al inicio, y para formar una buena base de usuarios que dispongan de cromos suficientes para competir entre sí una vez se integren los duelos en la aplicación.
+- Intercambio de cromos repetidos: se podría incluir un sistema mediante el que los usuarios podrían intercambiar aquellos cromos de Memoria Rojiblanca que tuviesen repetidos con otros usuarios. De esta forma, ambos saldrían beneficiados, ayudándose mutuamente a completar la colección, lo que fomentaría la interacción entre usuarios y el entretenmiento en la aplicación.
+- Más juegos: se dispone de múltiples ideas de nuevos juegos que podrían ser incluidos en el sistema para el entretenimiento de los usuarios y fomentar la ampliación de sus conocimientos, pero se ha decidido reservarlos para un futuro para no sobresaturar la aplicación en un inicio, y para poder ofrecer novedades en un futuro a los usuarios.
+- Internacionalización a varios idiomas: la aplicación actualmente solamente se muestra en español, pero se podría ampliar para incluir otros idiomas (como el asturiano o el inglés), lo que permitiría llegar a una audiencia más amplia y mejorar la accesibilidad para usuarios de diferentes regiones.
+- Notificaciones push: enviar avisos al móvil cuando falte poco para el cierre de La Porra, al inicio del partido, los goles en directo, o al recibir mensajes privados o menciones. Esto aportaría retención sin depender necesariamente de abrir la aplicación.
+- Seguimiento del Real Sporting Femenino y el Sporting Atlético: inicialmente, se ha desarrollado la aplicación para mostrar datos del primer equipo masculino, pero podría ser interesante para el futuro incluir cobertura del primer equipo femenino y el filial, para que los usuarios puedan realizar un seguimiento de los principales equipos de la institución en una sola plataforma, sirviendo como nexo de unión para los seguidores de todos los equipos, y como proovedor de toda la información que cualquier aficionado del club puede querer visualizar durante la temporada.
+- Ligas privadas en los juegos: permitir crear competiciones entre amigos para comparar el rendimiento en los juegos, especialmente en la porra, de forma que se potencie el entretenimiento proporcionado por los juegos, al poder realizar comparaciones reales con tu grupo de amigos, y comentar los resultados entre todos.
 
 ---
 
 # Capítulo 8. Referencias
 
-<!-- CONTENIDO: lista numerada de las fuentes que se citan en el texto con [n]. Solo estándares (WCAG 2.2, RGPD) y documentación oficial de las tecnologías y fuentes de datos usadas. -->
+A continuación se recogen los estándares técnicos, marcos normativos y documentación oficial de las tecnologías y fuentes de datos empleadas en Mareona.
+
+[1] W3C (World Wide Web Consortium). *Web Content Accessibility Guidelines (WCAG) 2.2*. Disponible en: https://www.w3.org/TR/WCAG22/
+
+[2] Unión Europea. *Reglamento (UE) 2016/679, General de Protección de Datos (RGPD)*. Disponible en: https://eur-lex.europa.eu/eli/reg/2016/679/oj
+
+[3] Jefatura del Estado (España). *Ley Orgánica 3/2018, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD)*. Disponible en: https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673
+
+[4] Unión Europea. *Reglamento (UE) 2022/2065 relativo a un mercado único de servicios digitales (Digital Services Act, DSA)*. Disponible en: https://eur-lex.europa.eu/eli/reg/2022/2065/oj
+
+[5] OWASP Foundation. *Application Security Verification Standard (ASVS)*. Disponible en: https://owasp.org/www-project-application-security-verification-standard/
+
+[6] Vercel. *Next.js 16 Documentation (App Router, Server Components, Server Actions)*. Disponible en: https://nextjs.org/docs
+
+[7] Meta Open Source. *React 19 Documentation*. Disponible en: https://react.dev
+
+[8] Microsoft. *TypeScript Handbook*. Disponible en: https://www.typescriptlang.org/docs/
+
+[9] Tailwind Labs. *Tailwind CSS v4 Documentation*. Disponible en: https://tailwindcss.com/docs
+
+[10] WorkOS / Radix. *Radix UI Primitives Documentation*. Disponible en: https://www.radix-ui.com/primitives/docs
+
+[11] Colin McDonnell. *Zod Schema Validation Documentation*. Disponible en: https://zod.dev
+
+[12] Supabase. *Supabase Documentation (PostgreSQL, Auth SSR, Row Level Security, Realtime, Storage)*. Disponible en: https://supabase.com/docs
+
+[13] The PostgreSQL Global Development Group. *PostgreSQL 15+ Documentation*. Disponible en: https://www.postgresql.org/docs/
+
+[14] Microsoft. *Playwright Documentation*. Disponible en: https://playwright.dev/docs/intro
+
+[15] Google Chrome Developers. *Lighthouse Documentation*. Disponible en: https://developer.chrome.com/docs/lighthouse/overview
+
+[16] Groq. *GroqCloud API Documentation*. Disponible en: https://console.groq.com/docs
+
+[17] ESPN / FotMob / API-Football. *Fuentes de datos deportivos y estadísticas de competición* (utilizadas exclusivamente desde adaptadores de servidor con almacenamiento en caché).
 
 ---
 
@@ -1629,11 +1683,40 @@ Una vez instalada, la aplicación permite consultar todo el archivo de *Históri
 
 ## 9.1 Glosario
 
-<!-- CONTENIDO: términos técnicos usados (RSC, RLS, PWA, Service Worker, caché, polling, WCAG, Server Action) con una definición de una línea. -->
+| Término | Definición |
+| :--- | :--- |
+| Caché L1 / L2 | Almacenamiento temporal de datos en dos niveles: en memoria del servidor (L1) para respuestas inmediatas y en PostgreSQL (L2) para persistir entre reinicios. |
+| CSP (*Content Security Policy*) | Cabecera HTTP que restringe desde qué orígenes puede cargar scripts, estilos, imágenes o conexiones el navegador. |
+| *Edge Proxy* | Código ejecutado en el borde de la red antes de servir una ruta, encargado en Mareona de validar y renovar las cookies de sesión. |
+| HSTS (*HTTP Strict Transport Security*) | Cabecera que obliga al navegador a comunicarse exclusivamente mediante HTTPS. |
+| JWT (*JSON Web Token*) | Token firmado que identifica la sesión autenticada del usuario y sus permisos. |
+| OAuth 2.0 / PKCE | Protocolo estándar de autorización utilizado para iniciar sesión con Google de forma segura desde navegador y PWA instalada. |
+| *Polling* | Consulta periódica desde el cliente al servidor en intervalos acotados para actualizar datos en directo sin mantener un canal abierto permanente. |
+| PWA (*Progressive Web App*) | Aplicación web instalable en móvil y escritorio que utiliza un Service Worker para funcionar con mala cobertura o sin conexión. |
+| RLS (*Row Level Security*) | Mecanismo de PostgreSQL que evalúa políticas de acceso sobre cada fila de una tabla según el usuario autenticado. |
+| RPC (*Remote Procedure Call*) | Llamada directa a una función almacenada en PostgreSQL (`PL/pgSQL`) para ejecutar operaciones atómicas como abrir sobres o liquidar puntos. |
+| RSC (*React Server Component*) | Componente de React que se ejecuta únicamente en el servidor y envía HTML ya renderizado sin añadir JavaScript al cliente. |
+| *Server Action* | Función asíncrona ejecutada en el servidor e invocada desde formularios o componentes cliente para validar y persistir cambios. |
+| *Service Worker* | Script en segundo plano del navegador que intercepta peticiones de red, gestiona cachés locales y habilita la navegación sin conexión. |
+| *Soft delete* (borrado lógico) | Ocultación de un registro mediante una marca temporal (`deleted_at`) sin eliminar físicamente la fila de la base de datos. |
+| TTL (*Time To Live*) | Tiempo de vigencia tras el cual un dato almacenado en caché se considera caducado y vuelve a consultarse en origen. |
+| WCAG 2.2 AA | Conjunto de pautas internacionales de accesibilidad web de nivel intermedio (contraste, teclado, foco y alternativas textuales). |
+| Zod | Librería de validación y tipado en tiempo de ejecución utilizada para comprobar toda entrada externa antes de procesarla. |
+
+*Tabla 10. Glosario de términos técnicos.*
 
 ## 9.2 Propiedad Intelectual y Licencias
 
-<!-- CONTENIDO: escudos, fotografías, datos y licencias de terceros. FUENTES: LEGAL-ASSETS.md. -->
+Mareona es una plataforma independiente creada por y para aficionados, sin patrocinio, respaldo ni afiliación oficial con el Real Sporting de Gijón, LaLiga ni la RFEF. Esta condición figura de forma explícita en el pie de página y en los textos legales públicos de la aplicación.
+
+El tratamiento de escudos, fotografías de futbolistas y marcas de terceros sigue los criterios definidos en `docs/LEGAL-ASSETS.md`:
+
+- Punto de entrada único: todas las imágenes deportivas externas se renderizan exclusivamente mediante los componentes `<TeamCrest>` y `<PlayerPhoto>` (`src/components/media/`), evitando etiquetas `<img>` dispersas.
+- Respeto a los orígenes: cuando una fuente externa no autoriza el rehospedaje, los archivos no se copian en almacenamiento propio y se sirven desde los dominios permitidos en `next.config.ts`, manteniendo sus proporciones y colores originales sin alteraciones ni fusiones con la marca de Mareona.
+- Alternativas neutras y retirada inmediata: si falla una carga externa se muestra una silueta o monograma vectorial; además, la variable `NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS` permite sustituir al instante todos los escudos y fotografías oficiales por marcadores neutros, y cualquier solicitud de retirada por parte de titulares de derechos se atiende en un plazo máximo de 48 horas.
+- Identidad propia: el logotipo de Mareona, los iconos de la aplicación instalada (PWA), el favicon y la iconografía propia pertenecen al proyecto.
+
+Las estadísticas actuales y las clasificaciones proceden de las fuentes deportivas integradas en servidor, mientras que los datos históricos compilados se utilizan con fines informativos, divulgativos y culturales dentro de la comunidad sportinguista.
 
 ---
 
