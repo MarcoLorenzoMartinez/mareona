@@ -6,6 +6,7 @@ import { X, ShieldAlert } from "lucide-react";
 import { toast } from "@/lib/ui/toast";
 import { REPORT_CATEGORIES, type ReportCategoryId } from "@/lib/social/dm-privacy-custody";
 import { reportUserAction } from "@/lib/social/safety-actions";
+import { getDictionary } from "@/i18n";
 
 interface UserReportModalProps {
   readonly isOpen: boolean;
@@ -22,6 +23,7 @@ export function UserReportModal({
   onClose,
   onBlocked,
 }: UserReportModalProps) {
+  const dict = getDictionary();
   const [category, setCategory] = useState<ReportCategoryId>("harassment");
   const [details, setDetails] = useState("");
   const [alsoBlock, setAlsoBlock] = useState(true);
@@ -53,14 +55,14 @@ export function UserReportModal({
     if (res.success) {
       toast.success(
         alsoBlock
-          ? `Denuncia registrada y @${targetUser.username} bloqueado`
-          : "Denuncia registrada para revisión de moderación"
+          ? `${dict.social.reportModal.blockedAndReportedPrefix}${targetUser.username} ${dict.social.reportModal.blockedAndReportedSuffix}`
+          : dict.social.reportModal.reportedToast
       );
       if (alsoBlock) onBlocked?.(targetUser.id);
       setDetails("");
       onClose();
     } else {
-      toast.error(res.error ?? "No se pudo registrar la denuncia");
+      toast.error(res.error ?? dict.social.reportModal.errorFallback);
     }
   };
 
@@ -68,7 +70,7 @@ export function UserReportModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={`Denunciar a @${targetUser.username}`}
+      aria-label={`${dict.social.reportModal.dialogAriaPrefix}${targetUser.username}`}
       className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
       onClick={onClose}
     >
@@ -79,12 +81,12 @@ export function UserReportModal({
         <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
           <div className="flex items-center gap-2">
             <ShieldAlert className="h-4 w-4 text-[var(--primary)]" aria-hidden="true" />
-            <h3 className="text-sm font-bold text-neutral-900">Denunciar a @{targetUser.username}</h3>
+            <h3 className="text-sm font-bold text-neutral-900">{dict.social.reportModal.titlePrefix}{targetUser.username}</h3>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar ventana de denuncia"
+            aria-label={dict.social.reportModal.closeAria}
             className="rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             <X className="h-4 w-4" aria-hidden="true" />
@@ -93,7 +95,7 @@ export function UserReportModal({
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-3.5">
           <fieldset className="space-y-1.5">
-            <legend className="text-xs font-bold text-neutral-800 mb-1.5">Motivo principal</legend>
+            <legend className="text-xs font-bold text-neutral-800 mb-1.5">{dict.social.reportModal.categoryLegend}</legend>
             {REPORT_CATEGORIES.map((item) => (
               <label
                 key={item.id}
@@ -118,7 +120,7 @@ export function UserReportModal({
 
           <div>
             <label htmlFor="report-details" className="block text-xs font-bold text-neutral-800 mb-1">
-              Contexto adicional (opcional)
+              {dict.social.reportModal.detailsLabel}
             </label>
             <textarea
               id="report-details"
@@ -126,7 +128,7 @@ export function UserReportModal({
               maxLength={500}
               value={details}
               onChange={(e) => setDetails(e.target.value)}
-              placeholder="Explica brevemente qué ha ocurrido..."
+              placeholder={dict.social.reportModal.detailsPlaceholder}
               className="w-full rounded-xl border border-neutral-200 px-3 py-2 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
           </div>
@@ -139,13 +141,13 @@ export function UserReportModal({
               className="mt-0.5 accent-[var(--primary)]"
             />
             <span>
-              <strong>Bloquear también a @{targetUser.username}</strong> e impedir que pueda volver a enviarme mensajes privados.
+              <strong>{dict.social.reportModal.alsoBlockPrefix}{targetUser.username}</strong> {dict.social.reportModal.alsoBlockSuffix}
             </span>
           </label>
 
           {conversationId && (
             <p className="text-[11px] leading-relaxed text-neutral-500">
-              Al enviar esta denuncia autorizas adjuntar los mensajes recientes de esta conversación como prueba para su revisión y custodia legal.
+              {dict.social.reportModal.conversationConsent}
             </p>
           )}
 
@@ -155,14 +157,14 @@ export function UserReportModal({
               onClick={onClose}
               className="rounded-full border border-neutral-200 px-4 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              Cancelar
+              {dict.social.reportModal.cancelButton}
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
               className="rounded-full bg-[var(--primary)] px-4 py-2 text-xs font-bold text-white shadow-2xs hover:bg-[#b30015] disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              {isSubmitting ? "Enviando..." : "Enviar denuncia"}
+              {isSubmitting ? dict.social.reportModal.submitting : dict.social.reportModal.submitButton}
             </button>
           </div>
         </form>

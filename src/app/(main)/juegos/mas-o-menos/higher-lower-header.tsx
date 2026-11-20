@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import type { HigherLowerMode } from '@/lib/higher-lower/types';
 import { HigherLowerModeSelector } from './higher-lower-mode-selector';
+import { getDictionary } from '@/i18n';
 
 interface HigherLowerHeaderProps {
   mode: HigherLowerMode;
@@ -18,13 +19,14 @@ export function HigherLowerHeader({
   currentScore,
   bestScore,
 }: HigherLowerHeaderProps) {
+  const dict = getDictionary();
   return (
     <header className="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-neutral-200 pb-4">
       <div className="flex items-center gap-3">
         <Link
           href="/juegos"
           className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[#e2001a] hover:text-[#e2001a] transition-colors"
-          aria-label="Volver a juegos"
+          aria-label={dict.games.higherLower.header.backAria}
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
@@ -32,7 +34,7 @@ export function HigherLowerHeader({
         </Link>
         <div>
           <h1 className="text-xl font-bold tracking-tight text-neutral-900">
-            ¿Más o Menos?
+            {dict.games.higherLower.header.title}
           </h1>
         </div>
       </div>
@@ -48,7 +50,7 @@ export function HigherLowerHeader({
         <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3.5 py-1.5 text-xs font-semibold shadow-2xs">
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
-              Racha
+              {dict.games.higherLower.header.streakLabel}
             </span>
             <span className="text-sm font-black tabular-nums text-[#e2001a]">
               {currentScore}
@@ -59,7 +61,7 @@ export function HigherLowerHeader({
 
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
-              Récord
+              {dict.games.higherLower.header.bestLabel}
             </span>
             <span className="text-sm font-black tabular-nums text-neutral-800">
               {bestScore}

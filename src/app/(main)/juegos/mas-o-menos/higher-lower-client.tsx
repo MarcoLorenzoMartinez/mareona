@@ -20,8 +20,10 @@ import { HigherLowerGameOverModal } from './higher-lower-game-over-modal';
 import { HigherLowerArenaBackground } from './higher-lower-arena-background';
 import { useAuth } from '@/context/auth-context';
 import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
+import { getDictionary } from '@/i18n';
 
 export function HigherLowerClient() {
+  const dict = getDictionary();
   const { user } = useAuth();
   const [mode, setMode] = useState<HigherLowerMode>('matches');
   const [stats, setStats] = useState<HigherLowerStats>(() => getStoredHigherLowerStats());
@@ -118,7 +120,7 @@ export function HigherLowerClient() {
       />
 
       <section
-        aria-label="Área de comparación"
+        aria-label={dict.games.higherLower.arenaAria}
         className="relative flex flex-col items-center p-2 sm:p-7 rounded-3xl"
       >
         <HigherLowerArenaBackground />
@@ -131,7 +133,7 @@ export function HigherLowerClient() {
 
           {/* Insignia Central VS perfectamente centrada entre ambas tarjetas */}
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex h-7 w-7 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-neutral-200 bg-white/95 font-bold text-[9px] sm:text-[11px] tracking-wider text-neutral-400 shadow-xs backdrop-blur-xs pointer-events-none">
-            VS
+            {dict.games.higherLower.vs}
           </div>
 
           <div className="flex flex-col items-center w-full">

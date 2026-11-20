@@ -4,6 +4,7 @@
 import { TacticalGrassMarkings } from "./tactical-grass-markings";
 import { SharedLineupPlayerToken } from "./shared-lineup-player-token";
 import type { SharedLineupData } from "@/lib/lineup-builder/shared-lineup-codec";
+import { getDictionary } from "@/i18n";
 
 interface SharedLineupPitchCardProps {
   readonly lineup: SharedLineupData;
@@ -19,6 +20,7 @@ export function SharedLineupPitchCard({
   lineup,
   className = "",
 }: SharedLineupPitchCardProps) {
+  const dict = getDictionary();
   const { starters } = lineup;
 
   return (
@@ -27,7 +29,7 @@ export function SharedLineupPitchCard({
       <div
         className="relative w-full aspect-[68/105] overflow-hidden rounded-xl border-2 border-neutral-800 bg-[#256e36] shadow-sm select-none"
         role="region"
-        aria-label="Alineación táctica en Mareona"
+        aria-label={dict.lineupBuilder.attachment.pitchAria}
       >
         {/* SVG Striped Grass and Tactical Markings */}
         <TacticalGrassMarkings />

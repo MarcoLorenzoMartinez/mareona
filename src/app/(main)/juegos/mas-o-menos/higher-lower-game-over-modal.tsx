@@ -5,6 +5,7 @@ import React from "react";
 import Link from "next/link";
 import type { HigherLowerMode } from "@/lib/higher-lower/types";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
+import { getDictionary } from "@/i18n";
 
 interface HigherLowerGameOverModalProps {
   readonly isOpen: boolean;
@@ -21,6 +22,7 @@ export function HigherLowerGameOverModal({
   mode,
   onPlayAgain,
 }: HigherLowerGameOverModalProps) {
+  const dict = getDictionary();
   const { handleBackdropClick } = useModalA11y({
     isOpen,
     onClose: onPlayAgain,
@@ -31,10 +33,10 @@ export function HigherLowerGameOverModal({
 
   const modeLabel =
     mode === "goals"
-      ? "Goles oficiales"
+      ? dict.games.higherLower.gameOver.modes.goals
       : mode === "minutes"
-      ? "Minutos jugados"
-      : "Partidos disputados";
+      ? dict.games.higherLower.gameOver.modes.minutes
+      : dict.games.higherLower.gameOver.modes.matches;
   const isNewRecord = score > 0 && score >= bestScore;
 
   return (
@@ -51,7 +53,7 @@ export function HigherLowerGameOverModal({
       >
         {/* Cabecera: Modo en tamaño destacado */}
         <span className="text-[11px] font-bold tracking-widest text-[#e2001a] uppercase">
-          {isNewRecord ? "¡Nuevo Récord!" : "Modo de juego"}
+          {isNewRecord ? dict.games.higherLower.gameOver.newRecord : dict.games.higherLower.gameOver.gameModeEyebrow}
         </span>
 
         <h2 id="gameover-title" className="mt-1 text-2xl font-black text-neutral-900 tracking-tight">
@@ -62,7 +64,7 @@ export function HigherLowerGameOverModal({
         <div className="mt-6 grid grid-cols-[1fr_auto_1fr] w-full items-center border-y border-neutral-100 py-4">
           <div className="flex flex-col items-center justify-center">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
-              Racha
+              {dict.games.higherLower.gameOver.streakLabel}
             </span>
             <span className="mt-0.5 text-3xl font-black tabular-nums text-[#e2001a]">
               {score}
@@ -73,7 +75,7 @@ export function HigherLowerGameOverModal({
 
           <div className="flex flex-col items-center justify-center">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
-              Mejor racha
+              {dict.games.higherLower.gameOver.bestStreakLabel}
             </span>
             <span className="mt-0.5 text-3xl font-black tabular-nums text-neutral-900">
               {bestScore}
@@ -87,7 +89,7 @@ export function HigherLowerGameOverModal({
             href="/juegos"
             className="flex h-12 items-center justify-center rounded-xl border border-neutral-300 bg-white px-3 text-xs sm:text-sm font-bold text-neutral-600 shadow-2xs hover:bg-neutral-50 hover:text-neutral-900 active:scale-[0.97] transition-all select-none text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Volver a juegos
+            {dict.games.higherLower.gameOver.backToGames}
           </Link>
 
           <button
@@ -95,7 +97,7 @@ export function HigherLowerGameOverModal({
             onClick={onPlayAgain}
             className="flex h-12 items-center justify-center rounded-xl bg-gradient-to-b from-[#e2001a] to-[#c70017] px-3 text-xs sm:text-sm font-extrabold text-white shadow-md hover:from-[#c70017] hover:to-[#a80013] hover:shadow-lg active:scale-[0.97] transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
           >
-            Jugar de nuevo
+            {dict.games.higherLower.gameOver.playAgain}
           </button>
         </div>
       </div>

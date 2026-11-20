@@ -19,6 +19,7 @@ import {
 import type { WhoAreYaPlayer, PlayerGuessResult } from '@/lib/who-are-ya/types';
 import { useAuth } from '@/context/auth-context';
 import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
+import { getDictionary } from '@/i18n';
 
 interface WhoAreYaClientProps {
   players: WhoAreYaPlayer[];
@@ -26,6 +27,7 @@ interface WhoAreYaClientProps {
 }
 
 export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
+  const dict = getDictionary();
   const { user } = useAuth();
   const userId = user?.id;
   const [selectedDate, setSelectedDate] = useState<string>(() =>
@@ -120,7 +122,7 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
       />
 
       <section
-        aria-label="Zona de juego"
+        aria-label={dict.games.whoAreYa.arenaAria}
         className="flex flex-col items-center gap-6 rounded-3xl border border-[var(--border)] bg-gradient-to-b from-white to-[var(--surface)] p-4 sm:p-8 shadow-xs"
       >
         <WhoAreYaMysteryPhoto
@@ -136,11 +138,11 @@ export function WhoAreYaClient({ players, initialDate }: WhoAreYaClientProps) {
             <WhoAreYaSelector
               options={playerOptions}
               onSelect={handleSelectOption}
-              placeholder="Busca un jugador del Real Sporting..."
+              placeholder={dict.games.whoAreYa.searchPlaceholder}
             />
             {/* Indicador sutil y discreto de intentos restantes */}
             <span className="text-[11px] font-semibold text-[var(--foreground-muted)] tracking-wide">
-              Intento {guessesCount + 1} de {MAX_ATTEMPTS}
+              {dict.games.whoAreYa.attemptPrefix} {guessesCount + 1} {dict.games.whoAreYa.attemptOf} {MAX_ATTEMPTS}
             </span>
           </div>
         )}

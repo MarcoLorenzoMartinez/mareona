@@ -4,6 +4,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { getPixelationFactor } from '@/lib/who-are-ya/engine';
 import { PlayerAvatarFallback } from '@/components/media/player-avatar-fallback';
+import { getDictionary } from '@/i18n';
 
 interface WhoAreYaMysteryPhotoProps {
   imageUrl: string;
@@ -19,6 +20,7 @@ export function WhoAreYaMysteryPhoto({
   attemptsCount,
   isGameOver,
 }: WhoAreYaMysteryPhotoProps) {
+  const dict = getDictionary();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cachedImgRef = useRef<HTMLImageElement | null>(null);
   const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
@@ -112,7 +114,7 @@ export function WhoAreYaMysteryPhoto({
               <PlayerAvatarFallback teamColor="#e2001a" />
             </div>
             <span className="text-[11px] font-semibold text-neutral-500">
-              {isGameOver ? name : 'Foto no disponible'}
+              {isGameOver ? name : dict.games.whoAreYa.mysteryPhoto.unavailable}
             </span>
           </div>
         ) : (
@@ -123,7 +125,7 @@ export function WhoAreYaMysteryPhoto({
             className={`h-full w-full object-cover pointer-events-none transition-opacity duration-300 ${
               isLoaded ? 'opacity-100' : 'opacity-0'
             }`}
-            aria-label={isGameOver ? name : 'Jugador misterioso pixelado'}
+            aria-label={isGameOver ? name : dict.games.whoAreYa.mysteryPhoto.pixelatedAria}
           />
         )}
 

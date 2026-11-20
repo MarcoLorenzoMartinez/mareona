@@ -7,6 +7,7 @@ import { MiniPack } from "@/components/cards/mini-pack";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 import { PackRowCard } from "./pack-row-card";
 import { PackModalActionsBar } from "./pack-modal-actions-bar";
+import { getDictionary } from "@/i18n";
 
 interface PackOpeningModalProps {
   readonly isOpen: boolean;
@@ -25,6 +26,7 @@ export function PackOpeningModal({
   onOpenPackCards,
   onSaveCards,
 }: PackOpeningModalProps) {
+  const dict = getDictionary();
   const [packData, setPackData] = useState<{ cards: Card[]; duplicateSlugs: Set<string> }>(() =>
     isOpen ? onOpenPackCards(tier) : { cards: [], duplicateSlugs: new Set() }
   );
@@ -133,9 +135,9 @@ export function PackOpeningModal({
                 type="button"
                 onClick={handleRevealAllNow}
                 className="shrink-0 rounded-full border border-[var(--border)] bg-neutral-50 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-neutral-600 hover:border-[#e2001a] hover:text-[#e2001a] hover:bg-red-50/50 active:scale-95 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-                title="Mostrar todos los cromos al instante sin esperar la animación"
+                title={dict.games.album.packs.modalSkipTitle}
               >
-                Saltar animación
+                {dict.games.album.packs.modalSkipButton}
               </button>
             )}
           </div>
@@ -143,7 +145,7 @@ export function PackOpeningModal({
           <button
             type="button"
             onClick={handleDismiss}
-            aria-label="Cerrar y guardar sobre"
+            aria-label={dict.games.album.packs.modalCloseAria}
             className="flex h-9 w-9 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             ✕

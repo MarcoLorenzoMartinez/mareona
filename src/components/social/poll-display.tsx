@@ -5,12 +5,14 @@ import { useState } from "react";
 import { useAuth } from "@/context/auth-context";
 import { votePoll } from "@/lib/social/actions";
 import type { SocialPoll } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 interface PollDisplayProps {
   readonly poll: SocialPoll;
 }
 
 export function PollDisplay({ poll }: PollDisplayProps) {
+  const dict = getDictionary();
   const { user, openAuthModal } = useAuth();
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(() => {
     if (poll.userVotedOptionId) return poll.userVotedOptionId;
@@ -84,7 +86,7 @@ export function PollDisplay({ poll }: PollDisplayProps) {
       onClick={(e) => e.stopPropagation()}
       className="mt-3 w-full space-y-3 pt-1"
       role="region"
-      aria-label="Encuesta de la tertulia"
+      aria-label={dict.social.poll.regionAria}
     >
       <div className="space-y-3">
         {votes.map((option) => {
@@ -149,7 +151,7 @@ export function PollDisplay({ poll }: PollDisplayProps) {
 
       <div className="text-[11px] font-medium text-neutral-400">
         <span className="font-sans tabular-nums">{totalVotes}</span>{" "}
-        {totalVotes === 1 ? "voto" : "votos"}
+        {totalVotes === 1 ? dict.social.poll.voteSingular : dict.social.poll.votePlural}
       </div>
     </div>
   );

@@ -7,8 +7,10 @@ import { ProfileGuestView } from "./profile-guest-view";
 import { ProfileHeader } from "./profile-header";
 import { ProfileEditForm } from "./profile-edit-form";
 import { ProfilePostsList } from "./profile-posts-list";
+import { getDictionary } from "@/i18n";
 
 export default function PerfilPage() {
+  const dict = getDictionary();
   const { user, profile, isLoading } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -31,7 +33,7 @@ export default function PerfilPage() {
     );
   }
 
-  const displayName = profile?.display_name || profile?.username || "Aficionado";
+  const displayName = profile?.display_name || profile?.username || dict.auth.common.defaultFanName;
   const username = profile?.username || "aficionado";
 
   return (

@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { HigherLowerClient } from './higher-lower-client';
+import { getDictionary } from '@/i18n';
+
+const dict = getDictionary();
 
 export const metadata: Metadata = {
-  title: '¿Más o Menos?',
-  description: 'Compara futbolistas del Real Sporting por partidos, goles y minutos.',
+  title: dict.games.higherLower.metadata.title,
+  description: dict.games.higherLower.metadata.description,
 };
 
 export default function HigherLowerPage() {

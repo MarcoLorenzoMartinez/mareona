@@ -4,6 +4,7 @@
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 import { RosterDrawer } from "./roster-drawer";
 import type { LineupPlayer } from "@/lib/lineup-builder/types";
+import { getDictionary } from "@/i18n";
 
 interface RosterModalProps {
   readonly isOpen: boolean;
@@ -34,6 +35,7 @@ export function RosterModal({
   onClearSlot,
   onAddCustomPlayer,
 }: RosterModalProps) {
+  const dict = getDictionary();
   const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   if (!isOpen) return null;
@@ -42,7 +44,7 @@ export function RosterModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Selección de jugador para la alineación"
+      aria-label={dict.lineupBuilder.roster.modalAria}
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150 lg:hidden"
       onClick={handleBackdropClick}
     >

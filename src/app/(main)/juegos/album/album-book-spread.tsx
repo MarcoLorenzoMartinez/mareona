@@ -1,6 +1,7 @@
 "use client"; // Client: Pliego abierto de álbum físico de cromos con 9 cromos a la izquierda y 9 a la derecha
 
 import type { ReactNode } from "react";
+import { getDictionary } from "@/i18n";
 
 const GRAIN_SVG =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0.1 0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")";
@@ -35,6 +36,7 @@ export function AlbumBookSpread({
   canPrev,
   canNext,
 }: AlbumBookSpreadProps) {
+  const dict = getDictionary();
   const turnAnimationClass =
     turnDirection === "next"
       ? "animate-in slide-in-from-right-6 fade-in-80 duration-200 ease-out"
@@ -49,9 +51,9 @@ export function AlbumBookSpread({
         <button
           type="button"
           onClick={onPrevPage}
-          aria-label="Pliego anterior (←)"
+          aria-label={dict.games.album.spread.prevSpreadLabel}
           className="group absolute -left-2.5 sm:-left-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white text-neutral-800 shadow-xl border border-neutral-300 hover:border-[#e2001a] hover:bg-[#e2001a] hover:text-white transition-all active:scale-95"
-          title="Pliego anterior (←)"
+          title={dict.games.album.spread.prevSpreadLabel}
         >
           <span className="font-sans font-black text-lg transition-transform group-hover:-translate-x-0.5">
             ‹
@@ -64,9 +66,9 @@ export function AlbumBookSpread({
         <button
           type="button"
           onClick={onNextPage}
-          aria-label="Pliego siguiente (→)"
+          aria-label={dict.games.album.spread.nextSpreadLabel}
           className="group absolute -right-2.5 sm:-right-4 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white text-neutral-800 shadow-xl border border-neutral-300 hover:border-[#e2001a] hover:bg-[#e2001a] hover:text-white transition-all active:scale-95"
-          title="Pliego siguiente (→)"
+          title={dict.games.album.spread.nextSpreadLabel}
         >
           <span className="font-sans font-black text-lg transition-transform group-hover:translate-x-0.5">
             ›
@@ -77,7 +79,7 @@ export function AlbumBookSpread({
       {/* Pliego físico abierto del álbum con textura de papel y hendidura central */}
       <section
         key={pageNumber}
-        aria-label={`Páginas ${pageNumber} y ${Math.min(totalPages, pageNumber + 1)} de ${totalPages}`}
+        aria-label={`${dict.games.album.spread.spreadAriaPrefix} ${pageNumber} ${dict.games.album.spread.spreadAriaAnd} ${Math.min(totalPages, pageNumber + 1)} ${dict.games.album.spread.pageOf} ${totalPages}`}
         className={`relative w-full rounded-b-xl rounded-t-sm overflow-hidden border border-amber-900/20 ${turnAnimationClass}`}
         style={{
           background:

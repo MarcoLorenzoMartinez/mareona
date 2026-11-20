@@ -17,6 +17,7 @@ import {
 } from "@/lib/lineup-builder/shared-lineup-codec";
 import { createSocialPost } from "@/lib/social/actions";
 import type { SocialPost } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 const MAX_USER_BODY_LENGTH = 500, COUNTER_THRESHOLD = 380;
 
@@ -31,10 +32,13 @@ interface PostComposerProps {
 export function PostComposer({
   onPosted,
   parentId,
-  placeholder = "Escribe en Mareona...",
-  submitLabel = "Publicar",
+  placeholder,
+  submitLabel,
   className = "",
 }: PostComposerProps) {
+  const dict = getDictionary();
+  const resolvedPlaceholder = placeholder ?? dict.social.composer.defaultPlaceholder;
+  const resolvedSubmitLabel = submitLabel ?? dict.social.composer.defaultSubmit;
   const { user, profile, openAuthModal } = useAuth();
   const searchParams = useSearchParams();
   const isLineupParam = !parentId && searchParams?.get("adjuntarOnce") === "1";
@@ -58,7 +62,7 @@ export function PostComposer({
     setPrevLineupParam(false);
   }
 
-  const displayName = profile?.display_name || profile?.username || "Aficionado";
+  const displayName = profile?.display_name || profile?.username || dict.auth.common.defaultFanName;
   const remaining = MAX_USER_BODY_LENGTH - body.length;
   const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
@@ -82,7 +86,7 @@ export function PostComposer({
     if (attachedLineup) { setAttachedLineup(null); return; }
     const draft = loadLocalSharedLineup();
     if (!draft) {
-      toast.info("Aún no tienes una alineación guardada. Ve a Mi Once para crearla.");
+      toast.info(dict.social.composer.noLineupSavedToast);
       return;
     }
     setAttachedLineup(draft);
@@ -95,7 +99,7 @@ export function PostComposer({
 
     const validPollOptions = poll.getValidOptions();
     if (poll.isPollActive && (!validPollOptions || validPollOptions.length < 2)) {
-      setError("Añade al menos 2 opciones a la encuesta");
+      setError(dict.social.composer.pollMinOptionsError);
       return;
     }
 
@@ -109,7 +113,7 @@ export function PostComposer({
     setIsSubmitting(false);
 
     if (!res.success || !res.data) {
-      setError(res.error ?? "No se pudo publicar el mensaje");
+      setError(res.error ?? dict.social.composer.publishErrorFallback);
       return;
     }
 
@@ -128,7 +132,7 @@ export function PostComposer({
     <form onSubmit={handleSubmit} className={`flex gap-3 border-b border-[var(--border)] px-4 py-3 transition-colors duration-150 ${className}`}>
       <AuthAvatar src={profile?.avatar_url} alt={displayName} size="md" className="shrink-0" />
       <div className="min-w-0 flex-1">
-        <label htmlFor={`composer-${parentId ?? "root"}`} className="sr-only">{placeholder}</label>
+        <label htmlFor={`composer-${parentId ?? "root"}`} className="sr-only">{resolvedPlaceholder}</label>
         <textarea
           ref={textareaRef}
           id={`composer-${parentId ?? "root"}`}
@@ -136,7 +140,7 @@ export function PostComposer({
           value={body}
           onFocus={handleFocus}
           onChange={(e) => { setBody(e.target.value); autoGrow(e.target); }}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           maxLength={MAX_USER_BODY_LENGTH}
           className="block w-full resize-none bg-transparent py-1.5 text-[15px] sm:text-base leading-snug text-neutral-900 placeholder:text-neutral-400 focus:outline-none transition-all"
         />
@@ -170,7 +174,7 @@ export function PostComposer({
             remaining={remaining}
             canSubmit={canSubmit}
             isSubmitting={isSubmitting}
-            submitLabel={submitLabel}
+            submitLabel={resolvedSubmitLabel}
           />
         )}
       </div>

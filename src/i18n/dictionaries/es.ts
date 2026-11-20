@@ -1,3 +1,12 @@
+import { esAuth } from "./es/auth.ts";
+import { esProfile } from "./es/profile.ts";
+import { esSocial } from "./es/social.ts";
+import { esGames } from "./es/games.ts";
+import { esLayout } from "./es/layout.ts";
+import { esPwa } from "./es/pwa.ts";
+import { esCards } from "./es/cards.ts";
+import { esLineupBuilder } from "./es/lineup-builder.ts";
+
 /**
  * Canonical Spanish dictionary for Mareona.
  * Structured by feature area and component domains.
@@ -256,6 +265,14 @@ export const es = {
       legacy: "Legado",
     },
   },
+  auth: esAuth,
+  profile: esProfile,
+  social: esSocial,
+  games: esGames,
+  layout: esLayout,
+  pwa: esPwa,
+  cards: esCards,
+  lineupBuilder: esLineupBuilder,
 } as const;
 
 export type Dictionary = typeof es;

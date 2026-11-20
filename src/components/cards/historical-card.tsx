@@ -14,6 +14,7 @@ import {
   CARD_CANONICAL_WIDTH,
   CARD_CANONICAL_HEIGHT,
 } from "./card-scale-frame";
+import { getDictionary } from "@/i18n";
 
 export interface HistoricalCardProps {
   readonly card: Card;
@@ -24,13 +25,6 @@ export interface HistoricalCardProps {
   readonly size?: "sm" | "md" | "lg" | "fill";
 }
 
-const POSITION_LABELS = {
-  goalkeeper: "POR",
-  defender: "DEF",
-  midfielder: "MED",
-  forward: "DEL",
-} as const;
-
 export function HistoricalCard({
   card,
   isOwned = true,
@@ -39,6 +33,7 @@ export function HistoricalCard({
   onCardClick,
   size = "md",
 }: HistoricalCardProps) {
+  const dict = getDictionary();
   const [imgError, setImgError] = useState(false);
 
   // Si el usuario aún no posee el cromo, se muestra el reverso oficial de Mareona
@@ -50,7 +45,7 @@ export function HistoricalCard({
         tier={tier}
         isSelected={isSelected}
         onClick={onCardClick ? () => onCardClick(card) : undefined}
-        title="Cromo por descubrir"
+        title={dict.cards.cardUndiscoveredTitle}
       />
     );
   }
@@ -59,14 +54,14 @@ export function HistoricalCard({
     card.kind === "crest" || card.kind === "moment" || card.kind === "coach";
   const badgeLabel =
     card.kind === "crest"
-      ? "ESCUDO"
+      ? dict.games.album.slot.kinds.crest
       : card.kind === "moment"
-        ? "MOMENTO"
+        ? dict.games.album.slot.kinds.moment
         : card.kind === "coach"
-          ? "MÍSTER"
+          ? dict.games.album.slot.kinds.coach
           : card.position
-            ? POSITION_LABELS[card.position]
-            : "JUG";
+            ? dict.games.album.slot.positions[card.position]
+            : dict.games.album.slot.fallbackKind;
 
   // Calibración visual de exclusividad por valoración (Opción 1: Marcos Metalizados)
   const ovr = card.ovr ?? 70;
@@ -121,7 +116,7 @@ export function HistoricalCard({
           {!imgError ? (
             <Image
               src={card.photoUrl}
-              alt={`Cromo de ${card.knownAs}`}
+              alt={`${dict.cards.cardImageAltPrefix} ${card.knownAs}`}
               fill
               unoptimized
               sizes="176px"

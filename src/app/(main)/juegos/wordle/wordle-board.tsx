@@ -1,6 +1,7 @@
 import React from 'react';
 import { WordleTile } from './wordle-tile';
 import { evaluateGuess } from '@/lib/wordle/engine';
+import { getDictionary } from '@/i18n';
 
 interface WordleBoardProps {
   targetWord: string;
@@ -25,6 +26,7 @@ export function WordleBoard({
   cursorIndex = null,
   onSelectCell,
 }: WordleBoardProps) {
+  const dict = getDictionary();
   const rows = Array.from({ length: maxAttempts });
 
   const maxBoardWidthClass =
@@ -45,7 +47,7 @@ export function WordleBoard({
   return (
     <div
       role="grid"
-      aria-label="Tablero de Wordle"
+      aria-label={dict.games.wordle.board.gridAria}
       className={`mx-auto flex flex-col items-center ${gapClass} w-full ${maxBoardWidthClass} px-2 sm:px-0 py-1 sm:py-2 select-none`}
     >
       {rows.map((_, rowIndex) => {

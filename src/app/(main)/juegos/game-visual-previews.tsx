@@ -1,5 +1,6 @@
 import type { GameItem } from "./types";
 import { MiniPack } from "@/components/cards/mini-pack";
+import { getDictionary } from "@/i18n";
 
 /**
  * Visual preview for Memoria Rojiblanca: 3 authentic miniature booster packs
@@ -102,12 +103,13 @@ function PreguntaPreview() {
  * using uniform 3-4 letter sports abbreviations, directional arrows, and legible typography.
  */
 function QuienEsPreview() {
+  const dict = getDictionary();
   const clues = [
-    { label: "PAÍS", state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
-    { label: "POS", state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
-    { label: "PART ▲", state: "border-neutral-300 bg-neutral-100 text-neutral-700" },
-    { label: "GOL ▼", state: "border-neutral-300 bg-neutral-100 text-neutral-700" },
-    { label: "DEB", state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
+    { label: dict.games.hub.previews.countryShort, state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
+    { label: dict.games.hub.previews.posShort, state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
+    { label: dict.games.hub.previews.matchesShort, state: "border-neutral-300 bg-neutral-100 text-neutral-700" },
+    { label: dict.games.hub.previews.goalsShort, state: "border-neutral-300 bg-neutral-100 text-neutral-700" },
+    { label: dict.games.hub.previews.debutShort, state: "border-emerald-500 bg-emerald-50 text-emerald-800" },
   ];
 
   return (
@@ -129,6 +131,7 @@ function QuienEsPreview() {
  * using clean statistical bars and higher/lower buttons without arbitrary numbers.
  */
 function MasOMenosPreview() {
+  const dict = getDictionary();
   return (
     <div className="flex items-center justify-center gap-2.5 select-none">
       <div className="flex h-8 w-11 items-end justify-center gap-1 rounded-md border border-[var(--border)] bg-neutral-50 px-2 py-1.5 shadow-2xs">
@@ -138,10 +141,10 @@ function MasOMenosPreview() {
       </div>
       <div className="flex flex-col gap-0.5">
         <span className="rounded-xs bg-[var(--primary)] px-2 py-0.5 text-[9px] font-black text-white shadow-2xs">
-          ▲ MÁS
+          {dict.games.hub.previews.higherLabel}
         </span>
         <span className="rounded-xs border border-[var(--border)] bg-neutral-100 px-2 py-0.5 text-[9px] font-black text-neutral-600">
-          ▼ MENOS
+          {dict.games.hub.previews.lowerLabel}
         </span>
       </div>
       <div className="flex h-8 w-11 items-center justify-center rounded-md border border-[var(--border)] bg-neutral-50 shadow-2xs">

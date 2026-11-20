@@ -3,6 +3,7 @@
 import type { PackTier } from "@/lib/cards/types";
 import { PACK_TIERS } from "@/lib/cards/packs";
 import { PACK_CARD_THEMES } from "./pack-card-theme";
+import { getDictionary } from "@/i18n";
 
 interface PackCardProps {
   readonly tier: PackTier;
@@ -20,6 +21,7 @@ export function PackCard({
   onOpen,
   isOpening = false,
 }: PackCardProps) {
+  const dict = getDictionary();
   const config = PACK_TIERS[tier];
   const theme = PACK_CARD_THEMES[tier];
 
@@ -34,7 +36,7 @@ export function PackCard({
           onOpen(tier);
         }
       }}
-      aria-label={`Abrir ${config.name}`}
+      aria-label={`${dict.cards.packOpenAriaPrefix} ${config.name}`}
       className={`group relative flex aspect-[1/1.55] w-full max-w-[195px] sm:max-w-[215px] flex-col rounded-sm p-1.5 transition-all duration-300 select-none cursor-pointer hover:-translate-y-2 hover:scale-[1.02] active:scale-95 ${theme.shadow}`}
     >
       {/* 3D Beveled Foil Packet Wrapper */}

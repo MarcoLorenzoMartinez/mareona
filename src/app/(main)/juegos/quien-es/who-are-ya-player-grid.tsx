@@ -4,6 +4,7 @@
 import React from 'react';
 import type { PlayerGuessResult, StatComparison } from '@/lib/who-are-ya/types';
 import { getNationalityFlagUrl, getPositionAbbr } from '@/lib/who-are-ya/format';
+import { getDictionary } from '@/i18n';
 
 interface WhoAreYaPlayerGridProps {
   guesses: PlayerGuessResult[];
@@ -43,6 +44,7 @@ function NumericTile({
   value: number;
   comparison: StatComparison;
 }) {
+  const dict = getDictionary();
   const isMatch = comparison === 'equal';
   const isHigher = comparison === 'higher';
   const isLower = comparison === 'lower';
@@ -60,7 +62,7 @@ function NumericTile({
         {isHigher && (
           <span
             className="text-[11px] font-black leading-none mb-0.5 text-neutral-500"
-            aria-label="Más alto"
+            aria-label={dict.games.whoAreYa.grid.higherAria}
           >
             ▲
           </span>
@@ -72,7 +74,7 @@ function NumericTile({
         {isLower && (
           <span
             className="text-[11px] font-black leading-none mt-0.5 text-neutral-500"
-            aria-label="Más bajo"
+            aria-label={dict.games.whoAreYa.grid.lowerAria}
           >
             ▼
           </span>
@@ -86,6 +88,7 @@ function NumericTile({
 }
 
 export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
+  const dict = getDictionary();
   if (guesses.length === 0) return null;
 
   return (
@@ -112,7 +115,7 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
             {/* Fila de 5 indicadores visuales limpios */}
             <div className="grid grid-cols-5 gap-2 sm:gap-3 justify-items-center pt-1">
               {/* 1. Nacionalidad: Bandera oficial gráfica */}
-              <StatTile label="País" isMatch={guess.nationalityMatch}>
+              <StatTile label={dict.games.whoAreYa.grid.country} isMatch={guess.nationalityMatch}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={flagUrl}
@@ -124,7 +127,7 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
               </StatTile>
 
               {/* 2. Posición: Abreviatura deportiva (POR, DEF, MED, DEL) */}
-              <StatTile label="Posición" isMatch={guess.positionMatch}>
+              <StatTile label={dict.games.whoAreYa.grid.position} isMatch={guess.positionMatch}>
                 <span
                   className={`text-xs sm:text-sm font-extrabold tracking-wide ${
                     guess.positionMatch ? 'text-white' : 'text-neutral-800'
@@ -137,21 +140,21 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
 
               {/* 3. Partidos */}
               <NumericTile
-                label="Partidos"
+                label={dict.games.whoAreYa.grid.matches}
                 value={guess.matchesPlayed.value}
                 comparison={guess.matchesPlayed.comparison}
               />
 
               {/* 4. Goles */}
               <NumericTile
-                label="Goles"
+                label={dict.games.whoAreYa.grid.goals}
                 value={guess.goals.value}
                 comparison={guess.goals.comparison}
               />
 
               {/* 5. Año de Debut */}
               <NumericTile
-                label="Debut"
+                label={dict.games.whoAreYa.grid.debut}
                 value={guess.startYear.value}
                 comparison={guess.startYear.comparison}
               />

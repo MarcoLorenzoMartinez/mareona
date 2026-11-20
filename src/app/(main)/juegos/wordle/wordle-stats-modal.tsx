@@ -5,6 +5,7 @@ import React from "react";
 import Link from "next/link";
 import type { WordleDailyWord, WordleStats } from "@/lib/wordle/types";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
+import { getDictionary } from "@/i18n";
 
 interface WordleStatsModalProps {
   readonly isOpen: boolean;
@@ -25,6 +26,7 @@ export function WordleStatsModal({
   onOpenArchive,
   onResetStats,
 }: WordleStatsModalProps) {
+  const dict = getDictionary();
   const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   if (!isOpen) return null;
@@ -48,13 +50,13 @@ export function WordleStatsModal({
         {/* Cabecera */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
           <h2 id="stats-title" className="text-sm font-bold uppercase tracking-wider text-neutral-500">
-            Estadísticas
+            {dict.games.wordle.statsModal.title}
           </h2>
           <button
             type="button"
             onClick={onClose}
             className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
-            aria-label="Cerrar estadísticas"
+            aria-label={dict.games.wordle.statsModal.closeAria}
           >
             ✕
           </button>
@@ -71,26 +73,26 @@ export function WordleStatsModal({
         {/* Métricas */}
         <div className="mt-5 grid grid-cols-4 items-center border-y border-neutral-100 py-3.5 text-center">
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Partidas</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.wordle.statsModal.played}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.played}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Aciertos</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.wordle.statsModal.winRate}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{winRate}%</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Racha</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.wordle.statsModal.currentStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-[#e2001a]">{stats.currentStreak}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Máxima</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.wordle.statsModal.maxStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.maxStreak}</span>
           </div>
         </div>
 
         {/* Distribución de intentos */}
         <div className="mt-4 pt-1">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">Distribución de intentos</span>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">{dict.games.wordle.statsModal.distributionTitle}</span>
           <div className="mt-2.5 space-y-1.5">
             {attemptsArray.map((attempt) => {
               const count = stats.guessDistribution?.[attempt] || 0;
@@ -118,7 +120,7 @@ export function WordleStatsModal({
             href="/juegos"
             className="flex h-11 items-center justify-center rounded-xl border border-neutral-300 bg-white px-3 text-xs sm:text-sm font-bold text-neutral-600 shadow-2xs hover:bg-neutral-50 hover:text-neutral-900 active:scale-[0.97] transition-all select-none text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Volver a juegos
+            {dict.games.wordle.statsModal.backToGames}
           </Link>
           {isGameOver && onOpenArchive ? (
             <button
@@ -126,7 +128,7 @@ export function WordleStatsModal({
               onClick={() => { onClose(); onOpenArchive(); }}
               className="flex h-11 items-center justify-center rounded-xl bg-gradient-to-b from-[#e2001a] to-[#c70017] px-3 text-xs sm:text-sm font-extrabold text-white shadow-md hover:from-[#c70017] hover:to-[#a80013] active:scale-[0.97] transition-all select-none text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              Jugar anteriores
+              {dict.games.wordle.statsModal.playArchive}
             </button>
           ) : (
             <button
@@ -134,7 +136,7 @@ export function WordleStatsModal({
               onClick={onClose}
               className="flex h-11 items-center justify-center rounded-xl bg-gradient-to-b from-[#e2001a] to-[#c70017] px-3 text-xs sm:text-sm font-extrabold text-white shadow-md hover:from-[#c70017] hover:to-[#a80013] active:scale-[0.97] transition-all select-none text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              Cerrar
+              {dict.games.wordle.statsModal.closeButton}
             </button>
           )}
         </div>
@@ -145,7 +147,7 @@ export function WordleStatsModal({
             onClick={onResetStats}
             className="mt-3 text-center text-[11px] font-medium text-neutral-400 hover:text-rose-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Reiniciar mis partidas y estadísticas
+            {dict.games.wordle.statsModal.resetStats}
           </button>
         )}
       </div>

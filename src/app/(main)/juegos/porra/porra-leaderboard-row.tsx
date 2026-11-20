@@ -3,12 +3,14 @@
 
 import React from 'react';
 import type { PorraLeaderboardEntry } from '@/lib/porra/types';
+import { getDictionary } from '@/i18n';
 
 interface PorraLeaderboardRowProps {
   readonly entry: PorraLeaderboardEntry;
 }
 
 export function PorraLeaderboardRow({ entry }: PorraLeaderboardRowProps) {
+  const dict = getDictionary();
   const isUser = Boolean(entry.isCurrentUser);
 
   return (
@@ -50,7 +52,7 @@ export function PorraLeaderboardRow({ entry }: PorraLeaderboardRowProps) {
           {entry.totalPoints}
         </span>
         <span className="font-sans text-[11px] font-medium text-neutral-400">
-          pts
+          {dict.games.porra.leaderboard.ptsUnit}
         </span>
       </div>
     </div>

@@ -1,6 +1,8 @@
 // Client: Pestañas del feed en píldora (Todos, Amigos) con navegación accesible
 "use client";
 
+import { getDictionary } from "@/i18n";
+
 export type SocialFeedTab = "all" | "friends" | "messages";
 
 interface FeedTabSelectorProps {
@@ -8,34 +10,35 @@ interface FeedTabSelectorProps {
   readonly onTabChange: (tab: SocialFeedTab) => void;
 }
 
-const TABS: readonly { readonly id: "all" | "friends"; readonly label: string }[] = [
-  { id: "all", label: "Todos" },
-  { id: "friends", label: "Amigos" },
-];
-
 export function FeedTabSelector({
   activeTab,
   onTabChange,
 }: FeedTabSelectorProps) {
+  const dict = getDictionary();
+  const tabs: readonly { readonly id: "all" | "friends"; readonly label: string }[] = [
+    { id: "all", label: dict.social.feed.tabs.all },
+    { id: "friends", label: dict.social.feed.tabs.friends },
+  ];
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
     e.preventDefault();
-    const currentIndex = TABS.findIndex((t) => t.id === activeTab);
+    const currentIndex = tabs.findIndex((t) => t.id === activeTab);
     const nextIndex =
       e.key === "ArrowRight"
-        ? (currentIndex + 1) % TABS.length
-        : (currentIndex - 1 + TABS.length) % TABS.length;
-    onTabChange(TABS[nextIndex]!.id);
+        ? (currentIndex + 1) % tabs.length
+        : (currentIndex - 1 + tabs.length) % tabs.length;
+    onTabChange(tabs[nextIndex]!.id);
   };
 
   return (
     <div
       role="tablist"
-      aria-label="Filtro de publicaciones de la tertulia"
+      aria-label={dict.social.feed.tabsAria}
       onKeyDown={handleKeyDown}
       className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
     >
-      {TABS.map((tab) => {
+      {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
 
         return (

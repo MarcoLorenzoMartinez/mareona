@@ -2,6 +2,7 @@
 "use client";
 
 import type { ChallengeDayStatus } from "./game-archive-modal";
+import { getDictionary } from "@/i18n";
 
 export interface ArchiveCalendarCell {
   readonly day: number;
@@ -26,6 +27,7 @@ export function GameArchiveGrid({
   onSelectDate,
   onClose,
 }: GameArchiveGridProps) {
+  const dict = getDictionary();
   return (
     <>
       <div className="grid grid-cols-7 gap-1.5 pt-1">
@@ -61,8 +63,8 @@ export function GameArchiveGrid({
                 onClose();
               }}
               className={`relative flex aspect-square flex-col items-center justify-center rounded-lg border text-xs font-semibold tabular-nums transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${cellBg} ${selectionRing} ${todayIndicator}`}
-              title={isDisabled ? "No disponible" : `Jugar reto del ${dateStr}`}
-              aria-label={`Día ${day}, ${status}${isSelected ? ", seleccionado" : ""}`}
+              title={isDisabled ? dict.games.archive.notAvailableTitle : `${dict.games.archive.playChallengePrefix} ${dateStr}`}
+              aria-label={`${dict.games.archive.dayAriaPrefix} ${day}, ${status}${isSelected ? dict.games.archive.selectedAriaSuffix : ""}`}
             >
               <span>{day}</span>
             </button>
@@ -73,15 +75,15 @@ export function GameArchiveGrid({
       <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-3 text-[11px] text-[var(--foreground-muted)]">
         <div className="flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-          <span>Superado</span>
+          <span>{dict.games.archive.legendWon}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
-          <span>Fallado</span>
+          <span>{dict.games.archive.legendLost}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface)] border border-[var(--border)]" />
-          <span>Pendiente</span>
+          <span>{dict.games.archive.legendPending}</span>
         </div>
       </div>
     </>

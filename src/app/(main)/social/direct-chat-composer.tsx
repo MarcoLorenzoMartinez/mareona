@@ -2,6 +2,7 @@
 "use client";
 
 import { Send } from "lucide-react";
+import { getDictionary } from "@/i18n";
 
 interface DirectChatComposerProps {
   readonly body: string;
@@ -20,6 +21,7 @@ export function DirectChatComposer({
   error,
   otherUserName,
 }: DirectChatComposerProps) {
+  const dict = getDictionary();
   return (
     <form onSubmit={onSend} className="border-t border-[var(--border)] bg-white p-3">
       {error && (
@@ -32,14 +34,14 @@ export function DirectChatComposer({
           type="text"
           value={body}
           onChange={(e) => onChangeBody(e.target.value)}
-          placeholder={`Escribe un mensaje a ${otherUserName}...`}
+          placeholder={`${dict.social.messages.inputPlaceholderPrefix} ${otherUserName}...`}
           maxLength={2000}
           className="flex-1 rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] transition-all"
         />
         <button
           type="submit"
           disabled={!body.trim() || isSubmitting}
-          aria-label="Enviar mensaje directo"
+          aria-label={dict.social.messages.sendAria}
           className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--primary)] text-white shadow-xs hover:bg-[#b30015] disabled:opacity-40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
         >
           <Send className="h-4 w-4" aria-hidden="true" />

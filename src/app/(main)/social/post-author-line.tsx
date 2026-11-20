@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Pencil } from "lucide-react";
 import { formatRelativeTime, canEditPost } from "@/lib/social/format";
 import { PostDeleteButton } from "./post-delete-button";
+import { getDictionary } from "@/i18n";
 
 interface PostAuthorLineProps {
   readonly post?: {
@@ -37,9 +38,10 @@ export function PostAuthorLine({
   onEdit,
   onDelete,
 }: PostAuthorLineProps) {
+  const dict = getDictionary();
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const effectiveAuthorName = post?.authorName ?? authorName ?? "Aficionado";
+  const effectiveAuthorName = post?.authorName ?? authorName ?? dict.auth.common.defaultFanName;
   const effectiveAuthorUsername = post?.authorUsername ?? authorUsername ?? "aficionado";
   const effectiveUserId = post?.userId ?? post?.authorId ?? userId ?? "";
   const effectiveCreatedAt = post?.createdAt ?? createdAt ?? "";
@@ -82,7 +84,7 @@ export function PostAuthorLine({
         {effectiveIsEdited && (
           <>
             <span aria-hidden="true" className="text-neutral-400">·</span>
-            <span className="shrink-0 text-xs text-neutral-400">editado</span>
+            <span className="shrink-0 text-xs text-neutral-400">{dict.social.post.editedLabel}</span>
           </>
         )}
       </div>
@@ -92,7 +94,7 @@ export function PostAuthorLine({
           <button
             type="button"
             onClick={handleEdit}
-            aria-label="Editar mensaje"
+            aria-label={dict.social.post.editMessageAria}
             className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             <Pencil className="h-3.5 w-3.5" aria-hidden="true" />

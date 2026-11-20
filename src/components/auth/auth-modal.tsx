@@ -6,8 +6,10 @@ import { useAuth } from "@/context/auth-context";
 import { abortRegistration } from "@/lib/auth/actions";
 import { AuthCredentialsForm } from "./auth-credentials-form";
 import { OnboardingStep } from "./onboarding-step";
+import { getDictionary } from "@/i18n";
 
 export function AuthModal() {
+  const dict = getDictionary();
   const { user, profile, isLoading, isAuthModalOpen, closeAuthModal, authModalMode, handleSignOut } = useAuth();
   const [prevMode, setPrevMode] = useState(authModalMode);
   const [step, setStep] = useState<"credentials" | "onboarding">(() =>
@@ -95,7 +97,7 @@ export function AuthModal() {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Acceso a Mareona"
+      aria-label={dict.auth.modal.dialogAria}
       className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
       onMouseDown={handleBackdropMouseDown}
       onMouseUp={handleBackdropMouseUp}
@@ -109,7 +111,7 @@ export function AuthModal() {
           onClick={step === "onboarding" ? handleAbortRegistration : handleClose}
           disabled={isAborting}
           className="absolute top-2.5 right-2.5 flex h-11 w-11 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
-          aria-label={step === "onboarding" ? "Cancelar registro y salir" : "Cerrar ventana"}
+          aria-label={step === "onboarding" ? dict.auth.modal.cancelRegistrationAria : dict.auth.modal.closeAria}
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

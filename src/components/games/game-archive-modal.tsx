@@ -4,6 +4,7 @@
 import React, { useState, useMemo } from "react";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
 import { GameArchiveGrid, type ArchiveCalendarCell } from "./game-archive-grid";
+import { getDictionary } from "@/i18n";
 
 export type ChallengeDayStatus = "WON" | "LOST" | "UNPLAYED";
 
@@ -18,13 +19,6 @@ export interface GameArchiveModalProps {
   readonly attemptVersion?: number;
 }
 
-const MONTH_NAMES = [
-  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
-];
-
-const WEEKDAY_HEADERS = ["L", "M", "X", "J", "V", "S", "D"];
-
 export function GameArchiveModal({
   isOpen,
   onClose,
@@ -35,6 +29,7 @@ export function GameArchiveModal({
   getStatusForDate,
   attemptVersion,
 }: GameArchiveModalProps) {
+  const dict = getDictionary();
   const [viewYear, setViewYear] = useState(() => Number(selectedDate.split("-")[0]) || 2026);
   const [viewMonth, setViewMonth] = useState(() => {
     const parsed = Number(selectedDate.split("-")[1]) - 1;
@@ -125,13 +120,13 @@ export function GameArchiveModal({
       >
         <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
           <h2 id="calendar-archive-title" className="text-base font-bold text-[var(--foreground)]">
-            Calendario de Retos
+            {dict.games.archive.title}
           </h2>
           <button
             type="button"
             onClick={onClose}
             className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer -mr-2"
-            aria-label="Cerrar calendario"
+            aria-label={dict.games.archive.closeAria}
           >
             ✕
           </button>
@@ -140,7 +135,7 @@ export function GameArchiveModal({
         {/* Month Selector Controls */}
         <div className="mt-3 flex items-center justify-between px-1">
           <span className="text-sm font-bold text-[var(--foreground)]">
-            {MONTH_NAMES[viewMonth]} {viewYear}
+            {dict.games.archive.months[viewMonth]} {viewYear}
           </span>
           <div className="flex items-center gap-1">
             <button
@@ -152,7 +147,7 @@ export function GameArchiveModal({
                   ? "border-[var(--border)] hover:bg-[var(--surface)] text-[var(--foreground)] active:scale-95 cursor-pointer"
                   : "border-neutral-100 bg-neutral-50 text-neutral-300 opacity-40 cursor-not-allowed"
               }`}
-              aria-label="Mes anterior"
+              aria-label={dict.games.archive.prevMonthAria}
             >
               ‹
             </button>
@@ -165,7 +160,7 @@ export function GameArchiveModal({
                   ? "border-[var(--border)] hover:bg-[var(--surface)] text-[var(--foreground)] active:scale-95 cursor-pointer"
                   : "border-neutral-100 bg-neutral-50 text-neutral-300 opacity-40 cursor-not-allowed"
               }`}
-              aria-label="Mes siguiente"
+              aria-label={dict.games.archive.nextMonthAria}
             >
               ›
             </button>
@@ -174,7 +169,7 @@ export function GameArchiveModal({
 
         {/* Calendar Day Header */}
         <div className="mt-3 grid grid-cols-7 text-center text-[11px] font-semibold text-[var(--foreground-muted)]">
-          {WEEKDAY_HEADERS.map((h, i) => (
+          {dict.games.archive.weekdays.map((h, i) => (
             <div key={i} className="py-1">
               {h}
             </div>

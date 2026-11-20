@@ -1,6 +1,7 @@
 "use client"; // Client: Pestañas troqueladas físicas pegadas al lomo superior del álbum
 
 import type { AlbumChapter } from "./album-types";
+import { getDictionary } from "@/i18n";
 
 interface AlbumChapterTabsProps {
   readonly chapters: readonly AlbumChapter[];
@@ -18,9 +19,10 @@ export function AlbumChapterTabs({
   currentPage,
   onSelectPage,
 }: AlbumChapterTabsProps) {
+  const dict = getDictionary();
   return (
     <nav
-      aria-label="Pestañas de capítulos del álbum"
+      aria-label={dict.games.album.spread.chaptersNavAria}
       className="relative z-10 flex w-full items-end gap-0.5 sm:gap-1 px-1 sm:px-2.5 mb-[-1px] select-none"
     >
       {chapters.map((ch) => {
@@ -37,7 +39,7 @@ export function AlbumChapterTabs({
                 ? "bg-[#e2001a] text-white shadow-md z-20 py-1.5 sm:py-2 border-t-2 border-x-2 border-[#b30015] -translate-y-0.5 ring-1 ring-black/10"
                 : "bg-[#eadbc3] text-amber-950/80 hover:bg-[#e2d0b5] hover:text-amber-950 border-t border-x border-amber-900/20 py-1 sm:py-1.5 opacity-90 hover:opacity-100 z-10"
             }`}
-            title={`Ir a ${ch.label} (Pág. ${ch.startPage})`}
+            title={`${dict.games.album.spread.goToPrefix} ${ch.label} (${dict.games.album.spread.pageShort} ${ch.startPage})`}
           >
             {/* Pespunte decorativo sutil en el borde superior de cada pestaña */}
             <span

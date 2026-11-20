@@ -8,6 +8,7 @@ import { getDirectConversations } from "@/lib/social/direct-messages-queries";
 import { formatRelativeTime } from "@/lib/social/format";
 import { decrementOptimisticUnreadChat } from "@/components/layout/use-social-notifications";
 import type { DirectConversationSummary } from "@/lib/social/direct-messages-types";
+import { getDictionary } from "@/i18n";
 
 interface DirectMessagesInboxProps {
   readonly onOpenConversation: (
@@ -26,6 +27,7 @@ export function DirectMessagesInbox({
   onOpenConversation,
   onOpenFriends,
 }: DirectMessagesInboxProps) {
+  const dict = getDictionary();
   const [conversations, setConversations] = useState<readonly DirectConversationSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
@@ -47,7 +49,7 @@ export function DirectMessagesInbox({
   if (isLoading) {
     return (
       <div className="py-16 text-center text-xs text-neutral-400">
-        Cargando conversaciones privadas...
+        {dict.social.messages.loadingInbox}
       </div>
     );
   }
@@ -59,7 +61,7 @@ export function DirectMessagesInbox({
           <MessageSquare className="h-6 w-6" aria-hidden="true" />
         </div>
         <h3 className="text-base font-bold text-neutral-900">
-          Mensajes directos entre amigos
+          {dict.social.messages.emptyTitle}
         </h3>
         <button
           type="button"
@@ -67,7 +69,7 @@ export function DirectMessagesInbox({
           className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-[var(--primary)] px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#b30015] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
         >
           <MessageCirclePlus className="h-4 w-4" aria-hidden="true" />
-          <span>Elegir un amigo para hablar</span>
+          <span>{dict.social.messages.chooseFriendButton}</span>
         </button>
       </div>
     );
@@ -76,7 +78,7 @@ export function DirectMessagesInbox({
   return (
     <div
       role="region"
-      aria-label="Lista de conversaciones directas"
+      aria-label={dict.social.messages.inboxAria}
       className={`divide-y divide-[var(--border)] ${isPending ? "opacity-60" : "opacity-100"} transition-opacity`}
     >
       {conversations.map((c) => {
@@ -99,7 +101,7 @@ export function DirectMessagesInbox({
                 avatarUrl: c.otherUserAvatar,
               });
             }}
-            aria-label={`${c.otherUserName}${hasUnread ? `, ${c.unreadCount} mensaje no leído` : ""}`}
+            aria-label={`${c.otherUserName}${hasUnread ? `, ${c.unreadCount} ${dict.social.messages.unreadAriaSuffix}` : ""}`}
             className={`flex cursor-pointer items-center gap-3 px-3 py-3.5 transition-colors duration-150 sm:px-4 ${
               hasUnread
                 ? "bg-red-500/[0.03] hover:bg-red-500/[0.06]"
@@ -150,12 +152,12 @@ export function DirectMessagesInbox({
                   {c.lastMessageBody ? (
                     <>
                       {c.lastMessageIsMine && (
-                        <span className="font-normal text-neutral-400">Tú: </span>
+                        <span className="font-normal text-neutral-400">{dict.social.messages.minePrefix} </span>
                       )}
                       <span>{c.lastMessageBody}</span>
                     </>
                   ) : (
-                    "Sin mensajes aún"
+                    dict.social.messages.noMessagesYet
                   )}
                 </p>
                 {hasUnread && (

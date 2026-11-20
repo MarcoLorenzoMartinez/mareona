@@ -12,6 +12,7 @@ import {
   BANNER_VISITS_KEY,
   shouldShowInstallBanner,
 } from "@/lib/pwa/install-banner";
+import { getDictionary } from "@/i18n";
 
 interface EngagementState {
   readonly visits: number;
@@ -41,6 +42,7 @@ function readEngagement(): EngagementState {
  * visitors. Dismissal is remembered so it never nags.
  */
 export function InstallBanner() {
+  const dict = getDictionary();
   const { platform } = usePwaInstall();
   const pathname = usePathname();
   const [engagement, setEngagement] = useState<EngagementState | null>(null);
@@ -68,22 +70,22 @@ export function InstallBanner() {
 
   return (
     <aside
-      aria-label="Instalar Mareona"
+      aria-label={dict.pwa.installBanner.aria}
       className="fixed inset-x-3 bottom-[calc(3.5rem+env(safe-area-inset-bottom)+0.5rem)] z-40 flex items-center gap-3 rounded-xl border border-[var(--border)] bg-white p-3 shadow-md md:hidden"
     >
       <Image src="/icons/icon-192.png" alt="" width={40} height={40} className="h-10 w-10 shrink-0 rounded-lg" />
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-bold text-[var(--foreground)]">Mareona en tu móvil</p>
-        <p className="truncate text-xs text-[var(--muted-foreground)]">Acceso directo y juegos sin conexión</p>
+        <p className="truncate text-sm font-bold text-[var(--foreground)]">{dict.pwa.installBanner.title}</p>
+        <p className="truncate text-xs text-[var(--muted-foreground)]">{dict.pwa.installBanner.subtitle}</p>
       </div>
       <InstallAction
-        label="Instalar"
+        label={dict.pwa.installBanner.installButton}
         className="min-h-11 shrink-0 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white transition-transform duration-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 inline-flex items-center"
       />
       <button
         type="button"
         onClick={handleDismiss}
-        aria-label="Ocultar aviso de instalación"
+        aria-label={dict.pwa.installBanner.dismissAria}
         className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--muted-foreground)] transition-colors hover:bg-[var(--surface)] active:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="h-4 w-4" aria-hidden="true">

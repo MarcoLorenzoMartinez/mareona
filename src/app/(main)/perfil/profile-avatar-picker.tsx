@@ -8,6 +8,7 @@ import { validateAvatarFile } from "@/lib/auth/avatar-validation";
 import { compressAvatarImage } from "@/lib/auth/avatar-compression";
 import { uploadAvatarImage } from "@/lib/auth/avatar-upload";
 import { useAuth } from "@/context/auth-context";
+import { getDictionary } from "@/i18n";
 
 interface ProfileAvatarPickerProps {
   readonly selectedAvatar: string | null;
@@ -18,8 +19,10 @@ interface ProfileAvatarPickerProps {
 export function ProfileAvatarPicker({
   selectedAvatar,
   onSelect,
-  displayName = "Aficionado",
+  displayName,
 }: ProfileAvatarPickerProps) {
+  const dict = getDictionary();
+  const resolvedDisplayName = displayName ?? dict.auth.common.defaultFanName;
   const { user } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -40,7 +43,7 @@ export function ProfileAvatarPicker({
       const optimized = await compressAvatarImage(file);
       const validation = validateAvatarFile(optimized);
       if (!validation.valid) {
-        setUploadError(validation.error ?? "Archivo no válido");
+        setUploadError(validation.error ?? dict.profile.avatarPicker.invalidFileFallback);
         setIsUploading(false);
         return;
       }
@@ -59,13 +62,13 @@ export function ProfileAvatarPicker({
 
       const res = await uploadAvatarImage(formData);
       if (!res.success || !res.data) {
-        setUploadError(res.error ?? "No se pudo subir la foto");
+        setUploadError(res.error ?? dict.profile.avatarPicker.uploadErrorFallback);
         onSelect(previousAvatar);
         return;
       }
       onSelect(res.data.url);
     } catch (err) {
-      setUploadError(err instanceof Error ? err.message : "Error inesperado al subir la foto");
+      setUploadError(err instanceof Error ? err.message : dict.profile.avatarPicker.unexpectedError);
       onSelect(previousAvatar);
     } finally {
       setIsUploading(false);
@@ -88,13 +91,13 @@ export function ProfileAvatarPicker({
         accept="image/png,image/jpeg,image/webp"
         onChange={handleFileChange}
         className="hidden"
-        aria-label="Seleccionar foto de perfil desde galería o cámara"
+        aria-label={dict.profile.avatarPicker.fileInputAria}
       />
 
       <div className="relative inline-flex">
         <AuthAvatar
           src={hasCustomPhoto ? selectedAvatar : null}
-          alt={displayName}
+          alt={resolvedDisplayName}
           size="xl"
           className="border-2 border-white shadow-xs ring-1 ring-neutral-100"
         />
@@ -104,7 +107,7 @@ export function ProfileAvatarPicker({
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          aria-label={hasCustomPhoto ? "Cambiar foto de perfil" : "Subir foto de perfil"}
+          aria-label={hasCustomPhoto ? dict.profile.avatarPicker.changePhotoAria : dict.profile.avatarPicker.uploadPhotoAria}
           className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[var(--primary)] text-white shadow-md transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
         >
           {isUploading ? (
@@ -123,7 +126,7 @@ export function ProfileAvatarPicker({
           className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-500 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-sm"
         >
           <Trash2 className="h-3 w-3" aria-hidden="true" />
-          <span>Quitar foto</span>
+          <span>{dict.profile.avatarPicker.removePhotoButton}</span>
         </button>
       )}
 

@@ -23,6 +23,7 @@ import type {
   PorraMatch,
   PorraPrediction,
 } from '@/lib/porra/types';
+import { getDictionary } from '@/i18n';
 
 interface PorraClientProps {
   readonly currentMatch: PorraMatch;
@@ -35,6 +36,7 @@ export function PorraClient({
   finishedMatches = [],
   availablePlayers,
 }: PorraClientProps) {
+  const dict = getDictionary();
   const { user, profile, openAuthModal } = useAuth();
   const [isRewardsModalOpen, setIsRewardsModalOpen] = useState(false);
   const [claimVersion, setClaimVersion] = useState(0);
@@ -75,7 +77,7 @@ export function PorraClient({
     const predictionsMap = getStoredPredictionsMap(finishedMatches, user.id);
     const localUserEntry = buildUserLeaderboardEntry({
       userId: user.id,
-      userName: profile?.display_name || profile?.username || 'Aficionado',
+      userName: profile?.display_name || profile?.username || dict.auth.common.defaultFanName,
       finishedMatches,
       predictionsByMatchId: predictionsMap,
       currentPrediction: prediction,
@@ -108,7 +110,7 @@ export function PorraClient({
       : localUserEntry;
 
     return [...withoutCurrent, combinedUserEntry];
-  }, [communityEntries, finishedMatches, prediction, profile, user]);
+  }, [communityEntries, finishedMatches, prediction, profile, user, dict.auth.common.defaultFanName]);
 
   const currentUserScore = useMemo(() => {
     const mine = mergedLeaderboard.find((e) => e.isCurrentUser);
@@ -122,7 +124,7 @@ export function PorraClient({
     }
     setPrediction(newPred);
     saveStoredPrediction(newPred, user.id);
-    toast.success('Pronóstico confirmado para esta jornada.');
+    toast.success(dict.games.porra.toasts.predictionConfirmed);
   };
 
   const handleClaimAll = () => {
@@ -136,8 +138,8 @@ export function PorraClient({
       setClaimVersion((v) => v + 1);
       toast.success(
         addedCount === 1
-          ? '+1 sobre añadido a tu inventario del Álbum.'
-          : `+${addedCount} sobres añadidos a tu inventario del Álbum.`
+          ? dict.games.porra.toasts.onePackAdded
+          : `${dict.games.porra.toasts.manyPacksPrefix}${addedCount} ${dict.games.porra.toasts.manyPacksSuffix}`
       );
     }
   };

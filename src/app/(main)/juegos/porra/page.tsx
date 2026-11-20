@@ -8,10 +8,13 @@ import {
 } from '@/lib/sports-api/client';
 import type { DomainPlayer, DomainMatchSummary } from '@/lib/sports-api/types';
 import type { PorraMatch } from '@/lib/porra/types';
+import { getDictionary } from '@/i18n';
+
+const dict = getDictionary();
 
 export const metadata: Metadata = {
-  title: 'La Porra',
-  description: 'Pronostica el marcador y los goleadores del Real Sporting en cada jornada.',
+  title: dict.games.porra.metadata.title,
+  description: dict.games.porra.metadata.description,
 };
 
 export default async function PorraPage() {
@@ -85,7 +88,7 @@ export default async function PorraPage() {
       isSporting: nextMatchSummary?.homeTeam?.isSporting ?? true,
     },
     awayTeam: {
-      name: nextMatchSummary?.awayTeam?.name ?? 'Próximo Rival',
+      name: nextMatchSummary?.awayTeam?.name ?? dict.games.porra.fallbackOpponent,
       crestUrl: nextMatchSummary?.awayTeam?.crestUrl ?? undefined,
       isSporting: nextMatchSummary?.awayTeam?.isSporting ?? false,
     },

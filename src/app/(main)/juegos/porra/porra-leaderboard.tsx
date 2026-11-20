@@ -9,6 +9,7 @@ import {
 } from '@/lib/porra/leaderboard';
 import { PorraLeaderboardRow } from './porra-leaderboard-row';
 import type { PorraLeaderboardEntry } from '@/lib/porra/types';
+import { getDictionary } from '@/i18n';
 
 interface PorraLeaderboardProps {
   readonly entries: readonly PorraLeaderboardEntry[];
@@ -20,11 +21,6 @@ interface PorraLeaderboardProps {
 
 const PAGE_SIZE = 10;
 
-const FILTER_TABS: readonly { readonly id: PorraLeaderboardFilter; readonly label: string }[] = [
-  { id: 'all', label: 'Todos' },
-  { id: 'friends', label: 'Amigos' },
-];
-
 export function PorraLeaderboard({
   entries,
   currentUserScore,
@@ -32,6 +28,11 @@ export function PorraLeaderboard({
   friendsCount = 0,
   onOpenAuth,
 }: PorraLeaderboardProps) {
+  const dict = getDictionary();
+  const filterTabs: readonly { readonly id: PorraLeaderboardFilter; readonly label: string }[] = [
+    { id: 'all', label: dict.games.porra.leaderboard.tabs.all },
+    { id: 'friends', label: dict.games.porra.leaderboard.tabs.friends },
+  ];
   const [activeFilter, setActiveFilter] = useState<PorraLeaderboardFilter>('all');
   const [page, setPage] = useState(1);
 
@@ -47,8 +48,8 @@ export function PorraLeaderboard({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
     e.preventDefault();
-    const idx = FILTER_TABS.findIndex((t) => t.id === activeFilter);
-    handleTabChange(FILTER_TABS[(idx + 1) % 2]!.id);
+    const idx = filterTabs.findIndex((t) => t.id === activeFilter);
+    handleTabChange(filterTabs[(idx + 1) % 2]!.id);
   };
 
   const visibleEntries = filterAndRankLeaderboard(entries, activeFilter);
@@ -64,17 +65,17 @@ export function PorraLeaderboard({
 
   return (
     <section
-      aria-label="Clasificación de La Porra"
+      aria-label={dict.games.porra.leaderboard.sectionAria}
       className="flex flex-col gap-3.5 rounded-3xl border border-[var(--border)] bg-white p-5 sm:p-7 shadow-xs"
     >
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-100 pb-3.5">
         <div className="flex flex-col gap-0.5">
           <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-900">
-            Clasificación
+            {dict.games.porra.leaderboard.title}
           </h2>
           {currentUserScore !== undefined && (
             <span className="text-xs font-semibold text-neutral-500">
-              Tus puntos:{' '}
+              {dict.games.porra.leaderboard.yourPointsPrefix}{' '}
               <span className="font-bold text-[#e2001a] tabular-nums">{currentUserScore}</span>
             </span>
           )}
@@ -92,17 +93,17 @@ export function PorraLeaderboard({
                   : 'border border-[#e2001a]/30 bg-red-50/50 text-[#e2001a] hover:bg-red-50 cursor-pointer'
               }`}
             >
-              Ir a mi posición (#{userEntry.rank})
+              {dict.games.porra.leaderboard.goToMyPositionPrefix}{userEntry.rank})
             </button>
           )}
 
           <div
             role="tablist"
-            aria-label="Filtro de clasificación"
+            aria-label={dict.games.porra.leaderboard.filterAria}
             onKeyDown={handleKeyDown}
             className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
           >
-            {FILTER_TABS.map((tab) => {
+            {filterTabs.map((tab) => {
               const isActive = activeFilter === tab.id;
               return (
                 <button
@@ -129,18 +130,18 @@ export function PorraLeaderboard({
       {activeFilter === 'friends' && friendsCount === 0 ? (
         <div className="flex flex-col items-center gap-2.5 py-6 text-center">
           <p className="text-xs text-neutral-500">
-            Aún no tienes amigos añadidos para comparar vuestros pronósticos.
+            {dict.games.porra.leaderboard.emptyFriends}
           </p>
           <Link
             href="/social"
             className="inline-flex min-h-9 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-1.5 text-xs font-bold text-neutral-800 hover:border-neutral-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Buscar amigos en Social
+            {dict.games.porra.leaderboard.findFriendsInSocial}
           </Link>
         </div>
       ) : visibleEntries.length === 0 ? (
         <p className="text-xs text-neutral-500 text-center py-6">
-          Aún no hay puntuaciones registradas. Envía tu pronóstico para estrenar la tabla.
+          {dict.games.porra.leaderboard.emptyAll}
         </p>
       ) : (
         <>
@@ -161,10 +162,10 @@ export function PorraLeaderboard({
                 disabled={safePage <= 1}
                 className="min-h-8 rounded-full border border-[var(--border)] bg-white px-3.5 py-1 text-xs font-bold text-neutral-700 transition-colors hover:bg-[var(--surface)] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               >
-                Anterior
+                {dict.games.porra.leaderboard.prevPage}
               </button>
               <span className="font-sans text-xs font-semibold tabular-nums text-neutral-500">
-                Página {safePage} de {totalPages}
+                {dict.games.porra.leaderboard.pagePrefix} {safePage} {dict.games.porra.leaderboard.pageOf} {totalPages}
               </span>
               <button
                 type="button"
@@ -172,7 +173,7 @@ export function PorraLeaderboard({
                 disabled={safePage >= totalPages}
                 className="min-h-8 rounded-full border border-[var(--border)] bg-white px-3.5 py-1 text-xs font-bold text-neutral-700 transition-colors hover:bg-[var(--surface)] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               >
-                Siguiente
+                {dict.games.porra.leaderboard.nextPage}
               </button>
             </div>
           )}

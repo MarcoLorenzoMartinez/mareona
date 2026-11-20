@@ -4,6 +4,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { PlayerPhoto } from '@/components/media/player-photo';
+import { getDictionary } from '@/i18n';
 
 interface TriviaSolvedCardProps {
   isCorrect: boolean;
@@ -22,6 +23,7 @@ export function TriviaSolvedCard({
   photoUrl,
   onOpenStats,
 }: TriviaSolvedCardProps) {
+  const dict = getDictionary();
   const isLocalImage = photoUrl?.startsWith('/') || photoUrl?.startsWith('/images') || photoUrl?.startsWith('/stadiums');
 
   return (
@@ -71,7 +73,7 @@ export function TriviaSolvedCard({
             {/* Si falló, mostramos qué había puesto */}
             {!isCorrect && (
               <p className="mt-3 text-[11px] text-neutral-500 font-medium">
-                Tu respuesta:{' '}
+                {dict.games.trivia.solvedCard.yourAnswerPrefix}{' '}
                 <span className="line-through text-neutral-400 font-normal">
                   {userAnswer}
                 </span>
@@ -87,7 +89,7 @@ export function TriviaSolvedCard({
         onClick={onOpenStats}
         className="mt-1 flex h-11 w-full items-center justify-center rounded-xl border border-neutral-300 bg-white px-4 text-xs font-bold text-neutral-700 shadow-2xs hover:bg-neutral-50 hover:text-neutral-900 active:scale-[0.98] transition-all select-none"
       >
-        Ver mis Estadísticas
+        {dict.games.trivia.solvedCard.viewStatsButton}
       </button>
     </div>
   );

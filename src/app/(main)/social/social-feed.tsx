@@ -21,12 +21,14 @@ import {
 import { addReplyToTree, removePostFromTree, updatePostInTree } from "@/lib/social/post-tree";
 import type { SocialFeedTab } from "./feed-tab-selector";
 import type { SocialPost } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 interface SocialFeedProps {
   readonly initialPosts: readonly SocialPost[];
 }
 
 export function SocialFeed({ initialPosts }: SocialFeedProps) {
+  const dict = getDictionary();
   const { user, openAuthModal } = useAuth();
   const socialNotifications = useSocialNotifications();
   const [activeTab, setActiveTab] = useState<SocialFeedTab>("all");
@@ -92,11 +94,11 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
     const res = await deleteSocialPost({ postId });
     if (!res.success) {
       setPosts(previousPosts);
-      toast.error(res.error ?? "No se pudo borrar la publicación");
+      toast.error(res.error ?? dict.social.feed.deleteErrorFallback);
       return;
     }
     removePostFromStack(postId);
-    toast.success("Publicación eliminada");
+    toast.success(dict.social.feed.deleteSuccess);
   };
   const handleUpdatePost = async (postId: string, newBody: string) => {
     const updatedAt = new Date().toISOString();

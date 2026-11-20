@@ -1,10 +1,13 @@
 ﻿import type { Metadata } from 'next';
 import { getTodayChallenge } from '@/lib/wordle/words';
 import { WordleClient } from './wordle-client';
+import { getDictionary } from '@/i18n';
+
+const dict = getDictionary();
 
 export const metadata: Metadata = {
-  title: 'Wordle Sportinguista',
-  description: 'Adivina la palabra del Real Sporting de hoy en 6 intentos.',
+  title: dict.games.wordle.metadata.title,
+  description: dict.games.wordle.metadata.description,
 };
 
 export default function WordlePage() {

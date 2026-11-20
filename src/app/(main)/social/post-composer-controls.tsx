@@ -3,6 +3,7 @@
 
 import { BarChart2 } from "lucide-react";
 import { FootballPitchIcon } from "@/components/icons/football-pitch-icon";
+import { getDictionary } from "@/i18n";
 
 interface PostComposerControlsProps {
   readonly parentId?: string;
@@ -33,6 +34,7 @@ export function PostComposerControls({
   isSubmitting,
   submitLabel,
 }: PostComposerControlsProps) {
+  const dict = getDictionary();
   return (
     <div className="mt-2.5 flex items-center justify-between pt-2 border-t border-neutral-100 animate-in fade-in duration-150">
       <div className="flex items-center gap-1">
@@ -40,22 +42,22 @@ export function PostComposerControls({
           <button
             type="button"
             onClick={onActivatePoll}
-            aria-label="Añadir encuesta a la publicación"
+            aria-label={dict.social.composer.addPollAria}
             className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             <BarChart2 className="h-4 w-4" aria-hidden="true" />
-            <span>Encuesta</span>
+            <span>{dict.social.composer.pollLabel}</span>
           </button>
         )}
         {!parentId && !hasAttachedLineup && (
           <button
             type="button"
             onClick={onToggleLineup}
-            aria-label="Adjuntar alineación de Mi Once"
+            aria-label={dict.social.composer.attachLineupAria}
             className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             <FootballPitchIcon className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Mi Once</span>
+            <span>{dict.social.composer.lineupLabel}</span>
           </button>
         )}
       </div>
@@ -67,7 +69,7 @@ export function PostComposerControls({
             onClick={onCancel}
             className="rounded-full px-3 py-1.5 text-xs font-semibold text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 transition-colors"
           >
-            Cancelar
+            {dict.social.composer.cancelButton}
           </button>
         )}
 
@@ -87,7 +89,7 @@ export function PostComposerControls({
           disabled={!canSubmit}
           className="min-h-9 rounded-full bg-[var(--primary)] px-5 text-sm font-bold text-white transition-[transform,opacity] duration-150 hover:bg-[var(--primary-strong)] active:scale-95 disabled:opacity-50 disabled:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         >
-          {isSubmitting ? "Publicando…" : submitLabel}
+          {isSubmitting ? dict.social.composer.submitting : submitLabel}
         </button>
       </div>
     </div>

@@ -4,34 +4,25 @@ import {
   CARD_CANONICAL_WIDTH,
   CARD_CANONICAL_HEIGHT,
 } from "@/components/cards/card-scale-frame";
+import { getDictionary } from "@/i18n";
 
 interface AlbumCardSlotProps {
   readonly card: Card;
   readonly cardNumber: number;
 }
 
-const POSITION_LABEL: Record<string, string> = {
-  goalkeeper: "POR",
-  defender: "DEF",
-  midfielder: "MED",
-  forward: "DEL",
-};
-
-const KIND_LABEL: Record<string, string> = {
-  crest: "ESCUDO",
-  moment: "MOMENTO",
-  coach: "MÍSTER",
-};
-
 /**
  * Empty troqueled slot in the album spread for a card not yet owned.
  * Simulates the printed cardboard sticker space from real Panini/Este albums.
  */
 export function AlbumCardSlot({ card, cardNumber }: AlbumCardSlotProps) {
+  const dict = getDictionary();
+  const positionLabel: Record<string, string> = dict.games.album.slot.positions;
+  const kindLabel: Record<string, string> = dict.games.album.slot.kinds;
   const typeLabel =
     card.position
-      ? POSITION_LABEL[card.position] ?? "JUG"
-      : KIND_LABEL[card.kind ?? "player"] ?? "JUG";
+      ? positionLabel[card.position] ?? dict.games.album.slot.fallbackKind
+      : kindLabel[card.kind ?? "player"] ?? dict.games.album.slot.fallbackKind;
 
   return (
     <CardScaleFrame size="fill">
@@ -46,7 +37,7 @@ export function AlbumCardSlot({ card, cardNumber }: AlbumCardSlotProps) {
           boxShadow:
             "inset 0 1px 3px rgba(100,70,20,0.08), inset 0 -1px 2px rgba(100,70,20,0.04)",
         }}
-        aria-label={`Casilla vacía: ${card.knownAs}`}
+        aria-label={`${dict.games.album.slot.emptyAriaPrefix} ${card.knownAs}`}
       >
         {/* Corner adhesive tabs (classic album sticker corners) */}
         <span
@@ -101,7 +92,7 @@ export function AlbumCardSlot({ card, cardNumber }: AlbumCardSlotProps) {
           aria-hidden="true"
           className="text-center text-[6.5px] font-semibold uppercase tracking-widest text-amber-700/35"
         >
-          Pega aquí
+          {dict.games.album.slot.pasteHere}
         </p>
       </div>
     </CardScaleFrame>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { deleteAccount } from "@/lib/auth/actions";
 import { toast } from "@/lib/ui/toast";
 import { useAuth } from "@/context/auth-context";
+import { getDictionary } from "@/i18n";
 
 interface DeleteAccountDialogProps {
   readonly isOpen: boolean;
@@ -17,6 +18,7 @@ interface DeleteAccountDialogProps {
  * Accessible with keyboard ESC dismissal, ARIA landmarks and explicit confirmation.
  */
 export function DeleteAccountDialog({ isOpen, onClose }: DeleteAccountDialogProps) {
+  const dict = getDictionary();
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
   const { handleSignOut } = useAuth();
@@ -38,12 +40,12 @@ export function DeleteAccountDialog({ isOpen, onClose }: DeleteAccountDialogProp
     const res = await deleteAccount();
     if (!res.success) {
       setIsDeleting(false);
-      toast.error(res.error ?? "No se pudo eliminar la cuenta. Inténtalo de nuevo.");
+      toast.error(res.error ?? dict.profile.deleteDialog.errorFallback);
       return;
     }
 
     await handleSignOut();
-    toast.success("Tu cuenta y datos personales han sido eliminados.");
+    toast.success(dict.profile.deleteDialog.successToast);
     router.push("/");
   };
 
@@ -75,20 +77,18 @@ export function DeleteAccountDialog({ isOpen, onClose }: DeleteAccountDialogProp
             id="delete-account-title"
             className="text-lg font-bold text-neutral-900"
           >
-            ¿Eliminar tu cuenta y datos?
+            {dict.profile.deleteDialog.title}
           </h2>
         </div>
 
         <p id="delete-account-desc" className="text-xs leading-relaxed text-neutral-600">
-          Esta acción es <strong className="text-neutral-900">definitiva e irreversible</strong>.
-          Conforme a tu derecho al olvido (RGPD), se suprimirán inmediatamente tus datos
-          de acceso, apodo, pronósticos de la porra, participaciones en juegos y comentarios en la
-          tertulia.
+          {dict.profile.deleteDialog.descriptionPrefix}{" "}
+          <strong className="text-neutral-900">{dict.profile.deleteDialog.descriptionHighlight}</strong>
+          {dict.profile.deleteDialog.descriptionSuffix}
         </p>
 
         <div className="rounded-lg border border-red-200 bg-red-50/70 p-3 text-xs text-red-800">
-          No podrás recuperar tus puntos acumulados ni tu historial sportinguista una vez confirmada
-          la eliminación.
+          {dict.profile.deleteDialog.warningBox}
         </div>
 
         <div className="flex items-center justify-end gap-2.5 pt-2">
@@ -98,7 +98,7 @@ export function DeleteAccountDialog({ isOpen, onClose }: DeleteAccountDialogProp
             onClick={onClose}
             className="inline-flex min-h-[44px] sm:min-h-9 items-center justify-center rounded-full border border-[var(--border)] bg-white px-4 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
           >
-            Cancelar
+            {dict.profile.deleteDialog.cancelButton}
           </button>
           <button
             type="button"
@@ -106,7 +106,7 @@ export function DeleteAccountDialog({ isOpen, onClose }: DeleteAccountDialogProp
             onClick={handleDelete}
             className="inline-flex min-h-[44px] sm:min-h-9 items-center justify-center rounded-full bg-[var(--primary)] px-4.5 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 cursor-pointer"
           >
-            {isDeleting ? "Eliminando..." : "Sí, eliminar definitivamente"}
+            {isDeleting ? dict.profile.deleteDialog.deleting : dict.profile.deleteDialog.confirmButton}
           </button>
         </div>
       </div>

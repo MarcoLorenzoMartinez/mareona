@@ -10,6 +10,7 @@ import {
   saveLocalSharedLineup,
   type SharedLineupData,
 } from "@/lib/lineup-builder/shared-lineup-codec";
+import { getDictionary } from "@/i18n";
 
 interface ShareLineupModalProps {
   readonly isOpen: boolean;
@@ -28,6 +29,7 @@ export function ShareLineupModal({
   nextMatchOpponent,
   nextMatchOpponentCrestUrl,
 }: ShareLineupModalProps) {
+  const dict = getDictionary();
   const router = useRouter();
   const { user, openAuthModal } = useAuth();
   const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
@@ -51,8 +53,8 @@ export function ShareLineupModal({
   };
 
   const matchLabel = nextMatchOpponent
-    ? `Partido vs ${nextMatchOpponent}`
-    : "Próximo partido";
+    ? `${dict.lineupBuilder.shareModal.matchPrefix} ${nextMatchOpponent}`
+    : dict.lineupBuilder.shareModal.nextMatchFallback;
 
   return (
     <div
@@ -69,12 +71,12 @@ export function ShareLineupModal({
         {/* Cabecera limpia */}
         <div className="flex items-center justify-between">
           <h2 id="share-lineup-title" className="text-base font-bold text-neutral-900">
-            Compartir Once
+            {dict.lineupBuilder.shareModal.title}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar modal"
+            aria-label={dict.lineupBuilder.shareModal.closeAria}
             className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer -mr-2"
           >
             <X className="h-5 w-5" aria-hidden="true" />
@@ -96,11 +98,11 @@ export function ShareLineupModal({
                 </div>
               </div>
               <span className="text-sm font-bold text-neutral-900 group-hover:text-[#e2001a] transition-colors truncate">
-                Social
+                {dict.lineupBuilder.shareModal.socialLabel}
               </span>
             </div>
             <span className="shrink-0 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-semibold text-neutral-700 group-hover:border-[#e2001a] group-hover:bg-[#e2001a] group-hover:text-white transition-all">
-              Compartir
+              {dict.lineupBuilder.shareModal.shareAction}
             </span>
           </button>
 
@@ -125,7 +127,7 @@ export function ShareLineupModal({
                     <div className="relative z-0 flex h-6 w-6 items-center justify-center rounded-full border border-white bg-white shadow-2xs overflow-hidden">
                       <TeamCrest
                         crestUrl={nextMatchOpponentCrestUrl}
-                        teamName={nextMatchOpponent ?? "Rival"}
+                        teamName={nextMatchOpponent ?? dict.lineupBuilder.shareModal.opponentFallback}
                         size="sm"
                       />
                     </div>
@@ -136,7 +138,7 @@ export function ShareLineupModal({
                 </span>
               </div>
               <span className="shrink-0 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-semibold text-neutral-700 group-hover:border-[#e2001a] group-hover:bg-[#e2001a] group-hover:text-white transition-all">
-                Compartir
+                {dict.lineupBuilder.shareModal.shareAction}
               </span>
             </button>
           )}

@@ -9,6 +9,7 @@ import { FriendsListContent } from "./friends-list-content";
 import { getMyFriendsList, searchAficionados } from "@/lib/social/friends-queries";
 import { removeFriendship, sendFriendRequest } from "@/lib/social/friends-actions";
 import type { FriendSummary } from "@/lib/social/friendship-schemas";
+import { getDictionary } from "@/i18n";
 
 interface FriendsModalProps {
   readonly onOpenProfile: (userId: string) => void;
@@ -25,6 +26,7 @@ export function FriendsModal({
   onOpenChange,
   defaultTab = "friends",
 }: FriendsModalProps) {
+  const dict = getDictionary();
   const { user, openAuthModal } = useAuth();
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
@@ -94,16 +96,16 @@ export function FriendsModal({
     const res = await removeFriendship(friendshipId);
     if (res.success) {
       setFriends((prev) => prev.filter((f) => f.friendshipId !== friendshipId));
-      setActionMessage(`Has dejado de conectar con ${name}`);
+      setActionMessage(`${dict.social.friends.removedMessagePrefix} ${name}`);
     }
   };
 
   const handleSendRequest = async (targetUserId: string, name: string) => {
     const res = await sendFriendRequest({ addresseeId: targetUserId });
     if (res.success) {
-      setActionMessage(`Solicitud enviada a ${name}`);
+      setActionMessage(`${dict.social.friends.requestSentPrefix} ${name}`);
     } else {
-      setActionMessage(res.error ?? "No se pudo enviar la solicitud");
+      setActionMessage(res.error ?? dict.social.friends.requestErrorFallback);
     }
   };
 
@@ -112,18 +114,18 @@ export function FriendsModal({
       <button
         type="button"
         onClick={handleOpen}
-        aria-label="Abrir gestión de amigos"
+        aria-label={dict.social.friends.buttonAria}
         className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-neutral-700 shadow-xs hover:border-neutral-300 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
       >
         <Users className="h-3.5 w-3.5 text-neutral-500" />
-        <span>Amigos</span>
+        <span>{dict.social.friends.buttonLabel}</span>
       </button>
 
       {isOpen && (
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Amigos y comunidad sportinguista"
+          aria-label={dict.social.friends.dialogAria}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
           onClick={() => setIsOpen(false)}
         >

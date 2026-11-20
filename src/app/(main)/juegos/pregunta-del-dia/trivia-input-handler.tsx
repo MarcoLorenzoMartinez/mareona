@@ -4,6 +4,7 @@
 import { useRef } from 'react';
 import type { TriviaQuestion } from '../../../../lib/trivia/types';
 import { TriviaPlayerInput } from './trivia-player-input';
+import { getDictionary } from '@/i18n';
 
 interface TriviaInputHandlerProps {
   question: TriviaQuestion;
@@ -20,6 +21,7 @@ export function TriviaInputHandler({
   disabled,
   onSubmit,
 }: TriviaInputHandlerProps) {
+  const dict = getDictionary();
   const endYearInputRef = useRef<HTMLInputElement>(null);
   const awayScoreInputRef = useRef<HTMLInputElement>(null);
 
@@ -79,9 +81,9 @@ export function TriviaInputHandler({
               onSubmit();
             }
           }}
-          placeholder="XXXX"
+          placeholder={dict.games.trivia.inputs.seasonStartPlaceholder}
           maxLength={4}
-          aria-label="Año de inicio de temporada"
+          aria-label={dict.games.trivia.inputs.seasonStartAria}
           className="h-14 w-28 rounded-2xl border-2 border-[var(--border)] bg-white text-center font-sans text-xl font-bold tabular-nums text-[var(--foreground)] placeholder:text-neutral-300 outline-none focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a]/20 disabled:bg-[var(--surface)] disabled:text-[var(--foreground-muted)] transition-all shadow-2xs"
         />
 
@@ -106,9 +108,9 @@ export function TriviaInputHandler({
               onSubmit();
             }
           }}
-          placeholder="XX"
+          placeholder={dict.games.trivia.inputs.seasonEndPlaceholder}
           maxLength={2}
-          aria-label="Año de fin de temporada"
+          aria-label={dict.games.trivia.inputs.seasonEndAria}
           className="h-14 w-20 rounded-2xl border-2 border-[var(--border)] bg-white text-center font-sans text-xl font-bold tabular-nums text-[var(--foreground)] placeholder:text-neutral-300 outline-none focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a]/20 disabled:bg-[var(--surface)] disabled:text-[var(--foreground-muted)] transition-all shadow-2xs"
         />
       </div>
@@ -153,7 +155,7 @@ export function TriviaInputHandler({
           }}
           placeholder="0"
           maxLength={2}
-          aria-label="Goles Sporting"
+          aria-label={dict.games.trivia.inputs.homeGoalsAria}
           className="h-14 w-20 rounded-2xl border-2 border-[var(--border)] bg-white text-center font-sans text-2xl font-bold tabular-nums text-[var(--foreground)] placeholder:text-neutral-300 outline-none focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a]/20 disabled:bg-[var(--surface)] disabled:text-[var(--foreground-muted)] transition-all shadow-2xs"
         />
 
@@ -177,7 +179,7 @@ export function TriviaInputHandler({
           }}
           placeholder="0"
           maxLength={2}
-          aria-label="Goles rival"
+          aria-label={dict.games.trivia.inputs.awayGoalsAria}
           className="h-14 w-20 rounded-2xl border-2 border-[var(--border)] bg-white text-center font-sans text-2xl font-bold tabular-nums text-[var(--foreground)] placeholder:text-neutral-300 outline-none focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a]/20 disabled:bg-[var(--surface)] disabled:text-[var(--foreground-muted)] transition-all shadow-2xs"
         />
       </div>
@@ -225,7 +227,7 @@ export function TriviaInputHandler({
           onSubmit();
         }
       }}
-      placeholder={question.formatHint || 'Escribe tu respuesta...'}
+      placeholder={question.formatHint || dict.games.trivia.inputs.defaultPlaceholder}
       className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--foreground)] placeholder-[var(--foreground-muted)] outline-none focus:border-[#e2001a] focus:ring-1 focus:ring-[#e2001a] disabled:bg-[var(--surface)] disabled:text-[var(--foreground-muted)]"
     />
   );

@@ -2,6 +2,7 @@
 'use client';
 
 import React from 'react';
+import { getDictionary } from '@/i18n';
 
 interface PorraScorersPickerProps {
   sportingGoals: number;
@@ -18,6 +19,7 @@ export function PorraScorersPicker({
   availablePlayers,
   disabled = false,
 }: PorraScorersPickerProps) {
+  const dict = getDictionary();
   if (sportingGoals <= 0) return null;
 
   const handleSelectScorer = (slotIndex: number, playerName: string) => {
@@ -29,7 +31,7 @@ export function PorraScorersPicker({
   return (
     <div className="flex flex-col gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
       <span className="text-xs font-bold text-[var(--foreground)]">
-        Goleadores del Real Sporting
+        {dict.games.porra.scorers.title}
       </span>
 
       <div className="flex flex-col gap-2">
@@ -43,10 +45,10 @@ export function PorraScorersPicker({
                 value={selectedScorers[i] || ''}
                 disabled={disabled}
                 onChange={(e) => handleSelectScorer(i, e.target.value)}
-                aria-label={`Goleador ${i + 1}`}
+                aria-label={`${dict.games.porra.scorers.selectAriaPrefix} ${i + 1}`}
                 className="w-full min-h-[44px] appearance-none rounded-xl border border-[var(--border)] bg-white pl-3.5 pr-10 py-2 text-xs font-semibold text-neutral-900 focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a]/20 focus:outline-none disabled:opacity-100 disabled:bg-white disabled:text-neutral-800 disabled:[-webkit-text-fill-color:#262626] disabled:cursor-default transition-colors"
               >
-                <option value="">Selecciona un goleador...</option>
+                <option value="">{dict.games.porra.scorers.placeholder}</option>
                 {availablePlayers.map((player) => (
                   <option key={player} value={player}>
                     {player}

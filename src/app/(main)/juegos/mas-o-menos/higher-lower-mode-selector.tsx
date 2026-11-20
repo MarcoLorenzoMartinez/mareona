@@ -1,5 +1,6 @@
 import React from 'react';
 import type { HigherLowerMode } from '@/lib/higher-lower/types';
+import { getDictionary } from '@/i18n';
 
 interface HigherLowerModeSelectorProps {
   currentMode: HigherLowerMode;
@@ -7,24 +8,25 @@ interface HigherLowerModeSelectorProps {
   disabled?: boolean;
 }
 
-const MODES: { id: HigherLowerMode; label: string }[] = [
-  { id: 'matches', label: 'Partidos' },
-  { id: 'goals', label: 'Goles' },
-  { id: 'minutes', label: 'Minutos' },
-];
-
 export function HigherLowerModeSelector({
   currentMode,
   onSelectMode,
   disabled = false,
 }: HigherLowerModeSelectorProps) {
+  const dict = getDictionary();
+  const modes: { id: HigherLowerMode; label: string }[] = [
+    { id: 'matches', label: dict.games.higherLower.modeSelector.matches },
+    { id: 'goals', label: dict.games.higherLower.modeSelector.goals },
+    { id: 'minutes', label: dict.games.higherLower.modeSelector.minutes },
+  ];
+
   return (
     <div
       role="radiogroup"
-      aria-label="Modo de juego"
+      aria-label={dict.games.higherLower.modeSelector.aria}
       className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 shadow-2xs"
     >
-      {MODES.map((mode) => {
+      {modes.map((mode) => {
         const isSelected = currentMode === mode.id;
         return (
           <button

@@ -1,5 +1,7 @@
 "use client"; // Client: Riel deslizador independiente debajo del álbum
 
+import { getDictionary } from "@/i18n";
+
 interface AlbumPageNavProps {
   readonly currentPage: number;
   readonly totalPages: number;
@@ -17,20 +19,21 @@ export function AlbumPageNav({
   onPageChange,
   label,
 }: AlbumPageNavProps) {
-  const displayLabel = label ?? `Página ${currentPage} de ${totalPages}`;
+  const dict = getDictionary();
+  const displayLabel = label ?? `${dict.games.album.spread.pageSinglePrefix} ${currentPage} ${dict.games.album.spread.pageOf} ${totalPages}`;
 
   return (
     <nav
-      aria-label="Selector de página del álbum"
+      aria-label={dict.games.album.spread.pageSelectorNavAria}
       className="w-full pt-1 pb-2 select-none"
     >
       {/* Indicador tipográfico de imprenta clásica */}
       <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-500 pb-1.5">
-        <span className="tabular-nums">Pág. 1</span>
+        <span className="tabular-nums">{dict.games.album.spread.pageShort} 1</span>
         <span className="text-[11px] font-black text-neutral-800 tracking-[0.2em]">
           {displayLabel}
         </span>
-        <span className="tabular-nums">Pág. {totalPages}</span>
+        <span className="tabular-nums">{dict.games.album.spread.pageShort} {totalPages}</span>
       </div>
 
       {/* Riel deslizador con hendidura troquelada y tirador en rojo Sporting */}
@@ -41,7 +44,7 @@ export function AlbumPageNav({
           max={totalPages}
           value={currentPage}
           onChange={(e) => onPageChange(Number(e.target.value))}
-          aria-label="Deslizar para seleccionar página del álbum"
+          aria-label={dict.games.album.spread.pageSliderAria}
           aria-valuemin={1}
           aria-valuemax={totalPages}
           aria-valuenow={currentPage}

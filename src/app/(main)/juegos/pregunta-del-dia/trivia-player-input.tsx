@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect, useId, useCallback } from 'react';
 import { searchClubFigures } from '@/lib/trivia/club-figures';
+import { getDictionary } from '@/i18n';
 
 interface TriviaPlayerInputProps {
   value: string;
@@ -17,6 +18,7 @@ export function TriviaPlayerInput({
   disabled,
   onSubmit,
 }: TriviaPlayerInputProps) {
+  const dict = getDictionary();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(value);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -119,7 +121,7 @@ export function TriviaPlayerInput({
           }
         }}
         onKeyDown={handleKeyDown}
-        placeholder="Escribe el nombre o alias..."
+        placeholder={dict.games.trivia.inputs.playerPlaceholder}
         className="w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-[var(--foreground)] placeholder-[var(--foreground-muted)] outline-none focus:border-[#e2001a] focus:ring-1 focus:ring-[#e2001a] disabled:bg-[var(--surface)] disabled:text-[var(--foreground-muted)]"
       />
 

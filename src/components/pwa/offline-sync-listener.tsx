@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { processOfflineGameSync, getOfflineGameQueue } from "@/lib/games/offline-sync-queue";
 import { syncOfflineGamesAction } from "@/lib/games/offline-sync-action";
 import { toast } from "@/lib/ui/toast";
+import { getDictionary } from "@/i18n";
 
 /**
  * Global background listener that automatically synchronizes offline game results
@@ -16,6 +17,7 @@ import { toast } from "@/lib/ui/toast";
  *   the user that their offline progress has been saved.
  */
 export function OfflineSyncListener() {
+  const dict = getDictionary();
   const isSyncingRef = useRef(false);
 
   useEffect(() => {
@@ -35,9 +37,9 @@ export function OfflineSyncListener() {
         if (isMounted && result.syncedCount > 0 && notifyUser) {
           toast.success(
             result.syncedCount === 1
-              ? "Partida sin conexión sincronizada"
-              : `${result.syncedCount} partidas sincronizadas`,
-            { description: "Tus progresos jugados sin cobertura se han guardado con éxito." }
+              ? dict.pwa.offlineSync.oneSyncedTitle
+              : `${result.syncedCount} ${dict.pwa.offlineSync.manySyncedSuffix}`,
+            { description: dict.pwa.offlineSync.syncedDescription }
           );
         }
       } catch {
@@ -73,7 +75,11 @@ export function OfflineSyncListener() {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("mareona_offline_sync_queue_updated", handleQueueUpdated);
     };
-  }, []);
+  }, [
+    dict.pwa.offlineSync.manySyncedSuffix,
+    dict.pwa.offlineSync.oneSyncedTitle,
+    dict.pwa.offlineSync.syncedDescription,
+  ]);
 
   return null;
 }

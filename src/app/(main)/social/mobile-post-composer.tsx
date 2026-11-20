@@ -17,6 +17,7 @@ import {
 } from "@/lib/lineup-builder/shared-lineup-codec";
 import { createSocialPost } from "@/lib/social/actions";
 import type { SocialPost } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 const MAX_USER_BODY_LENGTH = 500;
 const COUNTER_THRESHOLD = 380;
@@ -32,6 +33,7 @@ export function MobilePostComposerModal({
   onClose,
   onPosted,
 }: MobilePostComposerModalProps) {
+  const dict = getDictionary();
   const { profile } = useAuth();
   const [body, setBody] = useState("");
   const [attachedLineup, setAttachedLineup] = useState<SharedLineupData | null>(loadLocalSharedLineup);
@@ -40,7 +42,7 @@ export function MobilePostComposerModal({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const poll = usePollDraft();
 
-  const displayName = profile?.display_name || profile?.username || "Aficionado";
+  const displayName = profile?.display_name || profile?.username || dict.auth.common.defaultFanName;
   const remaining = MAX_USER_BODY_LENGTH - body.length;
   const canSubmit = (body.trim().length > 0 || Boolean(attachedLineup)) && !isSubmitting;
 
@@ -67,7 +69,7 @@ export function MobilePostComposerModal({
     if (attachedLineup) { setAttachedLineup(null); return; }
     const draft = loadLocalSharedLineup();
     if (!draft) {
-      toast.info("Aún no tienes una alineación guardada. Ve a Mi Once para crearla.");
+      toast.info(dict.social.composer.noLineupSavedToast);
       return;
     }
     setAttachedLineup(draft);
@@ -79,7 +81,7 @@ export function MobilePostComposerModal({
 
     const validPollOptions = poll.getValidOptions();
     if (poll.isPollActive && (!validPollOptions || validPollOptions.length < 2)) {
-      setError("Añade al menos 2 opciones a la encuesta");
+      setError(dict.social.composer.pollMinOptionsError);
       return;
     }
     const fullBody = attachedLineup
@@ -90,7 +92,7 @@ export function MobilePostComposerModal({
     const res = await createSocialPost({ body: fullBody, pollOptions: validPollOptions });
     setIsSubmitting(false);
     if (!res.success || !res.data) {
-      setError(res.error ?? "No se pudo publicar el mensaje");
+      setError(res.error ?? dict.social.composer.publishErrorFallback);
       return;
     }
 
@@ -110,7 +112,7 @@ export function MobilePostComposerModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Nueva publicación"
+      aria-label={dict.social.composer.mobileDialogAria}
       className="fixed inset-0 z-50 flex flex-col justify-end bg-black/60 backdrop-blur-xs sm:hidden animate-in fade-in duration-150"
       onClick={onClose}
     >
@@ -126,7 +128,7 @@ export function MobilePostComposerModal({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar ventana"
+            aria-label={dict.social.composer.mobileCloseAria}
             className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100"
           >
             <X className="h-5 w-5" aria-hidden="true" />
@@ -140,7 +142,7 @@ export function MobilePostComposerModal({
             rows={3}
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            placeholder="Escribe en Mareona..."
+            placeholder={dict.social.composer.defaultPlaceholder}
             maxLength={MAX_USER_BODY_LENGTH}
             className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
           />

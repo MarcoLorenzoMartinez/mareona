@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
 import { useSocialNotifications } from "./use-social-notifications";
 import { useOfflineGuard } from "@/lib/pwa/use-offline-guard";
+import { getDictionary } from "@/i18n";
 
 function MobileNavList({
   pathname,
@@ -15,11 +16,12 @@ function MobileNavList({
   readonly pathname: string | null;
   readonly unreadSocialCount?: number;
 }) {
+  const dict = getDictionary();
   const { isBlocked, guardNavigation } = useOfflineGuard();
 
   return (
     <nav
-      aria-label="Navegación móvil"
+      aria-label={dict.layout.nav.mobileAria}
       className="fixed bottom-0 inset-x-0 z-50 border-t border-[var(--border)] bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
     >
       <ul className="grid grid-cols-5 items-center">
@@ -58,7 +60,7 @@ function MobileNavList({
                   {item.href === "/social" && unreadSocialCount > 0 && (
                     <span
                       className="absolute -top-1 -right-2 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-[var(--primary)] px-1 text-[9px] font-bold tabular-nums text-white ring-2 ring-white"
-                      aria-label={`${unreadSocialCount} notificaciones en Social`}
+                      aria-label={`${unreadSocialCount} ${dict.layout.nav.notificationsAriaSuffix}`}
                     >
                       {unreadSocialCount > 9 ? "9+" : unreadSocialCount}
                     </span>

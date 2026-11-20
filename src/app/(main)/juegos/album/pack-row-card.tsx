@@ -4,6 +4,7 @@ import type { Card } from "@/lib/cards/types";
 import { HistoricalCard } from "@/components/cards/historical-card";
 import { CardBack } from "@/components/cards/card-back";
 import { CardPackDuplicateTag } from "@/components/cards/card-duplicate-badge";
+import { getDictionary } from "@/i18n";
 
 interface PackRowCardProps {
   readonly card: Card;
@@ -28,6 +29,7 @@ export function PackRowCard({
   index,
   onReveal,
 }: PackRowCardProps) {
+  const dict = getDictionary();
   const ovr = card.ovr ?? 70;
   const isGoldHype = ovr >= 86;
   const isSilverHype = ovr >= 80 && ovr < 86;
@@ -93,7 +95,7 @@ export function PackRowCard({
         aria-label={
           isRevealed
             ? `${card.knownAs}, ${card.eraLabel}`
-            : `Cromo ${index + 1} por descubrir`
+            : `${dict.games.album.packs.cardUnrevealedPrefix} ${index + 1} ${dict.games.album.packs.cardUnrevealedSuffix}`
         }
         className={`relative ${cardWidthClass} aspect-[63/90] perspective-1000 transition-shadow duration-300 rounded-none ${glowStyle} ${
           !isRevealed ? "cursor-pointer hover:scale-[1.03] active:scale-[0.98]" : ""
@@ -119,7 +121,7 @@ export function PackRowCard({
             <CardBack
               size="fill"
               tier={backTier}
-              title={`Cromo #${index + 1} por descubrir`}
+              title={`${dict.games.album.packs.cardBackPrefix}${index + 1} ${dict.games.album.packs.cardUnrevealedSuffix}`}
               className="h-full w-full"
             />
           </div>

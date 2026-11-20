@@ -3,6 +3,7 @@
 import type { CardDecade } from "@/lib/cards/types";
 import { CARD_DECADES } from "@/lib/cards/schemas";
 import type { SpecialCategory } from "./grid-filter-types.ts";
+import { getDictionary } from "@/i18n";
 
 interface GridFilterCategoriesProps {
   readonly selectedDecades: ReadonlySet<CardDecade>;
@@ -14,11 +15,6 @@ interface GridFilterCategoriesProps {
   readonly onReset: () => void;
 }
 
-const SECTION_OPTIONS: readonly { readonly id: SpecialCategory; readonly label: string }[] = [
-  { id: "crests", label: "Identidad" },
-  { id: "moments", label: "Momentos" },
-];
-
 export function GridFilterCategories({
   selectedDecades,
   selectedCategories,
@@ -28,6 +24,11 @@ export function GridFilterCategories({
   onToggleDecade,
   onReset,
 }: GridFilterCategoriesProps) {
+  const dict = getDictionary();
+  const sectionOptions: readonly { readonly id: SpecialCategory; readonly label: string }[] = [
+    { id: "crests", label: dict.games.album.grid.identityCategory },
+    { id: "moments", label: dict.games.album.grid.momentsCategory },
+  ];
   return (
     <div className="flex flex-wrap items-center gap-1.5 text-xs">
       {/* Opción 'Todas' */}
@@ -40,7 +41,7 @@ export function GridFilterCategories({
             : "border border-[var(--border)] bg-white text-neutral-700 hover:border-[#e2001a]/50"
         }`}
       >
-        Todas
+        {dict.games.album.grid.allCategories}
       </button>
 
       {/* Duplicados */}
@@ -53,7 +54,7 @@ export function GridFilterCategories({
             : "border border-[var(--border)] bg-white text-neutral-700 hover:border-[#e2001a]/50"
         }`}
       >
-        <span>Duplicados</span>
+        <span>{dict.games.album.grid.duplicatesCategory}</span>
         {duplicateCount > 0 && (
           <span
             className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
@@ -66,7 +67,7 @@ export function GridFilterCategories({
       </button>
 
       {/* Secciones Especiales: Identidad y Momentos */}
-      {SECTION_OPTIONS.map((sec) => {
+      {sectionOptions.map((sec) => {
         const isSelected = sec.id === "crests"
           ? selectedCategories.has("crests")
           : selectedCategories.has(sec.id);

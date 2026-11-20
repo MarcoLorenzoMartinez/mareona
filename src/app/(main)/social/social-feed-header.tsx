@@ -5,6 +5,7 @@ import { MessageSquare } from "lucide-react";
 import { FeedTabSelector, type SocialFeedTab } from "./feed-tab-selector";
 import { FriendsModal } from "./friends-modal";
 import type { FriendSummary } from "@/lib/social/friendship-schemas";
+import { getDictionary } from "@/i18n";
 
 interface SocialFeedHeaderProps {
   readonly activeTab: SocialFeedTab;
@@ -27,6 +28,7 @@ export function SocialFeedHeader({
   onFriendsOpenChange,
   friendsModalTab = "friends",
 }: SocialFeedHeaderProps) {
+  const dict = getDictionary();
   const isMessagesActive = activeTab === "messages";
 
   return (
@@ -37,7 +39,7 @@ export function SocialFeedHeader({
         <button
           type="button"
           onClick={() => onTabChange("messages")}
-          aria-label="Ver mensajes directos"
+          aria-label={dict.social.feed.messagesButtonAria}
           aria-pressed={isMessagesActive}
           className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold shadow-xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
             isMessagesActive
@@ -46,7 +48,7 @@ export function SocialFeedHeader({
           }`}
         >
           <MessageSquare className="h-3.5 w-3.5" aria-hidden="true" />
-          <span className="hidden xs:inline sm:inline">Mensajes</span>
+          <span className="hidden xs:inline sm:inline">{dict.social.feed.messagesButtonLabel}</span>
           {unreadMessagesCount > 0 && (
             <span
               className={`inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold tabular-nums ${

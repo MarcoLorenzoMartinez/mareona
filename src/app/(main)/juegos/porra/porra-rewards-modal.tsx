@@ -10,31 +10,41 @@ import {
   OUTCOME_POINTS,
   SCORER_POINTS,
 } from '@/lib/porra/engine';
+import { getDictionary } from '@/i18n';
 
 interface PorraRewardsModalProps {
   readonly isOpen: boolean;
   readonly onClose: () => void;
 }
 
-const REWARD_STEPS: readonly {
-  readonly tier: PackTier;
-  readonly pointsLabel: string;
-}[] = [
-  { tier: 'aficionado', pointsLabel: '1 – 2 pts' },
-  { tier: 'rojiblanco', pointsLabel: '3 – 4 pts' },
-  { tier: 'leyenda', pointsLabel: '5+ pts' },
-];
-
-const SCORING_RULES: readonly {
-  readonly label: string;
-  readonly points: string;
-}[] = [
-  { label: 'Marcador exacto', points: `+${EXACT_SCORE_POINTS} pts` },
-  { label: 'Signo 1X2', points: `+${OUTCOME_POINTS} pts` },
-  { label: 'Por cada goleador acertado', points: `+${SCORER_POINTS} pt` },
-];
-
 export function PorraRewardsModal({ isOpen, onClose }: PorraRewardsModalProps) {
+  const dict = getDictionary();
+  const rewardSteps: readonly {
+    readonly tier: PackTier;
+    readonly pointsLabel: string;
+  }[] = [
+    { tier: 'aficionado', pointsLabel: dict.games.porra.rewardsModal.pointsLabel.low },
+    { tier: 'rojiblanco', pointsLabel: dict.games.porra.rewardsModal.pointsLabel.mid },
+    { tier: 'leyenda', pointsLabel: dict.games.porra.rewardsModal.pointsLabel.high },
+  ];
+
+  const scoringRules: readonly {
+    readonly label: string;
+    readonly points: string;
+  }[] = [
+    {
+      label: dict.games.porra.rewardsModal.rules.exactScore,
+      points: `+${EXACT_SCORE_POINTS} ${dict.games.porra.pendingRewards.pointPlural}`,
+    },
+    {
+      label: dict.games.porra.rewardsModal.rules.outcome,
+      points: `+${OUTCOME_POINTS} ${dict.games.porra.pendingRewards.pointPlural}`,
+    },
+    {
+      label: dict.games.porra.rewardsModal.rules.scorer,
+      points: `+${SCORER_POINTS} ${dict.games.porra.pendingRewards.pointSingular}`,
+    },
+  ];
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -63,12 +73,12 @@ export function PorraRewardsModal({ isOpen, onClose }: PorraRewardsModalProps) {
             id="porra-rewards-modal-title"
             className="font-sans text-base font-bold tracking-tight text-[var(--foreground)]"
           >
-            Recompensas por jornada
+            {dict.games.porra.rewardsModal.title}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar ventana de recompensas"
+            aria-label={dict.games.porra.rewardsModal.closeAria}
             className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[var(--foreground-muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--foreground)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,7 +89,7 @@ export function PorraRewardsModal({ isOpen, onClose }: PorraRewardsModalProps) {
 
         {/* Escalones visuales de sobres */}
         <div className="mt-5 grid grid-cols-3 gap-2.5 sm:gap-3">
-          {REWARD_STEPS.map(({ tier, pointsLabel }) => {
+          {rewardSteps.map(({ tier, pointsLabel }) => {
             const config = PACK_TIERS[tier];
             return (
               <div
@@ -98,10 +108,10 @@ export function PorraRewardsModal({ isOpen, onClose }: PorraRewardsModalProps) {
 
                 <div className="flex flex-col gap-0.5">
                   <span className="font-sans text-xs font-bold leading-tight text-[var(--foreground)]">
-                    {config.name.replace('Sobre ', '')}
+                    {config.name.replace(dict.games.porra.rewardsModal.packPrefixToStrip, '')}
                   </span>
                   <span className="font-sans text-[11px] font-medium tabular-nums text-[var(--foreground-muted)]">
-                    {config.cardCount} cromos
+                    {config.cardCount} {dict.games.porra.rewardsModal.cardsSuffix}
                   </span>
                 </div>
               </div>
@@ -111,7 +121,7 @@ export function PorraRewardsModal({ isOpen, onClose }: PorraRewardsModalProps) {
 
         {/* Baremo de puntos limpio */}
         <div className="mt-5 rounded-xl border border-[var(--border)] divide-y divide-[var(--border)] overflow-hidden">
-          {SCORING_RULES.map((rule) => (
+          {scoringRules.map((rule) => (
             <div
               key={rule.label}
               className="flex items-center justify-between bg-white px-3.5 py-2.5"

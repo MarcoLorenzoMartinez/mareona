@@ -2,10 +2,13 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { getTriviaForDate, TRIVIA_EPOCH_DATE } from '../../../../lib/trivia/engine';
 import { TriviaClient } from './trivia-client';
+import { getDictionary } from '@/i18n';
+
+const dict = getDictionary();
 
 export const metadata: Metadata = {
-  title: 'La Pregunta del Día',
-  description: 'Desafío diario de historia y curiosidades del Real Sporting de Gijón.',
+  title: dict.games.trivia.metadata.title,
+  description: dict.games.trivia.metadata.description,
 };
 
 interface PageProps {

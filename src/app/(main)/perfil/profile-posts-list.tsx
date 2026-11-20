@@ -17,12 +17,7 @@ import {
 } from "@/lib/social/format";
 import { getUserSocialProfile } from "@/lib/social/user-profile-actions";
 import type { SocialPost } from "@/lib/social/types";
-
-const ORIGIN_TABS: readonly { readonly id: PostOriginFilter; readonly label: string }[] = [
-  { id: "all", label: "Todas" },
-  { id: "social", label: "Social" },
-  { id: "grada", label: "Grada" },
-];
+import { getDictionary } from "@/i18n";
 
 interface ProfilePostsListProps {
   readonly userId: string;
@@ -37,6 +32,12 @@ export function ProfilePostsList({
   username,
   avatarUrl,
 }: ProfilePostsListProps) {
+  const dict = getDictionary();
+  const originTabs: readonly { readonly id: PostOriginFilter; readonly label: string }[] = [
+    { id: "all", label: dict.profile.posts.originTabs.all },
+    { id: "social", label: dict.profile.posts.originTabs.social },
+    { id: "grada", label: dict.profile.posts.originTabs.grada },
+  ];
   const [posts, setPosts] = useState<readonly SocialPost[]>([]);
   const [originFilter, setOriginFilter] = useState<PostOriginFilter>("all");
   const [isLoading, setIsLoading] = useState(true);
@@ -59,25 +60,25 @@ export function ProfilePostsList({
     const res = await deleteSocialPost({ postId });
     if (!res.success) {
       setPosts(previous);
-      toast.error(res.error ?? "No se pudo borrar la publicación");
+      toast.error(res.error ?? dict.profile.posts.deleteErrorFallback);
       return;
     }
-    toast.success("Publicación eliminada");
+    toast.success(dict.profile.posts.deleteSuccess);
   };
 
   const filteredPosts = filterPostsByOrigin(posts, originFilter);
   const emptyMessage =
     originFilter === "social"
-      ? "Aún no has publicado en Social"
+      ? dict.profile.posts.emptySocial
       : originFilter === "grada"
-        ? "Aún no has publicado en Grada"
-        : "Aún no has publicado en la tertulia";
+        ? dict.profile.posts.emptyGrada
+        : dict.profile.posts.emptyAll;
 
   return (
-    <section aria-label="Mis publicaciones">
+    <section aria-label={dict.profile.posts.sectionAria}>
       <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] bg-white px-4 py-2.5 sm:px-5">
         <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-          Publicaciones{" "}
+          {dict.profile.posts.title}{" "}
           {!isLoading && (
             <span className="font-sans tabular-nums text-neutral-400">
               ({filteredPosts.length})
@@ -87,10 +88,10 @@ export function ProfilePostsList({
 
         <div
           role="group"
-          aria-label="Filtrar publicaciones por origen"
+          aria-label={dict.profile.posts.filterAria}
           className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-0.5"
         >
-          {ORIGIN_TABS.map((tab) => {
+          {originTabs.map((tab) => {
             const isActive = originFilter === tab.id;
             return (
               <button
@@ -113,7 +114,7 @@ export function ProfilePostsList({
 
       {isLoading ? (
         <div className="px-4 py-10 text-center text-xs text-neutral-400">
-          Cargando publicaciones...
+          {dict.profile.posts.loading}
         </div>
       ) : filteredPosts.length === 0 ? (
         <div className="px-4 py-12 text-center">

@@ -5,9 +5,12 @@ import {
   OFFLINE_GAME_LINKS,
   type OfflineLink,
 } from "@/lib/pwa/offline-routes";
+import { getDictionary } from "@/i18n";
+
+const dict = getDictionary();
 
 export const metadata: Metadata = {
-  title: "Sin conexión",
+  title: dict.layout.offline.title,
   robots: { index: false },
 };
 
@@ -40,14 +43,14 @@ export default function OfflinePage() {
     <div className="mx-auto w-full max-w-xl space-y-8 py-2 md:py-4">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)] md:text-3xl">
-          Sin conexión
+          {dict.layout.offline.title}
         </h1>
         <p className="text-sm text-[var(--muted-foreground)]">
-          No tienes conexión, mientras tanto puedes visitar las siguientes secciones:
+          {dict.layout.offline.description}
         </p>
       </div>
-      <LinkGroup title="Histórico" links={OFFLINE_ARCHIVE_LINKS} />
-      <LinkGroup title="Juegos" links={OFFLINE_GAME_LINKS} />
+      <LinkGroup title={dict.layout.offline.historySection} links={OFFLINE_ARCHIVE_LINKS} />
+      <LinkGroup title={dict.layout.offline.gamesSection} links={OFFLINE_GAME_LINKS} />
     </div>
   );
 }

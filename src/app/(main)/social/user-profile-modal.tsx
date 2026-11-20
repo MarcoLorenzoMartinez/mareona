@@ -11,6 +11,7 @@ import { getUserSocialProfile } from "@/lib/social/user-profile-actions";
 import { sendFriendRequest, removeFriendship, respondFriendRequest } from "@/lib/social/friends-actions";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
 import type { SocialPost } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 interface UserProfileModalProps {
   readonly userId: string | null;
@@ -30,6 +31,7 @@ export function UserProfileModal({
   onOpenThread,
   onStartChat,
 }: UserProfileModalProps) {
+  const dict = getDictionary();
   const { user, openAuthModal } = useAuth();
   const [profile, setProfile] = useState<UserSocialProfile | null>(null);
   const [posts, setPosts] = useState<readonly SocialPost[]>([]);
@@ -66,7 +68,7 @@ export function UserProfileModal({
     if (!user) {
       onClose();
       openAuthModal("signin");
-      toast.info("Inicia sesión para enviar solicitudes de amistad");
+      toast.info(dict.social.userProfileModal.signInForFriendRequestToast);
       return;
     }
     if (!profile) return;
@@ -77,13 +79,13 @@ export function UserProfileModal({
           await respondFriendRequest({ friendshipId: profile.friendshipId, action: "accept" });
         }
         setProfile((prev) => (prev ? { ...prev, friendshipStatus: "accepted" } : null));
-        toast.success("Solicitud de amistad aceptada");
+        toast.success(dict.social.userProfileModal.requestAcceptedToast);
       } else {
         if (userId.startsWith("demo-")) {
           setProfile((prev) =>
             prev ? { ...prev, friendshipStatus: "pending_sent", friendshipId: `demo-friendship-${userId}` } : null
           );
-          toast.success("Solicitud de amistad enviada");
+          toast.success(dict.social.userProfileModal.requestSentToast);
           return;
         }
 
@@ -92,9 +94,9 @@ export function UserProfileModal({
           setProfile((prev) =>
             prev ? { ...prev, friendshipStatus: "pending_sent", friendshipId: res.data?.friendshipId } : null
           );
-          toast.success("Solicitud de amistad enviada");
+          toast.success(dict.social.userProfileModal.requestSentToast);
         } else {
-          toast.error(res.error || "No se pudo enviar la solicitud de amistad");
+          toast.error(res.error || dict.social.userProfileModal.requestErrorFallback);
         }
       }
     });
@@ -108,7 +110,7 @@ export function UserProfileModal({
         await removeFriendship(fId);
       }
       setProfile((prev) => (prev ? { ...prev, friendshipStatus: "none", friendshipId: undefined } : null));
-      toast.success("Amistad eliminada");
+      toast.success(dict.social.userProfileModal.friendRemovedToast);
     });
   };
 
@@ -116,7 +118,7 @@ export function UserProfileModal({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Perfil del aficionado"
+      aria-label={dict.social.userProfileModal.dialogAria}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
       onClick={onClose}
     >
@@ -125,11 +127,11 @@ export function UserProfileModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-2.5 sm:px-5">
-          <h2 className="text-sm font-bold text-neutral-900">Perfil</h2>
+          <h2 className="text-sm font-bold text-neutral-900">{dict.social.userProfileModal.title}</h2>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar perfil"
+            aria-label={dict.social.userProfileModal.closeAria}
             className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-[var(--surface)] hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             <X className="h-4 w-4" aria-hidden="true" />
@@ -137,7 +139,7 @@ export function UserProfileModal({
         </div>
 
         {isLoading || !profile ? (
-          <div className="py-16 text-center text-xs text-neutral-400">Cargando perfil...</div>
+          <div className="py-16 text-center text-xs text-neutral-400">{dict.social.userProfileModal.loading}</div>
         ) : (
           <div className="flex-1 overflow-y-auto">
             <ProfileModalHeader

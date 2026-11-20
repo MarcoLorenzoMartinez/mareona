@@ -2,6 +2,7 @@
 "use client";
 
 import type { PlayerCategory } from "@/lib/lineup-builder/types";
+import { getDictionary } from "@/i18n";
 
 interface RosterFilterPillsProps {
   readonly selectedCategory: PlayerCategory | "all";
@@ -9,13 +10,6 @@ interface RosterFilterPillsProps {
   readonly selectedPosition: string;
   readonly onSelectPosition: (pos: string) => void;
 }
-
-const CATEGORIES: readonly { readonly key: PlayerCategory | "all"; readonly label: string }[] = [
-  { key: "all", label: "Todos" },
-  { key: "first_team", label: "1er Equipo" },
-  { key: "filial", label: "Sporting At." },
-  { key: "juvenil", label: "Juvenil DH" },
-];
 
 const POSITIONS = ["all", "POR", "DEF", "MED", "DEL"] as const;
 
@@ -25,14 +19,22 @@ export function RosterFilterPills({
   selectedPosition,
   onSelectPosition,
 }: RosterFilterPillsProps) {
+  const dict = getDictionary();
+  const categories: readonly { readonly key: PlayerCategory | "all"; readonly label: string }[] = [
+    { key: "all", label: dict.lineupBuilder.roster.categories.all },
+    { key: "first_team", label: dict.lineupBuilder.roster.categories.firstTeam },
+    { key: "filial", label: dict.lineupBuilder.roster.categories.filial },
+    { key: "juvenil", label: dict.lineupBuilder.roster.categories.juvenil },
+  ];
+
   return (
     <>
       <div
         role="radiogroup"
-        aria-label="Filtrar por categoría"
+        aria-label={dict.lineupBuilder.roster.categoryAria}
         className="mt-2.5 flex items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 overflow-x-auto scrollbar-none"
       >
-        {CATEGORIES.map((cat) => {
+        {categories.map((cat) => {
           const isSelected = selectedCategory === cat.key;
           return (
             <button
@@ -55,7 +57,7 @@ export function RosterFilterPills({
 
       <div
         role="radiogroup"
-        aria-label="Filtrar por línea táctica"
+        aria-label={dict.lineupBuilder.roster.positionAria}
         className="mt-2 flex items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
       >
         {POSITIONS.map((pos) => {
@@ -73,7 +75,7 @@ export function RosterFilterPills({
                   : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
               }`}
             >
-              {pos === "all" ? "Líneas" : pos}
+              {pos === "all" ? dict.lineupBuilder.roster.allPositionsLabel : pos}
             </button>
           );
         })}

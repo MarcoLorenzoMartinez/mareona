@@ -6,6 +6,7 @@ import { PorraScoreCounter } from './porra-score-counter';
 import { PorraScorersPicker } from './porra-scorers-picker';
 import { isPorraSubmissionOpen } from '@/lib/porra/engine';
 import type { PorraMatch, PorraPrediction } from '@/lib/porra/types';
+import { getDictionary } from '@/i18n';
 
 interface PorraMatchCardProps {
   readonly match: PorraMatch;
@@ -24,6 +25,7 @@ export function PorraMatchCard({
   isAuthenticated = false,
   onRequireAuth,
 }: PorraMatchCardProps) {
+  const dict = getDictionary();
   const [homeScore, setHomeScore] = useState<number>(() => existingPrediction?.homeScore ?? 0);
   const [awayScore, setAwayScore] = useState<number>(() => existingPrediction?.awayScore ?? 0);
   const [scorers, setScorers] = useState<string[]>(() => existingPrediction?.sportingScorers ?? []);
@@ -96,12 +98,12 @@ export function PorraMatchCard({
           score={displayedHome}
           isLocked={isLocked}
           onScoreChange={(delta) => handleScoreChange(true, delta)}
-          minusLabel="Restar gol local"
-          plusLabel="Añadir gol local"
+          minusLabel={dict.games.porra.matchCard.minusHomeAria}
+          plusLabel={dict.games.porra.matchCard.plusHomeAria}
         />
 
         <span className="text-sm font-bold text-neutral-400 select-none" aria-hidden="true">
-          VS
+          {dict.games.porra.matchCard.vs}
         </span>
 
         <PorraScoreCounter
@@ -111,8 +113,8 @@ export function PorraMatchCard({
           score={displayedAway}
           isLocked={isLocked}
           onScoreChange={(delta) => handleScoreChange(false, delta)}
-          minusLabel="Restar gol visitante"
-          plusLabel="Añadir gol visitante"
+          minusLabel={dict.games.porra.matchCard.minusAwayAria}
+          plusLabel={dict.games.porra.matchCard.plusAwayAria}
         />
       </div>
 
@@ -138,12 +140,12 @@ export function PorraMatchCard({
         }`}
       >
         {!isAuthenticated
-          ? 'Iniciar sesión para pronosticar'
+          ? dict.games.porra.matchCard.signInToPredict
           : isSubmitted
-          ? 'Pronóstico registrado'
+          ? dict.games.porra.matchCard.predictionSaved
           : !isOpen
-          ? 'Plazo de pronóstico cerrado'
-          : 'Confirmar pronóstico'}
+          ? dict.games.porra.matchCard.predictionClosed
+          : dict.games.porra.matchCard.confirmPrediction}
       </button>
     </form>
   );

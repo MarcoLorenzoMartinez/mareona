@@ -7,6 +7,7 @@ import Image from "next/image";
 import type { TriviaDailyChallenge, TriviaPlayerAttempt, TriviaStats } from "@/lib/trivia/types";
 import { PlayerPhoto } from "@/components/media/player-photo";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
+import { getDictionary } from "@/i18n";
 
 interface TriviaResultModalProps {
   readonly isOpen: boolean;
@@ -25,6 +26,7 @@ export function TriviaResultModal({
   attempt,
   onOpenArchive,
 }: TriviaResultModalProps) {
+  const dict = getDictionary();
   const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   if (!isOpen) return null;
@@ -50,13 +52,13 @@ export function TriviaResultModal({
         {/* Cabecera limpia y neutral */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
           <h2 id="trivia-modal-title" className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-            Estadísticas
+            {dict.games.trivia.resultModal.title}
           </h2>
           <button
             type="button"
             onClick={onClose}
             className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
-            aria-label="Cerrar modal"
+            aria-label={dict.games.trivia.resultModal.closeAria}
           >
             ✕
           </button>
@@ -90,19 +92,19 @@ export function TriviaResultModal({
         {/* Resumen métrico 4 columnas */}
         <div className="mt-5 grid grid-cols-4 items-center border-y border-neutral-100 py-3.5 text-center">
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Partidas</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.trivia.resultModal.played}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.played}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Aciertos</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.trivia.resultModal.winRate}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{winPercentage}%</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Racha</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.trivia.resultModal.currentStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-[#e2001a]">{stats.currentStreak}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Máxima</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.trivia.resultModal.maxStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.maxStreak}</span>
           </div>
         </div>
@@ -113,7 +115,7 @@ export function TriviaResultModal({
             href="/juegos"
             className="flex-1 rounded-xl border border-neutral-200 bg-white py-2.5 text-center text-xs font-bold text-neutral-700 hover:bg-neutral-50 active:scale-98 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Volver a Juegos
+            {dict.games.trivia.resultModal.backToGames}
           </Link>
           {onOpenArchive ? (
             <button
@@ -121,7 +123,7 @@ export function TriviaResultModal({
               onClick={() => { onClose(); onOpenArchive(); }}
               className="flex-1 rounded-xl bg-[#e2001a] py-2.5 text-center text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-98 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              Jugar archivo
+              {dict.games.trivia.resultModal.playArchive}
             </button>
           ) : (
             <button
@@ -129,7 +131,7 @@ export function TriviaResultModal({
               onClick={onClose}
               className="flex-1 rounded-xl bg-[#e2001a] py-2.5 text-center text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-98 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              Aceptar
+              {dict.games.trivia.resultModal.acceptButton}
             </button>
           )}
         </div>

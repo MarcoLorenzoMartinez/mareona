@@ -15,12 +15,14 @@ import { TriviaResultModal } from './trivia-result-modal';
 import { TriviaArchiveModal } from './trivia-archive-modal';
 import { TriviaArenaBackground } from './trivia-arena-background';
 import { TriviaSolvedCard } from './trivia-solved-card';
+import { getDictionary } from '@/i18n';
 
 interface TriviaClientProps {
   challenge: TriviaDailyChallenge;
 }
 
 export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps) {
+  const dict = getDictionary();
   const { user } = useAuth();
   const [activeDate, setActiveDate] = useState<string>(initialChallenge.dateStr);
   const [challenge, setChallenge] = useState<TriviaDailyChallenge>(initialChallenge);
@@ -48,7 +50,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
     if (isAnswered) return;
     const finalAnswer = (overrideAnswer ?? inputVal).trim();
     if (!finalAnswer) {
-      setErrorMsg('Por favor escribe o selecciona una respuesta.');
+      setErrorMsg(dict.games.trivia.emptyAnswerError);
       return;
     }
     setErrorMsg('');
@@ -116,7 +118,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
               onClick={() => handleSubmit()}
               className="mt-2 flex h-12 w-full items-center justify-center rounded-xl bg-[#e2001a] px-4 text-xs sm:text-sm font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-[0.99] transition-all select-none"
             >
-              Confirmar Respuesta
+              {dict.games.trivia.confirmAnswerButton}
             </button>
           </div>
         ) : (

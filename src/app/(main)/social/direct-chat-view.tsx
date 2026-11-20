@@ -6,6 +6,7 @@ import { DirectChatHeader } from "./direct-chat-header";
 import { DirectChatComposer } from "./direct-chat-composer";
 import { DirectMessageBubble } from "./direct-message-bubble";
 import { useDirectChatMessages } from "./use-direct-chat-messages";
+import { getDictionary } from "@/i18n";
 
 interface DirectChatViewProps {
   readonly conversationId: string;
@@ -25,6 +26,7 @@ export function DirectChatView({
   onBack,
   onOpenProfile,
 }: DirectChatViewProps) {
+  const dict = getDictionary();
   const [body, setBody] = useState("");
   const {
     messages,
@@ -57,10 +59,10 @@ export function DirectChatView({
 
       <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-[var(--surface)]/30">
         {isInitialLoading ? (
-          <div className="py-12 text-center text-xs text-neutral-400">Cargando conversación...</div>
+          <div className="py-12 text-center text-xs text-neutral-400">{dict.social.messages.loadingChat}</div>
         ) : messages.length === 0 ? (
           <div className="py-12 text-center text-xs text-neutral-400">
-            Comienza la conversación con {otherUser.name}. ¡Comenta la actualidad del Sporting!
+            {dict.social.messages.emptyChatPrefix} {otherUser.name}. {dict.social.messages.emptyChatSuffix}
           </div>
         ) : (
           messages.map((m) => (

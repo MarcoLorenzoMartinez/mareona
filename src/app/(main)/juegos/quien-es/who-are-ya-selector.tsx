@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect, useId, useCallback } from 'react';
 import { matchesSearchQuery } from '@/lib/utils/search-utils';
+import { getDictionary } from '@/i18n';
 
 export interface SelectorOption {
   id: string | number;
@@ -20,9 +21,11 @@ interface WhoAreYaSelectorProps {
 export function WhoAreYaSelector({
   options,
   onSelect,
-  placeholder = 'Escribe para buscar...',
+  placeholder,
   disabled = false,
 }: WhoAreYaSelectorProps) {
+  const dict = getDictionary();
+  const resolvedPlaceholder = placeholder ?? dict.games.whoAreYa.selectorDefaultPlaceholder;
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -113,7 +116,7 @@ export function WhoAreYaSelector({
           }
           aria-autocomplete="list"
           disabled={disabled}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           value={query}
           onKeyDown={handleKeyDown}
           onChange={(e) => {
@@ -134,7 +137,7 @@ export function WhoAreYaSelector({
               setOpen(false);
               setHighlightedIndex(-1);
             }}
-            aria-label="Limpiar búsqueda"
+            aria-label={dict.games.whoAreYa.clearSearchAria}
             className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           >
             ✕

@@ -3,6 +3,7 @@ import { PlayerPhoto } from '@/components/media/player-photo';
 import type { HigherLowerGuess, HigherLowerMode, HigherLowerPlayer } from '@/lib/higher-lower/types';
 import { formatMetricValue, getMetricValue } from '@/lib/higher-lower/engine';
 import { HigherLowerControls } from './higher-lower-controls';
+import { getDictionary } from '@/i18n';
 
 interface HigherLowerCardProps {
   player: HigherLowerPlayer;
@@ -23,6 +24,7 @@ export function HigherLowerCard({
   onGuess,
   disabled = false,
 }: HigherLowerCardProps) {
+  const dict = getDictionary();
   const metricValue = getMetricValue(player, mode);
   const formattedValue = formatMetricValue(metricValue, mode);
 
@@ -66,7 +68,11 @@ export function HigherLowerCard({
       {/* Sección del dato estadístico / botones de acción con altura simétrica garantizada */}
       <div className="mt-2 sm:mt-4 w-full border-t border-neutral-100 pt-2 sm:pt-3 text-center">
         <span className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-neutral-500 block truncate mb-1">
-          {mode === 'goals' ? 'Goles Oficiales' : mode === 'minutes' ? 'Minutos Disputados' : 'Partidos Oficiales'}
+          {mode === 'goals'
+            ? dict.games.higherLower.card.metrics.goals
+            : mode === 'minutes'
+            ? dict.games.higherLower.card.metrics.minutes
+            : dict.games.higherLower.card.metrics.matches}
         </span>
 
         <div className="flex items-center justify-center h-[82px] sm:h-[96px] w-full">
@@ -92,12 +98,12 @@ export function HigherLowerCard({
               </span>
               {outcome === 'correct' && (
                 <span className="mt-0.5 text-[10px] sm:text-xs font-black text-emerald-700">
-                  ¡Acierto! +1
+                  {dict.games.higherLower.card.correctFeedback}
                 </span>
               )}
               {outcome === 'wrong' && (
                 <span className="mt-0.5 text-[10px] sm:text-xs font-black text-[#e2001a]">
-                  ¡Fin de racha!
+                  {dict.games.higherLower.card.wrongFeedback}
                 </span>
               )}
             </div>

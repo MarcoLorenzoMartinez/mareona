@@ -8,6 +8,7 @@ import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { formatRelativeTime } from "@/lib/social/format";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
 import type { SocialPost } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 interface UserProfilePostsSectionProps {
   readonly profile: UserSocialProfile;
@@ -22,20 +23,21 @@ export function UserProfilePostsSection({
   onOpenThread,
   onClose,
 }: UserProfilePostsSectionProps) {
+  const dict = getDictionary();
   const displayName = profile.displayName || profile.username;
 
   return (
     <div>
       <div className="border-b border-[var(--border)] bg-[var(--surface)]/50 px-4 py-2 sm:px-5">
         <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-          Publicaciones{" "}
+          {dict.social.userProfileModal.postsTitle}{" "}
           <span className="font-sans tabular-nums text-neutral-400">({posts.length})</span>
         </h4>
       </div>
 
       {posts.length === 0 ? (
         <p className="px-4 py-10 text-center text-sm font-semibold text-neutral-600">
-          Aún no ha publicado en la tertulia
+          {dict.social.userProfileModal.noPosts}
         </p>
       ) : (
         posts.map((post) => {

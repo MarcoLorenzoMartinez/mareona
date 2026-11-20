@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
+import { getDictionary } from "@/i18n";
 
 interface PostDeleteButtonProps {
   readonly onConfirm: () => void;
@@ -13,6 +14,7 @@ export function PostDeleteButton({
   onConfirm,
   onConfirmingChange,
 }: PostDeleteButtonProps) {
+  const dict = getDictionary();
   const [isConfirming, setIsConfirming] = useState(false);
 
   const setConfirming = (next: boolean) => {
@@ -34,20 +36,20 @@ export function PostDeleteButton({
   if (isConfirming) {
     return (
       <div className="flex items-center gap-1 animate-in fade-in duration-100">
-        <span className="text-[11px] font-semibold text-red-600">¿Borrar?</span>
+        <span className="text-[11px] font-semibold text-red-600">{dict.social.post.confirmDeletePrompt}</span>
         <button
           type="button"
           onClick={handleDelete}
           className="rounded-full bg-[var(--primary)] px-2 py-0.5 text-[11px] font-bold text-white hover:bg-red-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
         >
-          Sí
+          {dict.social.post.confirmDeleteYes}
         </button>
         <button
           type="button"
           onClick={handleToggleConfirm}
           className="rounded-full px-2 py-0.5 text-[11px] font-semibold text-neutral-500 hover:bg-neutral-100 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
         >
-          No
+          {dict.social.post.confirmDeleteNo}
         </button>
       </div>
     );
@@ -57,7 +59,7 @@ export function PostDeleteButton({
     <button
       type="button"
       onClick={handleToggleConfirm}
-      aria-label="Borrar publicación"
+      aria-label={dict.social.post.deletePostAria}
       className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-red-50 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
     >
       <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />

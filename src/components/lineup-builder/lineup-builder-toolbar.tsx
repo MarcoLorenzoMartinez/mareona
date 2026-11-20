@@ -2,6 +2,7 @@
 "use client";
 
 import type { TacticalFormationKey } from "@/lib/lineup-builder/types";
+import { getDictionary } from "@/i18n";
 
 interface LineupBuilderToolbarProps {
   readonly formationKey: TacticalFormationKey;
@@ -29,16 +30,17 @@ export function LineupBuilderToolbar({
   onOpenShareModal,
   isExporting,
 }: LineupBuilderToolbarProps) {
+  const dict = getDictionary();
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-[var(--border)] bg-white p-4 shadow-2xs">
       {/* Selector de esquema táctico tipo píldora */}
       <div className="flex items-center gap-2.5 overflow-x-auto scrollbar-none py-1">
         <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider shrink-0">
-          Esquema:
+          {dict.lineupBuilder.toolbar.formationLabel}
         </span>
         <div
           role="radiogroup"
-          aria-label="Esquema táctico"
+          aria-label={dict.lineupBuilder.toolbar.formationAria}
           className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1 shrink-0"
         >
           {FORMATIONS.map((key) => {
@@ -70,7 +72,7 @@ export function LineupBuilderToolbar({
           onClick={onResetLineup}
           className="rounded-full border border-neutral-300 px-3.5 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors"
         >
-          Reiniciar
+          {dict.lineupBuilder.toolbar.resetButton}
         </button>
         <button
           type="button"
@@ -78,14 +80,14 @@ export function LineupBuilderToolbar({
           onClick={onDownload}
           className="inline-flex items-center gap-1.5 rounded-full border border-neutral-300 bg-white px-3.5 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 disabled:opacity-50 transition-colors"
         >
-          {isExporting ? "Generando..." : "Descargar Imagen"}
+          {isExporting ? dict.lineupBuilder.toolbar.generating : dict.lineupBuilder.toolbar.downloadButton}
         </button>
         <button
           type="button"
           onClick={onOpenShareModal}
           className="inline-flex items-center gap-1.5 rounded-full bg-[#e2001a] px-4 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-[#b30015] transition-colors"
         >
-          Compartir Once
+          {dict.lineupBuilder.toolbar.shareButton}
         </button>
       </div>
     </div>

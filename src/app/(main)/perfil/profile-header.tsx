@@ -3,15 +3,17 @@
 
 import { useAuth } from "@/context/auth-context";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
+import { getDictionary } from "@/i18n";
 
 interface ProfileHeaderProps {
   readonly onEdit: () => void;
 }
 
 export function ProfileHeader({ onEdit }: ProfileHeaderProps) {
+  const dict = getDictionary();
   const { profile, user, handleSignOut } = useAuth();
 
-  const displayName = profile?.display_name || profile?.username || "Aficionado";
+  const displayName = profile?.display_name || profile?.username || dict.auth.common.defaultFanName;
   const username = profile?.username || "aficionado";
 
   const createdAtFormatted = profile?.created_at
@@ -19,7 +21,7 @@ export function ProfileHeader({ onEdit }: ProfileHeaderProps) {
         month: "long",
         year: "numeric",
       })
-    : "temporada actual";
+    : dict.profile.header.currentSeasonFallback;
 
   return (
     <div className="border-b border-[var(--border)] bg-white px-4 py-5 sm:px-5">
@@ -37,7 +39,7 @@ export function ProfileHeader({ onEdit }: ProfileHeaderProps) {
             onClick={onEdit}
             className="min-h-9 rounded-full border border-[var(--border)] bg-white px-4 text-xs font-bold text-neutral-900 transition-colors hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Editar perfil
+            {dict.profile.header.editButton}
           </button>
 
           <button
@@ -45,7 +47,7 @@ export function ProfileHeader({ onEdit }: ProfileHeaderProps) {
             onClick={handleSignOut}
             className="min-h-9 rounded-full border border-[var(--border)] bg-white px-3.5 text-xs font-semibold text-[var(--primary)] transition-colors hover:border-red-200 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Cerrar sesión
+            {dict.profile.header.signOutButton}
           </button>
         </div>
       </div>
@@ -58,7 +60,7 @@ export function ProfileHeader({ onEdit }: ProfileHeaderProps) {
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-neutral-500">
-        <span>Desde {createdAtFormatted}</span>
+        <span>{dict.profile.header.sincePrefix} {createdAtFormatted}</span>
         {user?.email && (
           <>
             <span aria-hidden="true" className="text-neutral-300">·</span>

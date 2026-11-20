@@ -11,6 +11,7 @@ import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "./post-actions";
 import { PostAuthorLine } from "./post-author-line";
 import type { SocialPost } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 interface PostCardProps {
   readonly post: SocialPost;
@@ -27,6 +28,7 @@ export function PostCard({
   onDelete,
   onUpdate,
 }: PostCardProps) {
+  const dict = getDictionary();
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const repliesCount = post.repliesCount ?? post.replies?.length ?? 0;
@@ -46,7 +48,7 @@ export function PostCard({
       onClick={isEditing ? undefined : openThread}
       tabIndex={isEditing ? undefined : 0}
       role={isEditing ? "region" : "button"}
-      aria-label={`Publicación de ${post.authorName}`}
+      aria-label={`${dict.social.post.ariaPrefix} ${post.authorName}`}
       onKeyDown={(e) => {
         if (!isEditing && (e.key === "Enter" || e.key === " ")) {
           e.preventDefault();
@@ -65,7 +67,7 @@ export function PostCard({
           e.stopPropagation();
           if (post.userId) onOpenProfile?.(post.userId);
         }}
-        aria-label={`Ver perfil de ${post.authorName}`}
+        aria-label={`${dict.social.post.viewProfileAriaPrefix} ${post.authorName}`}
         className="h-fit shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
       >
         <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />

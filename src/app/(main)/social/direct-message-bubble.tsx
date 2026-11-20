@@ -3,6 +3,7 @@
 
 import { Trash2 } from "lucide-react";
 import type { DirectMessage } from "@/lib/social/direct-messages-types";
+import { getDictionary } from "@/i18n";
 
 interface DirectMessageBubbleProps {
   readonly message: DirectMessage;
@@ -15,6 +16,7 @@ export function DirectMessageBubble({
   isDeleting,
   onDelete,
 }: DirectMessageBubbleProps) {
+  const dict = getDictionary();
   return (
     <div
       className={`group flex flex-col ${
@@ -27,8 +29,8 @@ export function DirectMessageBubble({
             type="button"
             onClick={() => onDelete(message.id)}
             disabled={isDeleting}
-            aria-label="Eliminar mensaje enviado"
-            title="Eliminar mensaje"
+            aria-label={dict.social.messages.deleteMessageAria}
+            title={dict.social.messages.deleteMessageTitle}
             className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity duration-150 p-1.5 rounded-full text-neutral-400 hover:text-[var(--primary)] hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-40"
           >
             <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />

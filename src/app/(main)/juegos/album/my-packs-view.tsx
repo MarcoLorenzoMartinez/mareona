@@ -4,6 +4,7 @@ import type { DailyMissionState, PackTier, UserPackInventory } from "@/lib/cards
 import { PackCard } from "@/components/cards/pack-card";
 import { PackMissionsPanel } from "./pack-missions-panel";
 import { AlbumGuestPacksCard } from "./album-guest-packs-card";
+import { getDictionary } from "@/i18n";
 
 interface MyPacksViewProps {
   readonly isAuthenticated: boolean;
@@ -34,6 +35,7 @@ export function MyPacksView({
   onRecycleDuplicates,
   isOpening = false,
 }: MyPacksViewProps) {
+  const dict = getDictionary();
   const totalPacks =
     packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda;
 
@@ -55,23 +57,23 @@ export function MyPacksView({
         <AlbumGuestPacksCard onOpenAuth={onOpenAuth} />
       ) : (
         /* Área principal: Sobres en posesión */
-        <section aria-label="Tus sobres" className="flex flex-col gap-4">
+        <section aria-label={dict.games.album.packs.sectionAria} className="flex flex-col gap-4">
           <div className="flex items-center justify-between border-b border-[var(--border)] pb-2">
             <h2 className="font-sans text-xs font-black uppercase tracking-wider text-[var(--foreground-muted)]">
-              Tus sobres
+              {dict.games.album.packs.title}
             </h2>
             <span className="font-sans text-xs font-bold tabular-nums text-neutral-600">
-              {totalPacks} {totalPacks === 1 ? "sobre" : "sobres"}
+              {totalPacks} {totalPacks === 1 ? dict.games.album.packs.packSingular : dict.games.album.packs.packPlural}
             </span>
           </div>
 
           {totalPacks === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-neutral-50/50 py-12 px-4 text-center">
               <p className="text-sm font-bold text-neutral-800">
-                No tienes sobres pendientes de abrir
+                {dict.games.album.packs.emptyTitle}
               </p>
               <p className="mt-1 text-xs text-neutral-400">
-                Reclama tu visita diaria o juega los retos del día para conseguir más.
+                {dict.games.album.packs.emptySubtitle}
               </p>
             </div>
           ) : (

@@ -3,6 +3,7 @@
 
 import { useState, useTransition } from "react";
 import { resendConfirmationEmail } from "@/lib/auth/actions";
+import { getDictionary } from "@/i18n";
 
 interface AuthConfirmationNoticeProps {
   readonly email: string;
@@ -13,6 +14,7 @@ export function AuthConfirmationNotice({
   email,
   onBack,
 }: AuthConfirmationNoticeProps) {
+  const dict = getDictionary();
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<string | null>(null);
   const [feedbackType, setFeedbackType] = useState<"success" | "error">("success");
@@ -23,10 +25,10 @@ export function AuthConfirmationNotice({
       const res = await resendConfirmationEmail(email);
       if (res.success) {
         setFeedbackType("success");
-        setFeedback("Correo enviado de nuevo");
+        setFeedback(dict.auth.confirmation.resentSuccess);
       } else {
         setFeedbackType("error");
-        setFeedback(res.error || "No se pudo reenviar el correo");
+        setFeedback(res.error || dict.auth.confirmation.resentErrorFallback);
       }
     });
   };
@@ -35,14 +37,14 @@ export function AuthConfirmationNotice({
     <div className="space-y-4">
       <div className="space-y-1.5">
         <h3 className="text-lg font-bold tracking-tight text-neutral-900">
-          Confirma tu correo
+          {dict.auth.confirmation.title}
         </h3>
         <p className="text-sm text-neutral-600 leading-relaxed">
-          Te hemos enviado un enlace de activación a{" "}
+          {dict.auth.confirmation.sentToPrefix}{" "}
           <span className="font-semibold text-neutral-900 break-all">{email}</span>.
         </p>
         <p className="text-xs text-neutral-500">
-          Ábrelo para activar tu cuenta. Si no aparece en unos segundos, revisa la carpeta de spam.
+          {dict.auth.confirmation.spamHint}
         </p>
       </div>
 
@@ -66,7 +68,7 @@ export function AuthConfirmationNotice({
           disabled={isPending}
           className="flex min-h-[44px] w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-900 hover:bg-neutral-50 active:scale-[0.99] transition-all disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
         >
-          {isPending ? "Reenviando..." : "Reenviar correo"}
+          {isPending ? dict.auth.confirmation.resending : dict.auth.confirmation.resendButton}
         </button>
 
         <button
@@ -74,7 +76,7 @@ export function AuthConfirmationNotice({
           onClick={onBack}
           className="flex min-h-[40px] w-full items-center justify-center rounded-lg py-2 text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
         >
-          Volver
+          {dict.auth.confirmation.backButton}
         </button>
       </div>
     </div>

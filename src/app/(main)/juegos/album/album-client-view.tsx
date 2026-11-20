@@ -20,10 +20,12 @@ import {
   addPacksToInventory, clearUserPacks, getDailyMissionState, claimDailyLoginPack, claimDailyGamePack, recycleDuplicates,
 } from "@/lib/cards/pack-storage";
 import { DEFAULT_GRID_FILTER_STATE, filterGridCards, sortGridCards, type GridFilterState } from "./grid-filter-types";
+import { getDictionary } from "@/i18n";
 
 interface AlbumClientViewProps { readonly allCards: readonly Card[]; }
 
 export function AlbumClientView({ allCards }: AlbumClientViewProps) {
+  const dict = getDictionary();
   const { user, openAuthModal } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -90,7 +92,7 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     if (res.success && res.tier) {
       setPackInventory(loadUserPackInventory(user.id));
       setMissionState(getDailyMissionState(undefined, user.id));
-      toast.success("¡Recompensa diaria reclamada!", { description: "Has recibido 1 Sobre Aficionado." });
+      toast.success(dict.games.album.toasts.dailyLoginTitle, { description: dict.games.album.toasts.dailyLoginDesc });
     }
   };
 
@@ -100,8 +102,8 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     if (res.success && res.tier) {
       setPackInventory(loadUserPackInventory(user.id));
       setMissionState(getDailyMissionState(undefined, user.id));
-      const packName = res.tier === "leyenda" ? "Sobre Leyenda" : "Sobre Rojiblanco";
-      toast.success("¡Reto diario reclamado!", { description: `Has recibido 1 ${packName}.` });
+      const packName = res.tier === "leyenda" ? dict.games.album.toasts.legendPackName : dict.games.album.toasts.redWhitePackName;
+      toast.success(dict.games.album.toasts.dailyGameTitle, { description: `${dict.games.album.toasts.dailyGameDescPrefix} ${packName}.` });
     }
   };
 
@@ -111,8 +113,8 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     if (res.success) {
       setUserInventory(loadUserCardInventory(user.id));
       setPackInventory(loadUserPackInventory(user.id));
-      toast.success("¡10 repetidos canjeados con éxito por 1 Sobre Rojiblanco!");
-    } else toast.error("No tienes suficientes repetidos (se requieren 10).");
+      toast.success(dict.games.album.toasts.recycleSuccess);
+    } else toast.error(dict.games.album.toasts.recycleError);
   };
 
   const getCardStatus = useCallback((slug: string) => {
@@ -140,8 +142,8 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
           onRevealAll={() => setDemoViewMode("all-revealed")}
           onHideAll={() => setDemoViewMode("all-hidden")}
           onResetStarter={() => setDemoViewMode("starter")}
-          onAddPack={(t) => { setPackInventory(addPacksToInventory(t, 1, user.id)); toast.success(`+1 Sobre ${t} añadido.`); }}
-          onClearPacks={() => { setPackInventory(clearUserPacks(user.id)); toast.info("Inventario vaciado."); }}
+          onAddPack={(t) => { setPackInventory(addPacksToInventory(t, 1, user.id)); toast.success(`${dict.games.album.toasts.demoPackAddedPrefix} ${t} ${dict.games.album.toasts.demoPackAddedSuffix}`); }}
+          onClearPacks={() => { setPackInventory(clearUserPacks(user.id)); toast.info(dict.games.album.toasts.demoInventoryCleared); }}
         />
       )}
       <AlbumHeader ownedCount={ownedCount} totalCount={allCards.length} availablePacksCount={totalPacks} viewMode={viewMode} onViewModeChange={handleViewModeChange} />
@@ -169,7 +171,7 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
           canOpenAnother={Boolean(user && packInventory[selectedPackTier] > 0)}
           onClose={() => setIsPackModalOpen(false)}
           onOpenPackCards={handleOpenPackCards}
-          onSaveCards={() => toast.success("Cromos guardados en tu álbum")}
+          onSaveCards={() => toast.success(dict.games.album.toasts.cardsSaved)}
         />
       )}
     </div>

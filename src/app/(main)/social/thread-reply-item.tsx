@@ -11,6 +11,7 @@ import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
 import { PostActions } from "./post-actions";
 import { PostAuthorLine } from "./post-author-line";
 import type { SocialPost } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 interface ThreadReplyItemProps {
   readonly reply: SocialPost;
@@ -27,6 +28,7 @@ export function ThreadReplyItem({
   onDelete,
   onUpdate,
 }: ThreadReplyItemProps) {
+  const dict = getDictionary();
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const count = reply.repliesCount ?? reply.replies?.length ?? 0;
@@ -54,7 +56,7 @@ export function ThreadReplyItem({
           e.stopPropagation();
           if (reply.userId) onOpenProfile?.(reply.userId);
         }}
-        aria-label={`Ver perfil de ${reply.authorName}`}
+        aria-label={`${dict.social.post.viewProfileAriaPrefix} ${reply.authorName}`}
         className="h-fit shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
       >
         <AuthAvatar src={reply.authorAvatar} alt={reply.authorName} size="md" />

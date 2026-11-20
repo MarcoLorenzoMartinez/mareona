@@ -1,4 +1,5 @@
 import React from 'react';
+import { getDictionary } from '@/i18n';
 
 interface WordleKeyboardProps {
   onLetter: (char: string) => void;
@@ -19,6 +20,7 @@ export function WordleKeyboard({
   onSubmit,
   letterStatuses,
 }: WordleKeyboardProps) {
+  const dict = getDictionary();
   const getKeyClasses = (key: string) => {
     const status = letterStatuses[key];
     const base =
@@ -43,7 +45,7 @@ export function WordleKeyboard({
 
   return (
     <div
-      aria-label="Teclado virtual"
+      aria-label={dict.games.wordle.keyboard.aria}
       className="mx-auto flex flex-col gap-1 sm:gap-1.5 w-full max-w-[480px] p-0.5 sm:p-1"
     >
       {KEYBOARD_ROWS.map((row, rowIndex) => (
@@ -60,7 +62,7 @@ export function WordleKeyboard({
                   else onLetter(key);
                 }}
                 className={`${getKeyClasses(key)} ${isWide ? 'flex-[1.5]' : 'flex-1'}`}
-                aria-label={key === 'DEL' ? 'Borrar letra' : key === 'ENTER' ? 'Enviar palabra' : key}
+                aria-label={key === 'DEL' ? dict.games.wordle.keyboard.deleteAria : key === 'ENTER' ? dict.games.wordle.keyboard.enterAria : key}
               >
                 {key === 'DEL' ? '⌫' : key}
               </button>

@@ -9,12 +9,14 @@ import { MobileNav, MobileNavFallback } from "./mobile-nav";
 import { UserNav } from "@/components/auth/user-nav";
 import { useSocialNotifications } from "./use-social-notifications";
 import { useOfflineGuard } from "@/lib/pwa/use-offline-guard";
+import { getDictionary } from "@/i18n";
 
 /**
  * Brand logo linking to home/temporada.
  * Displays uploaded /logo.png or falls back to an accessible SVG crest mark.
  */
 function BrandLogo() {
+  const dict = getDictionary();
   const [hasImageError, setHasImageError] = useState(false);
   const { guardNavigation } = useOfflineGuard();
 
@@ -22,14 +24,14 @@ function BrandLogo() {
     <Link
       href="/"
       onClick={(e) => guardNavigation(e, "/")}
-      aria-label="Mareona — Inicio"
+      aria-label={dict.layout.brand.homeAria}
       className="flex items-center gap-2.5 rounded-md p-1 text-white transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
     >
       {!hasImageError ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src="/logo.png"
-          alt="Mareona Logo"
+          alt={dict.layout.brand.logoAlt}
           width={32}
           height={32}
           onError={() => setHasImageError(true)}
@@ -48,10 +50,10 @@ function BrandLogo() {
       )}
       <div className="flex flex-col">
         <span className="text-base font-black tracking-wider text-white uppercase leading-none">
-          Mareona
+          {dict.layout.brand.name}
         </span>
         <span className="text-[10px] font-semibold tracking-widest text-white/80 uppercase mt-0.5">
-          Real Sporting
+          {dict.layout.brand.club}
         </span>
       </div>
     </Link>
@@ -62,10 +64,11 @@ function DesktopNavList({
   pathname,
   unreadSocialCount = 0,
 }: { readonly pathname: string | null; readonly unreadSocialCount?: number }) {
+  const dict = getDictionary();
   const { isBlocked, guardNavigation } = useOfflineGuard();
 
   return (
-    <nav aria-label="Navegación principal">
+    <nav aria-label={dict.layout.nav.desktopAria}>
       <ul className="flex items-center gap-1.5">
         {NAV_ITEMS.map((item) => {
           const isActive =
@@ -90,7 +93,7 @@ function DesktopNavList({
                   {item.href === "/social" && unreadSocialCount > 0 && (
                     <span
                       className="absolute -top-1 -right-3 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-white px-1 text-[9px] font-bold leading-none tabular-nums text-[var(--primary)]"
-                      aria-label={`${unreadSocialCount} notificaciones en Social`}
+                      aria-label={`${unreadSocialCount} ${dict.layout.nav.notificationsAriaSuffix}`}
                     >
                       {unreadSocialCount > 9 ? "9+" : unreadSocialCount}
                     </span>

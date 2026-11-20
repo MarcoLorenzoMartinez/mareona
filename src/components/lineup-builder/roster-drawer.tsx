@@ -12,6 +12,7 @@ import {
   calculateDividerIndex,
 } from "@/lib/lineup-builder/roster-filter";
 import type { LineupPlayer, PlayerCategory } from "@/lib/lineup-builder/types";
+import { getDictionary } from "@/i18n";
 
 interface RosterDrawerProps {
   readonly players: readonly LineupPlayer[];
@@ -38,6 +39,7 @@ export function RosterDrawer({
   onClose,
   isModal = false,
 }: RosterDrawerProps) {
+  const dict = getDictionary();
   const [selectedCategory, setSelectedCategory] = useState<PlayerCategory | "all">("first_team");
   const [selectedPosition, setSelectedPosition] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -68,20 +70,20 @@ export function RosterDrawer({
 
   return (
     <aside
-      aria-label="Selección de plantilla"
+      aria-label={dict.lineupBuilder.roster.asideAria}
       className={`flex flex-col w-full bg-white ${
         isModal ? "p-4" : "rounded-2xl border border-[var(--border)] p-4 shadow-sm"
       }`}
     >
       <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
         <h2 className="text-sm font-bold text-neutral-900">
-          Plantilla
+          {dict.lineupBuilder.roster.title}
         </h2>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar selección de plantilla"
+            aria-label={dict.lineupBuilder.roster.closeAria}
             className="rounded-full p-2 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e2001a]"
           >
             <X className="h-5 w-5" />
@@ -92,7 +94,7 @@ export function RosterDrawer({
       <div className="mt-3">
         <input
           type="search"
-          placeholder="Buscar por nombre o dorsal..."
+          placeholder={dict.lineupBuilder.roster.searchPlaceholder}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-xs focus:border-[#e2001a] focus:bg-white focus:outline-none"
@@ -118,11 +120,11 @@ export function RosterDrawer({
                 <li
                   role="separator"
                   className="my-1.5 flex items-center gap-2"
-                  aria-label="Resto de la plantilla"
+                  aria-label={dict.lineupBuilder.roster.otherPositionsAria}
                 >
                   <div className="h-[1px] flex-1 bg-linear-to-r from-transparent via-[#e2001a]/40 to-transparent" />
                   <span className="text-[10px] font-semibold text-[#e2001a]/80 uppercase tracking-wider">
-                    Otras posiciones
+                    {dict.lineupBuilder.roster.otherPositionsLabel}
                   </span>
                   <div className="h-[1px] flex-1 bg-linear-to-r from-transparent via-[#e2001a]/40 to-transparent" />
                 </li>
@@ -139,7 +141,7 @@ export function RosterDrawer({
           ))
         ) : (
           <li className="py-8 text-center text-xs text-neutral-400">
-            No se encontraron jugadores con ese filtro
+            {dict.lineupBuilder.roster.emptySearch}
           </li>
         )}
       </ul>
@@ -150,7 +152,7 @@ export function RosterDrawer({
           onClick={() => setIsModalOpen(true)}
           className="text-[11px] font-medium text-neutral-400 hover:text-neutral-700 transition-colors"
         >
-          + Añadir jugador
+          {dict.lineupBuilder.roster.addPlayerButton}
         </button>
       </div>
 

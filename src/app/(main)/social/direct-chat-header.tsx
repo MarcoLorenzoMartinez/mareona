@@ -7,6 +7,7 @@ import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { toast } from "@/lib/ui/toast";
 import { blockUserAction } from "@/lib/social/safety-actions";
 import { UserReportModal } from "./user-report-modal";
+import { getDictionary } from "@/i18n";
 
 interface DirectChatHeaderProps {
   readonly conversationId: string;
@@ -26,6 +27,7 @@ export function DirectChatHeader({
   onBack,
   onOpenProfile,
 }: DirectChatHeaderProps) {
+  const dict = getDictionary();
   const [menuOpen, setMenuOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const [isBlocking, setIsBlocking] = useState(false);
@@ -38,10 +40,10 @@ export function DirectChatHeader({
     setIsBlocking(false);
 
     if (res.success) {
-      toast.success(`Has bloqueado a @${otherUser.username}`);
+      toast.success(`${dict.social.messages.blockedToastPrefix}${otherUser.username}`);
       onBack();
     } else {
-      toast.error(res.error ?? "No se pudo bloquear al usuario");
+      toast.error(res.error ?? dict.social.messages.blockErrorFallback);
     }
   };
 
@@ -50,7 +52,7 @@ export function DirectChatHeader({
       <button
         type="button"
         onClick={onBack}
-        aria-label="Volver a la lista de mensajes"
+        aria-label={dict.social.messages.backToInboxAria}
         className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 hover:bg-[var(--surface)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
       >
         <ArrowLeft className="h-5 w-5" aria-hidden="true" />
@@ -72,7 +74,7 @@ export function DirectChatHeader({
         <button
           type="button"
           onClick={() => setMenuOpen((prev) => !prev)}
-          aria-label="Opciones de seguridad de la conversación"
+          aria-label={dict.social.messages.safetyMenuAria}
           aria-expanded={menuOpen}
           className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-[var(--surface)] hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
         >
@@ -82,7 +84,7 @@ export function DirectChatHeader({
         {menuOpen && (
           <div
             role="menu"
-            aria-label="Acciones de seguridad"
+            aria-label={dict.social.messages.safetyMenuLabel}
             className="absolute right-0 top-10 z-30 w-52 rounded-xl border border-[var(--border)] bg-white p-1.5 shadow-lg"
           >
             <button
@@ -95,7 +97,7 @@ export function DirectChatHeader({
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-semibold text-neutral-700 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
               <Flag className="h-3.5 w-3.5 text-neutral-500" aria-hidden="true" />
-              <span>Denunciar conversación</span>
+              <span>{dict.social.messages.reportConversation}</span>
             </button>
 
             <button
@@ -106,7 +108,7 @@ export function DirectChatHeader({
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-bold text-[var(--primary)] hover:bg-red-50/60 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
               <Ban className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Bloquear a @{otherUser.username}</span>
+              <span>{dict.social.messages.blockUserPrefix}{otherUser.username}</span>
             </button>
           </div>
         )}

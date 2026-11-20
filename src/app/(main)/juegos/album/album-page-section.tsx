@@ -5,6 +5,7 @@ import { HistoricalCard } from "@/components/cards/historical-card";
 import { AlbumCardSlot } from "./album-card-slot";
 import { AlbumPastedCard } from "./album-pasted-card";
 import { CARDS_PER_PAGE } from "./album-types";
+import { getDictionary } from "@/i18n";
 
 interface AlbumPageSectionProps {
   readonly pageNumber: number;
@@ -30,6 +31,7 @@ export function AlbumPageSection({
   newlyAcquiredSlugs = new Set(),
   onCardPasted,
 }: AlbumPageSectionProps) {
+  const dict = getDictionary();
   const slots = Array.from({ length: CARDS_PER_PAGE });
 
   return (
@@ -64,7 +66,7 @@ export function AlbumPageSection({
                 className="flex aspect-[63/90] w-full items-center justify-center border border-dashed border-amber-800/25 bg-amber-950/5 p-1 text-center"
               >
                 <span className="text-[7px] font-bold uppercase tracking-widest text-amber-800/40">
-                  Casilla #{globalNumber}
+                  {dict.games.album.spread.emptySlotPrefix}{globalNumber}
                 </span>
               </div>
             );
@@ -100,8 +102,8 @@ export function AlbumPageSection({
         aria-hidden="true"
         className="flex items-center justify-between border-t border-amber-800/10 pt-1 mt-1.5 text-[7.5px] font-bold uppercase tracking-widest text-amber-900/40"
       >
-        <span>Real Sporting · Colección Oficial</span>
-        <span>Pág. {pageNumber}</span>
+        <span>{dict.games.album.spread.footerClub}</span>
+        <span>{dict.games.album.spread.pageShort} {pageNumber}</span>
       </footer>
     </div>
   );

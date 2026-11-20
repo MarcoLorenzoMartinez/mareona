@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { MouseEvent } from "react";
 import type { GameItem } from "./types";
 import { GameVisualPreview } from "./game-visual-previews";
+import { getDictionary } from "@/i18n";
 
 interface GameCardProps {
   readonly game: GameItem;
@@ -13,6 +14,7 @@ interface GameCardProps {
 }
 
 export function GameCard({ game, isDisabled, onNavigate }: GameCardProps) {
+  const dict = getDictionary();
   return (
     <Link
       href={game.href}
@@ -39,7 +41,7 @@ export function GameCard({ game, isDisabled, onNavigate }: GameCardProps) {
 
             {isDisabled && (
               <span className="rounded-full bg-neutral-100 border border-neutral-200 px-2 py-0.5 text-[9px] font-semibold text-neutral-500">
-                Requiere red
+                {dict.games.hub.requiresNetworkBadge}
               </span>
             )}
           </div>

@@ -1,5 +1,7 @@
 "use client"; // Client: Barra de acciones y control de apertura de sobres sin prosa explicativa
 
+import { getDictionary } from "@/i18n";
+
 interface PackModalActionsBarProps {
   readonly allRevealed: boolean;
   readonly canOpenAnother: boolean;
@@ -17,6 +19,7 @@ export function PackModalActionsBar({
   onOpenAnother,
   onSaveCards,
 }: PackModalActionsBarProps) {
+  const dict = getDictionary();
   if (!allRevealed) return null;
 
   return (
@@ -27,7 +30,7 @@ export function PackModalActionsBar({
           onClick={onOpenAnother}
           className="flex-1 sm:flex-initial rounded-full border border-[var(--border)] bg-white px-3.5 sm:px-4 py-2 text-xs font-bold text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50 active:scale-95 transition-all cursor-pointer"
         >
-          Abrir otro sobre
+          {dict.games.album.packs.modalOpenAnother}
         </button>
       )}
       <button
@@ -35,7 +38,7 @@ export function PackModalActionsBar({
         onClick={onSaveCards}
         className="flex-1 sm:flex-initial rounded-full bg-[#e2001a] px-4 sm:px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-95 transition-all cursor-pointer"
       >
-        Guardar cromos
+        {dict.games.album.packs.modalSaveCards}
       </button>
     </div>
   );

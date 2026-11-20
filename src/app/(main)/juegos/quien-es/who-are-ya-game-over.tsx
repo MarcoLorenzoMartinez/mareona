@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { PlayerPhoto } from '@/components/media/player-photo';
 import type { WhoAreYaStats } from '@/lib/who-are-ya/storage';
 import { useModalA11y } from '@/lib/ui/use-modal-a11y';
+import { getDictionary } from '@/i18n';
 
 interface WhoAreYaResultModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ export function WhoAreYaResultModal({
   stats,
   onOpenArchive,
 }: WhoAreYaResultModalProps) {
+  const dict = getDictionary();
   const { handleBackdropClick } = useModalA11y({ isOpen, onClose });
 
   if (!isOpen) return null;
@@ -53,13 +55,13 @@ export function WhoAreYaResultModal({
         {/* Cabecera limpia y neutral idéntica a La pregunta del día */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
           <h2 id="who-are-ya-modal-title" className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-            Estadísticas
+            {dict.games.whoAreYa.statsModal.title}
           </h2>
           <button
             type="button"
             onClick={onClose}
             className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
-            aria-label="Cerrar modal"
+            aria-label={dict.games.whoAreYa.statsModal.closeModalAria}
           >
             ✕
           </button>
@@ -98,19 +100,19 @@ export function WhoAreYaResultModal({
         {/* Resumen métrico 4 columnas idéntico a Trivia y Wordle */}
         <div className="mt-5 grid grid-cols-4 items-center border-y border-neutral-100 py-3.5 text-center">
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Partidas</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.whoAreYa.statsModal.played}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.played}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Aciertos</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.whoAreYa.statsModal.winRate}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{winPercentage}%</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Racha</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.whoAreYa.statsModal.currentStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-[#e2001a]">{stats.currentStreak}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Máxima</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.whoAreYa.statsModal.maxStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.maxStreak}</span>
           </div>
         </div>
@@ -118,7 +120,7 @@ export function WhoAreYaResultModal({
         {/* Distribución de intentos unificada con Wordle */}
         <div className="mt-4 pt-1">
           <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
-            Distribución de intentos
+            {dict.games.whoAreYa.statsModal.distributionTitle}
           </span>
           <div className="mt-2.5 space-y-1.5">
             {attemptsArray.map((attempt) => {
@@ -149,14 +151,14 @@ export function WhoAreYaResultModal({
             href="/juegos"
             className="flex-1 rounded-xl border border-neutral-200 bg-white py-2.5 text-center text-xs font-bold text-neutral-700 hover:bg-neutral-50 active:scale-98 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Volver a Juegos
+            {dict.games.whoAreYa.statsModal.backToGames}
           </Link>
           <button
             type="button"
             onClick={() => { onClose(); onOpenArchive(); }}
             className="flex-1 rounded-xl bg-[#e2001a] py-2.5 text-center text-xs font-bold text-white shadow-xs hover:bg-[#b30015] active:scale-98 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Jugar archivo
+            {dict.games.whoAreYa.statsModal.playArchive}
           </button>
         </div>
       </div>

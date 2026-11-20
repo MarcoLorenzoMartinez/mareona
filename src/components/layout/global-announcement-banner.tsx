@@ -1,10 +1,12 @@
 import { getActiveAnnouncementPublic } from "@/lib/admin/system-actions";
+import { getDictionary } from "@/i18n";
 
 /**
  * Server component that renders a global announcement banner at the top of the app.
  * Adheres strictly to AGENTS.md: zero blue colors, pure accessible contrast, tabular numbers.
  */
 export async function GlobalAnnouncementBanner() {
+  const dict = getDictionary();
   const announcement = await getActiveAnnouncementPublic();
 
   if (!announcement || !announcement.isActive) {
@@ -18,9 +20,9 @@ export async function GlobalAnnouncementBanner() {
   }[announcement.type];
 
   const prefix = {
-    info: "Información",
-    warning: "Atención",
-    alert: "Aviso Urgente",
+    info: dict.layout.announcement.info,
+    warning: dict.layout.announcement.warning,
+    alert: dict.layout.announcement.alert,
   }[announcement.type];
 
   return (

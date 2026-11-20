@@ -3,10 +3,13 @@ import type { Metadata } from "next";
 import { getSyncedCardsCatalog } from "@/lib/cards/card-catalog-sync";
 import { createClient } from "@/lib/supabase/server";
 import { AlbumClientView } from "./album-client-view";
+import { getDictionary } from "@/i18n";
+
+const dict = getDictionary();
 
 export const metadata: Metadata = {
-  title: "Memoria Rojiblanca",
-  description: "Colección de cartas y leyendas del Real Sporting desde 1905 hasta hoy.",
+  title: dict.games.album.metadata.title,
+  description: dict.games.album.metadata.description,
 };
 
 async function AlbumContent() {
@@ -21,7 +24,7 @@ export default function AlbumPage() {
       <Suspense
         fallback={
           <div className="py-20 text-center text-xs text-neutral-400">
-            Cargando colección de cromos...
+            {dict.games.album.loadingCollection}
           </div>
         }
       >

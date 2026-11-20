@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { customPlayerSchema, type LineupPlayer } from "@/lib/lineup-builder/types";
 import { useModalA11y } from "@/lib/ui/use-modal-a11y";
+import { getDictionary } from "@/i18n";
 
 interface CustomPlayerModalProps {
   readonly isOpen: boolean;
@@ -16,6 +17,7 @@ export function CustomPlayerModal({
   onClose,
   onAddPlayer,
 }: CustomPlayerModalProps) {
+  const dict = getDictionary();
   const [name, setName] = useState("");
   const [shirtNumber, setShirtNumber] = useState<string>("");
   const [position, setPosition] = useState<"POR" | "DEF" | "MED" | "DEL">("MED");
@@ -36,7 +38,7 @@ export function CustomPlayerModal({
     });
 
     if (!result.success) {
-      setError(result.error.issues[0]?.message ?? "Datos inválidos");
+      setError(result.error.issues[0]?.message ?? dict.lineupBuilder.customPlayerModal.invalidDataFallback);
       return;
     }
 
@@ -71,10 +73,10 @@ export function CustomPlayerModal({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 id="custom-player-title" className="text-base font-bold text-neutral-900">
-          Añadir canterano / jugador
+          {dict.lineupBuilder.customPlayerModal.title}
         </h2>
         <p className="mt-1 text-xs text-neutral-500">
-          Añade a un canterano o jugador que no aparezca en las listas oficiales.
+          {dict.lineupBuilder.customPlayerModal.subtitle}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
@@ -86,7 +88,7 @@ export function CustomPlayerModal({
 
           <div>
             <label htmlFor="custom-player-name" className="block text-xs font-semibold text-neutral-700">
-              Nombre o Apodo
+              {dict.lineupBuilder.customPlayerModal.nameLabel}
             </label>
             <input
               id="custom-player-name"
@@ -94,7 +96,7 @@ export function CustomPlayerModal({
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Ej. Pelayo o Mateo"
+              placeholder={dict.lineupBuilder.customPlayerModal.namePlaceholder}
               className="mt-1 w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a] outline-none"
             />
           </div>
@@ -102,7 +104,7 @@ export function CustomPlayerModal({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label htmlFor="custom-player-num" className="block text-xs font-semibold text-neutral-700">
-                Dorsal (opcional)
+                {dict.lineupBuilder.customPlayerModal.numberLabel}
               </label>
               <input
                 id="custom-player-num"
@@ -111,14 +113,14 @@ export function CustomPlayerModal({
                 max="99"
                 value={shirtNumber}
                 onChange={(e) => setShirtNumber(e.target.value)}
-                placeholder="Ej. 34"
+                placeholder={dict.lineupBuilder.customPlayerModal.numberPlaceholder}
                 className="mt-1 w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a] outline-none tabular-nums"
               />
             </div>
 
             <div>
               <label htmlFor="custom-player-pos" className="block text-xs font-semibold text-neutral-700">
-                Línea
+                {dict.lineupBuilder.customPlayerModal.lineLabel}
               </label>
               <select
                 id="custom-player-pos"
@@ -126,10 +128,10 @@ export function CustomPlayerModal({
                 onChange={(e) => setPosition(e.target.value as "POR" | "DEF" | "MED" | "DEL")}
                 className="mt-1 w-full rounded-lg border border-[var(--border)] bg-white px-3 py-2 text-sm focus:border-[#e2001a] focus:ring-2 focus:ring-[#e2001a] outline-none"
               >
-                <option value="POR">Portero</option>
-                <option value="DEF">Defensa</option>
-                <option value="MED">Centrocampista</option>
-                <option value="DEL">Delantero</option>
+                <option value="POR">{dict.lineupBuilder.customPlayerModal.positions.goalkeeper}</option>
+                <option value="DEF">{dict.lineupBuilder.customPlayerModal.positions.defender}</option>
+                <option value="MED">{dict.lineupBuilder.customPlayerModal.positions.midfielder}</option>
+                <option value="DEL">{dict.lineupBuilder.customPlayerModal.positions.forward}</option>
               </select>
             </div>
           </div>
@@ -140,13 +142,13 @@ export function CustomPlayerModal({
               onClick={onClose}
               className="min-h-[44px] rounded-full px-4 py-2 text-xs font-semibold text-neutral-600 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
-              Cancelar
+              {dict.lineupBuilder.customPlayerModal.cancelButton}
             </button>
             <button
               type="submit"
               className="min-h-[44px] rounded-full bg-[#e2001a] px-5 py-2 text-xs font-bold text-white hover:bg-[#b30015] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
             >
-              Añadir a la lista
+              {dict.lineupBuilder.customPlayerModal.submitButton}
             </button>
           </div>
         </form>

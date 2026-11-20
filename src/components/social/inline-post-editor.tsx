@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { parsePostLineup } from "@/lib/lineup-builder/shared-lineup-codec";
+import { getDictionary } from "@/i18n";
 
 interface InlinePostEditorProps {
   readonly initialBody: string;
@@ -21,6 +22,7 @@ export function InlinePostEditor({
   onCancel,
   isSaving = false,
 }: InlinePostEditorProps) {
+  const dict = getDictionary();
   const { cleanBody } = parsePostLineup(initialBody);
   const [text, setText] = useState(cleanBody);
   const [error, setError] = useState<string | null>(null);
@@ -38,11 +40,11 @@ export function InlinePostEditor({
     e?.stopPropagation();
     const trimmed = text.trim();
     if (!trimmed) {
-      setError("El mensaje no puede estar vacío");
+      setError(dict.social.editor.emptyError);
       return;
     }
     if (trimmed.length > 500) {
-      setError("El mensaje supera el límite de 500 caracteres");
+      setError(dict.social.editor.tooLongError);
       return;
     }
 
@@ -55,7 +57,7 @@ export function InlinePostEditor({
     try {
       await onSave(finalBody);
     } catch {
-      setError("No se pudo guardar la modificación");
+      setError(dict.social.editor.saveError);
     }
   };
 
@@ -91,7 +93,7 @@ export function InlinePostEditor({
           maxLength={500}
           rows={3}
           disabled={isSaving}
-          aria-label="Editar texto del mensaje"
+          aria-label={dict.social.editor.textareaAria}
           className="w-full resize-none rounded-xl border border-[var(--border)] bg-white p-3 text-[15px] leading-snug text-neutral-900 placeholder-neutral-400 focus:border-[#e2001a] focus:outline-none focus:ring-1 focus:ring-[#e2001a] disabled:bg-neutral-50"
         />
       </div>
@@ -117,14 +119,14 @@ export function InlinePostEditor({
             disabled={isSaving}
             className="rounded-full px-3 py-1 text-xs font-semibold text-neutral-600 hover:bg-neutral-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 disabled:opacity-50"
           >
-            Cancelar
+            {dict.social.editor.cancelButton}
           </button>
           <button
             type="submit"
             disabled={isSaving || !text.trim() || text.length > 500}
             className="rounded-full bg-[#e2001a] px-3.5 py-1 text-xs font-bold text-white shadow-2xs hover:bg-red-700 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] disabled:opacity-50 disabled:pointer-events-none"
           >
-            {isSaving ? "Guardando..." : "Guardar"}
+            {isSaving ? dict.social.editor.saving : dict.social.editor.saveButton}
           </button>
         </div>
       </div>

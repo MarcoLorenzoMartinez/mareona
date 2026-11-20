@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { MessageSquare, Share2, Check } from "lucide-react";
 import { HeartLikeIcon } from "@/components/social/heart-like-icon";
+import { getDictionary } from "@/i18n";
 
 interface PostActionsProps {
   readonly likesCount: number;
@@ -23,6 +24,7 @@ export function PostActions({
   postId,
   postBody,
 }: PostActionsProps) {
+  const dict = getDictionary();
   const [likes, setLikes] = useState(likesCount);
   const [hasLiked, setHasLiked] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
@@ -46,8 +48,8 @@ export function PostActions({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Mareona - Tertulia Sportinguista",
-          text: postBody ? `${postBody.slice(0, 100)}…` : "Publicación en Mareona",
+          title: dict.social.post.shareTitle,
+          text: postBody ? `${postBody.slice(0, 100)}…` : dict.social.post.shareFallbackText,
           url,
         });
         return;
@@ -68,7 +70,7 @@ export function PostActions({
           type="button"
           onClick={toggleLike}
           aria-pressed={hasLiked}
-          aria-label={`Me gusta, ${likes}`}
+          aria-label={`${dict.social.post.likeAriaPrefix} ${likes}`}
           className={`${ACTION_CLASS} ${
             hasLiked ? "font-bold text-[var(--primary)]" : "hover:text-[var(--primary)]"
           }`}
@@ -81,7 +83,7 @@ export function PostActions({
           <button
             type="button"
             onClick={handleReplies}
-            aria-label={`Ver respuestas, ${repliesCount}`}
+            aria-label={`${dict.social.post.repliesAriaPrefix} ${repliesCount}`}
             className={`${ACTION_CLASS} hover:text-[var(--primary)]`}
           >
             <MessageSquare className="h-4 w-4" aria-hidden="true" />
@@ -98,13 +100,13 @@ export function PostActions({
           <button
             type="button"
             onClick={handleShare}
-            aria-label="Compartir publicación"
+            aria-label={dict.social.post.shareAria}
             className={`${ACTION_CLASS} hover:text-[var(--primary)]`}
           >
             {hasCopied ? (
               <>
                 <Check className="h-4 w-4 text-green-600" aria-hidden="true" />
-                <span className="text-[11px] font-semibold text-green-700">Copiado</span>
+                <span className="text-[11px] font-semibold text-green-700">{dict.social.post.copiedLabel}</span>
               </>
             ) : (
               <Share2 className="h-3.5 w-3.5" aria-hidden="true" />

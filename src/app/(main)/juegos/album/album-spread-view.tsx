@@ -12,6 +12,7 @@ import {
   paginateCards,
   computeAlbumChapters,
 } from "./album-types";
+import { getDictionary } from "@/i18n";
 
 interface AlbumSpreadViewProps {
   readonly cards: readonly Card[];
@@ -26,6 +27,7 @@ export function AlbumSpreadView({
   newlyAcquiredSlugs = new Set(),
   onCardPasted,
 }: AlbumSpreadViewProps) {
+  const dict = getDictionary();
   const sortedCards = useMemo(() => sortCardsChronologically(cards), [cards]);
   const pages = useMemo(() => paginateCards(sortedCards, CARDS_PER_PAGE), [sortedCards]);
   const chapters = useMemo(() => computeAlbumChapters(pages), [pages]);
@@ -90,14 +92,14 @@ export function AlbumSpreadView({
   const canNext = isDoublePage ? rightPageNum < totalPages : currentPage < totalPages;
   const navLabel =
     isDoublePage && leftPageNum !== rightPageNum
-      ? `Páginas ${leftPageNum}–${rightPageNum} de ${totalPages}`
-      : `Página ${activePage} de ${totalPages}`;
+      ? `${dict.games.album.spread.pagesRangePrefix} ${leftPageNum}–${rightPageNum} ${dict.games.album.spread.pageOf} ${totalPages}`
+      : `${dict.games.album.spread.pageSinglePrefix} ${activePage} ${dict.games.album.spread.pageOf} ${totalPages}`;
 
   const renderPage = (pageNum: number, chapterLabel?: string, showTitle = true) => (
     <AlbumPageSection
       pageNumber={pageNum}
       totalPages={totalPages}
-      pageTitle={chapterLabel ?? "Colección de Cromos"}
+      pageTitle={chapterLabel ?? dict.games.album.spread.defaultChapterTitle}
       showHeaderTitle={showTitle}
       cards={pages[pageNum - 1] ?? []}
       getCardStatus={getCardStatus}

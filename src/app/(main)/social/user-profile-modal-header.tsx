@@ -9,6 +9,7 @@ import { toast } from "@/lib/ui/toast";
 import { blockUserAction, unblockUserAction } from "@/lib/social/safety-actions";
 import { UserReportModal } from "./user-report-modal";
 import type { UserSocialProfile } from "@/lib/social/friendship-schemas";
+import { getDictionary } from "@/i18n";
 
 interface ProfileModalHeaderProps {
   readonly profile: UserSocialProfile;
@@ -31,6 +32,7 @@ export function ProfileModalHeader({
   isPendingAction,
   onBlockStateChange,
 }: ProfileModalHeaderProps) {
+  const dict = getDictionary();
   const [isBlockBusy, setIsBlockBusy] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
 
@@ -38,7 +40,7 @@ export function ProfileModalHeader({
     try {
       return new Date(profile.createdAt).toLocaleDateString("es-ES", { month: "long", year: "numeric" });
     } catch {
-      return "reciente";
+      return dict.social.userProfileModal.recentMemberFallback;
     }
   })();
 
@@ -54,10 +56,14 @@ export function ProfileModalHeader({
     setIsBlockBusy(false);
 
     if (res.success) {
-      toast.success(isBlocked ? `Has desbloqueado a @${profile.username}` : `Has bloqueado a @${profile.username}`);
+      toast.success(
+        isBlocked
+          ? `${dict.social.userProfileModal.unblockedToastPrefix}${profile.username}`
+          : `${dict.social.userProfileModal.blockedToastPrefix}${profile.username}`
+      );
       onBlockStateChange?.(!isBlocked);
     } else {
-      toast.error(res.error ?? "No se pudo actualizar el bloqueo");
+      toast.error(res.error ?? dict.social.userProfileModal.blockErrorFallback);
     }
   };
 
@@ -72,7 +78,7 @@ export function ProfileModalHeader({
             onClick={onClose}
             className="inline-flex min-h-9 items-center rounded-full border border-[var(--border)] bg-white px-4 text-xs font-bold text-neutral-900 transition-colors hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
-            Editar perfil
+            {dict.social.userProfileModal.editProfileLink}
           </Link>
         ) : isBlocked ? (
           <button
@@ -82,7 +88,7 @@ export function ProfileModalHeader({
             className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3.5 text-xs font-bold text-[var(--primary)] hover:bg-red-100 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
           >
             <Ban className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Desbloquear</span>
+            <span>{dict.social.userProfileModal.unblockButton}</span>
           </button>
         ) : (
           <div>
@@ -95,7 +101,7 @@ export function ProfileModalHeader({
                     className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--primary)] px-3.5 text-xs font-bold text-white shadow-2xs hover:bg-[#b30015] active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
                   >
                     <MessageSquare className="h-3.5 w-3.5" aria-hidden="true" />
-                    <span>Mensaje</span>
+                    <span>{dict.social.userProfileModal.messageButton}</span>
                   </button>
                 )}
                 <button
@@ -105,14 +111,14 @@ export function ProfileModalHeader({
                   className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-white px-3 text-xs font-semibold text-neutral-700 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50 cursor-pointer"
                 >
                   <UserX className="h-3.5 w-3.5" aria-hidden="true" />
-                  <span>Eliminar</span>
+                  <span>{dict.social.userProfileModal.removeFriendButton}</span>
                 </button>
               </div>
             )}
             {profile.friendshipStatus === "pending_sent" && (
               <span className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--surface)] px-3.5 text-xs font-semibold text-neutral-500">
                 <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>Solicitud enviada</span>
+                <span>{dict.social.userProfileModal.requestSentBadge}</span>
               </span>
             )}
             {profile.friendshipStatus === "pending_received" && (
@@ -123,7 +129,7 @@ export function ProfileModalHeader({
                 className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
               >
                 <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>Aceptar solicitud</span>
+                <span>{dict.social.userProfileModal.acceptRequestButton}</span>
               </button>
             )}
             {profile.friendshipStatus === "none" && (
@@ -134,7 +140,7 @@ export function ProfileModalHeader({
                 className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-2xs transition-opacity hover:opacity-90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-50"
               >
                 <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>Conectar</span>
+                <span>{dict.social.userProfileModal.connectButton}</span>
               </button>
             )}
           </div>
@@ -148,18 +154,18 @@ export function ProfileModalHeader({
 
       <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500">
         <div className="flex items-center gap-x-2">
-          <span>Desde {memberSince}</span>
+          <span>{dict.social.userProfileModal.sincePrefix} {memberSince}</span>
         </div>
 
         {!isCurrentUser && (
           <div className="flex items-center gap-3">
             <button type="button" onClick={handleToggleBlock} disabled={isBlockBusy} className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-500 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs cursor-pointer">
               <Ban className="h-3 w-3" aria-hidden="true" />
-              <span>{isBlocked ? "Desbloquear" : "Bloquear"}</span>
+              <span>{isBlocked ? dict.social.userProfileModal.unblockButton : dict.social.userProfileModal.blockButton}</span>
             </button>
             <button type="button" onClick={() => setReportOpen(true)} className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-500 hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs cursor-pointer">
               <Flag className="h-3 w-3" aria-hidden="true" />
-              <span>Denunciar</span>
+              <span>{dict.social.userProfileModal.reportButton}</span>
             </button>
           </div>
         )}

@@ -5,6 +5,7 @@ import { PostComposer } from "./post-composer";
 import { PostCard } from "./post-card";
 import type { SocialPost } from "@/lib/social/types";
 import type { SocialFeedTab } from "./feed-tab-selector";
+import { getDictionary } from "@/i18n";
 
 interface SocialTimelineProps {
   readonly posts: readonly SocialPost[];
@@ -27,12 +28,13 @@ export function SocialTimeline({
   onDeletePost,
   onUpdatePost,
 }: SocialTimelineProps) {
+  const dict = getDictionary();
   return (
     <>
       <PostComposer onPosted={onPostCreated} className="hidden sm:flex" />
 
       <section
-        aria-label="Publicaciones de la tertulia"
+        aria-label={dict.social.feed.timelineAria}
         aria-busy={isPendingFilter}
         className={`transition-opacity duration-150 ${
           isPendingFilter ? "pointer-events-none opacity-50" : "opacity-100"
@@ -41,8 +43,8 @@ export function SocialTimeline({
         {posts.length === 0 ? (
           <p className="px-4 py-12 text-center text-sm font-semibold text-neutral-600">
             {activeTab === "friends"
-              ? "Tus amigos aún no han publicado"
-              : "Aún no hay publicaciones"}
+              ? dict.social.feed.emptyFriends
+              : dict.social.feed.emptyAll}
           </p>
         ) : (
           posts.map((post) => (

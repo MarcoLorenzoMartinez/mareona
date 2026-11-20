@@ -6,6 +6,7 @@ import { generateUsernameFromEmail, generateDefaultDisplayName } from "@/lib/aut
 import { updateProfile } from "@/lib/auth/actions";
 import { useAuth } from "@/context/auth-context";
 import { ProfileAvatarPicker } from "@/app/(main)/perfil/profile-avatar-picker";
+import { getDictionary } from "@/i18n";
 
 interface OnboardingStepProps {
   readonly onFinish: () => void;
@@ -18,6 +19,7 @@ interface OnboardingStepProps {
  * allowing fans to customize them or confirm them directly with a single click.
  */
 export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
+  const dict = getDictionary();
   const { user, profile, refreshProfile, updateLocalProfile } = useAuth();
 
   const defaultDisplayName =
@@ -66,7 +68,7 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
     });
 
     if (!res.success) {
-      setErrorMessage(res.error ?? "No se pudo actualizar el perfil");
+      setErrorMessage(res.error ?? dict.auth.onboarding.updateErrorFallback);
       setIsSubmitting(false);
       return;
     }
@@ -80,10 +82,10 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
     <div className="space-y-5">
       <div className="text-center">
         <h2 className="text-lg sm:text-xl font-bold tracking-tight text-neutral-900">
-          Elige tu nombre y usuario
+          {dict.auth.onboarding.title}
         </h2>
         <p className="mt-1 text-xs text-neutral-500">
-          Puedes personalizar tus datos o dejar los valores sugeridos.
+          {dict.auth.onboarding.subtitle}
         </p>
       </div>
 
@@ -91,7 +93,7 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
         <ProfileAvatarPicker
           selectedAvatar={selectedAvatar}
           onSelect={setSelectedAvatar}
-          displayName={displayName || username || user?.email || "Aficionado"}
+          displayName={displayName || username || user?.email || dict.auth.common.defaultFanName}
         />
 
         {/* Campo 1: Nombre en Mareona */}
@@ -100,14 +102,14 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
             htmlFor="onboarding-display-name"
             className="block text-xs font-semibold text-neutral-700 mb-1"
           >
-            Tu nombre en Mareona
+            {dict.auth.onboarding.displayNameLabel}
           </label>
           <input
             id="onboarding-display-name"
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            placeholder="ej. Pelayo García"
+            placeholder={dict.auth.onboarding.displayNamePlaceholder}
             maxLength={40}
             className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 px-3 text-base sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
           />
@@ -119,7 +121,7 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
             htmlFor="onboarding-username"
             className="block text-xs font-semibold text-neutral-700 mb-1"
           >
-            Tu apodo (@usuario)
+            {dict.auth.onboarding.usernameLabel}
           </label>
           <div className="relative">
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-bold text-neutral-400">
@@ -130,10 +132,10 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="pelayo_1905"
+              placeholder={dict.auth.onboarding.usernamePlaceholder}
               pattern="^[a-zA-Z0-9_]{3,20}$"
               maxLength={20}
-              title="De 3 a 20 caracteres (letras, números y guión bajo)"
+              title={dict.auth.onboarding.usernameTitle}
               className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 pr-3 pl-7 text-base sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
           </div>
@@ -155,14 +157,14 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
             disabled={isSubmitting}
             className="min-h-[44px] px-3.5 py-2 text-xs font-semibold text-neutral-500 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 rounded-lg cursor-pointer"
           >
-            Cancelar y salir
+            {dict.auth.onboarding.cancelButton}
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
             className="flex-1 min-h-[44px] rounded-lg bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
           >
-            {isSubmitting ? "Guardando..." : "Comenzar"}
+            {isSubmitting ? dict.auth.onboarding.saving : dict.auth.onboarding.startButton}
           </button>
         </div>
       </form>

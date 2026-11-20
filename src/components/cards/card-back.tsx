@@ -4,6 +4,7 @@ import {
   CARD_CANONICAL_WIDTH,
   CARD_CANONICAL_HEIGHT,
 } from "./card-scale-frame";
+import { getDictionary } from "@/i18n";
 
 export type CardBackTier = "standard" | "gold" | "silver";
 
@@ -52,8 +53,10 @@ export function CardBack({
   isSelected = false,
   onClick,
   className = "",
-  title = "Cromo no desbloqueado",
+  title,
 }: CardBackProps) {
+  const dict = getDictionary();
+  const resolvedTitle = title ?? dict.cards.cardBackDefaultTitle;
   const borderStyles = TIER_BORDER_STYLES[tier];
 
   return (
@@ -68,8 +71,8 @@ export function CardBack({
             onClick();
           }
         }}
-        title={title}
-        aria-label={title}
+        title={resolvedTitle}
+        aria-label={resolvedTitle}
         style={{
           width: CARD_CANONICAL_WIDTH,
           height: CARD_CANONICAL_HEIGHT,
@@ -95,7 +98,7 @@ export function CardBack({
           <div className="relative flex h-24 w-24 items-center justify-center">
             <Image
               src="/images/cards/card-back-logo.png"
-              alt="Mareona"
+              alt={dict.cards.cardBackLogoAlt}
               width={128}
               height={128}
               priority={false}

@@ -6,6 +6,7 @@ import {
   MessageSquare,
   type LucideIcon,
 } from "lucide-react";
+import { getDictionary } from "@/i18n";
 
 export interface NavItem {
   readonly label: string;
@@ -14,36 +15,38 @@ export interface NavItem {
   readonly description: string;
 }
 
+const dict = getDictionary();
+
 export const NAV_ITEMS: readonly NavItem[] = [
   {
-    label: "Inicio",
+    label: dict.layout.nav.items.home.label,
     href: "/",
     icon: Home,
-    description: "Portada y resumen de actualidad sportinguista",
+    description: dict.layout.nav.items.home.description,
   },
   {
-    label: "Temporada",
+    label: dict.layout.nav.items.season.label,
     href: "/temporada",
     icon: CalendarDays,
-    description: "Partidos, clasificación y plantilla actual",
+    description: dict.layout.nav.items.season.description,
   },
   {
-    label: "Histórico",
+    label: dict.layout.nav.items.history.label,
     href: "/historico",
     icon: History,
-    description: "Archivo histórico y efemérides sportinguistas",
+    description: dict.layout.nav.items.history.description,
   },
   {
-    label: "Social",
+    label: dict.layout.nav.items.social.label,
     href: "/social",
     icon: MessageSquare,
-    description: "Comunidad, feed de partidos y debates",
+    description: dict.layout.nav.items.social.description,
   },
   {
-    label: "Juegos",
+    label: dict.layout.nav.items.games.label,
     href: "/juegos",
     icon: Gamepad2,
-    description: "La Porra de El Molinón y pasatiempos",
+    description: dict.layout.nav.items.games.description,
   },
 ];
 

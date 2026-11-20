@@ -1,6 +1,7 @@
 "use client"; // Client: Tarjeta de bienvenida e incentivo de inicio de sesión para abrir sobres
 
 import { PackCard } from "@/components/cards/pack-card";
+import { getDictionary } from "@/i18n";
 
 interface AlbumGuestPacksCardProps {
   readonly onOpenAuth: () => void;
@@ -11,17 +12,18 @@ interface AlbumGuestPacksCardProps {
  * Prompts unauthenticated visitors to sign in to access starter packs and build their collection.
  */
 export function AlbumGuestPacksCard({ onOpenAuth }: AlbumGuestPacksCardProps) {
+  const dict = getDictionary();
   return (
     <section
-      aria-label="Colección de cromos"
+      aria-label={dict.games.album.guestCard.sectionAria}
       className="flex flex-col items-center justify-center rounded-2xl border border-[var(--border)] bg-white p-6 sm:p-10 text-center shadow-xs select-none"
     >
       {/* Main headline */}
       <h2 className="font-sans text-base sm:text-lg font-bold text-[var(--foreground)]">
-        Colección histórica de cromos
+        {dict.games.album.guestCard.title}
       </h2>
       <p className="mt-1 text-xs sm:text-sm text-[var(--foreground-muted)] max-w-sm">
-        Inicia sesión para abrir tus primeros sobres y guardar tu progreso.
+        {dict.games.album.guestCard.subtitle}
       </p>
 
       {/* Physical packs showcase */}
@@ -40,7 +42,7 @@ export function AlbumGuestPacksCard({ onOpenAuth }: AlbumGuestPacksCardProps) {
         onClick={onOpenAuth}
         className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-[var(--primary)] px-8 py-2.5 font-sans text-sm font-bold text-white shadow-2xs transition-colors hover:bg-[var(--primary-strong)] active:scale-98 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
       >
-        Iniciar sesión
+        {dict.games.album.guestCard.signInButton}
       </button>
     </section>
   );

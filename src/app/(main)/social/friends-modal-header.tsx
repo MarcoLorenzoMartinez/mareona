@@ -2,6 +2,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import { getDictionary } from "@/i18n";
 
 interface FriendsModalHeaderProps {
   readonly tab: "friends" | "search";
@@ -16,11 +17,12 @@ export function FriendsModalHeader({
   onTabChange,
   onClose,
 }: FriendsModalHeaderProps) {
+  const dict = getDictionary();
   return (
     <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
       <div
         role="tablist"
-        aria-label="Secciones de amigos"
+        aria-label={dict.social.friends.tabsAria}
         className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface)] p-1"
       >
         <button
@@ -34,7 +36,7 @@ export function FriendsModalHeader({
               : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
           }`}
         >
-          <span>Mis Amigos</span>
+          <span>{dict.social.friends.myFriendsTab}</span>
           <span className="tabular-nums opacity-90">({friendsCount})</span>
         </button>
         <button
@@ -48,7 +50,7 @@ export function FriendsModalHeader({
               : "text-[var(--foreground-muted)] font-semibold hover:text-[var(--foreground)]"
           }`}
         >
-          Buscar Aficionados
+          {dict.social.friends.searchTab}
         </button>
       </div>
 
@@ -56,7 +58,7 @@ export function FriendsModalHeader({
         type="button"
         onClick={onClose}
         className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer -mr-2"
-        aria-label="Cerrar ventana"
+        aria-label={dict.social.friends.closeAria}
       >
         <X className="h-4 w-4" aria-hidden="true" />
       </button>

@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import type { InstallPlatform } from "@/lib/pwa/install-platform";
+import { getDictionary } from "@/i18n";
 
-function ShareIcon() {
+function ShareIcon({ label }: { readonly label: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -12,36 +13,37 @@ function ShareIcon() {
       strokeLinejoin="round"
       className="inline h-4 w-4 align-[-3px] text-[var(--primary)]"
       role="img"
-      aria-label="Compartir"
+      aria-label={label}
     >
       <path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" />
     </svg>
   );
 }
 
-const STEPS: Partial<Record<InstallPlatform, readonly ReactNode[]>> = {
-  ios: [
-    <>Toca el botón Compartir <ShareIcon /> de Safari.</>,
-    <>Elige «Añadir a pantalla de inicio».</>,
-    <>Pulsa «Añadir».</>,
-  ],
-  "in-app": [
-    <>Abre el menú de esta ventana (⋯ o ⋮).</>,
-    <>Elige «Abrir en el navegador».</>,
-    <>Instala Mareona desde Safari o Chrome.</>,
-  ],
-  manual: [
-    <>Abre el menú de tu navegador.</>,
-    <>Elige «Instalar app» o «Añadir a pantalla de inicio».</>,
-  ],
-};
-
 /**
  * Numbered, platform-specific manual installation instructions.
  * Renders nothing for platforms with a native prompt or an installed app.
  */
 export function InstallSteps({ platform }: { readonly platform: InstallPlatform }) {
-  const steps = STEPS[platform];
+  const dict = getDictionary();
+  const stepsByPlatform: Partial<Record<InstallPlatform, readonly ReactNode[]>> = {
+    ios: [
+      <>{dict.pwa.installGuide.iosStep1Prefix} <ShareIcon label={dict.pwa.installGuide.shareAria} /> {dict.pwa.installGuide.iosStep1Suffix}</>,
+      <>{dict.pwa.installGuide.iosStep2}</>,
+      <>{dict.pwa.installGuide.iosStep3}</>,
+    ],
+    "in-app": [
+      <>{dict.pwa.installGuide.inAppStep1}</>,
+      <>{dict.pwa.installGuide.inAppStep2}</>,
+      <>{dict.pwa.installGuide.inAppStep3}</>,
+    ],
+    manual: [
+      <>{dict.pwa.installGuide.manualStep1}</>,
+      <>{dict.pwa.installGuide.manualStep2}</>,
+    ],
+  };
+
+  const steps = stepsByPlatform[platform];
   if (!steps) return null;
 
   return (

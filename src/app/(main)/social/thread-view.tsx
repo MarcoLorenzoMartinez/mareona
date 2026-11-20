@@ -15,6 +15,7 @@ import { PostComposer } from "./post-composer";
 import { ThreadReplyItem } from "./thread-reply-item";
 import { formatRelativeTime, canEditPost } from "@/lib/social/format";
 import type { SocialPost } from "@/lib/social/types";
+import { getDictionary } from "@/i18n";
 
 interface ThreadViewProps {
   readonly post: SocialPost;
@@ -37,6 +38,7 @@ export function ThreadView({
   onDeletePost,
   onUpdatePost,
 }: ThreadViewProps) {
+  const dict = getDictionary();
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const replies = post.replies ?? [];
@@ -67,7 +69,7 @@ export function ThreadView({
             <button
               type="button"
               onClick={openProfile}
-              aria-label={`Ver perfil de ${post.authorName}`}
+              aria-label={`${dict.social.post.viewProfileAriaPrefix} ${post.authorName}`}
               className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
             >
               <AuthAvatar src={post.authorAvatar} alt={post.authorName} size="md" />
@@ -89,7 +91,7 @@ export function ThreadView({
               <button
                 type="button"
                 onClick={() => setIsEditing((prev) => !prev)}
-                aria-label="Editar publicación"
+                aria-label={dict.social.post.editPostAria}
                 className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               >
                 <Pencil className="h-4 w-4" aria-hidden="true" />
@@ -100,7 +102,7 @@ export function ThreadView({
               <button
                 type="button"
                 onClick={() => onDeletePost(post.id)}
-                aria-label="Borrar publicación"
+                aria-label={dict.social.post.deletePostAria}
                 className="flex h-8 w-8 items-center justify-center text-neutral-400 hover:bg-red-50 hover:text-[#e2001a] rounded-full transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
               >
                 <Trash2 className="h-4 w-4" aria-hidden="true" />
@@ -132,7 +134,7 @@ export function ThreadView({
           {post.isEdited && (
             <>
               <span aria-hidden="true" className="text-neutral-400">·</span>
-              <span className="text-neutral-400 text-xs">editado</span>
+              <span className="text-neutral-400 text-xs">{dict.social.post.editedLabel}</span>
             </>
           )}
         </div>
@@ -151,14 +153,14 @@ export function ThreadView({
 
       <PostComposer
         parentId={post.id}
-        placeholder={`Responder a @${post.authorUsername}`}
-        submitLabel="Responder"
+        placeholder={`${dict.social.thread.replyPlaceholderPrefix}${post.authorUsername}`}
+        submitLabel={dict.social.thread.replySubmit}
         onPosted={(reply) => onAddReply(post.id, reply)}
       />
 
-      <section aria-label="Respuestas al mensaje">
+      <section aria-label={dict.social.thread.repliesAria}>
         {replies.length === 0 ? (
-          <p className="px-4 py-10 text-center text-sm text-neutral-500">Aún no hay respuestas</p>
+          <p className="px-4 py-10 text-center text-sm text-neutral-500">{dict.social.thread.noReplies}</p>
         ) : (
           replies.map((reply) => (
             <ThreadReplyItem

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { MiniPack } from '@/components/cards/mini-pack';
 import { PACK_TIERS } from '@/lib/cards/packs';
 import type { PorraUnclaimedReward } from '@/lib/porra/types';
+import { getDictionary } from '@/i18n';
 
 interface PorraPendingRewardsProps {
   readonly rewards: readonly PorraUnclaimedReward[];
@@ -18,6 +19,7 @@ export function PorraPendingRewards({
   justClaimedCount,
   onClaimAll,
 }: PorraPendingRewardsProps) {
+  const dict = getDictionary();
   if (rewards.length === 0 && justClaimedCount === 0) {
     return null;
   }
@@ -31,14 +33,14 @@ export function PorraPendingRewards({
         <span className="font-sans text-xs sm:text-sm font-semibold text-[var(--foreground)]">
           ✓{' '}
           {justClaimedCount === 1
-            ? '1 sobre reclamado y guardado en tu inventario.'
-            : `${justClaimedCount} sobres reclamados y guardados en tu inventario.`}
+            ? dict.games.porra.pendingRewards.oneClaimed
+            : `${justClaimedCount} ${dict.games.porra.pendingRewards.manyClaimedSuffix}`}
         </span>
         <Link
           href="/juegos/album?tab=packs"
           className="inline-flex shrink-0 items-center justify-center rounded-full border border-[var(--border)] bg-white px-3.5 py-1.5 font-sans text-xs font-bold text-[#e2001a] transition-colors hover:border-[#e2001a] active:scale-95"
         >
-          Abrir en el Álbum →
+          {dict.games.porra.pendingRewards.openInAlbum}
         </Link>
       </section>
     );
@@ -46,19 +48,19 @@ export function PorraPendingRewards({
 
   const buttonLabel =
     rewards.length === 1
-      ? 'Reclamar sobre'
-      : `Reclamar sobres (${rewards.length})`;
+      ? dict.games.porra.pendingRewards.claimOne
+      : `${dict.games.porra.pendingRewards.claimManyPrefix} (${rewards.length})`;
 
   return (
     <section
-      aria-label="Recompensas pendientes de La Porra"
+      aria-label={dict.games.porra.pendingRewards.sectionAria}
       className="flex flex-col overflow-hidden rounded-2xl border border-[#e2001a]/30 bg-white shadow-xs"
     >
       <div className="flex items-center justify-between border-b border-[var(--border)] bg-red-50/40 px-4 py-2.5">
         <span className="font-sans text-xs font-bold uppercase tracking-wider text-[#e2001a]">
           {rewards.length === 1
-            ? 'Tienes 1 recompensa por reclamar'
-            : `Tienes ${rewards.length} recompensas acumuladas`}
+            ? dict.games.porra.pendingRewards.onePendingTitle
+            : `${dict.games.porra.pendingRewards.manyPendingPrefix} ${rewards.length} ${dict.games.porra.pendingRewards.manyPendingSuffix}`}
         </span>
         <span className="rounded-full bg-[#e2001a] px-2 py-0.5 font-sans text-[11px] font-bold tabular-nums text-white">
           {rewards.length}
@@ -83,11 +85,11 @@ export function PorraPendingRewards({
                 </span>
                 <div className="flex flex-wrap items-center gap-1.5 font-sans text-[11px] font-medium tabular-nums text-[var(--foreground-muted)]">
                   <span>
-                    Tu pronóstico: {prediction.homeScore} - {prediction.awayScore}
+                    {dict.games.porra.pendingRewards.yourPredictionPrefix} {prediction.homeScore} - {prediction.awayScore}
                   </span>
                   <span>·</span>
                   <span className="font-bold text-[#e2001a]">
-                    +{evaluation.points} {evaluation.points === 1 ? 'pt' : 'pts'}
+                    +{evaluation.points} {evaluation.points === 1 ? dict.games.porra.pendingRewards.pointSingular : dict.games.porra.pendingRewards.pointPlural}
                   </span>
                   <span>·</span>
                   <span className="font-semibold text-[var(--foreground)]">
