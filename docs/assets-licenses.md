@@ -14,4 +14,4 @@ Todos los activos oficiales o de terceros están protegidos por la variable `NEX
 3. **Fotografías de estadios** (`public/stadiums/*.jpg|png` vía `getStadiumAsset` en `src/lib/sports-api/stadiums.ts` y fondos de arena en juegos): protegidas por `areOfficialAssetsEnabled()` en los 6 renderizadores de estadio (`NextFixtureHero`, `MatchHeader`, `MatchScoreboard`, `CardStadiumBackground`, `HigherLowerArenaBackground`, `TriviaArenaBackground`).
 
 ## 3. Solicitud de retirada
-Cualquier titular de derechos puede solicitar la retirada inmediata (máximo 48 horas) escribiendo a `marcolorenzomart@gmail.com`.
+Cualquier titular de derechos puede solicitar la retirada inmediata (máximo 48 horas) escribiendo a `mareonasportinguista@gmail.com`.
