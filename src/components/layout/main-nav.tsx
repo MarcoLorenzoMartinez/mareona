@@ -54,7 +54,7 @@ function BrandLogo() {
         <span className="text-base font-black tracking-wider text-white uppercase leading-none">
           {dict.layout.brand.name}
         </span>
-        <span className="text-[10px] font-semibold tracking-widest text-white/80 uppercase mt-0.5">
+        <span className="text-[10px] font-semibold tracking-widest text-white/95 uppercase mt-0.5">
           {dict.layout.brand.club}
         </span>
       </div>
@@ -87,7 +87,7 @@ function DesktopNavList({
                 className={`relative flex h-10 items-center justify-center rounded-md px-3.5 text-sm font-medium tracking-wide transition-colors duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] ${
                   isBlocked(item.href) ? "opacity-55 " : ""
                 }${
-                  isActive ? "bg-white/18 font-bold text-white shadow-2xs" : "text-white/85 hover:bg-white/10 hover:text-white"
+                  isActive ? "bg-white/18 font-bold text-white shadow-2xs" : "text-white/95 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <span className="relative inline-flex items-center">

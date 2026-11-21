@@ -114,7 +114,7 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
             onChange={(e) => setDisplayName(e.target.value)}
             placeholder={dict.auth.onboarding.displayNamePlaceholder}
             maxLength={40}
-            className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 px-3 text-base sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+            className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 px-3 text-base sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-600 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
           />
         </div>
 
@@ -127,7 +127,7 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
             {dict.auth.onboarding.usernameLabel}
           </label>
           <div className="relative">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-bold text-neutral-400">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-bold text-neutral-600">
               @
             </span>
             <input
@@ -139,7 +139,7 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
               pattern="^[a-zA-Z0-9_]{3,20}$"
               maxLength={20}
               title={dict.auth.onboarding.usernameTitle}
-              className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 pr-3 pl-7 text-base sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 pr-3 pl-7 text-base sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-600 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
           </div>
         </div>

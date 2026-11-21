@@ -80,7 +80,7 @@ function TeamLineupColumn({
               className="h-7 w-7 rounded-full border border-neutral-300 object-cover object-top shrink-0 bg-white"
             />
             <div className="text-left leading-none">
-              <span className="text-[10px] uppercase font-semibold text-neutral-400 block tracking-wider mb-0.5">
+              <span className="text-[10px] uppercase font-semibold text-neutral-600 block tracking-wider mb-0.5">
                 Entrenador
               </span>
               <span className="text-xs font-bold text-neutral-800">
@@ -96,7 +96,7 @@ function TeamLineupColumn({
           {groupedStarters.map((group) => (
             <div key={group.label} className="space-y-1 pt-1">
               <div className="text-center">
-                <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-neutral-400 select-none">
+                <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-neutral-600 select-none">
                   {group.label}
                 </span>
               </div>
@@ -120,7 +120,7 @@ function TeamLineupColumn({
 
       {bench.length > 0 && (
         <div className="pt-3 border-t border-[var(--border)]/70">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1.5">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-600 mb-1.5">
             Banquillo
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-0.5">

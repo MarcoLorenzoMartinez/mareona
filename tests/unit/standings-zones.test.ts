@@ -125,7 +125,7 @@ describe("getZoneBadgeStyle", () => {
     const playoff = getZoneBadgeStyle("promotion-playoff");
 
     assert.equal(direct.barClass, "bg-[#16a34a]");
-    assert.equal(playoff.barClass, "bg-[#2563eb]");
+    assert.equal(playoff.barClass, "bg-[#d97706]");
     assert.notEqual(direct.barClass, playoff.barClass);
   });
 
@@ -136,12 +136,12 @@ describe("getZoneBadgeStyle", () => {
     assert.equal(direct.barClass, "bg-[#16a34a]");
   });
 
-  it("assigns blue to Champions League and orange to Europa League / UEFA", () => {
+  it("assigns gold to Champions League and orange to Europa League / UEFA (no blue per AGENTS.md)", () => {
     const ucl = getZoneBadgeStyle("champions-league");
     const uel = getZoneBadgeStyle("europa-league");
     const uefa = getZoneBadgeStyle("uefa");
 
-    assert.equal(ucl.barClass, "bg-[#1d4ed8]");
+    assert.equal(ucl.barClass, "bg-[#ca8a04]");
     assert.equal(uel.barClass, "bg-[#ea580c]");
     assert.equal(uefa.barClass, "bg-[#ea580c]");
   });

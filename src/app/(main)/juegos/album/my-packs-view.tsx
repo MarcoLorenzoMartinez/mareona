@@ -72,7 +72,7 @@ export function MyPacksView({
               <p className="text-sm font-bold text-neutral-800">
                 {dict.games.album.packs.emptyTitle}
               </p>
-              <p className="mt-1 text-xs text-neutral-400">
+              <p className="mt-1 text-xs text-neutral-600">
                 {dict.games.album.packs.emptySubtitle}
               </p>
             </div>

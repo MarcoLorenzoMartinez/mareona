@@ -95,14 +95,14 @@ export function RivalsFilterBar({
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Buscar por equipo o provincia..."
             autoComplete="off"
-            className="w-full rounded-full border border-[var(--border)] bg-neutral-50 pl-4 pr-8 py-2 text-xs font-medium text-[var(--foreground)] placeholder:text-neutral-400 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+            className="w-full rounded-full border border-[var(--border)] bg-neutral-50 pl-4 pr-8 py-2 text-xs font-medium text-[var(--foreground)] placeholder:text-neutral-600 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => onSearchChange("")}
               aria-label="Limpiar búsqueda"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-neutral-400 hover:text-neutral-700 cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-neutral-600 hover:text-neutral-700 cursor-pointer"
             >
               ✕
             </button>

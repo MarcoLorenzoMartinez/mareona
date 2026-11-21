@@ -24,7 +24,7 @@ export function StandingsRow({ row, scope, totalTeams }: StandingsRowProps) {
   const barClass = isDirectPromotion
     ? "bg-[#16a34a]"
     : isPlayoff
-      ? "bg-[#2563eb]"
+      ? "bg-[#d97706]"
       : isRelegation
         ? "bg-[#dc2626]"
         : "";

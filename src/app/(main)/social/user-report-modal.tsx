@@ -87,7 +87,7 @@ export function UserReportModal({
             type="button"
             onClick={onClose}
             aria-label={dict.social.reportModal.closeAria}
-            className="rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            className="rounded-full p-1.5 text-neutral-600 hover:bg-neutral-100 hover:text-neutral-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -129,7 +129,7 @@ export function UserReportModal({
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               placeholder={dict.social.reportModal.detailsPlaceholder}
-              className="w-full rounded-xl border border-neutral-200 px-3 py-2 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              className="w-full rounded-xl border border-neutral-200 px-3 py-2 text-xs text-neutral-900 placeholder:text-neutral-600 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
           </div>
 

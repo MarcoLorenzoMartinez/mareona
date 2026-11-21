@@ -15,7 +15,7 @@ describe("Telemetry & Cookieless Analytics Suite", () => {
       assert.equal(resolveProvinceName(null, "Oviedo"), "Asturias");
       assert.equal(resolveProvinceName("MD", "Madrid"), "Madrid");
       assert.equal(resolveProvinceName("LE", "Ponferrada"), "León");
-      assert.equal(resolveProvinceName(null, null), "Asturias");
+      assert.equal(resolveProvinceName(null, null), "Desconocida");
     });
 
     it("maps country codes to Spanish localized names", () => {
@@ -24,7 +24,7 @@ describe("Telemetry & Cookieless Analytics Suite", () => {
       assert.equal(resolveCountryName("MX"), "México");
       assert.equal(resolveCountryName("FR"), "Francia");
       assert.equal(resolveCountryName("GB"), "Reino Unido");
-      assert.equal(resolveCountryName(null), "España");
+      assert.equal(resolveCountryName(null), "Desconocido");
       assert.equal(resolveCountryName("XX"), "Otros");
     });
   });

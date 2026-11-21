@@ -115,7 +115,7 @@ export function PlayerMatchRow({ match: m, onSelect }: PlayerMatchRowProps) {
             {m.rating.toFixed(1)}
           </span>
         ) : (
-          <span className="flex h-6 w-8 items-center justify-center rounded-lg bg-neutral-100 text-neutral-400 text-xs font-bold tabular-nums">
+          <span className="flex h-6 w-8 items-center justify-center rounded-lg bg-neutral-100 text-neutral-600 text-xs font-bold tabular-nums">
             —
           </span>
         )}

@@ -80,7 +80,7 @@ export function LegacyRankingsRow({ player, category }: LegacyRankingsRowProps) 
           <td className="hidden md:table-cell py-2.5 px-3 text-center font-medium">
             <div className="flex flex-col items-center">
               <span className="font-bold text-neutral-800">{player.seasonCount} temp.</span>
-              <span className="text-[10px] text-neutral-400">{seasonRangeLabel}</span>
+              <span className="text-[10px] text-neutral-600">{seasonRangeLabel}</span>
             </div>
           </td>
           <td className="hidden sm:table-cell py-2.5 px-3 text-center text-neutral-600 font-medium">

@@ -76,7 +76,7 @@ export function TriviaSolvedCard({
             {!isCorrect && (
               <p className="mt-3 text-[11px] text-neutral-500 font-medium">
                 {dict.games.trivia.solvedCard.yourAnswerPrefix}{' '}
-                <span className="line-through text-neutral-400 font-normal">
+                <span className="line-through text-neutral-600 font-normal">
                   {userAnswer}
                 </span>
               </p>

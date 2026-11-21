@@ -139,7 +139,7 @@ export function UserProfileModal({
         </div>
 
         {isLoading || !profile ? (
-          <div className="py-16 text-center text-xs text-neutral-400">{dict.social.userProfileModal.loading}</div>
+          <div className="py-16 text-center text-xs text-neutral-600">{dict.social.userProfileModal.loading}</div>
         ) : (
           <div className="flex-1 overflow-y-auto">
             <ProfileModalHeader

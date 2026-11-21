@@ -41,15 +41,14 @@ export function resolveProvinceName(regionCode?: string | null, city?: string | 
     }
   }
 
-  // Primary Mareona fan base demographic default
-  return "Asturias";
+  return "Desconocida";
 }
 
 /**
  * Maps a country code (ISO 3166-1 alpha-2) to its Spanish localized display name.
  */
 export function resolveCountryName(countryCode?: string | null): string {
-  if (!countryCode) return "España";
+  if (!countryCode) return "Desconocido";
   const code = countryCode.toUpperCase().trim();
 
   const COUNTRY_MAP: Record<string, string> = {

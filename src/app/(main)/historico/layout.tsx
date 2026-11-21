@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { HistoricoNav } from "@/components/layout/historico-nav";
 
@@ -12,7 +13,9 @@ export default function HistoricoLayout({
 }) {
   return (
     <div className="flex w-full flex-col gap-6">
-      <HistoricoNav />
+      <Suspense fallback={null}>
+        <HistoricoNav />
+      </Suspense>
       {children}
     </div>
   );

@@ -84,7 +84,7 @@ export function TacticalPlayerCard({
         {/* Indicador de sustitución */}
         {player.subbedOut && (
           <span
-            className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber-600 text-white text-[9px] font-bold shadow-2xs"
+            className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-amber-700 text-white text-[9px] font-bold shadow-2xs"
             title="Sustituido durante el partido"
             aria-hidden="true"
           >

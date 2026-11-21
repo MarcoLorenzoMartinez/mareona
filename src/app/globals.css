@@ -77,21 +77,31 @@
     outline-offset: 2px;
   }
 
-  /* Previene el zoom automático indeseado de iOS Safari al enfocar inputs */
-  @media (pointer: coarse) {
-    input, textarea, select {
-      font-size: 16px;
-    }
-  }
-
   body {
     background-color: var(--background);
     color: var(--foreground);
   }
 }
 
+/* Previene el zoom automático indeseado de iOS Safari al enfocar inputs (fuera de @layer base para superar utilidades text-sm/xs) */
+@media (pointer: coarse) {
+  input, textarea, select {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Mapeo de tokens para utilidades de Tailwind v4 */
 @theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);

@@ -144,7 +144,7 @@ export function MobilePostComposerModal({
             onChange={(e) => setBody(e.target.value)}
             placeholder={dict.social.composer.defaultPlaceholder}
             maxLength={MAX_USER_BODY_LENGTH}
-            className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
+            className="w-full resize-none bg-transparent py-2 text-base text-neutral-900 placeholder:text-neutral-600 focus:outline-none"
           />
 
           {attachedLineup && (

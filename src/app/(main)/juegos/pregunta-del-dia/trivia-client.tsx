@@ -99,7 +99,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
       />
 
       {/* Main Question Arena Card with El Molinón Backdrop */}
-      <main className="relative flex flex-col justify-between rounded-3xl border border-neutral-200/90 bg-white/90 p-7 sm:p-9 shadow-xs backdrop-blur-xs">
+      <div className="relative flex flex-col justify-between rounded-3xl border border-neutral-200/90 bg-white/90 p-7 sm:p-9 shadow-xs backdrop-blur-xs">
         <TriviaArenaBackground />
 
         <div>
@@ -140,7 +140,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
             onOpenStats={() => setIsModalOpen(true)}
           />
         )}
-      </main>
+      </div>
 
       {/* Archive Calendar Modal */}
       <TriviaArchiveModal

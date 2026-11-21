@@ -99,7 +99,7 @@ export function UserNav() {
           <span className="text-xs font-bold truncate max-w-[120px]">
             {displayName}
           </span>
-          <span className="text-[10px] font-medium text-white/80 truncate max-w-[120px]">
+          <span className="text-[10px] font-medium text-white/95 truncate max-w-[120px]">
             @{username}
           </span>
         </div>

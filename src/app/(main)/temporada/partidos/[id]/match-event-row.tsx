@@ -26,7 +26,7 @@ function EventDetails({ event, penaltyMissedLabel }: EventDetailsProps) {
         </span>
         {secondaryName && (
           <span className="flex items-center gap-1 text-[11px] text-[var(--foreground-muted)]">
-            <span className="text-[10px] text-neutral-400 font-bold" aria-hidden="true">▼</span>
+            <span className="text-[10px] text-neutral-600 font-bold" aria-hidden="true">▼</span>
             <span>{secondaryName}</span>
           </span>
         )}

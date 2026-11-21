@@ -72,7 +72,7 @@ export function PlayerSeasonStatsGrid({
                         {stat.statValue}
                       </span>
                       {stat.per90 > 0 && (
-                        <span className="text-[10px] font-semibold text-neutral-400 tabular-nums">
+                        <span className="text-[10px] font-semibold text-neutral-600 tabular-nums">
                           ({stat.per90} /90&apos;)
                         </span>
                       )}
@@ -84,7 +84,7 @@ export function PlayerSeasonStatsGrid({
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-dashed border-neutral-200 bg-white p-8 text-center text-xs text-neutral-400">
+        <div className="rounded-2xl border border-dashed border-neutral-200 bg-white p-8 text-center text-xs text-neutral-600">
           No se dispone de desglose estadístico acumulado para este jugador en la temporada actual.
         </div>
       )}

@@ -72,7 +72,7 @@ function EventDetail({
       </span>
       {event.secondaryText && (
         <span className="text-neutral-500 truncate inline-flex items-center gap-1 text-[10px]">
-          <span className="text-neutral-400 font-bold">↓</span> {event.secondaryText}
+          <span className="text-neutral-600 font-bold">↓</span> {event.secondaryText}
         </span>
       )}
     </div>

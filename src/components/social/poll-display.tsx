@@ -149,7 +149,7 @@ export function PollDisplay({ poll }: PollDisplayProps) {
         })}
       </div>
 
-      <div className="text-[11px] font-medium text-neutral-400">
+      <div className="text-[11px] font-medium text-neutral-600">
         <span className="font-sans tabular-nums">{totalVotes}</span>{" "}
         {totalVotes === 1 ? dict.social.poll.voteSingular : dict.social.poll.votePlural}
       </div>

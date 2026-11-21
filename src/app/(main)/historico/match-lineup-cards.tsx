@@ -88,7 +88,7 @@ export function BenchRow({ player, teamColor }: BenchRowProps) {
           <span>{player.subIn}&apos;</span>
         </span>
       ) : (
-        <span className="text-[10px] text-neutral-400 shrink-0 select-none" title="No disputó minutos">
+        <span className="text-[10px] text-neutral-600 shrink-0 select-none" title="No disputó minutos">
           —
         </span>
       )}

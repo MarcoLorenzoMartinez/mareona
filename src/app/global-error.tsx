@@ -3,6 +3,7 @@
 
 import { useEffect } from "react";
 import { reportClientError } from "@/lib/telemetry/client-error-reporter";
+import "./globals.css";
 
 interface GlobalErrorProps {
   readonly error: Error & { digest?: string };

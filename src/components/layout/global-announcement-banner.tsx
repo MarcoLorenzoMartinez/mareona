@@ -15,7 +15,7 @@ export async function GlobalAnnouncementBanner() {
 
   const styles = {
     info: "bg-[var(--foreground)] text-white border-b border-black/10",
-    warning: "bg-amber-600 text-white border-b border-amber-700",
+    warning: "bg-amber-700 text-white border-b border-amber-700",
     alert: "bg-[var(--brand,#e2001a)] text-white border-b border-red-700",
   }[announcement.type];
 

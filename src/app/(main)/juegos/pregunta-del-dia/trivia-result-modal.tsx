@@ -53,13 +53,13 @@ export function TriviaResultModal({
       >
         {/* Cabecera limpia y neutral */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
-          <h2 id="trivia-modal-title" className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+          <h2 id="trivia-modal-title" className="text-xs font-bold uppercase tracking-wider text-neutral-600">
             {dict.games.trivia.resultModal.title}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
+            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
             aria-label={dict.games.trivia.resultModal.closeAria}
           >
             ✕
@@ -94,19 +94,19 @@ export function TriviaResultModal({
         {/* Resumen métrico 4 columnas */}
         <div className="mt-5 grid grid-cols-4 items-center border-y border-neutral-100 py-3.5 text-center">
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.trivia.resultModal.played}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.trivia.resultModal.played}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.played}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.trivia.resultModal.winRate}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.trivia.resultModal.winRate}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{winPercentage}%</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.trivia.resultModal.currentStreak}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.trivia.resultModal.currentStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-[#e2001a]">{stats.currentStreak}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.trivia.resultModal.maxStreak}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.trivia.resultModal.maxStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.maxStreak}</span>
           </div>
         </div>

@@ -84,7 +84,7 @@ export function StandingsTable({
               {t.zones.promotion}
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-3 w-[3px] rounded-full bg-[#2563eb]" aria-hidden="true" />
+              <span className="h-3 w-[3px] rounded-full bg-[#d97706]" aria-hidden="true" />
               {t.zones.playoff}
             </span>
             <span className="flex items-center gap-1.5">

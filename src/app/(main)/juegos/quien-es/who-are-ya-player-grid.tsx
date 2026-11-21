@@ -23,13 +23,13 @@ function StatTile({ label, isMatch, children }: TileProps) {
       <div
         className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border font-bold transition-all shadow-2xs overflow-hidden ${
           isMatch
-            ? 'border-emerald-600 bg-emerald-600 text-white'
+            ? 'border-emerald-600 bg-emerald-700 text-white'
             : 'border-neutral-200 bg-neutral-100/90 text-neutral-800'
         }`}
       >
         {children}
       </div>
-      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 select-none">
+      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600 select-none">
         {label}
       </span>
     </div>
@@ -55,7 +55,7 @@ function NumericTile({
       <div
         className={`relative flex h-12 w-12 sm:h-14 sm:w-14 flex-col items-center justify-center rounded-xl border tabular-nums transition-all shadow-2xs ${
           isMatch
-            ? 'border-emerald-600 bg-emerald-600 text-white'
+            ? 'border-emerald-600 bg-emerald-700 text-white'
             : 'border-neutral-200 bg-neutral-100/90 text-neutral-900'
         }`}
       >
@@ -81,7 +81,7 @@ function NumericTile({
           </span>
         )}
       </div>
-      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 select-none">
+      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600 select-none">
         {label}
       </span>
     </div>
@@ -108,7 +108,7 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
               <span className="text-sm sm:text-base font-black tracking-tight text-neutral-900">
                 {guess.player.name}
               </span>
-              <span className="text-xs font-normal text-neutral-400 truncate max-w-[200px]">
+              <span className="text-xs font-normal text-neutral-600 truncate max-w-[200px]">
                 {guess.player.fullName}
               </span>
             </div>

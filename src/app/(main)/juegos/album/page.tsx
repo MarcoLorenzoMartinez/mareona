@@ -20,16 +20,16 @@ async function AlbumContent() {
 
 export default function AlbumPage() {
   return (
-    <main className="container mx-auto px-4 py-6 max-w-6xl">
+    <div className="container mx-auto px-4 py-6 max-w-6xl">
       <Suspense
         fallback={
-          <div className="py-20 text-center text-xs text-neutral-400">
+          <div className="py-20 text-center text-xs text-neutral-600">
             {dict.games.album.loadingCollection}
           </div>
         }
       >
         <AlbumContent />
       </Suspense>
-    </main>
+    </div>
   );
 }

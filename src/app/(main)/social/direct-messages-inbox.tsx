@@ -48,7 +48,7 @@ export function DirectMessagesInbox({
 
   if (isLoading) {
     return (
-      <div className="py-16 text-center text-xs text-neutral-400">
+      <div className="py-16 text-center text-xs text-neutral-600">
         {dict.social.messages.loadingInbox}
       </div>
     );
@@ -133,7 +133,7 @@ export function DirectMessagesInbox({
                     className={`shrink-0 text-[11px] font-sans tabular-nums ${
                       hasUnread
                         ? "font-bold text-[var(--primary)]"
-                        : "text-neutral-400"
+                        : "text-neutral-600"
                     }`}
                   >
                     {formatRelativeTime(c.lastMessageCreatedAt)}
@@ -152,7 +152,7 @@ export function DirectMessagesInbox({
                   {c.lastMessageBody ? (
                     <>
                       {c.lastMessageIsMine && (
-                        <span className="font-normal text-neutral-400">{dict.social.messages.minePrefix} </span>
+                        <span className="font-normal text-neutral-600">{dict.social.messages.minePrefix} </span>
                       )}
                       <span>{c.lastMessageBody}</span>
                     </>

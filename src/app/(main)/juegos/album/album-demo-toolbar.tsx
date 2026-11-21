@@ -38,7 +38,7 @@ export function AlbumDemoToolbar({
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
         <div className="flex items-center gap-2">
-          <span className="flex h-2.5 w-2.5 rounded-full bg-amber-500 ring-4 ring-amber-300/40 animate-pulse" />
+          <span className="flex h-2.5 w-2.5 rounded-full bg-amber-700 ring-4 ring-amber-300/40 animate-pulse" />
           <div className="flex flex-col">
             <span className="font-sans font-bold text-xs text-amber-950 uppercase tracking-wide">
               {dict.games.album.demoToolbar.title}

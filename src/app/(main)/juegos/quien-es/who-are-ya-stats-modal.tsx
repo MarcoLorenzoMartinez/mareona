@@ -46,7 +46,7 @@ export function WhoAreYaStatsModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
+            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
             aria-label={dict.games.whoAreYa.statsModal.closeAria}
           >
             ✕
@@ -56,26 +56,26 @@ export function WhoAreYaStatsModal({
         {/* Resumen Métrico unificado con Wordle y Trivia */}
         <div className="mt-4 grid grid-cols-4 items-center border-y border-neutral-100 py-3.5 text-center">
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.whoAreYa.statsModal.played}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.whoAreYa.statsModal.played}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.played}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.whoAreYa.statsModal.winRate}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.whoAreYa.statsModal.winRate}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{winRate}%</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.whoAreYa.statsModal.currentStreak}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.whoAreYa.statsModal.currentStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-[#e2001a]">{stats.currentStreak}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.whoAreYa.statsModal.maxStreak}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.whoAreYa.statsModal.maxStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.maxStreak}</span>
           </div>
         </div>
 
         {/* Distribución de Intentos */}
         <div className="mt-4 pt-1">
-          <h3 className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+          <h3 className="text-[11px] font-bold uppercase tracking-wider text-neutral-600">
             {dict.games.whoAreYa.statsModal.distributionTitle}
           </h3>
           <div className="mt-3 flex flex-col gap-1.5">
@@ -91,7 +91,7 @@ export function WhoAreYaStatsModal({
                   <div className="flex-1 overflow-hidden rounded-md bg-neutral-100">
                     <div
                       className={`flex h-5 items-center justify-end px-2 text-[11px] font-bold text-white transition-all duration-300 ${
-                        count > 0 ? "bg-[#e2001a]" : "bg-transparent text-neutral-400"
+                        count > 0 ? "bg-[#e2001a]" : "bg-transparent text-neutral-600"
                       }`}
                       style={{ width: `${Math.max(12, pct)}%` }}
                     >

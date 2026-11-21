@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function HigherLowerPage() {
   return (
-    <main className="w-full py-2">
+    <div className="w-full py-2">
       <HigherLowerClient />
-    </main>
+    </div>
   );
 }

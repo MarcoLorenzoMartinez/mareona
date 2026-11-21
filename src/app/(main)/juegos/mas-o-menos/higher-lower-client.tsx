@@ -146,7 +146,7 @@ export function HigherLowerClient() {
           </div>
 
           {/* Insignia Central VS perfectamente centrada entre ambas tarjetas */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex h-7 w-7 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-neutral-200 bg-white/95 font-bold text-[9px] sm:text-[11px] tracking-wider text-neutral-400 shadow-xs backdrop-blur-xs pointer-events-none">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex h-7 w-7 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-neutral-200 bg-white/95 font-bold text-[9px] sm:text-[11px] tracking-wider text-neutral-600 shadow-xs backdrop-blur-xs pointer-events-none">
             {dict.games.higherLower.vs}
           </div>
 

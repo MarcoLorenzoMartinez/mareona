@@ -100,7 +100,7 @@ export function HistoricalMatchDetailModal({ match, season: propSeason, onClose 
           <p className="text-xs text-neutral-500 font-medium">
             {match.round ? `${match.competition} (${match.round})` : match.competition}
           </p>
-          <p className="text-xs text-neutral-400 mt-0.5 tabular-nums">
+          <p className="text-xs text-neutral-600 mt-0.5 tabular-nums">
             {formatHistoricalDate(match.date)}
           </p>
         </div>

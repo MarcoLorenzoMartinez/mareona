@@ -14,8 +14,8 @@ export default function WordlePage() {
   const todayChallenge = getTodayChallenge();
 
   return (
-    <main className="w-full py-2">
+    <div className="w-full py-2">
       <WordleClient initialChallenge={todayChallenge} />
-    </main>
+    </div>
   );
 }

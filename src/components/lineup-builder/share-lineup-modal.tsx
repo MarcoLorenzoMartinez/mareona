@@ -77,7 +77,7 @@ export function ShareLineupModal({
             type="button"
             onClick={onClose}
             aria-label={dict.lineupBuilder.shareModal.closeAria}
-            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer -mr-2"
+            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a] cursor-pointer -mr-2"
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>

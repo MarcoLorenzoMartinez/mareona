@@ -31,10 +31,10 @@ export function WordleKeyboard({
     }
 
     if (status === 'correct') {
-      return `${base} bg-emerald-600 text-white border border-emerald-600`;
+      return `${base} bg-emerald-700 text-white border border-emerald-600`;
     }
     if (status === 'present') {
-      return `${base} bg-amber-500 text-white border border-amber-500`;
+      return `${base} bg-amber-700 text-white border border-amber-500`;
     }
     if (status === 'absent') {
       return `${base} bg-zinc-300 text-zinc-500 border border-zinc-300 opacity-60`;

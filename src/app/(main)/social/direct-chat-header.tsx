@@ -66,7 +66,7 @@ export function DirectChatHeader({
         <AuthAvatar src={otherUser.avatarUrl} alt={otherUser.name} size="sm" />
         <div className="min-w-0">
           <h3 className="truncate text-xs font-bold text-neutral-900">{otherUser.name}</h3>
-          <p className="truncate text-[11px] text-neutral-400">@{otherUser.username}</p>
+          <p className="truncate text-[11px] text-neutral-600">@{otherUser.username}</p>
         </div>
       </button>
 

@@ -77,14 +77,14 @@ export function PostAuthorLine({
         >
           @{effectiveAuthorUsername}
         </button>
-        <span aria-hidden="true" className="text-neutral-400">·</span>
+        <span aria-hidden="true" className="text-neutral-600">·</span>
         <time dateTime={effectiveCreatedAt} className="shrink-0 text-xs text-neutral-500">
           {formatRelativeTime(effectiveCreatedAt)}
         </time>
         {effectiveIsEdited && (
           <>
-            <span aria-hidden="true" className="text-neutral-400">·</span>
-            <span className="shrink-0 text-xs text-neutral-400">{dict.social.post.editedLabel}</span>
+            <span aria-hidden="true" className="text-neutral-600">·</span>
+            <span className="shrink-0 text-xs text-neutral-600">{dict.social.post.editedLabel}</span>
           </>
         )}
       </div>
@@ -95,7 +95,7 @@ export function PostAuthorLine({
             type="button"
             onClick={handleEdit}
             aria-label={dict.social.post.editMessageAria}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
           </button>

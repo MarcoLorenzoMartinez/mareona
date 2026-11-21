@@ -4,7 +4,7 @@ import type { DomainStandingRow } from "@/lib/sports-api/types";
 
 export const ZONE_BAR_CLASS: Readonly<Record<StandingZone, string>> = {
   promotion: "bg-[#16a34a]",
-  playoff: "bg-[#2563eb]",
+  playoff: "bg-[#d97706]",
   relegation: "bg-[#dc2626]",
   none: "",
 };
