@@ -103,7 +103,7 @@ export function InlinePostEditor({
       <div className="flex items-center justify-between gap-2">
         <span
           className={`font-sans text-xs tabular-nums ${
-            remaining < 20 ? "font-bold text-red-600" : "text-neutral-600"
+            remaining < 20 ? "font-bold text-red-600" : "text-neutral-400"
           }`}
         >
           {text.length}/500

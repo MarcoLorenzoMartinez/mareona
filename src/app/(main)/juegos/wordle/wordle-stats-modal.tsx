@@ -55,7 +55,7 @@ export function WordleStatsModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
+            className="flex h-9 w-9 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] -mr-2"
             aria-label={dict.games.wordle.statsModal.closeAria}
           >
             ✕
@@ -73,19 +73,19 @@ export function WordleStatsModal({
         {/* Métricas */}
         <div className="mt-5 grid grid-cols-4 items-center border-y border-neutral-100 py-3.5 text-center">
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.wordle.statsModal.played}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.wordle.statsModal.played}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.played}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.wordle.statsModal.winRate}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.wordle.statsModal.winRate}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{winRate}%</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.wordle.statsModal.currentStreak}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.wordle.statsModal.currentStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-[#e2001a]">{stats.currentStreak}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600">{dict.games.wordle.statsModal.maxStreak}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">{dict.games.wordle.statsModal.maxStreak}</span>
             <span className="mt-1 text-2xl font-black tabular-nums text-neutral-900">{stats.maxStreak}</span>
           </div>
         </div>
@@ -99,10 +99,10 @@ export function WordleStatsModal({
               const percentage = Math.round((count / maxGuessCount) * 100);
               return (
                 <div key={attempt} className="flex items-center gap-2 text-xs">
-                  <span className="w-3 font-bold text-neutral-600 tabular-nums">{attempt}</span>
+                  <span className="w-3 font-bold text-neutral-400 tabular-nums">{attempt}</span>
                   <div className="flex-1 rounded-sm bg-neutral-100 overflow-hidden h-5 flex items-center">
                     <div
-                      className={`h-full flex items-center justify-end px-1.5 text-[11px] font-bold text-white transition-all duration-300 ${count > 0 ? "bg-[#e2001a]" : "bg-transparent text-neutral-600"}`}
+                      className={`h-full flex items-center justify-end px-1.5 text-[11px] font-bold text-white transition-all duration-300 ${count > 0 ? "bg-[#e2001a]" : "bg-transparent text-neutral-400"}`}
                       style={{ width: `${Math.max(count > 0 ? 12 : 0, percentage)}%` }}
                     >
                       {count > 0 ? count : ""}
@@ -145,7 +145,7 @@ export function WordleStatsModal({
           <button
             type="button"
             onClick={onResetStats}
-            className="mt-3 text-center text-[11px] font-medium text-neutral-600 hover:text-rose-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            className="mt-3 text-center text-[11px] font-medium text-neutral-400 hover:text-rose-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             {dict.games.wordle.statsModal.resetStats}
           </button>

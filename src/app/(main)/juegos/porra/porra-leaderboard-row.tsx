@@ -28,7 +28,7 @@ export function PorraLeaderboardRow({ entry }: PorraLeaderboardRowProps) {
               ? 'text-[#e2001a]'
               : entry.rank <= 3
                 ? 'text-neutral-900'
-                : 'text-neutral-600'
+                : 'text-neutral-400'
           }`}
         >
           {entry.rank}
@@ -51,7 +51,7 @@ export function PorraLeaderboardRow({ entry }: PorraLeaderboardRowProps) {
         >
           {entry.totalPoints}
         </span>
-        <span className="font-sans text-[11px] font-medium text-neutral-600">
+        <span className="font-sans text-[11px] font-medium text-neutral-400">
           {dict.games.porra.leaderboard.ptsUnit}
         </span>
       </div>

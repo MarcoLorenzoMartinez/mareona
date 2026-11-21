@@ -89,7 +89,7 @@ export function PlayerSeasonHeatmap({ points }: PlayerSeasonHeatmapProps) {
             />
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-neutral-200 p-8 text-center text-xs text-neutral-600">
+          <div className="rounded-2xl border border-dashed border-neutral-200 p-8 text-center text-xs text-neutral-400">
             No se dispone de coordenadas de mapa de calor registradas para este jugador.
           </div>
         )}

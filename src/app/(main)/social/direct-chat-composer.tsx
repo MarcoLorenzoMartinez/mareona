@@ -36,7 +36,7 @@ export function DirectChatComposer({
           onChange={(e) => onChangeBody(e.target.value)}
           placeholder={`${dict.social.messages.inputPlaceholderPrefix} ${otherUserName}...`}
           maxLength={2000}
-          className="flex-1 rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-xs text-neutral-900 placeholder:text-neutral-600 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] transition-all"
+          className="flex-1 rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)] transition-all"
         />
         <button
           type="submit"

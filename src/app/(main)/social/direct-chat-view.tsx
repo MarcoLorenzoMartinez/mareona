@@ -59,9 +59,9 @@ export function DirectChatView({
 
       <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-[var(--surface)]/30">
         {isInitialLoading ? (
-          <div className="py-12 text-center text-xs text-neutral-600">{dict.social.messages.loadingChat}</div>
+          <div className="py-12 text-center text-xs text-neutral-400">{dict.social.messages.loadingChat}</div>
         ) : messages.length === 0 ? (
-          <div className="py-12 text-center text-xs text-neutral-600">
+          <div className="py-12 text-center text-xs text-neutral-400">
             {dict.social.messages.emptyChatPrefix} {otherUser.name}. {dict.social.messages.emptyChatSuffix}
           </div>
         ) : (

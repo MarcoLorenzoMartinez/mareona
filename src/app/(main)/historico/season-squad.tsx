@@ -154,7 +154,7 @@ export function HistoricalSeasonSquadTable({ players, seasonLabel }: SeasonSquad
                   {player.minutes !== null ? `${player.minutes}'` : "—"}
                 </td>
                 <td className="py-2.5 pr-3 text-right tabular-nums font-black text-sm">
-                  {player.goals > 0 ? <span className="text-[var(--primary)]">{player.goals}</span> : <span className="text-neutral-600 font-normal">0</span>}
+                  {player.goals > 0 ? <span className="text-[var(--primary)]">{player.goals}</span> : <span className="text-neutral-400 font-normal">0</span>}
                 </td>
               </tr>
             ))}

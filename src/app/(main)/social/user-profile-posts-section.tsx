@@ -31,7 +31,7 @@ export function UserProfilePostsSection({
       <div className="border-b border-[var(--border)] bg-[var(--surface)]/50 px-4 py-2 sm:px-5">
         <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
           {dict.social.userProfileModal.postsTitle}{" "}
-          <span className="font-sans tabular-nums text-neutral-600">({posts.length})</span>
+          <span className="font-sans tabular-nums text-neutral-400">({posts.length})</span>
         </h4>
       </div>
 
@@ -66,7 +66,7 @@ export function UserProfilePostsSection({
                   <div className="flex min-w-0 items-baseline gap-1.5 text-sm">
                     <span className="truncate font-bold text-neutral-900">{displayName}</span>
                     <span className="truncate text-neutral-500">@{profile.username}</span>
-                    <span aria-hidden="true" className="text-neutral-600">·</span>
+                    <span aria-hidden="true" className="text-neutral-400">·</span>
                     <time dateTime={post.createdAt} className="shrink-0 text-xs text-neutral-500">
                       {formatRelativeTime(post.createdAt)}
                     </time>

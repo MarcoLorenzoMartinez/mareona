@@ -90,7 +90,7 @@ export function PorraLeaderboard({
               disabled={isOnUserPage}
               className={`min-h-8 rounded-full px-3 text-xs font-bold tabular-nums transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
                 isOnUserPage
-                  ? 'border border-[var(--border)] bg-[var(--surface)] text-neutral-600 cursor-default'
+                  ? 'border border-[var(--border)] bg-[var(--surface)] text-neutral-400 cursor-default'
                   : 'border border-[#e2001a]/30 bg-red-50/50 text-[#e2001a] hover:bg-red-50 cursor-pointer'
               }`}
             >

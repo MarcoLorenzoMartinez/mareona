@@ -78,7 +78,7 @@ export function MatchCommunityTab({ match }: MatchCommunityTabProps) {
       {(!isFinished || activeSection === "comments") && (
         <>
           {isLoading ? (
-            <div className="mx-auto w-full max-w-2xl rounded-2xl border border-[var(--border)] bg-white p-10 text-center text-xs text-neutral-600 shadow-2xs">
+            <div className="mx-auto w-full max-w-2xl rounded-2xl border border-[var(--border)] bg-white p-10 text-center text-xs text-neutral-400 shadow-2xs">
               Cargando comentarios...
             </div>
           ) : (

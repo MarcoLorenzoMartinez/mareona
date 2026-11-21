@@ -104,7 +104,7 @@ export function PorraMatchCard({
           plusLabel={dict.games.porra.matchCard.plusHomeAria}
         />
 
-        <span className="text-sm font-bold text-neutral-600 select-none" aria-hidden="true">
+        <span className="text-sm font-bold text-neutral-400 select-none" aria-hidden="true">
           {dict.games.porra.matchCard.vs}
         </span>
 

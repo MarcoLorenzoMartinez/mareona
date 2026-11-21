@@ -50,7 +50,7 @@ export function GameCard({ game, isDisabled, onNavigate }: GameCardProps) {
             className={`flex h-7 w-7 items-center justify-center rounded-full border transition-all ${
               isDisabled
                 ? "border-neutral-200 text-neutral-300"
-                : "border-[var(--border)] text-neutral-600 group-hover:border-[var(--primary)] group-hover:bg-[var(--primary)] group-hover:text-white"
+                : "border-[var(--border)] text-neutral-400 group-hover:border-[var(--primary)] group-hover:bg-[var(--primary)] group-hover:text-white"
             }`}
           >
             {isDisabled ? (

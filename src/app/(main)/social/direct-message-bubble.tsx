@@ -31,7 +31,7 @@ export function DirectMessageBubble({
             disabled={isDeleting}
             aria-label={dict.social.messages.deleteMessageAria}
             title={dict.social.messages.deleteMessageTitle}
-            className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity duration-150 p-1.5 rounded-full text-neutral-600 hover:text-[var(--primary)] hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-40"
+            className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity duration-150 p-1.5 rounded-full text-neutral-400 hover:text-[var(--primary)] hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] disabled:opacity-40"
           >
             <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
           </button>
@@ -48,7 +48,7 @@ export function DirectMessageBubble({
           <time
             dateTime={message.createdAt}
             className={`mt-1 block text-[10px] font-sans tabular-nums text-right ${
-              message.isMine ? "text-white/95" : "text-neutral-600"
+              message.isMine ? "text-white/80" : "text-neutral-400"
             }`}
           >
             {new Date(message.createdAt).toLocaleTimeString("es-ES", {

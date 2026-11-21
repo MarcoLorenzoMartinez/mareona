@@ -39,7 +39,7 @@ export function FriendsListContent({
       return (
         <div className="py-10 text-center">
           <p className="text-sm font-semibold text-neutral-600">{dict.social.friends.emptyTitle}</p>
-          <p className="text-xs text-neutral-600 mt-1">{dict.social.friends.emptyHint}</p>
+          <p className="text-xs text-neutral-400 mt-1">{dict.social.friends.emptyHint}</p>
           {onSwitchToSearch && (
             <button
               type="button"
@@ -69,7 +69,7 @@ export function FriendsListContent({
               <AuthAvatar src={f.avatarUrl} alt={f.displayName || f.username} size="sm" />
               <div className="min-w-0">
                 <p className="text-xs font-bold text-neutral-900 truncate">{f.displayName || f.username}</p>
-                <p className="text-[11px] text-neutral-600">@{f.username}</p>
+                <p className="text-[11px] text-neutral-400">@{f.username}</p>
               </div>
             </button>
             <div className="flex items-center gap-1.5 shrink-0">
@@ -101,16 +101,16 @@ export function FriendsListContent({
   return (
     <div className="space-y-3">
       <div className="relative">
-        <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-neutral-600" />
+        <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-neutral-400" />
         <input
           type="text"
           placeholder={dict.social.friends.searchPlaceholder}
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 py-2 pl-9 pr-3 text-xs text-neutral-900 placeholder:text-neutral-600 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+          className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 py-2 pl-9 pr-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
         />
       </div>
-      {isPending && <p className="text-center text-xs text-neutral-600">{dict.social.friends.searching}</p>}
+      {isPending && <p className="text-center text-xs text-neutral-400">{dict.social.friends.searching}</p>}
       {searchResults.map((userResult) => (
         <div
           key={userResult.id}
@@ -130,7 +130,7 @@ export function FriendsListContent({
               <p className="text-xs font-bold text-neutral-900 truncate">
                 {userResult.displayName || userResult.username}
               </p>
-              <p className="text-[11px] text-neutral-600">@{userResult.username}</p>
+              <p className="text-[11px] text-neutral-400">@{userResult.username}</p>
             </div>
           </button>
           <button

@@ -27,7 +27,7 @@ export function PollCreator({
         <button
           type="button"
           onClick={onRemovePoll}
-          className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-600 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-sm"
+          className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-400 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-sm"
         >
           <X className="h-3.5 w-3.5" aria-hidden="true" />
           <span>{dict.social.poll.removePoll}</span>
@@ -43,7 +43,7 @@ export function PollCreator({
               value={opt}
               onChange={(e) => onChangeOption(idx, e.target.value)}
               placeholder={`${dict.social.poll.optionPlaceholderPrefix} ${idx + 1}`}
-              className="flex-1 rounded-lg border border-[var(--border)] bg-white px-3 py-1.5 text-xs text-neutral-900 placeholder:text-neutral-600 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+              className="flex-1 rounded-lg border border-[var(--border)] bg-white px-3 py-1.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
             {options.length > 2 && (
               <button
@@ -51,7 +51,7 @@ export function PollCreator({
                 onClick={() => onRemoveOption(idx)}
                 aria-label={`${dict.social.poll.removeOptionAriaPrefix} ${idx + 1}`}
                 title={dict.social.poll.removeOptionTitle}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-neutral-600 hover:bg-neutral-200/60 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-neutral-400 hover:bg-neutral-200/60 hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               >
                 <X className="h-3.5 w-3.5" aria-hidden="true" />
               </button>

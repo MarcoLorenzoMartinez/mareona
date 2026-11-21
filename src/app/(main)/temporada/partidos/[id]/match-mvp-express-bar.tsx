@@ -130,7 +130,7 @@ export function MatchMvpExpressBar({
                     {player.name}
                   </p>
                   {player.jersey ? (
-                    <span className="text-[10px] text-neutral-600 font-sans tabular-nums">
+                    <span className="text-[10px] text-neutral-400 font-sans tabular-nums">
                       #{player.jersey}
                     </span>
                   ) : null}
@@ -143,7 +143,7 @@ export function MatchMvpExpressBar({
                     <Check className="h-3 w-3 stroke-[3]" />
                   </span>
                 ) : (
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full border border-neutral-200 text-neutral-300 group-hover:border-neutral-300 group-hover:text-neutral-600 transition-colors">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full border border-neutral-200 text-neutral-300 group-hover:border-neutral-300 group-hover:text-neutral-400 transition-colors">
                     <Star className="h-3 w-3" />
                   </span>
                 )}

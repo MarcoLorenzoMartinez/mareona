@@ -23,7 +23,7 @@ export default function AlbumPage() {
     <div className="container mx-auto px-4 py-6 max-w-6xl">
       <Suspense
         fallback={
-          <div className="py-20 text-center text-xs text-neutral-600">
+          <div className="py-20 text-center text-xs text-neutral-400">
             {dict.games.album.loadingCollection}
           </div>
         }

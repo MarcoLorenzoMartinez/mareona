@@ -32,7 +32,7 @@ function PorraPreview() {
       <div className="flex flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-white shadow-2xs">
         <div className="flex items-center justify-center gap-2 bg-[var(--primary)] px-3 py-1">
           <span className="h-1.5 w-7 rounded-full bg-white/90" />
-          <span className="text-[7px] font-black tracking-widest text-white/95">VS</span>
+          <span className="text-[7px] font-black tracking-widest text-white/85">VS</span>
           <span className="h-1.5 w-7 rounded-full bg-white/90" />
         </div>
         <div className="flex items-center justify-center gap-1.5 bg-neutral-50/70 px-2.5 py-1.5">

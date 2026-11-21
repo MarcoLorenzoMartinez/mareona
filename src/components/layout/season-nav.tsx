@@ -118,7 +118,7 @@ function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
               >
                 <span className="sm:hidden">{tab.shortLabel}</span>
                 <span className="hidden sm:inline">{tab.label}</span>
-                <span className="hidden sm:inline rounded-xs bg-neutral-100 px-1.5 py-0.5 text-[9px] font-semibold text-neutral-600">
+                <span className="hidden sm:inline rounded-xs bg-neutral-100 px-1.5 py-0.5 text-[9px] font-semibold text-neutral-400">
                   {dict.common.upcoming}
                 </span>
               </span>

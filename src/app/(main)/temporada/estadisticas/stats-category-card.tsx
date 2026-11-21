@@ -20,7 +20,7 @@ export function StatsCategoryCard({ title, rows }: StatsCategoryCardProps) {
           <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
             {title}
           </h2>
-          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-neutral-600">
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
             <span className="w-12 text-right">Dato</span>
             <span className="min-w-[34px] text-center">Liga</span>
           </div>

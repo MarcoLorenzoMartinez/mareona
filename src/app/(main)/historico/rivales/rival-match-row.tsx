@@ -147,7 +147,7 @@ export function RivalMatchRow({ match, onSelect }: RivalMatchRowProps) {
 
         {/* 5. Desktop Outcome Badge & Round */}
         <div className="hidden sm:flex items-center justify-end gap-1.5 min-w-0">
-          <span className="hidden sm:inline-block text-[10px] text-neutral-600 truncate">
+          <span className="hidden sm:inline-block text-[10px] text-neutral-400 truncate">
             {match.round}
           </span>
           {outcomeBadge}

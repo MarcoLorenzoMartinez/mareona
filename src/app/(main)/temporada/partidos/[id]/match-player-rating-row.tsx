@@ -67,7 +67,7 @@ export function MatchPlayerRatingRow({
               {target.name}
             </span>
             {target.jersey && (
-              <span className="text-[10px] text-neutral-600 font-sans tabular-nums">
+              <span className="text-[10px] text-neutral-400 font-sans tabular-nums">
                 #{target.jersey}
               </span>
             )}
@@ -79,7 +79,7 @@ export function MatchPlayerRatingRow({
         {/* La media comunitaria solo se revela tras enviar las notas */}
         {isSubmitted && (
           <div className="flex flex-col items-end">
-            <span className="text-[10px] uppercase font-bold text-neutral-600">
+            <span className="text-[10px] uppercase font-bold text-neutral-400">
               Media
             </span>
             <span className="text-xs font-bold text-neutral-800 font-sans tabular-nums">

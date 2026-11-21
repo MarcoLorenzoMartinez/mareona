@@ -35,7 +35,7 @@ export function MatchStatsLiveConsolidating() {
             <div className="space-y-3 pt-2">
               {[1, 2, 3].map((rowIdx) => (
                 <div key={rowIdx} className="space-y-1.5">
-                  <div className="flex justify-between text-xs text-neutral-600">
+                  <div className="flex justify-between text-xs text-neutral-400">
                     <span className="h-2.5 w-6 rounded bg-neutral-100" />
                     <span className="h-2.5 w-20 rounded bg-neutral-100" />
                     <span className="h-2.5 w-6 rounded bg-neutral-100" />

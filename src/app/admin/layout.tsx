@@ -42,7 +42,7 @@ async function AdminProtectedShell({ children }: { readonly children: ReactNode 
               <span className="text-base font-black tracking-wider uppercase leading-none text-white">
                 Mareona
               </span>
-              <span className="text-[10px] font-semibold tracking-widest text-white/95 uppercase mt-0.5">
+              <span className="text-[10px] font-semibold tracking-widest text-white/80 uppercase mt-0.5">
                 Administración
               </span>
             </div>
@@ -51,7 +51,7 @@ async function AdminProtectedShell({ children }: { readonly children: ReactNode 
           <div className="flex items-center gap-3 sm:gap-4">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white/95 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white/85 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <span aria-hidden="true">&larr;</span>
               <span className="hidden sm:inline">Volver a la web</span>

@@ -59,7 +59,7 @@ export function PackMissionsPanel({
               onClick={onClaimLogin}
               className={`rounded-full px-3.5 py-1 text-xs font-bold transition-all cursor-pointer ${
                 missionState.hasClaimedDailyLogin
-                  ? "bg-neutral-100 text-neutral-600 cursor-not-allowed"
+                  ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
                   : "bg-[#e2001a] text-white hover:bg-[#b30015] active:scale-95 shadow-2xs"
               }`}
             >
@@ -83,7 +83,7 @@ export function PackMissionsPanel({
                 <div className="h-1.5 w-14 sm:w-20 overflow-hidden rounded-full bg-neutral-100">
                   <div
                     className={`h-full transition-all duration-300 ${
-                      dailyGameTier === "leyenda" ? "bg-amber-700" : "bg-[#e2001a]"
+                      dailyGameTier === "leyenda" ? "bg-amber-500" : "bg-[#e2001a]"
                     }`}
                     style={{ width: `${streakProgressPct}%` }}
                   />
@@ -94,7 +94,7 @@ export function PackMissionsPanel({
 
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             {missionState.hasClaimedDailyGame ? (
-              <span className="rounded-full bg-neutral-100 px-3.5 py-1 font-sans text-xs font-bold text-neutral-600 cursor-not-allowed">
+              <span className="rounded-full bg-neutral-100 px-3.5 py-1 font-sans text-xs font-bold text-neutral-400 cursor-not-allowed">
                 {dict.games.album.packs.claimed}
               </span>
             ) : missionState.hasCompletedDailyGame ? (
@@ -163,7 +163,7 @@ export function PackMissionsPanel({
               className={`rounded-full px-3.5 py-1 text-xs font-bold transition-all cursor-pointer ${
                 canRecycle
                   ? "bg-[#e2001a] text-white hover:bg-[#b30015] active:scale-95 shadow-2xs"
-                  : "bg-neutral-100 text-neutral-600 cursor-not-allowed"
+                  : "bg-neutral-100 text-neutral-400 cursor-not-allowed"
               }`}
             >
               {dict.games.album.packs.recycleButton}

@@ -84,7 +84,7 @@ export function RosterDrawer({
             type="button"
             onClick={onClose}
             aria-label={dict.lineupBuilder.roster.closeAria}
-            className="rounded-full p-2 text-neutral-600 hover:text-neutral-700 hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e2001a]"
+            className="rounded-full p-2 text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#e2001a]"
           >
             <X className="h-5 w-5" />
           </button>
@@ -140,7 +140,7 @@ export function RosterDrawer({
             </React.Fragment>
           ))
         ) : (
-          <li className="py-8 text-center text-xs text-neutral-600">
+          <li className="py-8 text-center text-xs text-neutral-400">
             {dict.lineupBuilder.roster.emptySearch}
           </li>
         )}
@@ -150,7 +150,7 @@ export function RosterDrawer({
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="text-[11px] font-medium text-neutral-600 hover:text-neutral-700 transition-colors"
+          className="text-[11px] font-medium text-neutral-400 hover:text-neutral-700 transition-colors"
         >
           {dict.lineupBuilder.roster.addPlayerButton}
         </button>

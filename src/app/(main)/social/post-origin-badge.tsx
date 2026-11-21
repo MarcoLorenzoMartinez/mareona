@@ -29,7 +29,7 @@ export function PostOriginBadge({ matchId, matchLabel }: PostOriginBadgeProps) {
   }
 
   return (
-    <span className="shrink-0 text-xs font-medium text-neutral-600">
+    <span className="shrink-0 text-xs font-medium text-neutral-400">
       {dict.social.post.originSocial}
     </span>
   );

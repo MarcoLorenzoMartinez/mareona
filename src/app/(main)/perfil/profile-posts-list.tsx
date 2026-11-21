@@ -80,7 +80,7 @@ export function ProfilePostsList({
         <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-500">
           {dict.profile.posts.title}{" "}
           {!isLoading && (
-            <span className="font-sans tabular-nums text-neutral-600">
+            <span className="font-sans tabular-nums text-neutral-400">
               ({filteredPosts.length})
             </span>
           )}
@@ -113,7 +113,7 @@ export function ProfilePostsList({
       </div>
 
       {isLoading ? (
-        <div className="px-4 py-10 text-center text-xs text-neutral-600">
+        <div className="px-4 py-10 text-center text-xs text-neutral-400">
           {dict.profile.posts.loading}
         </div>
       ) : filteredPosts.length === 0 ? (
@@ -136,7 +136,7 @@ export function ProfilePostsList({
                       {displayName}
                     </span>
                     <span className="truncate text-neutral-500">@{username}</span>
-                    <span aria-hidden="true" className="text-neutral-600">·</span>
+                    <span aria-hidden="true" className="text-neutral-400">·</span>
                     <time
                       dateTime={post.createdAt}
                       className="shrink-0 text-xs text-neutral-500"

@@ -67,7 +67,7 @@ export function PlayerRowItem({
           }
           className={`ml-2 shrink-0 rounded-full px-3 py-1.5 text-xs font-bold transition-all ${
             isAssigned
-              ? "border border-neutral-200/80 bg-neutral-100 text-neutral-600 cursor-not-allowed opacity-60"
+              ? "border border-neutral-200/80 bg-neutral-100 text-neutral-400 cursor-not-allowed opacity-60"
               : isStaged
               ? "border border-[#e2001a] bg-[#e2001a]/10 text-[#e2001a] hover:bg-[#e2001a]/20 shadow-xs active:scale-95"
               : "bg-[#e2001a] text-white hover:bg-[#b30015] shadow-xs active:scale-95"

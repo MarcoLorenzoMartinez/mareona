@@ -89,7 +89,7 @@ export function MatchThreadView({
                 type="button"
                 onClick={() => setIsEditing((prev) => !prev)}
                 aria-label="Editar comentario"
-                className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
               >
                 <Pencil className="h-4 w-4" aria-hidden="true" />
               </button>
@@ -100,7 +100,7 @@ export function MatchThreadView({
                 type="button"
                 onClick={() => onDeleteComment(comment.id)}
                 aria-label="Borrar comentario"
-                className="flex h-8 w-8 items-center justify-center text-neutral-600 hover:bg-red-50 hover:text-[#e2001a] rounded-full transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
+                className="flex h-8 w-8 items-center justify-center text-neutral-400 hover:bg-red-50 hover:text-[#e2001a] rounded-full transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e2001a]"
               >
                 <Trash2 className="h-4 w-4" aria-hidden="true" />
               </button>
@@ -128,8 +128,8 @@ export function MatchThreadView({
           <time dateTime={comment.createdAt}>{formatRelativeTime(comment.createdAt)}</time>
           {comment.isEdited && (
             <>
-              <span aria-hidden="true" className="text-neutral-600">·</span>
-              <span className="text-neutral-600 text-xs">editado</span>
+              <span aria-hidden="true" className="text-neutral-400">·</span>
+              <span className="text-neutral-400 text-xs">editado</span>
             </>
           )}
         </div>

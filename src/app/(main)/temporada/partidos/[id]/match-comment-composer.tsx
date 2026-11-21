@@ -147,7 +147,7 @@ export function MatchCommentComposer({
           }}
           placeholder={placeholder}
           maxLength={MAX_USER_BODY_LENGTH}
-          className="block w-full resize-none bg-transparent py-1.5 text-[15px] sm:text-base leading-snug text-neutral-900 placeholder:text-neutral-600 focus:outline-none transition-all"
+          className="block w-full resize-none bg-transparent py-1.5 text-[15px] sm:text-base leading-snug text-neutral-900 placeholder:text-neutral-400 focus:outline-none transition-all"
         />
 
         {attachedLineup && (
