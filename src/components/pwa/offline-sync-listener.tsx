@@ -3,8 +3,14 @@
 
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
+import { hasWonAnyDailyGameForDate } from "@/lib/cards/account-games-sync";
 import { syncAlbumAccountWithServer } from "@/lib/cards/account-sync-client";
 import { switchGameStorageUser } from "@/lib/cards/account-storage-partition";
+import {
+  awardDailyGamePack,
+  getDailyMissionState,
+  getTodayDateString,
+} from "@/lib/cards/pack-storage";
 import { processOfflineGameSync, getOfflineGameQueue } from "@/lib/games/offline-sync-queue";
 import { syncOfflineGamesAction } from "@/lib/games/offline-sync-action";
 import { toast } from "@/lib/ui/toast";
@@ -12,8 +18,8 @@ import { getDictionary } from "@/i18n";
 
 /**
  * Global background listener that isolates per-account local storage partitions,
- * synchronizes offline game results, and reconciles cross-device account state
- * when connectivity, focus, or auth session changes.
+ * safely merges guest progress on sign-in, synchronizes offline game results,
+ * and reconciles cross-device account state when connectivity or auth changes.
  */
 export function OfflineSyncListener() {
   const dict = getDictionary();
@@ -27,7 +33,8 @@ export function OfflineSyncListener() {
     let isMounted = true;
     let pushDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-    switchGameStorageUser(userId ?? null);
+    const initialSwitch = switchGameStorageUser(userId ?? null);
+    let pendingGuestRewardCheck = Boolean(userId && initialSwitch.absorbedGuest);
 
     async function triggerSync(notifyUser = false, syncMode: "reconcile" | "push" = "reconcile") {
       if (typeof window === "undefined" || !navigator.onLine || isSyncingRef.current) {
@@ -35,10 +42,27 @@ export function OfflineSyncListener() {
       }
       isSyncingRef.current = true;
       try {
-        switchGameStorageUser(userId ?? null);
+        const stepSwitch = switchGameStorageUser(userId ?? null);
+        if (userId && stepSwitch.absorbedGuest) {
+          pendingGuestRewardCheck = true;
+        }
 
         if (userId) {
-          await syncAlbumAccountWithServer(userId, syncMode);
+          const reconciled = await syncAlbumAccountWithServer(userId, syncMode);
+          if (pendingGuestRewardCheck && reconciled) {
+            pendingGuestRewardCheck = false;
+            const today = getTodayDateString();
+            const mission = getDailyMissionState(today, userId);
+            if (
+              !mission.hasCompletedDailyGame &&
+              hasWonAnyDailyGameForDate(reconciled.storageEntries, today)
+            ) {
+              const award = awardDailyGamePack(today, userId, today);
+              if (award.awarded) {
+                await syncAlbumAccountWithServer(userId, "push");
+              }
+            }
+          }
         }
 
         const result = await processOfflineGameSync(async (events) => {

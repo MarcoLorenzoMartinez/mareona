@@ -1,4 +1,7 @@
-import { isSyncedGameStorageKey } from "./account-games-sync.ts";
+import {
+  isSyncedGameStorageKey,
+  mergeSyncedGameStorageEntries,
+} from "./account-games-sync.ts";
 import { getInitialWordleStats } from "../wordle/storage.ts";
 import { getStoredTriviaStats } from "../trivia/storage.ts";
 import { getStoredWhoAreYaStats } from "../who-are-ya/storage.ts";
@@ -15,6 +18,11 @@ const DERIVED_STATS_KEYS = new Set([
 const PORRA_LEGACY_PREFIX = "mareona_porra_prediction_";
 const UUID_SCOPED_PORRA_REGEX =
   /^mareona_porra_prediction_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}_/i;
+
+export interface SwitchGameStorageResult {
+  readonly switched: boolean;
+  readonly absorbedGuest: boolean;
+}
 
 function isPartitionedGameKey(key: string): boolean {
   if (isSyncedGameStorageKey(key) || DERIVED_STATS_KEYS.has(key)) {
@@ -41,15 +49,56 @@ function collectCurrentPartitionedKeys(storage: Storage): Record<string, string>
   return snapshot;
 }
 
+function readBucketSnapshot(storage: Storage, bucketId: string): Record<string, string> {
+  try {
+    const raw = storage.getItem(getBucketKey(bucketId));
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as unknown;
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    const clean: Record<string, string> = {};
+    for (const [k, v] of Object.entries(parsed)) {
+      if (isPartitionedGameKey(k) && typeof v === "string") {
+        clean[k] = v;
+      }
+    }
+    return clean;
+  } catch {
+    return {};
+  }
+}
+
+function mergeGuestIntoAccountBucket(
+  accountBucket: Readonly<Record<string, string>>,
+  guestSnapshot: Readonly<Record<string, string>>
+): Record<string, string> {
+  const merged = mergeSyncedGameStorageEntries(accountBucket, guestSnapshot, "reconcile");
+  for (const [k, v] of Object.entries(accountBucket)) {
+    if (!(k in merged) && !DERIVED_STATS_KEYS.has(k)) {
+      merged[k] = v;
+    }
+  }
+  for (const [k, v] of Object.entries(guestSnapshot)) {
+    if (!(k in merged) && !DERIVED_STATS_KEYS.has(k)) {
+      merged[k] = v;
+    }
+  }
+  return merged;
+}
+
 /**
- * Isolates unscoped localStorage game/lineup keys per authenticated userId so switching
- * accounts on the same browser never leaks or mixes game boards, stats, or lineups.
+ * Isolates localStorage game/lineup keys per authenticated userId and performs
+ * a safe, single-consume guest-to-account merge (account wins on conflict) when
+ * a guest signs in or registers.
  *
  * @param nextUserId - Authenticated Supabase user ID, or null/undefined for guest mode.
- * @returns True if an account partition switch occurred.
+ * @returns Transition outcome indicating whether a partition switch and guest merge occurred.
  */
-export function switchGameStorageUser(nextUserId: string | null | undefined): boolean {
-  if (typeof window === "undefined" || !window.localStorage) return false;
+export function switchGameStorageUser(
+  nextUserId: string | null | undefined
+): SwitchGameStorageResult {
+  if (typeof window === "undefined" || !window.localStorage) {
+    return { switched: false, absorbedGuest: false };
+  }
 
   const storage = window.localStorage;
   const nextBucketId = nextUserId || "guest";
@@ -57,31 +106,38 @@ export function switchGameStorageUser(nextUserId: string | null | undefined): bo
 
   if (!prevBucketId) {
     storage.setItem(ACTIVE_GAME_USER_KEY, nextBucketId);
-    return false;
+    return { switched: false, absorbedGuest: false };
   }
 
   if (prevBucketId === nextBucketId) {
-    return false;
+    return { switched: false, absorbedGuest: false };
   }
 
   try {
     const outgoingSnapshot = collectCurrentPartitionedKeys(storage);
-    storage.setItem(getBucketKey(prevBucketId), JSON.stringify(outgoingSnapshot));
+    const isGuestToAccount = prevBucketId === "guest" && nextBucketId !== "guest";
+    let absorbedGuest = false;
 
     for (const key of Object.keys(outgoingSnapshot)) {
       storage.removeItem(key);
     }
 
-    const incomingRaw = storage.getItem(getBucketKey(nextBucketId));
-    if (incomingRaw) {
-      const parsed = JSON.parse(incomingRaw) as Record<string, string>;
-      if (parsed && typeof parsed === "object") {
-        for (const [key, val] of Object.entries(parsed)) {
-          if (isPartitionedGameKey(key) && typeof val === "string") {
-            storage.setItem(key, val);
-          }
-        }
-      }
+    let nextEntries: Record<string, string>;
+    if (isGuestToAccount) {
+      const accountBucket = readBucketSnapshot(storage, nextBucketId);
+      const guestEntriesCount = Object.keys(outgoingSnapshot).filter(
+        (k) => !DERIVED_STATS_KEYS.has(k)
+      ).length;
+      nextEntries = mergeGuestIntoAccountBucket(accountBucket, outgoingSnapshot);
+      storage.removeItem(getBucketKey("guest"));
+      absorbedGuest = guestEntriesCount > 0;
+    } else {
+      storage.setItem(getBucketKey(prevBucketId), JSON.stringify(outgoingSnapshot));
+      nextEntries = readBucketSnapshot(storage, nextBucketId);
+    }
+
+    for (const [key, val] of Object.entries(nextEntries)) {
+      storage.setItem(key, val);
     }
 
     storage.setItem(ACTIVE_GAME_USER_KEY, nextBucketId);
@@ -93,9 +149,9 @@ export function switchGameStorageUser(nextUserId: string | null | undefined): bo
     if (typeof window.dispatchEvent === "function") {
       window.dispatchEvent(new CustomEvent("mareona_account_state_synced"));
     }
-    return true;
+    return { switched: true, absorbedGuest };
   } catch {
     storage.setItem(ACTIVE_GAME_USER_KEY, nextBucketId);
-    return false;
+    return { switched: false, absorbedGuest: false };
   }
 }

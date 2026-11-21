@@ -65,8 +65,8 @@ function mergeSingleStorageValue(
       const c = JSON.parse(clientRaw) as { guesses?: unknown[]; status?: string };
       const sDone = s.status === "WON" || s.status === "LOST";
       const cDone = c.status === "WON" || c.status === "LOST";
-      if (cDone && !sDone) return clientRaw;
-      if (sDone && !cDone) return serverRaw;
+      if (sDone) return serverRaw;
+      if (cDone) return clientRaw;
       const sLen = Array.isArray(s.guesses) ? s.guesses.length : 0;
       const cLen = Array.isArray(c.guesses) ? c.guesses.length : 0;
       if (cLen !== sLen) return cLen > sLen ? clientRaw : serverRaw;
@@ -80,8 +80,10 @@ function mergeSingleStorageValue(
       const cArr = Array.isArray(c) ? c : [];
       const sWon = sArr.some((g) => g?.isCorrect);
       const cWon = cArr.some((g) => g?.isCorrect);
-      if (cWon && !sWon) return clientRaw;
-      if (sWon && !cWon) return serverRaw;
+      const sDone = sWon || sArr.length >= 6;
+      const cDone = cWon || cArr.length >= 6;
+      if (sDone) return serverRaw;
+      if (cDone) return clientRaw;
       if (cArr.length !== sArr.length) return cArr.length > sArr.length ? clientRaw : serverRaw;
       return mode === "push" ? clientRaw : serverRaw;
     }
@@ -155,4 +157,47 @@ export function mergeSyncedGameStorageEntries(
   }
 
   return result;
+}
+
+/**
+ * Checks whether any daily challenge (Wordle, Trivia, Who Are Ya) for the given date
+ * was completed with a win inside the provided storage snapshot.
+ *
+ * @param entries - Synced storage entries map.
+ * @param dateStr - Canonical YYYY-MM-DD challenge date.
+ * @returns True if at least one daily challenge was won on that date.
+ */
+export function hasWonAnyDailyGameForDate(
+  entries: Readonly<Record<string, string>> | undefined,
+  dateStr: string
+): boolean {
+  if (!entries) return false;
+  try {
+    const wordleRaw = entries[`${WORDLE_PREFIX}${dateStr}`];
+    if (wordleRaw) {
+      const parsed = JSON.parse(wordleRaw) as { status?: string };
+      if (parsed.status === "WON" || parsed.status === "SOLVED") return true;
+    }
+  } catch {
+    // Ignore malformed entry
+  }
+  try {
+    const triviaRaw = entries[`${TRIVIA_PREFIX}${dateStr}`];
+    if (triviaRaw) {
+      const parsed = JSON.parse(triviaRaw) as { isCorrect?: boolean };
+      if (parsed.isCorrect === true) return true;
+    }
+  } catch {
+    // Ignore malformed entry
+  }
+  try {
+    const whoRaw = entries[`${WHO_ARE_YA_PREFIX}${dateStr}`];
+    if (whoRaw) {
+      const parsed = JSON.parse(whoRaw) as Array<{ isCorrect?: boolean }>;
+      if (Array.isArray(parsed) && parsed.some((g) => g?.isCorrect === true)) return true;
+    }
+  } catch {
+    // Ignore malformed entry
+  }
+  return false;
 }

@@ -19,7 +19,10 @@ import {
   reconcileAccountAlbumState,
   type AccountAlbumSnapshot,
 } from "../../src/lib/cards/account-sync.ts";
-import { mergeSyncedGameStorageEntries } from "../../src/lib/cards/account-games-sync.ts";
+import {
+  hasWonAnyDailyGameForDate,
+  mergeSyncedGameStorageEntries,
+} from "../../src/lib/cards/account-games-sync.ts";
 import { switchGameStorageUser } from "../../src/lib/cards/account-storage-partition.ts";
 
 describe("Pack Storage & Missions Logic", () => {
@@ -354,6 +357,39 @@ describe("Pack Storage & Missions Logic", () => {
       switchGameStorageUser("user-a");
       assert.ok(mockStorage.getItem("mareona_wordle_v2_state_2026-11-21")?.includes("WON"));
       assert.ok(mockStorage.getItem("mareona_lineup_state_v1")?.includes("4-3-3"));
+      assert.equal(mockStorage.getItem("mareona_trivia_2026-11-21"), null);
+
+      // Guest -> Account merge (account wins on conflict, single-consume guest bucket)
+      switchGameStorageUser(null);
+      mockStorage.setItem(
+        "mareona_wordle_v2_state_2026-11-21",
+        JSON.stringify({ date: "2026-11-21", word: "QUINI", guesses: ["XXXXX"], status: "LOST" })
+      );
+      mockStorage.setItem(
+        "mareona_trivia_2026-11-21",
+        JSON.stringify({ dateStr: "2026-11-21", isCorrect: true, userAnswer: "Quini" })
+      );
+
+      // Guest signs in as Account A (who already WON Wordle today, but had no Trivia)
+      const mergeOutcome = switchGameStorageUser("user-a");
+      assert.equal(mergeOutcome.switched, true);
+      assert.equal(mergeOutcome.absorbedGuest, true);
+      // Account A's Wordle WON must NOT be overwritten by Guest's LOST
+      assert.ok(mockStorage.getItem("mareona_wordle_v2_state_2026-11-21")?.includes("WON"));
+      // Guest's Trivia (new to Account A) IS absorbed
+      assert.ok(mockStorage.getItem("mareona_trivia_2026-11-21")?.includes("Quini"));
+      assert.equal(
+        hasWonAnyDailyGameForDate(
+          {
+            "mareona_trivia_2026-11-21": mockStorage.getItem("mareona_trivia_2026-11-21")!,
+          },
+          "2026-11-21"
+        ),
+        true
+      );
+
+      // Single-consume: signing out and into Account B must NOT see Guest's consumed entries
+      switchGameStorageUser(null);
       assert.equal(mockStorage.getItem("mareona_trivia_2026-11-21"), null);
     } finally {
       Object.defineProperty(globalThis, "window", {
