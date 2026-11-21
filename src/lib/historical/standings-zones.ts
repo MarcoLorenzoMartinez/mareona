@@ -106,7 +106,7 @@ export function getZoneBadgeStyle(zone: HistoricalZone): ZoneBadgeStyle {
     case "champion":
       return { barClass: "bg-[#16a34a]", label: "Campeón" };
     case "champions-league":
-      return { barClass: "bg-[#ca8a04]", label: "Champions League" };
+      return { barClass: "bg-[#1d4ed8]", label: "Champions League" };
     case "europa-league":
       return { barClass: "bg-[#ea580c]", label: "Europa League" };
     case "conference-league":
@@ -117,7 +117,7 @@ export function getZoneBadgeStyle(zone: HistoricalZone): ZoneBadgeStyle {
     case "promotion":
       return { barClass: "bg-[#16a34a]", label: "Ascenso directo" };
     case "promotion-playoff":
-      return { barClass: "bg-[#d97706]", label: "Playoff de ascenso" };
+      return { barClass: "bg-[#2563eb]", label: "Playoff de ascenso" };
     case "relegation-playoff":
       return { barClass: "bg-[#f59e0b]", label: "Promoción permanencia" };
     case "relegation":
@@ -137,13 +137,13 @@ export function getZoneLegendItems(season: HistoricalSeason): readonly ZoneLegen
     const isSinglePromo = year >= 1929 && year <= 1932;
     return [
       { label: isSinglePromo ? "Campeón (Ascenso)" : "Ascenso directo", barClass: "bg-[#16a34a]" },
-      ...(hasPlayoff ? [{ label: year >= 2010 ? "Playoff de ascenso" : "Promoción de ascenso", barClass: "bg-[#d97706]" }] : []),
+      ...(hasPlayoff ? [{ label: year >= 2010 ? "Playoff de ascenso" : "Promoción de ascenso", barClass: "bg-[#2563eb]" }] : []),
       { label: "Descenso", barClass: "bg-[#dc2626]" },
     ];
   }
 
   const items: ZoneLegendItem[] = [{ label: "Campeón", barClass: "bg-[#16a34a]" }];
-  if (season.startYear >= 1997) items.push({ label: "Champions League", barClass: "bg-[#ca8a04]" });
+  if (season.startYear >= 1997) items.push({ label: "Champions League", barClass: "bg-[#1d4ed8]" });
   if (season.startYear >= 2009) {
     items.push({ label: "Europa League", barClass: "bg-[#ea580c]" });
   } else if (season.startYear >= 1971) {
