@@ -10,6 +10,7 @@ import { evaluateDemoAuth } from "@/lib/auth/demo-credentials";
 import { AuthConfirmationNotice } from "./auth-confirmation-notice";
 import { GoogleSignInButton } from "./google-sign-in-button";
 import { AgeGateCheckbox } from "./age-gate-checkbox";
+import { ForgotPasswordView } from "./forgot-password-view";
 import { getDictionary } from "@/i18n";
 
 interface AuthCredentialsFormProps {
@@ -26,6 +27,7 @@ export function AuthCredentialsForm({ initialMode, onSuccess }: AuthCredentialsF
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [ageConfirmed, setAgeConfirmed] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [pendingConfirmationEmail, setPendingConfirmationEmail] = useState<string | null>(null);
@@ -87,6 +89,10 @@ export function AuthCredentialsForm({ initialMode, onSuccess }: AuthCredentialsF
     return <AuthConfirmationNotice email={pendingConfirmationEmail} onBack={() => setPendingConfirmationEmail(null)} />;
   }
 
+  if (showForgotPassword) {
+    return <ForgotPasswordView initialEmail={email} onBack={() => setShowForgotPassword(false)} />;
+  }
+
   return (
     <div className="space-y-4">
       {isEmailJustConfirmed && tab === "signin" && (
@@ -132,9 +138,20 @@ export function AuthCredentialsForm({ initialMode, onSuccess }: AuthCredentialsF
         </div>
 
         <div>
-          <label htmlFor="auth-password-input" className="block text-xs font-semibold text-neutral-700 mb-1">
-            {dict.auth.credentials.passwordLabel}
-          </label>
+          <div className="flex items-center justify-between gap-2 mb-1">
+            <label htmlFor="auth-password-input" className="block text-xs font-semibold text-neutral-700">
+              {dict.auth.credentials.passwordLabel}
+            </label>
+            {tab === "signin" && (
+              <button
+                type="button"
+                onClick={() => { setShowForgotPassword(true); setErrorMessage(null); }}
+                className="text-xs font-medium text-[var(--primary-strong)] hover:text-[var(--primary)] hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs cursor-pointer"
+              >
+                {dict.auth.forgotPassword.linkLabel}
+              </button>
+            )}
+          </div>
           <div className="relative">
             <input id="auth-password-input" type={showPassword ? "text" : "password"} required autoComplete={tab === "signup" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={dict.auth.credentials.passwordPlaceholder} className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 pl-3 pr-11 text-base sm:text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
             <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-neutral-500 hover:text-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-r-lg cursor-pointer" aria-label={showPassword ? dict.auth.credentials.hidePasswordAria : dict.auth.credentials.showPasswordAria}>

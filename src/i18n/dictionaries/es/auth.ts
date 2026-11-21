@@ -73,4 +73,14 @@ export const esAuth = {
     privacyLink: "Política de privacidad",
     requiredError: "Debes confirmar que tienes al menos 14 años para crear tu cuenta.",
   },
+  forgotPassword: {
+    linkLabel: "¿Has olvidado tu contraseña?",
+    title: "Recuperar contraseña",
+    subtitle: "Introduce tu correo y te enviaremos un enlace para elegir una nueva contraseña.",
+    submitButton: "Enviar enlace de recuperación",
+    submitting: "Enviando...",
+    sentNotice: "Si existe una cuenta con ese correo, te hemos enviado un enlace para restablecer tu contraseña. Revisa también la carpeta de spam.",
+    backToSignIn: "Volver a iniciar sesión",
+    errorFallback: "No se pudo enviar el enlace de recuperación",
+  },
 } as const;
