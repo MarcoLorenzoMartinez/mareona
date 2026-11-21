@@ -1,10 +1,13 @@
 // Client: Maneja la selección interactiva de temporada con sincronización en tiempo real con el gráfico
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import type { HistoricalSeason, HistoricalChartPoint } from "@/lib/historical/types";
-import { getStandings, getSquadForSeason, getAssistsForSeason, getMatchesForSeason } from "@/lib/historical/service";
+import {
+  getHistoricalSeasonDataAction,
+  type HistoricalSeasonBundle,
+} from "./season-data-action";
 import { HistoricalEvolutionChart } from "./evolution-chart";
 import { HistoricalSeasonSelector } from "./season-picker";
 import { HistoricalStandingsTable } from "./standings-table";
@@ -18,6 +21,7 @@ interface TrayectoriaHubProps {
   readonly chartPoints: readonly HistoricalChartPoint[];
   readonly decades?: readonly { label: string; decadeStart: number }[];
   readonly initialSeasonId?: string;
+  readonly initialSeasonData?: HistoricalSeasonBundle | null;
 }
 
 type SeasonViewTab = "clasificacion" | "partidos" | "plantilla";
@@ -36,38 +40,47 @@ export function HistoricalTrayectoriaHub({
   seasons,
   chartPoints,
   initialSeasonId,
+  initialSeasonData,
 }: TrayectoriaHubProps) {
   // Deep links from social attachments: /historico?temporada=2014-15&vista=partidos
   const searchParams = useSearchParams();
   const requestedSeasonId = searchParams.get("temporada");
+  const defaultId = initialSeasonId ?? seasons[0]?.id ?? "2024-25";
   const [selectedSeasonId, setSelectedSeasonId] = useState<string>(
     seasons.some((s) => s.id === requestedSeasonId)
       ? (requestedSeasonId as string)
-      : (initialSeasonId ?? seasons[0]?.id ?? "2024-25")
+      : defaultId
   );
   const [activeTab, setActiveTab] = useState<SeasonViewTab>(
     searchParams.get("vista") === "partidos" ? "partidos" : "clasificacion"
+  );
+
+  const [seasonBundles, setSeasonBundles] = useState<Record<string, HistoricalSeasonBundle>>(() =>
+    initialSeasonData ? { [defaultId]: initialSeasonData } : {}
   );
 
   const selectedSeason = useMemo(() => {
     return seasons.find((s) => s.id === selectedSeasonId) ?? seasons[0]!;
   }, [seasons, selectedSeasonId]);
 
-  const standingsRows = useMemo(() => {
-    return getStandings(selectedSeason);
-  }, [selectedSeason]);
+  useEffect(() => {
+    if (seasonBundles[selectedSeason.id]) return;
+    let active = true;
+    void getHistoricalSeasonDataAction(selectedSeason.id).then((bundle) => {
+      if (active && bundle) {
+        setSeasonBundles((prev) => ({ ...prev, [selectedSeason.id]: bundle }));
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [selectedSeason.id, seasonBundles]);
 
-  const squad = useMemo(() => {
-    return getSquadForSeason(selectedSeason.id);
-  }, [selectedSeason.id]);
-
-  const assists = useMemo(() => {
-    return getAssistsForSeason(selectedSeason.id);
-  }, [selectedSeason.id]);
-
-  const matches = useMemo(() => {
-    return getMatchesForSeason(selectedSeason.id);
-  }, [selectedSeason.id]);
+  const activeBundle = seasonBundles[selectedSeason.id];
+  const standingsRows = activeBundle?.standings ?? [];
+  const squad = activeBundle?.squad ?? null;
+  const assists = activeBundle?.assists ?? [];
+  const matches = activeBundle?.matches ?? [];
 
   return (
     <div className="flex flex-col gap-6">

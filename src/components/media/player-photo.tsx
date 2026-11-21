@@ -94,7 +94,6 @@ export function PlayerPhoto({
     );
   }
 
-  const isLocal = Boolean(photoUrl?.startsWith("/"));
   const defaultFit = size === "card" ? "object-contain object-bottom" : "object-cover object-top";
 
   return (
@@ -102,7 +101,7 @@ export function PlayerPhoto({
     <img
       src={photoUrl ?? ""}
       alt={isDecorative ? "" : playerName}
-      loading={isLocal ? "eager" : "lazy"}
+      loading="lazy"
       decoding="async"
       onError={() => setFailedUrl(photoUrl ?? "")}
       className={`shrink-0 ${defaultFit} ${sizeClass} ${className}`}

@@ -7,7 +7,8 @@ import type {
 } from "@/lib/historical/rivals-types";
 import type { DayMatchItem } from "@/lib/historical/ephemerides-types";
 import type { HistoricalMatch } from "@/lib/historical/types";
-import { filterRivals, sortRivals } from "@/lib/historical/rivals-service";
+import { filterRivals, sortRivals } from "@/lib/historical/rivals-filters";
+import { useRivalMatches } from "./use-rival-matches";
 import { RivalsFilterBar } from "./rivals-filter-bar";
 import { RivalsListView } from "./rivals-list-view";
 import { RivalDetailView } from "./rival-detail-view";
@@ -31,6 +32,7 @@ export function RivalsHub({
   const [activeSort, setActiveSort] = useState<RivalSortOption>("alpha");
   const [layoutMode, setLayoutMode] = useState<RivalLayoutMode>("grid");
   const [selectedRival, setSelectedRival] = useState<RivalH2HSummary | null>(null);
+  const hydratedSelectedRival = useRivalMatches(selectedRival);
   const [selectedRegion, setSelectedRegion] = useState<RegionRivalSummary | null>(null);
   const [selectedMatch, setSelectedMatch] = useState<DayMatchItem | null>(null);
   const scrollYRef = useRef<number>(0);
@@ -112,11 +114,11 @@ export function RivalsHub({
 
   return (
     <div className="flex flex-col gap-5">
-      {selectedRival && (
+      {hydratedSelectedRival && (
         <>
           <RivalDetailView
-            key={selectedRival.name}
-            rival={selectedRival}
+            key={hydratedSelectedRival.name}
+            rival={hydratedSelectedRival}
             initialScope={activeScope}
             onBack={handleBackFromRival}
             onSelectMatch={setSelectedMatch}

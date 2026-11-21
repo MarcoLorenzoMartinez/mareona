@@ -3,6 +3,7 @@
 
 import { useState, Suspense } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
 import { MobileNav, MobileNavFallback } from "./mobile-nav";
@@ -28,12 +29,13 @@ function BrandLogo() {
       className="flex items-center gap-2.5 rounded-md p-1 text-white transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
     >
       {!hasImageError ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src="/logo.png"
           alt={dict.layout.brand.logoAlt}
           width={32}
           height={32}
+          priority
+          unoptimized
           onError={() => setHasImageError(true)}
           className="h-8 w-8 rounded-sm object-contain"
         />

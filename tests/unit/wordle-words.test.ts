@@ -6,8 +6,8 @@ import {
   getDaysSinceEpoch,
   getHistoricalChallenges,
   getWordAppearanceCounts,
-  isValidWordGuess,
 } from '../../src/lib/wordle/words.ts';
+import { isValidWordGuess } from '../../src/lib/wordle/dictionary.ts';
 
 describe('Sporting Words & Non-repeating Bag Suite', () => {
   it('loads more than 100 historical Sporting words in catalog', () => {

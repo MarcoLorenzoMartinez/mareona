@@ -1,10 +1,7 @@
 import rawWords from '../../data/wordle/sporting-words.json' with { type: 'json' };
-import rawValidDict from '../../data/wordle/valid-dictionary.json' with { type: 'json' };
 import type { WordleDailyWord } from './types';
 import { normalizeWord } from './engine.ts';
 import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
-
-const VALID_DICTIONARY: Record<string, string> = rawValidDict;
 
 export interface CatalogSportingWord {
   slug: string;
@@ -116,7 +113,7 @@ export function getWordAppearanceCounts(upToDateStr?: string): Record<string, nu
 /**
  * Binary search over the sorted lexicon string for O(log N) lookup time.
  */
-function binarySearchDict(dictStr: string, word: string, len: number): boolean {
+export function binarySearchDict(dictStr: string, word: string, len: number): boolean {
   let low = 0;
   let high = dictStr.length / len - 1;
 
@@ -132,29 +129,8 @@ function binarySearchDict(dictStr: string, word: string, len: number): boolean {
 }
 
 /**
- * Validates whether a guess is a real valid Spanish word or valid Sporting de Gijón term.
- * Checks both the Sporting catalog and the Spanish dictionary (supporting the letter Ñ).
+ * Checks whether a normalized word belongs to the Real Sporting catalog.
  */
-export function isValidWordGuess(guess: string, targetLength: number): boolean {
-  const norm = normalizeWord(guess);
-  if (norm.length !== targetLength) return false;
-  if (!/^[A-ZÑ]+$/.test(norm)) return false;
-
-  // Sporting catalog words (e.g. MARIÑO, QUINI, MOLINON, ROJIBLANCO) are always valid
-  if (SPORTING_WORDS_SET.has(norm)) return true;
-
-  const dictStr = VALID_DICTIONARY[String(targetLength)];
-  if (!dictStr) {
-    // Fallback: If no dictionary exists for this custom length, allow valid alphabetical
-    return true;
-  }
-
-  if (binarySearchDict(dictStr, norm, targetLength)) return true;
-
-  // Dictionary is ASCII normalized (Ñ mapped to N); check Ñ-replaced variant
-  if (norm.includes('Ñ')) {
-    return binarySearchDict(dictStr, norm.replace(/Ñ/g, 'N'), targetLength);
-  }
-
-  return false;
+export function isSportingWord(normalizedWord: string): boolean {
+  return SPORTING_WORDS_SET.has(normalizedWord);
 }

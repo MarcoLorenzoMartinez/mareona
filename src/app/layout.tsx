@@ -24,6 +24,9 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mareona.es";
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
+  alternates: {
+    canonical: "./",
+  },
   title: {
     default: "Mareona - Real Sporting",
     template: "%s - Mareona",
@@ -36,20 +39,11 @@ export const metadata: Metadata = {
     siteName: "Mareona",
     locale: "es_ES",
     type: "website",
-    images: [
-      {
-        url: "/logo.png",
-        width: 512,
-        height: 512,
-        alt: "Mareona",
-      },
-    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Mareona - Real Sporting",
     description: "La plataforma de la afición sportinguista.",
-    images: ["/logo.png"],
   },
   icons: {
     icon: [

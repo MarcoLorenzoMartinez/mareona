@@ -7,7 +7,7 @@
  * Everything else — live scores, auth, Supabase, API routes, Server Actions — always
  * goes to the network so users never see stale or cross-account data.
  */
-const VERSION = "v4";
+const VERSION = "v5";
 const SHELL_CACHE = `mareona-shell-${VERSION}`;
 const STATIC_CACHE = `mareona-static-${VERSION}`;
 const IMAGE_CACHE = `mareona-images-${VERSION}`;
@@ -16,6 +16,11 @@ const ACTIVE_CACHES = [SHELL_CACHE, STATIC_CACHE, IMAGE_CACHE];
 const OFFLINE_URL = "/offline";
 const CRITICAL_IMAGES = ["/logo.png"];
 const PRECACHE_PATHS = [
+  "/offline",
+  "/juegos",
+  "/historico",
+];
+const OFFLINE_ROUTES = [
   "/offline",
   "/juegos",
   "/juegos/wordle",
@@ -36,12 +41,16 @@ const STATIC_ASSET_PATTERN =
   /\/_next\/static\/[^"'\s\\)<>]+?\.(?:js|css|woff2?)(?:\?[^"'\s\\)<>]*)?/g;
 
 function isOfflineCapable(pathname) {
-  return PRECACHE_PATHS.includes(pathname) || pathname.startsWith(ARCHIVE_PREFIX);
+  return OFFLINE_ROUTES.includes(pathname) || pathname.startsWith(ARCHIVE_PREFIX);
 }
 
-/** Cache key ignores query strings so `?source=pwa` or UTM links share one entry. */
+/** Cache key preserves `?date=` for daily challenges/ephemerides while ignoring UTM/PWA params. */
 function pageKey(url) {
-  return new Request(url.origin + url.pathname);
+  const dateParam = url.searchParams.get("date");
+  const normalized = dateParam
+    ? `${url.origin}${url.pathname}?date=${encodeURIComponent(dateParam)}`
+    : `${url.origin}${url.pathname}`;
+  return new Request(normalized);
 }
 
 function isCacheablePage(response) {
@@ -51,9 +60,12 @@ function isCacheablePage(response) {
 async function trimCache(cacheName, maxEntries) {
   const cache = await caches.open(cacheName);
   const keys = await cache.keys();
-  const overflow = keys.length - maxEntries;
-  for (let i = 0; i < overflow; i += 1) {
+  let overflow = keys.length - maxEntries;
+  for (let i = 0; i < keys.length && overflow > 0; i += 1) {
+    const pathname = new URL(keys[i].url).pathname;
+    if (pathname === OFFLINE_URL || CRITICAL_IMAGES.includes(pathname)) continue;
     await cache.delete(keys[i]);
+    overflow -= 1;
   }
 }
 

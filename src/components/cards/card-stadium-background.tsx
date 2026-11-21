@@ -30,7 +30,6 @@ export function CardStadiumBackground({
             ? "opacity-25 contrast-110 saturate-50 mix-blend-multiply"
             : "opacity-15 grayscale contrast-125"
         }`}
-        priority
       />
 
       {/* 2. Degradado sutil para dar volumen a la ventana del cromo */}

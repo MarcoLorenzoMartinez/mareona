@@ -1,8 +1,38 @@
-import { isValidWordGuess } from './words';
+import { isSportingWord, binarySearchDict } from './words';
+import { normalizeWord } from './engine';
 import type { WordleChallengeState, WordleStats } from './types';
 import { computeUpdatedWordleStats, saveWordleState } from './storage';
 import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
 import { toast } from '@/lib/ui/toast';
+
+const lengthDictCache = new Map<number, string>();
+
+async function isValidWordClient(guess: string, targetLength: number): Promise<boolean> {
+  const norm = normalizeWord(guess);
+  if (norm.length !== targetLength || !/^[A-ZÑ]+$/.test(norm)) return false;
+  if (isSportingWord(norm)) return true;
+
+  let dictStr = lengthDictCache.get(targetLength);
+  if (dictStr === undefined) {
+    try {
+      const res = await fetch(`/api/wordle/dict?len=${targetLength}`);
+      if (!res.ok) return true;
+      const json = (await res.json()) as { dict?: string };
+      dictStr = typeof json.dict === 'string' ? json.dict : '';
+      lengthDictCache.set(targetLength, dictStr);
+    } catch {
+      // Allow graceful offline play if dictionary chunk has not been cached yet
+      return true;
+    }
+  }
+
+  if (!dictStr) return true;
+  if (binarySearchDict(dictStr, norm, targetLength)) return true;
+  if (norm.includes('Ñ')) {
+    return binarySearchDict(dictStr, norm.replace(/Ñ/g, 'N'), targetLength);
+  }
+  return false;
+}
 
 export interface SubmitAttemptParams {
   gameState: WordleChallengeState;
@@ -20,7 +50,7 @@ export interface SubmitAttemptParams {
 /**
  * Validates and commits a submitted wordle guess.
  */
-export function handleGuessSubmission({
+export async function handleGuessSubmission({
   gameState,
   letters,
   targetWord,
@@ -31,7 +61,7 @@ export function handleGuessSubmission({
   onShake,
   onSuccess,
   setStats,
-}: SubmitAttemptParams): void {
+}: SubmitAttemptParams): Promise<void> {
   if (gameState.status !== 'IN_PROGRESS') return;
 
   if (!letters.every((char) => char !== '')) {
@@ -41,7 +71,7 @@ export function handleGuessSubmission({
   }
 
   const guessWord = letters.join('');
-  if (!isValidWordGuess(guessWord, targetLength)) {
+  if (!(await isValidWordClient(guessWord, targetLength))) {
     onShake();
     toast.error('Palabra no válida');
     return;

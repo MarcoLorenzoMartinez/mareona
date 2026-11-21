@@ -12,7 +12,11 @@ export const metadata: Metadata = {
 };
 
 export default function HistoricoRivalesPage() {
-  const allRivals = getAllRivalsSummaries();
+  const allRivals = getAllRivalsSummaries().map((r) => ({
+    ...r,
+    matches: [],
+    allMatches: undefined,
+  }));
   const communitySummaries = getSummariesByCommunity(allRivals);
   const countrySummaries = getSummariesByCountry(allRivals);
 

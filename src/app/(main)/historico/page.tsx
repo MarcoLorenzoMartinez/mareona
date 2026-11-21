@@ -3,6 +3,10 @@ import { Suspense } from "react";
 import {
   getAllSeasons,
   getHistoricalChartPoints,
+  getStandings,
+  getSquadForSeason,
+  getAssistsForSeason,
+  getMatchesForSeason,
 } from "@/lib/historical/service";
 import { HistoricalTrayectoriaHub } from "./trayectoria-hub";
 
@@ -14,7 +18,15 @@ export const metadata: Metadata = {
 export default function HistoricoTrayectoriaPage() {
   const seasons = getAllSeasons();
   const chartPoints = getHistoricalChartPoints();
-  const defaultSeasonId = seasons[0]?.id;
+  const defaultSeason = seasons[0];
+  const initialSeasonData = defaultSeason
+    ? {
+        standings: getStandings(defaultSeason),
+        squad: getSquadForSeason(defaultSeason.id),
+        assists: getAssistsForSeason(defaultSeason.id),
+        matches: getMatchesForSeason(defaultSeason.id),
+      }
+    : null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -24,7 +36,8 @@ export default function HistoricoTrayectoriaPage() {
         <HistoricalTrayectoriaHub
           seasons={seasons}
           chartPoints={chartPoints}
-          initialSeasonId={defaultSeasonId}
+          initialSeasonId={defaultSeason?.id}
+          initialSeasonData={initialSeasonData}
         />
       </Suspense>
     </div>

@@ -2,6 +2,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import type { PlayerGuessResult, StatComparison } from '@/lib/who-are-ya/types';
 import { getNationalityFlagUrl, getPositionAbbr } from '@/lib/who-are-ya/format';
 import { getDictionary } from '@/i18n';
@@ -116,11 +117,12 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
             <div className="grid grid-cols-5 gap-2 sm:gap-3 justify-items-center pt-1">
               {/* 1. Nacionalidad: Bandera oficial gráfica */}
               <StatTile label={dict.games.whoAreYa.grid.country} isMatch={guess.nationalityMatch}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={flagUrl}
                   alt={guess.player.nationality}
                   title={guess.player.nationality}
+                  width={44}
+                  height={32}
                   loading="lazy"
                   className="h-7 w-10 sm:h-8 sm:w-11 rounded-sm object-cover shadow-2xs"
                 />

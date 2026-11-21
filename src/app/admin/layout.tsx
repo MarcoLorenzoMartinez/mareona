@@ -1,6 +1,7 @@
 import { Suspense, type ReactNode } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { assertAdmin } from "@/lib/admin/guard";
 import { UserNav } from "@/components/auth/user-nav";
 import { AdminNav } from "./admin-nav";
@@ -29,12 +30,12 @@ async function AdminProtectedShell({ children }: { readonly children: ReactNode 
             className="flex items-center gap-2.5 rounded-md p-1 text-white transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
             aria-label="Panel de administración de Mareona"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/logo.png"
               alt="Mareona Logo"
               width={32}
               height={32}
+              unoptimized
               className="h-8 w-8 rounded-sm object-contain"
             />
             <div className="flex flex-col">
