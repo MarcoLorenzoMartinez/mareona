@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { getAvatarInitials } from "@/lib/auth/initials";
+import { isSafeAvatarUrl } from "@/lib/auth/schemas";
 
 interface AuthAvatarProps {
   readonly src: string | null | undefined;
@@ -48,7 +49,10 @@ export function AuthAvatar({
   const pixelDimension = PIXEL_MAP[size];
 
   const initials = getAvatarInitials(alt);
-  const isCustomPhoto = Boolean(src) && !src?.includes("/avatars/presets/");
+  const isCustomPhoto =
+    Boolean(src) &&
+    !src?.includes("/avatars/presets/") &&
+    Boolean(src && (src.startsWith("data:") || src.startsWith("blob:") || isSafeAvatarUrl(src)));
 
   if (isCustomPhoto && !hasError && src) {
     return (

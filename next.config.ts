@@ -4,7 +4,12 @@ import { getSecurityHeaders } from "./src/lib/security/headers";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
+    qualities: [75, 95],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.googleusercontent.com",
+      },
       {
         protocol: "https",
         hostname: "www.bdfutbol.com",

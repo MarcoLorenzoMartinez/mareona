@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
+import { checkRateLimit } from "@/lib/security/rate-limiter";
 import {
   clientErrorReportSchema,
   formatClientErrorForLog,
@@ -11,6 +12,12 @@ import {
  */
 export async function POST(request: Request) {
   try {
+    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anon";
+    const rate = checkRateLimit({ key: `client_errors_${clientIp}`, limit: 20, windowMs: 60_000 });
+    if (!rate.allowed) {
+      return new NextResponse(null, { status: 429 });
+    }
+
     const rawBody: unknown = await request.json();
     const parsed = clientErrorReportSchema.safeParse(rawBody);
 

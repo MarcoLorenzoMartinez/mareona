@@ -19,10 +19,20 @@ export function isRunningInStandaloneMode(): boolean {
  * @returns Safe internal relative path defaulting to `/temporada`.
  */
 export function sanitizeNextPath(rawNext: string | null | undefined): string {
-  if (rawNext && rawNext.startsWith("/") && !rawNext.startsWith("//")) {
-    return rawNext;
+  if (!rawNext || typeof rawNext !== "string") return "/temporada";
+  const trimmed = rawNext.trim();
+  if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.includes("\\")) {
+    return "/temporada";
   }
-  return "/temporada";
+  try {
+    const parsed = new URL(trimmed, "https://mareona.local");
+    if (parsed.origin !== "https://mareona.local") {
+      return "/temporada";
+    }
+    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return "/temporada";
+  }
 }
 
 /**
@@ -41,7 +51,8 @@ export function buildOAuthCallbackUrl(
   forceStandalone?: boolean
 ): string {
   const isPwa = forceStandalone ?? isRunningInStandaloneMode();
-  const safePath = currentPath.startsWith("/") ? currentPath : `/${currentPath}`;
+  const normalized = currentPath.startsWith("/") ? currentPath : `/${currentPath}`;
+  const safePath = sanitizeNextPath(normalized);
   const targetNext = isPwa && !safePath.includes("source=pwa")
     ? `${safePath}${safePath.includes("?") ? "&" : "?"}source=pwa`
     : safePath;

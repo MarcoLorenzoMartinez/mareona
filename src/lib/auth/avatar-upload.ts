@@ -39,6 +39,25 @@ export async function uploadAvatarImage(
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
+    const isJpeg = buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+    const isPng =
+      buffer.length >= 4 &&
+      buffer[0] === 0x89 &&
+      buffer[1] === 0x50 &&
+      buffer[2] === 0x4e &&
+      buffer[3] === 0x47;
+    const isWebp =
+      buffer.length >= 12 &&
+      buffer.subarray(0, 4).toString("ascii") === "RIFF" &&
+      buffer.subarray(8, 12).toString("ascii") === "WEBP";
+
+    if (!isJpeg && !isPng && !isWebp) {
+      return {
+        success: false,
+        error: "El archivo no corresponde a una imagen JPG, PNG o WebP válida.",
+      };
+    }
+
     const { error: uploadError } = await supabase.storage
       .from("avatars")
       .upload(filePath, buffer, {

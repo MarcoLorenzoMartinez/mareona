@@ -141,6 +141,22 @@ export const googleCredentialSchema = z.object({
 
 export type GoogleCredentialInput = z.infer<typeof googleCredentialSchema>;
 
+export function isSafeAvatarUrl(rawUrl: string): boolean {
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return true;
+  if (trimmed.startsWith("/avatars/presets/") && !trimmed.includes("..")) {
+    return /^\/avatars\/presets\/[a-z0-9_-]+\.svg$/i.test(trimmed);
+  }
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol !== "https:") return false;
+    const host = parsed.hostname.toLowerCase();
+    return host.endsWith(".supabase.co") || host.endsWith(".googleusercontent.com");
+  } catch {
+    return false;
+  }
+}
+
 export const profileUpdateSchema = z.object({
   username: z
     .string()
@@ -156,10 +172,34 @@ export const profileUpdateSchema = z.object({
     .max(40, { message: "El nombre visible no puede superar los 40 caracteres" })
     .optional()
     .nullable(),
-  avatarUrl: z.string().trim().max(500).optional().nullable(),
+  avatarUrl: z
+    .string()
+    .trim()
+    .max(500)
+    .refine(isSafeAvatarUrl, { message: "URL de avatar no permitida" })
+    .optional()
+    .nullable(),
 });
 
 export type ProfileUpdateInput = z.infer<typeof profileUpdateSchema>;
+
+export const requestPasswordResetSchema = z.object({
+  email: z.string().trim().email({ message: "Introduce un correo electrónico válido" }),
+});
+
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, { message: "La contraseña debe tener al menos 6 caracteres" }),
+    confirmPassword: z.string().min(6, { message: "Confirma tu nueva contraseña" }),
+  })
+  .refine((v) => v.password === v.confirmPassword, {
+    message: "Las contraseñas no coinciden",
+    path: ["confirmPassword"],
+  });
+
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 
 /**
  * Sporting-themed avatar presets available for immediate selection during onboarding or profile editing.

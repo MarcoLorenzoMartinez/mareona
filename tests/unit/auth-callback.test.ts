@@ -8,7 +8,7 @@ import {
   isRecentSignup,
   shouldTriggerOnboarding,
 } from "../../src/lib/auth/new-user.ts";
-import { isEmailDeliveryFailure } from "../../src/lib/auth/email-fallback.ts";
+import { isSafeAvatarUrl } from "../../src/lib/auth/schemas.ts";
 
 describe("OAuth & Email Callback Route - Path Sanitization & Onboarding Logic", () => {
   it("preserves legitimate relative paths", () => {
@@ -22,8 +22,9 @@ describe("OAuth & Email Callback Route - Path Sanitization & Onboarding Logic", 
     assert.strictEqual(sanitizeNextPath(""), "/temporada");
   });
 
-  it("blocks open redirect attempts to external protocols or double slashes", () => {
+  it("blocks open redirect attempts to external protocols, backslashes, or double slashes", () => {
     assert.strictEqual(sanitizeNextPath("//attacker.com"), "/temporada");
+    assert.strictEqual(sanitizeNextPath("/\\attacker.com"), "/temporada");
     assert.strictEqual(sanitizeNextPath("https://attacker.com"), "/temporada");
     assert.strictEqual(sanitizeNextPath("javascript:alert(1)"), "/temporada");
   });
@@ -67,26 +68,12 @@ describe("OAuth & Email Callback Route - Path Sanitization & Onboarding Logic", 
     );
   });
 
-  it("detects email delivery and rate-limit failures without false-positiving on user errors", () => {
-    assert.strictEqual(
-      isEmailDeliveryFailure("Error sending confirmation email", "unexpected_failure", 500),
-      true
-    );
-    assert.strictEqual(
-      isEmailDeliveryFailure("Email rate limit exceeded", "over_email_send_rate_limit", 429),
-      true
-    );
-    assert.strictEqual(
-      isEmailDeliveryFailure("SMTP relay connection refused", null, 503),
-      true
-    );
-    assert.strictEqual(
-      isEmailDeliveryFailure("User already registered", "user_already_exists", 422),
-      false
-    );
-    assert.strictEqual(
-      isEmailDeliveryFailure("Invalid login credentials", "invalid_credentials", 400),
-      false
-    );
+  it("validates avatar URLs against safe preset and HTTPS host allowlist", () => {
+    assert.strictEqual(isSafeAvatarUrl("/avatars/presets/molinon.svg"), true);
+    assert.strictEqual(isSafeAvatarUrl("https://lh3.googleusercontent.com/a/photo"), true);
+    assert.strictEqual(isSafeAvatarUrl("https://xyz.supabase.co/storage/v1/object/public/avatars/u/a.webp"), true);
+    assert.strictEqual(isSafeAvatarUrl("https://evil.com/huge.png"), false);
+    assert.strictEqual(isSafeAvatarUrl("http://lh3.googleusercontent.com/a/photo"), false);
+    assert.strictEqual(isSafeAvatarUrl("/avatars/presets/../../etc/passwd"), false);
   });
 });

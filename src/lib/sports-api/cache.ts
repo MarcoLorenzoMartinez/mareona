@@ -1,4 +1,6 @@
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import type { createClient } from "@/lib/supabase/server";
+import type { Database, Json } from "../../types/database.types.ts";
 
 export const TTL_STANDINGS_MS = 60 * 60 * 1000; // 1 hour
 export const TTL_FIXTURES_MS = 12 * 60 * 60 * 1000; // 12 hours
@@ -91,11 +93,20 @@ export async function setCachedPayload(
   ttlMs: number
 ): Promise<void> {
   const expiresAt = new Date(Date.now() + ttlMs).toISOString();
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey =
+    typeof window === "undefined" ? process.env.SUPABASE_SERVICE_ROLE_KEY : undefined;
+  const writer =
+    url && serviceRoleKey
+      ? createSupabaseClient<Database>(url, serviceRoleKey, {
+          auth: { autoRefreshToken: false, persistSession: false },
+        })
+      : supabase;
 
-  await supabase.from("external_api_cache").upsert({
+  await writer.from("external_api_cache").upsert({
     cache_key: cacheKey,
     // Cast to Database Json shape without using any
-    payload: payload as unknown as import("@/types/database.types").Json,
+    payload: payload as unknown as Json,
     fetched_at: new Date().toISOString(),
     expires_at: expiresAt,
   });

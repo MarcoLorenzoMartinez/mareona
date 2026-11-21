@@ -4,11 +4,14 @@
  * first-party assets and trusted third-party providers (Supabase, Google OAuth, BDFutbol).
  */
 export function buildContentSecurityPolicy(): string {
+  const scriptSrc =
+    process.env.NODE_ENV === "production"
+      ? "script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client"
+      : "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://accounts.google.com/gsi/client";
+
   const directives = [
     "default-src 'self'",
-    // Next.js App Router inline script bootstrapping & Turbopack dev/prod hydration;
-    // Google Identity Services client library (in-page "Sign in with Google")
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://accounts.google.com/gsi/client",
+    scriptSrc,
     // Tailwind and dynamic CSS variables; stylesheet injected by Google Identity Services
     "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style",
     // Trusted media origins (Supabase storage, Google avatars, historical archives, sports CDNs)

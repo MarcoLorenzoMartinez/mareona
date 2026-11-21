@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { resolveProvinceName, resolveCountryName } from "@/lib/telemetry/geolocation";
+import { checkRateLimit } from "@/lib/security/rate-limiter";
 import { logger } from "@/lib/logger";
 
 const log = logger.child("telemetry");
@@ -20,6 +21,12 @@ const telemetryPayloadSchema = z.object({
  */
 export async function POST(request: NextRequest) {
   try {
+    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anon";
+    const rate = checkRateLimit({ key: `telemetry_${clientIp}`, limit: 60, windowMs: 60_000 });
+    if (!rate.allowed) {
+      return NextResponse.json({ ok: true, ignored: "rate_limited" });
+    }
+
     let rawBody: unknown;
     const contentType = request.headers.get("content-type") || "";
 

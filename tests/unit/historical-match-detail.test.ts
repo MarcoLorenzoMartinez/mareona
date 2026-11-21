@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { parseHistoricalMatchDetail } from "../../src/lib/historical/match-detail-server.ts";
+import { parseHistoricalMatchDetail } from "../../src/lib/historical/match-detail-parser.ts";
 
 const SAMPLE_MATCH_HTML = `
 <!doctype html>

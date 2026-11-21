@@ -3,42 +3,95 @@
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { checkRateLimit } from "@/lib/security/rate-limiter";
 import {
   generateUsernameFromEmail,
   generateDefaultDisplayName,
   resolveUsernameCollision,
 } from "./username";
 import { buildEmailConfirmationUrl } from "./oauth-redirect";
-import { isEmailDeliveryFailure } from "./email-fallback";
 import {
   signInSchema,
   signUpSchema,
   profileUpdateSchema,
+  requestPasswordResetSchema,
+  resetPasswordSchema,
   type SignInInput,
   type SignUpInput,
   type ProfileUpdateInput,
+  type ResetPasswordInput,
 } from "./schemas";
 import type { Database } from "@/types/database.types";
 import type { UserProfile, AuthActionResult } from "./types";
 export type { UserProfile, AuthActionResult };
+
+function isAllowedOriginHost(host: string): boolean {
+  const normalized = host.trim().toLowerCase();
+  const allowed = new Set<string>(["mareona.es", "www.mareona.es", "localhost:3000", "127.0.0.1:3000"]);
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    try {
+      allowed.add(new URL(process.env.NEXT_PUBLIC_APP_URL).host.toLowerCase());
+    } catch {
+      // Ignore invalid env URL
+    }
+  }
+  if (process.env.VERCEL_URL) {
+    allowed.add(process.env.VERCEL_URL.toLowerCase());
+  }
+  return allowed.has(normalized);
+}
 
 async function resolveRequestOrigin(): Promise<string> {
   try {
     const reqHeaders = await headers();
     const originHeader = reqHeaders.get("origin");
     if (originHeader && originHeader.startsWith("http")) {
-      return originHeader;
+      try {
+        const parsed = new URL(originHeader);
+        if (isAllowedOriginHost(parsed.host)) {
+          return parsed.origin;
+        }
+      } catch {
+        // Ignore invalid origin header
+      }
     }
     const forwardedHost = reqHeaders.get("x-forwarded-host") ?? reqHeaders.get("host");
-    if (forwardedHost) {
-      const proto = reqHeaders.get("x-forwarded-proto") ?? (forwardedHost.includes("localhost") ? "http" : "https");
+    if (forwardedHost && isAllowedOriginHost(forwardedHost)) {
+      const proto = forwardedHost.startsWith("localhost") || forwardedHost.startsWith("127.0.0.1") ? "http" : "https";
       return `${proto}://${forwardedHost}`;
     }
   } catch {
     // Fallback to environment variable outside request context
   }
   return process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+}
+
+function isEmailDispatchFailure(message: string, code?: string | null, status?: number | null): boolean {
+  const lower = (message || "").toLowerCase();
+  const normCode = (code || "").toLowerCase();
+  return (
+    normCode === "over_email_send_rate_limit" ||
+    status === 429 ||
+    lower.includes("error sending confirmation email") ||
+    lower.includes("error sending email") ||
+    lower.includes("smtp") ||
+    lower.includes("email rate limit")
+  );
+}
+
+async function purgeUserAvatarFiles(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string
+): Promise<void> {
+  try {
+    const { data: files } = await supabase.storage.from("avatars").list(userId, { limit: 100 });
+    if (files && files.length > 0) {
+      const paths = files.map((f) => `${userId}/${f.name}`);
+      await supabase.storage.from("avatars").remove(paths);
+    }
+  } catch {
+    // Do not block account deletion if avatar folder does not exist
+  }
 }
 
 function translateAuthError(message: string): string {
@@ -70,6 +123,15 @@ export async function signInWithPassword(
       success: false,
       error: parsed.error.issues[0]?.message ?? "Datos de acceso inválidos",
     };
+  }
+
+  const rate = checkRateLimit({
+    key: `auth_signin_${parsed.data.email.toLowerCase()}`,
+    limit: 8,
+    windowMs: 60_000,
+  });
+  if (!rate.allowed) {
+    return { success: false, error: rate.error };
   }
 
   const supabase = await createClient();
@@ -105,6 +167,15 @@ export async function signUpWithPassword(
     };
   }
 
+  const rate = checkRateLimit({
+    key: `auth_signup_${parsed.data.email.toLowerCase()}`,
+    limit: 5,
+    windowMs: 60_000,
+  });
+  if (!rate.allowed) {
+    return { success: false, error: rate.error };
+  }
+
   const baseHandle = generateUsernameFromEmail(parsed.data.email);
   const defaultDisplayName = generateDefaultDisplayName(null, parsed.data.email);
   const supabase = await createClient();
@@ -128,16 +199,12 @@ export async function signUpWithPassword(
   });
 
   if (error) {
-    if (isEmailDeliveryFailure(error.message, error.code, error.status)) {
-      const fallbackResult = await tryAutoConfirmFallbackSignUp({
-        email: parsed.data.email,
-        password: parsed.data.password,
-        username: finalHandle,
-        displayName: defaultDisplayName,
-      });
-      if (fallbackResult) {
-        return fallbackResult;
-      }
+    if (isEmailDispatchFailure(error.message, error.code, error.status)) {
+      return {
+        success: false,
+        error:
+          "No hemos podido enviar el correo de verificación en este momento. Inténtalo de nuevo en unos minutos o accede directamente con Google.",
+      };
     }
     return { success: false, error: translateAuthError(error.message) };
   }
@@ -162,88 +229,26 @@ export async function signUpWithPassword(
 }
 
 /**
- * Fail-safe contingency when the external SMTP relay is down or hits its daily quota:
- * Auto-creates/confirms the account via the server-only Admin API and establishes an
- * immediate session so the fan proceeds straight to identity onboarding without friction.
- */
-async function tryAutoConfirmFallbackSignUp(params: {
-  readonly email: string;
-  readonly password: string;
-  readonly username: string;
-  readonly displayName: string;
-}): Promise<AuthActionResult<{ readonly isNewUser: boolean; readonly requiresEmailConfirmation?: boolean }> | null> {
-  const admin = createAdminClient();
-  if (!admin) return null;
-
-  try {
-    const { error: createError } = await admin.auth.admin.createUser({
-      email: params.email,
-      password: params.password,
-      email_confirm: true,
-      user_metadata: {
-        username: params.username,
-        display_name: params.displayName,
-      },
-    });
-
-    if (createError) {
-      // If GoTrue already created the unconfirmed user before the SMTP step failed,
-      // locate the unconfirmed account and mark email_confirm: true.
-      const { data: listData } = await admin.auth.admin.listUsers({ page: 1, perPage: 100 });
-      const existingUnconfirmed = listData?.users.find(
-        (u) => u.email?.toLowerCase() === params.email.toLowerCase() && !u.email_confirmed_at
-      );
-
-      if (!existingUnconfirmed) {
-        return null;
-      }
-
-      const { error: updateError } = await admin.auth.admin.updateUserById(
-        existingUnconfirmed.id,
-        {
-          email_confirm: true,
-          password: params.password,
-          user_metadata: {
-            username: params.username,
-            display_name: params.displayName,
-          },
-        }
-      );
-      if (updateError) return null;
-    }
-
-    const supabase = await createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: params.email,
-      password: params.password,
-    });
-
-    if (signInError) return null;
-
-    revalidatePath("/", "layout");
-    return {
-      success: true,
-      data: {
-        isNewUser: true,
-        requiresEmailConfirmation: false,
-      },
-    };
-  } catch {
-    return null;
-  }
-}
-
-/**
  * Resends the signup confirmation email to the provided address.
  */
 export async function resendConfirmationEmail(email: string): Promise<AuthActionResult> {
+  const normalizedEmail = email.trim().toLowerCase();
+  const rate = checkRateLimit({
+    key: `auth_resend_${normalizedEmail}`,
+    limit: 3,
+    windowMs: 60_000,
+  });
+  if (!rate.allowed) {
+    return { success: false, error: rate.error };
+  }
+
   try {
     const supabase = await createClient();
     const origin = await resolveRequestOrigin();
     const emailRedirectTo = buildEmailConfirmationUrl(origin);
     const { error } = await supabase.auth.resend({
       type: "signup",
-      email: email.trim(),
+      email: normalizedEmail,
       options: {
         emailRedirectTo,
       },
@@ -252,6 +257,79 @@ export async function resendConfirmationEmail(email: string): Promise<AuthAction
     return { success: true };
   } catch {
     return { success: false, error: "No se pudo reenviar el correo de confirmación" };
+  }
+}
+
+/**
+ * Sends a password recovery email pointing to `/auth/callback?type=recovery`.
+ */
+export async function requestPasswordReset(email: string): Promise<AuthActionResult> {
+  const parsed = requestPasswordResetSchema.safeParse({ email });
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message ?? "Introduce un correo válido",
+    };
+  }
+
+  const rate = checkRateLimit({
+    key: `auth_reset_${parsed.data.email.toLowerCase()}`,
+    limit: 3,
+    windowMs: 60_000,
+  });
+  if (!rate.allowed) {
+    return { success: false, error: rate.error };
+  }
+
+  try {
+    const supabase = await createClient();
+    const origin = await resolveRequestOrigin();
+    const redirectTo = `${origin}/auth/callback?next=/auth/reset-password`;
+    const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+      redirectTo,
+    });
+    if (error) {
+      return { success: false, error: translateAuthError(error.message) };
+    }
+    return { success: true };
+  } catch {
+    return { success: false, error: "No se pudo enviar el enlace de recuperación" };
+  }
+}
+
+/**
+ * Updates the authenticated user's password after completing a recovery flow.
+ */
+export async function updatePassword(input: ResetPasswordInput): Promise<AuthActionResult> {
+  const parsed = resetPasswordSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message ?? "Contraseña no válida",
+    };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+    if (userError || !user) {
+      return {
+        success: false,
+        error: "El enlace de recuperación ha caducado o no es válido. Solicita uno nuevo.",
+      };
+    }
+
+    const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+    if (error) {
+      return { success: false, error: translateAuthError(error.message) };
+    }
+    revalidatePath("/", "layout");
+    return { success: true };
+  } catch {
+    return { success: false, error: "No se pudo actualizar la contraseña" };
   }
 }
 
@@ -276,7 +354,10 @@ export async function abortRegistration(): Promise<AuthActionResult> {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (user) await supabase.rpc("delete_current_user");
+    if (user) {
+      await purgeUserAvatarFiles(supabase, user.id);
+      await supabase.rpc("delete_current_user");
+    }
     await supabase.auth.signOut();
     revalidatePath("/", "layout");
     return { success: true };
@@ -300,6 +381,8 @@ export async function deleteAccount(): Promise<AuthActionResult> {
     if (userError || !user) {
       return { success: false, error: "No hay sesión activa para eliminar" };
     }
+
+    await purgeUserAvatarFiles(supabase, user.id);
 
     const { error: rpcError } = await supabase.rpc("delete_current_user");
     if (rpcError) {

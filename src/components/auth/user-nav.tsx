@@ -23,7 +23,7 @@ export function UserNav() {
 
     void checkCurrentUserAdminAction().then((hasAdmin) => {
       if (mounted) {
-        setIsAdmin(hasAdmin || user.email === "mareonasportinguista@gmail.com");
+        setIsAdmin(hasAdmin);
       }
     });
 
@@ -32,7 +32,7 @@ export function UserNav() {
     };
   }, [user]);
 
-  const showAdmin = Boolean(user) && (isAdmin || user?.email === "mareonasportinguista@gmail.com");
+  const showAdmin = Boolean(user) && isAdmin;
 
   useEffect(() => {
     if (!isMenuOpen) return;

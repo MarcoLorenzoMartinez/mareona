@@ -64,8 +64,28 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
 
   const fallbackUrl = new URL(safeNext, origin);
-  fallbackUrl.searchParams.set("email_confirmed", "true");
+  fallbackUrl.searchParams.set("auth_error", "callback_failed");
   return NextResponse.redirect(fallbackUrl);
+}
+
+function resolveAllowedHost(request: NextRequest, candidateHost: string | null): string | null {
+  if (!candidateHost) return null;
+  const normalized = candidateHost.trim().toLowerCase();
+  const allowedHosts = new Set<string>(["mareona.es", "www.mareona.es"]);
+
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    try {
+      allowedHosts.add(new URL(process.env.NEXT_PUBLIC_APP_URL).host.toLowerCase());
+    } catch {
+      // Ignore malformed env URL
+    }
+  }
+  if (process.env.VERCEL_URL) {
+    allowedHosts.add(process.env.VERCEL_URL.toLowerCase());
+  }
+  allowedHosts.add(request.nextUrl.host.toLowerCase());
+
+  return allowedHosts.has(normalized) ? normalized : null;
 }
 
 function buildAuthenticatedRedirect(
@@ -75,6 +95,16 @@ function buildAuthenticatedRedirect(
   user: User,
   otpType: EmailOtpType | null
 ): NextResponse {
+  if (otpType === "recovery") {
+    const resetUrl = new URL("/auth/reset-password", origin);
+    const allowedHost = resolveAllowedHost(request, request.headers.get("x-forwarded-host"));
+    if (process.env.NODE_ENV !== "development" && allowedHost) {
+      resetUrl.protocol = "https:";
+      resetUrl.host = allowedHost;
+    }
+    return NextResponse.redirect(resetUrl);
+  }
+
   const { searchParams } = new URL(request.url);
   const needsOnboarding = shouldTriggerOnboarding({
     createdAt: user.created_at,
@@ -85,6 +115,9 @@ function buildAuthenticatedRedirect(
   const isPwa = searchParams.get("pwa") === "1";
   const targetUrl = new URL(safeNext, origin);
 
+  if (otpType === "signup") {
+    targetUrl.searchParams.set("email_confirmed", "true");
+  }
   if (needsOnboarding) {
     targetUrl.searchParams.set("onboarding", "true");
   }
@@ -92,12 +125,12 @@ function buildAuthenticatedRedirect(
     targetUrl.searchParams.set("source", "pwa");
   }
 
-  const forwardedHost = request.headers.get("x-forwarded-host");
+  const allowedHost = resolveAllowedHost(request, request.headers.get("x-forwarded-host"));
   const isLocalEnv = process.env.NODE_ENV === "development";
 
-  if (!isLocalEnv && forwardedHost) {
+  if (!isLocalEnv && allowedHost) {
     targetUrl.protocol = "https:";
-    targetUrl.host = forwardedHost;
+    targetUrl.host = allowedHost;
   }
 
   return NextResponse.redirect(targetUrl);
