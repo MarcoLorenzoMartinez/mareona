@@ -146,7 +146,7 @@ export function AuthCredentialsForm({ initialMode, onSuccess }: AuthCredentialsF
               <button
                 type="button"
                 onClick={() => { setShowForgotPassword(true); setErrorMessage(null); }}
-                className="text-xs font-medium text-[var(--primary-strong)] hover:text-[var(--primary)] hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs cursor-pointer"
+                className="text-[11px] font-medium text-neutral-600 hover:text-neutral-900 hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs cursor-pointer"
               >
                 {dict.auth.forgotPassword.linkLabel}
               </button>
