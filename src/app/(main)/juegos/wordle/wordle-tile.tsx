@@ -23,11 +23,11 @@ export function WordleTile({
   let bgClasses = 'bg-white border-neutral-200 text-neutral-900';
 
   if (status === 'correct') {
-    bgClasses = 'bg-emerald-700 border-emerald-600 text-white';
+    bgClasses = 'bg-emerald-600 border-emerald-600 text-white';
   } else if (status === 'present') {
-    bgClasses = 'bg-amber-700 border-amber-500 text-white';
+    bgClasses = 'bg-amber-500 border-amber-500 text-white';
   } else if (status === 'absent') {
-    bgClasses = 'bg-[var(--surface-raised,var(--surface))] border-neutral-200 text-neutral-600';
+    bgClasses = 'bg-[var(--surface-raised,var(--surface))] border-neutral-200 text-neutral-400';
   } else if (isActiveCursor) {
     bgClasses = 'bg-white border-[#e2001a] ring-2 ring-[#e2001a]/25 text-neutral-900 scale-102 shadow-xs';
   } else if (letter) {

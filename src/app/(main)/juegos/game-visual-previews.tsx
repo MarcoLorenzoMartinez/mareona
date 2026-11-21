@@ -58,8 +58,8 @@ function WordlePreview() {
   const row1 = ["neutral", "amber", "neutral", "neutral", "emerald"] as const;
   const colorMap = {
     neutral: "bg-neutral-200 border-neutral-300",
-    amber: "bg-amber-700 border-amber-500",
-    emerald: "bg-emerald-700 border-emerald-600",
+    amber: "bg-amber-500 border-amber-500",
+    emerald: "bg-emerald-600 border-emerald-600",
   };
 
   return (
