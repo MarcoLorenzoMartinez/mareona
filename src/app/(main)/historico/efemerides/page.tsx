@@ -1,6 +1,7 @@
 import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { getEphemeridesForDay } from "@/lib/historical/ephemerides-service";
+import { getTodayMadridIsoDate } from "@/lib/games/daily-date";
 import { EphemeridesHub } from "./ephemerides-hub";
 
 export const metadata: Metadata = {
@@ -11,11 +12,8 @@ export const metadata: Metadata = {
 
 export default async function HistoricoEfemeridesPage() {
   "use cache";
-  cacheLife("hours");
-  const now = new Date();
-  const todayMonth = now.getMonth() + 1;
-  const todayDay = now.getDate();
-  const currentYear = now.getFullYear();
+  cacheLife("minutes");
+  const [currentYear, todayMonth, todayDay] = getTodayMadridIsoDate().split("-").map(Number);
 
   const initialData = getEphemeridesForDay(todayMonth, todayDay);
 

@@ -87,18 +87,26 @@ export function useSocialNotifications(): SocialNotificationCounts {
     const channelName = `social-notifications-${user.id}-${instanceId}`;
 
     let channel: ReturnType<typeof supabase.channel> | null = null;
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+    const scheduleRefresh = () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        void refreshSocialNotifications();
+      }, 400);
+    };
+
     try {
       channel = supabase
         .channel(channelName)
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "messages" },
-          () => { void refreshSocialNotifications(); }
+          scheduleRefresh
         )
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "friendships" },
-          () => { void refreshSocialNotifications(); }
+          scheduleRefresh
         )
         .subscribe();
     } catch (err) {
@@ -106,6 +114,7 @@ export function useSocialNotifications(): SocialNotificationCounts {
     }
 
     return () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
       if (channel) {
         void supabase.removeChannel(channel);
       }

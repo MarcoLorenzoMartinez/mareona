@@ -11,6 +11,10 @@ import {
   groupSquadByPosition,
   type DomainPlayer,
 } from "../../src/lib/sports-api/types.ts";
+import {
+  buildPlayerProfileHref,
+  resolveSquadPlayerByParam,
+} from "../../src/lib/sports-api/squad-routing.ts";
 
 test("mapEspnPosition maps positions correctly", () => {
   assert.equal(mapEspnPosition("Goalkeeper"), "goalkeeper");
@@ -246,4 +250,40 @@ test("transformEspnAthlete applies canonical overrides for jersey 23 Jorge Sáen
   assert.equal(player.fullName, "Jorge Sáenz");
   assert.equal(player.displayName, "Jorge Sáenz");
   assert.equal(player.shortName, "J. Sáenz");
+});
+
+test("buildPlayerProfileHref and resolveSquadPlayerByParam disambiguate duplicate jersey numbers (#34)", () => {
+  const alexDiego: DomainPlayer = {
+    ...transformEspnAthlete({
+      id: "340001",
+      fullName: "Alex Diego",
+      displayName: "Alex Diego",
+      shortName: "A. Diego",
+      jersey: "34",
+      position: { id: "2", name: "Defender", displayName: "Defender", abbreviation: "D" },
+    }),
+    displayName: "Álex Diego",
+    fullName: "Álex Diego",
+  };
+  const mata: DomainPlayer = {
+    ...transformEspnAthlete({
+      id: "340002",
+      fullName: "Diego Matabuena",
+      displayName: "Mata",
+      shortName: "Mata",
+      jersey: "34",
+      position: { id: "4", name: "Forward", displayName: "Forward", abbreviation: "F" },
+    }),
+    displayName: "Mata",
+    fullName: "Diego Matabuena",
+  };
+
+  const href1 = buildPlayerProfileHref(alexDiego);
+  const href2 = buildPlayerProfileHref(mata);
+  assert.notEqual(href1, href2);
+
+  const squad = [alexDiego, mata];
+  assert.equal(resolveSquadPlayerByParam(squad, mata.externalId)?.displayName, "Mata");
+  assert.equal(resolveSquadPlayerByParam(squad, alexDiego.externalId)?.displayName, "Álex Diego");
+  assert.equal(resolveSquadPlayerByParam(squad, "mata")?.displayName, "Mata");
 });

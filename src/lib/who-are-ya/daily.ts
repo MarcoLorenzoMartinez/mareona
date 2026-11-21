@@ -1,5 +1,6 @@
 import type { WhoAreYaPlayer } from './types';
 import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
+import { resolveClampedMadridDate } from '../games/daily-date.ts';
 
 export const WHO_ARE_YA_EPOCH_DATE = '2026-11-13';
 
@@ -38,12 +39,5 @@ export function getTodayDateStr(): string {
   if (typeof window === 'undefined') {
     return WHO_ARE_YA_EPOCH_DATE;
   }
-  const todayStr = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Madrid',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(new Date());
-
-  return todayStr < WHO_ARE_YA_EPOCH_DATE ? WHO_ARE_YA_EPOCH_DATE : todayStr;
+  return resolveClampedMadridDate(WHO_ARE_YA_EPOCH_DATE);
 }

@@ -3,6 +3,7 @@ import rawQuestions from '../../data/trivia/questions.json' with { type: 'json' 
 import { ALL_CLUB_FIGURES } from './club-figures.ts';
 import { normalizeSearchText } from '../utils/search-utils.ts';
 import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
+import { resolveClampedMadridDate } from '../games/daily-date.ts';
 
 export const TRIVIA_QUESTIONS: TriviaQuestion[] = rawQuestions as TriviaQuestion[];
 
@@ -65,14 +66,7 @@ export function getTriviaTodayDateStr(): string {
   if (typeof window === 'undefined') {
     return TRIVIA_EPOCH_DATE;
   }
-  const todayStr = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Madrid',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(new Date());
-
-  return todayStr < TRIVIA_EPOCH_DATE ? TRIVIA_EPOCH_DATE : todayStr;
+  return resolveClampedMadridDate(TRIVIA_EPOCH_DATE);
 }
 
 /**

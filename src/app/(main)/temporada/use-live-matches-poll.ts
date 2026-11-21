@@ -1,7 +1,7 @@
 // Client: Hook reactivo para sincronización en vivo del calendario de partidos
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { getLiveSeasonMatchesUpdate } from "./live-actions";
 import { LIVE_POLL_INTERVAL_MS, shouldPollMatchesList } from "@/lib/sports-api/live-poll";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
@@ -16,12 +16,16 @@ import type { DomainMatchSummary } from "@/lib/sports-api/types";
  */
 export function useLiveMatchesPoll(initialMatches: readonly DomainMatchSummary[]) {
   const [matches, setMatches] = useState<readonly DomainMatchSummary[]>(initialMatches);
+  const isFetchingRef = useRef(false);
   const hasLiveMatch = matches.some((m) => m.status === "live");
+  const shouldPoll = shouldPollMatchesList(matches, true);
 
   const fetchUpdate = useCallback(async () => {
+    if (isFetchingRef.current) return;
     if (typeof document !== "undefined" && document.visibilityState === "hidden") {
       return;
     }
+    isFetchingRef.current = true;
     try {
       const updated = await getLiveSeasonMatchesUpdate();
       if (updated && updated.length > 0) {
@@ -29,14 +33,15 @@ export function useLiveMatchesPoll(initialMatches: readonly DomainMatchSummary[]
       }
     } catch {
       // Retain existing state on transient network failures
+    } finally {
+      isFetchingRef.current = false;
     }
   }, []);
 
   useEffect(() => {
-    const shouldPoll = shouldPollMatchesList(matches, true);
     if (!shouldPoll) return;
 
-    // Immediately fetch upon mount when in polling window to get live status without waiting
+    // Immediately fetch upon entering the polling window to get live status without waiting
     const initialTimer = setTimeout(() => {
       void fetchUpdate();
     }, 0);
@@ -45,7 +50,7 @@ export function useLiveMatchesPoll(initialMatches: readonly DomainMatchSummary[]
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        fetchUpdate();
+        void fetchUpdate();
       }
     };
 
@@ -56,7 +61,7 @@ export function useLiveMatchesPoll(initialMatches: readonly DomainMatchSummary[]
       clearInterval(intervalId);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [matches, fetchUpdate]);
+  }, [shouldPoll, fetchUpdate]);
 
   return { matches, hasLiveMatch };
 }

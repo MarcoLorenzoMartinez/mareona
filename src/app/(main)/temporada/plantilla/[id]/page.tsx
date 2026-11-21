@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchSportingSquad } from "@/lib/sports-api/client";
+import { resolveSquadPlayerByParam } from "@/lib/sports-api/squad-routing";
 import {
   resolveSportingPlayerId,
   fetchFotMobPlayerProfile,
@@ -19,12 +20,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const squad = await fetchSportingSquad();
-  const player = squad.find(
-    (p) =>
-      String(p.shirtNumber) === id ||
-      p.id === id ||
-      p.externalId === id
-  );
+  const player = resolveSquadPlayerByParam(squad, id);
 
   if (!player) {
     return { title: "Jugador no encontrado" };
@@ -54,13 +50,7 @@ async function PlayerDetailContent({ params }: PageProps) {
   const { id } = await params;
   const squad = await fetchSportingSquad();
 
-  const player = squad.find(
-    (p) =>
-      String(p.shirtNumber) === id ||
-      p.id === id ||
-      p.externalId === id ||
-      p.displayName.toLowerCase().replace(/\s+/g, "-") === id.toLowerCase()
-  );
+  const player = resolveSquadPlayerByParam(squad, id);
 
   if (!player) {
     notFound();

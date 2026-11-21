@@ -1,5 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import {
   resolveMatchDetailTtlMs,
   TTL_LIVE_MATCH_MS,
@@ -128,6 +130,18 @@ describe("Live Match Polling & Dynamic TTL", () => {
   describe("LIVE_POLL_INTERVAL_MS", () => {
     it("defines 15-second polling interval for responsive live experiences", () => {
       assert.equal(LIVE_POLL_INTERVAL_MS, 15_000);
+    });
+  });
+
+  describe("useLiveMatchesPoll stability", () => {
+    it("does not depend on the mutable matches array reference inside useEffect", () => {
+      const hookPath = path.join(
+        process.cwd(),
+        "src/app/(main)/temporada/use-live-matches-poll.ts"
+      );
+      const source = fs.readFileSync(hookPath, "utf8");
+      assert.match(source, /\[\s*shouldPoll\s*,\s*fetchUpdate\s*\]/);
+      assert.doesNotMatch(source, /\[\s*matches\s*,\s*fetchUpdate\s*\]/);
     });
   });
 });

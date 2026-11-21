@@ -2,6 +2,7 @@ import rawWords from '../../data/wordle/sporting-words.json' with { type: 'json'
 import type { WordleDailyWord } from './types';
 import { normalizeWord } from './engine.ts';
 import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
+import { resolveClampedMadridDate } from '../games/daily-date.ts';
 
 export interface CatalogSportingWord {
   slug: string;
@@ -65,15 +66,7 @@ export function getTodayChallenge(customDate?: Date): WordleDailyWord {
   if (typeof window === 'undefined' && !customDate) {
     return getChallengeForDate(WORDLE_EPOCH_DATE);
   }
-  const d = customDate || new Date();
-  const formatter = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Madrid',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
-  const todayDateStr = formatter.format(d);
-  const effectiveDate = todayDateStr < WORDLE_EPOCH_DATE ? WORDLE_EPOCH_DATE : todayDateStr;
+  const effectiveDate = resolveClampedMadridDate(WORDLE_EPOCH_DATE, customDate);
   return getChallengeForDate(effectiveDate);
 }
 

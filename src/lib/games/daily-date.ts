@@ -20,3 +20,23 @@ export function formatGameDailyDate(dateStr: string): string {
     year: 'numeric',
   }).format(date);
 }
+
+/**
+ * Resolves the canonical ISO date string (YYYY-MM-DD) in Europe/Madrid timezone.
+ */
+export function getTodayMadridIsoDate(customDate: Date = new Date()): string {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Madrid',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(customDate);
+}
+
+/**
+ * Resolves today's Europe/Madrid ISO date string clamped to `epochDate` minimum.
+ */
+export function resolveClampedMadridDate(epochDate: string, customDate?: Date): string {
+  const todayStr = getTodayMadridIsoDate(customDate);
+  return todayStr < epochDate ? epochDate : todayStr;
+}

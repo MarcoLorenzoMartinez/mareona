@@ -108,6 +108,7 @@ const SECTIONS: readonly LegalSection[] = [
           <li><LegalStrong>Brevo:</LegalStrong> envío de correos transaccionales de verificación y recuperación de contraseña.</li>
           <li><LegalStrong>Groq:</LegalStrong> moderación automática preventiva del muro público (nunca de mensajes privados).</li>
           <li><LegalStrong>Google:</LegalStrong> inicio de sesión mediante Google OAuth (si eliges ese método).</li>
+          <li><LegalStrong>Proveedores de activos y datos deportivos (ESPN, FotMob, BDFutbol):</LegalStrong> carga informativa de resultados, escudos y fotografías deportivas externas autorizadas bajo sus condiciones técnicas de conexión.</li>
         </LegalList>
         <LegalP>
           Tu nombre visible, apodo, avatar, puntos y publicaciones son públicos. En cambio,{" "}

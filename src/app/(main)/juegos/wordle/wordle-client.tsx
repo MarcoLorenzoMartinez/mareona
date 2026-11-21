@@ -3,7 +3,11 @@
 
 import React, { useState, useEffect } from 'react';
 import type { WordleDailyWord } from '@/lib/wordle/types';
-import { getTodayChallenge, getChallengeForDate } from '@/lib/wordle/words';
+import {
+  WORDLE_EPOCH_DATE,
+  getTodayChallenge,
+  getChallengeForDate,
+} from '@/lib/wordle/words';
 import { useWordleGame } from '@/lib/wordle/use-wordle-game';
 import { prefetchWordleDictionary } from '@/lib/wordle/submission';
 import { WordleHeader } from './wordle-header';
@@ -22,11 +26,20 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
   const { user } = useAuth();
   const isDemo = process.env.NODE_ENV !== 'production' && isDemoEmail(user?.email);
 
-  const [challenge, setChallenge] = useState<WordleDailyWord>(() => {
-    return (typeof window === 'undefined' ? initialChallenge : getTodayChallenge()) || getTodayChallenge();
-  });
+  const [challenge, setChallenge] = useState<WordleDailyWord>(
+    () => initialChallenge ?? getChallengeForDate(WORDLE_EPOCH_DATE)
+  );
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isStatsOpen, setIsStatsOpen] = useState(false);
+
+  // Sync to Europe/Madrid current day after mount so SSR and initial hydration never mismatch
+  useEffect(() => {
+    const today = getTodayChallenge();
+    if (today.id !== challenge.id) {
+      queueMicrotask(() => setChallenge(today));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const {
     gameState,
