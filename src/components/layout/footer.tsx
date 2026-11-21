@@ -13,6 +13,7 @@ const LINK_CLASS =
 export function Footer() {
   const dict = getDictionary();
   const legalLinks = [
+    { href: "/acerca-de", label: dict.layout.footer.about },
     { href: "/aviso-legal", label: dict.layout.footer.legalNotice },
     { href: "/privacidad", label: dict.layout.footer.privacy },
     { href: "/terminos", label: dict.layout.footer.terms },

@@ -33,7 +33,7 @@ describe("SEO Metadata Suite (robots & sitemap)", () => {
     const urls = sitemapEntries.map((e) => e.url);
 
     // Core home and season
-    assert.ok(urls.some((u) => u.endsWith("mareona.es") || u.endsWith("mareona.es/")));
+    assert.ok(urls.some((u) => u.endsWith("mareona.vercel.app") || u.endsWith("mareona.vercel.app/")));
     assert.ok(urls.some((u) => u.includes("/temporada")));
     assert.ok(urls.some((u) => u.includes("/temporada/partidos")));
     assert.ok(urls.some((u) => u.includes("/temporada/clasificacion")));
@@ -50,7 +50,8 @@ describe("SEO Metadata Suite (robots & sitemap)", () => {
     assert.equal(urls.some((u) => u.includes("/temporada/calendario")), false);
     assert.equal(urls.some((u) => u.includes("/historico/leyendas")), false);
 
-    // Legal
+    // About & Legal
+    assert.ok(urls.some((u) => u.includes("/acerca-de")));
     assert.ok(urls.some((u) => u.includes("/aviso-legal")));
     assert.ok(urls.some((u) => u.includes("/privacidad")));
 

@@ -7,7 +7,6 @@ Mareona abre la ventana de Google directamente desde la web (Google Identity Ser
 En **APIs y servicios → Credenciales → ID de cliente OAuth (tipo «Aplicación web»)**, añade en **Orígenes de JavaScript autorizados**:
 
 - `https://mareona.vercel.app`
-- `https://mareona.es` (cuando exista)
 - `http://localhost:3000` (desarrollo)
 
 Mantén el URI de redireccionamiento de Supabase (`https://<proyecto>.supabase.co/auth/v1/callback`): sigue usándose en la app instalada como PWA.

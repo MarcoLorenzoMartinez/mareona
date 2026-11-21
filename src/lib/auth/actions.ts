@@ -28,13 +28,16 @@ export type { UserProfile, AuthActionResult };
 
 function isAllowedOriginHost(host: string): boolean {
   const normalized = host.trim().toLowerCase();
-  const allowed = new Set<string>(["mareona.es", "www.mareona.es", "localhost:3000", "127.0.0.1:3000"]);
+  const allowed = new Set<string>(["mareona.vercel.app", "localhost:3000", "127.0.0.1:3000"]);
   if (process.env.NEXT_PUBLIC_APP_URL) {
     try {
       allowed.add(new URL(process.env.NEXT_PUBLIC_APP_URL).host.toLowerCase());
     } catch {
       // Ignore invalid env URL
     }
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    allowed.add(process.env.VERCEL_PROJECT_PRODUCTION_URL.toLowerCase());
   }
   if (process.env.VERCEL_URL) {
     allowed.add(process.env.VERCEL_URL.toLowerCase());
@@ -64,7 +67,7 @@ async function resolveRequestOrigin(): Promise<string> {
   } catch {
     // Fallback to environment variable outside request context
   }
-  return process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  return process.env.NEXT_PUBLIC_APP_URL || "https://mareona.vercel.app";
 }
 
 function isEmailDispatchFailure(message: string, code?: string | null, status?: number | null): boolean {

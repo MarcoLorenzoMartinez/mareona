@@ -6,7 +6,7 @@ import type { MetadataRoute } from "next";
  * in the public disallow list; instead, private pages declare their own 'noindex' meta tags.
  */
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mareona.es";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mareona.vercel.app";
 
   return {
     rules: [

@@ -42,6 +42,7 @@ export const esLayout = {
   },
   footer: {
     navAria: "Información legal",
+    about: "Acerca de",
     legalNotice: "Aviso legal",
     privacy: "Privacidad",
     terms: "Términos",
@@ -49,7 +50,7 @@ export const esLayout = {
     contact: "Contacto",
     installApp: "Instalar app",
     disclaimer:
-      "Mareona. Proyecto independiente creado por aficionados, sin vinculación oficial con el Real Sporting de Gijón, S.A.D.",
+      "Mareona. Proyecto independiente creado por aficionados, sin patrocinio, respaldo ni vinculación oficial con el Real Sporting de Gijón, S.A.D. ni con LaLiga.",
   },
   offline: {
     title: "Sin conexión",

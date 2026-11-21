@@ -40,7 +40,7 @@ export function sanitizeNextPath(rawNext: string | null | undefined): string {
  * preserving PWA standalone launch indicators so mobile operating systems
  * restore the installed app context after provider login.
  *
- * @param origin - Current window origin (e.g. `https://mareona.es` or `http://localhost:3000`).
+ * @param origin - Current window origin (e.g. `https://mareona.vercel.app` or `http://localhost:3000`).
  * @param currentPath - Target return path within the application.
  * @param forceStandalone - Optional override for unit testing.
  * @returns Fully qualified callback URL.

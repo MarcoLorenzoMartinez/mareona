@@ -1,4 +1,4 @@
-export const LEGAL_OWNER_NAME = "Marco Lorenzo";
+export const LEGAL_OWNER_NAME = "Marco Lorenzo Martínez";
 export const LEGAL_OWNER_LOCATION = "Asturias, España";
 export const CONTACT_EMAIL = "mareonasportinguista@gmail.com";
 

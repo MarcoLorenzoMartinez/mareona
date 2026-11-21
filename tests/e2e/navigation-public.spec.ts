@@ -47,8 +47,8 @@ test.describe("Public Navigation & Discovery Suite", () => {
     await expect(page.locator("main")).toContainText(/Mareona/i);
   });
 
-  test("all four legal pages load with canonical disclosures", async ({ page }) => {
-    const legalRoutes = ["/aviso-legal", "/privacidad", "/terminos", "/cookies"];
+  test("all institutional and legal pages load with canonical disclosures", async ({ page }) => {
+    const legalRoutes = ["/acerca-de", "/aviso-legal", "/privacidad", "/terminos", "/cookies"];
 
     for (const route of legalRoutes) {
       await page.goto(route);

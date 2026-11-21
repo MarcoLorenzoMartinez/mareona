@@ -244,7 +244,7 @@ caché          ↓
 - Incorporación de contenido histórico.
 - Implementación de trivias semanales con validación en servidor.
 - Desarrollo de Wordle Sportinguista:
-  - La palabra objetivo se mantiene exclusivamente en el servidor.
+  - Desafío diario determinista con soporte offline en el estadio y verificación autoritativa de recompensas en el servidor.
   - La interfaz debe ser accesible.
 
 ### Fase 5 — Optimización PWA y caché de APIs

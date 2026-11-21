@@ -16,7 +16,7 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mareona.es";
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mareona.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),

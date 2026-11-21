@@ -59,9 +59,8 @@ Esta arquitectura combina **Supabase Auth** (seguridad, tokens y gestión de ses
 1. En el panel de Supabase, entra en:
    `Authentication > URL Configuration` (`https://supabase.com/dashboard/project/<YOUR_SUPABASE_PROJECT_REF>/auth/url-configuration`).
 2. Asegúrate de tener:
-   - **Site URL:** La dirección principal de tu web en producción (ej. `https://mareona.es`, **sin `/` al final**).
+   - **Site URL:** La dirección principal de tu web en producción (`https://mareona.vercel.app`, **sin `/` al final**).
    - **Redirect URLs:** Añade únicamente rutas exactas autorizadas (evita comodines amplios):
-     - `https://mareona.es/auth/callback`
-     - `https://www.mareona.es/auth/callback`
+     - `https://mareona.vercel.app/auth/callback`
      - `http://localhost:3000/auth/callback`
 3. Pulsa **Save**.

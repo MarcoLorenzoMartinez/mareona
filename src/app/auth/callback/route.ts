@@ -71,7 +71,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 function resolveAllowedHost(request: NextRequest, candidateHost: string | null): string | null {
   if (!candidateHost) return null;
   const normalized = candidateHost.trim().toLowerCase();
-  const allowedHosts = new Set<string>(["mareona.es", "www.mareona.es"]);
+  const allowedHosts = new Set<string>(["mareona.vercel.app"]);
 
   if (process.env.NEXT_PUBLIC_APP_URL) {
     try {
@@ -79,6 +79,9 @@ function resolveAllowedHost(request: NextRequest, candidateHost: string | null):
     } catch {
       // Ignore malformed env URL
     }
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    allowedHosts.add(process.env.VERCEL_PROJECT_PRODUCTION_URL.toLowerCase());
   }
   if (process.env.VERCEL_URL) {
     allowedHosts.add(process.env.VERCEL_URL.toLowerCase());

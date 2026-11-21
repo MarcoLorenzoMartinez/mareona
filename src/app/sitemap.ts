@@ -36,6 +36,7 @@ const CANONICAL_PUBLIC_ROUTES: readonly RouteConfig[] = [
   { path: "/instalar", changeFrequency: "monthly", priority: 0.6 },
 
   // Legal & Transparency
+  { path: "/acerca-de", changeFrequency: "monthly", priority: 0.5 },
   { path: "/aviso-legal", changeFrequency: "yearly", priority: 0.3 },
   { path: "/privacidad", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terminos", changeFrequency: "yearly", priority: 0.3 },
@@ -48,7 +49,7 @@ const CANONICAL_PUBLIC_ROUTES: readonly RouteConfig[] = [
  * private authenticated pages (/admin, /perfil).
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "https://mareona.es").replace(/\/+$/, "");
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "https://mareona.vercel.app").replace(/\/+$/, "");
   const lastModified = new Date();
 
   return CANONICAL_PUBLIC_ROUTES.map((route) => ({

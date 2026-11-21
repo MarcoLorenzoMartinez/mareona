@@ -30,9 +30,9 @@ describe("OAuth & Email Callback Route - Path Sanitization & Onboarding Logic", 
   });
 
   it("builds email confirmation URL with onboarding=true and sanitized next path", () => {
-    const url = buildEmailConfirmationUrl("https://mareona.es", "/social");
+    const url = buildEmailConfirmationUrl("https://mareona.vercel.app", "/social");
     const parsed = new URL(url);
-    assert.strictEqual(parsed.origin, "https://mareona.es");
+    assert.strictEqual(parsed.origin, "https://mareona.vercel.app");
     assert.strictEqual(parsed.pathname, "/auth/callback");
     assert.strictEqual(parsed.searchParams.get("next"), "/social");
     assert.strictEqual(parsed.searchParams.get("onboarding"), "true");
