@@ -66,4 +66,11 @@ export const esAuth = {
     connectError: "No se pudo conectar con Google en este momento.",
     continueWithGoogle: "Continuar con Google",
   },
+  ageGate: {
+    prefix: "Confirmo que tengo 14 años o más y acepto los",
+    termsLink: "Términos de uso",
+    and: "y la",
+    privacyLink: "Política de privacidad",
+    requiredError: "Debes confirmar que tienes al menos 14 años para crear tu cuenta.",
+  },
 } as const;

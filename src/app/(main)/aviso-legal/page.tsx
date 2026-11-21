@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalDocument, type LegalSection } from "@/components/legal/legal-document";
 import { LegalMail, LegalP, LegalStrong } from "@/components/legal/legal-elements";
+import { LEGAL_OWNER_LOCATION, LEGAL_OWNER_NAME } from "@/lib/legal/constants";
 
 export const metadata: Metadata = {
   title: "Aviso legal",
@@ -15,9 +16,11 @@ const SECTIONS: readonly LegalSection[] = [
     content: (
       <>
         <LegalP>
-          Mareona es una iniciativa comunitaria de aficionados del Real Sporting que ofrece datos
-          de la temporada, archivo histórico, juegos y una tertulia social. El acceso y el uso de
-          la web son gratuitos.
+          En cumplimiento del artículo 10 de la Ley 34/2002 (LSSI-CE), el titular de Mareona es{" "}
+          <LegalStrong>{LEGAL_OWNER_NAME}</LegalStrong>, con domicilio en {LEGAL_OWNER_LOCATION}.
+          Mareona es una iniciativa comunitaria sin ánimo de lucro de aficionados del Real Sporting
+          que ofrece datos de la temporada, archivo histórico, juegos y una tertulia social. El
+          acceso y el uso de la web son gratuitos.
         </LegalP>
         <LegalP>
           Para cualquier consulta, aviso legal o solicitud sobre contenidos, escribe a <LegalMail />.

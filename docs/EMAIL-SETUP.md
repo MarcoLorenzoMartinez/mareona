@@ -21,7 +21,7 @@ Esta arquitectura combina **Supabase Auth** (seguridad, tokens y gestión de ses
 ## Paso 2: Conectar Brevo en el panel de Supabase (1 minuto)
 
 1. Entra en tu panel de Supabase:
-   [Project Settings > Authentication (SMTP Settings)](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/settings/auth).
+   `Project Settings > Authentication (SMTP Settings)` (`https://supabase.com/dashboard/project/<YOUR_SUPABASE_PROJECT_REF>/settings/auth`).
 2. Baja hasta la sección **SMTP Settings** y activa el interruptor **Enable Custom SMTP**.
 3. Rellena exactamente estos campos:
    - **Sender email:** `mareonasportinguista@gmail.com`
@@ -38,18 +38,18 @@ Esta arquitectura combina **Supabase Auth** (seguridad, tokens y gestión de ses
 ## Paso 3: Pegar las plantillas minimalistas de Mareona en Supabase (1 minuto)
 
 1. En el panel de Supabase, entra en:
-   [Authentication > Email Templates](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/auth/templates).
+   `Authentication > Email Templates` (`https://supabase.com/dashboard/project/<YOUR_SUPABASE_PROJECT_REF>/auth/templates`).
 2. En la pestaña **Confirm signup**:
    - **Subject heading:** `Confirma tu correo en Mareona`
-   - **Message body (Source / Code):** Borra todo el texto que viene por defecto y pega íntegro el contenido de [`supabase/email-templates/confirm-signup.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/confirm-signup.html).
+   - **Message body (Source / Code):** Borra todo el texto que viene por defecto y pega íntegro el contenido de [`supabase/email-templates/confirm-signup.html`](../supabase/email-templates/confirm-signup.html).
    - Pulsa **Save**.
 3. En la pestaña **Reset password**:
    - **Subject heading:** `Restablece tu contraseña en Mareona`
-   - **Message body (Source / Code):** Pega íntegro el contenido de [`supabase/email-templates/reset-password.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/reset-password.html).
+   - **Message body (Source / Code):** Pega íntegro el contenido de [`supabase/email-templates/reset-password.html`](../supabase/email-templates/reset-password.html).
    - Pulsa **Save**.
 4. En la pestaña **Magic Link**:
    - **Subject heading:** `Acceso a Mareona`
-   - **Message body (Source / Code):** Pega íntegro el contenido de [`supabase/email-templates/magic-link.html`](file:///c:/Users/marco/dev/mareona/supabase/email-templates/magic-link.html).
+   - **Message body (Source / Code):** Pega íntegro el contenido de [`supabase/email-templates/magic-link.html`](../supabase/email-templates/magic-link.html).
    - Pulsa **Save**.
 
 ---
@@ -57,10 +57,11 @@ Esta arquitectura combina **Supabase Auth** (seguridad, tokens y gestión de ses
 ## Paso 4: Verificar las URLs de redirección en Supabase (30 segundos)
 
 1. En el panel de Supabase, entra en:
-   [Authentication > URL Configuration](https://supabase.com/dashboard/project/icdjlwxxudyaexbmedfo/auth/url-configuration).
+   `Authentication > URL Configuration` (`https://supabase.com/dashboard/project/<YOUR_SUPABASE_PROJECT_REF>/auth/url-configuration`).
 2. Asegúrate de tener:
-   - **Site URL:** La dirección principal de tu web en producción (ej. `https://mareona.vercel.app` o tu dominio definitivo, **sin `/` al final**).
-   - **Redirect URLs:** Añade estas dos reglas si no están ya en la lista:
-     - `https://**/auth/callback**`
-     - `http://localhost:3000/**`
+   - **Site URL:** La dirección principal de tu web en producción (ej. `https://mareona.es`, **sin `/` al final**).
+   - **Redirect URLs:** Añade únicamente rutas exactas autorizadas (evita comodines amplios):
+     - `https://mareona.es/auth/callback`
+     - `https://www.mareona.es/auth/callback`
+     - `http://localhost:3000/auth/callback`
 3. Pulsa **Save**.

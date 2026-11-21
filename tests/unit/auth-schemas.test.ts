@@ -11,12 +11,22 @@ import {
 describe("Auth Schemas", () => {
   describe("signInSchema & signUpSchema", () => {
     it("accepts valid email and password with at least 6 characters", () => {
-      const valid = { email: "aficionado@mareona.com", password: "sporting1905" };
-      const parsedSignIn = signInSchema.safeParse(valid);
-      const parsedSignUp = signUpSchema.safeParse(valid);
+      const validSignIn = { email: "aficionado@mareona.com", password: "sporting1905" };
+      const validSignUp = { ...validSignIn, ageConfirmed: true };
+      const parsedSignIn = signInSchema.safeParse(validSignIn);
+      const parsedSignUp = signUpSchema.safeParse(validSignUp);
 
       assert.equal(parsedSignIn.success, true);
       assert.equal(parsedSignUp.success, true);
+    });
+
+    it("rejects signup when ageConfirmed is false", () => {
+      const res = signUpSchema.safeParse({
+        email: "aficionado@mareona.com",
+        password: "sporting1905",
+        ageConfirmed: false,
+      });
+      assert.equal(res.success, false);
     });
 
     it("rejects invalid email formats", () => {

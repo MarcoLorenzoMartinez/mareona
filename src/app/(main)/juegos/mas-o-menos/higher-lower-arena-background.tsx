@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { areOfficialAssetsEnabled } from '@/lib/legal/official-assets';
 
 interface HigherLowerArenaBackgroundProps {
   className?: string;
@@ -13,20 +14,23 @@ interface HigherLowerArenaBackgroundProps {
 export function HigherLowerArenaBackground({
   className = '',
 }: HigherLowerArenaBackgroundProps) {
+  const showOfficialAssets = areOfficialAssetsEnabled();
   return (
     <div
       className={`pointer-events-none absolute inset-0 -z-10 select-none overflow-hidden rounded-3xl border border-neutral-200/80 shadow-inner ${className}`}
       aria-hidden="true"
     >
       {/* 1. Fotografía auténtica de El Molinón con mayor presencia */}
-      <Image
-        src="/stadiums/el-molinon.jpg"
-        alt=""
-        fill
-        sizes="(max-width: 1024px) 100vw, 900px"
-        className="object-cover object-center opacity-[0.16] filter grayscale contrast-115"
-        priority
-      />
+      {showOfficialAssets && (
+        <Image
+          src="/stadiums/el-molinon.jpg"
+          alt=""
+          fill
+          sizes="(max-width: 1024px) 100vw, 900px"
+          className="object-cover object-center opacity-[0.16] filter grayscale contrast-115"
+          priority
+        />
+      )}
 
       {/* 2. Velo suave con sutil tinte rojiblanco superior que da profundidad */}
       <div className="absolute inset-0 bg-gradient-to-b from-rose-50/50 via-neutral-50/60 to-white/95" />

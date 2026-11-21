@@ -122,6 +122,11 @@ export const signUpSchema = z.object({
   password: z
     .string()
     .min(6, { message: "La contraseña debe tener al menos 6 caracteres" }),
+  ageConfirmed: z
+    .boolean()
+    .refine((v) => v === true, {
+      message: "Debes confirmar que tienes al menos 14 años",
+    }),
 });
 
 export type SignUpInput = z.infer<typeof signUpSchema>;

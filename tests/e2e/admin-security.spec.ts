@@ -7,8 +7,9 @@ test.describe("Admin Panel Security Suite", () => {
     // Must either redirect away from /admin or render an access denied notification
     const url = page.url();
     const isRedirected = !url.endsWith("/admin");
-    const hasForbiddenMessage = (await page.locator("text=denegado|iniciar sesión|no autorizado/i").count()) > 0;
+    const hasForbiddenMessage =
+      (await page.locator("text=/denegado|iniciar sesión|no autorizado/i").count()) > 0;
 
-    expect(isRedirected || hasForbiddenMessage || true).toBe(true);
+    expect(isRedirected || hasForbiddenMessage).toBe(true);
   });
 });

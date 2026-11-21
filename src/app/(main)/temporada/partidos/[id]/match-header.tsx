@@ -2,6 +2,7 @@ import Image from "next/image";
 import { TeamCrest } from "@/components/media/team-crest";
 import { formatMatchDate, formatMatchTime } from "@/lib/sports-api/dates";
 import { getStadiumAsset } from "@/lib/sports-api/stadiums";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
 import { MatchHeaderMeta } from "./match-header-meta";
@@ -25,12 +26,14 @@ export function MatchHeader({ match }: MatchHeaderProps) {
   );
   const kickoffTime = formatMatchTime(match.kickoffAt);
 
-  const stadiumAsset = getStadiumAsset({
-    teamExternalId: match.homeTeam.externalId,
-    teamName: match.homeTeam.name,
-    isSporting: match.homeTeam.isSporting,
-    venueName: match.venue?.name,
-  });
+  const stadiumAsset = areOfficialAssetsEnabled()
+    ? getStadiumAsset({
+        teamExternalId: match.homeTeam.externalId,
+        teamName: match.homeTeam.name,
+        isSporting: match.homeTeam.isSporting,
+        venueName: match.venue?.name,
+      })
+    : null;
 
   const isFinished =
     match.status === "finished" &&

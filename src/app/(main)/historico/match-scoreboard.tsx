@@ -4,6 +4,7 @@
 import Image from "next/image";
 import type { HistoricalMatch } from "@/lib/historical/types";
 import type { getStadiumAsset } from "@/lib/sports-api/stadiums";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 import { TeamCrest } from "@/components/media/team-crest";
 
 interface MatchScoreboardProps {
@@ -20,7 +21,7 @@ export function MatchScoreboard({ match, stadiumAsset }: MatchScoreboardProps) {
       id="match-modal-title"
       className="relative overflow-hidden grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 my-4 py-4 bg-[var(--surface)] rounded-xl border border-[var(--border)] px-3 sm:px-6"
     >
-      {stadiumAsset && (
+      {stadiumAsset && areOfficialAssetsEnabled() && (
         <div className="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden" aria-hidden="true">
           <Image
             src={stadiumAsset.imagePath}

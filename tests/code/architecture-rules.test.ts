@@ -269,6 +269,12 @@ describe("Architecture & Code Quality Suite (AGENTS.md & Industry Standards)", (
       "src/app/(main)/juegos/quien-es/who-are-ya-mystery-photo.tsx",
       "src/app/(main)/juegos/pregunta-del-dia/trivia-result-modal.tsx",
       "src/app/(main)/juegos/pregunta-del-dia/trivia-solved-card.tsx",
+      "src/app/(main)/juegos/mas-o-menos/higher-lower-arena-background.tsx",
+      "src/app/(main)/juegos/pregunta-del-dia/trivia-arena-background.tsx",
+      "src/components/cards/card-stadium-background.tsx",
+      "src/app/(main)/temporada/next-fixture-hero.tsx",
+      "src/app/(main)/temporada/partidos/[id]/match-header.tsx",
+      "src/app/(main)/historico/match-scoreboard.tsx",
     ];
 
     for (const relPath of guardedFiles) {

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatMatchDate, formatMatchTime } from "@/lib/sports-api/dates";
 import { getStadiumAsset } from "@/lib/sports-api/stadiums";
+import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
 import { useLiveFixturePoll } from "./use-live-fixture-poll";
@@ -31,14 +32,15 @@ export function NextFixtureHero({ match: initialMatch }: NextFixtureHeroProps) {
       }
     : null;
 
-  const stadiumAsset = match
-    ? getStadiumAsset({
-        teamExternalId: match.homeTeam.externalId,
-        teamName: match.homeTeam.name,
-        isSporting: match.homeTeam.isSporting,
-        venueName: match.venue,
-      })
-    : null;
+  const stadiumAsset =
+    areOfficialAssetsEnabled() && match
+      ? getStadiumAsset({
+          teamExternalId: match.homeTeam.externalId,
+          teamName: match.homeTeam.name,
+          isSporting: match.homeTeam.isSporting,
+          venueName: match.venue,
+        })
+      : null;
 
   const isFinished =
     match?.status === "finished" &&

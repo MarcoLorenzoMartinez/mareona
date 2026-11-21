@@ -6,6 +6,7 @@ import { generateUsernameFromEmail, generateDefaultDisplayName } from "@/lib/aut
 import { updateProfile } from "@/lib/auth/actions";
 import { useAuth } from "@/context/auth-context";
 import { ProfileAvatarPicker } from "@/app/(main)/perfil/profile-avatar-picker";
+import { AgeGateCheckbox } from "./age-gate-checkbox";
 import { getDictionary } from "@/i18n";
 
 interface OnboardingStepProps {
@@ -38,11 +39,16 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(
     () => profile?.avatar_url || (user?.user_metadata?.avatar_url as string | undefined) || null
   );
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!ageConfirmed) {
+      setErrorMessage(dict.auth.ageGate.requiredError);
+      return;
+    }
     setIsSubmitting(true);
     setErrorMessage(null);
 
@@ -101,21 +107,10 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
 
         {/* Campo 1: Nombre en Mareona */}
         <div>
-          <label
-            htmlFor="onboarding-display-name"
-            className="block text-xs font-semibold text-neutral-700 mb-1"
-          >
+          <label htmlFor="onboarding-display-name" className="block text-xs font-semibold text-neutral-700 mb-1">
             {dict.auth.onboarding.displayNameLabel}
           </label>
-          <input
-            id="onboarding-display-name"
-            type="text"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            placeholder={dict.auth.onboarding.displayNamePlaceholder}
-            maxLength={40}
-            className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 px-3 text-base sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-600 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
-          />
+          <input id="onboarding-display-name" type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder={dict.auth.onboarding.displayNamePlaceholder} maxLength={40} className="w-full min-h-[44px] rounded-lg border border-neutral-200 bg-white py-2 px-3 text-base sm:text-sm font-sans text-neutral-900 placeholder:text-neutral-600 focus:border-[var(--primary)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)]" />
         </div>
 
         {/* Campo 2: Apodo / Usuario */}
@@ -144,11 +139,10 @@ export function OnboardingStep({ onFinish, onCancel }: OnboardingStepProps) {
           </div>
         </div>
 
+        <AgeGateCheckbox id="onboarding-age-gate" checked={ageConfirmed} onChange={setAgeConfirmed} />
+
         {errorMessage && (
-          <div
-            role="alert"
-            className="rounded-lg bg-red-50 border border-red-200 p-2.5 text-xs font-medium text-[var(--primary)]"
-          >
+          <div role="alert" className="rounded-lg bg-red-50 border border-red-200 p-2.5 text-xs font-medium text-[var(--primary)]">
             {errorMessage}
           </div>
         )}

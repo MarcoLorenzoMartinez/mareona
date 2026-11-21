@@ -8,6 +8,7 @@ import {
   LegalStrong,
   LegalTable,
 } from "@/components/legal/legal-elements";
+import { LEGAL_OWNER_LOCATION, LEGAL_OWNER_NAME } from "@/lib/legal/constants";
 
 export const metadata: Metadata = {
   title: "Política de privacidad",
@@ -23,8 +24,9 @@ const SECTIONS: readonly LegalSection[] = [
     title: "Responsable del tratamiento",
     content: (
       <LegalP>
-        El responsable de los datos es el equipo promotor de Mareona. Para cualquier cuestión sobre
-        privacidad puedes escribir a <LegalMail />.
+        El responsable del tratamiento de los datos personales es{" "}
+        <LegalStrong>{LEGAL_OWNER_NAME}</LegalStrong> ({LEGAL_OWNER_LOCATION}). Para cualquier
+        cuestión sobre privacidad o ejercicio de derechos puedes escribir a <LegalMail />.
       </LegalP>
     ),
   },
@@ -102,7 +104,9 @@ const SECTIONS: readonly LegalSection[] = [
         <LegalP>No vendemos tus datos ni los usamos para publicidad. Recurrimos a estos proveedores:</LegalP>
         <LegalList>
           <li><LegalStrong>Supabase:</LegalStrong> base de datos, autenticación y almacenamiento de avatares.</li>
-          <li><LegalStrong>Vercel:</LegalStrong> alojamiento de la web.</li>
+          <li><LegalStrong>Vercel:</LegalStrong> alojamiento de la web y analítica técnica sin cookies ni perfilado individual.</li>
+          <li><LegalStrong>Brevo:</LegalStrong> envío de correos transaccionales de verificación y recuperación de contraseña.</li>
+          <li><LegalStrong>Groq:</LegalStrong> moderación automática preventiva del muro público (nunca de mensajes privados).</li>
           <li><LegalStrong>Google:</LegalStrong> inicio de sesión mediante Google OAuth (si eliges ese método).</li>
         </LegalList>
         <LegalP>

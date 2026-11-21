@@ -49,13 +49,12 @@ const SECTIONS: readonly LegalSection[] = [
     content: (
       <>
         <LegalP>
-          Guardamos en tu dispositivo, bajo claves que empiezan por <LegalStrong>mareona_</LegalStrong>,
-          datos que no se envían a ningún tercero:
+          Guardamos en tu dispositivo, bajo claves que empiezan por <LegalStrong>mareona_</LegalStrong>{" "}
+          o <LegalStrong>mareona-</LegalStrong>, datos que no se envían a terceros:
         </LegalP>
         <LegalList>
-          <li>Progreso y estadísticas de Wordle, ¿Quién es?, Pregunta del día y ¿Más o Menos?.</li>
-          <li>Tus votos y valoraciones en partidos, encuestas y porra.</li>
-          <li>Sobres y cromos de tu colección.</li>
+          <li>Progreso y estadísticas locales de Wordle, ¿Quién es?, Pregunta del día y ¿Más o Menos?.</li>
+          <li>Preferencias locales de sesión de juego cuando navegas sin cuenta (al iniciar sesión, la porra, los cromos y tus votos se sincronizan en tu cuenta).</li>
         </LegalList>
       </>
     ),

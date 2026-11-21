@@ -142,6 +142,14 @@ describe("Accessibility & WCAG 2.2 AA Color Contrast Suite", () => {
     );
   });
 
+  it("verifies semantic badge and muted UI colors meet WCAG 2.2 AA (>= 4.5:1)", () => {
+    // neutral-600 (#525252) on surface (#fafafa)
+    assert.ok(getContrastRatio("#525252", "#fafafa") >= 4.5, "neutral-600 on surface >= 4.5");
+    // amber-700 (#b45309) and emerald-700 (#047857) with white text (#ffffff)
+    assert.ok(getContrastRatio("#ffffff", "#b45309") >= 4.5, "white on amber-700 >= 4.5");
+    assert.ok(getContrastRatio("#ffffff", "#047857") >= 4.5, "white on emerald-700 >= 4.5");
+  });
+
   it("verifies color-scheme light declaration for consistent contrast rendering", () => {
     const cssContent = fs.readFileSync(globalsCssPath, "utf-8");
     assert.ok(

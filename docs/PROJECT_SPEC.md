@@ -63,8 +63,6 @@ La aplicación contará con cuatro áreas verticales de primer nivel en la naveg
 | Calidad de código | ESLint | Análisis estático |
 | Auditoría integral | `npm run check` | Ejecución conjunta de tipado, lint y pruebas |
 | Tipado | `tsc --noEmit` | Comprobación de tipos |
-| Hooks de Git | Husky + lint-staged | Validaciones previas a los commits |
-| Commits | commitlint | Validación de mensajes de commit |
 
 ### 1.4. Reglas de oro de arquitectura
 
@@ -141,7 +139,7 @@ mareona/
 │   ├── types/
 │   │   ├── database.types.ts
 │   │   └── index.ts
-│   └── middleware.ts
+│   └── proxy.ts
 └── tests/
     ├── e2e/
     ├── integration/
