@@ -1,8 +1,10 @@
 "use client"; // Client: Fallback automático ante fallos de carga de imágenes externas o estado offline
 
 import { useState } from "react";
+import Image from "next/image";
 import { useOnlineStatus } from "@/lib/pwa/use-online-status";
 import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
+import { isNextImageSupportedUrl } from "./image-optimization";
 
 interface TeamCrestProps {
   readonly crestUrl: string | null | undefined;
@@ -10,12 +12,19 @@ interface TeamCrestProps {
   readonly size?: "sm" | "md" | "lg";
   readonly isDecorative?: boolean;
   readonly isSporting?: boolean;
+  readonly priority?: boolean;
 }
 
 const SIZE_CLASSES = {
   sm: "h-6 w-6 text-[10px]",
   md: "h-8 w-8 text-xs",
   lg: "h-12 w-12 text-sm",
+} as const;
+
+const SIZE_PIXELS = {
+  sm: 24,
+  md: 32,
+  lg: 48,
 } as const;
 
 /**
@@ -35,6 +44,7 @@ export function TeamCrest({
   size = "md",
   isDecorative = true,
   isSporting = false,
+  priority = false,
 }: TeamCrestProps) {
   const isOnline = useOnlineStatus();
   const effectiveCrestUrl = crestUrl ?? (isSporting ? "/crests/historical/sporting-modern.png" : null);
@@ -71,12 +81,32 @@ export function TeamCrest({
     );
   }
 
+  const px = SIZE_PIXELS[size];
+
+  if (isNextImageSupportedUrl(effectiveCrestUrl)) {
+    return (
+      <Image
+        src={effectiveCrestUrl}
+        alt={isDecorative ? "" : teamName}
+        width={px}
+        height={px}
+        sizes={`${px}px`}
+        priority={priority}
+        loading={priority ? "eager" : "lazy"}
+        onError={() => setHasError(true)}
+        className={`shrink-0 object-contain ${sizeClass}`}
+      />
+    );
+  }
+
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={effectiveCrestUrl}
       alt={isDecorative ? "" : teamName}
-      loading="lazy"
+      width={px}
+      height={px}
+      loading={priority ? "eager" : "lazy"}
       onError={() => setHasError(true)}
       className={`shrink-0 object-contain ${sizeClass}`}
     />

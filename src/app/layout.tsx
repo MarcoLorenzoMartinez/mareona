@@ -4,14 +4,10 @@ import { Geist } from "next/font/google";
 import { TopProgressBar } from "@/components/layout/top-progress-bar";
 import { GlobalAnnouncementBanner } from "@/components/layout/global-announcement-banner";
 import { AuthProvider } from "@/context/auth-context";
-import { AuthModal } from "@/components/auth/auth-modal";
-import { ToastContainer } from "@/components/ui/toast-container";
+import { AuthModalLoader } from "@/components/auth/auth-modal-loader";
+import { DeferredRootUtilities } from "@/components/layout/deferred-root-utilities";
 import { PwaInstallProvider } from "@/components/pwa/pwa-install-provider";
 import { OfflineBanner } from "@/components/pwa/offline-banner";
-import { OfflineSyncListener } from "@/components/pwa/offline-sync-listener";
-import { OfflineTransitionListener } from "@/components/pwa/offline-transition-listener";
-import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
-import { TelemetryBeacon } from "@/components/telemetry/telemetry-beacon";
 import { VercelAnalytics } from "@/components/telemetry/vercel-analytics";
 import "./globals.css";
 
@@ -93,18 +89,10 @@ export default function RootLayout({
               <GlobalAnnouncementBanner />
             </Suspense>
             <OfflineBanner />
-            <OfflineSyncListener />
-            <Suspense fallback={null}>
-              <OfflineTransitionListener />
-            </Suspense>
-            <Suspense fallback={null}>
-              <TelemetryBeacon />
-            </Suspense>
-            <AuthModal />
+            <AuthModalLoader />
             {children}
-            <ToastContainer />
+            <DeferredRootUtilities />
           </AuthProvider>
-          <ServiceWorkerRegister />
           <VercelAnalytics />
         </PwaInstallProvider>
       </body>

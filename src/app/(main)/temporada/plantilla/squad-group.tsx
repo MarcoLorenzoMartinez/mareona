@@ -4,6 +4,7 @@ import { PlayerCard } from "./player-card";
 interface SquadGroupProps {
   readonly title: string;
   readonly players: readonly DomainPlayer[];
+  readonly priorityFirst?: boolean;
 }
 
 /**
@@ -13,7 +14,7 @@ interface SquadGroupProps {
  * @param title Section heading in uppercase (e.g., "PORTEROS", "DEFENSAS").
  * @param players Array of DomainPlayer items for this position group.
  */
-export function SquadGroup({ title, players }: SquadGroupProps) {
+export function SquadGroup({ title, players, priorityFirst = false }: SquadGroupProps) {
   if (players.length === 0) {
     return null;
   }
@@ -28,8 +29,12 @@ export function SquadGroup({ title, players }: SquadGroupProps) {
       </h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
-        {players.map((player) => (
-          <PlayerCard key={player.id} player={player} />
+        {players.map((player, index) => (
+          <PlayerCard
+            key={player.id}
+            player={player}
+            priority={priorityFirst && index < 4}
+          />
         ))}
       </div>
     </section>

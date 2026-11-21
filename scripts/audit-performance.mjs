@@ -1,5 +1,5 @@
 import http from "node:http";
-import { spawn } from "node:child_process";
+import { spawn, execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import lighthouse from "lighthouse";
@@ -118,8 +118,16 @@ async function runAudit() {
     }
   } finally {
     await chrome.kill();
-    if (serverProcess) {
-      serverProcess.kill();
+    if (serverProcess && serverProcess.pid) {
+      if (process.platform === "win32") {
+        try {
+          execSync(`taskkill /PID ${serverProcess.pid} /T /F`, { stdio: "ignore" });
+        } catch {
+          serverProcess.kill();
+        }
+      } else {
+        serverProcess.kill();
+      }
     }
   }
 

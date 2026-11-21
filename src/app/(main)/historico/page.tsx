@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import {
@@ -15,7 +16,9 @@ export const metadata: Metadata = {
   description: "Evolución histórica del Real Sporting en la Liga y archivo completo de temporadas con clasificaciones y escudos.",
 };
 
-export default function HistoricoTrayectoriaPage() {
+export default async function HistoricoTrayectoriaPage() {
+  "use cache";
+  cacheLife("days");
   const seasons = getAllSeasons();
   const chartPoints = getHistoricalChartPoints();
   const defaultSeason = seasons[0];

@@ -2,7 +2,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { PlayerAvatarFallback } from "./player-avatar-fallback";
+import { isNextImageSupportedUrl } from "./image-optimization";
 import { useOnlineStatus } from "@/lib/pwa/use-online-status";
 import { areOfficialAssetsEnabled } from "@/lib/legal/official-assets";
 
@@ -14,6 +16,7 @@ interface PlayerPhotoProps {
   readonly className?: string;
   readonly isDecorative?: boolean;
   readonly teamColor?: string;
+  readonly priority?: boolean;
 }
 
 const SIZE_CLASSES = {
@@ -22,6 +25,14 @@ const SIZE_CLASSES = {
   lg: "h-24 w-24",
   card: "h-52 sm:h-60 w-full",
   custom: "",
+} as const;
+
+const IMAGE_DIMENSIONS = {
+  sm: 40,
+  md: 64,
+  lg: 96,
+  card: 240,
+  custom: 160,
 } as const;
 
 /**
@@ -43,6 +54,7 @@ export function PlayerPhoto({
   className = "",
   isDecorative = true,
   teamColor = "#e2001a",
+  priority = false,
 }: PlayerPhotoProps) {
   const isOnline = useOnlineStatus();
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
@@ -95,15 +107,33 @@ export function PlayerPhoto({
   }
 
   const defaultFit = size === "card" ? "object-contain object-bottom" : "object-cover object-top";
+  const resolvedSrc = photoUrl ?? "";
+  const px = IMAGE_DIMENSIONS[size];
+
+  if (isNextImageSupportedUrl(resolvedSrc)) {
+    return (
+      <Image
+        src={resolvedSrc}
+        alt={isDecorative ? "" : playerName}
+        width={px}
+        height={px}
+        sizes={size === "card" ? "(max-width: 640px) 180px, 240px" : `${px}px`}
+        priority={priority}
+        loading={priority ? "eager" : "lazy"}
+        onError={() => setFailedUrl(resolvedSrc)}
+        className={`shrink-0 ${defaultFit} ${sizeClass} ${className}`}
+      />
+    );
+  }
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={photoUrl ?? ""}
+      src={resolvedSrc}
       alt={isDecorative ? "" : playerName}
-      loading="lazy"
+      loading={priority ? "eager" : "lazy"}
       decoding="async"
-      onError={() => setFailedUrl(photoUrl ?? "")}
+      onError={() => setFailedUrl(resolvedSrc)}
       className={`shrink-0 ${defaultFit} ${sizeClass} ${className}`}
     />
   );

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import type { DomainPlayer } from "@/lib/sports-api/types";
+import { buildPlayerProfileHref } from "@/lib/sports-api/squad-routing";
 import { PlayerPhoto } from "@/components/media/player-photo";
 
 interface PlayerCardProps {
   readonly player: DomainPlayer;
+  readonly priority?: boolean;
 }
 
 /**
@@ -17,10 +19,10 @@ interface PlayerCardProps {
  *
  * @param player DomainPlayer data model.
  */
-export function PlayerCard({ player }: PlayerCardProps) {
+export function PlayerCard({ player, priority = false }: PlayerCardProps) {
   const dorsalLabel =
     player.shirtNumber !== null ? `Dorsal ${player.shirtNumber}` : "";
-  const href = `/temporada/plantilla/${player.shirtNumber ?? player.externalId}`;
+  const href = buildPlayerProfileHref(player);
 
   return (
     <Link
@@ -48,6 +50,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
           playerName={player.displayName}
           shirtNumber={player.shirtNumber}
           size="card"
+          priority={priority}
           className="h-44 sm:h-60 transition-transform duration-200 group-hover:scale-105"
         />
       </div>

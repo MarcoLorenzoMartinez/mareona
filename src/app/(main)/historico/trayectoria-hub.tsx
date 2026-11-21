@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import type { HistoricalSeason, HistoricalChartPoint } from "@/lib/historical/types";
 import {
@@ -12,9 +13,16 @@ import { HistoricalEvolutionChart } from "./evolution-chart";
 import { HistoricalSeasonSelector } from "./season-picker";
 import { HistoricalStandingsTable } from "./standings-table";
 import { HistoricalSeasonLeaders } from "./season-leaders";
-import { HistoricalSeasonCoaches } from "./season-coaches";
-import { HistoricalSeasonSquadTable } from "./season-squad";
-import { HistoricalSeasonMatches } from "./season-matches";
+
+const HistoricalSeasonCoaches = dynamic(() =>
+  import("./season-coaches").then((m) => m.HistoricalSeasonCoaches)
+);
+const HistoricalSeasonSquadTable = dynamic(() =>
+  import("./season-squad").then((m) => m.HistoricalSeasonSquadTable)
+);
+const HistoricalSeasonMatches = dynamic(() =>
+  import("./season-matches").then((m) => m.HistoricalSeasonMatches)
+);
 
 interface TrayectoriaHubProps {
   readonly seasons: readonly HistoricalSeason[];

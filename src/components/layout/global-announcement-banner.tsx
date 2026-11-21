@@ -1,4 +1,4 @@
-import { getActiveAnnouncementPublic } from "@/lib/admin/system-actions";
+import { getCachedPublicAnnouncement } from "@/lib/admin/public-announcement";
 import { getDictionary } from "@/i18n";
 
 /**
@@ -7,7 +7,7 @@ import { getDictionary } from "@/i18n";
  */
 export async function GlobalAnnouncementBanner() {
   const dict = getDictionary();
-  const announcement = await getActiveAnnouncementPublic();
+  const announcement = await getCachedPublicAnnouncement();
 
   if (!announcement || !announcement.isActive) {
     return null;

@@ -4,6 +4,7 @@ import { getSecurityHeaders } from "./src/lib/security/headers";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
+    formats: ["image/avif", "image/webp"],
     qualities: [75, 95],
     remotePatterns: [
       {

@@ -30,6 +30,7 @@ export function HeroTeamCell({ team, isHome }: HeroTeamCellProps) {
           teamName={team.name}
           size="md"
           isSporting={team.isSporting}
+          priority
         />
       </div>
       <div className={`${crestOrderClass} shrink-0 hidden md:block`}>
@@ -38,6 +39,7 @@ export function HeroTeamCell({ team, isHome }: HeroTeamCellProps) {
           teamName={team.name}
           size="lg"
           isSporting={team.isSporting}
+          priority
         />
       </div>
     </div>

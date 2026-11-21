@@ -33,6 +33,7 @@ export default async function PlantillaPage() {
           <SquadGroup
             title={t.groups.goalkeepers}
             players={grouped.goalkeepers}
+            priorityFirst
           />
           <SquadGroup
             title={t.groups.defenders}

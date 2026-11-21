@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import dynamic from "next/dynamic";
 import {
   getSortedStandings,
   type DomainStandingRow,
@@ -9,10 +10,16 @@ import {
   type MatchdayEvolutionPoint,
 } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
-import { RealDistanceView } from "./real-distance-view";
-import { EvolutionChart, type DisplayMode } from "./evolution-chart";
+import type { DisplayMode } from "./evolution-chart";
 import { StandingsTable } from "./standings-table";
 import { StandingsViewControls } from "./standings-view-controls";
+
+const RealDistanceView = dynamic(() =>
+  import("./real-distance-view").then((m) => m.RealDistanceView)
+);
+const EvolutionChart = dynamic(() =>
+  import("./evolution-chart").then((m) => m.EvolutionChart)
+);
 
 export type ClassificationViewMode = "table" | "distance" | "evolution";
 

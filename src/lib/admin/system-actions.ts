@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { clearSportsMemoryCache } from "@/lib/sports-api/client";
@@ -111,6 +111,7 @@ export async function saveAnnouncementAction(
     metadata: { ...parsed.data },
   });
 
+  revalidateTag("system-announcement", "max");
   revalidatePath("/", "layout");
   revalidatePath("/admin/anuncios");
   return { success: true };
@@ -141,6 +142,7 @@ export async function toggleAnnouncementActiveAction(
     metadata: { isActive },
   });
 
+  revalidateTag("system-announcement", "max");
   revalidatePath("/", "layout");
   revalidatePath("/admin/anuncios");
   return { success: true };
