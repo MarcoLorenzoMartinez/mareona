@@ -1,11 +1,15 @@
 // Client: Interactive game client for "La pregunta del día" with archive modal and history support
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { TriviaDailyChallenge, TriviaPlayerAttempt, TriviaStats } from '@/lib/trivia/types';
 import { evaluateTriviaAnswer, getTriviaForDate } from '@/lib/trivia/engine';
 import {
-  getStoredTriviaAttempt, saveTriviaAttempt, getStoredTriviaStats, updateTriviaStatsOnFinish
+  getStoredTriviaAttempt,
+  saveTriviaAttempt,
+  getStoredTriviaStats,
+  INITIAL_TRIVIA_STATS,
+  updateTriviaStatsOnFinish,
 } from '@/lib/trivia/storage';
 import { useAuth } from '@/context/auth-context';
 import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
@@ -26,10 +30,15 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
   const { user } = useAuth();
   const [activeDate, setActiveDate] = useState<string>(initialChallenge.dateStr);
   const [challenge, setChallenge] = useState<TriviaDailyChallenge>(initialChallenge);
-  const [attempt, setAttempt] = useState<TriviaPlayerAttempt | null>(() =>
-    getStoredTriviaAttempt(initialChallenge.dateStr)
-  );
-  const [stats, setStats] = useState<TriviaStats>(() => getStoredTriviaStats());
+  const [attempt, setAttempt] = useState<TriviaPlayerAttempt | null>(null);
+  const [stats, setStats] = useState<TriviaStats>(INITIAL_TRIVIA_STATS);
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      setAttempt(getStoredTriviaAttempt(initialChallenge.dateStr));
+      setStats(getStoredTriviaStats());
+    });
+  }, [initialChallenge.dateStr]);
   const [inputVal, setInputVal] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);

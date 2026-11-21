@@ -13,16 +13,20 @@ import { AlbumSpreadView } from "./album-spread-view";
 import { AlbumGridTabView } from "./album-grid-tab-view";
 import { MyPacksView } from "./my-packs-view";
 import { useAlbumInventory } from "./use-album-inventory";
+import { useAlbumActions } from "./use-album-actions";
 import { useAlbumTesterSeed } from "./use-album-tester-seed";
-import { generatePackCards } from "@/lib/cards/packs";
+import { addPacksToInventory, clearUserPacks } from "@/lib/cards/pack-storage";
 import {
-  loadUserPackInventory, consumeUserPack, loadUserCardInventory, addCardsToInventory,
-  addPacksToInventory, clearUserPacks, getDailyMissionState, claimDailyLoginPack, claimDailyGamePack, recycleDuplicates,
-} from "@/lib/cards/pack-storage";
-import { DEFAULT_GRID_FILTER_STATE, filterGridCards, sortGridCards, type GridFilterState } from "./grid-filter-types";
+  DEFAULT_GRID_FILTER_STATE,
+  filterGridCards,
+  sortGridCards,
+  type GridFilterState,
+} from "./grid-filter-types";
 import { getDictionary } from "@/i18n";
 
-interface AlbumClientViewProps { readonly allCards: readonly Card[]; }
+interface AlbumClientViewProps {
+  readonly allCards: readonly Card[];
+}
 
 export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   const dict = getDictionary();
@@ -34,6 +38,10 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
   const [gridFilterState, setGridFilterState] = useState<GridFilterState>(DEFAULT_GRID_FILTER_STATE);
   const [isPackModalOpen, setIsPackModalOpen] = useState(false);
   const [selectedPackTier, setSelectedPackTier] = useState<PackTier>("aficionado");
+  const [activePackData, setActivePackData] = useState<{ cards: Card[]; duplicateSlugs: Set<string> }>({
+    cards: [],
+    duplicateSlugs: new Set(),
+  });
 
   const rawTabParam = searchParams.get("tab") ?? searchParams.get("view");
   const urlViewMode: AlbumViewMode = rawTabParam === "packs" || rawTabParam === "grid" ? rawTabParam : "album";
@@ -54,28 +62,18 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     useAlbumInventory(user?.id);
 
   useAlbumTesterSeed(user?.id, isDemo, setPackInventory);
+  const { handleOpenPackCards, handleClaimLogin, handleClaimDailyGame, handleRecycle } = useAlbumActions({
+    userId: user?.id,
+    allCards,
+    userInventory,
+    setUserInventory,
+    setPackInventory,
+    setMissionState,
+    setNewlyAcquiredSlugs,
+    openAuthModal,
+  });
+
   const totalPacks = user ? packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda : 0;
-
-  const handleOpenPackCards = useCallback((tier: PackTier): { cards: Card[]; duplicateSlugs: Set<string> } => {
-    if (!user?.id) return { cards: [], duplicateSlugs: new Set() };
-    consumeUserPack(tier, user.id);
-    setPackInventory(loadUserPackInventory(user.id));
-    const previouslyOwned = new Set(Object.entries(userInventory).filter(([, q]) => q > 0).map(([s]) => s));
-    const generated = generatePackCards(tier, allCards, previouslyOwned);
-
-    const duplicateSlugs = new Set<string>();
-    const seenInPack = new Set<string>();
-    for (const card of generated) {
-      if (previouslyOwned.has(card.slug) || seenInPack.has(card.slug)) duplicateSlugs.add(card.slug);
-      seenInPack.add(card.slug);
-    }
-
-    const nextInventory = addCardsToInventory(generated, user.id);
-    setUserInventory(nextInventory);
-    const brandNewCards = generated.filter((c) => !previouslyOwned.has(c.slug));
-    setNewlyAcquiredSlugs((prev) => new Set([...prev, ...brandNewCards.map((c) => c.slug)]));
-    return { cards: generated, duplicateSlugs };
-  }, [allCards, user, userInventory, setPackInventory, setUserInventory]);
 
   const handleCardPasted = useCallback((slug: string) => {
     setNewlyAcquiredSlugs((prev) => {
@@ -86,43 +84,15 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     });
   }, []);
 
-  const handleClaimLogin = () => {
-    if (!user) return openAuthModal("signin");
-    const res = claimDailyLoginPack(user.id);
-    if (res.success && res.tier) {
-      setPackInventory(loadUserPackInventory(user.id));
-      setMissionState(getDailyMissionState(undefined, user.id));
-      toast.success(dict.games.album.toasts.dailyLoginTitle, { description: dict.games.album.toasts.dailyLoginDesc });
-    }
-  };
-
-  const handleClaimDailyGame = () => {
-    if (!user) return openAuthModal("signin");
-    const res = claimDailyGamePack(user.id);
-    if (res.success && res.tier) {
-      setPackInventory(loadUserPackInventory(user.id));
-      setMissionState(getDailyMissionState(undefined, user.id));
-      const packName = res.tier === "leyenda" ? dict.games.album.toasts.legendPackName : dict.games.album.toasts.redWhitePackName;
-      toast.success(dict.games.album.toasts.dailyGameTitle, { description: `${dict.games.album.toasts.dailyGameDescPrefix} ${packName}.` });
-    }
-  };
-
-  const handleRecycle = () => {
-    if (!user) return openAuthModal("signin");
-    const res = recycleDuplicates(user.id);
-    if (res.success) {
-      setUserInventory(loadUserCardInventory(user.id));
-      setPackInventory(loadUserPackInventory(user.id));
-      toast.success(dict.games.album.toasts.recycleSuccess);
-    } else toast.error(dict.games.album.toasts.recycleError);
-  };
-
-  const getCardStatus = useCallback((slug: string) => {
-    if (demoViewMode === "all-revealed") return { isOwned: true, quantity: Math.max(1, userInventory[slug] ?? 0) };
-    if (demoViewMode === "all-hidden") return { isOwned: false, quantity: 0 };
-    const qty = userInventory[slug] ?? 0;
-    return { isOwned: qty > 0, quantity: qty };
-  }, [demoViewMode, userInventory]);
+  const getCardStatus = useCallback(
+    (slug: string) => {
+      if (demoViewMode === "all-revealed") return { isOwned: true, quantity: Math.max(1, userInventory[slug] ?? 0) };
+      if (demoViewMode === "all-hidden") return { isOwned: false, quantity: 0 };
+      const qty = userInventory[slug] ?? 0;
+      return { isOwned: qty > 0, quantity: qty };
+    },
+    [demoViewMode, userInventory]
+  );
 
   const filteredGridCards = useMemo(
     () => sortGridCards(filterGridCards(allCards, gridFilterState, getCardStatus), gridFilterState.sortField, gridFilterState.sortDirection),
@@ -154,7 +124,14 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
           packInventory={packInventory}
           missionState={missionState}
           duplicateCount={duplicateCount}
-          onOpenPack={(t) => { if (!user) return openAuthModal("signin"); setSelectedPackTier(t); setIsPackModalOpen(true); }}
+          onOpenPack={(t) => {
+            if (!user) return openAuthModal("signin");
+            const opened = handleOpenPackCards(t);
+            if (!opened) return toast.error("No te quedan sobres disponibles de este tipo.");
+            setSelectedPackTier(t);
+            setActivePackData(opened);
+            setIsPackModalOpen(true);
+          }}
           onClaimLogin={handleClaimLogin}
           onClaimDailyGame={handleClaimDailyGame}
           onRecycleDuplicates={handleRecycle}
@@ -168,6 +145,7 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
         <PackOpeningModal
           isOpen={isPackModalOpen}
           tier={selectedPackTier}
+          initialPackData={activePackData}
           canOpenAnother={Boolean(user && packInventory[selectedPackTier] > 0)}
           onClose={() => setIsPackModalOpen(false)}
           onOpenPackCards={handleOpenPackCards}

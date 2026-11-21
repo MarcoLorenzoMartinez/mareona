@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { fetchTeamSeasonStats } from "@/lib/sports-api/team-season-stats";
 import { getSeasonLabel } from "@/lib/sports-api/types";
@@ -18,6 +19,7 @@ export function generateMetadata(): Metadata {
 
 export default async function EstadisticasPage() {
   "use cache";
+  cacheLife("minutes");
   const stats = await fetchTeamSeasonStats();
 
   if (!stats) {

@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { fetchStandings, fetchSportingSeasonMatches } from "@/lib/sports-api/client";
 import {
@@ -19,6 +20,7 @@ export function generateMetadata(): Metadata {
 
 export default async function ClasificacionPage() {
   "use cache";
+  cacheLife("minutes");
   let standings: readonly DomainStandingRow[] = [];
   let matches: readonly DomainMatchSummary[] = [];
 

@@ -189,7 +189,7 @@ export function transformEspnEvent(event: EspnEvent, matchday: number = 10): Dom
     matchday,
     kickoffAt: event.date,
     status,
-    venue: comp.venue?.fullName ?? "El Molinón",
+    venue: comp.venue?.fullName ?? (isHomeSporting ? "El Molinón" : null),
     isTimeConfirmed:
       event.timeValid !== false &&
       comp.status.type.shortDetail?.toUpperCase() !== "TBD" &&

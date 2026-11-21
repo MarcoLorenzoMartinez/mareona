@@ -822,11 +822,7 @@ export function normalizeAthleteName(athlete: {
   const rawName = (athlete.displayName || athlete.fullName || "").trim();
   const rawShort = (athlete.shortName || athlete.displayName || rawName).trim();
 
-  if (
-    athlete.id === "209736" ||
-    rawName.toLowerCase() === "jorge" ||
-    rawShort.toLowerCase() === "jorge"
-  ) {
+  if (athlete.id === "209736") {
     return { name: "Jorge Sáenz", shortName: "J. Sáenz" };
   }
 

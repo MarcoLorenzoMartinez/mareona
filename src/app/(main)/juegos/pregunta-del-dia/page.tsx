@@ -30,7 +30,12 @@ async function TriviaContent({ searchParams }: PageProps) {
   const requestedDate = params.date && /^\d{4}-\d{2}-\d{2}$/.test(params.date)
     ? params.date
     : effectiveToday;
-  const targetDate = requestedDate < TRIVIA_EPOCH_DATE ? TRIVIA_EPOCH_DATE : requestedDate;
+  const targetDate =
+    requestedDate < TRIVIA_EPOCH_DATE
+      ? TRIVIA_EPOCH_DATE
+      : requestedDate > effectiveToday
+        ? effectiveToday
+        : requestedDate;
 
   const challenge = getTriviaForDate(targetDate);
 

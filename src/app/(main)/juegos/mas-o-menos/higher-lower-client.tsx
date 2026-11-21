@@ -1,7 +1,7 @@
 // Client: Orquestador interactivo del juego Más o Menor
 'use client';
 
-import React, { useState, useCallback, useTransition } from 'react';
+import React, { useState, useCallback, useTransition, useEffect } from 'react';
 import type { HigherLowerMode, HigherLowerPlayer, HigherLowerGuess, HigherLowerStats } from '@/lib/higher-lower/types';
 import {
   getEligiblePlayers,
@@ -10,6 +10,7 @@ import {
 } from '@/lib/higher-lower/engine';
 import {
   getStoredHigherLowerStats,
+  INITIAL_HIGHER_LOWER_STATS,
   saveHigherLowerStats,
   recordScoreInStats,
   incrementGamesPlayed,
@@ -26,7 +27,7 @@ export function HigherLowerClient() {
   const dict = getDictionary();
   const { user } = useAuth();
   const [mode, setMode] = useState<HigherLowerMode>('matches');
-  const [stats, setStats] = useState<HigherLowerStats>(() => getStoredHigherLowerStats());
+  const [stats, setStats] = useState<HigherLowerStats>(INITIAL_HIGHER_LOWER_STATS);
   const [currentScore, setCurrentScore] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
   const [guessOutcome, setGuessOutcome] = useState<'correct' | 'wrong' | null>(null);
@@ -34,14 +35,22 @@ export function HigherLowerClient() {
   const [, startTransition] = useTransition();
 
   const [pool, setPool] = useState<HigherLowerPlayer[]>(() => getEligiblePlayers('matches'));
-  const [leftPlayer, setLeftPlayer] = useState<HigherLowerPlayer>(() => {
-    const initialPool = getEligiblePlayers('matches');
-    return typeof window === 'undefined' ? initialPool[0] : pickRandomPlayer(initialPool);
-  });
+  const [leftPlayer, setLeftPlayer] = useState<HigherLowerPlayer>(() => getEligiblePlayers('matches')[0]);
   const [rightPlayer, setRightPlayer] = useState<HigherLowerPlayer>(() => {
     const initialPool = getEligiblePlayers('matches');
-    return typeof window === 'undefined' ? (initialPool[1] ?? initialPool[0]) : pickRandomPlayer(initialPool, [initialPool[0].bdfId]);
+    return initialPool[1] ?? initialPool[0];
   });
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      setStats(getStoredHigherLowerStats());
+      const initialPool = getEligiblePlayers('matches');
+      const first = pickRandomPlayer(initialPool);
+      const second = pickRandomPlayer(initialPool, [first.bdfId]);
+      setLeftPlayer(first);
+      setRightPlayer(second);
+    });
+  }, []);
 
   const startNewGame = useCallback((targetMode: HigherLowerMode) => {
     const newPool = getEligiblePlayers(targetMode);
@@ -92,7 +101,12 @@ export function HigherLowerClient() {
           try {
             enqueueGameResult({
               gameType: 'higher_lower',
-              challengeDate: new Date().toISOString().slice(0, 10),
+              challengeDate: new Intl.DateTimeFormat("en-CA", {
+                timeZone: "Europe/Madrid",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              }).format(new Date()),
               won: currentScore >= 3,
               score: currentScore,
               completedAt: new Date().toISOString(),

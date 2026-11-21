@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { fetchSportingSquad } from "@/lib/sports-api/client";
 import { groupSquadByPosition, getSeasonLabel } from "@/lib/sports-api/types";
@@ -14,6 +15,7 @@ export function generateMetadata(): Metadata {
 
 export default async function PlantillaPage() {
   "use cache";
+  cacheLife("minutes");
   const dict = getDictionary();
   const t = dict.season.squad;
   const seasonLabel = getSeasonLabel();

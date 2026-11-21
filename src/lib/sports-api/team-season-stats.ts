@@ -15,6 +15,8 @@ let memoryCachedTeamStats: {
   data: TeamSeasonStats;
   expiresAt: number;
 } | null = null;
+let inFlightTeamStats: Promise<TeamSeasonStats | null> | null = null;
+const TEAM_STATS_TTL_MS = 30 * 60 * 1000;
 
 interface RawStatItem {
   readonly header?: string;
@@ -154,7 +156,7 @@ export function transformFotMobTeamStats(
     seasonYear: getCurrentSeasonYear(),
     competition: "LaLiga Hypermotion",
     matchesPlayed: sportingAll?.played ?? 0,
-    rating: getMetric("rating_team").val || 6.8,
+    rating: getMetric("rating_team").val || 0,
     ratingRank: getMetric("rating_team").rank,
     seasonGoals,
     // Efficiency & Expected Points
@@ -240,24 +242,29 @@ export function transformFotMobTeamStats(
  * @returns TeamSeasonStats or null if unavailable
  */
 export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
-  if (memoryCachedTeamStats) {
+  if (memoryCachedTeamStats && Date.now() < memoryCachedTeamStats.expiresAt) {
     return memoryCachedTeamStats.data;
   }
+  if (inFlightTeamStats) {
+    return inFlightTeamStats;
+  }
 
-  try {
-    const res = await fetch(`https://www.fotmob.com/api/data/teams?id=${FOTMOB_SPORTING_ID}`, {
-      headers: FOTMOB_HEADERS,
-      next: { revalidate: 1800 },
-    });
+  inFlightTeamStats = (async () => {
+    try {
+      const res = await fetch(`https://www.fotmob.com/api/data/teams?id=${FOTMOB_SPORTING_ID}`, {
+        headers: FOTMOB_HEADERS,
+        next: { revalidate: 1800 },
+        signal: AbortSignal.timeout(5000),
+      });
 
-    if (!res.ok) return null;
+      if (!res.ok) return null;
 
-    const json = (await res.json()) as RawFotMobTeamPayload;
+      const json = (await res.json()) as RawFotMobTeamPayload;
 
-    // Automatically aggregate all goals from finished matches
-    const finishedMatches = (json.fixtures?.allFixtures?.fixtures ?? []).filter(
-      (f) => f.id && f.status?.finished
-    );
+      // Aggregate goals from up to 10 most recent finished matches to avoid request storms
+      const finishedMatches = (json.fixtures?.allFixtures?.fixtures ?? [])
+        .filter((f) => f.id && f.status?.finished)
+        .slice(-10);
 
     const goalsPromises = finishedMatches.map(async (fixture) => {
       const matchId = fixture.id;
@@ -454,16 +461,21 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
       heatmapCirclesSvg,
     });
 
-    if (stats) {
-      memoryCachedTeamStats = {
-        data: stats,
-        expiresAt: 0,
-      };
-      return stats;
+      if (stats) {
+        memoryCachedTeamStats = {
+          data: stats,
+          expiresAt: Date.now() + TEAM_STATS_TTL_MS,
+        };
+        return stats;
+      }
+    } catch {
+      // Return null transparently without fake data
     }
-  } catch {
-    // Return null transparently without fake data
-  }
 
-  return null;
+    return null;
+  })().finally(() => {
+    inFlightTeamStats = null;
+  });
+
+  return inFlightTeamStats;
 }

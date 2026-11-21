@@ -3,6 +3,8 @@ import { TTL_FIXTURES_MS, TTL_LIVE_MATCH_MS } from "./cache.ts";
 export const LIVE_POLL_INTERVAL_MS = 15_000;
 /** Window before kickoff to begin verifying whether the match has started (10 minutes) */
 export const PRE_MATCH_POLL_WINDOW_MS = 10 * 60 * 1000;
+/** Upper bound after kickoff so stale scheduled fixtures do not poll indefinitely (4 hours) */
+export const MAX_POST_KICKOFF_POLL_MS = 4 * 60 * 60 * 1000;
 
 /**
  * Pure helper verifying whether a polling cycle should trigger for a single match.
@@ -34,7 +36,10 @@ export function shouldPollMatch(
   if (status === "scheduled" && kickoffAt) {
     const kickoffMs = new Date(kickoffAt).getTime();
     if (!Number.isNaN(kickoffMs)) {
-      return now >= kickoffMs - PRE_MATCH_POLL_WINDOW_MS;
+      return (
+        now >= kickoffMs - PRE_MATCH_POLL_WINDOW_MS &&
+        now <= kickoffMs + MAX_POST_KICKOFF_POLL_MS
+      );
     }
   }
   return false;

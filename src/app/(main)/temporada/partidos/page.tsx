@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { fetchSportingSeasonMatches } from "@/lib/sports-api/client";
 import { getSeasonLabel } from "@/lib/sports-api/types";
@@ -14,6 +15,7 @@ export function generateMetadata(): Metadata {
 
 export default async function PartidosPage() {
   "use cache";
+  cacheLife("minutes");
   const dict = getDictionary();
   const matches = await fetchSportingSeasonMatches();
   const seasonLabel = getSeasonLabel();

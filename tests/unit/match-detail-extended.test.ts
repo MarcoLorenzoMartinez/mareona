@@ -192,14 +192,14 @@ test("transformEspnMatchDetail parses extended match statistics, events, and ros
   assert.equal(detail.awayLineup.substitutes[0].subbedIn, true);
 });
 
-test("normalizeAthleteName converts incomplete vendor name 'Jorge' to 'Jorge Sáenz'", () => {
+test("normalizeAthleteName converts incomplete vendor name for id 209736 without misnaming other Jorges", () => {
   const byId = normalizeAthleteName({ id: "209736", displayName: "Jorge" });
   assert.equal(byId.name, "Jorge Sáenz");
   assert.equal(byId.shortName, "J. Sáenz");
 
-  const byName = normalizeAthleteName({ displayName: "Jorge" });
-  assert.equal(byName.name, "Jorge Sáenz");
-  assert.equal(byName.shortName, "J. Sáenz");
+  const rivalJorge = normalizeAthleteName({ id: "999999", displayName: "Jorge" });
+  assert.equal(rivalJorge.name, "Jorge");
+  assert.equal(rivalJorge.shortName, "Jorge");
 
   const other = normalizeAthleteName({ id: "123", displayName: "Cote" });
   assert.equal(other.name, "Cote");

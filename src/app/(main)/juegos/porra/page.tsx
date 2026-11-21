@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from 'next';
 import { PorraClient } from './porra-client';
 import {
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 
 export default async function PorraPage() {
   "use cache";
+  cacheLife("minutes");
   const [nextMatchSummary, squad, seasonMatches] = await Promise.all([
     fetchNextFixture(),
     fetchSportingSquad(),

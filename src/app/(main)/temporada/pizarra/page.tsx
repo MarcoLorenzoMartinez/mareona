@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import { fetchSportingSquad, fetchNextFixture } from "@/lib/sports-api/client";
 import { buildUnifiedRoster } from "@/lib/lineup-builder/roster-builder";
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 
 export default async function PizarraPage() {
   "use cache";
+  cacheLife("minutes");
   const [firstTeamSquad, nextFixture] = await Promise.all([
     fetchSportingSquad(),
     fetchNextFixture(),

@@ -560,7 +560,7 @@ export async function fetchMatchDetail(
             const sanitized = sanitizeMatchDetail(enriched);
             memoryCachedMatchDetails.set(matchId, {
               data: sanitized,
-              expiresAt: now + resolveMatchDetailTtlMs(sanitized.status),
+              expiresAt: now + resolveMatchDetailTtlMs(sanitized.status, sanitized.kickoffAt, now),
             });
             return sanitized;
           }
@@ -571,7 +571,7 @@ export async function fetchMatchDetail(
       const sanitized = sanitizeMatchDetail(cached);
       memoryCachedMatchDetails.set(matchId, {
         data: sanitized,
-        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status),
+        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status, sanitized.kickoffAt, now),
       });
       return sanitized;
     }
@@ -619,7 +619,7 @@ export async function fetchMatchDetail(
           supabase,
           cacheKey,
           sanitized as unknown as Record<string, unknown>,
-          resolveMatchDetailTtlMs(sanitized.status)
+          resolveMatchDetailTtlMs(sanitized.status, sanitized.kickoffAt, now)
         );
         if (sanitized.status === "finished") {
           void triggerCardSyncForFinishedMatch(supabase, sanitized);
@@ -627,7 +627,7 @@ export async function fetchMatchDetail(
       }
       memoryCachedMatchDetails.set(matchId, {
         data: sanitized,
-        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status),
+        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status, sanitized.kickoffAt, now),
       });
       return sanitized;
     }
@@ -641,7 +641,7 @@ export async function fetchMatchDetail(
           supabase,
           cacheKey,
           sanitized as unknown as Record<string, unknown>,
-          resolveMatchDetailTtlMs(sanitized.status)
+          resolveMatchDetailTtlMs(sanitized.status, sanitized.kickoffAt, now)
         );
         if (sanitized.status === "finished") {
           void triggerCardSyncForFinishedMatch(supabase, sanitized);
@@ -649,7 +649,7 @@ export async function fetchMatchDetail(
       }
       memoryCachedMatchDetails.set(matchId, {
         data: sanitized,
-        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status),
+        expiresAt: now + resolveMatchDetailTtlMs(sanitized.status, sanitized.kickoffAt, now),
       });
       return sanitized;
     }

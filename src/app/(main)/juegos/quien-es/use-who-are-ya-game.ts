@@ -1,7 +1,7 @@
 // Client: Hook managing Who Are Ya daily state, storage persistence, and guess evaluation
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import type { SelectorOption } from './who-are-ya-selector';
 import { evaluatePlayerGuess, MAX_ATTEMPTS } from '@/lib/who-are-ya/engine';
 import { getPlayerForDate, getTodayDateStr } from '@/lib/who-are-ya/daily';
@@ -10,6 +10,7 @@ import {
   getStoredPlayerGuesses,
   savePlayerGuesses,
   getStoredWhoAreYaStats,
+  INITIAL_WHO_ARE_YA_STATS,
   updateWhoAreYaStatsOnFinish,
   type WhoAreYaStats,
 } from '@/lib/who-are-ya/storage';
@@ -20,17 +21,22 @@ import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
 export function useWhoAreYaGame(players: WhoAreYaPlayer[], initialDate: string) {
   const { user } = useAuth();
   const userId = user?.id;
-  const [selectedDate, setSelectedDate] = useState<string>(() =>
-    typeof window === 'undefined' ? initialDate : getTodayDateStr()
-  );
+  const [selectedDate, setSelectedDate] = useState<string>(initialDate);
   const [isResultModalDismissed, setIsResultModalDismissed] = useState(false);
-  const [stats, setStats] = useState<WhoAreYaStats>(() => getStoredWhoAreYaStats());
+  const [stats, setStats] = useState<WhoAreYaStats>(INITIAL_WHO_ARE_YA_STATS);
+  const [playerGuessesByDate, setPlayerGuessesByDate] = useState<Record<string, PlayerGuessResult[]>>({});
 
-  const [playerGuessesByDate, setPlayerGuessesByDate] = useState<Record<string, PlayerGuessResult[]>>(() => {
-    const activeDate = typeof window === 'undefined' ? initialDate : getTodayDateStr();
-    const initialGuesses = getStoredPlayerGuesses(activeDate);
-    return initialGuesses.length > 0 ? { [activeDate]: initialGuesses } : {};
-  });
+  useEffect(() => {
+    queueMicrotask(() => {
+      const today = getTodayDateStr();
+      setSelectedDate(today);
+      setStats(getStoredWhoAreYaStats());
+      const initialGuesses = getStoredPlayerGuesses(today);
+      if (initialGuesses.length > 0) {
+        setPlayerGuessesByDate({ [today]: initialGuesses });
+      }
+    });
+  }, []);
 
   const handleDateChange = (newDate: string) => {
     setSelectedDate(newDate);

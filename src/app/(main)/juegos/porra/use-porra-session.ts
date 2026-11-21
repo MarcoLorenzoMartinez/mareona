@@ -50,9 +50,7 @@ export function usePorraSession({
 
   const currentMatchId = currentMatch?.id ?? null;
   const [prevUserId, setPrevUserId] = useState(userId);
-  const [prediction, setPrediction] = useState<PorraPrediction | null>(() =>
-    userId && currentMatchId ? getStoredPrediction(currentMatchId, userId) : null
-  );
+  const [prediction, setPrediction] = useState<PorraPrediction | null>(null);
 
   if (prevUserId !== userId) {
     setPrevUserId(userId);
@@ -64,6 +62,10 @@ export function usePorraSession({
     let active = true;
 
     async function loadSessionData() {
+      if (userId && currentMatchId) {
+        const localPred = getStoredPrediction(currentMatchId, userId);
+        if (localPred && active) setPrediction(localPred);
+      }
       const communityPromise = fetchPorraCommunityData(currentMatchId);
 
       if (!userId) {

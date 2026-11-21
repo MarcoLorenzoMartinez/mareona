@@ -100,36 +100,25 @@ export function evaluateTriviaAnswer(userAnswer: string, question: TriviaQuestio
 
   // 3. If question is 'player', resolve nickname vs full legal name across catalog figures
   if (question.type === 'player') {
-    const matchingCatalogFigure = ALL_CLUB_FIGURES.find(
+    const matchingCatalogFigures = ALL_CLUB_FIGURES.filter(
       (p) =>
         normalizeTriviaText(p.displayName) === normalizedUser ||
         normalizeTriviaText(p.fullName) === normalizedUser ||
         normalizeTriviaText(p.name) === normalizedUser
     );
 
-    if (matchingCatalogFigure) {
-      const normDisplay = normalizeTriviaText(matchingCatalogFigure.displayName);
-      const normShort = normalizeTriviaText(matchingCatalogFigure.name);
-      const normFull = normalizeTriviaText(matchingCatalogFigure.fullName);
+    if (matchingCatalogFigures.length > 0) {
       const normCanonical = normalizeTriviaText(question.canonicalAnswer);
+      const normAcceptedSet = new Set(question.acceptedAnswers.map((a) => normalizeTriviaText(a)));
 
-      return (
-        normDisplay === normCanonical ||
-        normShort === normCanonical ||
-        normFull === normCanonical ||
-        normFull.includes(normCanonical) ||
-        normCanonical.includes(normShort) ||
-        question.acceptedAnswers.some((accepted) => {
-          const normAcc = normalizeTriviaText(accepted);
-          return (
-            normAcc === normDisplay ||
-            normAcc === normShort ||
-            normAcc === normFull ||
-            normFull.includes(normAcc) ||
-            normShort.includes(normAcc)
-          );
-        })
-      );
+      return matchingCatalogFigures.some((fig) => {
+        const candidates = [
+          normalizeTriviaText(fig.displayName),
+          normalizeTriviaText(fig.name),
+          normalizeTriviaText(fig.fullName),
+        ];
+        return candidates.some((c) => c === normCanonical || normAcceptedSet.has(c));
+      });
     }
   }
 

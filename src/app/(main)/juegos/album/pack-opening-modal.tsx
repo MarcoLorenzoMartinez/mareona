@@ -11,22 +11,24 @@ import { PackModalActionsBar } from "./pack-modal-actions-bar";
 interface PackOpeningModalProps {
   readonly isOpen: boolean;
   readonly tier: PackTier;
+  readonly initialPackData: { cards: Card[]; duplicateSlugs: Set<string> };
   readonly canOpenAnother?: boolean;
   readonly onClose: () => void;
-  readonly onOpenPackCards: (tier: PackTier) => { cards: Card[]; duplicateSlugs: Set<string> };
+  readonly onOpenPackCards: (tier: PackTier) => { cards: Card[]; duplicateSlugs: Set<string> } | null;
   readonly onSaveCards: () => void;
 }
 
 export function PackOpeningModal({
   isOpen,
   tier,
+  initialPackData,
   canOpenAnother = false,
   onClose,
   onOpenPackCards,
   onSaveCards,
 }: PackOpeningModalProps) {
-  const [packData, setPackData] = useState<{ cards: Card[]; duplicateSlugs: Set<string> }>(() =>
-    isOpen ? onOpenPackCards(tier) : { cards: [], duplicateSlugs: new Set() }
+  const [packData, setPackData] = useState<{ cards: Card[]; duplicateSlugs: Set<string> }>(
+    initialPackData
   );
   const cards = packData.cards;
   const duplicateSlugs = packData.duplicateSlugs;
@@ -104,6 +106,10 @@ export function PackOpeningModal({
 
   const handleOpenAnother = () => {
     const generated = onOpenPackCards(tier);
+    if (!generated) {
+      handleDismiss();
+      return;
+    }
     setPackData(generated);
     setRevealedCount(0);
     startRevealSequence(generated.cards);

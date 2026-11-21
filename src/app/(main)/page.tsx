@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import {
   fetchNextFixture,
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   "use cache";
+  cacheLife("minutes");
   let standings: readonly DomainStandingRow[] = [];
   let match: DomainMatchSummary | null = null;
   let nextFixture: DomainMatchSummary | null = null;
