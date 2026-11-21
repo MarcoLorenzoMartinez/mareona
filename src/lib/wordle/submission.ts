@@ -6,26 +6,49 @@ import { enqueueGameResult } from '@/lib/games/offline-sync-queue';
 import { toast } from '@/lib/ui/toast';
 
 const lengthDictCache = new Map<number, string>();
+const inflightDictFetches = new Map<number, Promise<string | null>>();
+
+async function fetchWordleDictionary(targetLength: number): Promise<string | null> {
+  const cached = lengthDictCache.get(targetLength);
+  if (cached !== undefined) return cached;
+
+  const existing = inflightDictFetches.get(targetLength);
+  if (existing) return existing;
+
+  const promise = (async () => {
+    try {
+      const res = await fetch(`/api/wordle/dict?len=${targetLength}`);
+      if (!res.ok) return null;
+      const json = (await res.json()) as { dict?: string };
+      const dictStr = typeof json.dict === 'string' ? json.dict : '';
+      lengthDictCache.set(targetLength, dictStr);
+      return dictStr;
+    } catch {
+      return null;
+    } finally {
+      inflightDictFetches.delete(targetLength);
+    }
+  })();
+
+  inflightDictFetches.set(targetLength, promise);
+  return promise;
+}
+
+/**
+ * Preloads the Wordle dictionary for a word length in the background
+ * so the Service Worker caches it for full offline validation.
+ */
+export function prefetchWordleDictionary(targetLength: number): void {
+  if (typeof window === 'undefined') return;
+  void fetchWordleDictionary(targetLength);
+}
 
 async function isValidWordClient(guess: string, targetLength: number): Promise<boolean> {
   const norm = normalizeWord(guess);
   if (norm.length !== targetLength || !/^[A-ZÑ]+$/.test(norm)) return false;
   if (isSportingWord(norm)) return true;
 
-  let dictStr = lengthDictCache.get(targetLength);
-  if (dictStr === undefined) {
-    try {
-      const res = await fetch(`/api/wordle/dict?len=${targetLength}`);
-      if (!res.ok) return true;
-      const json = (await res.json()) as { dict?: string };
-      dictStr = typeof json.dict === 'string' ? json.dict : '';
-      lengthDictCache.set(targetLength, dictStr);
-    } catch {
-      // Allow graceful offline play if dictionary chunk has not been cached yet
-      return true;
-    }
-  }
-
+  const dictStr = await fetchWordleDictionary(targetLength);
   if (!dictStr) return true;
   if (binarySearchDict(dictStr, norm, targetLength)) return true;
   if (norm.includes('Ñ')) {

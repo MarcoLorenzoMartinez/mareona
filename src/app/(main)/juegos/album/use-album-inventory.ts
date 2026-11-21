@@ -8,13 +8,13 @@ import {
   getDailyMissionState,
   DEFAULT_MISSION_STATE,
   DEFAULT_PACK_INVENTORY,
-  saveUserCardInventory,
 } from "@/lib/cards/pack-storage";
-import { loadUserCardsFromServer } from "@/lib/cards/actions";
+import { syncAlbumAccountWithServer } from "@/lib/cards/account-sync-client";
 
 /**
  * Manages reactive synchronization of cards, booster packs, and daily objectives.
- * Automatically switches storage partition when the authenticated user session changes.
+ * Automatically reconciles local device state with Supabase whenever the session,
+ * tab focus, or visibility changes so all devices display identical state.
  */
 export function useAlbumInventory(userId?: string) {
   const [prevUserId, setPrevUserId] = useState(userId);
@@ -38,40 +38,34 @@ export function useAlbumInventory(userId?: string) {
       onCardSync();
       onMissionSync();
     };
+    const onServerReconcile = () => {
+      onFullSync();
+      if (userId) {
+        void syncAlbumAccountWithServer(userId, "reconcile");
+      }
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        onServerReconcile();
+      }
+    };
 
     // Refresh state immediately when view mounts or resumes from Next.js <Activity> cache
-    queueMicrotask(onFullSync);
-
-    if (userId) {
-      void loadUserCardsFromServer().then((serverCards) => {
-        if (!serverCards) return;
-        const localCards = loadUserCardInventory(userId);
-        const merged: Record<string, number> = { ...localCards };
-        let changed = false;
-        for (const [slug, qty] of Object.entries(serverCards)) {
-          if ((merged[slug] ?? 0) < qty) {
-            merged[slug] = qty;
-            changed = true;
-          }
-        }
-        if (changed) {
-          saveUserCardInventory(merged, userId);
-          setUserInventory(merged);
-        }
-      });
-    }
+    queueMicrotask(onServerReconcile);
 
     window.addEventListener("mareona_pack_inventory_changed", onPackSync);
     window.addEventListener("mareona_card_inventory_changed", onCardSync);
     window.addEventListener("mareona_missions_state_changed", onMissionSync);
-    window.addEventListener("focus", onFullSync);
+    window.addEventListener("focus", onServerReconcile);
     window.addEventListener("storage", onFullSync);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     return () => {
       window.removeEventListener("mareona_pack_inventory_changed", onPackSync);
       window.removeEventListener("mareona_card_inventory_changed", onCardSync);
       window.removeEventListener("mareona_missions_state_changed", onMissionSync);
-      window.removeEventListener("focus", onFullSync);
+      window.removeEventListener("focus", onServerReconcile);
       window.removeEventListener("storage", onFullSync);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [userId]);
 

@@ -35,6 +35,15 @@ export function useWordleGame(challenge: WordleDailyWord, userId?: string) {
     setJustFinished(false);
   }
 
+  useEffect(() => {
+    const onSynced = () => {
+      setGameState(getInitialWordleState(challenge.id, targetWord));
+      setStats(getInitialWordleStats());
+    };
+    window.addEventListener('mareona_account_state_synced', onSynced);
+    return () => window.removeEventListener('mareona_account_state_synced', onSynced);
+  }, [challenge.id, targetWord]);
+
   const setCursor = useCallback((index: number) => {
     if (index >= 0 && index < targetLength) setCursorIndex(index);
   }, [targetLength]);

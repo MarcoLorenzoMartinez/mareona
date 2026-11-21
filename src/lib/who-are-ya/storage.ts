@@ -44,6 +44,9 @@ export function savePlayerGuesses(dateStr: string, guesses: PlayerGuessResult[])
   if (typeof window === 'undefined' || dateStr < WHO_ARE_YA_EPOCH_DATE) return;
   try {
     localStorage.setItem(`${WHO_ARE_YA_STORAGE_PREFIX}${dateStr}`, JSON.stringify(guesses));
+    if (typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('mareona_local_account_mutated'));
+    }
   } catch {
     // Fail silently in private browsing / full quota
   }

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import type { WordleDailyWord } from '@/lib/wordle/types';
 import { getTodayChallenge, getChallengeForDate } from '@/lib/wordle/words';
 import { useWordleGame } from '@/lib/wordle/use-wordle-game';
+import { prefetchWordleDictionary } from '@/lib/wordle/submission';
 import { WordleHeader } from './wordle-header';
 import { WordleBoard } from './wordle-board';
 import { WordleKeyboard } from './wordle-keyboard';
@@ -47,6 +48,11 @@ export function WordleClient({ initialChallenge }: WordleClientProps) {
   } = useWordleGame(challenge, user?.id);
 
   const isGameOver = gameState.status !== 'IN_PROGRESS';
+
+  // Preload current word-length dictionary so Service Worker caches it for offline play
+  useEffect(() => {
+    prefetchWordleDictionary(targetLength);
+  }, [targetLength]);
 
   // Open stats modal automatically ONLY when the user finishes a game in the current session
   useEffect(() => {

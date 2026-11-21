@@ -4,7 +4,7 @@
 import { useCallback } from "react";
 import { toast } from "@/lib/ui/toast";
 import { generatePackCards } from "@/lib/cards/packs";
-import { persistAcquiredCardsToServer } from "@/lib/cards/actions";
+import { syncAlbumAccountWithServer } from "@/lib/cards/account-sync-client";
 import {
   loadUserPackInventory,
   consumeUserPack,
@@ -65,7 +65,7 @@ export function useAlbumActions({
 
       const nextInventory = addCardsToInventory(generated, userId);
       setUserInventory(nextInventory);
-      void persistAcquiredCardsToServer(generated.map((c) => c.slug));
+      void syncAlbumAccountWithServer(userId, "push");
       const brandNewCards = generated.filter((c) => !previouslyOwned.has(c.slug));
       setNewlyAcquiredSlugs((prev) => new Set([...prev, ...brandNewCards.map((c) => c.slug)]));
       return { cards: generated, duplicateSlugs };
@@ -79,6 +79,7 @@ export function useAlbumActions({
     if (res.success && res.tier) {
       setPackInventory(loadUserPackInventory(userId));
       setMissionState(getDailyMissionState(undefined, userId));
+      void syncAlbumAccountWithServer(userId, "push");
       toast.success(dict.games.album.toasts.dailyLoginTitle, {
         description: dict.games.album.toasts.dailyLoginDesc,
       });
@@ -91,6 +92,7 @@ export function useAlbumActions({
     if (res.success && res.tier) {
       setPackInventory(loadUserPackInventory(userId));
       setMissionState(getDailyMissionState(undefined, userId));
+      void syncAlbumAccountWithServer(userId, "push");
       const packName =
         res.tier === "leyenda"
           ? dict.games.album.toasts.legendPackName
@@ -107,6 +109,7 @@ export function useAlbumActions({
     if (res.success) {
       setUserInventory(loadUserCardInventory(userId));
       setPackInventory(loadUserPackInventory(userId));
+      void syncAlbumAccountWithServer(userId, "push");
       toast.success(dict.games.album.toasts.recycleSuccess);
     } else {
       toast.error(dict.games.album.toasts.recycleError);

@@ -1,7 +1,9 @@
-// Client: Escucha el estado de conexión y sincroniza la cola de partidas offline
+// Client: Escucha el estado de conexión y sincroniza la cola de partidas offline y estado de cuenta
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useAuth } from "@/context/auth-context";
+import { syncAlbumAccountWithServer } from "@/lib/cards/account-sync-client";
 import { processOfflineGameSync, getOfflineGameQueue } from "@/lib/games/offline-sync-queue";
 import { syncOfflineGamesAction } from "@/lib/games/offline-sync-action";
 import { toast } from "@/lib/ui/toast";
@@ -9,31 +11,33 @@ import { getDictionary } from "@/i18n";
 
 /**
  * Global background listener that automatically synchronizes offline game results
- * when network connectivity is established or restored.
- *
- * UX Policy:
- * - When playing online: synchronization is completely silent and seamless (no toast).
- * - When reconnecting after playing offline (without coverage): a toast informs
- *   the user that their offline progress has been saved.
+ * and cross-device account state (album, packs, missions, daily games, porra, lineup)
+ * when connectivity, focus, or auth session is ready.
  */
 export function OfflineSyncListener() {
   const dict = getDictionary();
+  const { user } = useAuth();
+  const userId = user?.id;
   const isSyncingRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
+    let pushDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-    async function triggerSync(notifyUser = false) {
+    async function triggerSync(notifyUser = false, syncMode: "reconcile" | "push" = "reconcile") {
       if (typeof window === "undefined" || !navigator.onLine || isSyncingRef.current) {
         return;
       }
       isSyncingRef.current = true;
       try {
+        if (userId) {
+          await syncAlbumAccountWithServer(userId, syncMode);
+        }
+
         const result = await processOfflineGameSync(async (events) => {
           return await syncOfflineGamesAction({ events: [...events] });
         });
 
-        // Solo notificar al usuario si la sincronización proviene de una reconexión tras jugar sin cobertura
         if (isMounted && result.syncedCount > 0 && notifyUser) {
           toast.success(
             result.syncedCount === 1
@@ -49,33 +53,60 @@ export function OfflineSyncListener() {
       }
     }
 
-    // Al montar: si hay partidas acumuladas en la cola, significa que se jugaron previamente sin conexión
     const pendingOnMount = getOfflineGameQueue().length;
     if (pendingOnMount > 0) {
-      triggerSync(true);
+      void triggerSync(true, "reconcile");
     } else {
-      triggerSync(false);
+      void triggerSync(false, "reconcile");
     }
 
-    // Reconexión tras caída o recuperación de red
-    const handleOnline = () => triggerSync(true);
+    const handleOnline = () => {
+      void triggerSync(true, "reconcile");
+    };
 
-    // Partida finalizada en tiempo real: si hay red, se sincroniza en segundo plano de forma silenciosa
     const handleQueueUpdated = () => {
       if (navigator.onLine) {
-        triggerSync(false);
+        void triggerSync(false, "push");
+      }
+    };
+
+    const handleLocalMutation = () => {
+      if (!navigator.onLine || !userId) return;
+      if (pushDebounceTimer) clearTimeout(pushDebounceTimer);
+      pushDebounceTimer = setTimeout(() => {
+        void triggerSync(false, "push");
+      }, 250);
+    };
+
+    const handleFocus = () => {
+      if (navigator.onLine && userId) {
+        void triggerSync(false, "reconcile");
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && navigator.onLine && userId) {
+        void triggerSync(false, "reconcile");
       }
     };
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("mareona_offline_sync_queue_updated", handleQueueUpdated);
+    window.addEventListener("mareona_local_account_mutated", handleLocalMutation);
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       isMounted = false;
+      if (pushDebounceTimer) clearTimeout(pushDebounceTimer);
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("mareona_offline_sync_queue_updated", handleQueueUpdated);
+      window.removeEventListener("mareona_local_account_mutated", handleLocalMutation);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [
+    userId,
     dict.pwa.offlineSync.manySyncedSuffix,
     dict.pwa.offlineSync.oneSyncedTitle,
     dict.pwa.offlineSync.syncedDescription,

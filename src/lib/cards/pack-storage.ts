@@ -346,7 +346,7 @@ export function addCardsToInventory(
   return next;
 }
 
-interface StoredMissionState {
+export interface StoredMissionState {
   lastLoginClaimDate?: string;
   lastGameWinDate?: string;
   lastGameClaimDate?: string;
@@ -354,7 +354,7 @@ interface StoredMissionState {
   pendingGameRewardTier?: PackTier;
 }
 
-function loadStoredMissionState(userId?: string): StoredMissionState {
+export function loadStoredMissionState(userId?: string): StoredMissionState {
   if (typeof window === "undefined" || !userId) return {};
   try {
     const raw = window.localStorage.getItem(getMissionsStorageKey(userId));
@@ -373,7 +373,7 @@ function loadStoredMissionState(userId?: string): StoredMissionState {
   }
 }
 
-function saveStoredMissionState(state: StoredMissionState, userId?: string): void {
+export function saveStoredMissionState(state: StoredMissionState, userId?: string): void {
   if (typeof window === "undefined" || !userId) return;
   try {
     window.localStorage.setItem(getMissionsStorageKey(userId), JSON.stringify(state));

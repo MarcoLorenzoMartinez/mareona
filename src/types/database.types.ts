@@ -1206,6 +1206,44 @@ export interface Database {
           },
         ];
       };
+      user_account_state: {
+        Row: {
+          user_id: string;
+          cards: Json;
+          packs: Json;
+          missions: Json;
+          has_activity: boolean;
+          revision: number;
+          updated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          cards?: Json;
+          packs?: Json;
+          missions?: Json;
+          has_activity?: boolean;
+          revision?: number;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          cards?: Json;
+          packs?: Json;
+          missions?: Json;
+          has_activity?: boolean;
+          revision?: number;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_account_state_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: true;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: {

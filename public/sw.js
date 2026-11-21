@@ -7,7 +7,7 @@
  * Everything else — live scores, auth, Supabase, API routes, Server Actions — always
  * goes to the network so users never see stale or cross-account data.
  */
-const VERSION = "v5";
+const VERSION = "v6";
 const SHELL_CACHE = `mareona-shell-${VERSION}`;
 const STATIC_CACHE = `mareona-static-${VERSION}`;
 const IMAGE_CACHE = `mareona-images-${VERSION}`;
@@ -201,7 +201,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (url.pathname.startsWith("/_next/static/")) {
+  if (url.pathname.startsWith("/_next/static/") || url.pathname === "/api/wordle/dict") {
     event.respondWith(cacheFirst(request, STATIC_CACHE, MAX_STATIC_ENTRIES));
     return;
   }

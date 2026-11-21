@@ -1,4 +1,4 @@
-// Client: Hook para persistencia y restauración automática de Mi Once en localStorage
+// Client: Hook para persistencia y restauración automática de Mi Once en localStorage y cuenta
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -25,8 +25,8 @@ interface UseLineupPersistenceOptions {
 }
 
 /**
- * Manages automatic background synchronization of the tactical lineup with localStorage.
- * Restores state safely upon page refresh without SSR hydration mismatches.
+ * Manages automatic background synchronization of the tactical lineup with localStorage and Supabase.
+ * Restores state safely upon page refresh or cross-device sync without SSR hydration mismatches.
  */
 export function useLineupPersistence({
   formationKey,
@@ -39,28 +39,40 @@ export function useLineupPersistence({
 }: UseLineupPersistenceOptions) {
   const isHydratedRef = useRef(false);
   const isInitialMountRef = useRef(true);
+  const isRestoringFromSyncRef = useRef(false);
 
-  // Restore persisted lineup on initial client mount
   useEffect(() => {
-    const saved = loadPersistedLineup();
-    if (saved) {
-      if (saved.customPlayers?.length) {
-        setCustomPlayers(saved.customPlayers);
+    const restoreFromStorage = (fromSyncEvent = false) => {
+      const saved = loadPersistedLineup();
+      if (saved) {
+        if (fromSyncEvent) {
+          isRestoringFromSyncRef.current = true;
+        }
+        if (saved.customPlayers?.length) {
+          setCustomPlayers(saved.customPlayers);
+        }
+        if (saved.formationKey) {
+          setFormationKey(saved.formationKey);
+        }
+        const pool = [...saved.customPlayers, ...initialRoster];
+        setAssignedSlots(restoreSlotsWithRoster(saved.slots, pool));
       }
-      if (saved.formationKey) {
-        setFormationKey(saved.formationKey);
-      }
-      const pool = [...saved.customPlayers, ...initialRoster];
-      setAssignedSlots(restoreSlotsWithRoster(saved.slots, pool));
-    }
-    isHydratedRef.current = true;
+      isHydratedRef.current = true;
+    };
+
+    restoreFromStorage(false);
+    const onSynced = () => restoreFromStorage(true);
+    window.addEventListener("mareona_account_state_synced", onSynced);
+    return () => window.removeEventListener("mareona_account_state_synced", onSynced);
   }, [initialRoster, setCustomPlayers, setFormationKey, setAssignedSlots]);
 
-  // Auto-save changes strictly AFTER initial hydration has completed and state has settled
   useEffect(() => {
-    // Avoid saving on initial mount to prevent overwriting stored lineup with blank initial state
     if (isInitialMountRef.current) {
       isInitialMountRef.current = false;
+      return;
+    }
+    if (isRestoringFromSyncRef.current) {
+      isRestoringFromSyncRef.current = false;
       return;
     }
     if (!isHydratedRef.current) return;

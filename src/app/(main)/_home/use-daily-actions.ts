@@ -24,6 +24,7 @@ const SYNC_EVENTS = [
   "storage",
   "mareona_pack_inventory_changed",
   "mareona_missions_state_changed",
+  "mareona_account_state_synced",
 ] as const;
 
 function subscribe(onChange: () => void): () => void {
@@ -39,7 +40,12 @@ function checkWordleCompletedToday(today: string): boolean {
     const raw = window.localStorage.getItem(`mareona_wordle_v2_state_${today}`);
     if (!raw) return false;
     const parsed = JSON.parse(raw) as { status?: string };
-    return parsed.status === "SOLVED" || parsed.status === "FAILED";
+    return (
+      parsed.status === "WON" ||
+      parsed.status === "LOST" ||
+      parsed.status === "SOLVED" ||
+      parsed.status === "FAILED"
+    );
   } catch {
     return false;
   }

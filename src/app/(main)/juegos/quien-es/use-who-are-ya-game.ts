@@ -38,6 +38,18 @@ export function useWhoAreYaGame(players: WhoAreYaPlayer[], initialDate: string) 
     });
   }, []);
 
+  useEffect(() => {
+    const onSynced = () => {
+      setStats(getStoredWhoAreYaStats());
+      const syncedGuesses = getStoredPlayerGuesses(selectedDate);
+      if (syncedGuesses.length > 0) {
+        setPlayerGuessesByDate((prev) => ({ ...prev, [selectedDate]: syncedGuesses }));
+      }
+    };
+    window.addEventListener('mareona_account_state_synced', onSynced);
+    return () => window.removeEventListener('mareona_account_state_synced', onSynced);
+  }, [selectedDate]);
+
   const handleDateChange = (newDate: string) => {
     setSelectedDate(newDate);
     setIsResultModalDismissed(false);

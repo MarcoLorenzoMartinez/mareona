@@ -34,11 +34,14 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
   const [stats, setStats] = useState<TriviaStats>(INITIAL_TRIVIA_STATS);
 
   useEffect(() => {
-    queueMicrotask(() => {
-      setAttempt(getStoredTriviaAttempt(initialChallenge.dateStr));
+    const refreshFromStorage = () => {
+      setAttempt(getStoredTriviaAttempt(activeDate));
       setStats(getStoredTriviaStats());
-    });
-  }, [initialChallenge.dateStr]);
+    };
+    queueMicrotask(refreshFromStorage);
+    window.addEventListener('mareona_account_state_synced', refreshFromStorage);
+    return () => window.removeEventListener('mareona_account_state_synced', refreshFromStorage);
+  }, [activeDate]);
   const [inputVal, setInputVal] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);

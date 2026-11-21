@@ -27,6 +27,9 @@ export function getStoredHigherLowerStats(): HigherLowerStats {
 export function saveHigherLowerStats(stats: HigherLowerStats): void {
   try {
     localStorage.setItem(HIGHER_LOWER_STATS_KEY, JSON.stringify(stats));
+    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('mareona_local_account_mutated'));
+    }
   } catch {
     // LocalStorage fallback
   }

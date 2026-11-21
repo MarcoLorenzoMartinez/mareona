@@ -16,6 +16,7 @@ import { useAlbumInventory } from "./use-album-inventory";
 import { useAlbumActions } from "./use-album-actions";
 import { useAlbumTesterSeed } from "./use-album-tester-seed";
 import { addPacksToInventory, clearUserPacks } from "@/lib/cards/pack-storage";
+import { syncAlbumAccountWithServer } from "@/lib/cards/account-sync-client";
 import {
   DEFAULT_GRID_FILTER_STATE,
   filterGridCards,
@@ -112,8 +113,8 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
           onRevealAll={() => setDemoViewMode("all-revealed")}
           onHideAll={() => setDemoViewMode("all-hidden")}
           onResetStarter={() => setDemoViewMode("starter")}
-          onAddPack={(t) => { setPackInventory(addPacksToInventory(t, 1, user.id)); toast.success(`${dict.games.album.toasts.demoPackAddedPrefix} ${t} ${dict.games.album.toasts.demoPackAddedSuffix}`); }}
-          onClearPacks={() => { setPackInventory(clearUserPacks(user.id)); toast.info(dict.games.album.toasts.demoInventoryCleared); }}
+          onAddPack={(t) => { setPackInventory(addPacksToInventory(t, 1, user.id)); void syncAlbumAccountWithServer(user.id, "push"); toast.success(`${dict.games.album.toasts.demoPackAddedPrefix} ${t} ${dict.games.album.toasts.demoPackAddedSuffix}`); }}
+          onClearPacks={() => { setPackInventory(clearUserPacks(user.id)); void syncAlbumAccountWithServer(user.id, "push"); toast.info(dict.games.album.toasts.demoInventoryCleared); }}
         />
       )}
       <AlbumHeader ownedCount={ownedCount} totalCount={allCards.length} availablePacksCount={totalPacks} viewMode={viewMode} onViewModeChange={handleViewModeChange} />

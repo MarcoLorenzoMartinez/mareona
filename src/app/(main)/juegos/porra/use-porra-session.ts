@@ -11,6 +11,7 @@ import {
   submitPorraPrediction,
   fetchAndSettleUserPorraState,
 } from '@/lib/porra/actions';
+import { syncAlbumAccountWithServer } from '@/lib/cards/account-sync-client';
 import {
   getStoredPrediction,
   saveStoredPrediction,
@@ -232,6 +233,7 @@ export function usePorraSession({
     }
     const addedCount = claimPorraRewards(pendingRewards, user.id);
     if (addedCount > 0) {
+      void syncAlbumAccountWithServer(user.id, 'push');
       setJustClaimedCount(addedCount);
       setClaimVersion((v) => v + 1);
       toast.success(

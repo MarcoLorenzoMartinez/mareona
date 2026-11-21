@@ -131,6 +131,9 @@ export function saveWordleState(newState: WordleChallengeState): void {
   if (newState.date < WORDLE_EPOCH_DATE) return;
   try {
     localStorage.setItem(`${STORAGE_KEY_PREFIX}${newState.date}`, JSON.stringify(newState));
+    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('mareona_local_account_mutated'));
+    }
   } catch {
     // Storage unavailable
   }

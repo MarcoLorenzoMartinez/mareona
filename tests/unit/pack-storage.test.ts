@@ -15,6 +15,11 @@ import {
   claimDailyLoginPack,
   migrateCardInventorySlugs,
 } from "../../src/lib/cards/pack-storage.ts";
+import {
+  reconcileAccountAlbumState,
+  type AccountAlbumSnapshot,
+} from "../../src/lib/cards/account-sync.ts";
+import { mergeSyncedGameStorageEntries } from "../../src/lib/cards/account-games-sync.ts";
 
 describe("Pack Storage & Missions Logic", () => {
   it("formats dates as canonical YYYY-MM-DD", () => {
@@ -177,5 +182,114 @@ describe("Pack Storage & Missions Logic", () => {
         writable: true,
       });
     }
+  });
+
+  it("reconciles PC and mobile album snapshots deterministically regardless of connection order", () => {
+    const pcUnplayedSnapshot: AccountAlbumSnapshot = {
+      cards: {},
+      packs: { aficionado: 4, rojiblanco: 4, leyenda: 3 },
+      missions: {},
+      hasActivity: false,
+      revision: 0,
+      updatedAt: "2026-11-21T12:00:00.000Z",
+    };
+
+    const mobileActiveSnapshot: AccountAlbumSnapshot = {
+      cards: { "escudo-oficial-1997": 1, "quini-1979": 2 },
+      packs: { aficionado: 0, rojiblanco: 0, leyenda: 0 },
+      missions: {
+        lastLoginClaimDate: "2026-11-21",
+        lastGameWinDate: "2026-11-21",
+        gameStreak: 1,
+        pendingGameRewardTier: "rojiblanco",
+      },
+      hasActivity: true,
+      revision: 0,
+      updatedAt: "2026-11-21T12:44:00.000Z",
+    };
+
+    // Order A: PC connects first, then mobile connects, then PC refreshes
+    const serverAfterPcFirst = reconcileAccountAlbumState(null, pcUnplayedSnapshot, "reconcile");
+    const serverAfterMobileSecond = reconcileAccountAlbumState(
+      serverAfterPcFirst,
+      mobileActiveSnapshot,
+      "reconcile"
+    );
+    const pcSyncedView = reconcileAccountAlbumState(
+      serverAfterMobileSecond,
+      { ...serverAfterPcFirst },
+      "reconcile"
+    );
+
+    assert.deepEqual(pcSyncedView.cards, { "escudo-oficial-1997": 1, "quini-1979": 2 });
+    assert.deepEqual(pcSyncedView.packs, { aficionado: 0, rojiblanco: 0, leyenda: 0 });
+    assert.equal(pcSyncedView.missions.lastLoginClaimDate, "2026-11-21");
+    assert.equal(pcSyncedView.missions.lastGameWinDate, "2026-11-21");
+    assert.equal(pcSyncedView.missions.gameStreak, 1);
+    assert.equal(pcSyncedView.missions.pendingGameRewardTier, "rojiblanco");
+
+    // Order B: Mobile connects first, then PC connects
+    const serverAfterMobileFirst = reconcileAccountAlbumState(null, mobileActiveSnapshot, "reconcile");
+    const serverAfterPcSecond = reconcileAccountAlbumState(
+      serverAfterMobileFirst,
+      pcUnplayedSnapshot,
+      "reconcile"
+    );
+
+    assert.deepEqual(serverAfterPcSecond.cards, pcSyncedView.cards);
+    assert.deepEqual(serverAfterPcSecond.packs, pcSyncedView.packs);
+    assert.deepEqual(serverAfterPcSecond.missions, pcSyncedView.missions);
+  });
+
+  it("merges daily minigame boards, records, and porra rewards across devices", () => {
+    const serverEntries = {
+      mareona_wordle_v2_state_2026_11_21_invalid: "ignored",
+      "mareona_wordle_v2_state_2026-11-21": JSON.stringify({
+        date: "2026-11-21",
+        word: "QUINI",
+        guesses: ["GOLAZ"],
+        status: "IN_PROGRESS",
+      }),
+      mareona_higher_lower_stats_v1: JSON.stringify({
+        bestScoreByMode: { matches: 5, goals: 2, minutes: 8 },
+        totalGamesPlayed: 4,
+      }),
+      mareona_porra_claimed_rewards_v1: JSON.stringify(["match-1"]),
+    };
+
+    const clientEntries = {
+      "mareona_wordle_v2_state_2026-11-21": JSON.stringify({
+        date: "2026-11-21",
+        word: "QUINI",
+        guesses: ["GOLAZ", "QUINI"],
+        status: "WON",
+      }),
+      "mareona_trivia_2026-11-21": JSON.stringify({
+        dateStr: "2026-11-21",
+        isCorrect: true,
+        userAnswer: "Quini",
+      }),
+      mareona_higher_lower_stats_v1: JSON.stringify({
+        bestScoreByMode: { matches: 3, goals: 9, minutes: 4 },
+        totalGamesPlayed: 7,
+      }),
+      mareona_porra_claimed_rewards_v1: JSON.stringify(["match-2"]),
+    };
+
+    const merged = mergeSyncedGameStorageEntries(serverEntries, clientEntries, "reconcile");
+
+    assert.equal("mareona_wordle_v2_state_2026_11_21_invalid" in merged, false);
+    const wordle = JSON.parse(merged["mareona_wordle_v2_state_2026-11-21"]!) as { status: string };
+    assert.equal(wordle.status, "WON");
+
+    const hl = JSON.parse(merged.mareona_higher_lower_stats_v1!) as {
+      bestScoreByMode: { matches: number; goals: number; minutes: number };
+      totalGamesPlayed: number;
+    };
+    assert.deepEqual(hl.bestScoreByMode, { matches: 5, goals: 9, minutes: 8 });
+    assert.equal(hl.totalGamesPlayed, 7);
+
+    const porraClaimed = JSON.parse(merged.mareona_porra_claimed_rewards_v1!) as string[];
+    assert.deepEqual(porraClaimed, ["match-1", "match-2"]);
   });
 });

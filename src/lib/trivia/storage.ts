@@ -33,6 +33,9 @@ export function saveTriviaAttempt(attempt: TriviaPlayerAttempt): void {
   if (typeof window === 'undefined' || attempt.dateStr < TRIVIA_EPOCH_DATE) return;
   try {
     localStorage.setItem(`${TRIVIA_STORAGE_PREFIX}${attempt.dateStr}`, JSON.stringify(attempt));
+    if (typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('mareona_local_account_mutated'));
+    }
   } catch {
     // Fail silently in private browsing / full quota
   }

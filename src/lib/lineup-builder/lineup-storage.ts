@@ -43,6 +43,9 @@ export function savePersistedLineup(
       })),
     };
     window.localStorage.setItem(LINEUP_STORAGE_KEY, JSON.stringify(payload));
+    if (typeof window.dispatchEvent === "function") {
+      window.dispatchEvent(new CustomEvent("mareona_local_account_mutated"));
+    }
   } catch {
     // Non-blocking quota failure
   }

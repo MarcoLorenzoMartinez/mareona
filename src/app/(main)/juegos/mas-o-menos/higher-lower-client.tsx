@@ -50,6 +50,9 @@ export function HigherLowerClient() {
       setLeftPlayer(first);
       setRightPlayer(second);
     });
+    const onSynced = () => setStats(getStoredHigherLowerStats());
+    window.addEventListener('mareona_account_state_synced', onSynced);
+    return () => window.removeEventListener('mareona_account_state_synced', onSynced);
   }, []);
 
   const startNewGame = useCallback((targetMode: HigherLowerMode) => {
