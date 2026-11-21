@@ -55,6 +55,7 @@ const SECTIONS: readonly LegalSection[] = [
         <LegalList>
           <li>Progreso y estadísticas locales de Wordle, ¿Quién es?, Pregunta del día y ¿Más o Menos?.</li>
           <li>Preferencias locales de sesión de juego cuando navegas sin cuenta (al iniciar sesión, la porra, los cromos y tus votos se sincronizan en tu cuenta).</li>
+          <li>Identificador técnico diario (<LegalStrong>mareona_telemetry_vid</LegalStrong>), rotado cada 24 horas para evitar contabilizar visitas duplicadas en la analítica propia sin emplear cookies ni almacenar direcciones IP.</li>
         </LegalList>
       </>
     ),

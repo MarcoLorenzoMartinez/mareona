@@ -2,137 +2,55 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
-import type { Json } from "@/types/database.types";
-import { DEFAULT_PACK_INVENTORY } from "./pack-storage";
+import { getSyncedCardsCatalog } from "./card-catalog-sync";
+import { getTodayDateString } from "./pack-storage";
 import {
-  accountAlbumSnapshotSchema,
-  hasAlbumActivity,
   reconcileAccountAlbumState,
   syncAlbumInputSchema,
   type AccountAlbumSnapshot,
 } from "./account-sync";
+import { readServerAlbumState, writeServerAlbumState } from "./account-state-store";
+import {
+  applyDailyGameClaimOnSnapshot,
+  applyDailyLoginClaimOnSnapshot,
+  applyOpenPackOnSnapshot,
+  applyRecycleDuplicatesOnSnapshot,
+  ensureInitialAlbumSnapshot,
+} from "./album-server-domain";
 import type { SyncedPorraPrediction } from "./account-games-sync";
+import type { Card, PackTier } from "./types";
 
-const ACCOUNT_CACHE_KEY_PREFIX = "user_account_state:";
-const PERMANENT_CACHE_EXPIRY_ISO = "2099-12-31T23:59:59.000Z";
+const packTierInputSchema = z.enum(["aficionado", "rojiblanco", "leyenda"]);
 
-const persistSlugsInputSchema = z.array(z.string().regex(/^[a-z0-9-]+$/i)).max(600);
-
-function getAccountCacheKey(userId: string): string {
-  return `${ACCOUNT_CACHE_KEY_PREFIX}${userId}`;
-}
-
-/**
- * Reads the authoritative account album snapshot from Supabase (`user_account_state`
- * with seamless fallback to `external_api_cache` and `user_cards`).
- *
- * @param userId - Authenticated user UUID from server session.
- * @returns Parsed account snapshot or null if the user has never synced.
- */
-async function readServerAlbumState(userId: string): Promise<AccountAlbumSnapshot | null> {
-  const supabase = await createClient();
-  const admin = createAdminClient();
-  const db = admin ?? supabase;
-
-  let tableSnapshot: AccountAlbumSnapshot | null = null;
-  let cacheSnapshot: AccountAlbumSnapshot | null = null;
-
-  try {
-    const { data: row } = await db
-      .from("user_account_state")
-      .select("cards, packs, missions, has_activity, revision, updated_at")
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    if (row) {
-      const candidate = accountAlbumSnapshotSchema.safeParse({
-        cards: row.cards,
-        packs: row.packs,
-        missions: row.missions,
-        hasActivity: row.has_activity,
-        revision: row.revision,
-        updatedAt: row.updated_at,
-      });
-      if (candidate.success) {
-        tableSnapshot = candidate.data;
-      }
-    }
-  } catch {
-    // Table may not be migrated yet in remote environment; fallback to cache below
-  }
-
-  try {
-    const { data: cacheRow } = await db
-      .from("external_api_cache")
-      .select("payload")
-      .eq("cache_key", getAccountCacheKey(userId))
-      .maybeSingle();
-
-    if (cacheRow?.payload) {
-      const candidate = accountAlbumSnapshotSchema.safeParse(cacheRow.payload);
-      if (candidate.success) {
-        cacheSnapshot = candidate.data;
-      }
-    }
-  } catch {
-    // Fallback silent catch
-  }
-
-  if (tableSnapshot && cacheSnapshot) {
-    return tableSnapshot.revision >= cacheSnapshot.revision ? tableSnapshot : cacheSnapshot;
-  }
-  return tableSnapshot ?? cacheSnapshot;
-}
-
-/**
- * Persists the authoritative account album snapshot into Supabase.
- * Writes both to `user_account_state` and `external_api_cache` for zero-downtime resilience.
- *
- * @param userId - Authenticated user UUID from server session.
- * @param snapshot - Validated album state snapshot to persist.
- */
-async function writeServerAlbumState(
+async function enrichWithPorraPredictions(
+  supabase: Awaited<ReturnType<typeof createClient>>,
   userId: string,
   snapshot: AccountAlbumSnapshot
-): Promise<void> {
-  const supabase = await createClient();
-  const admin = createAdminClient();
-  const db = admin ?? supabase;
-  const payloadJson = snapshot as unknown as Json;
-
+): Promise<AccountAlbumSnapshot> {
+  const porraPredictions: Record<string, SyncedPorraPrediction> = {};
   try {
-    await db.from("user_account_state").upsert(
-      {
-        user_id: userId,
-        cards: snapshot.cards as unknown as Json,
-        packs: snapshot.packs as unknown as Json,
-        missions: snapshot.missions as unknown as Json,
-        has_activity: snapshot.hasActivity,
-        revision: snapshot.revision,
-        updated_at: snapshot.updatedAt,
-      },
-      { onConflict: "user_id" }
-    );
+    const { data: predRows } = await supabase
+      .from("predictions")
+      .select("match_id, home_score, away_score, sporting_scorers, updated_at")
+      .eq("user_id", userId);
+
+    for (const row of predRows ?? []) {
+      porraPredictions[row.match_id] = {
+        matchId: row.match_id,
+        homeScore: row.home_score,
+        awayScore: row.away_score,
+        sportingScorers: Array.isArray(row.sporting_scorers) ? row.sporting_scorers : [],
+        submittedAt: row.updated_at,
+      };
+    }
   } catch {
-    // Handled by external_api_cache write below when table migration is pending
+    // Optional predictions enrichment fallback
   }
 
-  if (admin) {
-    try {
-      await admin.from("external_api_cache").upsert(
-        {
-          cache_key: getAccountCacheKey(userId),
-          payload: payloadJson,
-          fetched_at: snapshot.updatedAt,
-          expires_at: PERMANENT_CACHE_EXPIRY_ISO,
-        },
-        { onConflict: "cache_key" }
-      );
-    } catch {
-      // Cache persistence fallback
-    }
-  }
+  return {
+    ...snapshot,
+    porraPredictions,
+  };
 }
 
 /**
@@ -170,32 +88,146 @@ export async function syncUserAlbumStateWithServer(
       await writeServerAlbumState(user.id, reconciled);
     }
 
-    const porraPredictions: Record<string, SyncedPorraPrediction> = {};
-    try {
-      const { data: predRows } = await supabase
-        .from("predictions")
-        .select("match_id, home_score, away_score, sporting_scorers, updated_at")
-        .eq("user_id", user.id);
-
-      for (const row of predRows ?? []) {
-        porraPredictions[row.match_id] = {
-          matchId: row.match_id,
-          homeScore: row.home_score,
-          awayScore: row.away_score,
-          sportingScorers: Array.isArray(row.sporting_scorers) ? row.sporting_scorers : [],
-          submittedAt: row.updated_at,
-        };
-      }
-    } catch {
-      // Optional predictions enrichment fallback
-    }
-
-    return {
-      ...reconciled,
-      porraPredictions,
-    };
+    return await enrichWithPorraPredictions(supabase, user.id, reconciled);
   } catch {
     return null;
+  }
+}
+
+/**
+ * Authoritative Server Action that opens a booster pack from the user's server balance,
+ * generates the cards on the server, and persists the updated account state.
+ */
+export async function openPackServerAction(rawTier: unknown): Promise<{
+  readonly success: boolean;
+  readonly error?: string;
+  readonly cards?: readonly Card[];
+  readonly duplicateSlugs?: readonly string[];
+  readonly snapshot?: AccountAlbumSnapshot;
+}> {
+  const parsed = packTierInputSchema.safeParse(rawTier);
+  if (!parsed.success) {
+    return { success: false, error: "Tipo de sobre no válido." };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      return { success: false, error: "Debes iniciar sesión para abrir sobres." };
+    }
+
+    const [current, allCards] = await Promise.all([
+      readServerAlbumState(user.id),
+      getSyncedCardsCatalog(supabase),
+    ]);
+
+    const base = ensureInitialAlbumSnapshot(current);
+    const result = applyOpenPackOnSnapshot(base, parsed.data, allCards);
+    if (!result.ok) {
+      return {
+        success: false,
+        error:
+          result.reason === "no_packs"
+            ? "No te quedan sobres disponibles de este tipo."
+            : "No se pudo cargar el catálogo de cromos.",
+      };
+    }
+
+    await writeServerAlbumState(user.id, result.snapshot);
+    return {
+      success: true,
+      cards: result.cards,
+      duplicateSlugs: result.duplicateSlugs,
+      snapshot: result.snapshot,
+    };
+  } catch {
+    return { success: false, error: "No se pudo abrir el sobre en este momento." };
+  }
+}
+
+/**
+ * Authoritative Server Action to claim the daily login pack (1 Sobre Aficionado).
+ */
+export async function claimDailyLoginServerAction(): Promise<{
+  readonly success: boolean;
+  readonly tier?: PackTier;
+  readonly snapshot?: AccountAlbumSnapshot;
+}> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { success: false };
+
+    const base = ensureInitialAlbumSnapshot(await readServerAlbumState(user.id));
+    const result = applyDailyLoginClaimOnSnapshot(base, getTodayDateString());
+    if (!result.ok) return { success: false };
+
+    await writeServerAlbumState(user.id, result.snapshot);
+    return { success: true, tier: result.tier, snapshot: result.snapshot };
+  } catch {
+    return { success: false };
+  }
+}
+
+/**
+ * Authoritative Server Action to claim the pending daily minigame pack reward.
+ */
+export async function claimDailyGameServerAction(): Promise<{
+  readonly success: boolean;
+  readonly tier?: PackTier;
+  readonly streak?: number;
+  readonly snapshot?: AccountAlbumSnapshot;
+}> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { success: false };
+
+    const base = ensureInitialAlbumSnapshot(await readServerAlbumState(user.id));
+    const result = applyDailyGameClaimOnSnapshot(base, getTodayDateString());
+    if (!result.ok) return { success: false };
+
+    await writeServerAlbumState(user.id, result.snapshot);
+    return {
+      success: true,
+      tier: result.tier,
+      streak: result.streak,
+      snapshot: result.snapshot,
+    };
+  } catch {
+    return { success: false };
+  }
+}
+
+/**
+ * Authoritative Server Action to recycle 10 duplicate cards into 1 Sobre Rojiblanco.
+ */
+export async function recycleDuplicatesServerAction(): Promise<{
+  readonly success: boolean;
+  readonly snapshot?: AccountAlbumSnapshot;
+}> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { success: false };
+
+    const base = ensureInitialAlbumSnapshot(await readServerAlbumState(user.id));
+    const result = applyRecycleDuplicatesOnSnapshot(base);
+    if (!result.ok) return { success: false };
+
+    await writeServerAlbumState(user.id, result.snapshot);
+    return { success: true, snapshot: result.snapshot };
+  } catch {
+    return { success: false };
   }
 }
 
@@ -214,48 +246,5 @@ export async function loadUserCardsFromServer(): Promise<Record<string, number> 
     return state ? state.cards : null;
   } catch {
     return null;
-  }
-}
-
-/**
- * Persists newly acquired card slugs into the user's server account state.
- *
- * @param rawSlugs - Array of acquired card slugs validated with Zod.
- */
-export async function persistAcquiredCardsToServer(
-  rawSlugs: readonly string[]
-): Promise<{ success: boolean }> {
-  const parsed = persistSlugsInputSchema.safeParse(rawSlugs);
-  if (!parsed.success || parsed.data.length === 0) {
-    return { success: parsed.success };
-  }
-
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return { success: false };
-
-    const existing = await readServerAlbumState(user.id);
-    const nextCards: Record<string, number> = { ...(existing?.cards ?? {}) };
-    for (const slug of parsed.data) {
-      nextCards[slug] = (nextCards[slug] ?? 0) + 1;
-    }
-
-    const nowIso = new Date().toISOString();
-    const nextSnapshot: AccountAlbumSnapshot = {
-      cards: nextCards,
-      packs: existing?.packs ?? { ...DEFAULT_PACK_INVENTORY },
-      missions: existing?.missions ?? {},
-      hasActivity: hasAlbumActivity(nextCards, existing?.missions ?? {}),
-      revision: (existing?.revision ?? 0) + 1,
-      updatedAt: nowIso,
-    };
-
-    await writeServerAlbumState(user.id, nextSnapshot);
-    return { success: true };
-  } catch {
-    return { success: false };
   }
 }

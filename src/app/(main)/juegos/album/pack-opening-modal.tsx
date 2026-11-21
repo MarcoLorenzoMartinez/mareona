@@ -14,7 +14,7 @@ interface PackOpeningModalProps {
   readonly initialPackData: { cards: Card[]; duplicateSlugs: Set<string> };
   readonly canOpenAnother?: boolean;
   readonly onClose: () => void;
-  readonly onOpenPackCards: (tier: PackTier) => { cards: Card[]; duplicateSlugs: Set<string> } | null;
+  readonly onOpenPackCards: (tier: PackTier) => Promise<{ cards: Card[]; duplicateSlugs: Set<string> } | null>;
   readonly onSaveCards: () => void;
 }
 
@@ -104,8 +104,8 @@ export function PackOpeningModal({
 
   const config = PACK_TIERS[tier];
 
-  const handleOpenAnother = () => {
-    const generated = onOpenPackCards(tier);
+  const handleOpenAnother = async () => {
+    const generated = await onOpenPackCards(tier);
     if (!generated) {
       handleDismiss();
       return;

@@ -27,7 +27,6 @@ function fetchBdfutbolPosition(playerId: string): Promise<string | null> {
     const req = https.get(
       url,
       {
-        rejectUnauthorized: false,
         headers: BDFUTBOL_POSITION_HEADERS,
       },
       (res) => {

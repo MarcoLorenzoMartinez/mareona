@@ -63,16 +63,16 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
     useAlbumInventory(user?.id);
 
   useAlbumTesterSeed(user?.id, isDemo, setPackInventory);
-  const { handleOpenPackCards, handleClaimLogin, handleClaimDailyGame, handleRecycle } = useAlbumActions({
-    userId: user?.id,
-    allCards,
-    userInventory,
-    setUserInventory,
-    setPackInventory,
-    setMissionState,
-    setNewlyAcquiredSlugs,
-    openAuthModal,
-  });
+  const { isOpeningPack, handleOpenPackCards, handleClaimLogin, handleClaimDailyGame, handleRecycle } =
+    useAlbumActions({
+      userId: user?.id,
+      userInventory,
+      setUserInventory,
+      setPackInventory,
+      setMissionState,
+      setNewlyAcquiredSlugs,
+      openAuthModal,
+    });
 
   const totalPacks = user ? packInventory.aficionado + packInventory.rojiblanco + packInventory.leyenda : 0;
 
@@ -125,14 +125,15 @@ export function AlbumClientView({ allCards }: AlbumClientViewProps) {
           packInventory={packInventory}
           missionState={missionState}
           duplicateCount={duplicateCount}
-          onOpenPack={(t) => {
+          onOpenPack={async (t) => {
             if (!user) return openAuthModal("signin");
-            const opened = handleOpenPackCards(t);
-            if (!opened) return toast.error("No te quedan sobres disponibles de este tipo.");
+            const opened = await handleOpenPackCards(t);
+            if (!opened) return;
             setSelectedPackTier(t);
             setActivePackData(opened);
             setIsPackModalOpen(true);
           }}
+          isOpening={isOpeningPack}
           onClaimLogin={handleClaimLogin}
           onClaimDailyGame={handleClaimDailyGame}
           onRecycleDuplicates={handleRecycle}

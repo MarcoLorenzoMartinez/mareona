@@ -65,17 +65,23 @@ export function OfflineSyncListener() {
           }
         }
 
-        const result = await processOfflineGameSync(async (events) => {
-          return await syncOfflineGamesAction({ events: [...events] });
-        });
+        if (userId) {
+          const result = await processOfflineGameSync(async (events) => {
+            return await syncOfflineGamesAction({ events: [...events] });
+          });
 
-        if (isMounted && result.syncedCount > 0 && notifyUser) {
-          toast.success(
-            result.syncedCount === 1
-              ? dict.pwa.offlineSync.oneSyncedTitle
-              : `${result.syncedCount} ${dict.pwa.offlineSync.manySyncedSuffix}`,
-            { description: dict.pwa.offlineSync.syncedDescription }
-          );
+          if (result.syncedCount > 0) {
+            await syncAlbumAccountWithServer(userId, "reconcile");
+          }
+
+          if (isMounted && result.syncedCount > 0 && notifyUser) {
+            toast.success(
+              result.syncedCount === 1
+                ? dict.pwa.offlineSync.oneSyncedTitle
+                : `${result.syncedCount} ${dict.pwa.offlineSync.manySyncedSuffix}`,
+              { description: dict.pwa.offlineSync.syncedDescription }
+            );
+          }
         }
       } catch {
         // Sync failure will retry on next reconnect event

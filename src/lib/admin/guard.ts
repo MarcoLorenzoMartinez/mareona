@@ -42,10 +42,11 @@ export async function verifyUserIsAdmin(
     .maybeSingle();
 
   if (error || !data) {
-    // In local development, recognize designated admin email if user_roles table is not yet seeded
-    if (process.env.NODE_ENV !== "production") {
+    // In local development, optionally allow configured DEV_ADMIN_EMAIL if user_roles is not yet seeded
+    const devAdminEmail = process.env.DEV_ADMIN_EMAIL?.trim();
+    if (process.env.NODE_ENV !== "production" && devAdminEmail) {
       const { data: userData } = await supabase.auth.getUser();
-      if (userData?.user?.email === "mareonasportinguista@gmail.com") {
+      if (userData?.user?.email === devAdminEmail) {
         return true;
       }
     }

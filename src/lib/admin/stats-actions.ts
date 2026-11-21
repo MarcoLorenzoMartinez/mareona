@@ -93,29 +93,42 @@ export async function getAdminAuditLogs(limit = 40): Promise<readonly AdminAudit
 
 /**
  * Fetches platform engagement analytics including traffic by day, peak hours, and sections.
- * Privacy-first and cookieless: dynamically aggregates real telemetry from `site_visits`.
+ * Privacy-first and cookieless: paginates `site_visits` in 1,000-row batches so PostgREST's
+ * default row cap never truncates long-range metrics silently.
  */
 export async function getAdminPlatformAnalytics(): Promise<PlatformAnalytics> {
   await assertAdmin();
   const supabase = createAdminClient() ?? (await createClient());
 
   const oneYearAgoIso = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
-
-  const { data, error } = await supabase
-    .from("site_visits")
-    .select("*")
-    .gte("created_at", oneYearAgoIso)
-    .order("created_at", { ascending: false })
-    .limit(5000);
-
-  if (error) {
-    log.error("Failed to fetch site_visits for admin analytics", error);
-    return computePlatformAnalytics([]);
-  }
-  if (!data || data.length === 0) {
-    return computePlatformAnalytics([]);
-  }
+  const PAGE_SIZE = 1000;
+  const MAX_ROWS = 50_000;
 
   type SiteVisitRow = Database["public"]["Tables"]["site_visits"]["Row"];
-  return computePlatformAnalytics(data as unknown as readonly SiteVisitRow[]);
+  const allRows: SiteVisitRow[] = [];
+
+  for (let offset = 0; offset < MAX_ROWS; offset += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from("site_visits")
+      .select("*")
+      .gte("created_at", oneYearAgoIso)
+      .order("created_at", { ascending: false })
+      .range(offset, offset + PAGE_SIZE - 1);
+
+    if (error) {
+      log.error("Failed to fetch site_visits for admin analytics", error);
+      return computePlatformAnalytics(allRows);
+    }
+
+    if (!data || data.length === 0) {
+      break;
+    }
+
+    allRows.push(...(data as unknown as readonly SiteVisitRow[]));
+    if (data.length < PAGE_SIZE) {
+      break;
+    }
+  }
+
+  return computePlatformAnalytics(allRows);
 }
