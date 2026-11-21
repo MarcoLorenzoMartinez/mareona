@@ -173,9 +173,9 @@ Todas las llamadas externas pasan obligatoriamente por adaptadores en el servido
 
 ### 1.4.5 Interfaz y Estilos
 
-Se descartaron librerías de componentes cerradas con estilos predefinidos (Material UI o Ant Design) en favor de Tailwind CSS 4, primitivas de Radix UI / shadcn y la librería de iconos `lucide-react`.
+Se descartaron librerías de componentes cerradas con estilos predefinidos (Material UI, Ant Design o dependencias UI pesadas) en favor de Tailwind CSS 4, componentes accesibles propios (`use-modal-a11y.ts` y controles HTML/ARIA nativos) y la librería de iconos `lucide-react`.
 
-Las librerías cerradas dificultan imponer una identidad visual estricta en rojo y blanco sin sobrescribir estilos internos y añaden código innecesario al paquete del navegador. Tailwind CSS 4 genera únicamente las clases utilizadas en la aplicación, mientras que Radix UI aporta el manejo del foco, la navegación por teclado y los atributos ARIA requeridos por WCAG 2.2 AA sobre componentes visuales propios y ligeros.
+Las librerías cerradas dificultan imponer una identidad visual estricta en rojo y blanco sin sobrescribir estilos internos y añaden código innecesario al paquete del navegador. Tailwind CSS 4 genera únicamente las clases utilizadas en la aplicación, mientras que los componentes propios garantizan el manejo del foco, la navegación por teclado y los atributos ARIA requeridos por WCAG 2.2 AA con una huella mínima en cliente.
 
 ---
 # Capítulo 2. Análisis
@@ -406,11 +406,11 @@ Agrupa los motores de *La Porra*, los tres juegos diarios (*Wordle*, *La Pregunt
 
 ### 2.5.7 Administración, Auditoría y Telemetría
 
-Controla el acceso al panel `/admin/*` verificando el rol en `user_roles`, ejecuta acciones disciplinarias y gestión de anuncios, registra cada operación administrativa en `admin_audit_logs` y recoge métricas de visitas y errores de cliente (`/api/telemetry` y `/api/client-errors`).
+Controla el acceso al panel `/admin/*` verificando el rol en `user_roles`, ejecuta acciones disciplinarias y gestión de anuncios, registra cada operación administrativa en `admin_audit_logs` y recoge métricas de visitas y errores de cliente (`/api/telemetry` y `/api/client-errors`). El bloque API incluye además rutas técnicas de soporte como `/api/cron/settle-porra` y `/api/wordle/dict`.
 
 ### 2.5.8 PWA y Modo Offline
 
-Incluye el manifiesto web, el Service Worker (`public/sw.js`), la cola de sincronización en IndexedDB/almacenamiento local para acciones realizadas sin red y la página de ayuda para instalación (`/instalar` y `/offline`). Da soporte al Archivo Histórico y a los Juegos en condiciones de baja cobertura.
+Incluye el manifiesto web, el Service Worker (`public/sw.js`), la cola de sincronización en `localStorage` para acciones realizadas sin red (aislada por cuenta autenticada) y la página de ayuda para instalación (`/instalar` y `/offline`). Da soporte al Archivo Histórico y a los Juegos en condiciones de baja cobertura.
 
 ### 2.5.9 Identidad, Sesión y Cuenta
 
@@ -540,7 +540,7 @@ flowchart TB
 
 ### 3.1.4 Despliegue e Infraestructura
 
-La aplicación se despliega en Vercel a partir del repositorio Git, separando las variables de entorno públicas (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS`) de las credenciales privadas que solo existen en el servidor (`SUPABASE_SERVICE_ROLE_KEY`, `SPORTS_API_KEY`, `GROQ_API_KEY`).
+La aplicación se despliega en Vercel a partir del repositorio Git, separando las variables de entorno públicas (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS`, `NEXT_PUBLIC_ENABLE_LOCAL_TELEMETRY`) de las credenciales y secretos que solo existen en el servidor (`SUPABASE_SERVICE_ROLE_KEY`, `SPORTS_API_KEY`, `SPORTS_API_BASE_URL`, `GROQ_API_KEY`, `GROQ_MODEL`, `CRON_SECRET`), integrando `@vercel/analytics` para métricas básicas de tráfico en producción.
 
 Las cabeceras HTTP de seguridad y el control de caché del Service Worker (`no-cache, no-store, must-revalidate` en `/sw.js` para que las actualizaciones lleguen de inmediato a las aplicaciones instaladas) se configuran en `next.config.ts`. Los avatares de usuario se almacenan comprimidos en el bucket `avatars` de Supabase Storage. La Ilustración 13 resume la topología de despliegue.
 
@@ -768,7 +768,7 @@ Las tablas del esquema `public` se agrupan por dominio en la Tabla 2, indicando 
 | Social y moderación | `user_blocks`, `user_reports`, `blocked_post_attempts` | Bloqueos entre usuarios, denuncias con `evidence_snapshot` inmutable y registro de textos rechazados por la IA. |
 | Juegos y cromos | `predictions` | Pronósticos de La Porra vinculados por `match_id` (`text` externo), clave única `(user_id, match_id)`, goles (`0..20`), `sporting_scorers` (`text[]`) y `points_awarded` sincronizado automáticamente con `profiles.points`. |
 | Juegos y cromos | `match_mvp_votes`, `match_player_ratings` | Votos al MVP del partido (único por usuario y partido) y calificaciones individuales (`0..10`) en *La Grada* vinculados por `match_id` externo en texto. |
-| Juegos y cromos | `cards`, `user_cards`, `user_packs` | Catálogo de cromos (década, demarcación, `ovr`, `matches_played`), inventario por usuario (`quantity >= 1`) y sobres pendientes o abiertos (`aficionado`, `rojiblanco`, `leyenda`). |
+| Juegos y cromos | `cards`, `user_cards`, `user_packs`, `user_account_state` | Catálogo de cromos (década, demarcación, `ovr`, `matches_played`) y estado autoritativo unificado por usuario en `user_account_state` (`cards`, `packs`, `missions`, `storage_entries` en `JSONB`, `revision`), complementado con las tablas heredadas `user_cards`/`user_packs`. |
 
 *Tabla 2. Diccionario de datos resumido por dominios.*
 
@@ -779,14 +779,14 @@ Todas las tablas de `public` tienen activado `ENABLE ROW LEVEL SECURITY`, reforz
 | Tabla(s) | Política de lectura (`SELECT`) | Política de escritura (`INSERT` / `UPDATE` / `DELETE`) | Garantía destacada |
 | :--- | :--- | :--- | :--- |
 | `profiles` | Pública (`anon`, `authenticated`). | Solo el propietario (`auth.uid() = id`). | Solo permite actualizar `username`, `display_name` y `avatar_url`; trigger `BEFORE UPDATE` (`protect_profile_privileged_columns`) impide alterar `points` o `is_banned`. |
-| `predictions` | Pública (`anon`, `authenticated`) para consultar la clasificación. | `INSERT` y `UPDATE` del propio usuario no sancionado (`not is_user_banned`), con cierre de plazo validado en servidor. | Trigger `sync_profile_porra_points` sincroniza `profiles.points` al liquidar `points_awarded`. |
+| `predictions` | Pública (`anon`, `authenticated`) para consultar la clasificación. | Escritura directa (`INSERT`/`UPDATE`/`DELETE`) revocada para clientes (`20261121180000`); solo Server Actions con `service_role` tras validar sesión y plazo. | Trigger `sync_profile_porra_points` sincroniza `profiles.points` al liquidar `points_awarded`. |
 | `match_mvp_votes`, `match_player_ratings` | Pública (`anon`, `authenticated`) para calcular totales y medias reales. | `INSERT` y `UPDATE` exclusivos del usuario autenticado no sancionado (`auth.uid() = user_id`). | Unicidad por `(match_id, user_id)` en MVP y `(match_id, user_id, target_id)` en notas. |
 | `posts` | Pública para filas activas (`deleted_at IS NULL`). | `INSERT` condicionado a no estar sancionado ni activo `is_wall_read_only()`; `UPDATE` del autor sobre `body` y `deleted_at`. | Trigger `protect_post_moderation_columns` impide autoaprobar un mensaje retenido (`flagged`). |
 | `messages` | Miembros de la conversación con `deleted_at IS NULL`. | `INSERT` condicionado a `can_message_conversation` (membresía y ausencia de bloqueo). | El remitente solo puede actualizar `deleted_at` (borrado lógico); el texto original se conserva intacto ante denuncias. |
 | `blocked_post_attempts` | Solo `is_admin()`. | `INSERT` del propio `user_id` desde servidor. | El usuario no puede consultar ni borrar su historial de intentos bloqueados. |
 | `user_roles`, `admin_audit_logs` | Solo `is_admin()`. | `user_roles` solo `service_role`; `admin_audit_logs` solo `INSERT` de administradores. | Impide autoasignarse roles o borrar el rastro de auditoría. |
 | `site_visits` | Solo `is_admin()`. | `INSERT` permitido a `anon` y `authenticated`. | Permite registrar visitas anónimas sin exponer métricas de tráfico. |
-| `user_cards`, `user_packs` | `user_cards` visible para el álbum; `user_packs` privada del propietario. | Limitada a `auth.uid() = user_id`; apertura mediante RPC `open_card_pack`. | El bloqueo de fila impide abrir un mismo sobre dos veces en paralelo. |
+| `user_account_state`, `user_cards`, `user_packs` | Lectura limitada al propietario (`auth.uid() = user_id`). | Escritura directa revocada en `user_account_state` (`service_role` vía Server Actions autoritativas); lógica de apertura validada en servidor (`openPackServerAction`). | Garantiza saldo de sobres, misiones y progreso diario verificados en servidor sin manipulación desde cliente. |
 | `matches`, `teams`, `players`, `standings`, `cards` | Pública (`anon`, `authenticated`). | Solo `service_role` desde procesos de servidor. | Ningún cliente puede alterar datos deportivos ni el catálogo de cromos. |
 
 *Tabla 3. Políticas de Row Level Security por tabla.*
@@ -797,8 +797,8 @@ La lógica que exige atomicidad, bloqueo de filas o ejecución privilegiada resi
 
 | Nombre | Tipo | Cuándo se ejecuta y qué hace |
 | :--- | :--- | :--- |
-| `handle_new_user()` | Trigger (`on_auth_user_created`) | Al crearse una cuenta en `auth.users`, genera un `username` único desde el correo y crea la fila en `public.profiles`. |
-| `open_card_pack(p_pack_id, p_user_id)` | RPC | Bloquea el sobre con `SELECT ... FOR UPDATE`, aplica garantías de rareza según el tipo (`leyenda` prioriza OVR ≥ 82 no poseído; `rojiblanco` OVR ≥ 75), inserta cromos con `ON CONFLICT` y devuelve el resultado marcando los nuevos. |
+| `handle_new_user()` | Trigger (`on_auth_user_created`) | Al crearse una cuenta en `auth.users`, genera un `username` único desde correo/metadatos, hidrata `display_name` y `avatar_url` de Google OAuth cuando existen, y crea la fila en `public.profiles`. |
+| `open_card_pack(p_pack_id, p_user_id)` / `openPackServerAction` | RPC / Server Action | Bloqueo atómico y transición autoritativa de sobres: comprueba saldo, aplica garantías por categoría (`leyenda` OVR ≥ 82; `rojiblanco` OVR ≥ 75), acredita cromos y persiste el snapshot en `user_account_state`. |
 | `sync_active_player_card_matches(p_matches)` | RPC (`service_role`) | Al finalizar un partido oficial del Real Sporting, actualiza en bloque `matches_played` de los cromos de la plantilla activa. |
 | `apply_prediction_points(p_prediction_id, p_points)` | RPC (`service_role`) | Bloquea la predicción con `FOR UPDATE`, comprueba `points_awarded IS NULL` para garantizar idempotencia y suma los puntos al perfil en la misma transacción. |
 | `get_or_create_direct_conversation(p_other_user)` y `can_message_conversation(p_conversation_id)` | RPC / Helper RLS | Verifican en `user_blocks` en ambos sentidos que ninguno haya bloqueado al otro antes de crear un chat o admitir un mensaje. |
@@ -963,9 +963,9 @@ En *Memoria Rojiblanca*, los cromos se distribuyen mediante sobres de tres categ
 ```mermaid
 stateDiagram-v2
     [*] --> Concedido: Bienvenida, visita diaria, juego, racha 7 días, Porra o reciclaje (10 repetidos)
-    Concedido --> Pendiente: Fila en user_packs (is_opened = false)
-    Pendiente --> Abriendo: Usuario pulsa abrir (RPC open_card_pack)
-    Abriendo --> Abierto: SELECT FOR UPDATE, garantiza rareza y suma a user_cards
+    Concedido --> Pendiente: Saldo acumulado en user_account_state.packs
+    Pendiente --> Abriendo: Usuario pulsa abrir (openPackServerAction)
+    Abriendo --> Abierto: Servidor valida saldo, garantiza rareza y actualiza cards
     Abierto --> [*]
 ```
 
@@ -974,10 +974,10 @@ stateDiagram-v2
 ```mermaid
 flowchart LR
     Inicio["Abre reto del día (Europe/Madrid)"] --> Modo{"¿Tiene sesión?"}
-    Modo -->|No| Local["Juega y guarda estado en localStorage"]
+    Modo -->|No| Local["Juega y guarda estado en partición local de invitado"]
     Modo -->|Sí| Red{"¿Hay conexión?"}
-    Red -->|Sí| Server["Evalúa en cliente, persiste racha y concede sobre si gana"]
-    Red -->|No| Queue["Encola resultado en localStorage (sin sobrescribir derrotas)"]
+    Red -->|Sí| Server["Evalúa, envía prueba al servidor (verifyDailyGameWinProof) y persiste"]
+    Red -->|No| Queue["Encola resultado en localStorage por cuenta (sin sobrescribir derrotas)"]
     Queue -->|"Al volver la red"| Server
 ```
 
@@ -987,23 +987,23 @@ Cuando un partido oficial del Real Sporting pasa a estado `finished`, `card-cata
 
 ### 3.3.7 La Porra
 
-*La Porra* (`src/lib/porra/engine.ts`) permite pronosticar el marcador exacto y los goleadores rojiblancos del siguiente partido oficial hasta 60 segundos antes del inicio (`PORRA_CUTOFF_MS = 60_000`). Esta ventana se verifica en la interfaz, en la Server Action y mediante política RLS en `predictions` (`kickoff_at > now()`).
+*La Porra* (`src/lib/porra/engine.ts`) permite pronosticar el marcador exacto y los goleadores rojiblancos del siguiente partido oficial hasta 60 segundos antes del inicio (`PORRA_CUTOFF_MS = 60_000`). Esta ventana y la identidad del usuario se verifican en la Server Action antes de persistir mediante `service_role` (con escritura directa desde cliente revocada en `predictions`).
 
-Cuando el partido finaliza, el cálculo de puntos asigna 5 puntos por marcador exacto, 2 puntos por signo 1X2 sin marcador exacto y 1 punto por cada goleador acertado (teniendo en cuenta dobletes o múltiples goles del mismo jugador sin duplicar aciertos). La acreditación usa `apply_prediction_points` para evitar sumas duplicadas y concede un sobre de recompensa según la puntuación obtenida (1-2 puntos: Aficionado; 3-4 puntos: Rojiblanco; 5 o más: Leyenda). La Ilustración 23 resume la secuencia completa.
+Cuando el partido finaliza, el cálculo de puntos asigna 5 puntos por marcador exacto, 2 puntos por signo 1X2 sin marcador exacto y 1 punto por cada goleador acertado (teniendo en cuenta dobletes o múltiples goles del mismo jugador sin duplicar aciertos). La liquidación (`settlePendingPorraMatches` en `src/lib/porra/settle.ts`) se dispara de forma automática bajo demanda (con ventana de enfriamiento de 3 minutos) y cuenta además con un cron diario de respaldo en Vercel (`/api/cron/settle-porra`, configurado en `vercel.json` y protegido con `CRON_SECRET`). La acreditación usa `apply_prediction_points` para evitar sumas duplicadas y concede un sobre de recompensa (`user_account_state.packs`) según la puntuación obtenida (1-2 puntos: Aficionado; 3-4 puntos: Rojiblanco; 5 o más: Leyenda). La Ilustración 23 resume la secuencia completa.
 
 ```mermaid
 sequenceDiagram
     autonumber
     participant U as Usuario
-    participant SA as Server Action
+    participant SA as Server Action / Cron
     participant DB as PostgreSQL (predictions / profiles)
     participant Sports as Datos Deportivos
 
     U->>SA: Envía marcador y goleadores
-    SA->>DB: INSERT/UPDATE si kickoff_at > now() + 60s
-    Note over DB: RLS bloquea lecturas de otros usuarios hasta el inicio
+    SA->>DB: Upsert con service_role si kickoff_at > now() + 60s
+    Note over DB: Escritura directa bloqueada y lecturas ocultas hasta inicio
     Sports-->>SA: Partido pasa a estado finished con resultado final
-    SA->>SA: Calcula puntos (1X2, marcador exacto, goleadores)
+    SA->>SA: Liquidación bajo demanda o cron (/api/cron/settle-porra)
     SA->>DB: apply_prediction_points(id, puntos) con FOR UPDATE
     DB-->>U: Suma puntos al perfil y asigna sobre de recompensa
 ```
@@ -1018,13 +1018,13 @@ La telemetría propia (`src/lib/telemetry/`) sustituye a rastreadores comerciale
 
 ### 3.3.9 PWA y Modo Offline
 
-Al ser incompatibles los plugins de PWA basados en Webpack con Turbopack en Next.js 16, `public/sw.js` implementa un Service Worker propio con tres cachés versionadas (`mareona-shell-v3`, `mareona-static-v3` y `mareona-images-v3`) y limpieza FIFO al superar límites de entradas.
+Al ser incompatibles los plugins de PWA basados en Webpack con Turbopack en Next.js 16, `public/sw.js` implementa un Service Worker propio (`VERSION = "v6"`) con tres cachés versionadas (`mareona-shell-v6`, `mareona-static-v6` y `mareona-images-v6`) y limpieza FIFO al superar límites de entradas.
 
-- Las rutas `/juegos/*`, `/historico/*` y `/offline` se precachean en la instalación extrayendo sus recursos JS y CSS mediante expresión regular; en navegación aplican estrategia *network-first* con un límite de espera de 3 segundos (`NAVIGATION_TIMEOUT_MS`), sirviendo la copia en caché si la red del estadio está saturada.
-- Las rutas dinámicas o privadas (`/temporada`, `/social`, `/perfil`, `/api/*`) van siempre a red para no mezclar sesiones ni mostrar marcadores obsoletos, mostrando `/offline` si no hay conexión.
+- En la instalación se precachean `/offline`, `/juegos` e `/historico` extrayendo sus recursos JS y CSS mediante expresión regular, y en navegación se habilita copia offline bajo demanda para los juegos (`/juegos/wordle`, `/juegos/pregunta-del-dia`, `/juegos/mas-o-menos`) y todo `/historico/*` con estrategia *network-first* y límite de espera de 3 segundos (`NAVIGATION_TIMEOUT_MS`), además de cachear las peticiones al diccionario de Wordle (`/api/wordle/dict?len=...`).
+- Las rutas dinámicas o privadas (`/temporada`, `/social`, `/perfil`, el resto de `/api/*`) van siempre a red para no mezclar sesiones ni mostrar marcadores obsoletos, mostrando `/offline` si no hay conexión.
 - Los paquetes inmutables de `/_next/static/*` usan *cache-first* y las imágenes usan *stale-while-revalidate*.
 
-Si un usuario completa un juego diario sin red, `offline-sync-queue.ts` guarda el resultado en `localStorage` conservando siempre el primer intento del día en los retos de intento único para evitar trampas, y `OfflineSyncListener` lo envía al servidor cuando el navegador recupera conexión (Ilustración 24).
+Si un usuario completa un juego diario sin red, `offline-sync-queue.ts` guarda el resultado en la partición de `localStorage` del usuario (`account-storage-partition.ts`, con absorción segura de la sesión previa de invitado al iniciar sesión) conservando siempre el primer intento del día para evitar trampas, y `OfflineSyncListener` lo envía al servidor cuando el navegador recupera conexión para verificar su prueba (`verifyDailyGameWinProof`) (Ilustración 24).
 
 ```mermaid
 sequenceDiagram
@@ -1204,7 +1204,7 @@ Ningún componente de interfaz renderiza etiquetas `<img>` directas para recurso
 
 ### 3.6.1 Identidad Visual
 
-La interfaz utiliza un único tema claro (`color-scheme: light`) basado en rojo corporativo y blanco (`docs/DESIGN.md` y `src/app/globals.css`), eliminando cualquier tono azul por defecto del navegador en enlaces, selecciones o anillos de foco:
+La interfaz utiliza un único tema claro (`color-scheme: light`) basado en rojo corporativo y blanco (`docs/DESIGN.md` y `src/app/globals.css`), eliminando cualquier tono azul por defecto del navegador en enlaces, selecciones o anillos de foco (reservando el azul exclusivamente para los indicadores deportivos de zona competitiva en clasificación —Champions League y Playoff de ascenso— y la convención cromática estándar en Wordle):
 
 | Token | Valor | Uso principal |
 | :--- | :--- | :--- |
@@ -1264,11 +1264,12 @@ El proyecto se desarrolla sobre un stack web tipado en TypeScript, apoyado en Po
 | Next.js | 16.4 | Framework de aplicación con App Router, Server Components, Server Actions y proxy en el borde. |
 | React / React DOM | 19.3 | Renderizado en servidor y componentes interactivos en cliente. |
 | Tailwind CSS | 4 | Sistema de estilos utilitarios compilado mediante `@tailwindcss/turbopack`. |
-| Radix UI / shadcn | 1.8 / 4.21 | Primitivas accesibles para diálogos, controles y manejo de foco y teclado. |
+| Componentes UI propios | — | Controles nativos accesibles con gestión de foco (`use-modal-a11y.ts`) y ARIA sin librerías UI pesadas. |
 | Zod | 4.6 | Validación de formularios, Server Actions, rutas API y respuestas de fuentes externas. |
 | Supabase JS / SSR | 2.117 / 0.12 | Acceso a PostgreSQL, autenticación mediante cookies HTTP, Realtime y Storage. |
 | PostgreSQL (PL/pgSQL) | 15+ | Base de datos relacional, políticas *Row Level Security* y funciones atómicas. |
 | Lucide React | 1.55 | Iconografía funcional de interfaz. |
+| Vercel Analytics | 2.0 | Telemetría ligera integrada en el despliegue de producción. |
 
 *Tabla 7. Tecnologías, lenguajes y versiones principales.*
 
@@ -1299,7 +1300,7 @@ mareona/
 ├── public/                # Manifiesto PWA, Service Worker (sw.js), escudos y recursos estáticos
 ├── scripts/               # Scripts de ingesta histórica y auditoría Lighthouse
 ├── supabase/
-│   └── migrations/        # 16 migraciones SQL incrementales y políticas RLS
+│   └── migrations/        # 23 migraciones SQL incrementales y políticas RLS
 ├── tests/
 │   ├── a11y/              # Contraste WCAG 2.2 y estándares ARIA en modales
 │   ├── code/              # Reglas estáticas de arquitectura y seguridad
@@ -1352,11 +1353,11 @@ Todo el código generado, las migraciones SQL, las políticas RLS y la lógica d
 
 ## 5.1 Estrategia de Pruebas
 
-La verificación del sistema se organiza en seis niveles automatizados ejecutados mediante el corredor nativo de Node.js (`node --test`) [14] y Playwright. La suite de Node agrupa **102 archivos** (140 suites y **604 tests**) que se ejecutan en unos segundos, complementados por **5 suites extremo a extremo** en navegador Chromium y un script de auditoría Lighthouse [15]. En la Ilustración 35 se muestra la pirámide de pruebas y en la Tabla 9 los comandos disponibles en `package.json`.
+La verificación del sistema se organiza en seis niveles automatizados ejecutados mediante el corredor nativo de Node.js (`node --test`) [14] y Playwright. La suite de Node agrupa **105 archivos** (**146 suites** y **641 tests**) que se ejecutan en unos segundos, complementados por **5 suites extremo a extremo** en navegador Chromium y un script de auditoría Lighthouse [15]. En la Ilustración 35 se muestra la pirámide de pruebas y en la Tabla 9 los comandos disponibles en `package.json`.
 
 ```mermaid
 flowchart BT
-    L1["Base: Unitarias (98 archivos en tests/unit/)\nMotores de juegos, parsers deportivos, Porra, códec táctico, esquemas Zod"]
+    L1["Base: Unitarias (99 archivos en tests/unit/)\nMotores de juegos, parsers deportivos, Porra, códec táctico, esquemas Zod"]
     L2["Integración (2 archivos en tests/integration/)\nServer Actions sociales, encuestas, comentarios y votos al MVP"]
     L3["Código y arquitectura (1 archivo en tests/code/)\nReglas estáticas sobre src/: sin font-mono, sin @ts-ignore, cabeceras OWASP"]
     L4["Accesibilidad (2 archivos en tests/a11y/)\nContraste WCAG 2.2 AA sobre globals.css y estándares ARIA en modales"]
@@ -1370,7 +1371,7 @@ flowchart BT
 
 | Comando | Alcance |
 | :--- | :--- |
-| `npm run test:unit` | Ejecuta los 98 archivos de pruebas unitarias de dominio. |
+| `npm run test:unit` | Ejecuta los 99 archivos de pruebas unitarias de dominio. |
 | `npm run test:integration` | Ejecuta las pruebas de Server Actions sociales y de *La Grada*. |
 | `npm run test:a11y` | Verifica contraste WCAG 2.2 AA y atributos ARIA en modales. |
 | `npm run test:code` | Comprueba reglas de arquitectura, seguridad y limpieza sobre `src/`. |
@@ -1383,7 +1384,7 @@ flowchart BT
 
 ## 5.2 Pruebas Unitarias
 
-Las 98 suites de `tests/unit/` validan la lógica pura de dominio aislada de la red y de React:
+Las 99 suites de archivos en `tests/unit/` validan la lógica pura de dominio aislada de la red y de React:
 
 - Motores de juego: evaluación en dos pasadas de *Wordle* (`wordle-engine.test.ts`), ausencia de repeticiones en la permutación diaria Mulberry32 + Fisher-Yates (`daily-permutation.test.ts`, `wordle-words.test.ts`), cálculo de fechas en `Europe/Madrid` (`game-daily-date.test.ts`), comparación de atributos en *¿Quién es?* y *¿Más o Menos?*, y liquidación de puntos y cortes horarios en *La Porra* (`porra-engine.test.ts`, `porra-cutoff.test.ts`).
 - Coleccionismo: probabilidades y garantías por tipo de sobre en `card-packs.test.ts`, paginación del álbum y sincronización de partidos disputados en `cards-match-sync.test.ts`.
@@ -1656,7 +1657,7 @@ Desde el punto de vista técnico, las decisiones de arquitectura responden a la 
 - La combinación de fuentes deportivas detrás de adaptadores de servidor con caché en dos niveles (memoria con deduplicación `inFlightRequests` y `external_api_cache` en PostgreSQL) y la compilación del archivo histórico en ficheros JSON permiten servir vistas densas sin agotar cuotas ni exponer claves externas.
 - El Service Worker propio (`public/sw.js`), con límite de espera de 3 segundos en navegación y cola de sincronización en `localStorage`, mantiene disponibles el archivo histórico y los juegos diarios cuando falla la cobertura en el estadio.
 - La seguridad y el cumplimiento legal recaen en la propia base de datos mediante *Row Level Security* y permisos por columna en todas las tablas, validaciones con Zod en cada Server Action, moderación automática con Groq acompañada de revisión manual, borrado completo de cuenta (`delete_current_user`) y borrado lógico con custodia en mensajería directa.
-- El diseño visual en rojo y blanco cumple WCAG 2.2 AA [1] de forma verificable (contraste comprobado sobre los tokens CSS, tablas `sr-only` para gráficos SVG y gestión de foco en modales), respaldado por una batería de 604 tests en Node.js y 5 suites extremo a extremo en Playwright [14].
+- El diseño visual en rojo y blanco cumple WCAG 2.2 AA [1] de forma verificable (contraste comprobado sobre los tokens CSS, tablas `sr-only` para gráficos SVG y gestión de foco en modales), respaldado por una batería de 641 tests (146 suites) en Node.js y 5 suites extremo a extremo en Playwright [14].
 
 El proyecto también deja claras sus contrapartidas. Depender de fuentes deportivas gratuitas o no oficiales obliga a mantener parsers defensivos y a mostrar avisos explícitos cuando falta un dato en lugar de recurrir a valores simulados; del mismo modo, los límites de ejecución y conexiones de los planes gratuitos exigen vigilar el tamaño de las consultas y el tiempo de vida de las cachés.
 
@@ -1698,7 +1699,7 @@ A continuación se recogen los estándares técnicos, marcos normativos y docume
 
 [9] Tailwind Labs. *Tailwind CSS v4 Documentation*. Disponible en: https://tailwindcss.com/docs
 
-[10] WorkOS / Radix. *Radix UI Primitives Documentation*. Disponible en: https://www.radix-ui.com/primitives/docs
+[10] Lucide Contributors. *Lucide React Icon Library Documentation*. Disponible en: https://lucide.dev/guide/packages/lucide-react
 
 [11] Colin McDonnell. *Zod Schema Validation Documentation*. Disponible en: https://zod.dev
 

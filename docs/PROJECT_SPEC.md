@@ -51,7 +51,7 @@ La aplicación contará con cuatro áreas verticales de primer nivel en la naveg
 | Frontend | Next.js (App Router) | Aplicación web y renderizado |
 | Lenguaje | TypeScript estricto | Seguridad de tipos |
 | Estilos | Tailwind CSS | Diseño y estilos |
-| Componentes UI | shadcn/ui (Radix UI) | Componentes accesibles |
+| Componentes UI | Componentes propios accesibles + `lucide-react` | Sistema de diseño ligero sin dependencias externas pesadas |
 | Backend / Base de datos | Supabase | PostgreSQL, Auth, Row Level Security (RLS) y Storage |
 | Despliegue | Vercel | CI/CD continuo desde GitHub |
 | PWA | Service Worker propio (`public/sw.js`) + Manifest Web | Instalación y funcionamiento offline compatible con Turbopack |
@@ -86,64 +86,61 @@ La aplicación contará con cuatro áreas verticales de primer nivel en la naveg
 ```text
 mareona/
 ├── docs/
-│   ├── adr/
-│   ├── api-terms.md
+│   ├── DESIGN.md
+│   ├── LEGAL-ASSETS.md
 │   ├── assets-licenses.md
-│   └── design-tokens-contrast.md
+│   ├── MEMORIA_TECNICA.md
 ├── public/
 │   ├── icons/
+│   ├── sw.js
 │   └── manifest.webmanifest
 ├── supabase/
 │   ├── migrations/
-│   ├── seed.sql
-│   └── config.toml
+│   └── email-templates/
 ├── src/
 │   ├── app/
-│   │   ├── (auth)/
-│   │   │   ├── login/
-│   │   │   ├── registro/
-│   │   │   └── onboarding/
 │   │   ├── (main)/
 │   │   │   ├── temporada/
 │   │   │   ├── historico/
 │   │   │   ├── social/
 │   │   │   ├── juegos/
-│   │   │   └── perfil/
-│   │   ├── (legal)/
-│   │   │   ├── accesibilidad/
-│   │   │   ├── privacidad/
-│   │   │   ├── terminos/
-│   │   │   └── acerca-de/
+│   │   │   ├── perfil/
+│   │   │   ├── instalar/
+│   │   │   └── aviso-legal/, privacidad/, cookies/, terminos/
+│   │   ├── admin/
+│   │   ├── auth/callback/
 │   │   ├── api/
-│   │   │   ├── cron/
-│   │   │   └── webhooks/
+│   │   │   ├── client-errors/
+│   │   │   ├── cron/settle-porra/
+│   │   │   ├── telemetry/
+│   │   │   └── wordle/dict/
 │   │   └── globals.css
 │   ├── components/
 │   │   ├── ui/
-│   │   ├── brand/
+│   │   ├── auth/
+│   │   ├── cards/
+│   │   ├── layout/
 │   │   ├── media/
-│   │   └── features/
-│   ├── domain/
-│   │   ├── season/
-│   │   ├── history/
-│   │   ├── social/
-│   │   ├── games/
-│   │   └── shared/
-│   ├── application/
-│   │   └── casos de uso / Server Actions
+│   │   ├── pwa/
+│   │   └── social/
+│   ├── data/
+│   ├── i18n/
 │   ├── lib/
 │   │   ├── supabase/
 │   │   ├── sports-api/
-│   │   ├── validation/
+│   │   ├── admin/, auth/, cards/, games/, historical/, porra/, social/
 │   │   └── utils.ts
 │   ├── types/
 │   │   ├── database.types.ts
 │   │   └── index.ts
 │   └── proxy.ts
 └── tests/
+    ├── a11y/
+    ├── code/
     ├── e2e/
     ├── integration/
-    └── fixtures/
+    ├── load/
+    └── unit/
 ```
 
 ### 2.2. Reglas de dependencias entre capas
@@ -151,26 +148,21 @@ mareona/
 La arquitectura seguirá el siguiente flujo de dependencias:
 
 ```text
-app/ (UI y rutas)
+app/ (UI, rutas y Server Actions)
     ↓
-components/
+components/ (presentación e interactividad cliente acotada)
     ↓
-application/ (casos de uso y Server Actions)
+lib/{dominio} (lógica pura, validación Zod y reglas de negocio)
     ↓
-domain/ (lógica de negocio pura)
-
-lib/ (adaptadores técnicos)
-    ↓
-Implementaciones de las interfaces utilizadas por application/
+lib/{supabase,sports-api}/ + data/ (adaptadores de infraestructura)
 ```
 
 Reglas:
 
-- **`app/`:** contiene las rutas y la interfaz de usuario. Las páginas deben ser finas y obtener los datos mediante casos de uso.
-- **`components/`:** contiene los componentes reutilizables de la interfaz y los componentes específicos de cada funcionalidad.
-- **`application/`:** orquesta los casos de uso y coordina el dominio con los adaptadores mediante interfaces.
-- **`domain/`:** contiene la lógica de negocio en TypeScript puro. No debe importar React, Next.js ni Supabase.
-- **`lib/`:** implementa los adaptadores técnicos, como el acceso a Supabase y la integración con las API deportivas.
+- **`app/`:** contiene las rutas, Server Components, API routes y layouts. Las páginas cargan datos en servidor en paralelo (`Promise.all`) delegando en `src/lib/`.
+- **`components/`:** contiene los componentes reutilizables de la interfaz y los módulos visuales acotados (≤ 180 líneas por archivo).
+- **`lib/` (dominio y Server Actions):** contiene la lógica pura (motores de juegos, La Porra, normalización, árboles sociales, validación Zod) y las mutaciones autoritativas de servidor.
+- **`lib/supabase/`, `lib/sports-api/` y `data/`:** implementan los adaptadores técnicos y el archivo histórico compilado en JSON.
 
 ### 2.3. Estrategia de caché de datos deportivos
 
@@ -206,10 +198,10 @@ caché          ↓
 
 #### Control del consumo de API
 
-- Al alcanzar el **80 % de la cuota disponible**, activar el modo «solo caché».
-- La sincronización se realizará mediante un cron protegido con `CRON_SECRET`.
-- Las solicitudes de los usuarios no deben provocar directamente sincronizaciones con la API deportiva.
-- Los partidos en directo se transmitirán al cliente mediante Supabase Realtime, escuchando los cambios de la tabla `matches`.
+- Las peticiones pasan por caché en dos niveles (`inFlightRequests` en memoria y `external_api_cache` en Supabase) con TTL variable por tipo de dato.
+- La liquidación pendiente de *La Porra* cuenta con ejecución automática bajo demanda y cron diario de respaldo protegido con `CRON_SECRET` (`/api/cron/settle-porra`).
+- Ninguna solicitud del navegador llama directamente a las APIs deportivas externas; todo acceso ocurre en servidor.
+- Durante partidos en directo, el cliente refresca con *polling* acotado (`use-live-matches-poll.ts`) con corte automático al perder foco o finalizar el encuentro.
 
 ---
 
@@ -217,7 +209,7 @@ caché          ↓
 
 ### Fase 1 — Setup, autenticación y fundamentos de accesibilidad
 
-- Configuración de Next.js y shadcn/ui.
+- Configuración de Next.js y sistema de diseño propio en rojo y blanco.
 - Definición de los tokens corporativos de diseño.
 - Implementación de la autenticación con Supabase Auth.
 - Creación de un layout accesible con las cuatro áreas principales.
@@ -257,7 +249,7 @@ caché          ↓
 
 ### Fase 5 — Optimización PWA y caché de APIs
 
-- Implementación del service worker con Serwist.
+- Implementación de un Service Worker manual propio (`public/sw.js`) compatible con Turbopack.
 - Configuración de la instalación como PWA.
 - Auditorías Lighthouse:
   - Rendimiento: puntuación objetivo de al menos 90.
@@ -334,10 +326,10 @@ Los comentarios deben explicar únicamente:
 
 Antes de considerar una tarea terminada, deben cumplirse los siguientes criterios:
 
-- [ ] Compila sin errores mediante `npm run typecheck`.
-- [ ] No contiene usos de `any`.
+- [ ] Compila sin errores y supera la suite automatizada mediante `npm run check` (`tsc --noEmit`, `eslint` y `node --test`).
+- [ ] No contiene usos de `any`, `@ts-ignore` ni `@ts-expect-error`.
 - [ ] `npm run lint` termina sin errores.
-- [ ] `npm run format:check` termina sin errores.
+- [ ] Respeta el límite de ≤ 180 líneas por archivo de componente y la prohibición de `font-mono`.
 - [ ] Se utilizan Server Components por defecto; cualquier directiva `"use client"` está justificada.
 - [ ] Se han añadido las pruebas correspondientes y `npm test` termina correctamente.
 - [ ] Se han verificado las políticas RLS y la validación con Zod.

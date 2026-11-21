@@ -219,7 +219,7 @@ Para garantizar una comunidad sana y un funcionamiento técnico fiable, la plata
 ### Calidad del Software, Seguridad y Verificación
 - **Arquitectura modular y tipado estricto:** Separación limpia entre presentación, casos de uso y dominio, con validación de esquemas en el borde mediante Zod y ausencia total de tipos `any`.
 - **Seguridad defensiva y RGPD:** Políticas *Row Level Security* (RLS) activas en todas las tablas de PostgreSQL, cabeceras HTTP de seguridad estrictas (CSP, HSTS), limitación de tasa de peticiones (*rate limiting*) en servidor y custodia segura de comunicaciones.
-- **Suite de pruebas multinivel (604 tests automatizados en 140 suites):** Verificación continua que abarca pruebas unitarias de dominio, pruebas de integración de Server Actions, auditorías estáticas de reglas de arquitectura, tests matemáticos de contraste WCAG, pruebas de concurrencia/carga y pruebas de extremo a extremo (E2E) con Playwright.
+- **Suite de pruebas multinivel (641 tests automatizados en 146 suites):** Verificación continua que abarca pruebas unitarias de dominio, pruebas de integración de Server Actions, auditorías estáticas de reglas de arquitectura, tests matemáticos de contraste WCAG, pruebas de concurrencia/carga y pruebas de extremo a extremo (E2E) con Playwright.
 
 ---
 
@@ -231,7 +231,7 @@ Para garantizar una comunidad sana y un funcionamiento técnico fiable, la plata
 | **Lenguaje** | TypeScript 5 (`strict: true`) | Tipado estático estricto en la totalidad de la base de código |
 | **Base de Datos** | PostgreSQL (Supabase) | Modelo relacional, funciones RPC, triggers y políticas Row Level Security |
 | **Autenticación** | Supabase Auth (`@supabase/ssr`) | Credenciales y Google OAuth 2.0 gestionados en servidor |
-| **Estilos y UI** | Tailwind CSS 4 & Radix UI | Sistema de diseño accesible basado en tokens corporativos |
+| **Estilos y UI** | Tailwind CSS 4 & Lucide React | Sistema de diseño accesible propio basado en tokens corporativos e iconografía funcional |
 | **Validación** | Zod 4 | Validación de esquemas y contratos de datos en el borde de entrada |
 | **Datos Deportivos** | ESPN API, FotMob, API-Football & BDFutbol | Ingesta multifuente con caché en servidor y archivo histórico compilado |
 | **Moderación IA** | Groq API (`Llama 3.1 8B`) | Análisis contextual de baja latencia sobre publicaciones comunitarias |
@@ -267,4 +267,5 @@ Ingeniero Informático del Software
 - **Despliegue:** [mareona.vercel.app](https://mareona.vercel.app)
 - **GitHub:** [@MarcoLorenzoMartinez](https://github.com/MarcoLorenzoMartinez)
 - **LinkedIn:** [Marco Lorenzo Martínez](https://www.linkedin.com/in/marco-lorenzo-mart%C3%ADnez/)
-- **Contacto:** [marcolorenzomart@gmail.com](mailto:marcolorenzomart@gmail.com)
+- **Contacto oficial de Mareona:** [mareonasportinguista@gmail.com](mailto:mareonasportinguista@gmail.com)
+- **Contacto del autor:** [marcolorenzomart@gmail.com](mailto:marcolorenzomart@gmail.com)

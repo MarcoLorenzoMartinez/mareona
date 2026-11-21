@@ -21,7 +21,7 @@ La aplicación utiliza como paleta principal el **rojo y blanco**, manteniendo u
 
 ### Reglas de Aplicación
 - **Rojo y blanco dominan:** El rojo no se usa en párrafos de texto largo ni fondos de lectura extensa (feeds o tablas).
-- **Sin tonos azules en la interfaz:** Diseñada con tema claro rojo/blanco. Reemplazar valores por defecto del navegador y librerías (`--ring`, selecciones y enlaces) por los tokens corporativos.
+- **Sin tonos azules en la interfaz (con excepción deportiva en tablas clasificatorias):** Diseñada con tema claro rojo/blanco. Reemplazar valores por defecto del navegador y librerías (`--ring`, selecciones y enlaces) por los tokens corporativos. Única excepción aprobada en v1.0: los indicadores cromáticos de zona competitiva en clasificación (`#1d4ed8` Champions League y `#2563eb` Playoff de ascenso en `src/lib/historical/standings-zones.ts`).
 - **Contenido externo:** Los escudos y fotografías de terceros conservan sus colores oficiales originales.
 - **Denominación oficial del club:** En cualquier pantalla o componente, el club se nombra siempre **"Real Sporting"**, sobreescribiendo en la capa de datos cualquier variación proveniente de APIs de terceros (ej. "Sporting Gijón").
 - **Logotipo:** Isotipo minimalista con fondo rojo `#e2001a` y una cresta de ola marina blanca formando sutilmente una letra "M".

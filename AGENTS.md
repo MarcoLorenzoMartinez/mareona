@@ -23,7 +23,7 @@
 
 ## 3. Identidad Visual y Accesibilidad
 - **Rojo y blanco dominan.** `--brand`: `#e2001a`, `--background`: `#ffffff`.
-- **Sin azul en la interfaz:** Diseñada con tema claro rojo/blanco. Reemplazar tokens por defecto de foco (`--ring`), enlaces y selección por la paleta corporativa.
+- **Sin azul en la interfaz (con excepción deportiva en tablas clasificatorias):** Diseñada con tema claro rojo/blanco. Reemplazar tokens por defecto de foco (`--ring`), enlaces y selección por la paleta corporativa. Única excepción aprobada en v1.0: los indicadores cromáticos de zona competitiva en clasificación (`#1d4ed8` Champions League y `#2563eb` Playoff de ascenso en `src/lib/historical/standings-zones.ts`) y los estados estándar de acierto/presencia de Wordle (`emerald-600` / `amber-500`).
 - **Tema único en MVP:** Claro (rojo y blanco). Declarar `color-scheme: light`.
 - **Accesibilidad WCAG 2.2 AA:** Requisito bloqueante en toda pantalla desde la Fase 1. Operable por teclado, foco siempre visible, contraste ≥ 4.5:1, nunca transmitir estados solo con color.
 - **Escudos y fotos:** Usar exclusivamente `<TeamCrest>` y `<PlayerPhoto>` de `src/components/media/`.
@@ -65,7 +65,7 @@ La IA debe consultar y aplicar de forma autónoma las skills instaladas según e
 | **Vistas con datos y tablas** (`/temporada`, clasificación, plantillas, estadísticas) | `.agents/skills/design-taste-frontend` | Controlar `VISUAL_DENSITY` (densidad alta pero legible, ritmo visual sobrio sin tarjetas infladas). |
 | **Layouts móviles y PWA** (`MainNav`, vistas de móvil, navegación inferior) | `.agents/skills/mobile-native` | Áreas táctiles cómodas (≥44px), ergonomía de pulgar, evitar scroll rebote y emular sensación nativa. |
 | **Microinteracciones y feedback** (botones, tarjetas activas, dialogs, tabs) | `.agents/skills/emil-design-eng` | Transiciones rápidas (<200ms), estados `:active` inmediatos y físicas naturales sin animación superflua. |
-| **Notificaciones o confirmaciones** (envío de porra, guardado, errores) | `.agents/skills/ask-sonner` | Integración correcta de toasts con `sonner` y alineación con tokens del proyecto. |
+| **Notificaciones o confirmaciones** (envío de porra, guardado, errores) | `.agents/skills/ask-sonner` | Patrones de UX de toasts aplicados sobre el componente propio `src/components/ui/toast-container.tsx` alineado con tokens del proyecto. |
 
 > **Regla de conflicto innegociable:** Ante cualquier conflicto de estilo propuesto por una skill, los tokens y restricciones de `docs/DESIGN.md` (tema claro, rojo `#e2001a`, blanco puro y sin tonos azules) tienen prioridad absoluta.
 
