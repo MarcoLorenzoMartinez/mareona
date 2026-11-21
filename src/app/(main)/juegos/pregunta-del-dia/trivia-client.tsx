@@ -85,6 +85,7 @@ export function TriviaClient({ challenge: initialChallenge }: TriviaClientProps)
         gameType: 'trivia',
         challengeDate: challenge.dateStr,
         won: isCorrect,
+        proof: isCorrect ? finalAnswer : undefined,
         completedAt: newAttempt.answeredAt,
         userId: user?.id,
       });

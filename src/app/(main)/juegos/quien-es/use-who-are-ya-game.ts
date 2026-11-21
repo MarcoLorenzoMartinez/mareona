@@ -114,6 +114,7 @@ export function useWhoAreYaGame(players: WhoAreYaPlayer[], initialDate: string) 
             challengeDate: selectedDate,
             won: nextIsWon,
             score: nextGuesses.length,
+            proof: nextIsWon ? String(found.bdfId) : undefined,
             completedAt: new Date().toISOString(),
             userId,
           });

@@ -1,7 +1,7 @@
 // Client: Orquestador interactivo del juego Más o Menor
 'use client';
 
-import React, { useState, useCallback, useTransition, useEffect } from 'react';
+import React, { useState, useCallback, useTransition, useEffect, useRef } from 'react';
 import type { HigherLowerMode, HigherLowerPlayer, HigherLowerGuess, HigherLowerStats } from '@/lib/higher-lower/types';
 import {
   getEligiblePlayers,
@@ -33,6 +33,7 @@ export function HigherLowerClient() {
   const [guessOutcome, setGuessOutcome] = useState<'correct' | 'wrong' | null>(null);
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
   const [, startTransition] = useTransition();
+  const lastWinProofRef = useRef<string | undefined>(undefined);
 
   const [pool, setPool] = useState<HigherLowerPlayer[]>(() => getEligiblePlayers('matches'));
   const [leftPlayer, setLeftPlayer] = useState<HigherLowerPlayer>(() => getEligiblePlayers('matches')[0]);
@@ -67,6 +68,7 @@ export function HigherLowerClient() {
     setIsRevealed(false);
     setGuessOutcome(null);
     setIsGameOverModalOpen(false);
+    lastWinProofRef.current = undefined;
   }, []);
 
   const handleModeChange = (newMode: HigherLowerMode) => {
@@ -76,6 +78,7 @@ export function HigherLowerClient() {
 
   const handleGuess = (guess: HigherLowerGuess) => {
     const evaluation = evaluateHigherLower(leftPlayer, rightPlayer, mode, guess);
+    if (evaluation.isCorrect) lastWinProofRef.current = `${leftPlayer.bdfId}:${rightPlayer.bdfId}:${mode}:${guess}`;
     setIsRevealed(true);
     setGuessOutcome(evaluation.isCorrect ? 'correct' : 'wrong');
 
@@ -84,13 +87,11 @@ export function HigherLowerClient() {
         if (evaluation.isCorrect) {
           const nextScore = currentScore + 1;
           setCurrentScore(nextScore);
-
           setStats((prev) => {
             const nextStats = recordScoreInStats(prev, mode, nextScore);
             saveHigherLowerStats(nextStats);
             return nextStats;
           });
-
           setLeftPlayer(rightPlayer);
           setRightPlayer(pickRandomPlayer(pool, [leftPlayer.bdfId, rightPlayer.bdfId]));
           setIsRevealed(false);
@@ -102,16 +103,13 @@ export function HigherLowerClient() {
             return nextStats;
           });
           try {
+            const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Madrid", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
             enqueueGameResult({
               gameType: 'higher_lower',
-              challengeDate: new Intl.DateTimeFormat("en-CA", {
-                timeZone: "Europe/Madrid",
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-              }).format(new Date()),
+              challengeDate: today,
               won: currentScore >= 3,
               score: currentScore,
+              proof: currentScore >= 3 ? lastWinProofRef.current : undefined,
               completedAt: new Date().toISOString(),
               userId: user?.id,
             });

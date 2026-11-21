@@ -9,6 +9,8 @@ export const esAuth = {
     dialogAria: "Acceso a Mareona",
     cancelRegistrationAria: "Cancelar registro y salir",
     closeAria: "Cerrar ventana",
+    confirmAbortRegistration:
+      "¿Seguro que quieres cancelar el registro? Se eliminará la cuenta que acabas de crear.",
   },
   credentials: {
     signInErrorFallback: "No se pudo iniciar sesión",

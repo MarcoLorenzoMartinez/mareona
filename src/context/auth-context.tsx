@@ -1,8 +1,9 @@
 // Client: Provee estado global de sesión de usuario y control del modal de acceso
 "use client";
 
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { signOut as serverSignOut } from "@/lib/auth/actions";
+import { isOnboardingEligible } from "@/lib/auth/new-user";
 import { useAuthSession } from "./use-auth-session";
 import type { AuthContextValue, AuthProviderProps } from "./auth-types";
 
@@ -40,6 +41,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const closeAuthModal = useCallback(() => {
     setIsAuthModalOpen(false);
   }, []);
+
+  useEffect(() => {
+    if (isLoading || !isAuthModalOpen || authModalMode !== "onboarding") {
+      return;
+    }
+
+    const eligible = isOnboardingEligible({
+      hasUser: Boolean(user),
+      userCreatedAt: user?.created_at,
+      profileCreatedAt: profile?.created_at,
+      profileUpdatedAt: profile?.updated_at,
+    });
+
+    if (!eligible) {
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has("onboarding")) {
+          url.searchParams.delete("onboarding");
+          window.history.replaceState({}, "", url.pathname + url.search);
+        }
+      }
+      queueMicrotask(() => {
+        setAuthModalMode("signin");
+        setIsAuthModalOpen(false);
+      });
+    }
+  }, [isLoading, isAuthModalOpen, authModalMode, user, profile]);
 
   const handleSignOut = useCallback(async () => {
     clearSession();

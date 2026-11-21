@@ -1,12 +1,12 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { validateAvatarFile } from "./avatar-validation";
 import type { AuthActionResult } from "./types";
 
 /**
- * Securely uploads a user avatar to Supabase Storage and updates the profile.
+ * Securely uploads a user avatar to Supabase Storage and returns its public URL.
+ * Profile persistence is finalized only when the user explicitly saves the edit or onboarding form.
  */
 export async function uploadAvatarImage(
   formData: FormData
@@ -79,15 +79,6 @@ export async function uploadAvatarImage(
     const {
       data: { publicUrl },
     } = supabase.storage.from("avatars").getPublicUrl(filePath);
-
-    // Update public profile avatar url
-    await supabase
-      .from("profiles")
-      .update({ avatar_url: publicUrl })
-      .eq("id", user.id);
-
-    revalidatePath("/perfil");
-    revalidatePath("/social");
 
     return {
       success: true,

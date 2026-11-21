@@ -1,6 +1,10 @@
 import { z } from "zod";
 import type { UserPackInventory } from "./types.ts";
-import { migrateCardInventorySlugs, type StoredMissionState } from "./pack-storage.ts";
+import {
+  DEFAULT_PACK_INVENTORY,
+  migrateCardInventorySlugs,
+  type StoredMissionState,
+} from "./pack-storage.ts";
 import {
   mergeSyncedGameStorageEntries,
   syncedGameStorageMapSchema,
@@ -189,5 +193,63 @@ export function reconcileAccountAlbumState(
     hasActivity: serverActive || clientActive,
     revision: server.revision + 1,
     updatedAt: nowIso,
+  };
+}
+
+/**
+ * Server-authoritative reconciliation boundary used by Server Actions.
+ * Never allows a client payload (neither on initial sync nor via `mode: "push"`) to forge or
+ * overwrite sensitive inventory (`cards`, `packs`, `missions`). Only client game storage entries
+ * (Wordle, Who Are Ya, Lineup Builder, etc.) are synchronized across devices.
+ *
+ * @param server - Current authoritative server snapshot (or null on first sync).
+ * @param client - Untrusted client snapshot validated by Zod.
+ * @param storageSyncMode - Cross-device merge mode applied strictly to non-privileged `storageEntries`.
+ * @param nowIso - Timestamp ISO string.
+ * @returns Server-authoritative reconciled snapshot.
+ */
+export function reconcileAuthoritativeAccountState(
+  server: AccountAlbumSnapshot | null,
+  client: AccountAlbumSnapshot,
+  storageSyncMode: "reconcile" | "push",
+  nowIso = new Date().toISOString()
+): AccountAlbumSnapshot {
+  const mergedStorage = mergeSyncedGameStorageEntries(
+    server?.storageEntries,
+    client.storageEntries,
+    storageSyncMode
+  );
+
+  // Preserve server-owned claimed Porra rewards key so clients cannot erase claim records
+  const serverClaimedPorra = server?.storageEntries?.mareona_porra_claimed_rewards_v1;
+  if (serverClaimedPorra !== undefined) {
+    mergedStorage.mareona_porra_claimed_rewards_v1 = serverClaimedPorra;
+  }
+
+  if (!server) {
+    return {
+      cards: {},
+      packs: { ...DEFAULT_PACK_INVENTORY },
+      missions: {},
+      storageEntries: mergedStorage,
+      hasActivity: Object.keys(mergedStorage).length > 0,
+      revision: 1,
+      updatedAt: nowIso,
+    };
+  }
+
+  const { inventory: serverCards } = migrateCardInventorySlugs(server.cards);
+  const serverActive = server.hasActivity || hasAlbumActivity(serverCards, server.missions);
+  const storageChanged =
+    JSON.stringify(mergedStorage) !== JSON.stringify(server.storageEntries ?? {});
+
+  return {
+    cards: serverCards,
+    packs: server.packs,
+    missions: server.missions,
+    storageEntries: mergedStorage,
+    hasActivity: serverActive || Object.keys(mergedStorage).length > 0,
+    revision: storageChanged ? server.revision + 1 : server.revision,
+    updatedAt: storageChanged ? nowIso : server.updatedAt,
   };
 }

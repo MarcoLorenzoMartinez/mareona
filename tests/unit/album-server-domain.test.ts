@@ -7,6 +7,7 @@ import {
   applyDailyGameWinOnSnapshot,
   applyDailyGameClaimOnSnapshot,
   applyRecycleDuplicatesOnSnapshot,
+  applyPorraRewardsOnSnapshot,
 } from "../../src/lib/cards/album-server-domain.ts";
 import { HISTORICAL_CARDS_SEED } from "../../src/lib/cards/seed-data.ts";
 
@@ -83,5 +84,22 @@ describe("Album Server Domain State Transitions", () => {
       );
       assert.equal(remainingDups, 1);
     }
+  });
+
+  it("credits Porra rewards authoritatively without double-claiming", () => {
+    const base = ensureInitialAlbumSnapshot(null);
+    const first = applyPorraRewardsOnSnapshot(base, [
+      { matchId: "match-1", tier: "leyenda" },
+      { matchId: "match-2", tier: "rojiblanco" },
+    ]);
+    assert.equal(first.addedCount, 2);
+    assert.equal(first.snapshot.packs.leyenda, 1);
+    assert.equal(first.snapshot.packs.rojiblanco, 2);
+
+    const repeat = applyPorraRewardsOnSnapshot(first.snapshot, [
+      { matchId: "match-1", tier: "leyenda" },
+    ]);
+    assert.equal(repeat.addedCount, 0);
+    assert.equal(repeat.snapshot.packs.leyenda, 1);
   });
 });

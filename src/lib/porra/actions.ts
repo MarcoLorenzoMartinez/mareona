@@ -13,7 +13,14 @@ import {
   BANNED_USER_POST_MESSAGE,
   isProfileActivelyBanned,
 } from '@/lib/social/moderation';
-import { evaluatePorraPrediction, isPorraSubmissionOpen } from './engine';
+import { evaluatePorraPrediction, getPorraRewardTier, isPorraSubmissionOpen } from './engine';
+import { readServerAlbumState, writeServerAlbumState } from '@/lib/cards/account-state-store';
+import {
+  applyPorraRewardsOnSnapshot,
+  ensureInitialAlbumSnapshot,
+  type PorraRewardGrantItem,
+} from '@/lib/cards/album-server-domain';
+import type { AccountAlbumSnapshot } from '@/lib/cards/account-sync';
 import {
   submitPorraPredictionSchema,
   type SubmitPorraPredictionInput,
@@ -131,7 +138,15 @@ export async function submitPorraPrediction(
       : parsed.data.awayScore;
     const sanitizedScorers = parsed.data.sportingScorers.slice(0, sportingGoals);
 
-    const { data: inserted, error } = await supabase
+    const admin = createAdminClient();
+    if (!admin) {
+      return {
+        success: false,
+        error: 'El servicio de pronósticos no está configurado en el servidor',
+      };
+    }
+
+    const { data: inserted, error } = await admin
       .from('predictions')
       .insert({
         user_id: user.id,
@@ -311,5 +326,72 @@ export async function fetchAndSettleUserPorraState(): Promise<UserPorraState> {
     return { predictionsByMatchId, settledCount };
   } catch {
     return { predictionsByMatchId: {}, settledCount: 0 };
+  }
+}
+
+/**
+ * Authoritatively settles any finished predictions and credits unclaimed Porra booster pack
+ * rewards directly onto `user_account_state` on the server.
+ */
+export async function claimPorraRewardsServerAction(): Promise<
+  ActionResult<{
+    readonly addedCount: number;
+    readonly claimedMatchIds: readonly string[];
+    readonly snapshot: AccountAlbumSnapshot;
+  }>
+> {
+  if (!isSupabaseConfigured()) {
+    return { success: false, error: 'El servicio de base de datos no está disponible' };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: 'Debes iniciar sesión para reclamar tus sobres' };
+    }
+
+    // Ensure all finished matches have their points_awarded computed server-side
+    await fetchAndSettleUserPorraState();
+
+    const { data: rows, error } = await supabase
+      .from('predictions')
+      .select('match_id, points_awarded')
+      .eq('user_id', user.id)
+      .gt('points_awarded', 0);
+
+    if (error) {
+      return { success: false, error: 'No se pudieron verificar tus aciertos de la Porra' };
+    }
+
+    const eligibleRewards: PorraRewardGrantItem[] = [];
+    for (const row of rows ?? []) {
+      if (typeof row.points_awarded === 'number' && row.points_awarded > 0) {
+        const tier = getPorraRewardTier(row.points_awarded);
+        if (tier) {
+          eligibleRewards.push({ matchId: row.match_id, tier });
+        }
+      }
+    }
+
+    const base = ensureInitialAlbumSnapshot(await readServerAlbumState(user.id));
+    const outcome = applyPorraRewardsOnSnapshot(base, eligibleRewards);
+    if (outcome.addedCount > 0) {
+      await writeServerAlbumState(user.id, outcome.snapshot);
+    }
+
+    return {
+      success: true,
+      data: {
+        addedCount: outcome.addedCount,
+        claimedMatchIds: outcome.claimedMatchIds,
+        snapshot: outcome.snapshot,
+      },
+    };
+  } catch {
+    return { success: false, error: 'No se pudieron acreditar los sobres de La Porra' };
   }
 }

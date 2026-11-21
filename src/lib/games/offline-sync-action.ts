@@ -12,6 +12,7 @@ import {
   syncOfflineGamesInputSchema,
   type SyncOfflineGamesInput,
 } from "./offline-sync-types";
+import { verifyDailyGameWinProof } from "./offline-sync-verify";
 
 export interface SyncActionResult {
   readonly success: boolean;
@@ -53,10 +54,10 @@ export async function syncOfflineGamesAction(
     }
 
     const today = getTodayDateString();
-    const hasTodayWin = events.some((ev) => ev.won && ev.challengeDate === today);
+    const hasVerifiedTodayWin = events.some((ev) => verifyDailyGameWinProof(ev, today));
 
     let awardedReward = false;
-    if (hasTodayWin) {
+    if (hasVerifiedTodayWin) {
       const base = ensureInitialAlbumSnapshot(await readServerAlbumState(user.id));
       const outcome = applyDailyGameWinOnSnapshot(base, today);
       if (outcome.awarded) {

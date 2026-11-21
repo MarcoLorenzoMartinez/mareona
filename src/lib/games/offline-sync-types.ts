@@ -9,6 +9,7 @@ export const queuedGameEventSchema = z.object({
   challengeDate: z.string().min(1),
   won: z.boolean(),
   score: z.number().int().nonnegative().optional(),
+  proof: z.string().max(160).optional(),
   completedAt: z.string().min(1),
   userId: z.string().uuid().optional(),
 });

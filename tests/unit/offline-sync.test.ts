@@ -8,6 +8,12 @@ import {
   processOfflineGameSync,
 } from "../../src/lib/games/offline-sync-queue.ts";
 import { syncOfflineGamesInputSchema } from "../../src/lib/games/offline-sync-types.ts";
+import { verifyDailyGameWinProof } from "../../src/lib/games/offline-sync-verify.ts";
+import { getChallengeForDate } from "../../src/lib/wordle/words.ts";
+import { getTriviaForDate } from "../../src/lib/trivia/engine.ts";
+import rawWhoAreYaPlayers from "../../src/data/who-are-ya/players.json" with { type: "json" };
+import { getPlayerForDate } from "../../src/lib/who-are-ya/daily.ts";
+import type { WhoAreYaPlayer } from "../../src/lib/who-are-ya/types.ts";
 
 describe("Offline Game Sync Queue Suite", () => {
   const store = new Map<string, string>();
@@ -204,5 +210,89 @@ describe("Offline Game Sync Queue Suite", () => {
     };
     const invalidParsed = syncOfflineGamesInputSchema.safeParse(invalidBatch);
     assert.equal(invalidParsed.success, false);
+  });
+
+  it("verifies daily win proofs server-side and rejects forged events without valid proof", () => {
+    const today = "2026-11-21";
+    const wordleTarget = getChallengeForDate(today);
+    const triviaTarget = getTriviaForDate(today);
+    const wayTarget = getPlayerForDate(today, rawWhoAreYaPlayers as WhoAreYaPlayer[]);
+
+    // Forged win without proof must be rejected
+    assert.equal(
+      verifyDailyGameWinProof(
+        {
+          id: "forged-1",
+          gameType: "wordle",
+          challengeDate: today,
+          won: true,
+          completedAt: "2026-11-21T10:00:00Z",
+        },
+        today
+      ),
+      false
+    );
+
+    // Wrong proof must be rejected
+    assert.equal(
+      verifyDailyGameWinProof(
+        {
+          id: "wrong-word",
+          gameType: "wordle",
+          challengeDate: today,
+          won: true,
+          proof: "ZZZZZ",
+          completedAt: "2026-11-21T10:00:00Z",
+        },
+        today
+      ),
+      false
+    );
+
+    // Genuine wordle, trivia, and who_are_ya proofs pass
+    assert.equal(
+      verifyDailyGameWinProof(
+        {
+          id: "ok-wordle",
+          gameType: "wordle",
+          challengeDate: today,
+          won: true,
+          proof: wordleTarget.word,
+          completedAt: "2026-11-21T10:00:00Z",
+        },
+        today
+      ),
+      true
+    );
+
+    assert.equal(
+      verifyDailyGameWinProof(
+        {
+          id: "ok-trivia",
+          gameType: "trivia",
+          challengeDate: today,
+          won: true,
+          proof: triviaTarget.question.acceptedAnswers[0],
+          completedAt: "2026-11-21T10:00:00Z",
+        },
+        today
+      ),
+      true
+    );
+
+    assert.equal(
+      verifyDailyGameWinProof(
+        {
+          id: "ok-way",
+          gameType: "who_are_ya",
+          challengeDate: today,
+          won: true,
+          proof: String(wayTarget.bdfId),
+          completedAt: "2026-11-21T10:00:00Z",
+        },
+        today
+      ),
+      true
+    );
   });
 });

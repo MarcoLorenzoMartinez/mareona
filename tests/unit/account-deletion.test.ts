@@ -1,5 +1,11 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import {
+  canSafelyAbortRegistration,
+  isOnboardingEligible,
+} from "../../src/lib/auth/new-user.ts";
 
 describe("GDPR Account Deletion & Right to be Forgotten Protocol", () => {
   type AuthActionResult = {
@@ -115,5 +121,88 @@ describe("GDPR Account Deletion & Right to be Forgotten Protocol", () => {
     assert.strictEqual(result.success, false);
     assert.match(result.error ?? "", /Foreign key constraint violation/);
     assert.strictEqual(signedOut, false);
+  });
+
+  describe("Onboarding Abort & Eligibility Guards (P0-1)", () => {
+    it("allows abortRegistration only for fresh unedited accounts within 24 hours", () => {
+      const now = new Date("2026-11-21T14:00:00Z").getTime();
+      const recent = "2026-11-21T13:55:00Z";
+      assert.strictEqual(
+        canSafelyAbortRegistration({
+          userCreatedAt: recent,
+          profileCreatedAt: recent,
+          profileUpdatedAt: recent,
+          points: 0,
+          nowMs: now,
+        }),
+        true
+      );
+    });
+
+    it("blocks abortRegistration for established accounts older than 24h, edited profiles, or with points", () => {
+      const now = new Date("2026-11-21T14:00:00Z").getTime();
+      const oldDate = "2026-10-15T10:00:00Z";
+      const recent = "2026-11-21T13:55:00Z";
+
+      assert.strictEqual(
+        canSafelyAbortRegistration({
+          userCreatedAt: oldDate,
+          profileCreatedAt: oldDate,
+          profileUpdatedAt: oldDate,
+          points: 0,
+          nowMs: now,
+        }),
+        false
+      );
+
+      assert.strictEqual(
+        canSafelyAbortRegistration({
+          userCreatedAt: recent,
+          profileCreatedAt: recent,
+          profileUpdatedAt: "2026-11-21T13:58:00Z",
+          points: 0,
+          nowMs: now,
+        }),
+        false
+      );
+
+      assert.strictEqual(
+        canSafelyAbortRegistration({
+          userCreatedAt: recent,
+          profileCreatedAt: recent,
+          profileUpdatedAt: recent,
+          points: 10,
+          nowMs: now,
+        }),
+        false
+      );
+    });
+
+    it("denies onboarding modal when user is logged out or already customized their profile", () => {
+      const now = new Date("2026-11-21T14:00:00Z").getTime();
+      assert.strictEqual(
+        isOnboardingEligible({ hasUser: false, nowMs: now }),
+        false
+      );
+      assert.strictEqual(
+        isOnboardingEligible({
+          hasUser: true,
+          userCreatedAt: "2026-10-01T10:00:00Z",
+          profileCreatedAt: "2026-10-01T10:00:00Z",
+          profileUpdatedAt: "2026-10-05T10:00:00Z",
+          nowMs: now,
+        }),
+        false
+      );
+    });
+
+    it("requires explicit confirmation in AuthModal before aborting registration", () => {
+      const modalSrc = fs.readFileSync(
+        path.join(process.cwd(), "src/components/auth/auth-modal.tsx"),
+        "utf8"
+      );
+      assert.match(modalSrc, /window\.confirm\(/);
+      assert.match(modalSrc, /isOnboardingEligible/);
+    });
   });
 });

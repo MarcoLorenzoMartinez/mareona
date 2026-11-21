@@ -123,6 +123,7 @@ export async function handleGuessSubmission({
         challengeDate: challengeId,
         won: isWin,
         score: nextGuesses.length,
+        proof: isWin ? guessWord : undefined,
         completedAt: newState.completedAt || new Date().toISOString(),
         userId,
       });

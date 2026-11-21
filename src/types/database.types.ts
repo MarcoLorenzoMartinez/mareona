@@ -1212,6 +1212,7 @@ export interface Database {
           cards: Json;
           packs: Json;
           missions: Json;
+          storage_entries: Json;
           has_activity: boolean;
           revision: number;
           updated_at: string;
@@ -1221,6 +1222,7 @@ export interface Database {
           cards?: Json;
           packs?: Json;
           missions?: Json;
+          storage_entries?: Json;
           has_activity?: boolean;
           revision?: number;
           updated_at?: string;
@@ -1230,6 +1232,7 @@ export interface Database {
           cards?: Json;
           packs?: Json;
           missions?: Json;
+          storage_entries?: Json;
           has_activity?: boolean;
           revision?: number;
           updated_at?: string;

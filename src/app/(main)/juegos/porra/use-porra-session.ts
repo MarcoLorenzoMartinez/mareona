@@ -10,14 +10,16 @@ import { fetchPorraCommunityData } from '@/lib/porra/queries';
 import {
   submitPorraPrediction,
   fetchAndSettleUserPorraState,
+  claimPorraRewardsServerAction,
 } from '@/lib/porra/actions';
-import { syncAlbumAccountWithServer } from '@/lib/cards/account-sync-client';
+import { saveUserPackInventory } from '@/lib/cards/pack-storage';
+import { saveAlbumSyncRevision } from '@/lib/cards/account-sync-client';
 import {
   getStoredPrediction,
   saveStoredPrediction,
   getStoredPredictionsMap,
   getClaimedPorraMatchIds,
-  claimPorraRewards,
+  markPorraRewardsClaimed,
 } from '@/lib/porra/storage';
 import type {
   PorraLeaderboardEntry,
@@ -226,14 +228,23 @@ export function usePorraSession({
     }
   };
 
-  const handleClaimAll = () => {
+  const handleClaimAll = async () => {
     if (!user?.id) {
       openAuthModal();
       return;
     }
-    const addedCount = claimPorraRewards(pendingRewards, user.id);
+    const res = await claimPorraRewardsServerAction();
+    if (!res.success || !res.data) {
+      toast.error(res.error ?? 'No se pudieron reclamar tus sobres');
+      return;
+    }
+
+    const { addedCount, claimedMatchIds, snapshot } = res.data;
+    markPorraRewardsClaimed(claimedMatchIds, user.id);
+    saveUserPackInventory(snapshot.packs, user.id);
+    saveAlbumSyncRevision(snapshot.revision, user.id);
+
     if (addedCount > 0) {
-      void syncAlbumAccountWithServer(user.id, 'push');
       setJustClaimedCount(addedCount);
       setClaimVersion((v) => v + 1);
       toast.success(
@@ -241,6 +252,8 @@ export function usePorraSession({
           ? dict.games.porra.toasts.onePackAdded
           : `${dict.games.porra.toasts.manyPacksPrefix}${addedCount} ${dict.games.porra.toasts.manyPacksSuffix}`
       );
+    } else if (pendingRewards.length > 0) {
+      setClaimVersion((v) => v + 1);
     }
   };
 

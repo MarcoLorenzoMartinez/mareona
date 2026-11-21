@@ -1,7 +1,7 @@
 // Client: Avatar con botón de cámara solapado y subida desde galería o cámara
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Camera, Loader2, Trash2 } from "lucide-react";
 import { AuthAvatar } from "@/components/auth/auth-avatar";
 import { validateAvatarFile } from "@/lib/auth/avatar-validation";
@@ -25,11 +25,30 @@ export function ProfileAvatarPicker({
   const resolvedDisplayName = displayName ?? dict.auth.common.defaultFanName;
   const { user } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewUrlRef = useRef<string | null>(null);
+  const [localPreviewUrl, setLocalPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+      }
+    };
+  }, []);
+
+  const clearPreview = () => {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+    setLocalPreviewUrl(null);
+  };
+
+  const activeAvatar = localPreviewUrl ?? selectedAvatar;
   const hasCustomPhoto =
-    Boolean(selectedAvatar) && !selectedAvatar?.includes("/avatars/presets/");
+    Boolean(activeAvatar) && !activeAvatar?.includes("/avatars/presets/");
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,18 +63,19 @@ export function ProfileAvatarPicker({
       const validation = validateAvatarFile(optimized);
       if (!validation.valid) {
         setUploadError(validation.error ?? dict.profile.avatarPicker.invalidFileFallback);
-        setIsUploading(false);
         return;
       }
 
+      clearPreview();
       const previewUrl = URL.createObjectURL(optimized);
-      onSelect(previewUrl);
+      previewUrlRef.current = previewUrl;
+      setLocalPreviewUrl(previewUrl);
 
       const isDemo =
         process.env.NODE_ENV !== "production" &&
         (!user || user.id.startsWith("00000000-0000-4000-8000"));
       if (isDemo || !user) {
-        setIsUploading(false);
+        onSelect(previewUrl);
         return;
       }
 
@@ -65,12 +85,15 @@ export function ProfileAvatarPicker({
       const res = await uploadAvatarImage(formData);
       if (!res.success || !res.data) {
         setUploadError(res.error ?? dict.profile.avatarPicker.uploadErrorFallback);
+        clearPreview();
         onSelect(previousAvatar);
         return;
       }
+      clearPreview();
       onSelect(res.data.url);
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : dict.profile.avatarPicker.unexpectedError);
+      clearPreview();
       onSelect(previousAvatar);
     } finally {
       setIsUploading(false);
@@ -79,6 +102,7 @@ export function ProfileAvatarPicker({
 
   const handleRemovePhoto = () => {
     setUploadError(null);
+    clearPreview();
     onSelect(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -98,7 +122,7 @@ export function ProfileAvatarPicker({
 
       <div className="relative inline-flex">
         <AuthAvatar
-          src={hasCustomPhoto ? selectedAvatar : null}
+          src={hasCustomPhoto ? activeAvatar : null}
           alt={resolvedDisplayName}
           size="xl"
           className="border-2 border-white shadow-xs ring-1 ring-neutral-100"

@@ -10,6 +10,7 @@ import {
   resolveUsernameCollision,
 } from "./username";
 import { buildEmailConfirmationUrl } from "./oauth-redirect";
+import { canSafelyAbortRegistration } from "./new-user";
 import {
   signInSchema,
   signUpSchema,
@@ -355,8 +356,31 @@ export async function abortRegistration(): Promise<AuthActionResult> {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("created_at, updated_at, points")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (
+        !canSafelyAbortRegistration({
+          userCreatedAt: user.created_at,
+          profileCreatedAt: profile?.created_at,
+          profileUpdatedAt: profile?.updated_at,
+          points: profile?.points,
+        })
+      ) {
+        return {
+          success: false,
+          error: "Esta cuenta ya está activa. Si deseas eliminarla, hazlo desde tu Perfil.",
+        };
+      }
+
       await purgeUserAvatarFiles(supabase, user.id);
-      await supabase.rpc("delete_current_user");
+      const { error: rpcError } = await supabase.rpc("delete_current_user");
+      if (rpcError) {
+        return { success: false, error: `Error al cancelar el registro: ${rpcError.message}` };
+      }
     }
     await supabase.auth.signOut();
     revalidatePath("/", "layout");

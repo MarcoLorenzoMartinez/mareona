@@ -278,3 +278,67 @@ export function applyRecycleDuplicatesOnSnapshot(
     },
   };
 }
+
+export interface PorraRewardGrantItem {
+  readonly matchId: string;
+  readonly tier: PackTier;
+}
+
+/**
+ * Server-authoritative transition that credits unclaimed Porra booster packs
+ * onto `user_account_state` and records the claimed match IDs in `storageEntries`.
+ */
+export function applyPorraRewardsOnSnapshot(
+  snapshot: AccountAlbumSnapshot,
+  eligibleRewards: readonly PorraRewardGrantItem[],
+  nowIso = new Date().toISOString()
+): {
+  readonly addedCount: number;
+  readonly claimedMatchIds: readonly string[];
+  readonly snapshot: AccountAlbumSnapshot;
+} {
+  const existingRaw = snapshot.storageEntries?.mareona_porra_claimed_rewards_v1;
+  let existingClaimed: string[] = [];
+  if (existingRaw) {
+    try {
+      const parsed = JSON.parse(existingRaw) as unknown;
+      if (Array.isArray(parsed)) {
+        existingClaimed = parsed.filter((id): id is string => typeof id === "string");
+      }
+    } catch {
+      existingClaimed = [];
+    }
+  }
+
+  const claimedSet = new Set(existingClaimed);
+  const nextPacks = { ...snapshot.packs };
+  let addedCount = 0;
+
+  for (const item of eligibleRewards) {
+    if (!item.matchId || claimedSet.has(item.matchId)) continue;
+    claimedSet.add(item.matchId);
+    nextPacks[item.tier] = (nextPacks[item.tier] ?? 0) + 1;
+    addedCount += 1;
+  }
+
+  const allClaimed = Array.from(claimedSet);
+  if (addedCount === 0) {
+    return { addedCount: 0, claimedMatchIds: allClaimed, snapshot };
+  }
+
+  return {
+    addedCount,
+    claimedMatchIds: allClaimed,
+    snapshot: {
+      ...snapshot,
+      packs: nextPacks,
+      storageEntries: {
+        ...(snapshot.storageEntries ?? {}),
+        mareona_porra_claimed_rewards_v1: JSON.stringify(allClaimed),
+      },
+      hasActivity: true,
+      revision: snapshot.revision + 1,
+      updatedAt: nowIso,
+    },
+  };
+}

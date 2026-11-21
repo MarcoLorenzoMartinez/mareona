@@ -17,6 +17,7 @@ import {
 } from "../../src/lib/cards/pack-storage.ts";
 import {
   reconcileAccountAlbumState,
+  reconcileAuthoritativeAccountState,
   type AccountAlbumSnapshot,
 } from "../../src/lib/cards/account-sync.ts";
 import {
@@ -403,5 +404,38 @@ describe("Pack Storage & Missions Logic", () => {
         writable: true,
       });
     }
+  });
+
+  it("blocks untrusted client inventory forgery during authoritative server reconciliation (P0-3)", () => {
+    const forgedClient: AccountAlbumSnapshot = {
+      cards: { "quini-1979": 99 },
+      packs: { aficionado: 999, rojiblanco: 999, leyenda: 999 },
+      missions: { lastLoginClaimDate: "2026-11-21", gameStreak: 365 },
+      storageEntries: {
+        "mareona_wordle_v2_state_2026-11-21": JSON.stringify({
+          date: "2026-11-21",
+          word: "QUINI",
+          guesses: ["QUINI"],
+          status: "WON",
+        }),
+      },
+      hasActivity: true,
+      revision: 99,
+      updatedAt: "2026-11-21T14:00:00.000Z",
+    };
+
+    const initialServer = reconcileAuthoritativeAccountState(null, forgedClient, "push");
+    assert.deepEqual(initialServer.cards, {});
+    assert.deepEqual(initialServer.packs, DEFAULT_PACK_INVENTORY);
+    assert.deepEqual(initialServer.missions, {});
+    assert.ok(initialServer.storageEntries?.["mareona_wordle_v2_state_2026-11-21"]);
+
+    const updatedServer = reconcileAuthoritativeAccountState(
+      initialServer,
+      forgedClient,
+      "push"
+    );
+    assert.deepEqual(updatedServer.cards, {});
+    assert.deepEqual(updatedServer.packs, DEFAULT_PACK_INVENTORY);
   });
 });

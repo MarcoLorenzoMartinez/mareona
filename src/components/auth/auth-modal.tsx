@@ -4,6 +4,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
 import { abortRegistration } from "@/lib/auth/actions";
+import { isOnboardingEligible } from "@/lib/auth/new-user";
+import { toast } from "@/lib/ui/toast";
 import { AuthCredentialsForm } from "./auth-credentials-form";
 import { OnboardingStep } from "./onboarding-step";
 import { getDictionary } from "@/i18n";
@@ -16,6 +18,7 @@ export function AuthModal() {
     authModalMode === "onboarding" ? "onboarding" : "credentials"
   );
   const [isAborting, setIsAborting] = useState(false);
+  const [didJustSignUp, setDidJustSignUp] = useState(false);
   const isBackdropMouseDownRef = useRef(false);
 
   if (prevMode !== authModalMode) {
@@ -23,7 +26,19 @@ export function AuthModal() {
     setStep(authModalMode === "onboarding" ? "onboarding" : "credentials");
   }
 
+  const canRunOnboarding =
+    step === "onboarding" &&
+    !isLoading &&
+    isOnboardingEligible({
+      hasUser: Boolean(user),
+      explicitSignupFlow: didJustSignUp,
+      userCreatedAt: user?.created_at,
+      profileCreatedAt: profile?.created_at,
+      profileUpdatedAt: profile?.updated_at,
+    });
+
   const handleClose = useCallback(() => {
+    setDidJustSignUp(false);
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
       let mutated = false;
@@ -43,12 +58,26 @@ export function AuthModal() {
   }, [closeAuthModal]);
 
   const handleAbortRegistration = useCallback(async () => {
+    if (!user || !canRunOnboarding) {
+      handleClose();
+      return;
+    }
+
+    if (typeof window !== "undefined" && !window.confirm(dict.auth.modal.confirmAbortRegistration)) {
+      return;
+    }
+
     setIsAborting(true);
-    await abortRegistration();
+    const res = await abortRegistration();
+    if (!res.success) {
+      setIsAborting(false);
+      toast.error(res.error ?? dict.auth.modal.cancelRegistrationAria);
+      return;
+    }
     await handleSignOut();
     handleClose();
     setIsAborting(false);
-  }, [handleSignOut, handleClose]);
+  }, [user, canRunOnboarding, dict.auth.modal.cancelRegistrationAria, dict.auth.modal.confirmAbortRegistration, handleSignOut, handleClose]);
 
   const handleBackdropMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     isBackdropMouseDownRef.current = e.target === e.currentTarget;
@@ -85,6 +114,7 @@ export function AuthModal() {
 
   const handleCredentialsSuccess = (isNewUser: boolean) => {
     if (isNewUser) {
+      setDidJustSignUp(true);
       setStep("onboarding");
     } else {
       handleClose();
@@ -108,17 +138,17 @@ export function AuthModal() {
       >
         <button
           type="button"
-          onClick={step === "onboarding" ? handleAbortRegistration : handleClose}
+          onClick={canRunOnboarding ? handleAbortRegistration : handleClose}
           disabled={isAborting}
           className="absolute top-2.5 right-2.5 flex h-11 w-11 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] cursor-pointer"
-          aria-label={step === "onboarding" ? dict.auth.modal.cancelRegistrationAria : dict.auth.modal.closeAria}
+          aria-label={canRunOnboarding ? dict.auth.modal.cancelRegistrationAria : dict.auth.modal.closeAria}
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        {step === "onboarding" && (isLoading || user) ? (
+        {canRunOnboarding || (step === "onboarding" && isLoading) ? (
           <OnboardingStep
             key={`${user?.id ?? "loading"}-${profile?.username ?? ""}`}
             onFinish={handleClose}

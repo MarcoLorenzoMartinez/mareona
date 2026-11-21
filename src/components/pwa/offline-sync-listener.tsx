@@ -3,14 +3,8 @@
 
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
-import { hasWonAnyDailyGameForDate } from "@/lib/cards/account-games-sync";
 import { syncAlbumAccountWithServer } from "@/lib/cards/account-sync-client";
 import { switchGameStorageUser } from "@/lib/cards/account-storage-partition";
-import {
-  awardDailyGamePack,
-  getDailyMissionState,
-  getTodayDateString,
-} from "@/lib/cards/pack-storage";
 import { processOfflineGameSync, getOfflineGameQueue } from "@/lib/games/offline-sync-queue";
 import { syncOfflineGamesAction } from "@/lib/games/offline-sync-action";
 import { toast } from "@/lib/ui/toast";
@@ -33,8 +27,7 @@ export function OfflineSyncListener() {
     let isMounted = true;
     let pushDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-    const initialSwitch = switchGameStorageUser(userId ?? null);
-    let pendingGuestRewardCheck = Boolean(userId && initialSwitch.absorbedGuest);
+    switchGameStorageUser(userId ?? null);
 
     async function triggerSync(notifyUser = false, syncMode: "reconcile" | "push" = "reconcile") {
       if (typeof window === "undefined" || !navigator.onLine || isSyncingRef.current) {
@@ -42,30 +35,11 @@ export function OfflineSyncListener() {
       }
       isSyncingRef.current = true;
       try {
-        const stepSwitch = switchGameStorageUser(userId ?? null);
-        if (userId && stepSwitch.absorbedGuest) {
-          pendingGuestRewardCheck = true;
-        }
+        switchGameStorageUser(userId ?? null);
 
         if (userId) {
-          const reconciled = await syncAlbumAccountWithServer(userId, syncMode);
-          if (pendingGuestRewardCheck && reconciled) {
-            pendingGuestRewardCheck = false;
-            const today = getTodayDateString();
-            const mission = getDailyMissionState(today, userId);
-            if (
-              !mission.hasCompletedDailyGame &&
-              hasWonAnyDailyGameForDate(reconciled.storageEntries, today)
-            ) {
-              const award = awardDailyGamePack(today, userId, today);
-              if (award.awarded) {
-                await syncAlbumAccountWithServer(userId, "push");
-              }
-            }
-          }
-        }
+          await syncAlbumAccountWithServer(userId, syncMode);
 
-        if (userId) {
           const result = await processOfflineGameSync(async (events) => {
             return await syncOfflineGamesAction({ events: [...events] });
           });

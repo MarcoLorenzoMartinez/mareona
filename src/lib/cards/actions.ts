@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getSyncedCardsCatalog } from "./card-catalog-sync";
 import { getTodayDateString } from "./pack-storage";
 import {
-  reconcileAccountAlbumState,
+  reconcileAuthoritativeAccountState,
   syncAlbumInputSchema,
   type AccountAlbumSnapshot,
 } from "./account-sync";
@@ -74,17 +74,13 @@ export async function syncUserAlbumStateWithServer(
     if (!user) return null;
 
     const currentServer = await readServerAlbumState(user.id);
-    const reconciled = reconcileAccountAlbumState(
+    const reconciled = reconcileAuthoritativeAccountState(
       currentServer,
       parsed.data.clientSnapshot,
       parsed.data.mode
     );
 
-    if (
-      !currentServer ||
-      parsed.data.mode === "push" ||
-      reconciled.revision !== currentServer.revision
-    ) {
+    if (!currentServer || reconciled.revision !== currentServer.revision) {
       await writeServerAlbumState(user.id, reconciled);
     }
 
