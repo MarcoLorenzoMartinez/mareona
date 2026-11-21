@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { settlePendingPredictions } from './settle';
 import type { PorraLeaderboardEntry } from './types';
 
 export interface PorraCommunityData {
@@ -27,6 +28,9 @@ export async function fetchPorraCommunityData(
   }
 
   try {
+    // Settle finished matches on demand (throttled) so points appear immediately after full-time
+    await settlePendingPredictions({ respectCooldown: true }).catch(() => 0);
+
     const supabase = await createClient();
     const {
       data: { user },
