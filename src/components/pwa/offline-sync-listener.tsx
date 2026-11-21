@@ -4,25 +4,30 @@
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
 import { syncAlbumAccountWithServer } from "@/lib/cards/account-sync-client";
+import { switchGameStorageUser } from "@/lib/cards/account-storage-partition";
 import { processOfflineGameSync, getOfflineGameQueue } from "@/lib/games/offline-sync-queue";
 import { syncOfflineGamesAction } from "@/lib/games/offline-sync-action";
 import { toast } from "@/lib/ui/toast";
 import { getDictionary } from "@/i18n";
 
 /**
- * Global background listener that automatically synchronizes offline game results
- * and cross-device account state (album, packs, missions, daily games, porra, lineup)
- * when connectivity, focus, or auth session is ready.
+ * Global background listener that isolates per-account local storage partitions,
+ * synchronizes offline game results, and reconciles cross-device account state
+ * when connectivity, focus, or auth session changes.
  */
 export function OfflineSyncListener() {
   const dict = getDictionary();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const userId = user?.id;
   const isSyncingRef = useRef(false);
 
   useEffect(() => {
+    if (isLoading) return;
+
     let isMounted = true;
     let pushDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+    switchGameStorageUser(userId ?? null);
 
     async function triggerSync(notifyUser = false, syncMode: "reconcile" | "push" = "reconcile") {
       if (typeof window === "undefined" || !navigator.onLine || isSyncingRef.current) {
@@ -30,6 +35,8 @@ export function OfflineSyncListener() {
       }
       isSyncingRef.current = true;
       try {
+        switchGameStorageUser(userId ?? null);
+
         if (userId) {
           await syncAlbumAccountWithServer(userId, syncMode);
         }
@@ -107,6 +114,7 @@ export function OfflineSyncListener() {
     };
   }, [
     userId,
+    isLoading,
     dict.pwa.offlineSync.manySyncedSuffix,
     dict.pwa.offlineSync.oneSyncedTitle,
     dict.pwa.offlineSync.syncedDescription,

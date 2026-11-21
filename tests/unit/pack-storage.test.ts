@@ -20,6 +20,7 @@ import {
   type AccountAlbumSnapshot,
 } from "../../src/lib/cards/account-sync.ts";
 import { mergeSyncedGameStorageEntries } from "../../src/lib/cards/account-games-sync.ts";
+import { switchGameStorageUser } from "../../src/lib/cards/account-storage-partition.ts";
 
 describe("Pack Storage & Missions Logic", () => {
   it("formats dates as canonical YYYY-MM-DD", () => {
@@ -291,5 +292,80 @@ describe("Pack Storage & Missions Logic", () => {
 
     const porraClaimed = JSON.parse(merged.mareona_porra_claimed_rewards_v1!) as string[];
     assert.deepEqual(porraClaimed, ["match-1", "match-2"]);
+  });
+
+  it("isolates localStorage game and lineup partitions when switching accounts on the same browser", () => {
+    const store = new Map<string, string>();
+    const originalWindow = globalThis.window;
+    const originalLocalStorage = globalThis.localStorage;
+
+    const mockStorage = {
+      get length() {
+        return store.size;
+      },
+      key: (idx: number) => Array.from(store.keys())[idx] ?? null,
+      getItem: (k: string) => store.get(k) ?? null,
+      setItem: (k: string, v: string) => {
+        store.set(k, v);
+      },
+      removeItem: (k: string) => {
+        store.delete(k);
+      },
+      clear: () => store.clear(),
+    };
+
+    Object.defineProperty(globalThis, "localStorage", {
+      value: mockStorage,
+      configurable: true,
+      writable: true,
+    });
+    Object.defineProperty(globalThis, "window", {
+      value: {
+        localStorage: mockStorage,
+        dispatchEvent: () => true,
+      },
+      configurable: true,
+      writable: true,
+    });
+
+    try {
+      // Account A plays Wordle and saves a lineup
+      switchGameStorageUser("user-a");
+      mockStorage.setItem(
+        "mareona_wordle_v2_state_2026-11-21",
+        JSON.stringify({ date: "2026-11-21", word: "QUINI", guesses: ["QUINI"], status: "WON" })
+      );
+      mockStorage.setItem("mareona_lineup_state_v1", JSON.stringify({ formationKey: "4-3-3" }));
+
+      // Sign out -> switches to guest partition; Account A keys must not be visible
+      switchGameStorageUser(null);
+      assert.equal(mockStorage.getItem("mareona_wordle_v2_state_2026-11-21"), null);
+      assert.equal(mockStorage.getItem("mareona_lineup_state_v1"), null);
+
+      // Sign in as Account B -> clean slate, zero leakage from Account A
+      switchGameStorageUser("user-b");
+      assert.equal(mockStorage.getItem("mareona_wordle_v2_state_2026-11-21"), null);
+      mockStorage.setItem(
+        "mareona_trivia_2026-11-21",
+        JSON.stringify({ dateStr: "2026-11-21", isCorrect: false, userAnswer: "Test" })
+      );
+
+      // Switch back to Account A -> Account A's Wordle and lineup are restored, Account B's trivia is hidden
+      switchGameStorageUser("user-a");
+      assert.ok(mockStorage.getItem("mareona_wordle_v2_state_2026-11-21")?.includes("WON"));
+      assert.ok(mockStorage.getItem("mareona_lineup_state_v1")?.includes("4-3-3"));
+      assert.equal(mockStorage.getItem("mareona_trivia_2026-11-21"), null);
+    } finally {
+      Object.defineProperty(globalThis, "window", {
+        value: originalWindow,
+        configurable: true,
+        writable: true,
+      });
+      Object.defineProperty(globalThis, "localStorage", {
+        value: originalLocalStorage,
+        configurable: true,
+        writable: true,
+      });
+    }
   });
 });
