@@ -808,29 +808,33 @@ La lógica que exige atomicidad, bloqueo de filas o ejecución privilegiada resi
 
 ### 3.2.6 Migraciones
 
-Toda la estructura de la base de datos se define en `supabase/migrations/` mediante **19 archivos SQL** ordenados cronológicamente con prefijo de fecha (`YYYY_MMDDHHMMSS_nombre.sql`). Ninguna migración ya aplicada se modifica: cualquier cambio posterior de esquema o de políticas RLS se añade como una nueva migración incremental (Tabla 5).
+Toda la estructura de la base de datos se define en `supabase/migrations/` mediante **23 archivos SQL** ordenados cronológicamente con prefijo de fecha estándar (`YYYYMMDDHHMMSS_nombre.sql`). Ninguna migración ya aplicada se modifica destructivamente: cualquier cambio posterior de esquema o de políticas RLS se añade como una nueva migración incremental (Tabla 5).
 
 | Migración | Cambio principal |
 | :--- | :--- |
-| `2026_1012000000_init_schema.sql` | Tablas base (`profiles`, `teams`, `matches`, `players`, `standings`, `predictions`, `posts`, `external_api_cache`), políticas RLS y `apply_prediction_points`. |
-| `2026_1021000000_username_from_email.sql` | Generación automática de `username` único en `handle_new_user()`. |
-| `2026_1021010000_storage_avatars.sql` | Políticas del bucket `avatars` en Supabase Storage. |
-| `2026_1022000000_cards_schema.sql` | Esquema inicial de `cards`, `user_cards` y `user_packs`. |
-| `2026_1023000000_card_match_sync.sql` | Función `sync_active_player_card_matches` para sincronizar partidos jugados. |
-| `2026_1027000000_friendships.sql` | Tabla `friendships` y políticas RLS de solicitudes y amistades. |
-| `2026_1029000000_pack_inventory_tiers.sql` | Tipos de sobre (`aficionado`, `rojiblanco`, `leyenda`) y RPC `open_card_pack`. |
-| `2026_1105000000_post_moderation.sql` | Columnas de moderación (`moderation_status`, `moderation_reason`) en `posts`. |
-| `2026_1105000100_blocked_post_attempts.sql` | Registro de intentos bloqueados por la moderación automática. |
-| `2026_1105000200_polls.sql` | Tablas `polls`, `poll_options` y `poll_votes` asociadas a publicaciones. |
-| `2026_1106000000_admin_roles_and_audit.sql` | Tabla `user_roles`, función `is_admin()`, flags de sanción en `profiles`, `admin_audit_logs` y `system_announcements`. |
-| `2026_1109000000_delete_current_user_rpc.sql` | RPC `delete_current_user()` para supresión completa de cuenta. |
-| `2026_1111000000_dm_soft_delete_and_legal_custody.sql` | Mensajería directa (`conversations`, `conversation_members`, `messages`), borrado lógico y custodia legal. |
-| `2026_1111010000_user_reports_and_mutual_block_guard.sql` | Denuncias (`user_reports`), `user_blocks` y bloqueo mutuo en chats directos. |
-| `2026_1111020000_site_visits_telemetry.sql` | Tabla `site_visits` para telemetría anónima sin cookies. |
-| `2026_1117000000_widen_post_body_length.sql` | Ampliación del límite de `posts.body` a 4.000 caracteres para admitir alineaciones serializadas. |
-| `2026_1119000000_fix_admin_table_grants_and_rls.sql` | Ajuste de permisos (`GRANT`) y políticas RLS de las tablas administrativas. |
-| `2026_1120000000_grant_anon_profiles_select.sql` | Lectura pública de perfiles básicos para usuarios no autenticados. |
-| `2026_1120000100_posts_select_own_for_soft_delete.sql` | Permite al autor consultar su propia publicación durante el borrado lógico. |
+| `20261012000000_init_schema.sql` | Tablas base (`profiles`, `teams`, `matches`, `players`, `standings`, `predictions`, `posts`, `external_api_cache`), políticas RLS y `apply_prediction_points`. |
+| `20261021000000_username_from_email.sql` | Generación automática de `username` único en `handle_new_user()`. |
+| `20261021010000_storage_avatars.sql` | Políticas del bucket `avatars` en Supabase Storage. |
+| `20261022000000_cards_schema.sql` | Esquema inicial de `cards`, `user_cards` y `user_packs`. |
+| `20261023000000_card_match_sync.sql` | Función `sync_active_player_card_matches` para sincronizar partidos jugados. |
+| `20261027000000_friendships.sql` | Tabla `friendships` y políticas RLS de solicitudes y amistades. |
+| `20261029000000_pack_inventory_tiers.sql` | Tipos de sobre (`aficionado`, `rojiblanco`, `leyenda`) y RPC `open_card_pack`. |
+| `20261105000000_post_moderation.sql` | Columnas de moderación (`moderation_status`, `moderation_reason`) en `posts`. |
+| `20261105000100_blocked_post_attempts.sql` | Registro de intentos bloqueados por la moderación automática. |
+| `20261105000200_polls.sql` | Tablas `polls`, `poll_options` y `poll_votes` asociadas a publicaciones. |
+| `20261106000000_admin_roles_and_audit.sql` | Tabla `user_roles`, función `is_admin()`, flags de sanción en `profiles`, `admin_audit_logs` y `system_announcements`. |
+| `20261109000000_delete_current_user_rpc.sql` | RPC `delete_current_user()` para supresión completa de cuenta. |
+| `20261111000000_dm_soft_delete_and_legal_custody.sql` | Mensajería directa (`conversations`, `conversation_members`, `messages`), borrado lógico y custodia legal. |
+| `20261111010000_user_reports_and_mutual_block_guard.sql` | Denuncias (`user_reports`), `user_blocks` y bloqueo mutuo en chats directos. |
+| `20261111020000_site_visits_telemetry.sql` | Tabla `site_visits` para telemetría anónima sin cookies. |
+| `20261117000000_widen_post_body_length.sql` | Ampliación del límite de `posts.body` a 4.000 caracteres para admitir alineaciones serializadas. |
+| `20261119000000_fix_admin_table_grants_and_rls.sql` | Ajuste de permisos (`GRANT`) y políticas RLS de las tablas administrativas. |
+| `20261120000000_grant_anon_profiles_select.sql` | Lectura pública de perfiles básicos para usuarios no autenticados. |
+| `20261120000100_posts_select_own_for_soft_delete.sql` | Permite al autor consultar su propia publicación durante el borrado lógico. |
+| `20261120010000_production_security_and_match_schemas.sql` | Guardas RLS de privilegios, `match_mvp_votes`, `match_player_ratings` y `external_api_cache`. |
+| `20261121000000_v1_security_rls_rpcs_and_post_likes.sql` | Endurecimiento v1.0, `post_likes`, RPCs agregadas, custodia legal y límites del bucket `avatars`. |
+| `20261121120000_user_account_state_and_grants.sql` | Tabla `user_account_state` y restauración de permisos `GRANT` en tablas núcleo. |
+| `20261121180000_v1_audit_hardening.sql` | Columna `storage_entries` en `user_account_state`, limpieza de caché privada, bloqueo directo de `predictions`/`user_account_state`, filtro `rating > 0` y metadatos Google OAuth. |
 
 *Tabla 5. Historial cronológico de migraciones en Supabase.*
 

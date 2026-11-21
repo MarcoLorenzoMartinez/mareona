@@ -203,7 +203,7 @@ describe("Architecture & Code Quality Suite (AGENTS.md & Industry Standards)", (
   it("verifies unified database hardening migration for RLS privilege guards and external match_id schemas", () => {
     const migrationPath = path.resolve(
       process.cwd(),
-      "supabase/migrations/2026_1120010000_production_security_and_match_schemas.sql"
+      "supabase/migrations/20261120010000_production_security_and_match_schemas.sql"
     );
     assert.strictEqual(
       fs.existsSync(migrationPath),
@@ -238,6 +238,28 @@ describe("Architecture & Code Quality Suite (AGENTS.md & Industry Standards)", (
     assert.ok(sql.includes("cast_match_mvp_vote"), "Must define cast_match_mvp_vote RPC");
     assert.ok(sql.includes("get_porra_leaderboard_stats"), "Must define get_porra_leaderboard_stats RPC");
     assert.ok(sql.includes("get_admin_telemetry_summary"), "Must define get_admin_telemetry_summary RPC");
+  });
+
+  it("verifies all SQL migrations follow strict lexicographical CLI naming and v1 audit hardening exists", () => {
+    const migrationsDir = path.resolve(process.cwd(), "supabase/migrations");
+    const files = fs.readdirSync(migrationsDir).filter((f) => f.endsWith(".sql")).sort();
+    assert.ok(files.length >= 23, "Expected full v1.0 migration history");
+
+    for (const file of files) {
+      assert.match(
+        file,
+        /^\d{14}_[a-z0-9_]+\.sql$/,
+        `Migration ${file} must use pure 14-digit YYYYMMDDHHMMSS_name.sql prefix`
+      );
+    }
+
+    const auditSql = fs.readFileSync(
+      path.join(migrationsDir, "20261121180000_v1_audit_hardening.sql"),
+      "utf8"
+    );
+    assert.ok(auditSql.includes("storage_entries"), "Must add storage_entries column to user_account_state");
+    assert.ok(auditSql.includes("and r.rating > 0"), "Must exclude N/C (rating = 0) from ratings average");
+    assert.ok(auditSql.includes("revoke insert, update, delete on public.predictions"), "Must lock direct predictions writes");
   });
 
   it("verifies LEGAL-ASSETS.md killswitch (NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS) across all asset components", () => {
