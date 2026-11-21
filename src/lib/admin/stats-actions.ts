@@ -105,8 +105,8 @@ export async function getAdminPlatformAnalytics(): Promise<PlatformAnalytics> {
     .from("site_visits")
     .select("*")
     .gte("created_at", oneYearAgoIso)
-    .order("created_at", { ascending: true })
-    .limit(10000);
+    .order("created_at", { ascending: false })
+    .limit(5000);
 
   if (error) {
     log.error("Failed to fetch site_visits for admin analytics", error);

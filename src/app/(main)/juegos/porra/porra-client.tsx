@@ -11,7 +11,7 @@ import { usePorraSession } from './use-porra-session';
 import type { PorraMatch } from '@/lib/porra/types';
 
 interface PorraClientProps {
-  readonly currentMatch: PorraMatch;
+  readonly currentMatch: PorraMatch | null;
   readonly finishedMatches?: readonly PorraMatch[];
   readonly availablePlayers: string[];
 }
@@ -46,15 +46,21 @@ export function PorraClient({
         onClaimAll={handleClaimAll}
       />
 
-      <PorraMatchCard
-        match={currentMatch}
-        existingPrediction={prediction}
-        onSavePrediction={handleSavePrediction}
-        availablePlayers={availablePlayers}
-        isAuthenticated={Boolean(user)}
-        isSubmitting={isSubmitting}
-        onRequireAuth={() => openAuthModal('signin')}
-      />
+      {currentMatch ? (
+        <PorraMatchCard
+          match={currentMatch}
+          existingPrediction={prediction}
+          onSavePrediction={handleSavePrediction}
+          availablePlayers={availablePlayers}
+          isAuthenticated={Boolean(user)}
+          isSubmitting={isSubmitting}
+          onRequireAuth={() => openAuthModal('signin')}
+        />
+      ) : (
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 text-center text-sm text-neutral-600">
+          No hay ningún próximo partido programado disponible en este momento.
+        </div>
+      )}
 
       <PorraLeaderboard
         entries={mergedLeaderboard}

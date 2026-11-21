@@ -87,8 +87,11 @@ export async function createSocialPost(
       return { success: false, error: READ_ONLY_WALL_MESSAGE };
     }
 
-    const { cleanBody } = parsePostLineup(parsed.data.body);
-    const moderation = await moderateText(cleanBody);
+    const { cleanBody, lineup } = parsePostLineup(parsed.data.body);
+    const lineupNames = lineup ? lineup.starters.map((s) => s.displayName).join(" ") : "";
+    const pollText = parsed.data.pollOptions ? parsed.data.pollOptions.join(" ") : "";
+    const moderationInput = [cleanBody, pollText, lineupNames].filter(Boolean).join("\n");
+    const moderation = await moderateText(moderationInput);
     if (moderation.verdict === "block") {
       await logBlockedAttempt(supabase, {
         userId: user.id,
@@ -171,38 +174,9 @@ export async function createSocialPost(
       },
     };
   } catch {
-    const demoPoll: SocialPoll | null =
-      parsed.data.pollOptions && parsed.data.pollOptions.length >= 2
-        ? {
-            id: `local-poll-${Date.now()}`,
-            postId: `local-post-${Date.now()}`,
-            options: parsed.data.pollOptions.map((label, idx) => ({
-              id: `local-opt-${idx}`,
-              label,
-              votesCount: 0,
-            })),
-            totalVotes: 0,
-            userVotedOptionId: null,
-          }
-        : null;
-
-    // Fallback if offline/demo
     return {
-      success: true,
-      data: {
-        id: `local-post-${Date.now()}`,
-        userId: "local-user",
-        authorName: "Aficionado Sportinguista",
-        authorUsername: "aficionado",
-        authorAvatar: null,
-        body: parsed.data.body,
-        createdAt: new Date().toISOString(),
-        parentId: parsed.data.parentId ?? null,
-        likesCount: 0,
-        repliesCount: 0,
-        replies: [],
-        poll: demoPoll,
-      },
+      success: false,
+      error: "No se pudo publicar el mensaje. Comprueba tu conexión e inténtalo de nuevo.",
     };
   }
 }
@@ -237,6 +211,22 @@ export async function getSocialPosts(
       );
     }
 
+    const {
+      data: { user: currentUser },
+    } = await supabase.auth.getUser();
+
+    const blockedUserIds = new Set<string>();
+    if (currentUser) {
+      const { data: blocks } = await supabase
+        .from("user_blocks")
+        .select("blocker_id, blocked_id")
+        .or(`blocker_id.eq.${currentUser.id},blocked_id.eq.${currentUser.id}`);
+      for (const b of blocks ?? []) {
+        if (b.blocker_id === currentUser.id) blockedUserIds.add(b.blocked_id);
+        if (b.blocked_id === currentUser.id) blockedUserIds.add(b.blocker_id);
+      }
+    }
+
     let query = supabase
       .from("posts")
       .select(
@@ -244,6 +234,7 @@ export async function getSocialPosts(
          profiles (username, display_name, avatar_url)`
       )
       .is("match_id", null)
+      .is("parent_id", null)
       .is("deleted_at", null)
       .order("created_at", { ascending: false })
       .limit(30);
@@ -252,52 +243,73 @@ export async function getSocialPosts(
       query = query.in("user_id", friendUserIds as string[]);
     }
 
-    const { data: posts, error } = await query;
+    const { data: rawRootPosts, error } = await query;
 
-    if (error || !posts || posts.length === 0) {
+    if (error || !rawRootPosts || rawRootPosts.length === 0) {
       return [];
     }
 
-    const {
-      data: { user: currentUser },
-    } = await supabase.auth.getUser();
+    const rootPosts = rawRootPosts.filter((p) => !blockedUserIds.has(p.user_id));
+    if (rootPosts.length === 0) return [];
 
-    // Map database posts into typed SocialPost structures
-    const rootPosts = posts.filter((p) => !p.parent_id);
-    const replyPosts = posts.filter((p) => Boolean(p.parent_id));
+    const rootPostIds = rootPosts.map((p) => p.id);
 
-    const pollsByPostId = new Map<string, SocialPoll>();
-    if (rootPosts.length > 0) {
-      const { data: pollRows } = await supabase
+    const [{ data: rawReplies }, { data: pollRows }] = await Promise.all([
+      supabase
+        .from("posts")
+        .select(
+          `id, body, created_at, updated_at, parent_id, user_id,
+           profiles (username, display_name, avatar_url)`
+        )
+        .in("parent_id", rootPostIds)
+        .is("deleted_at", null)
+        .order("created_at", { ascending: true }),
+      supabase
         .from("polls")
         .select(
           `id, post_id,
            poll_options (id, label, position),
            poll_votes (id, option_id, user_id)`
         )
-        .in(
-          "post_id",
-          rootPosts.map((p) => p.id)
-        );
+        .in("post_id", rootPostIds),
+    ]);
 
-      for (const pollRaw of pollRows ?? []) {
-        const sortedOptions = [...(pollRaw.poll_options ?? [])].sort(
-          (a, b) => a.position - b.position
-        );
-        const votes = pollRaw.poll_votes ?? [];
-        const userVote = currentUser ? votes.find((v) => v.user_id === currentUser.id) : null;
-        pollsByPostId.set(pollRaw.post_id, {
-          id: pollRaw.id,
-          postId: pollRaw.post_id,
-          options: sortedOptions.map((opt) => ({
-            id: opt.id,
-            label: opt.label,
-            votesCount: votes.filter((v) => v.option_id === opt.id).length,
-          })),
-          totalVotes: votes.length,
-          userVotedOptionId: userVote?.option_id ?? null,
-        });
+    const replyPosts = (rawReplies ?? []).filter((r) => !blockedUserIds.has(r.user_id));
+    const allPostIds = [...rootPostIds, ...replyPosts.map((r) => r.id)];
+
+    const likesCountMap = new Map<string, number>();
+    const likedByMeSet = new Set<string>();
+    if (allPostIds.length > 0) {
+      const { data: likeRows } = await supabase
+        .from("post_likes")
+        .select("post_id, user_id")
+        .in("post_id", allPostIds);
+      for (const lr of likeRows ?? []) {
+        likesCountMap.set(lr.post_id, (likesCountMap.get(lr.post_id) ?? 0) + 1);
+        if (currentUser && lr.user_id === currentUser.id) {
+          likedByMeSet.add(lr.post_id);
+        }
       }
+    }
+
+    const pollsByPostId = new Map<string, SocialPoll>();
+    for (const pollRaw of pollRows ?? []) {
+      const sortedOptions = [...(pollRaw.poll_options ?? [])].sort(
+        (a, b) => a.position - b.position
+      );
+      const votes = pollRaw.poll_votes ?? [];
+      const userVote = currentUser ? votes.find((v) => v.user_id === currentUser.id) : null;
+      pollsByPostId.set(pollRaw.post_id, {
+        id: pollRaw.id,
+        postId: pollRaw.post_id,
+        options: sortedOptions.map((opt) => ({
+          id: opt.id,
+          label: opt.label,
+          votesCount: votes.filter((v) => v.option_id === opt.id).length,
+        })),
+        totalVotes: votes.length,
+        userVotedOptionId: userVote?.option_id ?? null,
+      });
     }
 
     return rootPosts.map((p) => {
@@ -330,7 +342,8 @@ export async function getSocialPosts(
             updatedAt: r.updated_at ?? null,
             isEdited: replyIsEdited,
             parentId: p.id,
-            likesCount: 0,
+            likesCount: likesCountMap.get(r.id) ?? 0,
+            userHasLiked: likedByMeSet.has(r.id),
             repliesCount: 0,
           };
         });
@@ -353,7 +366,8 @@ export async function getSocialPosts(
         updatedAt: p.updated_at ?? null,
         isEdited: rootIsEdited,
         parentId: null,
-        likesCount: 0,
+        likesCount: likesCountMap.get(p.id) ?? 0,
+        userHasLiked: likedByMeSet.has(p.id),
         repliesCount: postReplies.length,
         replies: postReplies,
         poll: postPoll,
@@ -413,7 +427,7 @@ export async function deleteSocialPost(
     }
     return { success: true, data: { deletedId: parsed.data.postId } };
   } catch {
-    return { success: true, data: { deletedId: parsed.data.postId } };
+    return { success: false, error: "No se pudo eliminar la publicación" };
   }
 }
 
@@ -504,8 +518,10 @@ export async function updateSocialPost(
       };
     }
 
-    const { cleanBody } = parsePostLineup(parsed.data.body);
-    const moderation = await moderateText(cleanBody);
+    const { cleanBody, lineup } = parsePostLineup(parsed.data.body);
+    const lineupNames = lineup ? lineup.starters.map((s) => s.displayName).join(" ") : "";
+    const moderationInput = [cleanBody, lineupNames].filter(Boolean).join("\n");
+    const moderation = await moderateText(moderationInput);
     if (moderation.verdict === "block") {
       await logBlockedAttempt(supabase, {
         userId: user.id,
@@ -515,17 +531,17 @@ export async function updateSocialPost(
       return { success: false, error: MODERATION_REJECTED_MESSAGE };
     }
 
-    const nowIso = new Date().toISOString();
-    const { error: updateError } = await supabase
+    const { data: updatedRow, error: updateError } = await supabase
       .from("posts")
       .update({
         body: parsed.data.body,
-        updated_at: nowIso,
         moderation_status: moderation.verdict === "flag" ? "flagged" : "approved",
         moderation_reason: moderation.verdict === "flag" ? moderation.reason : null,
       })
       .eq("id", parsed.data.postId)
-      .eq("user_id", user.id);
+      .eq("user_id", user.id)
+      .select("updated_at")
+      .single();
 
     if (updateError) {
       return { success: false, error: updateError.message };
@@ -541,18 +557,11 @@ export async function updateSocialPost(
       data: {
         postId: parsed.data.postId,
         body: parsed.data.body,
-        updatedAt: nowIso,
+        updatedAt: updatedRow?.updated_at ?? new Date().toISOString(),
       },
     };
   } catch {
-    return {
-      success: true,
-      data: {
-        postId: parsed.data.postId,
-        body: parsed.data.body,
-        updatedAt: new Date().toISOString(),
-      },
-    };
+    return { success: false, error: "No se pudo actualizar la publicación" };
   }
 }
 
@@ -600,6 +609,69 @@ export async function votePoll(
     revalidatePath("/social");
     return { success: true, data: { pollId: parsed.data.pollId, optionId: parsed.data.optionId } };
   } catch {
-    return { success: true, data: { pollId: parsed.data.pollId, optionId: parsed.data.optionId } };
+    return { success: false, error: "No se pudo registrar tu voto en la encuesta" };
+  }
+}
+
+/**
+ * Toggles a persistent like on a social post in `public.post_likes`.
+ *
+ * @param postId - Target post UUID.
+ * @returns Updated like state and total like count.
+ */
+export async function togglePostLike(
+  postId: string
+): Promise<ActionResult<{ liked: boolean; likesCount: number }>> {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(postId)) {
+    return { success: false, error: "Publicación no válida" };
+  }
+
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: "Debes iniciar sesión para dar me gusta" };
+    }
+
+    const rate = checkRateLimit({ key: `post_like_${user.id}`, limit: 30, windowMs: 60_000 });
+    if (!rate.allowed) {
+      return { success: false, error: rate.error };
+    }
+
+    const { data: existing } = await supabase
+      .from("post_likes")
+      .select("post_id")
+      .eq("post_id", postId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (existing) {
+      const { error } = await supabase
+        .from("post_likes")
+        .delete()
+        .eq("post_id", postId)
+        .eq("user_id", user.id);
+      if (error) return { success: false, error: "No se pudo quitar el me gusta" };
+    } else {
+      const { error } = await supabase
+        .from("post_likes")
+        .insert({ post_id: postId, user_id: user.id });
+      if (error) return { success: false, error: "No se pudo registrar el me gusta" };
+    }
+
+    const { count } = await supabase
+      .from("post_likes")
+      .select("post_id", { count: "exact", head: true })
+      .eq("post_id", postId);
+
+    return {
+      success: true,
+      data: { liked: !existing, likesCount: count ?? 0 },
+    };
+  } catch {
+    return { success: false, error: "Error de conexión al actualizar el me gusta" };
   }
 }

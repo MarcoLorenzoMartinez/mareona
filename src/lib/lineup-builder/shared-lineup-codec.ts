@@ -33,7 +33,9 @@ function reconstitutePhotoUrl(compact: string, shirtNumber?: number | null): str
   if (/^\d+$/.test(compact)) {
     return `https://images.fotmob.com/image_resources/playerimages/${compact}.png`;
   }
-  return compact.startsWith("/") ? compact : null;
+  return compact.startsWith("/") && !compact.startsWith("//") && !compact.includes("\\")
+    ? compact
+    : null;
 }
 
 /**

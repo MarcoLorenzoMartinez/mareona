@@ -17,7 +17,7 @@ export interface PorraCommunityData {
  * @returns Community leaderboard entries and total accepted friends count.
  */
 export async function fetchPorraCommunityData(
-  currentMatchExternalId: string
+  currentMatchExternalId: string | null
 ): Promise<PorraCommunityData> {
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
@@ -50,31 +50,25 @@ export async function fetchPorraCommunityData(
       }
     }
 
-    const { data: topProfiles } = await supabase
-      .from('profiles')
-      .select('id, username, display_name, points')
-      .eq('is_banned', false)
-      .gt('points', 0)
-      .order('points', { ascending: false })
-      .limit(50);
-
     const friendIds = Array.from(friendIdSet);
-    const { data: friendProfiles } =
-      friendIds.length > 0
-        ? await supabase
-            .from('profiles')
-            .select('id, username, display_name, points')
-            .eq('is_banned', false)
-            .in('id', friendIds)
-        : { data: [] };
-
-    const currentUserProfileResult = user
-      ? await supabase
-          .from('profiles')
-          .select('id, username, display_name, points')
-          .eq('id', user.id)
-          .maybeSingle()
-      : { data: null };
+    const [{ data: leaderboardStats }, { data: friendProfiles }, currentUserProfileResult] =
+      await Promise.all([
+        supabase.rpc('get_porra_leaderboard_stats', { p_limit: 500 }),
+        friendIds.length > 0
+          ? supabase
+              .from('profiles')
+              .select('id, username, display_name, points')
+              .eq('is_banned', false)
+              .in('id', friendIds)
+          : Promise.resolve({ data: [] }),
+        user
+          ? supabase
+              .from('profiles')
+              .select('id, username, display_name, points')
+              .eq('id', user.id)
+              .maybeSingle()
+          : Promise.resolve({ data: null }),
+      ]);
 
     const profileMap = new Map<
       string,
@@ -86,65 +80,63 @@ export async function fetchPorraCommunityData(
       }
     >();
 
-    for (const p of topProfiles ?? []) {
-      profileMap.set(p.id, p);
+    const statsByUserId = new Map<
+      string,
+      { predictionsCount: number; exactHits: number }
+    >();
+
+    for (const s of leaderboardStats ?? []) {
+      profileMap.set(s.user_id, {
+        id: s.user_id,
+        username: s.username,
+        display_name: s.display_name,
+        points: s.points,
+      });
+      statsByUserId.set(s.user_id, {
+        predictionsCount: Number(s.predictions_count),
+        exactHits: Number(s.exact_hits),
+      });
     }
     for (const p of friendProfiles ?? []) {
-      profileMap.set(p.id, p);
+      if (!profileMap.has(p.id)) profileMap.set(p.id, p);
     }
-    if (currentUserProfileResult.data) {
-      profileMap.set(
-        currentUserProfileResult.data.id,
-        currentUserProfileResult.data
-      );
+    if (currentUserProfileResult.data && !profileMap.has(currentUserProfileResult.data.id)) {
+      profileMap.set(currentUserProfileResult.data.id, currentUserProfileResult.data);
     }
 
     if (profileMap.size === 0) {
       return { entries: [], friendsCount: friendIdSet.size };
     }
 
-    const allProfileIds = Array.from(profileMap.keys());
+    const activeMatchPredsMap = new Map<
+      string,
+      { home_score: number; away_score: number; sporting_scorers: string[] }
+    >();
 
-    const { data: predictionRows } = await supabase
-      .from('predictions')
-      .select(
-        'user_id, match_id, home_score, away_score, sporting_scorers, points_awarded, created_at'
-      )
-      .in('user_id', allProfileIds)
-      .order('created_at', { ascending: false });
+    if (currentMatchExternalId) {
+      const { data: activeRows } = await supabase
+        .from('predictions')
+        .select('user_id, home_score, away_score, sporting_scorers')
+        .eq('match_id', currentMatchExternalId)
+        .in('user_id', Array.from(profileMap.keys()));
+
+      for (const row of activeRows ?? []) {
+        activeMatchPredsMap.set(row.user_id, {
+          home_score: row.home_score,
+          away_score: row.away_score,
+          sporting_scorers: Array.isArray(row.sporting_scorers)
+            ? row.sporting_scorers
+            : [],
+        });
+      }
+    }
 
     const entries: PorraLeaderboardEntry[] = [];
 
     for (const profile of profileMap.values()) {
-      const userPreds = (predictionRows ?? []).filter(
-        (pr) => pr.user_id === profile.id
-      );
-
-      let exactScoresCount = 0;
-      let outcomesCount = 0;
-      let computedPoints = 0;
-      let lastMatchPoints: number | undefined;
-
-      for (const pr of userPreds) {
-        if (pr.points_awarded !== null) {
-          computedPoints += pr.points_awarded;
-          if (pr.points_awarded >= 5) {
-            exactScoresCount += 1;
-            outcomesCount += 1;
-          } else if (pr.points_awarded >= 2) {
-            outcomesCount += 1;
-          }
-          if (lastMatchPoints === undefined) {
-            lastMatchPoints = pr.points_awarded;
-          }
-        }
-      }
-
-      const activePred = userPreds.find(
-        (pr) => pr.match_id === currentMatchExternalId
-      );
-
-      const totalPoints = Math.max(profile.points, computedPoints);
+      const stat = statsByUserId.get(profile.id);
+      const activePred = activeMatchPredsMap.get(profile.id);
+      const totalPoints = profile.points;
       const isFriend = friendIdSet.has(profile.id);
       const isCurrentUser = user?.id === profile.id;
 
@@ -155,16 +147,14 @@ export async function fetchPorraCommunityData(
           userName: profile.display_name || profile.username,
           avatarSeed: profile.username,
           totalPoints,
-          exactScoresCount,
-          outcomesCount,
-          lastMatchPoints,
+          exactScoresCount: stat?.exactHits ?? 0,
+          outcomesCount: stat?.predictionsCount ?? 0,
+          lastMatchPoints: undefined,
           currentPrediction: activePred
             ? {
                 homeScore: activePred.home_score,
                 awayScore: activePred.away_score,
-                sportingScorers: Array.isArray(activePred.sporting_scorers)
-                  ? activePred.sporting_scorers
-                  : [],
+                sportingScorers: activePred.sporting_scorers,
               }
             : null,
           isCurrentUser,

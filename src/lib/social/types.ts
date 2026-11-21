@@ -26,6 +26,7 @@ export interface SocialPost {
   readonly matchId?: string | null;
   readonly matchLabel?: string | null;
   readonly likesCount: number;
+  readonly userHasLiked?: boolean;
   readonly repliesCount: number;
   readonly replies?: readonly SocialPost[];
   readonly poll?: SocialPoll | null;

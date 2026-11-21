@@ -26,7 +26,7 @@ import type {
 import { getDictionary } from '@/i18n';
 
 interface UsePorraSessionOptions {
-  readonly currentMatch: PorraMatch;
+  readonly currentMatch: PorraMatch | null;
   readonly finishedMatches: readonly PorraMatch[];
 }
 
@@ -48,14 +48,15 @@ export function usePorraSession({
     Readonly<Record<string, PorraPrediction>>
   >({});
 
+  const currentMatchId = currentMatch?.id ?? null;
   const [prevUserId, setPrevUserId] = useState(userId);
   const [prediction, setPrediction] = useState<PorraPrediction | null>(() =>
-    userId ? getStoredPrediction(currentMatch.id, userId) : null
+    userId && currentMatchId ? getStoredPrediction(currentMatchId, userId) : null
   );
 
   if (prevUserId !== userId) {
     setPrevUserId(userId);
-    setPrediction(userId ? getStoredPrediction(currentMatch.id, userId) : null);
+    setPrediction(userId && currentMatchId ? getStoredPrediction(currentMatchId, userId) : null);
     setRemotePredictions({});
   }
 
@@ -63,7 +64,7 @@ export function usePorraSession({
     let active = true;
 
     async function loadSessionData() {
-      const communityPromise = fetchPorraCommunityData(currentMatch.id);
+      const communityPromise = fetchPorraCommunityData(currentMatchId);
 
       if (!userId) {
         const res = await communityPromise;
@@ -81,14 +82,16 @@ export function usePorraSession({
       if (!active) return;
 
       setRemotePredictions(userState.predictionsByMatchId);
-      const remoteCurrentPred = userState.predictionsByMatchId[currentMatch.id];
+      const remoteCurrentPred = currentMatchId
+        ? userState.predictionsByMatchId[currentMatchId]
+        : undefined;
       if (remoteCurrentPred) {
         setPrediction(remoteCurrentPred);
         saveStoredPrediction(remoteCurrentPred, userId);
       }
 
       if (userState.settledCount > 0) {
-        const refreshed = await fetchPorraCommunityData(currentMatch.id);
+        const refreshed = await fetchPorraCommunityData(currentMatchId);
         if (!active) return;
         setCommunityEntries(refreshed.entries);
         setFriendsCount(refreshed.friendsCount);
@@ -102,7 +105,7 @@ export function usePorraSession({
     return () => {
       active = false;
     };
-  }, [currentMatch.id, userId]);
+  }, [currentMatchId, userId]);
 
   const mergedPredictionsMap = useMemo(() => {
     if (!userId) return {};
@@ -212,7 +215,7 @@ export function usePorraSession({
       saveStoredPrediction(persisted, user.id);
       toast.success(dict.games.porra.toasts.predictionConfirmed);
 
-      const refreshed = await fetchPorraCommunityData(currentMatch.id);
+      const refreshed = await fetchPorraCommunityData(currentMatchId);
       setCommunityEntries(refreshed.entries);
       setFriendsCount(refreshed.friendsCount);
     } finally {

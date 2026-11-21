@@ -2,7 +2,6 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/security/rate-limiter";
-import { logBlockedAttempt } from "./moderation-log";
 import {
   blockUserSchema,
   reportUserSchema,
@@ -161,11 +160,14 @@ export async function reportUserAction(
     let transcriptLines: string[] = [];
 
     if (parsed.data.conversationId) {
-      const { data: isMember } = await supabase.rpc("is_conversation_member", {
-        p_conversation_id: parsed.data.conversationId,
-      });
+      const { data: members } = await supabase
+        .from("conversation_members")
+        .select("user_id")
+        .eq("conversation_id", parsed.data.conversationId)
+        .in("user_id", [user.id, parsed.data.targetUserId]);
 
-      if (isMember) {
+      const memberIds = new Set((members ?? []).map((m) => m.user_id));
+      if (memberIds.has(user.id) && memberIds.has(parsed.data.targetUserId)) {
         const { data: recentMsgs } = await supabase
           .from("messages")
           .select("sender_id, body, created_at")
@@ -190,23 +192,19 @@ export async function reportUserAction(
       transcriptLines,
     });
 
-    await Promise.allSettled([
-      supabase.from("user_reports").insert({
-        reporter_id: user.id,
-        reported_id: parsed.data.targetUserId,
-        conversation_id: parsed.data.conversationId ?? null,
-        category: parsed.data.category,
-        details: parsed.data.details?.trim() || null,
-        evidence_snapshot:
-          transcriptLines.length > 0 ? transcriptLines.join("\n") : null,
-      }),
-      logBlockedAttempt(supabase, {
-        userId: user.id,
-        body: formatted.body,
-        reason: formatted.reason,
-        channel: "user_report",
-      }),
-    ]);
+    const { error: reportErr } = await supabase.from("user_reports").insert({
+      reporter_id: user.id,
+      reported_id: parsed.data.targetUserId,
+      conversation_id: parsed.data.conversationId ?? null,
+      category: parsed.data.category,
+      details: [parsed.data.details?.trim(), formatted.reason].filter(Boolean).join(" — ") || null,
+      evidence_snapshot:
+        transcriptLines.length > 0 ? transcriptLines.join("\n") : null,
+    });
+
+    if (reportErr) {
+      return { success: false, error: "No se pudo registrar la denuncia en este momento" };
+    }
 
     if (parsed.data.alsoBlock) {
       await blockUserAction({ targetUserId: parsed.data.targetUserId });

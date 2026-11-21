@@ -78,23 +78,25 @@ export default async function PorraPage() {
     })
   );
 
-  const currentMatch: PorraMatch = {
-    id: nextMatchSummary?.externalId ?? 'next-sporting-match',
-    roundName: nextMatchSummary?.competition ?? 'LaLiga Hypermotion',
-    matchday: nextMatchSummary?.matchday ?? undefined,
-    homeTeam: {
-      name: nextMatchSummary?.homeTeam?.name ?? 'Real Sporting',
-      crestUrl: nextMatchSummary?.homeTeam?.crestUrl ?? undefined,
-      isSporting: nextMatchSummary?.homeTeam?.isSporting ?? true,
-    },
-    awayTeam: {
-      name: nextMatchSummary?.awayTeam?.name ?? dict.games.porra.fallbackOpponent,
-      crestUrl: nextMatchSummary?.awayTeam?.crestUrl ?? undefined,
-      isSporting: nextMatchSummary?.awayTeam?.isSporting ?? false,
-    },
-    kickoffAt: nextMatchSummary?.kickoffAt ?? new Date().toISOString(),
-    isFinished: false,
-  };
+  const currentMatch: PorraMatch | null = nextMatchSummary
+    ? {
+        id: nextMatchSummary.externalId,
+        roundName: nextMatchSummary.competition,
+        matchday: nextMatchSummary.matchday ?? undefined,
+        homeTeam: {
+          name: nextMatchSummary.homeTeam.name,
+          crestUrl: nextMatchSummary.homeTeam.crestUrl ?? undefined,
+          isSporting: nextMatchSummary.homeTeam.isSporting,
+        },
+        awayTeam: {
+          name: nextMatchSummary.awayTeam.name,
+          crestUrl: nextMatchSummary.awayTeam.crestUrl ?? undefined,
+          isSporting: nextMatchSummary.awayTeam.isSporting,
+        },
+        kickoffAt: nextMatchSummary.kickoffAt,
+        isFinished: false,
+      }
+    : null;
 
   return (
     <PorraClient

@@ -143,6 +143,7 @@ export function ThreadView({
           <div className="mt-2 border-t border-[var(--border)] pt-1">
             <PostActions
               likesCount={post.likesCount}
+              userHasLiked={post.userHasLiked}
               repliesCount={replies.length}
               postId={post.id}
               postBody={cleanBody || post.body}

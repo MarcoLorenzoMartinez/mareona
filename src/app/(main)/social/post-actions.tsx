@@ -4,10 +4,13 @@
 import { useState } from "react";
 import { MessageSquare, Share2, Check } from "lucide-react";
 import { HeartLikeIcon } from "@/components/social/heart-like-icon";
+import { togglePostLike } from "@/lib/social/actions";
+import { toast } from "@/lib/ui/toast";
 import { getDictionary } from "@/i18n";
 
 interface PostActionsProps {
   readonly likesCount: number;
+  readonly userHasLiked?: boolean;
   readonly repliesCount: number;
   readonly onOpenThread?: () => void;
   readonly postId?: string;
@@ -19,6 +22,7 @@ const ACTION_CLASS =
 
 export function PostActions({
   likesCount,
+  userHasLiked = false,
   repliesCount,
   onOpenThread,
   postId,
@@ -26,13 +30,26 @@ export function PostActions({
 }: PostActionsProps) {
   const dict = getDictionary();
   const [likes, setLikes] = useState(likesCount);
-  const [hasLiked, setHasLiked] = useState(false);
+  const [hasLiked, setHasLiked] = useState(userHasLiked);
   const [hasCopied, setHasCopied] = useState(false);
 
-  const toggleLike = (e: React.MouseEvent) => {
+  const toggleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setLikes((prev) => (hasLiked ? Math.max(0, prev - 1) : prev + 1));
-    setHasLiked((prev) => !prev);
+    const prevLiked = hasLiked;
+    const prevLikes = likes;
+    setLikes((prev) => (prevLiked ? Math.max(0, prev - 1) : prev + 1));
+    setHasLiked(!prevLiked);
+
+    if (!postId) return;
+    const res = await togglePostLike(postId);
+    if (!res.success || !res.data) {
+      setLikes(prevLikes);
+      setHasLiked(prevLiked);
+      if (res.error) toast.error(res.error);
+      return;
+    }
+    setLikes(res.data.likesCount);
+    setHasLiked(res.data.liked);
   };
 
   const handleReplies = (e: React.MouseEvent) => {

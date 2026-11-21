@@ -145,23 +145,16 @@ export async function deleteDirectMessage(
       return { success: false, error: "Debes iniciar sesión para eliminar un mensaje" };
     }
 
-    const { data: updated, error: updateErr } = await supabase
-      .from("messages")
-      .update({ deleted_at: new Date().toISOString() })
-      .match({
-        id: parsed.data.messageId,
-        conversation_id: parsed.data.conversationId,
-        sender_id: user.id,
-      })
-      .is("deleted_at", null)
-      .select("id")
-      .maybeSingle();
+    const { data: deleted, error: rpcErr } = await supabase.rpc(
+      "soft_delete_direct_message",
+      { p_message_id: parsed.data.messageId }
+    );
 
-    if (updateErr || !updated) {
+    if (rpcErr || !deleted) {
       return { success: false, error: "No se pudo eliminar el mensaje" };
     }
 
-    return { success: true, data: { messageId: updated.id } };
+    return { success: true, data: { messageId: parsed.data.messageId } };
   } catch {
     return { success: false, error: "Error inesperado al eliminar el mensaje" };
   }

@@ -102,7 +102,7 @@ export async function getMyFriendsList(): Promise<readonly FriendSummary[]> {
  * Searches users by username or display name for friend addition.
  */
 export async function searchAficionados(query: string): Promise<readonly FriendSummary[]> {
-  const cleanQuery = normalizeSearchQuery(query);
+  const cleanQuery = normalizeSearchQuery(query).replace(/[^a-zA-Z0-9_\sáéíóúÁÉÍÓÚñÑüÜ-]/g, "").trim();
   if (cleanQuery.length < 2) return [];
 
   // When Supabase environment variables are missing (local demo mode / sandbox),

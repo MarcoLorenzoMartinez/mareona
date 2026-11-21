@@ -22,7 +22,6 @@ import {
   type SubmitPlayerRatingInput,
   type SubmitMatchPlayerRatingsInput,
 } from "./schemas";
-import { aggregateMvpVotes, aggregatePlayerRatings } from "./mvp";
 import { buildMatchCommentTree } from "./comment-tree";
 import type { MatchComment } from "./types";
 import type { Database } from "@/types/database.types";
@@ -242,40 +241,51 @@ export async function getMatchCommunityRatings(
       {
         data: { user },
       },
-      { data: mvpRows },
-      { data: ratingRows },
+      { data: mvpSummary },
+      { data: ratingSummary },
     ] = await Promise.all([
       supabase.auth.getUser(),
-      supabase
-        .from("match_mvp_votes")
-        .select("player_id, user_id")
-        .eq("match_id", matchId),
-      supabase
-        .from("match_player_ratings")
-        .select("target_id, rating, user_id")
-        .eq("match_id", matchId),
+      supabase.rpc("get_match_mvp_summary", { p_match_id: matchId }),
+      supabase.rpc("get_match_player_ratings_summary", { p_match_id: matchId }),
     ]);
 
-    const safeMvpRows = mvpRows ?? [];
-    const safeRatingRows = ratingRows ?? [];
+    const mvpVoteCounts: Record<string, number> = {};
+    for (const row of mvpSummary ?? []) {
+      mvpVoteCounts[row.player_id] = Number(row.votes);
+    }
+
+    const communityRatingAverages: Record<string, number> = {};
+    for (const row of ratingSummary ?? []) {
+      communityRatingAverages[row.target_id] = Number(row.avg_rating);
+    }
 
     let userMvpPlayerId: string | null = null;
     const userRatings: Record<string, number> = {};
 
     if (user) {
-      const ownMvp = safeMvpRows.find((r) => r.user_id === user.id);
-      userMvpPlayerId = ownMvp?.player_id ?? null;
+      const [{ data: ownMvp }, { data: ownRatings }] = await Promise.all([
+        supabase
+          .from("match_mvp_votes")
+          .select("player_id")
+          .eq("match_id", matchId)
+          .eq("user_id", user.id)
+          .maybeSingle(),
+        supabase
+          .from("match_player_ratings")
+          .select("target_id, rating")
+          .eq("match_id", matchId)
+          .eq("user_id", user.id),
+      ]);
 
-      for (const row of safeRatingRows) {
-        if (row.user_id === user.id) {
-          userRatings[row.target_id] = row.rating;
-        }
+      userMvpPlayerId = ownMvp?.player_id ?? null;
+      for (const row of ownRatings ?? []) {
+        userRatings[row.target_id] = row.rating;
       }
     }
 
     return {
-      mvpVoteCounts: aggregateMvpVotes(safeMvpRows),
-      communityRatingAverages: aggregatePlayerRatings(safeRatingRows),
+      mvpVoteCounts,
+      communityRatingAverages,
       userMvpPlayerId,
       userRatings,
     };
@@ -330,28 +340,25 @@ export async function submitMvpVote(
       .eq("user_id", user.id)
       .maybeSingle();
 
-    const { error: upsertError } = await supabase
-      .from("match_mvp_votes")
-      .upsert(
-        {
-          match_id: parsed.data.matchId,
-          user_id: user.id,
-          player_id: parsed.data.playerId,
-        },
-        { onConflict: "match_id,user_id" }
-      );
+    const { error: rpcError } = await supabase.rpc("cast_match_mvp_vote", {
+      p_match_id: parsed.data.matchId,
+      p_player_id: parsed.data.playerId,
+    });
 
-    if (upsertError) {
+    if (rpcError) {
       return {
         success: false,
-        error: upsertError.message ?? "No se pudo registrar tu voto al MVP",
+        error: rpcError.message ?? "No se pudo registrar tu voto al MVP",
       };
     }
 
-    const { data: allMvpRows } = await supabase
-      .from("match_mvp_votes")
-      .select("player_id")
-      .eq("match_id", parsed.data.matchId);
+    const { data: mvpSummary } = await supabase.rpc("get_match_mvp_summary", {
+      p_match_id: parsed.data.matchId,
+    });
+    const mvpVoteCounts: Record<string, number> = {};
+    for (const row of mvpSummary ?? []) {
+      mvpVoteCounts[row.player_id] = Number(row.votes);
+    }
 
     revalidatePath(`/temporada/partidos/${parsed.data.matchId}`);
 
@@ -360,7 +367,7 @@ export async function submitMvpVote(
       data: {
         playerId: parsed.data.playerId,
         previousPlayerId: existingVote?.player_id ?? parsed.data.previousPlayerId ?? null,
-        mvpVoteCounts: aggregateMvpVotes(allMvpRows ?? []),
+        mvpVoteCounts,
       },
     };
   } catch {
@@ -402,18 +409,14 @@ export async function submitPlayerRating(
       return { success: false, error: auth.error };
     }
 
-    const { supabase, user } = auth;
+    const { supabase } = auth;
     const integerRating = Math.round(parsed.data.rating);
 
-    const { error } = await supabase.from("match_player_ratings").upsert(
-      {
-        match_id: parsed.data.matchId,
-        user_id: user.id,
-        target_id: parsed.data.targetId,
-        rating: integerRating,
-      },
-      { onConflict: "match_id,user_id,target_id" }
-    );
+    const { error } = await supabase.rpc("upsert_match_player_rating", {
+      p_match_id: parsed.data.matchId,
+      p_target_id: parsed.data.targetId,
+      p_rating: integerRating,
+    });
 
     if (error) {
       return {
@@ -480,21 +483,33 @@ export async function submitMatchPlayerRatings(
       rating: Math.round(item.rating),
     }));
 
-    const { error: upsertError } = await supabase
-      .from("match_player_ratings")
-      .upsert(rowsToUpsert, { onConflict: "match_id,user_id,target_id" });
+    const results = await Promise.all(
+      rowsToUpsert.map((row) =>
+        supabase.rpc("upsert_match_player_rating", {
+          p_match_id: row.match_id,
+          p_target_id: row.target_id,
+          p_rating: row.rating,
+        })
+      )
+    );
 
-    if (upsertError) {
+    const firstErr = results.find((r) => r.error)?.error;
+    if (firstErr) {
       return {
         success: false,
-        error: upsertError.message ?? "No se pudieron guardar tus calificaciones",
+        error: firstErr.message ?? "No se pudieron guardar tus calificaciones",
       };
     }
 
-    const { data: allRatingRows } = await supabase
-      .from("match_player_ratings")
-      .select("target_id, rating")
-      .eq("match_id", parsed.data.matchId);
+    const { data: ratingSummary } = await supabase.rpc(
+      "get_match_player_ratings_summary",
+      { p_match_id: parsed.data.matchId }
+    );
+
+    const communityRatingAverages: Record<string, number> = {};
+    for (const row of ratingSummary ?? []) {
+      communityRatingAverages[row.target_id] = Number(row.avg_rating);
+    }
 
     const userRatings: Record<string, number> = {};
     for (const row of rowsToUpsert) {
@@ -507,7 +522,7 @@ export async function submitMatchPlayerRatings(
       success: true,
       data: {
         userRatings,
-        communityRatingAverages: aggregatePlayerRatings(allRatingRows ?? []),
+        communityRatingAverages,
       },
     };
   } catch {

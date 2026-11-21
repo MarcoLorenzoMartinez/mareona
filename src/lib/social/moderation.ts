@@ -27,6 +27,7 @@ interface GroqCompletion {
 }
 
 async function classifyWithGroq(text: string, apiKey: string): Promise<ModerationDecision> {
+  const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const response = await fetch(GROQ_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
@@ -37,7 +38,7 @@ async function classifyWithGroq(text: string, apiKey: string): Promise<Moderatio
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: MODERATION_SYSTEM_PROMPT },
-        { role: "user", content: `<mensaje>${text}</mensaje>` },
+        { role: "user", content: `<mensaje>${safeText}</mensaje>` },
       ],
     }),
     signal: AbortSignal.timeout(TIMEOUT_MS),
@@ -65,7 +66,11 @@ export async function moderateText(text: string): Promise<ModerationDecision> {
   }
 
   const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) return { verdict: "allow", reason: "ai_unconfigured" };
+  if (!apiKey) {
+    return process.env.NODE_ENV === "production"
+      ? { verdict: "flag", reason: "ai_unconfigured" }
+      : { verdict: "allow", reason: "ai_unconfigured" };
+  }
 
   try {
     return await classifyWithGroq(text, apiKey);

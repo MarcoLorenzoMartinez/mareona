@@ -134,13 +134,13 @@ export async function getDirectMessages(
 
     if (!isMember) return [];
 
-    // Mark as read in background
-    void supabase
+    // Mark as read synchronously
+    await supabase
       .from("conversation_members")
       .update({ last_read_at: new Date().toISOString() })
       .match({ conversation_id: conversationId, user_id: user.id });
 
-    // Fetch messages
+    // Fetch latest 100 messages in chronological order
     const { data: messages, error } = await supabase
       .from("messages")
       .select(
@@ -149,12 +149,12 @@ export async function getDirectMessages(
       )
       .eq("conversation_id", conversationId)
       .is("deleted_at", null)
-      .order("created_at", { ascending: true })
+      .order("created_at", { ascending: false })
       .limit(100);
 
     if (error || !messages) return [];
 
-    return messages.map((m) => {
+    return [...messages].reverse().map((m) => {
       const profile = m.profiles as {
         username: string;
         display_name: string | null;

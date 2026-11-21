@@ -30,7 +30,10 @@ export async function searchAdminUsers(query?: string): Promise<readonly Discipl
     `)
     .limit(30);
 
-  const cleanQuery = query?.trim();
+  const cleanQuery = query
+    ?.trim()
+    .replace(/[^a-zA-Z0-9_\sáéíóúÁÉÍÓÚñÑüÜ-]/g, "")
+    .trim();
   if (cleanQuery) {
     req = req.or(`username.ilike.%${cleanQuery}%,display_name.ilike.%${cleanQuery}%`);
   } else {
@@ -67,6 +70,9 @@ export async function banUserAction(
   const parsed = banUserSchema.safeParse(input);
   if (!parsed.success) {
     return { success: false, error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
+  }
+  if (parsed.data.userId === user.id) {
+    return { success: false, error: "No puedes suspender tu propia cuenta de administrador" };
   }
 
   const bannedUntil = parsed.data.durationDays

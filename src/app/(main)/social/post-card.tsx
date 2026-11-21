@@ -102,6 +102,7 @@ export function PostCard({
         {!isEditing && (
           <PostActions
             likesCount={post.likesCount}
+            userHasLiked={post.userHasLiked}
             repliesCount={repliesCount}
             onOpenThread={openThread}
             postId={post.id}
