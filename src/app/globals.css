@@ -101,7 +101,6 @@
 
 /* Mapeo de tokens para utilidades de Tailwind v4 */
 @theme inline {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
