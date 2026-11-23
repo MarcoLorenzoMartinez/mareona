@@ -56,13 +56,11 @@ export function WhoAreYaSelector({
 
   const cleanQuery = query.trim();
   const filtered = cleanQuery.length > 0
-    ? options
-        .filter(
-          (opt) =>
-            matchesSearchQuery(opt.label, cleanQuery) ||
-            (opt.sublabel && matchesSearchQuery(opt.sublabel, cleanQuery))
-        )
-        .slice(0, 6)
+    ? options.filter(
+        (opt) =>
+          matchesSearchQuery(opt.label, cleanQuery) ||
+          (opt.sublabel && matchesSearchQuery(opt.sublabel, cleanQuery))
+      )
     : [];
 
   const handleSelectOption = useCallback(

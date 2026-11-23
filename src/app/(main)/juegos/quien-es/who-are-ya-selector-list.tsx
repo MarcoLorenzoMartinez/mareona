@@ -26,7 +26,7 @@ export function WhoAreYaSelectorList({
       ref={listRef}
       id={listboxId}
       role="listbox"
-      className="absolute z-30 mt-2 max-h-60 w-full overflow-auto rounded-2xl border border-[var(--border)] bg-white py-1.5 shadow-lg animate-in fade-in-50 duration-150"
+      className="absolute z-30 mt-2 max-h-60 w-full overflow-auto overscroll-contain rounded-2xl border border-[var(--border)] bg-white py-1.5 shadow-lg animate-in fade-in-50 duration-150"
     >
       {options.map((item, idx) => {
         const isHighlighted = idx === highlightedIndex;
