@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { usePendingNavigation } from "@/lib/ui/use-pending-navigation";
 import { getDictionary } from "@/i18n";
 
 /**
@@ -12,6 +13,7 @@ import { getDictionary } from "@/i18n";
 export function HistoricoNav() {
   const pathname = usePathname();
   const dict = getDictionary();
+  const { markPending, isPending } = usePendingNavigation(pathname);
 
   const historicoTabs = [
     { label: dict.historico.tabs.trajectory, href: "/historico" },
@@ -31,15 +33,20 @@ export function HistoricoNav() {
             tab.href === "/historico"
               ? pathname === "/historico"
               : pathname.startsWith(tab.href);
+          const isTabPending = isPending(tab.href);
 
           return (
             <Link
               key={tab.href}
               href={tab.href}
               aria-current={isActive ? "page" : undefined}
+              aria-busy={isTabPending ? "true" : undefined}
+              onClick={() => markPending(tab.href, isActive)}
               className={`inline-flex min-h-[44px] items-center border-b-2 px-3.5 py-2 text-sm font-semibold transition-all duration-150 whitespace-nowrap active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] focus-visible:ring-offset-2 ${
                 isActive
                   ? "border-[var(--primary)] text-[var(--primary)]"
+                  : isTabPending
+                  ? "border-[var(--primary)]/50 text-[var(--primary)] animate-pulse"
                   : "border-transparent text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
               }`}
             >

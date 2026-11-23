@@ -12,6 +12,7 @@ import {
   type SharedLineupData,
 } from "@/lib/lineup-builder/shared-lineup-codec";
 import { createSocialPost } from "@/lib/social/actions";
+import { runWithNetworkTimeout } from "@/lib/pwa/network-quality";
 import type { SocialPost } from "@/lib/social/types";
 import { getDictionary } from "@/i18n";
 
@@ -88,8 +89,18 @@ export function usePostComposer(
 
     setIsSubmitting(true);
     setError(null);
-    const res = await createSocialPost({ body: fullBody, parentId, pollOptions: validPollOptions });
-    setIsSubmitting(false);
+    let res: Awaited<ReturnType<typeof createSocialPost>>;
+    try {
+      res = await runWithNetworkTimeout(
+        () => createSocialPost({ body: fullBody, parentId, pollOptions: validPollOptions }),
+        12_000
+      );
+    } catch {
+      setError(dict.social.composer.publishErrorFallback);
+      return;
+    } finally {
+      setIsSubmitting(false);
+    }
 
     if (!res.success || !res.data) {
       setError(res.error ?? dict.social.composer.publishErrorFallback);

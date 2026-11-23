@@ -87,6 +87,7 @@ export function PostComposerControls({
         <button
           type="submit"
           disabled={!canSubmit}
+          aria-busy={isSubmitting}
           className="min-h-9 rounded-full bg-[var(--primary)] px-5 text-sm font-bold text-white transition-[transform,opacity] duration-150 hover:bg-[var(--primary-strong)] active:scale-95 disabled:opacity-50 disabled:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
         >
           {isSubmitting ? dict.social.composer.submitting : submitLabel}

@@ -4,10 +4,12 @@
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { usePendingNavigation } from "@/lib/ui/use-pending-navigation";
 import { getDictionary } from "@/i18n";
 
 function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
   const dict = getDictionary();
+  const { markPending, isPending } = usePendingNavigation(pathname);
   const containerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -56,36 +58,11 @@ function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
   }, [pathname]);
 
   const seasonTabs = [
-    {
-      label: dict.season.tabs.matches,
-      shortLabel: dict.season.tabs.matches,
-      href: "/temporada/partidos",
-      isAvailable: true,
-    },
-    {
-      label: dict.season.tabs.standings,
-      shortLabel: dict.season.tabs.standingsShort,
-      href: "/temporada/clasificacion",
-      isAvailable: true,
-    },
-    {
-      label: dict.season.tabs.stats,
-      shortLabel: dict.season.tabs.statsShort,
-      href: "/temporada/estadisticas",
-      isAvailable: true,
-    },
-    {
-      label: dict.season.tabs.squad,
-      shortLabel: dict.season.tabs.squad,
-      href: "/temporada/plantilla",
-      isAvailable: true,
-    },
-    {
-      label: dict.season.tabs.lineup,
-      shortLabel: dict.season.tabs.lineup,
-      href: "/temporada/pizarra",
-      isAvailable: true,
-    },
+    { label: dict.season.tabs.matches, shortLabel: dict.season.tabs.matches, href: "/temporada/partidos", isAvailable: true },
+    { label: dict.season.tabs.standings, shortLabel: dict.season.tabs.standingsShort, href: "/temporada/clasificacion", isAvailable: true },
+    { label: dict.season.tabs.stats, shortLabel: dict.season.tabs.statsShort, href: "/temporada/estadisticas", isAvailable: true },
+    { label: dict.season.tabs.squad, shortLabel: dict.season.tabs.squad, href: "/temporada/plantilla", isAvailable: true },
+    { label: dict.season.tabs.lineup, shortLabel: dict.season.tabs.lineup, href: "/temporada/pizarra", isAvailable: true },
   ];
 
   return (
@@ -108,6 +85,7 @@ function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
         {seasonTabs.map((tab) => {
           const isActive =
             pathname !== null && pathname.startsWith(tab.href);
+          const isTabPending = isPending(tab.href);
 
           if (!tab.isAvailable) {
             return (
@@ -130,9 +108,13 @@ function SeasonNavList({ pathname }: { readonly pathname: string | null }) {
               key={tab.href}
               href={tab.href}
               aria-current={isActive ? "page" : undefined}
+              aria-busy={isTabPending ? "true" : undefined}
+              onClick={() => markPending(tab.href, isActive)}
               className={`inline-flex min-h-[44px] items-center justify-center border-b-2 px-1 sm:px-3.5 py-2 text-sm font-semibold transition-all duration-150 whitespace-nowrap active:scale-[0.98] text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-strong)] focus-visible:ring-offset-2 ${
                 isActive
                   ? "border-[var(--primary)] text-[var(--primary)]"
+                  : isTabPending
+                  ? "border-[var(--primary)]/50 text-[var(--primary)] animate-pulse"
                   : "border-transparent text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
               }`}
             >

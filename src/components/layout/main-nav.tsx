@@ -1,66 +1,17 @@
-// Client: Requiere usePathname() para evaluar la ruta activa y aplicar aria-current="page", y estado de fallback de imagen
+// Client: Requiere usePathname() para evaluar la ruta activa y aplicar aria-current="page"
 "use client";
 
-import { useState, Suspense } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav-items";
+import { BrandLogo } from "./brand-logo";
 import { MobileNav, MobileNavFallback } from "./mobile-nav";
 import { UserNav } from "@/components/auth/user-nav";
 import { useSocialNotifications } from "./use-social-notifications";
 import { useOfflineGuard } from "@/lib/pwa/use-offline-guard";
+import { usePendingNavigation } from "@/lib/ui/use-pending-navigation";
 import { getDictionary } from "@/i18n";
-
-/**
- * Brand logo linking to home/temporada.
- * Displays uploaded /logo.png or falls back to an accessible SVG crest mark.
- */
-function BrandLogo() {
-  const dict = getDictionary();
-  const [hasImageError, setHasImageError] = useState(false);
-  const { guardNavigation } = useOfflineGuard();
-
-  return (
-    <Link
-      href="/"
-      onClick={(e) => guardNavigation(e, "/")}
-      aria-label={dict.layout.brand.homeAria}
-      className="flex items-center gap-2.5 rounded-md p-1 text-white transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
-    >
-      {!hasImageError ? (
-        <Image
-          src="/logo.png"
-          alt={dict.layout.brand.logoAlt}
-          width={32}
-          height={32}
-          priority
-          unoptimized
-          onError={() => setHasImageError(true)}
-          className="h-8 w-8 rounded-sm object-contain"
-        />
-      ) : (
-        <div
-          className="flex h-8 w-8 items-center justify-center rounded-sm bg-white text-[var(--primary)] shadow-xs select-none"
-          aria-hidden="true"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-            <path d="M3 17c3-5 5-8 9-2 4 6 6 3 9-2" />
-            <path d="M3 12c3-4 5-6 9-1 4 5 6 2 9-1" opacity="0.6" />
-          </svg>
-        </div>
-      )}
-      <div className="flex flex-col">
-        <span className="text-base font-black tracking-wider text-white uppercase leading-none">
-          {dict.layout.brand.name}
-        </span>
-        <span className="text-[10px] font-semibold tracking-widest text-white/80 uppercase mt-0.5">
-          {dict.layout.brand.club}
-        </span>
-      </div>
-    </Link>
-  );
-}
 
 function DesktopNavList({
   pathname,
@@ -68,6 +19,7 @@ function DesktopNavList({
 }: { readonly pathname: string | null; readonly unreadSocialCount?: number }) {
   const dict = getDictionary();
   const { isBlocked, guardNavigation } = useOfflineGuard();
+  const { markPending, isPending } = usePendingNavigation(pathname);
 
   return (
     <nav aria-label={dict.layout.nav.desktopAria}>
@@ -76,6 +28,7 @@ function DesktopNavList({
           const isActive =
             pathname !== null &&
             (item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`));
+          const isItemPending = isPending(item.href);
 
           return (
             <li key={item.href}>
@@ -83,11 +36,21 @@ function DesktopNavList({
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
                 aria-disabled={isBlocked(item.href) ? "true" : undefined}
-                onClick={(e) => guardNavigation(e, item.href)}
+                aria-busy={isItemPending ? "true" : undefined}
+                onClick={(e) => {
+                  guardNavigation(e, item.href);
+                  if (!e.defaultPrevented) {
+                    markPending(item.href, isActive);
+                  }
+                }}
                 className={`relative flex h-10 items-center justify-center rounded-md px-3.5 text-sm font-medium tracking-wide transition-colors duration-150 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] ${
                   isBlocked(item.href) ? "opacity-55 " : ""
                 }${
-                  isActive ? "bg-white/18 font-bold text-white shadow-2xs" : "text-white/85 hover:bg-white/10 hover:text-white"
+                  isActive
+                    ? "bg-white/18 font-bold text-white shadow-2xs"
+                    : isItemPending
+                    ? "bg-white/15 font-semibold text-white animate-pulse"
+                    : "text-white/85 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <span className="relative inline-flex items-center">

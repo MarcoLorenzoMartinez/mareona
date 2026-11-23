@@ -1,9 +1,10 @@
 // Client: Hook de estado, sincronización Supabase y cálculo de clasificación de La Porra
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { toast } from '@/lib/ui/toast';
 import { useAuth } from '@/context/auth-context';
+import { runWithNetworkTimeout } from '@/lib/pwa/network-quality';
 import { buildUserLeaderboardEntry } from '@/lib/porra/leaderboard';
 import { resolveUnclaimedPorraRewards } from '@/lib/porra/engine';
 import { fetchPorraCommunityData } from '@/lib/porra/queries';
@@ -43,6 +44,7 @@ export function usePorraSession({
   const [claimVersion, setClaimVersion] = useState(0);
   const [justClaimedCount, setJustClaimedCount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isClaimingRef = useRef(false);
   const [communityEntries, setCommunityEntries] = useState<
     readonly PorraLeaderboardEntry[]
   >([]);
@@ -199,12 +201,16 @@ export function usePorraSession({
 
     setIsSubmitting(true);
     try {
-      const res = await submitPorraPrediction({
-        matchId: newPred.matchId,
-        homeScore: newPred.homeScore,
-        awayScore: newPred.awayScore,
-        sportingScorers: newPred.sportingScorers,
-      });
+      const res = await runWithNetworkTimeout(
+        () =>
+          submitPorraPrediction({
+            matchId: newPred.matchId,
+            homeScore: newPred.homeScore,
+            awayScore: newPred.awayScore,
+            sportingScorers: newPred.sportingScorers,
+          }),
+        12_000
+      );
 
       if (!res.success || !res.data) {
         toast.error(res.error ?? 'No se pudo confirmar tu pronóstico');
@@ -223,6 +229,8 @@ export function usePorraSession({
       const refreshed = await fetchPorraCommunityData(currentMatchId);
       setCommunityEntries(refreshed.entries);
       setFriendsCount(refreshed.friendsCount);
+    } catch {
+      toast.error('No se pudo conectar para confirmar tu pronóstico');
     } finally {
       setIsSubmitting(false);
     }
@@ -233,27 +241,35 @@ export function usePorraSession({
       openAuthModal();
       return;
     }
-    const res = await claimPorraRewardsServerAction();
-    if (!res.success || !res.data) {
-      toast.error(res.error ?? 'No se pudieron reclamar tus sobres');
-      return;
-    }
+    if (isClaimingRef.current) return;
+    isClaimingRef.current = true;
+    try {
+      const res = await runWithNetworkTimeout(() => claimPorraRewardsServerAction(), 12_000);
+      if (!res.success || !res.data) {
+        toast.error(res.error ?? 'No se pudieron reclamar tus sobres');
+        return;
+      }
 
-    const { addedCount, claimedMatchIds, snapshot } = res.data;
-    markPorraRewardsClaimed(claimedMatchIds, user.id);
-    saveUserPackInventory(snapshot.packs, user.id);
-    saveAlbumSyncRevision(snapshot.revision, user.id);
+      const { addedCount, claimedMatchIds, snapshot } = res.data;
+      markPorraRewardsClaimed(claimedMatchIds, user.id);
+      saveUserPackInventory(snapshot.packs, user.id);
+      saveAlbumSyncRevision(snapshot.revision, user.id);
 
-    if (addedCount > 0) {
-      setJustClaimedCount(addedCount);
-      setClaimVersion((v) => v + 1);
-      toast.success(
-        addedCount === 1
-          ? dict.games.porra.toasts.onePackAdded
-          : `${dict.games.porra.toasts.manyPacksPrefix}${addedCount} ${dict.games.porra.toasts.manyPacksSuffix}`
-      );
-    } else if (pendingRewards.length > 0) {
-      setClaimVersion((v) => v + 1);
+      if (addedCount > 0) {
+        setJustClaimedCount(addedCount);
+        setClaimVersion((v) => v + 1);
+        toast.success(
+          addedCount === 1
+            ? dict.games.porra.toasts.onePackAdded
+            : `${dict.games.porra.toasts.manyPacksPrefix}${addedCount} ${dict.games.porra.toasts.manyPacksSuffix}`
+        );
+      } else if (pendingRewards.length > 0) {
+        setClaimVersion((v) => v + 1);
+      }
+    } catch {
+      toast.error('No se pudo conectar para reclamar tus sobres');
+    } finally {
+      isClaimingRef.current = false;
     }
   };
 

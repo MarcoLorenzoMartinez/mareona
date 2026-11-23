@@ -13,20 +13,15 @@ import { SocialMobileComposerSection } from "./social-mobile-composer-section";
 import { useSocialThreadNavigation } from "./use-social-thread-navigation";
 import { getSocialPosts, deleteSocialPost, updateSocialPost } from "@/lib/social/actions";
 import { getOrCreateConversationWithFriend } from "@/lib/social/direct-messages-actions";
-import {
-  useSocialNotifications,
-  refreshSocialNotifications,
-} from "@/components/layout/use-social-notifications";
+import { runWithNetworkTimeout } from "@/lib/pwa/network-quality";
+import { completeNavigationProgress, startNavigationProgress } from "@/lib/ui/navigation-progress";
+import { useSocialNotifications, refreshSocialNotifications } from "@/components/layout/use-social-notifications";
 import { addReplyToTree, removePostFromTree, updatePostInTree } from "@/lib/social/post-tree";
 import type { SocialFeedTab } from "./feed-tab-selector";
 import type { SocialPost } from "@/lib/social/types";
 import { getDictionary } from "@/i18n";
 
-interface SocialFeedProps {
-  readonly initialPosts: readonly SocialPost[];
-}
-
-export function SocialFeed({ initialPosts }: SocialFeedProps) {
+export function SocialFeed({ initialPosts }: { readonly initialPosts: readonly SocialPost[] }) {
   const dict = getDictionary();
   const { user, openAuthModal } = useAuth();
   const socialNotifications = useSocialNotifications();
@@ -56,9 +51,16 @@ export function SocialFeed({ initialPosts }: SocialFeedProps) {
     setActiveTab(tab);
     setActiveConversationId(null);
     if (tab !== "messages") {
+      startNavigationProgress();
       startTransition(async () => {
-        const filtered = await getSocialPosts(tab);
-        setPosts(filtered);
+        try {
+          const filtered = await runWithNetworkTimeout(() => getSocialPosts(tab), 12_000);
+          setPosts(filtered);
+        } catch {
+          toast.error(dict.common.error);
+        } finally {
+          completeNavigationProgress();
+        }
       });
     }
   };
