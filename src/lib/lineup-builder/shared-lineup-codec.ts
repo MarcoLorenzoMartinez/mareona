@@ -15,7 +15,7 @@ export interface SharedLineupData {
   readonly starters: readonly SharedLineupStarter[];
 }
 
-const LOCAL_STORAGE_KEY = "mareona_shared_once_draft";
+export const SHARED_LINEUP_STORAGE_KEY = "mareona_shared_once_draft";
 
 function extractPhotoId(photoUrl: string | null): string {
   if (!photoUrl) return "";
@@ -137,7 +137,7 @@ export function parsePostLineup(body: string): { cleanBody: string; lineup: Shar
 export function saveLocalSharedLineup(data: SharedLineupData): void {
   if (typeof window === "undefined") return;
   try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+    window.localStorage.setItem(SHARED_LINEUP_STORAGE_KEY, JSON.stringify(data));
   } catch {
     // Non-blocking quota failure
   }
@@ -146,11 +146,20 @@ export function saveLocalSharedLineup(data: SharedLineupData): void {
 export function loadLocalSharedLineup(): SharedLineupData | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const raw = window.localStorage.getItem(SHARED_LINEUP_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as SharedLineupData;
     return parsed?.formationKey && Array.isArray(parsed.starters) ? parsed : null;
   } catch {
     return null;
+  }
+}
+
+export function clearLocalSharedLineup(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(SHARED_LINEUP_STORAGE_KEY);
+  } catch {
+    // Non-blocking quota failure
   }
 }

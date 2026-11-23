@@ -6,6 +6,11 @@ import type {
   TacticalRole,
 } from "./types.ts";
 import { TACTICAL_FORMATIONS } from "./formations.ts";
+import {
+  buildSharedLineupFromSlots,
+  clearLocalSharedLineup,
+  saveLocalSharedLineup,
+} from "./shared-lineup-codec.ts";
 
 export const LINEUP_STORAGE_KEY = "mareona_lineup_state_v1";
 
@@ -43,6 +48,7 @@ export function savePersistedLineup(
       })),
     };
     window.localStorage.setItem(LINEUP_STORAGE_KEY, JSON.stringify(payload));
+    saveLocalSharedLineup(buildSharedLineupFromSlots(formationKey, assignedSlots));
     if (typeof window.dispatchEvent === "function") {
       window.dispatchEvent(new CustomEvent("mareona_local_account_mutated"));
     }
@@ -83,6 +89,7 @@ export function clearPersistedLineup(): void {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.removeItem(LINEUP_STORAGE_KEY);
+    clearLocalSharedLineup();
   } catch {
     // Non-blocking quota failure
   }
