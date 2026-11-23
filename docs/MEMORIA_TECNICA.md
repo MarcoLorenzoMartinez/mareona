@@ -80,13 +80,13 @@ El objetivo principal del proyecto es reunir en una sola aplicación la actualid
 
 Mareona cubre el seguimiento deportivo del Real Sporting, la consulta de su archivo histórico, la interacción social entre aficionados y una colección de juegos diarios y de coleccionismo. La aplicación se organiza en siete áreas funcionales accesibles desde la navegación principal o mediante permisos de administración:
 
-- Inicio (`/`): resumen con el próximo partido o encuentro en directo, efeméride del día y accesos directos a las secciones principales.
-- Temporada (`/temporada`): calendario y resultados oficiales de la temporada del Real Sporting, ficha completa de cada encuentro (alineaciones, cronología en directo, estadísticas comparadas, gráfico de *momentum*, mapa de disparos y *La Grada* con votación al MVP), clasificación en tres vistas (tabla tradicional, distancia real por puntos y evolución por jornada), estadísticas colectivas con posición en liga y mapas tácticos, fichas individuales de la plantilla y pizarra táctica interactiva (*Mi Once*) para crear y compartir alineaciones.
-- Histórico (`/historico`): trayectoria del club temporada a temporada con acceso a clasificaciones, partidos y plantillas pasadas, calendario de efemérides, balance frente a rivales con mapas interactivos de España y del mundo, y tablas históricas de jugadores y entrenadores.
-- Social (`/social`): muro comunitario con hilos de respuestas, encuestas y alineaciones compartidas, red de amistades, mensajería directa privada, bloqueo entre usuarios y moderación automática con IA acompañada de revisión manual.
-- Juegos (`/juegos`): tres retos diarios sobre el club (*Wordle*, *La Pregunta del Día* y *¿Quién es?*), el modo de racha libre *¿Más o Menos?*, *La Porra* de cada partido oficial con clasificación global y por amigos, y el álbum de cromos *Memoria Rojiblanca* con apertura de sobres y reciclaje de repetidos.
-- Perfil (`/perfil`): autenticación por correo electrónico o Google, edición de datos y avatar, borrado completo de cuenta y soporte de instalación como PWA con modo sin conexión para el archivo histórico y los juegos diarios.
-- Administración (`/admin`): panel restringido a moderadores y administradores para gestionar usuarios, revisar mensajes reportados o retenidos, publicar avisos y consultar métricas de visitas y errores de cliente.
+- **Inicio (`/`):** resumen con el próximo partido o encuentro en directo, efeméride del día y accesos directos a las secciones principales.
+- **Temporada (`/temporada`):** calendario y resultados oficiales de la temporada del Real Sporting, ficha completa de cada encuentro (alineaciones, cronología en directo, estadísticas comparadas, gráfico de *momentum*, mapa de disparos y *La Grada* con votación al MVP), clasificación en tres vistas (tabla tradicional, distancia real por puntos y evolución por jornada), estadísticas colectivas con posición en liga y mapas tácticos, fichas individuales de la plantilla y pizarra táctica interactiva (*Mi Once*) para crear y compartir alineaciones.
+- **Histórico (`/historico`):** trayectoria del club temporada a temporada con acceso a clasificaciones, partidos y plantillas pasadas, calendario de efemérides, balance frente a rivales con mapas interactivos de España y del mundo, y tablas históricas de jugadores y entrenadores.
+- **Social (`/social`):** muro comunitario con hilos de respuestas, encuestas y alineaciones compartidas, red de amistades, mensajería directa privada, bloqueo entre usuarios y moderación automática con IA acompañada de revisión manual.
+- **Juegos (`/juegos`):** tres retos diarios sobre el club (*Wordle*, *La Pregunta del Día* y *¿Quién es?*), el modo de racha libre *¿Más o Menos?*, *La Porra* de cada partido oficial con clasificación global y por amigos, y el álbum de cromos *Memoria Rojiblanca* con apertura de sobres y reciclaje de repetidos.
+- **Perfil (`/perfil`):** autenticación por correo electrónico o Google, edición de datos y avatar, borrado completo de cuenta y soporte de instalación como PWA con modo sin conexión para el archivo histórico y los juegos diarios.
+- **Administración (`/admin`):** panel restringido a moderadores y administradores para gestionar usuarios, revisar mensajes reportados o retenidos, publicar avisos y consultar métricas de visitas y errores de cliente.
 
 En la Ilustración 1 se muestra la distribución de los módulos de la aplicación y su agrupación entre zonas públicas, áreas que requieren sesión y el panel de administración.
 
@@ -279,13 +279,13 @@ Administración:
 
 Los requisitos no funcionales fijan las restricciones técnicas y de calidad que condicionan el diseño:
 
-- Coste de infraestructura cero: todas las piezas (hospedaje, base de datos, autenticación, almacenamiento, moderación y fuentes de datos) deben operar dentro de planes gratuitos.
-- Accesibilidad WCAG 2.2 AA: contraste mínimo de 4,5:1 en texto normal, operabilidad completa mediante teclado, foco visible en rojo corporativo y ausencia de información transmitida solo por color.
-- Uso móvil y PWA: áreas táctiles mínimas de 44x44 px, navegación inferior en pantallas pequeñas, instalación en iOS, Android y escritorio, y consulta sin conexión del archivo histórico y los juegos diarios.
-- Seguridad en base de datos y borde: *Row Level Security* (RLS) activada en todas las tablas, validación con Zod en toda entrada externa, cabeceras de seguridad HTTP (`CSP`, `X-Frame-Options`, `Referrer-Policy`) y límite de peticiones en rutas sensibles.
-- Privacidad y cumplimiento legal: eliminación efectiva de cuenta y datos personales bajo demanda, custodia legal de mensajes denunciados y páginas de aviso legal, privacidad, cookies y términos accesibles sin registro.
-- Veracidad de datos: prohibición de mostrar datos deportivos simulados o de relleno cuando falte información en las fuentes externas; la interfaz debe indicar la ausencia de forma explícita.
-- Rendimiento y cobertura móvil: carga inicial ligera mediante Server Components en las rutas de datos y tiempo de espera acotado (3 segundos) en el Service Worker para no bloquear la navegación con mala cobertura en el estadio.
+- **Coste de infraestructura cero:** todas las piezas (hospedaje, base de datos, autenticación, almacenamiento, moderación y fuentes de datos) deben operar dentro de planes gratuitos.
+- **Accesibilidad WCAG 2.2 AA:** contraste mínimo de 4,5:1 en texto normal, operabilidad completa mediante teclado, foco visible en rojo corporativo y ausencia de información transmitida solo por color.
+- **Uso móvil y PWA:** áreas táctiles mínimas de 44x44 px, navegación inferior en pantallas pequeñas, instalación en iOS, Android y escritorio, y consulta sin conexión del archivo histórico y los juegos diarios.
+- **Seguridad en base de datos y borde:** *Row Level Security* (RLS) activada en todas las tablas, validación con Zod en toda entrada externa, cabeceras de seguridad HTTP (`CSP`, `X-Frame-Options`, `Referrer-Policy`) y límite de peticiones en rutas sensibles.
+- **Privacidad y cumplimiento legal:** eliminación efectiva de cuenta y datos personales bajo demanda, custodia legal de mensajes denunciados y páginas de aviso legal, privacidad, cookies y términos accesibles sin registro.
+- **Veracidad de datos:** prohibición de mostrar datos deportivos simulados o de relleno cuando falte información en las fuentes externas; la interfaz debe indicar la ausencia de forma explícita.
+- **Rendimiento y cobertura móvil:** carga inicial ligera mediante Server Components en las rutas de datos y tiempo de espera acotado (3 segundos) en el Service Worker para no bloquear la navegación con mala cobertura en el estadio.
 
 ## 2.4 Casos de Uso
 
@@ -491,10 +491,10 @@ flowchart LR
 
 El código fuente bajo `src/` se organiza en cuatro capas unidireccionales. Las capas externas dependen de las internas, pero la lógica de dominio no importa componentes de React ni detalles de transporte HTTP:
 
-- Presentación (`src/app/` y `src/components/`): rutas de App Router, layouts, Server Components, componentes interactivos de cliente y diccionarios de texto (`src/i18n/`).
-- Borde y validación (`src/proxy.ts`, Server Actions y `src/app/api/`): renovación de sesión, limitación de peticiones (`rate-limiter.ts`) y validación de entradas con esquemas Zod.
-- Dominio (`src/lib/`): motores de cálculo de La Porra, juegos diarios, pizarra táctica, árboles de conversación, normalización deportiva y analítica.
-- Infraestructura y datos (`src/lib/supabase/`, `src/lib/sports-api/`, `src/data/`): clientes de Supabase (navegador, servidor SSR y `service_role`), conectores externos y conjuntos de datos históricos en JSON.
+- **Presentación (`src/app/` y `src/components/`):** rutas de App Router, layouts, Server Components, componentes interactivos de cliente y diccionarios de texto (`src/i18n/`).
+- **Borde y validación (`src/proxy.ts`, Server Actions y `src/app/api/`):** renovación de sesión, limitación de peticiones (`rate-limiter.ts`) y validación de entradas con esquemas Zod.
+- **Dominio (`src/lib/`):** motores de cálculo de La Porra, juegos diarios, pizarra táctica, árboles de conversación, normalización deportiva y analítica.
+- **Infraestructura y datos (`src/lib/supabase/`, `src/lib/sports-api/`, `src/data/`):** clientes de Supabase (navegador, servidor SSR y `service_role`), conectores externos y conjuntos de datos históricos en JSON.
 
 En la Ilustración 11 se representan las dependencias permitidas entre capas. El cumplimiento de estas fronteras se verifica de forma automática mediante la suite `tests/code/architecture-rules.test.ts` y la directiva `import "server-only"` en los módulos que manejan credenciales o el cliente administrativo de Supabase: si un componente de cliente intenta importarlos, la compilación falla.
 
@@ -878,9 +878,9 @@ sequenceDiagram
 
 Tres decisiones rigen este subsistema:
 
-- Deduplicación en vuelo (`inFlightRequests`): si varios usuarios solicitan la misma vista en el mismo segundo tras un gol, un mapa de promesas en memoria agrupa todas las solicitudes en una sola llamada HTTP saliente y reparte el resultado.
-- Caducidad variable (`resolveMatchDetailTtlMs`): los encuentros en directo o en la hora previa al saque inicial usan un TTL de 30 a 60 segundos; la clasificación se cachea 1 hora; el calendario y las plantillas, entre 12 y 24 horas; y los partidos finalizados mantienen una caché larga al no cambiar sus datos.
-- Normalización y veracidad: `normalizeTeamName` convierte en el borde variantes externas como `"Sporting Gijón"` o `"Sporting de Gijón"` en el nombre canónico `"Real Sporting"` antes de llegar a la interfaz. El cruce de jugadores entre ESPN y FotMob combina normalización Unicode NFD, dorsal y apellidos. Si una fuente no responde o carece de datos, la aplicación informa de la ausencia sin mostrar datos inventados.
+- **Deduplicación en vuelo (`inFlightRequests`):** si varios usuarios solicitan la misma vista en el mismo segundo tras un gol, un mapa de promesas en memoria agrupa todas las solicitudes en una sola llamada HTTP saliente y reparte el resultado.
+- **Caducidad variable (`resolveMatchDetailTtlMs`):** los encuentros en directo o en la hora previa al saque inicial usan un TTL de 30 a 60 segundos; la clasificación se cachea 1 hora; el calendario y las plantillas, entre 12 y 24 horas; y los partidos finalizados mantienen una caché larga al no cambiar sus datos.
+- **Normalización y veracidad:** `normalizeTeamName` convierte en el borde variantes externas como `"Sporting Gijón"` o `"Sporting de Gijón"` en el nombre canónico `"Real Sporting"` antes de llegar a la interfaz. El cruce de jugadores entre ESPN y FotMob combina normalización Unicode NFD, dorsal y apellidos. Si una fuente no responde o carece de datos, la aplicación informa de la ausencia sin mostrar datos inventados.
 
 ### 3.3.2 Temporada
 
@@ -1191,10 +1191,10 @@ flowchart LR
 
 El diseño incorpora medidas directas de cumplimiento con el RGPD, la LOPDGDD y el Reglamento de Servicios Digitales (DSA):
 
-- Derecho de supresión (art. 17 RGPD): desde `/perfil`, el diálogo de eliminación ejecuta `public.delete_current_user()`, borrando la cuenta en `auth.users` y sus datos asociados en cascada sin requerir trámites por correo.
-- Limpieza de metadatos en avatares: antes de subir una imagen de perfil a Supabase Storage, `avatar-compression.ts` la redimensiona y recodifica en un `<canvas>` del navegador, reduciendo su peso y eliminando metadatos EXIF como la ubicación GPS.
-- Custodia de mensajes privados: el borrado lógico en `messages` oculta al instante el mensaje a ambos participantes mediante RLS, pero conserva el registro íntegro para adjuntar evidencia inmutable (`evidence_snapshot`) si existe una denuncia en `user_reports`.
-- Telemetría sin cookies: al no almacenar direcciones IP ni usar cookies de seguimiento, no se requieren banners de consentimiento publicitario, y las páginas legales (`/aviso-legal`, `/privacidad`, `/cookies`, `/terminos`) son públicas sin necesidad de registro.
+- **Derecho de supresión (art. 17 RGPD):** desde `/perfil`, el diálogo de eliminación ejecuta `public.delete_current_user()`, borrando la cuenta en `auth.users` y sus datos asociados en cascada sin requerir trámites por correo.
+- **Limpieza de metadatos en avatares:** antes de subir una imagen de perfil a Supabase Storage, `avatar-compression.ts` la redimensiona y recodifica en un `<canvas>` del navegador, reduciendo su peso y eliminando metadatos EXIF como la ubicación GPS.
+- **Custodia de mensajes privados:** el borrado lógico en `messages` oculta al instante el mensaje a ambos participantes mediante RLS, pero conserva el registro íntegro para adjuntar evidencia inmutable (`evidence_snapshot`) si existe una denuncia en `user_reports`.
+- **Telemetría sin cookies:** al no almacenar direcciones IP ni usar cookies de seguimiento, no se requieren banners de consentimiento publicitario, y las páginas legales (`/aviso-legal`, `/privacidad`, `/cookies`, `/terminos`) son públicas sin necesidad de registro.
 
 ### 3.5.3 Escudos, Fotografías y Atribución
 
@@ -1245,10 +1245,10 @@ En pantallas pequeñas, la navegación principal se traslada a una barra inferio
 
 El cumplimiento de WCAG 2.2 nivel AA se integra en los componentes base:
 
-- Contraste verificado: `--brand` sobre blanco alcanza 4,90:1, `--brand-strong` 6,94:1 y `--foreground-muted` 7,82:1; los bordes de controles alcanzan al menos 3:1.
-- Independencia del color: en *Wordle* cada celda combina color, borde e icono (✓, ▲, ×) junto con `aria-label` descriptivo; en los gráficos de evolución la posición y los puntos se distinguen por trazo continuo con círculos frente a trazo discontinuo con cuadrados.
-- Alternativa textual en gráficos: todos los gráficos SVG (evolución, *momentum* y mapas de disparos) incluyen una tabla HTML oculta (`sr-only`) con `<caption>` y `<th scope="col">` para lectores de pantalla.
-- Teclado y modales: toda la interfaz es operable con teclado con foco visible en `--brand-strong`; los modales aplican `role="dialog"`, `aria-modal="true"`, trampa de foco, cierre con `Escape` y restauración del foco al elemento que los abrió.
+- **Contraste verificado:** `--brand` sobre blanco alcanza 4,90:1, `--brand-strong` 6,94:1 y `--foreground-muted` 7,82:1; los bordes de controles alcanzan al menos 3:1.
+- **Independencia del color:** en *Wordle* cada celda combina color, borde e icono (✓, ▲, ×) junto con `aria-label` descriptivo; en los gráficos de evolución la posición y los puntos se distinguen por trazo continuo con círculos frente a trazo discontinuo con cuadrados.
+- **Alternativa textual en gráficos:** todos los gráficos SVG (evolución, *momentum* y mapas de disparos) incluyen una tabla HTML oculta (`sr-only`) con `<caption>` y `<th scope="col">` para lectores de pantalla.
+- **Teclado y modales:** toda la interfaz es operable con teclado con foco visible en `--brand-strong`; los modales aplican `role="dialog"`, `aria-modal="true"`, trampa de foco, cierre con `Escape` y restauración del foco al elemento que los abrió.
 
 ---
 
@@ -1325,10 +1325,10 @@ mareona/
 
 El desarrollo sigue reglas verificables automáticamente mediante `npm run check` (`tsc --noEmit && eslint && node --test tests/**/*.test.ts`):
 
-- Tipado estricto en TypeScript: `strict: true` en `tsconfig.json`, prohibición de `any`, `as any`, `@ts-ignore` y `@ts-expect-error`. Toda entrada externa se valida con Zod en el borde, y los tipos de base de datos proceden de `src/types/database.types.ts` generado desde el esquema real.
-- Modularidad de componentes: ningún archivo de componente (`.tsx`) en `src/` supera las 180 líneas; cuando una vista o diálogo crece, se divide en subcomponentes y hooks dedicados (separando la lógica extensa, los adaptadores externos y las definiciones de tipos en módulos `.ts`).
-- Documentación interna y commits: las funciones de dominio, adaptadores y Server Actions incorporan comentarios TSDoc (`@param`, `@returns`, `@throws`) y comentarios en inglés centrados en el porqué de las decisiones. El historial sigue el formato *Conventional Commits* (`type(scope): imperative description`).
-- Estándares integrados: el cumplimiento de accesibilidad (WCAG 2.2 AA [1]), privacidad (RGPD [2] / LOPDGDD [3]) y seguridad (OWASP ASVS nivel 2 [5], RLS y cabeceras HTTP) forma parte de los criterios de aceptación descritos en los apartados 3.5 y 3.6 y se verifica en la batería de pruebas del Capítulo 5.
+- **Tipado estricto en TypeScript:** `strict: true` en `tsconfig.json`, prohibición de `any`, `as any`, `@ts-ignore` y `@ts-expect-error`. Toda entrada externa se valida con Zod en el borde, y los tipos de base de datos proceden de `src/types/database.types.ts` generado desde el esquema real.
+- **Modularidad de componentes:** ningún archivo de componente (`.tsx`) en `src/` supera las 180 líneas; cuando una vista o diálogo crece, se divide en subcomponentes y hooks dedicados (separando la lógica extensa, los adaptadores externos y las definiciones de tipos en módulos `.ts`).
+- **Documentación interna y commits:** las funciones de dominio, adaptadores y Server Actions incorporan comentarios TSDoc (`@param`, `@returns`, `@throws`) y comentarios en inglés centrados en el porqué de las decisiones. El historial sigue el formato *Conventional Commits* (`type(scope): imperative description`).
+- **Estándares integrados:** el cumplimiento de accesibilidad (WCAG 2.2 AA [1]), privacidad (RGPD [2] / LOPDGDD [3]) y seguridad (OWASP ASVS nivel 2 [5], RLS y cabeceras HTTP) forma parte de los criterios de aceptación descritos en los apartados 3.5 y 3.6 y se verifica en la batería de pruebas del Capítulo 5.
 
 ## 4.5 Internacionalización
 
@@ -1386,10 +1386,10 @@ flowchart BT
 
 Las 99 suites de archivos en `tests/unit/` validan la lógica pura de dominio aislada de la red y de React:
 
-- Motores de juego: evaluación en dos pasadas de *Wordle* (`wordle-engine.test.ts`), ausencia de repeticiones en la permutación diaria Mulberry32 + Fisher-Yates (`daily-permutation.test.ts`, `wordle-words.test.ts`), cálculo de fechas en `Europe/Madrid` (`game-daily-date.test.ts`), comparación de atributos en *¿Quién es?* y *¿Más o Menos?*, y liquidación de puntos y cortes horarios en *La Porra* (`porra-engine.test.ts`, `porra-cutoff.test.ts`).
-- Coleccionismo: probabilidades y garantías por tipo de sobre en `card-packs.test.ts`, paginación del álbum y sincronización de partidos disputados en `cards-match-sync.test.ts`.
-- Datos deportivos y pizarra: parsers de ESPN y FotMob, resolución de jugadores por nombre y dorsal (`fotmob-player-resolver.test.ts`), normalización del club, transiciones entre sistemas tácticos (`formation-transition.test.ts`) y códec de alineaciones compartidas.
-- Seguridad, privacidad y offline: esquemas Zod de autenticación, mensajería, encuestas y administración, borrado de cuenta (`account-deletion.test.ts`), moderación con IA (`moderation-ai.test.ts`), cola sin conexión (`offline-sync.test.ts`) y telemetría.
+- **Motores de juego:** evaluación en dos pasadas de *Wordle* (`wordle-engine.test.ts`), ausencia de repeticiones en la permutación diaria Mulberry32 + Fisher-Yates (`daily-permutation.test.ts`, `wordle-words.test.ts`), cálculo de fechas en `Europe/Madrid` (`game-daily-date.test.ts`), comparación de atributos en *¿Quién es?* y *¿Más o Menos?*, y liquidación de puntos y cortes horarios en *La Porra* (`porra-engine.test.ts`, `porra-cutoff.test.ts`).
+- **Coleccionismo:** probabilidades y garantías por tipo de sobre en `card-packs.test.ts`, paginación del álbum y sincronización de partidos disputados en `cards-match-sync.test.ts`.
+- **Datos deportivos y pizarra:** parsers de ESPN y FotMob, resolución de jugadores por nombre y dorsal (`fotmob-player-resolver.test.ts`), normalización del club, transiciones entre sistemas tácticos (`formation-transition.test.ts`) y códec de alineaciones compartidas.
+- **Seguridad, privacidad y offline:** esquemas Zod de autenticación, mensajería, encuestas y administración, borrado de cuenta (`account-deletion.test.ts`), moderación con IA (`moderation-ai.test.ts`), cola sin conexión (`offline-sync.test.ts`) y telemetría.
 
 Por ejemplo, la suite `wordle-words.test.ts` comprueba que el catálogo contiene más de 100 palabras históricas del club, que el algoritmo no repite ninguna palabra dentro de un ciclo completo de longitud $N$, y que la validación acepta nombres con `ñ` mientras rechaza cadenas aleatorias o de longitud incorrecta.
 
@@ -1401,18 +1401,18 @@ Las pruebas de `tests/integration/` (`social-actions.test.ts` y `match-community
 
 Las 5 suites de Playwright en `tests/e2e/` prueban la aplicación real en navegador Chromium:
 
-- `navigation-public.spec.ts`: recorrido por las rutas públicas principales sin sesión iniciada.
-- `porra-flow.spec.ts`: flujo de pronóstico y estado de *La Porra*.
-- `social-wall.spec.ts`: visualización e interacción en el muro social.
-- `admin-security.spec.ts`: comprobación de que los accesos sin rol `admin` a `/admin/*` reciben rechazo del servidor.
-- `offline-pwa.spec.ts`: simulación de pérdida de red (`offline`) para verificar que las rutas precacheadas y la página `/offline` responden correctamente.
+- **`navigation-public.spec.ts`:** recorrido por las rutas públicas principales sin sesión iniciada.
+- **`porra-flow.spec.ts`:** flujo de pronóstico y estado de *La Porra*.
+- **`social-wall.spec.ts`:** visualización e interacción en el muro social.
+- **`admin-security.spec.ts`:** comprobación de que los accesos sin rol `admin` a `/admin/*` reciben rechazo del servidor.
+- **`offline-pwa.spec.ts`:** simulación de pérdida de red (`offline`) para verificar que las rutas precacheadas y la página `/offline` responden correctamente.
 
 ## 5.5 Pruebas de Accesibilidad
 
 El cumplimiento de WCAG 2.2 AA se comprueba en `tests/a11y/` mediante dos suites automatizadas:
 
-- `wcag-contrast.test.ts`: lee los tokens de color reales definidos en `src/app/globals.css`, calcula la luminancia relativa sRGB según la fórmula del W3C y comprueba que los pares de texto normal superan el ratio 4,5:1 y los controles y texto grande superan 3,0:1.
-- `modal-standards.test.ts`: verifica que los componentes modales implementan `role="dialog"`, `aria-modal="true"` y gestión de foco mediante `use-modal-a11y.ts`.
+- **`wcag-contrast.test.ts`:** lee los tokens de color reales definidos en `src/app/globals.css`, calcula la luminancia relativa sRGB según la fórmula del W3C y comprueba que los pares de texto normal superan el ratio 4,5:1 y los controles y texto grande superan 3,0:1.
+- **`modal-standards.test.ts`:** verifica que los componentes modales implementan `role="dialog"`, `aria-modal="true"` y gestión de foco mediante `use-modal-a11y.ts`.
 
 Estas comprobaciones se completan con revisión manual de navegación por teclado (`Tab`, `Shift+Tab`, `Escape`) y presencia de tablas `sr-only` en los gráficos SVG.
 
@@ -1667,13 +1667,13 @@ Mareona ha permitido aplicar y unificar conocimientos de arquitectura en capas c
 ## 7.2 Ampliaciones
 
 Hay múltiples posibilidades de ampliación de Mareona, las cuales se podrían implementar en futuras versiones del producto:
-- Duelos 11vs11: modo de juego integrado en Memoria Rojiblanca, que permitiría a los usuarios crear alineaciones propias y enfrentarlas a las de otros aficionados, con un estilo de juego similar al de los cromos tradicionales, en el que se jugaría por rondas, enfrentando las características de un jugador de cada equipo en cada ronda. Se podría incluir un sistema de ligas y de recompensas que funcionase con matchmaking, y que permitiera a los usuarios ir subiendo de rango a medida que obtienen victorias, consiguiendo a su vez sobres para completar la colección. Se ha decidido esperar a incluir esta ampliación para no sobresaturar con demasiados juegos al inicio, y para formar una buena base de usuarios que dispongan de cromos suficientes para competir entre sí una vez se integren los duelos en la aplicación.
-- Intercambio de cromos repetidos: se podría incluir un sistema mediante el que los usuarios podrían intercambiar aquellos cromos de Memoria Rojiblanca que tuviesen repetidos con otros usuarios. De esta forma, ambos saldrían beneficiados, ayudándose mutuamente a completar la colección, lo que fomentaría la interacción entre usuarios y el entretenimiento en la aplicación.
-- Más juegos: se dispone de múltiples ideas de nuevos juegos que podrían ser incluidos en el sistema para el entretenimiento de los usuarios y fomentar la ampliación de sus conocimientos, pero se ha decidido reservarlos para un futuro para no sobresaturar la aplicación en un inicio, y para poder ofrecer novedades en un futuro a los usuarios.
-- Internacionalización a varios idiomas: la aplicación actualmente solamente se muestra en español, pero se podría ampliar para incluir otros idiomas (como el asturiano o el inglés), lo que permitiría llegar a una audiencia más amplia y mejorar la accesibilidad para usuarios de diferentes regiones.
-- Notificaciones push: enviar avisos al móvil cuando falte poco para el cierre de La Porra, al inicio del partido, los goles en directo, o al recibir mensajes privados o menciones. Esto aportaría retención sin depender necesariamente de abrir la aplicación.
-- Seguimiento del Real Sporting Femenino y el Sporting Atlético: inicialmente, se ha desarrollado la aplicación para mostrar datos del primer equipo masculino, pero podría ser interesante para el futuro incluir cobertura del primer equipo femenino y el filial, para que los usuarios puedan realizar un seguimiento de los principales equipos de la institución en una sola plataforma, sirviendo como nexo de unión para los seguidores de todos los equipos, y como proveedor de toda la información que cualquier aficionado del club puede querer visualizar durante la temporada.
-- Ligas privadas en los juegos: permitir crear competiciones entre amigos para comparar el rendimiento en los juegos, especialmente en la porra, de forma que se potencie el entretenimiento proporcionado por los juegos, al poder realizar comparaciones reales con tu grupo de amigos, y comentar los resultados entre todos.
+- **Duelos 11vs11:** modo de juego integrado en Memoria Rojiblanca, que permitiría a los usuarios crear alineaciones propias y enfrentarlas a las de otros aficionados, con un estilo de juego similar al de los cromos tradicionales, en el que se jugaría por rondas, enfrentando las características de un jugador de cada equipo en cada ronda. Se podría incluir un sistema de ligas y de recompensas que funcionase con matchmaking, y que permitiera a los usuarios ir subiendo de rango a medida que obtienen victorias, consiguiendo a su vez sobres para completar la colección. Se ha decidido esperar a incluir esta ampliación para no sobresaturar con demasiados juegos al inicio, y para formar una buena base de usuarios que dispongan de cromos suficientes para competir entre sí una vez se integren los duelos en la aplicación.
+- **Intercambio de cromos repetidos:** se podría incluir un sistema mediante el que los usuarios podrían intercambiar aquellos cromos de Memoria Rojiblanca que tuviesen repetidos con otros usuarios. De esta forma, ambos saldrían beneficiados, ayudándose mutuamente a completar la colección, lo que fomentaría la interacción entre usuarios y el entretenimiento en la aplicación.
+- **Más juegos:** se dispone de múltiples ideas de nuevos juegos que podrían ser incluidos en el sistema para el entretenimiento de los usuarios y fomentar la ampliación de sus conocimientos, pero se ha decidido reservarlos para un futuro para no sobresaturar la aplicación en un inicio, y para poder ofrecer novedades en un futuro a los usuarios.
+- **Internacionalización a varios idiomas:** la aplicación actualmente solamente se muestra en español, pero se podría ampliar para incluir otros idiomas (como el asturiano o el inglés), lo que permitiría llegar a una audiencia más amplia y mejorar la accesibilidad para usuarios de diferentes regiones.
+- **Notificaciones push:** enviar avisos al móvil cuando falte poco para el cierre de La Porra, al inicio del partido, los goles en directo, o al recibir mensajes privados o menciones. Esto aportaría retención sin depender necesariamente de abrir la aplicación.
+- **Seguimiento del Real Sporting Femenino y el Sporting Atlético:** inicialmente, se ha desarrollado la aplicación para mostrar datos del primer equipo masculino, pero podría ser interesante para el futuro incluir cobertura del primer equipo femenino y el filial, para que los usuarios puedan realizar un seguimiento de los principales equipos de la institución en una sola plataforma, sirviendo como nexo de unión para los seguidores de todos los equipos, y como proveedor de toda la información que cualquier aficionado del club puede querer visualizar durante la temporada.
+- **Ligas privadas en los juegos:** permitir crear competiciones entre amigos para comparar el rendimiento en los juegos, especialmente en la porra, de forma que se potencie el entretenimiento proporcionado por los juegos, al poder realizar comparaciones reales con tu grupo de amigos, y comentar los resultados entre todos.
 
 ---
 
@@ -1749,9 +1749,9 @@ Mareona es una plataforma independiente creada por y para aficionados, sin patro
 
 El tratamiento de escudos, fotografías de futbolistas y marcas de terceros sigue los criterios definidos en `docs/LEGAL-ASSETS.md`:
 
-- Punto de entrada único: todas las imágenes deportivas externas se renderizan exclusivamente mediante los componentes `<TeamCrest>` y `<PlayerPhoto>` (`src/components/media/`), evitando etiquetas `<img>` dispersas.
-- Respeto a los orígenes: cuando una fuente externa no autoriza el rehospedaje, los archivos no se copian en almacenamiento propio y se sirven desde los dominios permitidos en `next.config.ts`, manteniendo sus proporciones y colores originales sin alteraciones ni fusiones con la marca de Mareona.
-- Alternativas neutras y retirada inmediata: si falla una carga externa se muestra una silueta o monograma vectorial; además, la variable `NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS` permite sustituir al instante todos los escudos y fotografías oficiales por marcadores neutros, y cualquier solicitud de retirada por parte de titulares de derechos se atiende en un plazo máximo de 48 horas.
-- Identidad propia: el logotipo de Mareona, los iconos de la aplicación instalada (PWA), el favicon y la iconografía propia pertenecen al proyecto.
+- **Punto de entrada único:** todas las imágenes deportivas externas se renderizan exclusivamente mediante los componentes `<TeamCrest>` y `<PlayerPhoto>` (`src/components/media/`), evitando etiquetas `<img>` dispersas.
+- **Respeto a los orígenes:** cuando una fuente externa no autoriza el rehospedaje, los archivos no se copian en almacenamiento propio y se sirven desde los dominios permitidos en `next.config.ts`, manteniendo sus proporciones y colores originales sin alteraciones ni fusiones con la marca de Mareona.
+- **Alternativas neutras y retirada inmediata:** si falla una carga externa se muestra una silueta o monograma vectorial; además, la variable `NEXT_PUBLIC_SHOW_OFFICIAL_ASSETS` permite sustituir al instante todos los escudos y fotografías oficiales por marcadores neutros, y cualquier solicitud de retirada por parte de titulares de derechos se atiende en un plazo máximo de 48 horas.
+- **Identidad propia:** el logotipo de Mareona, los iconos de la aplicación instalada (PWA), el favicon y la iconografía propia pertenecen al proyecto.
 
 Las estadísticas actuales y las clasificaciones proceden de las fuentes deportivas integradas en servidor [17], mientras que los datos históricos compilados se utilizan con fines informativos, divulgativos y culturales dentro de la comunidad sportinguista.
