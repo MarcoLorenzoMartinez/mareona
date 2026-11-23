@@ -14,8 +14,8 @@ export function HeroTeamCell({ team, isHome }: HeroTeamCellProps) {
     ? "flex-col md:flex-row items-center justify-center md:justify-end text-center md:text-right"
     : "flex-col md:flex-row items-center justify-center md:justify-start text-center md:text-left";
 
-  const nameOrderClass = isHome ? "order-2 md:order-1" : "";
-  const crestOrderClass = isHome ? "order-1 md:order-2" : "";
+  const nameOrderClass = isHome ? "order-2 md:order-1" : "order-2 md:order-2";
+  const crestOrderClass = isHome ? "order-1 md:order-2" : "order-1 md:order-1";
 
   return (
     <div className={`col-span-3 flex ${alignmentClass} gap-1.5 md:gap-3.5 min-w-0`}>
