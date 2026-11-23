@@ -70,6 +70,28 @@ describe("transformFotMobTeamStats", () => {
     assert.equal(stats.awaySplit.wins, 2);
   });
 
+  it("falls back to computed home attendance when API omits home_attendance_team", () => {
+    const raw = {
+      stats: {
+        teams: [
+          {
+            header: "Goals per match",
+            participant: {
+              value: 1.1,
+              rank: 18,
+              stat: { name: "goals_team_match", value: 1.1 },
+            },
+          },
+        ],
+      },
+    };
+
+    const stats = transformFotMobTeamStats(raw, [], undefined, 21184);
+    assert.ok(stats);
+    assert.equal(stats.homeAttendance, 21184);
+    assert.equal(stats.attendanceRank, null);
+  });
+
   it("returns null when teams stats are empty", () => {
     const stats = transformFotMobTeamStats({ stats: { teams: [] } });
     assert.equal(stats, null);

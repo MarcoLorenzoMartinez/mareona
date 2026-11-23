@@ -82,17 +82,19 @@ export function StatsSplitsChart({
       </div>
 
       {/* Asistencia Media en El Molinón con cápsula de ranking unificada */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-neutral-100 pt-3 text-xs">
-        <span className="font-medium text-[var(--foreground-muted)]">
-          Asistencia media en El Molinón
-        </span>
-        <div className="flex items-center gap-2">
-          {attendanceRank && <LeagueRankBadge rank={attendanceRank} />}
-          <span className="text-sm font-bold text-[var(--foreground)] font-sans tabular-nums">
-            {homeAttendance.toLocaleString("es-ES")} espectadores
+      {homeAttendance > 0 && (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-neutral-100 pt-3 text-xs">
+          <span className="font-medium text-[var(--foreground-muted)]">
+            Asistencia media en El Molinón
           </span>
+          <div className="flex items-center gap-2">
+            {attendanceRank && <LeagueRankBadge rank={attendanceRank} />}
+            <span className="text-sm font-bold text-[var(--foreground)] font-sans tabular-nums">
+              {homeAttendance.toLocaleString("es-ES")} espectadores
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

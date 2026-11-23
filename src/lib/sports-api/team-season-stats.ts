@@ -92,10 +92,28 @@ function parseSplit(row?: RawSplitRow): TeamSeasonStatsSplit {
   };
 }
 
+function isLeagueFixture(fixture: RawFixtureItem): boolean {
+  return fixture.tournament?.name?.includes("LaLiga") ?? false;
+}
+
+function parseAttendance(raw: number | string | null | undefined): number | null {
+  if (typeof raw === "number") {
+    return Number.isFinite(raw) && raw > 0 ? raw : null;
+  }
+  if (typeof raw === "string") {
+    const digits = Number(raw.replace(/[^\d]/g, ""));
+    return Number.isFinite(digits) && digits > 0 ? digits : null;
+  }
+  return null;
+}
+
 /**
  * Transforms FotMob team metrics payload into a clean Domain TeamSeasonStats model.
  *
  * @param payload Raw FotMob team details payload
+ * @param seasonGoals Aggregated league season goals
+ * @param tacticalSpatial Aggregated tactical zones, pass territory, and heatmap SVG
+ * @param computedHomeAttendance Fallback average home attendance computed from league matchDetails
  * @returns Clean TeamSeasonStats or null if unparseable
  */
 export function transformFotMobTeamStats(
@@ -105,7 +123,8 @@ export function transformFotMobTeamStats(
     attackingZones?: { left: number; center: number; right: number };
     passTerritory?: { ownHalfPasses: number; oppHalfPasses: number; ownHalfPct: number; oppHalfPct: number };
     heatmapCirclesSvg?: string;
-  }
+  },
+  computedHomeAttendance?: number
 ): TeamSeasonStats | null {
   const teamsStats = payload.stats?.teams ?? [];
   if (teamsStats.length === 0) return null;
@@ -130,7 +149,7 @@ export function transformFotMobTeamStats(
 
   // Calculate league match patterns
   const leagueFixtures = (payload.fixtures?.allFixtures?.fixtures ?? []).filter(
-    (f) => f.status?.finished && (f.tournament?.name?.includes("LaLiga") ?? true)
+    (f) => f.status?.finished && isLeagueFixture(f)
   );
 
   let cleanSheetsCount = 0;
@@ -217,7 +236,7 @@ export function transformFotMobTeamStats(
     savesPerMatch: getMetric("saves_team").val,
     savesRank: getMetric("saves_team").rank,
     // Stadium & Discipline
-    homeAttendance: getMetric("home_attendance_team").val,
+    homeAttendance: getMetric("home_attendance_team").val || computedHomeAttendance || 0,
     attendanceRank: getMetric("home_attendance_team").rank,
     yellowCards: getMetric("total_yel_card_team").val,
     yellowCardsRank: getMetric("total_yel_card_team").rank,
@@ -261,14 +280,14 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
 
       const json = (await res.json()) as RawFotMobTeamPayload;
 
-      // Aggregate goals from up to 10 most recent finished matches to avoid request storms
-      const finishedMatches = (json.fixtures?.allFixtures?.fixtures ?? [])
-        .filter((f) => f.id && f.status?.finished)
-        .slice(-10);
+      // Aggregate goals, tactical metrics, and home attendance across all finished league matches
+      const finishedMatches = (json.fixtures?.allFixtures?.fixtures ?? []).filter(
+        (f) => f.id && f.status?.finished && isLeagueFixture(f)
+      );
 
     const goalsPromises = finishedMatches.map(async (fixture) => {
       const matchId = fixture.id;
-      if (!matchId) return { goals: [], attackingZones: null, passTerritory: null };
+      if (!matchId) return { goals: [], attackingZones: null, passTerritory: null, heatmapCircles: "", homeAttendance: null };
       const isHome = fixture.home?.id === FOTMOB_SPORTING_ID;
       const rivalName = (isHome ? fixture.away?.name : fixture.home?.name) || "Rival";
       const teamScore = isHome ? fixture.home?.score : fixture.away?.score;
@@ -278,7 +297,7 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
           `https://www.fotmob.com/api/data/matchDetails?matchId=${matchId}`,
           { headers: FOTMOB_HEADERS, next: { revalidate: 3600 } }
         );
-        if (!matchRes.ok) return { goals: [], attackingZones: null, passTerritory: null };
+        if (!matchRes.ok) return { goals: [], attackingZones: null, passTerritory: null, heatmapCircles: "", homeAttendance: null };
         interface RawShotItem {
           readonly id?: number;
           readonly eventType?: string;
@@ -310,6 +329,11 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
         const mData = (await matchRes.json()) as {
           content?: {
             heatmapUrl?: string;
+            matchFacts?: {
+              infoBox?: {
+                Attendance?: number | string | null;
+              };
+            };
             playerStats?: Record<string, RawPlayerStatEntry>;
             shotmap?: { shots?: readonly RawShotItem[] };
             attackingZones?: {
@@ -401,14 +425,19 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
           }
         }
 
+        const homeAttendance = isHome
+          ? parseAttendance(mData.content?.matchFacts?.infoBox?.Attendance)
+          : null;
+
         return {
           goals: matchGoals,
           attackingZones: matchZones || null,
           passTerritory: ownHalf !== null && oppHalf !== null ? { ownHalf, oppHalf } : null,
           heatmapCircles,
+          homeAttendance,
         };
       } catch {
-        return { goals: [], attackingZones: null, passTerritory: null, heatmapCircles: "" };
+        return { goals: [], attackingZones: null, passTerritory: null, heatmapCircles: "", homeAttendance: null };
       }
     });
 
@@ -416,6 +445,7 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
     const collectedGoals: TeamSeasonGoalItem[] = [];
     let azLeftSum = 0, azCenterSum = 0, azRightSum = 0, azCount = 0;
     let ownPassSum = 0, oppPassSum = 0, passCount = 0;
+    let attendanceSum = 0, attendanceCount = 0;
     let aggregatedHeatmapCircles = "";
 
     for (const r of settledGoals) {
@@ -431,6 +461,10 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
           ownPassSum += r.value.passTerritory.ownHalf;
           oppPassSum += r.value.passTerritory.oppHalf;
           passCount++;
+        }
+        if (r.value.homeAttendance !== null) {
+          attendanceSum += r.value.homeAttendance;
+          attendanceCount++;
         }
         if (r.value.heatmapCircles) {
           aggregatedHeatmapCircles += r.value.heatmapCircles;
@@ -454,12 +488,19 @@ export async function fetchTeamSeasonStats(): Promise<TeamSeasonStats | null> {
     } : undefined;
 
     const heatmapCirclesSvg = aggregatedHeatmapCircles || undefined;
+    const computedHomeAttendance =
+      attendanceCount > 0 ? Math.round(attendanceSum / attendanceCount) : 0;
 
-    const stats = transformFotMobTeamStats(json, collectedGoals, {
-      attackingZones,
-      passTerritory,
-      heatmapCirclesSvg,
-    });
+    const stats = transformFotMobTeamStats(
+      json,
+      collectedGoals,
+      {
+        attackingZones,
+        passTerritory,
+        heatmapCirclesSvg,
+      },
+      computedHomeAttendance
+    );
 
       if (stats) {
         memoryCachedTeamStats = {
