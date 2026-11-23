@@ -7,16 +7,18 @@
  * Everything else — live scores, auth, Supabase, API routes, Server Actions — always
  * goes to the network so users never see stale or cross-account data.
  */
-const VERSION = "v6";
+const VERSION = "v7";
 const SHELL_CACHE = `mareona-shell-${VERSION}`;
 const STATIC_CACHE = `mareona-static-${VERSION}`;
 const IMAGE_CACHE = `mareona-images-${VERSION}`;
 const ACTIVE_CACHES = [SHELL_CACHE, STATIC_CACHE, IMAGE_CACHE];
 
 const OFFLINE_URL = "/offline";
+const HOME_SHELL_PATH = "/";
 const CRITICAL_IMAGES = ["/logo.png"];
 const PRECACHE_PATHS = [
   "/offline",
+  "/",
   "/juegos",
   "/historico",
 ];
@@ -42,6 +44,10 @@ const STATIC_ASSET_PATTERN =
 
 function isOfflineCapable(pathname) {
   return OFFLINE_ROUTES.includes(pathname) || pathname.startsWith(ARCHIVE_PREFIX);
+}
+
+function isFastShellRoute(pathname) {
+  return pathname === HOME_SHELL_PATH;
 }
 
 /** Cache key preserves `?date=` for daily challenges/ephemerides while ignoring UTM/PWA params. */
@@ -137,7 +143,7 @@ async function offlineFallback() {
 async function handleNavigation(event) {
   const url = new URL(event.request.url);
 
-  if (!isOfflineCapable(url.pathname)) {
+  if (!isOfflineCapable(url.pathname) && !isFastShellRoute(url.pathname)) {
     try {
       return await fetch(event.request);
     } catch {
@@ -150,7 +156,17 @@ async function handleNavigation(event) {
   const cached = await cache.match(key);
 
   const network = fetch(event.request).then((response) => {
-    if (isCacheablePage(response)) cache.put(key, response.clone());
+    if (isCacheablePage(response)) {
+      cache.put(key, response.clone());
+      // Keep `/` static JS/CSS chunks warm in STATIC_CACHE for instant hydration in poor coverage
+      if (isFastShellRoute(url.pathname)) {
+        response
+          .clone()
+          .text()
+          .then((html) => precacheStaticAssets(html))
+          .catch(() => undefined);
+      }
+    }
     return response;
   });
   event.waitUntil(network.catch(() => undefined));

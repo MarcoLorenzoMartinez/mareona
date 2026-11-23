@@ -30,7 +30,8 @@ export const esPwa = {
   },
   offlineBanner: {
     reconnectedToast: "Conexión recuperada",
-    statusText: "Sin conexión · Juegos y archivo histórico disponibles",
+    statusText: "Sin conexión - Juegos y archivo histórico disponibles",
+    degradedText: "Cobertura débil - Algunas acciones pueden tardar",
   },
   offlineSync: {
     oneSyncedTitle: "Partida sin conexión sincronizada",

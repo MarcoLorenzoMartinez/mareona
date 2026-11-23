@@ -15,6 +15,16 @@ import {
   getOfflineBlockCopy,
   isOfflineRoute,
 } from "../../src/lib/pwa/offline-routes.ts";
+import {
+  DEGRADED_COOLDOWN_MS,
+  HEALTHY_REQUEST_THRESHOLD_MS,
+  SLOW_REQUEST_THRESHOLD_MS,
+  isNetworkDegraded,
+  isSlowNetworkConnectionInfo,
+  reportRequestOutcome,
+  resetNetworkQualityForTests,
+  runWithNetworkTimeout,
+} from "../../src/lib/pwa/network-quality.ts";
 
 const IPHONE_SAFARI =
   "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1";
@@ -108,6 +118,12 @@ describe("Service worker precache list", () => {
     }
   });
 
+  it("precaches the home shell '/' with timeout fallback for congested networks", () => {
+    assert.ok(swSource.includes('HOME_SHELL_PATH = "/"'));
+    assert.ok(swSource.includes("isFastShellRoute"));
+    assert.ok(swSource.includes("NAVIGATION_TIMEOUT_MS"));
+  });
+
   it("never caches live or personal routes", () => {
     for (const path of [
       "/juegos/porra",
@@ -170,5 +186,48 @@ describe("getOfflineBlockCopy", () => {
 
   it("falls back to a generic explanation for unknown network routes", () => {
     assert.equal(getOfflineBlockCopy("/admin")?.description, "Esta sección necesita internet.");
+  });
+});
+
+describe("Network quality monitor (lie-fi detection)", () => {
+  it("flags 2g, slow-2g, or high RTT connection info as slow", () => {
+    assert.equal(isSlowNetworkConnectionInfo(null), false);
+    assert.equal(isSlowNetworkConnectionInfo({ effectiveType: "4g", rtt: 120 }), false);
+    assert.equal(isSlowNetworkConnectionInfo({ effectiveType: "2g", rtt: 400 }), true);
+    assert.equal(isSlowNetworkConnectionInfo({ effectiveType: "slow-2g" }), true);
+    assert.equal(isSlowNetworkConnectionInfo({ effectiveType: "4g", rtt: 1800 }), true);
+  });
+
+  it("activates degraded mode on slow or failed requests and clears on fast recovery", () => {
+    resetNetworkQualityForTests();
+    const base = 1_700_000_000_000;
+
+    assert.equal(isNetworkDegraded(base), false);
+
+    reportRequestOutcome(SLOW_REQUEST_THRESHOLD_MS + 500, true, base);
+    assert.equal(isNetworkDegraded(base + 1000), true);
+
+    // Fast successful request clears degraded state immediately
+    reportRequestOutcome(HEALTHY_REQUEST_THRESHOLD_MS - 200, true, base + 2000);
+    assert.equal(isNetworkDegraded(base + 2000), false);
+
+    // Failed request triggers cooldown and expires automatically after DEGRADED_COOLDOWN_MS
+    reportRequestOutcome(500, false, base + 3000);
+    assert.equal(isNetworkDegraded(base + 4000), true);
+    assert.equal(isNetworkDegraded(base + 3000 + DEGRADED_COOLDOWN_MS + 1), false);
+  });
+
+  it("rejects timed-out requests and marks network degraded via runWithNetworkTimeout", async () => {
+    resetNetworkQualityForTests();
+    await assert.rejects(
+      () =>
+        runWithNetworkTimeout(
+          () => new Promise((resolve) => setTimeout(() => resolve("late"), 100)),
+          20
+        ),
+      /timed out/
+    );
+    assert.equal(isNetworkDegraded(), true);
+    resetNetworkQualityForTests();
   });
 });
