@@ -13,11 +13,32 @@ interface WhoAreYaPlayerGridProps {
 
 interface TileProps {
   label: string;
+  shortLabel?: string;
   isMatch: boolean;
   children: React.ReactNode;
 }
 
-function StatTile({ label, isMatch, children }: TileProps) {
+interface NumericTileProps {
+  label: string;
+  shortLabel?: string;
+  value: number;
+  comparison: StatComparison;
+}
+
+function TileLabel({ label, shortLabel }: { label: string; shortLabel?: string }) {
+  const baseClass = 'text-[10px] font-bold uppercase tracking-wider text-neutral-400 select-none';
+  if (!shortLabel) return <span className={baseClass}>{label}</span>;
+
+  return (
+    <span className={baseClass} title={label}>
+      <span className="sr-only">{label}</span>
+      <span className="sm:hidden" aria-hidden="true">{shortLabel}</span>
+      <span className="hidden sm:inline" aria-hidden="true">{label}</span>
+    </span>
+  );
+}
+
+function StatTile({ label, shortLabel, isMatch, children }: TileProps) {
   return (
     <div className="flex flex-col items-center gap-1">
       <div
@@ -29,22 +50,12 @@ function StatTile({ label, isMatch, children }: TileProps) {
       >
         {children}
       </div>
-      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 select-none">
-        {label}
-      </span>
+      <TileLabel label={label} shortLabel={shortLabel} />
     </div>
   );
 }
 
-function NumericTile({
-  label,
-  value,
-  comparison,
-}: {
-  label: string;
-  value: number;
-  comparison: StatComparison;
-}) {
+function NumericTile({ label, shortLabel, value, comparison }: NumericTileProps) {
   const dict = getDictionary();
   const isMatch = comparison === 'equal';
   const isHigher = comparison === 'higher';
@@ -81,15 +92,13 @@ function NumericTile({
           </span>
         )}
       </div>
-      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 select-none">
-        {label}
-      </span>
+      <TileLabel label={label} shortLabel={shortLabel} />
     </div>
   );
 }
 
 export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
-  const dict = getDictionary();
+  const { grid } = getDictionary().games.whoAreYa;
   if (guesses.length === 0) return null;
 
   return (
@@ -116,7 +125,7 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
             {/* Fila de 5 indicadores visuales limpios */}
             <div className="grid grid-cols-5 gap-2 sm:gap-3 justify-items-center pt-1">
               {/* 1. Nacionalidad: Bandera oficial gráfica */}
-              <StatTile label={dict.games.whoAreYa.grid.country} isMatch={guess.nationalityMatch}>
+              <StatTile label={grid.country} isMatch={guess.nationalityMatch}>
                 <Image
                   src={flagUrl}
                   alt={guess.player.nationality}
@@ -129,7 +138,7 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
               </StatTile>
 
               {/* 2. Posición: Abreviatura deportiva (POR, DEF, MED, DEL) */}
-              <StatTile label={dict.games.whoAreYa.grid.position} isMatch={guess.positionMatch}>
+              <StatTile label={grid.position} shortLabel={grid.positionShort} isMatch={guess.positionMatch}>
                 <span
                   className={`text-xs sm:text-sm font-extrabold tracking-wide ${
                     guess.positionMatch ? 'text-white' : 'text-neutral-800'
@@ -142,24 +151,17 @@ export function WhoAreYaPlayerGrid({ guesses }: WhoAreYaPlayerGridProps) {
 
               {/* 3. Partidos */}
               <NumericTile
-                label={dict.games.whoAreYa.grid.matches}
+                label={grid.matches}
+                shortLabel={grid.matchesShort}
                 value={guess.matchesPlayed.value}
                 comparison={guess.matchesPlayed.comparison}
               />
 
               {/* 4. Goles */}
-              <NumericTile
-                label={dict.games.whoAreYa.grid.goals}
-                value={guess.goals.value}
-                comparison={guess.goals.comparison}
-              />
+              <NumericTile label={grid.goals} value={guess.goals.value} comparison={guess.goals.comparison} />
 
               {/* 5. Año de Debut */}
-              <NumericTile
-                label={dict.games.whoAreYa.grid.debut}
-                value={guess.startYear.value}
-                comparison={guess.startYear.comparison}
-              />
+              <NumericTile label={grid.debut} value={guess.startYear.value} comparison={guess.startYear.comparison} />
             </div>
           </div>
         );

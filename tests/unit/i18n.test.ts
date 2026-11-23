@@ -43,3 +43,11 @@ test("getDictionary returns required historico translations and tabs", () => {
   assert.equal(dict.historico.tabs.legacy, "Legado");
 });
 
+test("getDictionary returns full and compact whoAreYa grid labels", () => {
+  const dict = getDictionary("es");
+  assert.equal(dict.games.whoAreYa.grid.position, "Posición");
+  assert.equal(dict.games.whoAreYa.grid.positionShort, "Posic.");
+  assert.equal(dict.games.whoAreYa.grid.matches, "Partidos");
+  assert.equal(dict.games.whoAreYa.grid.matchesShort, "Partid.");
+});
+
