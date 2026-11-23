@@ -10,6 +10,11 @@ import {
   getDaysSinceEpoch,
   WHO_ARE_YA_EPOCH_DATE,
 } from '../../src/lib/who-are-ya/daily.ts';
+import {
+  getWhoAreYaTargetPool,
+  WHO_ARE_YA_TARGET_IDS,
+} from '../../src/lib/who-are-ya/target-pool.ts';
+import rawPlayers from '../../src/data/who-are-ya/players.json' with { type: 'json' };
 import type { WhoAreYaPlayer } from '../../src/lib/who-are-ya/types.ts';
 
 describe('Who Are Ya (¿Quién es?) Engine Suite', () => {
@@ -71,5 +76,28 @@ describe('Who Are Ya (¿Quién es?) Engine Suite', () => {
 
     const days = getDaysSinceEpoch(WHO_ARE_YA_EPOCH_DATE);
     assert.equal(days, 0);
+  });
+
+  it('selects daily mystery targets exclusively from the curated 172-player pool without repeating in a full round', () => {
+    const fullCatalog = rawPlayers as WhoAreYaPlayer[];
+    const pool = getWhoAreYaTargetPool(fullCatalog);
+
+    assert.equal(WHO_ARE_YA_TARGET_IDS.size, 172);
+    assert.equal(pool.length, 172);
+
+    const epochPlayer = getPlayerForDate(WHO_ARE_YA_EPOCH_DATE, fullCatalog);
+    assert.equal(epochPlayer.bdfId, 3268);
+
+    const seenIds = new Set<number>();
+    const [year, month, day] = WHO_ARE_YA_EPOCH_DATE.split('-').map(Number);
+
+    for (let offset = 0; offset < pool.length; offset++) {
+      const dateStr = new Date(Date.UTC(year, month - 1, day + offset)).toISOString().slice(0, 10);
+      const picked = getPlayerForDate(dateStr, fullCatalog);
+      assert.equal(WHO_ARE_YA_TARGET_IDS.has(picked.bdfId), true);
+      seenIds.add(picked.bdfId);
+    }
+
+    assert.equal(seenIds.size, 172);
   });
 });

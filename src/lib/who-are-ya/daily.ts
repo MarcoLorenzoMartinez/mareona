@@ -1,6 +1,7 @@
 import type { WhoAreYaPlayer } from './types';
 import { getDailyPermutedIndex } from '../games/daily-permutation.ts';
 import { resolveClampedMadridDate } from '../games/daily-date.ts';
+import { getWhoAreYaTargetPool, WHO_ARE_YA_INAUGURAL_PLAYER_ID } from './target-pool.ts';
 
 export const WHO_ARE_YA_EPOCH_DATE = '2026-11-13';
 
@@ -22,13 +23,24 @@ export function getDaysSinceEpoch(dateStr: string): number {
 
 /**
  * Resolves deterministic daily player for an ISO date string (YYYY-MM-DD)
- * using a Fisher-Yates shuffled permutation per round.
+ * from the curated target pool using a Fisher-Yates shuffled permutation per round.
+ *
+ * @param dateStr Target ISO date string (YYYY-MM-DD)
+ * @param catalog Full Who Are Ya player catalog
+ * @returns Deterministic mystery player for the requested date
  */
 export function getPlayerForDate(dateStr: string, catalog: WhoAreYaPlayer[]): WhoAreYaPlayer {
+  const pool = getWhoAreYaTargetPool(catalog);
   const days = getDaysSinceEpoch(dateStr);
-  const total = catalog.length;
-  const idx = getDailyPermutedIndex(days, total, 4817, 2);
-  return catalog[idx] || catalog[0];
+  const total = pool.length;
+  const inauguralIdx = pool.findIndex((player) => player.bdfId === WHO_ARE_YA_INAUGURAL_PLAYER_ID);
+  const idx = getDailyPermutedIndex(
+    days,
+    total,
+    4817,
+    inauguralIdx >= 0 ? inauguralIdx : undefined
+  );
+  return pool[idx] || pool[0];
 }
 
 /**
