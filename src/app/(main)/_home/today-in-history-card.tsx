@@ -23,7 +23,7 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
   return (
     <section
       aria-label={dict.title}
-      className="flex flex-col rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs"
+      className="flex flex-1 flex-col rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs"
     >
       <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2.5">
         <h2 className="text-base font-bold text-[var(--foreground)]">{dict.title}</h2>
@@ -35,7 +35,7 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
         </Link>
       </div>
 
-      <div className="mt-3.5 flex flex-col gap-3">
+      <div className="mt-3.5 flex flex-1 flex-col gap-3">
         {/* Cabecera contextual: Año en rojo tipográfico y 'Competición, Jornada' separados solo por contraste y espacio */}
         <div className="flex flex-wrap items-baseline gap-2 text-xs">
           {featured.year !== null && (
@@ -52,7 +52,7 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
         {isMatch ? (
           <Link
             href={matchHref}
-            className="group flex flex-col justify-center rounded-xl border border-[var(--border)] bg-neutral-50/60 p-4 transition-all duration-150 hover:border-[var(--primary)]/50 hover:bg-white hover:shadow-2xs active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            className="group flex flex-1 flex-col justify-center rounded-xl border border-[var(--border)] bg-neutral-50/60 p-4 transition-all duration-150 hover:border-[var(--primary)]/50 hover:bg-white hover:shadow-2xs active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             {/* Marcador central limpio y proporcionado */}
             <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
@@ -102,7 +102,7 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
           </Link>
         ) : (
           /* Hito o efeméride no partido (personaje / leyenda) */
-          <div className="flex items-start gap-3 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-3.5">
+          <div className="flex flex-1 items-center gap-3 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-3.5">
             {featured.photoUrl && (
               <div className="shrink-0 overflow-hidden rounded-lg border border-[var(--border)] bg-white">
                 <PlayerPhoto
