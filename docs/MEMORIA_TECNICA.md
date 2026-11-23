@@ -1036,7 +1036,7 @@ sequenceDiagram
 
     U->>SW: Navega a /juegos/wordle
     SW-->>U: Sirve HTML y JS desde caché (tras fallo o timeout de 3 s)
-    U->>LS: Completa el reto; enqueueGameResult() guarda intento único
+    U->>LS: Completa el reto y enqueueGameResult() guarda intento único
     Note over U,LS: Al recuperar cobertura se dispara el evento online
     LS->>SA: OfflineSyncListener envía los eventos pendientes
     SA-->>LS: Confirma persistencia en Supabase y elimina de la cola
