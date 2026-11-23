@@ -1,8 +1,23 @@
-// Client: Interacción táctil, hover y selección interactiva de puntos en el gráfico
+// Client: Interacción táctil, hover y selección por punto más cercano en el gráfico
 "use client";
 
-import { useMemo, useRef, useEffect } from "react";
+import { useMemo, useRef, useEffect, useState, useCallback, type MouseEvent, type PointerEvent } from "react";
 import type { HistoricalChartPoint } from "@/lib/historical/types";
+import {
+  CHART_HEIGHT,
+  CHART_INNER_WIDTH,
+  CHART_PAD_BOTTOM,
+  CHART_PAD_LEFT,
+  CHART_PAD_RIGHT,
+  CHART_PAD_TOP,
+  CHART_WIDTH,
+  clientToSvgCoords,
+  computeChartPointCoords,
+  findNearestChartPoint,
+  getChartRankY,
+  getChartYearX,
+  type ChartPointCoord,
+} from "./evolution-chart-math";
 
 interface EvolutionChartProps {
   readonly points: readonly HistoricalChartPoint[];
@@ -10,17 +25,11 @@ interface EvolutionChartProps {
   readonly onSelectSeason: (seasonId: string) => void;
 }
 
-const WIDTH = 920;
-const HEIGHT = 220;
-const PAD_LEFT = 42;
-const PAD_RIGHT = 24;
-const PAD_TOP = 20;
-const PAD_BOTTOM = 30;
+const DECADE_MARKERS = [1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020] as const;
 
 /**
  * Interactive SVG trajectory chart plotting Real Sporting league finishes from 1928 to present.
- * Inverts the Y-axis so 1st place is at the top, cleanly separating 1.ª and 2.ª División.
- * Starts scrolled to the end on mobile viewports so recent seasons are immediately visible.
+ * Resolves clicks and pointer hover to the nearest 2D point so adjacent seasons never steal clicks.
  */
 export function HistoricalEvolutionChart({
   points,
@@ -28,17 +37,12 @@ export function HistoricalEvolutionChart({
   onSelectSeason,
 }: EvolutionChartProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const innerWidth = WIDTH - PAD_LEFT - PAD_RIGHT;
-  const innerHeight = HEIGHT - PAD_TOP - PAD_BOTTOM;
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [hoveredSeasonId, setHoveredSeasonId] = useState<string | null>(null);
 
   const minYear = points[0]?.year ?? 1928;
   const maxYear = points[points.length - 1]?.year ?? 2026;
   const yearSpan = Math.max(maxYear - minYear, 1);
-
-  // Map coordinates: Effective rank 1 to 42 (1 top, 42 bottom)
-  const getX = (year: number) => PAD_LEFT + ((year - minYear) / yearSpan) * innerWidth;
-  const getY = (rank: number) => PAD_TOP + ((rank - 1) / 41) * innerHeight;
 
   // On mount, position the horizontal scroll at the rightmost end so the most recent seasons are visible first
   useEffect(() => {
@@ -55,96 +59,124 @@ export function HistoricalEvolutionChart({
     return () => cancelAnimationFrame(frameId);
   }, []);
 
-  const polylinePoints = useMemo(() => {
-    return points
-      .map((p) => {
-        const x = PAD_LEFT + ((p.year - minYear) / yearSpan) * innerWidth;
-        const y = PAD_TOP + ((p.effectiveRank - 1) / 41) * innerHeight;
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
-      })
-      .join(" ");
-  }, [points, minYear, yearSpan, innerWidth, innerHeight]);
+  const pointCoords = useMemo(() => computeChartPointCoords(points), [points]);
 
-  const yDiv = getY(20.5);
+  const polylinePoints = useMemo(() => {
+    return pointCoords.map((c) => `${c.cx.toFixed(1)},${c.cy.toFixed(1)}`).join(" ");
+  }, [pointCoords]);
+
+  const resolveNearestPoint = useCallback(
+    (clientX: number, clientY: number): ChartPointCoord | null => {
+      const svg = svgRef.current;
+      if (!svg) return null;
+      const svgPos = clientToSvgCoords(clientX, clientY, svg.getBoundingClientRect());
+      if (!svgPos) return null;
+      return findNearestChartPoint(pointCoords, svgPos.x, svgPos.y);
+    },
+    [pointCoords]
+  );
+
+  const handleSvgClick = useCallback(
+    (e: MouseEvent<SVGSVGElement>) => {
+      const nearest = resolveNearestPoint(e.clientX, e.clientY);
+      if (nearest) {
+        onSelectSeason(nearest.point.seasonLabel);
+      }
+    },
+    [resolveNearestPoint, onSelectSeason]
+  );
+
+  const handleSvgPointerMove = useCallback(
+    (e: PointerEvent<SVGSVGElement>) => {
+      if (e.pointerType === "touch") return;
+      const nearest = resolveNearestPoint(e.clientX, e.clientY);
+      setHoveredSeasonId(nearest?.point.seasonLabel ?? null);
+    },
+    [resolveNearestPoint]
+  );
+
+  const handleSvgPointerLeave = useCallback(() => {
+    setHoveredSeasonId(null);
+  }, []);
+
+  const hoveredPoint = useMemo(
+    () => (hoveredSeasonId ? pointCoords.find((c) => c.point.seasonLabel === hoveredSeasonId) ?? null : null),
+    [pointCoords, hoveredSeasonId]
+  );
+
+  const yDiv = getChartRankY(20.5);
 
   return (
     <section aria-label="Evolución histórica en Liga" className="w-full">
       <div className="rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs">
         <div ref={scrollContainerRef} className="overflow-x-auto scrollbar-none touch-pan-x">
           <svg
-            viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-            className="w-full min-w-[700px] h-auto select-none overflow-visible"
+            ref={svgRef}
+            viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+            className={`w-full min-w-[700px] h-auto select-none overflow-visible ${hoveredPoint ? "cursor-pointer" : ""}`}
             role="img"
             aria-label="Gráfico de posiciones históricas del Real Sporting en Primera y Segunda División"
+            onClick={handleSvgClick}
+            onPointerMove={handleSvgPointerMove}
+            onPointerLeave={handleSvgPointerLeave}
           >
             {/* Division Background Bands */}
-            <rect x={PAD_LEFT} y={PAD_TOP} width={innerWidth} height={yDiv - PAD_TOP} fill="#fafafa" />
-            <rect x={PAD_LEFT} y={yDiv} width={innerWidth} height={HEIGHT - PAD_BOTTOM - yDiv} fill="#f5f5f5" />
+            <rect x={CHART_PAD_LEFT} y={CHART_PAD_TOP} width={CHART_INNER_WIDTH} height={yDiv - CHART_PAD_TOP} fill="#fafafa" />
+            <rect x={CHART_PAD_LEFT} y={yDiv} width={CHART_INNER_WIDTH} height={CHART_HEIGHT - CHART_PAD_BOTTOM - yDiv} fill="#f5f5f5" />
 
             {/* Division Boundary Line */}
-            <line x1={PAD_LEFT} y1={yDiv} x2={WIDTH - PAD_RIGHT} y2={yDiv} stroke="#d4d4d4" strokeDasharray="3 3" />
+            <line x1={CHART_PAD_LEFT} y1={yDiv} x2={CHART_WIDTH - CHART_PAD_RIGHT} y2={yDiv} stroke="#d4d4d4" strokeDasharray="3 3" />
 
             {/* Y-Axis Boundary Line */}
-            <line x1={PAD_LEFT} y1={PAD_TOP} x2={PAD_LEFT} y2={HEIGHT - PAD_BOTTOM} stroke="#e5e5e5" strokeWidth="1" />
+            <line x1={CHART_PAD_LEFT} y1={CHART_PAD_TOP} x2={CHART_PAD_LEFT} y2={CHART_HEIGHT - CHART_PAD_BOTTOM} stroke="#e5e5e5" strokeWidth="1" />
 
             {/* Y-Axis Division Labels (centered vertically in each division zone) */}
-            <text
-              x={PAD_LEFT - 8}
-              y={(PAD_TOP + yDiv) / 2 + 4}
-              textAnchor="end"
-              fontSize="12"
-              fontWeight="bold"
-              fill="#525252"
-            >
+            <text x={CHART_PAD_LEFT - 8} y={(CHART_PAD_TOP + yDiv) / 2 + 4} textAnchor="end" fontSize="12" fontWeight="bold" fill="#525252">
               1ª
             </text>
-            <text
-              x={PAD_LEFT - 8}
-              y={(yDiv + HEIGHT - PAD_BOTTOM) / 2 + 4}
-              textAnchor="end"
-              fontSize="12"
-              fontWeight="bold"
-              fill="#737373"
-            >
+            <text x={CHART_PAD_LEFT - 8} y={(yDiv + CHART_HEIGHT - CHART_PAD_BOTTOM) / 2 + 4} textAnchor="end" fontSize="12" fontWeight="bold" fill="#737373">
               2ª
             </text>
 
             {/* Trajectory Path */}
             <polyline fill="none" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" points={polylinePoints} />
 
-            {/* Interactive Points (All uniform: white with red outline) */}
-            {points.map((p) => {
-              const cx = getX(p.year);
-              const cy = getY(p.effectiveRank);
-              const isSelected = p.seasonLabel === selectedSeasonId;
+            {/* Plotted Season Points */}
+            {pointCoords.map(({ point, cx, cy }) => {
+              const isSelected = point.seasonLabel === selectedSeasonId;
+              const isHovered = point.seasonLabel === hoveredSeasonId && !isSelected;
 
               return (
-                <g key={p.seasonLabel} className="cursor-pointer" onClick={() => onSelectSeason(p.seasonLabel)}>
-                  <title>{`${p.seasonLabel}: ${p.position}.º puesto (${p.tier === 1 ? "1.ª" : "2.ª"})`}</title>
-                  {/* Touch hit area (min 44px equivalent) */}
-                  <circle cx={cx} cy={cy} r="12" fill="transparent" />
-
-                  {/* Selected Outer Ring */}
+                <g key={point.seasonLabel} className="pointer-events-none">
+                  {isHovered && (
+                    <circle cx={cx} cy={cy} r="5.5" fill="none" stroke="#e2001a" strokeWidth="1.5" opacity="0.45" />
+                  )}
                   {isSelected && (
                     <circle cx={cx} cy={cy} r="7" fill="none" stroke="#e2001a" strokeWidth="2" opacity="0.7" className="animate-pulse" />
                   )}
-
-                  {/* Uniform Point Marker */}
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r="2.5"
-                    fill="#ffffff"
-                    stroke="#e2001a"
-                    strokeWidth="1.5"
-                  />
+                  <circle cx={cx} cy={cy} r="2.5" fill="#ffffff" stroke="#e2001a" strokeWidth="1.5" />
                 </g>
               );
             })}
 
+            {/* Native tooltip anchored to the nearest hovered point */}
+            {hoveredPoint && (
+              <circle cx={hoveredPoint.cx} cy={hoveredPoint.cy} r="8" fill="transparent">
+                <title>{`${hoveredPoint.point.seasonLabel}: ${hoveredPoint.point.position}.º puesto (${hoveredPoint.point.tier === 1 ? "1.ª" : "2.ª"})`}</title>
+              </circle>
+            )}
+
             {/* Decade markers on X axis */}
-            {[1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020].map((yr) => (
-              <text key={yr} x={getX(yr)} y={HEIGHT - 10} textAnchor="middle" fontSize="10" fill="#737373" className="tabular-nums">
+            {DECADE_MARKERS.map((yr) => (
+              <text
+                key={yr}
+                x={getChartYearX(yr, minYear, yearSpan)}
+                y={CHART_HEIGHT - 10}
+                textAnchor="middle"
+                fontSize="10"
+                fill="#737373"
+                className="tabular-nums pointer-events-none"
+              >
                 {yr}
               </text>
             ))}
