@@ -66,23 +66,16 @@ export function NextFixtureHero({ match: initialMatch }: NextFixtureHeroProps) {
           </div>
         )}
 
-        <div className="relative z-10 flex items-center justify-between border-b border-[var(--border)] pb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
-              {match
-                ? `${match.roundName ? `${match.roundName} · ` : match.matchday ? `${dict.season.match.matchday} ${match.matchday} · ` : ""}${match.competition}`
-                : dict.season.match.nextFixture}
-            </span>
-            {isLive && (
-              <span className="rounded-xs bg-[var(--primary)] px-1.5 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider animate-pulse">
-                {dict.season.matchDetail.status.live}
-              </span>
-            )}
-          </div>
+        <div className="relative z-10 flex items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
+          <span className="min-w-0 text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
+            {match
+              ? `${match.roundName ? `${match.roundName} · ` : match.matchday ? `${dict.season.match.matchday} ${match.matchday} · ` : ""}${match.competition}`
+              : dict.season.match.nextFixture}
+          </span>
           {match && (
             <Link
               href={`/temporada/partidos/${match.externalId}`}
-              className="text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs"
+              className="shrink-0 whitespace-nowrap text-xs font-semibold text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-xs"
             >
               {dict.season.matchDetail.title} →
             </Link>

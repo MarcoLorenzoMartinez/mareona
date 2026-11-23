@@ -33,7 +33,7 @@ export function HeroScoreboard({
       <div
         className={`flex h-10 md:h-12 min-w-[64px] md:min-w-[76px] items-center justify-center rounded-md backdrop-blur-xs px-2.5 md:px-3.5 text-center shadow-2xs border ${
           isLive
-            ? "bg-red-50/80 border-[var(--primary)]/30 animate-pulse"
+            ? "bg-red-50/80 border-[var(--primary)]/30"
             : "bg-[var(--surface)]/90 border-[var(--border)]/40"
         }`}
       >
@@ -49,11 +49,15 @@ export function HeroScoreboard({
             : timeLabel}
         </span>
       </div>
-      {isFinished && (
+      {isLive ? (
+        <span className="mt-1.5 md:mt-0 md:absolute md:-bottom-5 md:left-1/2 md:-translate-x-1/2 rounded-full bg-[var(--primary)] px-2 py-0.5 text-[10px] font-bold tracking-wider text-white uppercase whitespace-nowrap leading-tight">
+          {dict.season.matchDetail.status.live}
+        </span>
+      ) : isFinished ? (
         <span className="text-[10px] sm:text-[11px] font-semibold tracking-wider text-[var(--muted-foreground)] uppercase whitespace-nowrap mt-1 md:mt-0 md:absolute md:-bottom-5 md:left-1/2 md:-translate-x-1/2">
           Final
         </span>
-      )}
+      ) : null}
     </div>
   );
 }
