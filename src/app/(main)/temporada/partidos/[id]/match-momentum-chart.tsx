@@ -82,7 +82,7 @@ export function MatchMomentumChart({
             {positionedHome.map((pe) => (
               <div
                 key={pe.event.id}
-                className="absolute -translate-x-1/2"
+                className="absolute w-max -translate-x-1/2"
                 style={{
                   left: `${pe.markerPct}%`,
                   bottom: `${pe.tier * 26}px`,
@@ -147,7 +147,7 @@ export function MatchMomentumChart({
             {positionedAway.map((pe) => (
               <div
                 key={pe.event.id}
-                className="absolute -translate-x-1/2"
+                className="absolute w-max -translate-x-1/2"
                 style={{
                   left: `${pe.markerPct}%`,
                   top: `${pe.tier * 26}px`,

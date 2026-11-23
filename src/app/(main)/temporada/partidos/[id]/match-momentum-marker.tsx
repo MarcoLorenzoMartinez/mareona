@@ -26,7 +26,7 @@ export function MatchMomentumMarker({ event, isTop }: MatchMomentumMarkerProps) 
     >
       {isGoal ? (
         <span
-          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold font-sans tabular-nums text-white shadow-2xs select-none ${
+          className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-bold font-sans tabular-nums text-white shadow-2xs select-none ${
             event.isSporting ? "bg-[var(--primary)]" : "bg-neutral-900"
           }`}
         >
