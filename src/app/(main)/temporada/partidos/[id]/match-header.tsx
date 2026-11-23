@@ -7,15 +7,47 @@ import type { DomainMatchDetail } from "@/lib/sports-api/types";
 import { getDictionary } from "@/i18n";
 import { MatchHeaderMeta } from "./match-header-meta";
 
+interface MatchHeaderTeamCellProps {
+  readonly team: DomainMatchDetail["homeTeam"];
+  readonly isHome: boolean;
+}
+
+function MatchHeaderTeamCell({ team, isHome }: MatchHeaderTeamCellProps) {
+  const layoutClass = isHome
+    ? "justify-center md:justify-end text-center md:text-right"
+    : "justify-center md:justify-start text-center md:text-left";
+  const nameOrderClass = isHome ? "order-2 md:order-1" : "order-2";
+  const crestOrderClass = isHome ? "order-1 md:order-2" : "order-1";
+
+  return (
+    <div className={`col-span-3 flex flex-col md:flex-row items-center gap-1.5 md:gap-3.5 min-w-0 ${layoutClass}`}>
+      <span
+        className={`${nameOrderClass} text-xs sm:text-sm font-bold truncate max-w-full md:text-xl ${
+          team.isSporting ? "text-[var(--primary)]" : "text-[var(--foreground)]"
+        }`}
+      >
+        {team.name}
+      </span>
+      <div className={`${crestOrderClass} shrink-0 md:hidden`}>
+        <TeamCrest crestUrl={team.crestUrl} teamName={team.name} size="md" isSporting={team.isSporting} />
+      </div>
+      <div className={`${crestOrderClass} shrink-0 hidden md:block`}>
+        <TeamCrest crestUrl={team.crestUrl} teamName={team.name} size="lg" isSporting={team.isSporting} />
+      </div>
+    </div>
+  );
+}
+
 interface MatchHeaderProps {
   readonly match: DomainMatchDetail;
+  readonly isSyncStale?: boolean;
 }
 
 /**
  * Scoreboard hero card presenting match status, official club crests,
  * result/kickoff time and subtle stadium photography backdrop.
  */
-export function MatchHeader({ match }: MatchHeaderProps) {
+export function MatchHeader({ match, isSyncStale = false }: MatchHeaderProps) {
   const dict = getDictionary();
   const t = dict.season.matchDetail;
   const matchT = dict.season.match;
@@ -78,43 +110,26 @@ export function MatchHeader({ match }: MatchHeaderProps) {
             : ""}
           {match.competition}
         </span>
-        {match.status === "live" && (
-          <span className="rounded-xs bg-[var(--primary)] px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white animate-pulse">
-            {t.status.live}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {match.status === "live" && (
+            <span className="rounded-xs bg-[var(--primary)] px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white animate-pulse">
+              {t.status.live}
+            </span>
+          )}
+          {isSyncStale && (
+            <span
+              role="status"
+              className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-950"
+            >
+              {t.syncStale}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Marcador principal y equipos */}
       <div className="relative z-10 grid grid-cols-7 items-center gap-2 py-4 md:gap-6 md:py-6">
-        {/* Equipo Local */}
-        <div className="col-span-3 flex flex-col md:flex-row items-center justify-center md:justify-end gap-1.5 md:gap-3.5 text-center md:text-right min-w-0">
-          <span
-            className={`order-2 md:order-1 text-xs sm:text-sm font-bold truncate max-w-full md:text-xl ${
-              match.homeTeam.isSporting
-                ? "text-[var(--primary)]"
-                : "text-[var(--foreground)]"
-            }`}
-          >
-            {match.homeTeam.name}
-          </span>
-          <div className="order-1 md:order-2 shrink-0 md:hidden">
-            <TeamCrest
-              crestUrl={match.homeTeam.crestUrl}
-              teamName={match.homeTeam.name}
-              size="md"
-              isSporting={match.homeTeam.isSporting}
-            />
-          </div>
-          <div className="order-1 md:order-2 shrink-0 hidden md:block">
-            <TeamCrest
-              crestUrl={match.homeTeam.crestUrl}
-              teamName={match.homeTeam.name}
-              size="lg"
-              isSporting={match.homeTeam.isSporting}
-            />
-          </div>
-        </div>
+        <MatchHeaderTeamCell team={match.homeTeam} isHome={true} />
 
         {/* Marcador central */}
         <div className="col-span-1 relative flex flex-col items-center justify-center shrink-0">
@@ -138,34 +153,7 @@ export function MatchHeader({ match }: MatchHeaderProps) {
           </div>
         </div>
 
-        {/* Equipo Visitante */}
-        <div className="col-span-3 flex flex-col md:flex-row items-center justify-center md:justify-start gap-1.5 md:gap-3.5 text-center md:text-left min-w-0">
-          <div className="shrink-0 md:hidden">
-            <TeamCrest
-              crestUrl={match.awayTeam.crestUrl}
-              teamName={match.awayTeam.name}
-              size="md"
-              isSporting={match.awayTeam.isSporting}
-            />
-          </div>
-          <div className="shrink-0 hidden md:block">
-            <TeamCrest
-              crestUrl={match.awayTeam.crestUrl}
-              teamName={match.awayTeam.name}
-              size="lg"
-              isSporting={match.awayTeam.isSporting}
-            />
-          </div>
-          <span
-            className={`text-xs sm:text-sm font-bold truncate max-w-full md:text-xl ${
-              match.awayTeam.isSporting
-                ? "text-[var(--primary)]"
-                : "text-[var(--foreground)]"
-            }`}
-          >
-            {match.awayTeam.name}
-          </span>
-        </div>
+        <MatchHeaderTeamCell team={match.awayTeam} isHome={false} />
       </div>
 
       <MatchHeaderMeta match={match} stadiumAsset={stadiumAsset} />

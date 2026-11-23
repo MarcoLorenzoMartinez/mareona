@@ -350,12 +350,12 @@ export async function fetchEspnSportingMatch(): Promise<DomainMatchSummary | nul
       fetch(`${baseUrl}?fixture=true`, {
         method: "GET",
         headers: ESPN_REQUEST_HEADERS,
-        next: { revalidate: 30 },
+        cache: "no-store",
       }),
       fetch(baseUrl, {
         method: "GET",
         headers: ESPN_REQUEST_HEADERS,
-        next: { revalidate: 30 },
+        cache: "no-store",
       }),
     ]);
 
@@ -404,12 +404,12 @@ export async function fetchEspnSportingSeasonMatches(): Promise<readonly DomainM
     fetch(baseUrl, {
       method: "GET",
       headers: ESPN_REQUEST_HEADERS,
-      next: { revalidate: 30 },
+      cache: "no-store",
     }),
     fetch(`${baseUrl}?fixture=true`, {
       method: "GET",
       headers: ESPN_REQUEST_HEADERS,
-      next: { revalidate: 30 },
+      cache: "no-store",
     }),
   ]);
 
@@ -464,7 +464,7 @@ export async function fetchEspnMatchDetail(
     const res = await fetch(url, {
       method: "GET",
       headers: ESPN_REQUEST_HEADERS,
-      next: { revalidate: 15 },
+      cache: "no-store",
     });
 
     if (!res.ok) {

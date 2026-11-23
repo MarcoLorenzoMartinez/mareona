@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getLiveSeasonMatchesUpdate } from "./live-actions";
 import { LIVE_POLL_INTERVAL_MS, shouldPollMatchesList } from "@/lib/sports-api/live-poll";
+import { runWithNetworkTimeout } from "@/lib/pwa/network-quality";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 
 /**
@@ -27,7 +28,7 @@ export function useLiveMatchesPoll(initialMatches: readonly DomainMatchSummary[]
     }
     isFetchingRef.current = true;
     try {
-      const updated = await getLiveSeasonMatchesUpdate();
+      const updated = await runWithNetworkTimeout(() => getLiveSeasonMatchesUpdate());
       if (updated && updated.length > 0) {
         setMatches(updated);
       }

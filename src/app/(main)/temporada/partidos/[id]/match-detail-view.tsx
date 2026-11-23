@@ -19,11 +19,11 @@ export function MatchDetailView({
   isNextFixture = false,
   rivalH2H = null,
 }: MatchDetailViewProps) {
-  const { match } = useLiveMatchPoll(initialMatch);
+  const { match, isSyncStale } = useLiveMatchPoll(initialMatch);
 
   return (
     <div className="flex flex-col gap-6">
-      <MatchHeader match={match} />
+      <MatchHeader match={match} isSyncStale={isSyncStale} />
       {isNextFixture && (
         <MatchPorraWidget
           matchId={match.externalId}

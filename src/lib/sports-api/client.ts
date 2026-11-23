@@ -18,11 +18,15 @@ import {
   setCachedPayload,
   TTL_STANDINGS_MS,
   TTL_FIXTURES_MS,
-  TTL_LIVE_MATCH_MS,
   TTL_SQUAD_MS,
   resolveMatchDetailTtlMs,
 } from "./cache.ts";
-import { PRE_MATCH_POLL_WINDOW_MS } from "./live-poll.ts";
+import {
+  PRE_MATCH_POLL_WINDOW_MS,
+  hasStaleScheduledMatch,
+  resolveSeasonMatchesTtlMs,
+  shouldPollMatch,
+} from "./live-poll.ts";
 import {
   fetchEspnLiveStandings,
   fetchEspnSportingMatch,
@@ -324,19 +328,40 @@ export async function fetchSpotlightFixture(
   // Safeguard: If spotlight resolved to a finished match but the season is in progress
   // and no upcoming matches were present in the season match list (e.g. transient vendor API glitch),
   // fallback to fetchNextFixture to ensure we spotlight the upcoming match if available.
+  let resolvedSpotlight = spotlight;
   const hasUpcomingInList = matches.some((m) => m.status !== "finished");
-  if (!hasUpcomingInList && spotlight?.status === "finished") {
+  if (!hasUpcomingInList && resolvedSpotlight?.status === "finished") {
     try {
       const nextFixture = await fetchNextFixture(supabase);
       if (nextFixture && nextFixture.status !== "finished") {
-        return resolveSpotlightFixture([...matches, nextFixture]);
+        resolvedSpotlight = resolveSpotlightFixture([...matches, nextFixture]);
       }
     } catch {
       // Fallback gracefully to the already resolved spotlight match
     }
   }
 
-  return spotlight;
+  // During kickoff window or live play, cross-check match summary endpoint which updates faster than /schedule.
+  if (
+    resolvedSpotlight &&
+    shouldPollMatch(resolvedSpotlight.status, true, resolvedSpotlight.kickoffAt)
+  ) {
+    try {
+      const liveDetail = await fetchMatchDetail(resolvedSpotlight.externalId, supabase);
+      if (liveDetail) {
+        return {
+          ...resolvedSpotlight,
+          status: liveDetail.status,
+          homeScore: liveDetail.homeScore,
+          awayScore: liveDetail.awayScore,
+        };
+      }
+    } catch {
+      // Fall back to the schedule spotlight summary
+    }
+  }
+
+  return resolvedSpotlight;
 }
 
 /** In-memory cache for season matches to eliminate navigation delays. */
@@ -358,7 +383,8 @@ export async function fetchSportingSeasonMatches(
   if (
     memoryCachedSeasonMatches &&
     memoryCachedSeasonMatches.expiresAt > now &&
-    memoryCachedSeasonMatches.data.length > 0
+    memoryCachedSeasonMatches.data.length > 0 &&
+    !hasStaleScheduledMatch(memoryCachedSeasonMatches.data, now)
   ) {
     return memoryCachedSeasonMatches.data;
   }
@@ -369,16 +395,10 @@ export async function fetchSportingSeasonMatches(
   if (supabase) {
     const cached = await getCachedPayload<DomainMatchSummary[]>(supabase, cacheKey);
     if (cached) {
-      const hasStaleScheduled = cached.some(
-        (m) =>
-          m.status === "scheduled" &&
-          new Date(m.kickoffAt).getTime() - now <= PRE_MATCH_POLL_WINDOW_MS
-      );
-      if (hasStaleScheduled) {
+      if (hasStaleScheduledMatch(cached, now)) {
         // A scheduled match has entered the kickoff window; re-fetch from vendor to detect live kickoff
       } else {
-        const hasLive = cached.some((m) => m.status === "live");
-        const ttl = hasLive ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+        const ttl = resolveSeasonMatchesTtlMs(cached, false, now);
         memoryCachedSeasonMatches = {
           data: cached,
           expiresAt: now + ttl,
@@ -400,7 +420,6 @@ export async function fetchSportingSeasonMatches(
     );
 
     if (matches.length > 0) {
-      const hasLive = matches.some((m) => m.status === "live");
       const hasUpcoming = matches.some((m) => m.status !== "finished");
       // Mid-season schedule must contain upcoming fixtures. If none are present and total matches < 38,
       // it indicates an incomplete vendor fetch (e.g. rate limit on fixture=true).
@@ -412,7 +431,7 @@ export async function fetchSportingSeasonMatches(
           { totalMatches: matches.length }
         );
       }
-      const ttl = hasLive || isSuspiciousPartial ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+      const ttl = resolveSeasonMatchesTtlMs(matches, isSuspiciousPartial, now);
       memoryCachedSeasonMatches = {
         data: matches,
         expiresAt: now + ttl,

@@ -1,34 +1,42 @@
 // Client: Hook reactivo para sincronización en vivo del partido actual/próximo
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { getLiveNextFixtureUpdate } from "./live-actions";
 import { LIVE_POLL_INTERVAL_MS, shouldPollMatch } from "@/lib/sports-api/live-poll";
+import { runWithNetworkTimeout } from "@/lib/pwa/network-quality";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 
 /**
  * React hook that manages live polling for the spotlighted next fixture.
- * Polling triggers when the match is in progress ('live') or entering scheduled kickoff window,
- * and pauses when the tab is hidden or when the match is officially 'finished'.
+ * Prevents overlapping requests on slow stadium networks, bounds polls by timeout,
+ * and exposes `isSyncStale` when live updates cannot be refreshed.
  *
  * @param initialMatch Pre-rendered match summary state from Server Component.
- * @returns Current match summary state and isLive indicator.
+ * @returns Current match summary state, isLive indicator, and sync staleness flag.
  */
 export function useLiveFixturePoll(initialMatch: DomainMatchSummary | null) {
   const [match, setMatch] = useState<DomainMatchSummary | null>(initialMatch);
+  const [isSyncStale, setIsSyncStale] = useState(false);
+  const isFetchingRef = useRef(false);
   const isLive = match?.status === "live";
 
   const fetchUpdate = useCallback(async () => {
+    if (isFetchingRef.current) return;
     if (typeof document !== "undefined" && document.visibilityState === "hidden") {
       return;
     }
+    isFetchingRef.current = true;
     try {
-      const update = await getLiveNextFixtureUpdate();
+      const update = await runWithNetworkTimeout(() => getLiveNextFixtureUpdate());
+      setIsSyncStale(false);
       if (update) {
         setMatch(update);
       }
     } catch {
-      // Retain existing score state on transient network fluctuations
+      setIsSyncStale(true);
+    } finally {
+      isFetchingRef.current = false;
     }
   }, []);
 
@@ -45,7 +53,7 @@ export function useLiveFixturePoll(initialMatch: DomainMatchSummary | null) {
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        fetchUpdate();
+        void fetchUpdate();
       }
     };
 
@@ -58,5 +66,5 @@ export function useLiveFixturePoll(initialMatch: DomainMatchSummary | null) {
     };
   }, [match?.status, match?.kickoffAt, fetchUpdate]);
 
-  return { match, isLive };
+  return { match, isLive, isSyncStale };
 }

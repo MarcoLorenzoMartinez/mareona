@@ -74,6 +74,7 @@ export const es = {
         scheduled: "Programado",
         live: "En Directo",
       },
+      syncStale: "Sin actualizar · reintentando",
       notFound: "No se ha encontrado la ficha del partido solicitado.",
       tabs: {
         events: "Eventos",

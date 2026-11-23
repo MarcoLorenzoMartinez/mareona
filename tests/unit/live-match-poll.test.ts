@@ -11,6 +11,8 @@ import {
   shouldPollMatch,
   shouldPollMatchesList,
   resolveFixturesListTtlMs,
+  hasStaleScheduledMatch,
+  resolveSeasonMatchesTtlMs,
   LIVE_POLL_INTERVAL_MS,
   PRE_MATCH_POLL_WINDOW_MS,
 } from "../../src/lib/sports-api/live-poll.ts";
@@ -49,6 +51,33 @@ describe("Live Match Polling & Dynamic TTL", () => {
 
     it("returns 12 hours TTL when no match is in play", () => {
       assert.equal(resolveFixturesListTtlMs(false), TTL_FIXTURES_MS);
+    });
+  });
+
+  describe("hasStaleScheduledMatch & resolveSeasonMatchesTtlMs", () => {
+    it("detects scheduled matches entering kickoff window so memory/DB caches invalidate", () => {
+      const now = new Date("2026-11-14T16:10:00Z").getTime();
+      const matches = [
+        { status: "finished", kickoffAt: "2026-11-07T16:15:00Z" },
+        { status: "scheduled", kickoffAt: "2026-11-14T16:15:00Z" },
+      ];
+      assert.equal(hasStaleScheduledMatch(matches, now), true);
+      assert.equal(resolveSeasonMatchesTtlMs(matches, false, now), TTL_LIVE_MATCH_MS);
+    });
+
+    it("keeps 12h TTL when all scheduled matches are distant in the future", () => {
+      const now = new Date("2026-11-14T10:00:00Z").getTime();
+      const matches = [
+        { status: "finished", kickoffAt: "2026-11-07T16:15:00Z" },
+        { status: "scheduled", kickoffAt: "2026-11-22T15:15:00Z" },
+      ];
+      assert.equal(hasStaleScheduledMatch(matches, now), false);
+      assert.equal(resolveSeasonMatchesTtlMs(matches, false, now), TTL_FIXTURES_MS);
+    });
+
+    it("returns 15s TTL when a match is already live", () => {
+      const matches = [{ status: "live", kickoffAt: "2026-11-14T16:15:00Z" }];
+      assert.equal(resolveSeasonMatchesTtlMs(matches, false), TTL_LIVE_MATCH_MS);
     });
   });
 

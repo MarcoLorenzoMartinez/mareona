@@ -1,34 +1,42 @@
 // Client: Hook para actualización en vivo (polling inteligente) de partidos en juego
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { getLiveMatchUpdate } from "./actions";
 import { LIVE_POLL_INTERVAL_MS, shouldPollMatch } from "@/lib/sports-api/live-poll";
+import { runWithNetworkTimeout } from "@/lib/pwa/network-quality";
 import type { DomainMatchDetail } from "@/lib/sports-api/types";
 
 /**
  * React hook that manages live polling for matches in progress or entering kickoff window.
- * Silently pauses when the user minimizes or switches browser tabs, or when the match is finished.
+ * Prevents stacked requests on slow cellular networks and reports sync staleness on failures.
  *
  * @param initialMatch Pre-rendered match detail state from Server Component.
- * @returns The current match detail state and isLive flag.
+ * @returns The current match detail state, isLive flag, and sync staleness indicator.
  */
 export function useLiveMatchPoll(initialMatch: DomainMatchDetail) {
   const [match, setMatch] = useState<DomainMatchDetail>(initialMatch);
+  const [isSyncStale, setIsSyncStale] = useState(false);
+  const isFetchingRef = useRef(false);
   const matchId = initialMatch.externalId;
   const isLive = match.status === "live";
 
   const fetchUpdate = useCallback(async () => {
+    if (isFetchingRef.current) return;
     if (typeof document !== "undefined" && document.visibilityState === "hidden") {
       return;
     }
+    isFetchingRef.current = true;
     try {
-      const update = await getLiveMatchUpdate(matchId);
+      const update = await runWithNetworkTimeout(() => getLiveMatchUpdate(matchId));
+      setIsSyncStale(false);
       if (update) {
         setMatch(update);
       }
     } catch {
-      // Retain existing state on transient network failures
+      setIsSyncStale(true);
+    } finally {
+      isFetchingRef.current = false;
     }
   }, [matchId]);
 
@@ -45,7 +53,7 @@ export function useLiveMatchPoll(initialMatch: DomainMatchDetail) {
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        fetchUpdate();
+        void fetchUpdate();
       }
     };
 
@@ -58,5 +66,5 @@ export function useLiveMatchPoll(initialMatch: DomainMatchDetail) {
     };
   }, [match.status, match.kickoffAt, fetchUpdate]);
 
-  return { match, isLive };
+  return { match, isLive, isSyncStale };
 }

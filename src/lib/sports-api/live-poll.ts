@@ -71,3 +71,41 @@ export function shouldPollMatchesList(
 export function resolveFixturesListTtlMs(hasLiveMatch: boolean): number {
   return hasLiveMatch ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
 }
+
+/**
+ * Checks whether a cached season match list holds a scheduled match that has entered
+ * the kickoff polling window and must therefore be refreshed from upstream.
+ *
+ * @param matches Cached season match summaries.
+ * @param now Current timestamp in ms (defaults to Date.now()).
+ * @returns True if any scheduled match is imminent or currently past kickoff within the match window.
+ */
+export function hasStaleScheduledMatch(
+  matches: readonly { status: string; kickoffAt?: string | null }[],
+  now: number = Date.now()
+): boolean {
+  return matches.some(
+    (m) => m.status === "scheduled" && shouldPollMatch(m.status, true, m.kickoffAt, now)
+  );
+}
+
+/**
+ * Resolves the cache TTL for the Sporting season matches list.
+ * Uses the short 15-second TTL whenever a match is live, imminent/in-window, or partial.
+ *
+ * @param matches Season match summaries.
+ * @param isSuspiciousPartial Whether the upstream response looked truncated.
+ * @param now Current timestamp in ms (defaults to Date.now()).
+ * @returns TTL in milliseconds.
+ */
+export function resolveSeasonMatchesTtlMs(
+  matches: readonly { status: string; kickoffAt?: string | null }[],
+  isSuspiciousPartial: boolean = false,
+  now: number = Date.now()
+): number {
+  const hasLiveOrImminent =
+    isSuspiciousPartial ||
+    matches.some((m) => m.status === "live") ||
+    hasStaleScheduledMatch(matches, now);
+  return hasLiveOrImminent ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+}

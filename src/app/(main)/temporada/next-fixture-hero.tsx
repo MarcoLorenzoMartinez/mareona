@@ -21,7 +21,7 @@ interface NextFixtureHeroProps {
  * Automatically polls for score updates when status is 'live' and pauses when tab is hidden.
  */
 export function NextFixtureHero({ match: initialMatch }: NextFixtureHeroProps) {
-  const { match, isLive } = useLiveFixturePoll(initialMatch);
+  const { match, isLive, isSyncStale } = useLiveFixturePoll(initialMatch);
   const dict = getDictionary();
 
   const isTimeConfirmed = match?.isTimeConfirmed ?? true;
@@ -67,11 +67,21 @@ export function NextFixtureHero({ match: initialMatch }: NextFixtureHeroProps) {
         )}
 
         <div className="relative z-10 flex items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
-          <span className="min-w-0 text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
-            {match
-              ? `${match.roundName ? `${match.roundName} · ` : match.matchday ? `${dict.season.match.matchday} ${match.matchday} · ` : ""}${match.competition}`
-              : dict.season.match.nextFixture}
-          </span>
+          <div className="flex min-w-0 items-center gap-2 flex-wrap">
+            <span className="min-w-0 text-xs font-semibold tracking-wider text-[var(--primary)] uppercase">
+              {match
+                ? `${match.roundName ? `${match.roundName} · ` : match.matchday ? `${dict.season.match.matchday} ${match.matchday} · ` : ""}${match.competition}`
+                : dict.season.match.nextFixture}
+            </span>
+            {isSyncStale && (
+              <span
+                role="status"
+                className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-950"
+              >
+                {dict.season.matchDetail.syncStale}
+              </span>
+            )}
+          </div>
           {match && (
             <Link
               href={`/temporada/partidos/${match.externalId}`}
