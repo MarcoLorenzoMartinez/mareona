@@ -35,18 +35,24 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
         </Link>
       </div>
 
-      <div className="mt-2.5 flex flex-1 flex-col gap-2">
-        {/* Cabecera contextual: Año en rojo tipográfico y 'Competición, Jornada' o categoría separados solo por contraste y espacio */}
+      <div className="mt-2.5 flex flex-1 flex-col gap-2.5">
+        {/* Cabecera contextual: Año en rojo tipográfico y 'Competición, Jornada' o título del hito */}
         <div className="flex min-w-0 items-baseline gap-2 text-xs">
           {featured.year !== null && (
             <span className="shrink-0 text-sm font-bold tabular-nums text-[var(--primary)]">
               {featured.year}
             </span>
           )}
-          <span className="truncate font-medium text-[var(--foreground-muted)]">
-            {featured.competition || featured.categoryLabel || featured.detail}
-            {featured.round ? `, ${featured.round}` : ""}
-          </span>
+          {isMatch ? (
+            <span className="truncate font-medium text-[var(--foreground-muted)]">
+              {featured.competition || featured.detail}
+              {featured.round ? `, ${featured.round}` : ""}
+            </span>
+          ) : (
+            <h3 className="truncate text-sm font-bold text-[var(--foreground)]">
+              {featured.title}
+            </h3>
+          )}
         </div>
 
         {isMatch ? (
@@ -101,29 +107,24 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
             </div>
           </Link>
         ) : (
-          /* Hito o efeméride no partido (personaje / leyenda) */
-          <div className="flex flex-1 items-center gap-3 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-2.5">
+          /* Hito o efeméride no partido (personaje / leyenda) sin recuadro anidado */
+          <div className="flex flex-1 items-center gap-3.5">
             {featured.photoUrl && (
               <div className="shrink-0 overflow-hidden rounded-lg border border-[var(--border)] bg-white">
                 <PlayerPhoto
                   photoUrl={featured.photoUrl}
                   playerName={featured.figure ?? featured.title}
                   size="custom"
-                  className="h-14 w-14 object-cover object-top rounded-lg"
+                  className="h-18 w-18 object-cover object-top rounded-lg"
                 />
               </div>
             )}
-            <div className="flex-1 flex flex-col gap-0.5 min-w-0">
-              <h3 className="text-sm font-bold text-[var(--foreground)] leading-snug truncate">
-                {featured.title}
-              </h3>
-              <p
-                title={featured.detail}
-                className="text-xs leading-snug text-[var(--foreground-muted)] font-medium line-clamp-2"
-              >
-                {featured.detail}
-              </p>
-            </div>
+            <p
+              title={featured.detail}
+              className="flex-1 min-w-0 text-xs leading-snug text-[var(--foreground-muted)] font-medium line-clamp-4"
+            >
+              {featured.detail}
+            </p>
           </div>
         )}
       </div>
