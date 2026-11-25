@@ -146,12 +146,20 @@ export function parseFotMobPlayerProfile(data: FotMobRawPlayerData): DomainPlaye
   const statsGroups: PlayerProfileStatGroup[] = (data.firstSeasonStats?.statsSection?.items ?? [])
     .map((grp) => ({
       title: translatePlayerStatGroupTitle(grp.title),
-      items: (grp.items ?? []).map((it) => ({
-        title: translatePlayerStatTitle(it.title),
-        statValue: String(it.statValue ?? "0"),
-        per90: Math.round((it.per90 ?? 0) * 100) / 100,
-        percentileRank: it.percentileRank !== undefined ? Math.round(it.percentileRank) : undefined,
-      })),
+      items: (grp.items ?? []).map((it) => {
+        const title = translatePlayerStatTitle(it.title);
+        const isPercentage = title.includes("(%)") || (it.title ?? "").includes("%");
+        const rawValue = String(it.statValue ?? "0");
+        const statValue = isPercentage && !rawValue.endsWith("%") ? `${rawValue}%` : rawValue;
+
+        return {
+          title,
+          statValue,
+          // Percentages are time-invariant ratios; normalizing them per 90 minutes is meaningless.
+          per90: isPercentage ? 0 : Math.round((it.per90 ?? 0) * 100) / 100,
+          percentileRank: it.percentileRank !== undefined ? Math.round(it.percentileRank) : undefined,
+        };
+      }),
     }))
     .filter((g) => g.items.length > 0);
 

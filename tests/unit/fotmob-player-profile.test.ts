@@ -41,6 +41,7 @@ test("parseFotMobPlayerProfile maps biometrics, positions, heatmap, and recent m
             title: "Defending",
             items: [
               { title: "Tackles", statValue: "31", per90: 3.52, percentileRank: 97.5 },
+              { title: "Duels won %", statValue: "56.0", per90: 56.03, percentileRank: 64.2 },
             ],
           },
         ],
@@ -105,6 +106,11 @@ test("parseFotMobPlayerProfile maps biometrics, positions, heatmap, and recent m
   assert.equal(parsed.statsGroups.length, 1);
   assert.equal(parsed.statsGroups[0]?.title, "Defensa");
   assert.equal(parsed.statsGroups[0]?.items[0]?.title, "Entradas con éxito");
+  assert.equal(parsed.statsGroups[0]?.items[0]?.statValue, "31");
+  assert.equal(parsed.statsGroups[0]?.items[0]?.per90, 3.52);
+  assert.equal(parsed.statsGroups[0]?.items[1]?.title, "Duelos ganados (%)");
+  assert.equal(parsed.statsGroups[0]?.items[1]?.statValue, "56.0%");
+  assert.equal(parsed.statsGroups[0]?.items[1]?.per90, 0);
 
   assert.equal(parsed.recentMatches.length, 1);
   assert.equal(parsed.recentMatches[0]?.opponentName, "Cádiz");

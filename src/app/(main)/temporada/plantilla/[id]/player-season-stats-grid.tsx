@@ -71,11 +71,12 @@ export function PlayerSeasonStatsGrid({
                       <span className="font-black text-neutral-900 tabular-nums">
                         {stat.statValue}
                       </span>
-                      {stat.per90 > 0 && (
-                        <span className="text-[10px] font-semibold text-neutral-400 tabular-nums">
-                          ({stat.per90} /90&apos;)
-                        </span>
-                      )}
+                      <span
+                        aria-hidden={stat.per90 <= 0 ? true : undefined}
+                        className="w-16 shrink-0 whitespace-nowrap text-right text-[10px] font-semibold text-neutral-400 tabular-nums"
+                      >
+                        {stat.per90 > 0 ? `(${stat.per90} /90')` : ""}
+                      </span>
                     </div>
                   </div>
                 ))}
