@@ -75,10 +75,10 @@ export default async function HomePage() {
 
       {/* Main layout: Table leads on mobile, 2 columns (7/5) on desktop */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-stretch">
-        <div className="h-full lg:col-span-7">
+        <div className="lg:col-span-7 lg:self-start">
           <SeasonSummaryTable standings={standings} seasonLabel={seasonLabel} />
         </div>
-        <div className="flex flex-col gap-5 lg:col-span-5">
+        <div className="flex flex-col gap-4 lg:col-span-5">
           <div className="hidden lg:block">
             <DailyActionsCard porra={porra} />
           </div>

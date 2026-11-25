@@ -65,7 +65,7 @@ export function DailyActionsCard({ porra }: DailyActionsCardProps) {
   return (
     <section
       aria-label={dict.title}
-      className="flex flex-col rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs select-none"
+      className="flex flex-col rounded-xl border border-[var(--border)] bg-white px-4 py-3.5 sm:px-5 sm:py-4 shadow-2xs select-none"
     >
       <div className="flex items-center justify-between border-b border-[var(--border)] pb-2.5">
         <h2 className="text-base font-bold text-[var(--foreground)]">{dict.title}</h2>

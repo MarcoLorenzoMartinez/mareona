@@ -23,9 +23,9 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
   return (
     <section
       aria-label={dict.title}
-      className="flex flex-1 flex-col rounded-xl border border-[var(--border)] bg-white p-4 sm:p-5 shadow-2xs"
+      className="flex flex-1 flex-col rounded-xl border border-[var(--border)] bg-white px-4 py-3.5 sm:px-5 sm:py-4 shadow-2xs"
     >
-      <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2.5">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2">
         <h2 className="text-base font-bold text-[var(--foreground)]">{dict.title}</h2>
         <Link
           href="/historico/efemerides"
@@ -35,16 +35,16 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
         </Link>
       </div>
 
-      <div className="mt-3.5 flex flex-1 flex-col gap-3">
-        {/* Cabecera contextual: Año en rojo tipográfico y 'Competición, Jornada' separados solo por contraste y espacio */}
-        <div className="flex flex-wrap items-baseline gap-2 text-xs">
+      <div className="mt-2.5 flex flex-1 flex-col gap-2">
+        {/* Cabecera contextual: Año en rojo tipográfico y 'Competición, Jornada' o categoría separados solo por contraste y espacio */}
+        <div className="flex min-w-0 items-baseline gap-2 text-xs">
           {featured.year !== null && (
             <span className="shrink-0 text-sm font-bold tabular-nums text-[var(--primary)]">
               {featured.year}
             </span>
           )}
-          <span className="font-medium text-[var(--foreground-muted)]">
-            {featured.competition || featured.detail}
+          <span className="truncate font-medium text-[var(--foreground-muted)]">
+            {featured.competition || featured.categoryLabel || featured.detail}
             {featured.round ? `, ${featured.round}` : ""}
           </span>
         </div>
@@ -52,7 +52,7 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
         {isMatch ? (
           <Link
             href={matchHref}
-            className="group flex flex-1 flex-col justify-center rounded-xl border border-[var(--border)] bg-neutral-50/60 p-4 transition-all duration-150 hover:border-[var(--primary)]/50 hover:bg-white hover:shadow-2xs active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
+            className="group flex flex-1 flex-col justify-center rounded-xl border border-[var(--border)] bg-neutral-50/60 p-3.5 transition-all duration-150 hover:border-[var(--primary)]/50 hover:bg-white hover:shadow-2xs active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
           >
             {/* Marcador central limpio y proporcionado */}
             <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
@@ -102,22 +102,25 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
           </Link>
         ) : (
           /* Hito o efeméride no partido (personaje / leyenda) */
-          <div className="flex flex-1 items-center gap-3 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-3.5">
+          <div className="flex flex-1 items-center gap-3 rounded-xl border border-[var(--border)] bg-neutral-50/60 p-2.5">
             {featured.photoUrl && (
               <div className="shrink-0 overflow-hidden rounded-lg border border-[var(--border)] bg-white">
                 <PlayerPhoto
                   photoUrl={featured.photoUrl}
                   playerName={featured.figure ?? featured.title}
-                  size="md"
-                  className="h-16 w-16 object-cover object-top rounded-lg"
+                  size="custom"
+                  className="h-14 w-14 object-cover object-top rounded-lg"
                 />
               </div>
             )}
-            <div className="flex-1 flex flex-col gap-1 min-w-0">
+            <div className="flex-1 flex flex-col gap-0.5 min-w-0">
               <h3 className="text-sm font-bold text-[var(--foreground)] leading-snug truncate">
                 {featured.title}
               </h3>
-              <p className="text-xs leading-relaxed text-[var(--foreground-muted)] font-medium">
+              <p
+                title={featured.detail}
+                className="text-xs leading-snug text-[var(--foreground-muted)] font-medium line-clamp-2"
+              >
                 {featured.detail}
               </p>
             </div>
