@@ -26,6 +26,8 @@ export function ShotGoalPost({
 }: ShotGoalPostProps) {
   // Only shots on target or goals that have onGoalShot or goal coordinates
   const onTargetShots = shots.filter((s) => s.isOnTarget || s.isGoal);
+  // Match pitch priority so temporary hover overrides pinned selection and only one shot pulses
+  const activeShotId = hoveredShotId ?? selectedShotId;
 
   return (
     <div className="flex flex-col items-center gap-1.5 rounded-lg border border-[var(--border)]/60 bg-[var(--surface)]/30 p-2 text-center w-full max-w-[200px]">
@@ -39,6 +41,7 @@ export function ShotGoalPost({
           viewBox="0 0 120 60"
           className="h-full w-full select-none overflow-visible"
           aria-label={`Vista frontal portería ${title}`}
+          onMouseLeave={() => onHoverShot(null)}
         >
           {/* Sombra / Profundidad de la red */}
           <polygon points="15,12 105,12 110,6 10,6" fill="rgba(0,0,0,0.03)" />
@@ -70,9 +73,7 @@ export function ShotGoalPost({
 
           {/* Disparos a puerta sobre la red */}
           {onTargetShots.map((shot) => {
-            const isHovered = hoveredShotId === shot.id;
-            const isSelected = selectedShotId === shot.id;
-            const isActive = isHovered || isSelected;
+            const isActive = activeShotId === shot.id;
 
             // X va de 0 (poste izq) a 2 (poste dcho)
             const rawX = shot.onGoalShot?.x ?? 1;

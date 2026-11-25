@@ -6,7 +6,7 @@ const FOTMOB_SPORTING_ID = 9869;
 const FOTMOB_HEADERS = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36" };
 
 interface FotMobRawShot {
-  readonly id: number; readonly eventType: string; readonly isGoal?: boolean;
+  readonly id?: number; readonly eventType: string; readonly isGoal?: boolean;
   readonly isOnTarget?: boolean; readonly isBlocked?: boolean; readonly teamId: number;
   readonly playerId: number; readonly playerName: string; readonly min: number;
   readonly x: number; readonly y: number; readonly expectedGoals?: number;
@@ -32,6 +32,35 @@ interface FotMobRawPayload {
   };
 }
 
+/**
+ * Ensures every shot item has a unique numeric identifier, even when upstream
+ * payloads omit or repeat raw shot IDs.
+ *
+ * @param shots List of raw or cached shots.
+ * @returns Shots with guaranteed unique numeric IDs.
+ */
+export function ensureUniqueShotIds<T extends { readonly id?: number }>(
+  shots: readonly T[]
+): Array<T & { readonly id: number }> {
+  const seen = new Set<number>();
+  return shots.map((shot, index) => {
+    let id = typeof shot.id === "number" && Number.isFinite(shot.id) ? shot.id : index + 1;
+    while (seen.has(id)) {
+      id += 1;
+    }
+    seen.add(id);
+    return { ...shot, id };
+  });
+}
+
+/**
+ * Transforms a raw FotMob match payload into normalized domain advanced stats.
+ *
+ * @param data Raw FotMob match detail payload.
+ * @param homeTeamId FotMob identifier for the home team.
+ * @param awayTeamId FotMob identifier for the away team.
+ * @returns Normalized advanced match stats including shots with unique IDs.
+ */
 export function transformFotMobAdvancedStats(
   data: FotMobRawPayload,
   homeTeamId: number,
@@ -40,7 +69,7 @@ export function transformFotMobAdvancedStats(
   const content = data.content;
   const rawShots = content?.shotmap?.shots ?? [];
 
-  const shots: DomainShotItem[] = rawShots.map((s) => {
+  const shots: DomainShotItem[] = ensureUniqueShotIds(rawShots).map((s) => {
     const isHome = s.teamId === homeTeamId;
     const isSporting = s.teamId === FOTMOB_SPORTING_ID;
     const norm = normalizeAthleteName({ id: String(s.playerId), displayName: s.playerName });

@@ -18,6 +18,9 @@ export function SeasonGoalPost({
   onHoverGoal,
   onSelectGoal,
 }: SeasonGoalPostProps) {
+  // Match pitch priority so temporary hover overrides pinned selection and only one goal pulses
+  const activeGoalId = hoveredGoalId ?? selectedGoalId;
+
   return (
     <div className="flex flex-col items-center gap-1.5 rounded-lg border border-[var(--border)]/60 bg-[var(--surface)]/30 p-2 text-center w-full max-w-[210px] shrink-0">
       <span className="text-[11px] font-bold text-[var(--foreground)]">
@@ -29,6 +32,7 @@ export function SeasonGoalPost({
           viewBox="0 0 120 60"
           className="h-full w-full select-none overflow-visible"
           aria-label="Vista frontal de la portería rival con la ubicación de los goles"
+          onMouseLeave={() => onHoverGoal(null)}
         >
           {/* Sombra / Profundidad de la red */}
           <polygon points="15,12 105,12 110,6 10,6" fill="rgba(0,0,0,0.03)" />
@@ -60,9 +64,7 @@ export function SeasonGoalPost({
 
           {/* Impactos de gol sobre la portería */}
           {goals.map((goal) => {
-            const isHovered = hoveredGoalId === goal.id;
-            const isSelected = selectedGoalId === goal.id;
-            const isActive = isHovered || isSelected;
+            const isActive = activeGoalId === goal.id;
 
             // X va de 0 (poste izquierdo) a 2 (poste derecho)
             const rawX = goal.onGoalX ?? 1;

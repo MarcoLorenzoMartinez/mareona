@@ -252,4 +252,66 @@ test("parseFotMobTacticalLineups maps formations, coordinates, and photo URLs", 
   assert.equal(result.away.starters[0]?.rating, 8.5);
 });
 
+test("transformFotMobAdvancedStats assigns unique deterministic ids when raw shot ids are missing or duplicated", () => {
+  const payloadWithDuplicateIds = {
+    general: {
+      homeTeam: { id: 8385 },
+      awayTeam: { id: 9869 },
+    },
+    content: {
+      shotmap: {
+        shots: [
+          {
+            id: 0,
+            eventType: "Goal",
+            teamId: 8385,
+            playerId: 10,
+            playerName: "Jugador Uno",
+            x: 92,
+            y: 34,
+            min: 12,
+            isGoal: true,
+            isOnTarget: true,
+            onGoalShot: { x: 0.5, y: 0.2 },
+          },
+          {
+            id: 0,
+            eventType: "Goal",
+            teamId: 8385,
+            playerId: 11,
+            playerName: "Jugador Dos",
+            x: 94,
+            y: 30,
+            min: 65,
+            isGoal: true,
+            isOnTarget: true,
+            onGoalShot: { x: 1.5, y: 0.2 },
+          },
+          {
+            eventType: "AttemptSaved",
+            teamId: 9869,
+            playerId: 12,
+            playerName: "Jugador Tres",
+            x: 90,
+            y: 36,
+            min: 70,
+            isOnTarget: true,
+          },
+        ],
+      },
+    },
+  };
+
+  // Cast only for simulating missing raw id from external payload in test
+  const result = transformFotMobAdvancedStats(
+    payloadWithDuplicateIds as Parameters<typeof transformFotMobAdvancedStats>[0],
+    8385,
+    9869
+  );
+  const ids = result.shots.map((shot) => shot.id);
+  assert.equal(new Set(ids).size, 3);
+  assert.ok(ids.every((id) => Number.isFinite(id)));
+});
+
+
 

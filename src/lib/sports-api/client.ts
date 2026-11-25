@@ -34,7 +34,7 @@ import {
   fetchEspnMatchDetail,
   fetchEspnSportingRoster,
 } from "./espn.ts";
-import { fetchFotMobAdvancedStats } from "./fotmob.ts";
+import { ensureUniqueShotIds, fetchFotMobAdvancedStats } from "./fotmob.ts";
 import { fetchSportingCopaMatches } from "./copa.ts";
 import { fetchFotMobMatchDetail } from "./fotmob-match-detail.ts";
 import { resolveSpotlightFixture } from "./spotlight-fixture.ts";
@@ -486,6 +486,12 @@ function sanitizeMatchDetail(detail: DomainMatchDetail): DomainMatchDetail {
     ...detail,
     homeLineup: sanitizeLineup(detail.homeLineup),
     awayLineup: sanitizeLineup(detail.awayLineup),
+    advancedStats: detail.advancedStats
+      ? {
+          ...detail.advancedStats,
+          shots: ensureUniqueShotIds(detail.advancedStats.shots),
+        }
+      : detail.advancedStats,
     events: (() => {
       let runningHome = 0;
       let runningAway = 0;
