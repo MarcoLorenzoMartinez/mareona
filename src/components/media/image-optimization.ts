@@ -1,5 +1,6 @@
+// BDFutbol rejects server-side image optimizer fetches from Vercel (HTTP 502),
+// so www.bdfutbol.com assets intentionally fall back to bounded <img> tags.
 const OPTIMIZABLE_REMOTE_EXACT_HOSTS = new Set([
-  "www.bdfutbol.com",
   "a.espncdn.com",
   "images.fotmob.com",
   "media.api-sports.io",

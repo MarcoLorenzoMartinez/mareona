@@ -131,8 +131,11 @@ export function PlayerPhoto({
     <img
       src={resolvedSrc}
       alt={isDecorative ? "" : playerName}
+      width={px}
+      height={px}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
+      referrerPolicy="no-referrer"
       onError={() => setFailedUrl(resolvedSrc)}
       className={`shrink-0 ${defaultFit} ${sizeClass} ${className}`}
     />

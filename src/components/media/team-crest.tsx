@@ -107,6 +107,7 @@ export function TeamCrest({
       width={px}
       height={px}
       loading={priority ? "eager" : "lazy"}
+      referrerPolicy="no-referrer"
       onError={() => setHasError(true)}
       className={`shrink-0 object-contain ${sizeClass}`}
     />
