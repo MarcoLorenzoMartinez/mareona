@@ -1,4 +1,5 @@
 import { TTL_FIXTURES_MS, TTL_LIVE_MATCH_MS } from "./cache.ts";
+import { computeSpotlightTransitionAt } from "./spotlight-fixture.ts";
 
 export const LIVE_POLL_INTERVAL_MS = 15_000;
 /** Window before kickoff to begin verifying whether the match has started (10 minutes) */
@@ -108,4 +109,33 @@ export function resolveSeasonMatchesTtlMs(
     matches.some((m) => m.status === "live") ||
     hasStaleScheduledMatch(matches, now);
   return hasLiveOrImminent ? TTL_LIVE_MATCH_MS : TTL_FIXTURES_MS;
+}
+
+/**
+ * Determines whether a cached spotlight hero match has crossed its editorial transition
+ * boundary (or missed its kickoff window) and needs a one-shot client refresh.
+ *
+ * @param status Current match status ('scheduled' | 'live' | 'finished' | 'cancelled' | 'postponed').
+ * @param isVisible Whether browser document is visible.
+ * @param kickoffAt ISO kickoff timestamp of the spotlighted match.
+ * @param now Current timestamp in ms (defaults to Date.now()).
+ * @returns True if a single background refresh should run to replace stale cached HTML.
+ */
+export function shouldRefreshStaleSpotlight(
+  status: string | undefined | null,
+  isVisible: boolean,
+  kickoffAt?: string | null,
+  now: number = Date.now()
+): boolean {
+  if (!isVisible || !status || !kickoffAt) return false;
+  const kickoffMs = new Date(kickoffAt).getTime();
+  if (Number.isNaN(kickoffMs)) return false;
+
+  if (status === "finished") {
+    return now >= computeSpotlightTransitionAt(kickoffAt);
+  }
+  if (status === "scheduled") {
+    return now > kickoffMs + MAX_POST_KICKOFF_POLL_MS;
+  }
+  return false;
 }

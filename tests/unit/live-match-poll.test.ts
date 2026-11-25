@@ -10,6 +10,7 @@ import {
 import {
   shouldPollMatch,
   shouldPollMatchesList,
+  shouldRefreshStaleSpotlight,
   resolveFixturesListTtlMs,
   hasStaleScheduledMatch,
   resolveSeasonMatchesTtlMs,
@@ -171,6 +172,38 @@ describe("Live Match Polling & Dynamic TTL", () => {
       const source = fs.readFileSync(hookPath, "utf8");
       assert.match(source, /\[\s*shouldPoll\s*,\s*fetchUpdate\s*\]/);
       assert.doesNotMatch(source, /\[\s*matches\s*,\s*fetchUpdate\s*\]/);
+    });
+  });
+
+  describe("shouldRefreshStaleSpotlight", () => {
+    it("keeps finished weekend match on Sunday and Monday before Tuesday 00:00 Madrid", () => {
+      const sundayKickoff = "2026-11-22T17:30:00+01:00";
+      const mondayNight = new Date("2026-11-23T23:55:00+01:00").getTime();
+      assert.equal(shouldRefreshStaleSpotlight("finished", true, sundayKickoff, mondayNight), false);
+    });
+
+    it("flags finished weekend match for one-shot refresh once Tuesday 00:00 Madrid arrives", () => {
+      const sundayKickoff = "2026-11-22T17:30:00+01:00";
+      const tuesdayMidnight = new Date("2026-11-24T00:00:01+01:00").getTime();
+      const wednesday = new Date("2026-11-25T13:26:00+01:00").getTime();
+      assert.equal(shouldRefreshStaleSpotlight("finished", true, sundayKickoff, tuesdayMidnight), true);
+      assert.equal(shouldRefreshStaleSpotlight("finished", true, sundayKickoff, wednesday), true);
+    });
+
+    it("flags stale scheduled matches well past the 4-hour post-kickoff window", () => {
+      const kickoff = "2026-11-22T17:30:00+01:00";
+      const withinWindow = new Date("2026-11-22T19:00:00+01:00").getTime();
+      const nextDay = new Date("2026-11-23T10:00:00+01:00").getTime();
+      assert.equal(shouldRefreshStaleSpotlight("scheduled", true, kickoff, withinWindow), false);
+      assert.equal(shouldRefreshStaleSpotlight("scheduled", true, kickoff, nextDay), true);
+    });
+
+    it("returns false when hidden, live, or given invalid inputs", () => {
+      const wednesday = new Date("2026-11-25T13:26:00+01:00").getTime();
+      assert.equal(shouldRefreshStaleSpotlight("finished", false, "2026-11-22T17:30:00+01:00", wednesday), false);
+      assert.equal(shouldRefreshStaleSpotlight("live", true, "2026-11-22T17:30:00+01:00", wednesday), false);
+      assert.equal(shouldRefreshStaleSpotlight("finished", true, "invalid-date", wednesday), false);
+      assert.equal(shouldRefreshStaleSpotlight("finished", true, null, wednesday), false);
     });
   });
 });

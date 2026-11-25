@@ -3,7 +3,11 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getLiveNextFixtureUpdate } from "./live-actions";
-import { LIVE_POLL_INTERVAL_MS, shouldPollMatch } from "@/lib/sports-api/live-poll";
+import {
+  LIVE_POLL_INTERVAL_MS,
+  shouldPollMatch,
+  shouldRefreshStaleSpotlight,
+} from "@/lib/sports-api/live-poll";
 import { runWithNetworkTimeout } from "@/lib/pwa/network-quality";
 import type { DomainMatchSummary } from "@/lib/sports-api/types";
 
@@ -19,6 +23,7 @@ export function useLiveFixturePoll(initialMatch: DomainMatchSummary | null) {
   const [match, setMatch] = useState<DomainMatchSummary | null>(initialMatch);
   const [isSyncStale, setIsSyncStale] = useState(false);
   const isFetchingRef = useRef(false);
+  const attemptedStaleIdsRef = useRef<Set<string>>(new Set());
   const isLive = match?.status === "live";
 
   const fetchUpdate = useCallback(async () => {
@@ -65,6 +70,35 @@ export function useLiveFixturePoll(initialMatch: DomainMatchSummary | null) {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [match?.status, match?.kickoffAt, fetchUpdate]);
+
+  useEffect(() => {
+    if (!match) return;
+    const isPollingActive = shouldPollMatch(match.status, true, match.kickoffAt);
+    if (isPollingActive) return;
+
+    const triggerStaleRefreshIfNeeded = () => {
+      if (typeof navigator !== "undefined" && !navigator.onLine) return;
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+      if (attemptedStaleIdsRef.current.has(match.externalId)) return;
+      if (!shouldRefreshStaleSpotlight(match.status, true, match.kickoffAt)) return;
+
+      attemptedStaleIdsRef.current.add(match.externalId);
+      void fetchUpdate();
+    };
+
+    const timer = setTimeout(triggerStaleRefreshIfNeeded, 0);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        triggerStaleRefreshIfNeeded();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [match, fetchUpdate]);
 
   return { match, isLive, isSyncStale };
 }

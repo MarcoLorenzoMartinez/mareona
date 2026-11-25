@@ -7,7 +7,7 @@
  * Everything else — live scores, auth, Supabase, API routes, Server Actions — always
  * goes to the network so users never see stale or cross-account data.
  */
-const VERSION = "v7";
+const VERSION = "v8";
 const SHELL_CACHE = `mareona-shell-${VERSION}`;
 const STATIC_CACHE = `mareona-static-${VERSION}`;
 const IMAGE_CACHE = `mareona-images-${VERSION}`;
@@ -36,7 +36,7 @@ const OFFLINE_ROUTES = [
 const ARCHIVE_PREFIX = "/historico/";
 const IMAGE_PREFIXES = ["/crests/", "/flags/", "/images/", "/stadiums/", "/icons/", "/_next/image"];
 
-const NAVIGATION_TIMEOUT_MS = 3000;
+const NAVIGATION_TIMEOUT_MS = 6000;
 const MAX_STATIC_ENTRIES = 300;
 const MAX_IMAGE_ENTRIES = 150;
 const STATIC_ASSET_PATTERN =

@@ -121,7 +121,7 @@ describe("Service worker precache list", () => {
   it("precaches the home shell '/' with timeout fallback for congested networks", () => {
     assert.ok(swSource.includes('HOME_SHELL_PATH = "/"'));
     assert.ok(swSource.includes("isFastShellRoute"));
-    assert.ok(swSource.includes("NAVIGATION_TIMEOUT_MS"));
+    assert.ok(swSource.includes("NAVIGATION_TIMEOUT_MS = 6000"));
   });
 
   it("never caches live or personal routes", () => {
