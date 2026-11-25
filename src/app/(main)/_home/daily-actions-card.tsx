@@ -77,7 +77,7 @@ export function DailyActionsCard({ porra }: DailyActionsCardProps) {
         </Link>
       </div>
 
-      <div className="mt-3.5 flex flex-col gap-3">
+      <div className="mt-3 flex flex-col gap-2.5">
         {/* Sobre diario: barra compacta interactiva */}
         {actions?.packReady && (
           <Link

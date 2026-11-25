@@ -115,7 +115,7 @@ export function TodayInHistoryCard({ featured }: TodayInHistoryCardProps) {
                   photoUrl={featured.photoUrl}
                   playerName={featured.figure ?? featured.title}
                   size="custom"
-                  className="h-18 w-18 object-cover object-top rounded-lg"
+                  className="h-16 w-16 object-cover object-top rounded-lg"
                 />
               </div>
             )}
